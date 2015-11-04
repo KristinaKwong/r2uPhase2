@@ -1,0 +1,21 @@
+A9B5EF48-9203-4383-8DC4-80F304BF40CF 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
+# Emme table generated on Wed Oct 8 10:05:22 2014
+# File: //vanco-ifs-01/Project/projects/202994TransLink Modelling Support/Work Program/NG Model Validation/02.0C NG TL MODEL/Worksheets/TL NG RTM Model Worksheets/Matrix/3 Structure (OD)/WS.T.M.S.10.Demand OD.emt
+#
+[O-D pairs]
+# String Name: table name that appears in the table header (tr,subst)
+Name = WS.T.M.S.10.Demand OD
+# String SaveListConfiguration: file name to save current table configuration (subst,nosave)
+SaveListConfiguration : /$SaveListConfiguration
+# Click PrintCurrentListNoSetup: when clicked, current table will be printed without entering setup dialog (nosave)
+PrintCurrentListNoSetup : /$PrintCurrentListNoSetup/$PrintCurrentListNoSetup
+# String ExportCurrentTableToFile: when set to a file name, the current table is exported to it (nosave)
+ExportCurrentTableToFile : /$ExportCurrentTableToFile
+# Click CloseList: when clicked, table will be closed (nosave)
+CloseList : /$CloseList/$CloseList
+# Expression MatrixValue: expression for matrix value (tr,o-d,string,max. 6 values)
+MatrixValue[] = [Auto Person Trips T1] mf70
+MatrixValue[] = [Auto Person Trips T1] mf70
+# Bool ShowSum: Whether to show sum summary
+ShowSum = 1
+

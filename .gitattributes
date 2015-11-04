@@ -1,0 +1,12 @@
+RTM/BaseNetworks/starter_skims.csv.gz filter=lfs diff=lfs merge=lfs -text
+RTM/BaseNetworks/Starter_Demand_MD.in filter=lfs diff=lfs merge=lfs -text
+RTM/BaseNetworks/Starter_Demand_AM.in filter=lfs diff=lfs merge=lfs -text
+RTM/BaseNetworks/Starter_Demand_PM.in filter=lfs diff=lfs merge=lfs -text
+RTM_R2015_01[[:space:]]2011_BC/BaseNetworks/*.in filter=lfs diff=lfs merge=lfs -text
+RTM_R2015_01[[:space:]]2011_BC/BaseNetworks/Matrices/2030/*.in filter=lfs diff=lfs merge=lfs -text
+RTM_R2015_01[[:space:]]2011_BC/BaseNetworks/Matrices/2011/*.in filter=lfs diff=lfs merge=lfs -text
+RTM_R2015_01[[:space:]]2011_BC/BaseNetworks/Matrices/2045/*.in filter=lfs diff=lfs merge=lfs -text
+RTM_R2015_01[[:space:]]2011_BC/BaseNetworks/Inputs/2011/*.in filter=lfs diff=lfs merge=lfs -text
+RTM_R2015_01[[:space:]]2011_BC/BaseNetworks/Inputs/2030/*.in filter=lfs diff=lfs merge=lfs -text
+RTM_R2015_01[[:space:]]2011_BC/BaseNetworks/Inputs/2045/*.in filter=lfs diff=lfs merge=lfs -text
+RTM/BaseNetworks/Starter_Demand_*.in filter=lfs diff=lfs merge=lfs -text

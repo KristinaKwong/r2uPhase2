@@ -1,0 +1,12 @@
+Label,              Setting,                                Value
+am_scenario,        AM Scenario,                            21000
+md_scenario,        Midday Scenario,                        22000
+num_processors,     Number of Processors,                   8
+create_scenarios,   Scenario creation module,               On
+park_cost_adjust,   Parking cost adjustment module,         Off
+cost_sens,          Distribution cost sensitivity (0 to 1), 1
+mode_choice_sens,   Mode choice toll sensitivity (0 to 1),  1
+toll_assign_sens,   Assignment toll sensitivity (0 to 1),   1
+toll_dist_sens,     Distribution toll sensitivity (0 to 1), 1
+congested_transit,  Run the congested transit assignment,   On
+park_and_ride,      Run the park and ride adjustment,       On

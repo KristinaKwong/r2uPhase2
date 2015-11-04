@@ -1,0 +1,66 @@
+t matrices
+d mf19
+d mf20
+d mf21
+d mf22
+d mf23
+d mf24
+d mf25
+d mf26
+d mf27
+d mf28
+d mf29
+d mf30
+d mf31
+d mf32
+d mf51
+d mf52
+d mf53
+d mf54
+d mf55
+d mf56
+d mf57
+d mf58
+d mf59
+d mf60
+d mf61
+d mf62
+d mf63
+d mf64
+d mf66
+d mf67
+d mf68
+d mf69
+a matrix=mf19 AVhD1 0 11-Veh-AMPH-nonworkext-adjusted-SOV
+a matrix=mf20 AVhD2 0 11-Veh-AMPH-worklow-adjusted-SOV
+a matrix=mf21 AVhD3 0 11-Veh-AMPH-workmed-adjusted-SOV
+a matrix=mf22 AVhD4 0 11-Veh-AMPH-workhigh-adjusted-SOV
+a matrix=mf23 AVhD5 0 11-Veh-AMPH-nonworklow-adjusted-SOV
+a matrix=mf24 AVhD6 0 11-Veh-AMPH-nonworkmed-high-adjusted-SOV
+a matrix=mf25 AVhD7 0 11-Veh-AMPH-nonworkext-adjusted-HOV
+a matrix=mf26 AVhD8 0 11-Veh-AMPH-worklow-adjusted-HOV
+a matrix=mf27 AVhD9 0 11-Veh-AMPH-workmed-adjusted-HOV
+a matrix=mf28 AVhD10 0 11-Veh-AMPH-workhigh-adjusted-HOV
+a matrix=mf29 AVhD11 0 11-Veh-AMPH-nonworklow-adjusted-HOV
+a matrix=mf30 AVhD12 0 11-Veh-AMPH-nonworkmed-high-adjusted-HOV
+a matrix=mf31 ALgD13 0 11-Veh-AMPH-adjusted-Light Trucks
+a matrix=mf32 AHgD14 0 11-Veh-AMPH-adjusted-Heavy Trucks
+a matrix=mf51 MVhD1 0 11-Veh-MDPH-nonworkext-adjusted-SOV
+a matrix=mf52 MVhD2 0 11-Veh-MDPH-worklow-adjusted-SOV
+a matrix=mf53 MVhD3 0 11-Veh-MDPH-workmed-adjusted-SOV
+a matrix=mf54 MVhD4 0 11-Veh-MDPH-workhigh-adjusted-SOV
+a matrix=mf55 MVhD5 0 11-Veh-MDPH-nonworklow-adjusted-SOV
+a matrix=mf56 MVhD6 0 11-Veh-MDPH-nonworkmed-high-adjusted-SV
+a matrix=mf57 MVhD7 0 11-Veh-MDPH-nonworkext-adjusted-HOV
+a matrix=mf58 MVhD8 0 11-Veh-MDPH-worklow-adjusted-HOV
+a matrix=mf59 MVhD9 0 11-Veh-MDPH-workmed-adjusted-HOV
+a matrix=mf60 MVhD10 0 11-Veh-MDPH-workhigh-adjusted-HOV
+a matrix=mf61 MVhD11 0 11-Veh-MDPH-nonworklow-adjusted-HOV
+a matrix=mf62 MVhD12 0 11-Veh-MDPH-nonworkmed-high-adjusted-HOV
+a matrix=mf63 MVhD13 0 11-Veh-MDPH-adjusted-LGV
+a matrix=mf64 MVhD14 0 11-Veh-MDPH-adjusted-HGV
+a matrix=mf66 jAuDsA 0 Adj. Final Skim AutoDistanceAM
+a matrix=mf67 jAuTmA 0 Adj. Final Skim AutoTimeAM
+a matrix=mf68 jAuDsM 0 Adj. Final Skim AutoDistanceMD
+a matrix=mf69 jAuTmM 0 Adj. Final Skim AutoTimeMD
+                        

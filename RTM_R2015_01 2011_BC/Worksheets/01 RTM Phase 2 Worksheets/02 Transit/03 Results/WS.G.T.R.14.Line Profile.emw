@@ -1,0 +1,1502 @@
+D2461A6A-1F51-4A2C-87AC-6C3C49AA9DF7 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 2 0
+# Emme worksheet generated on Wed Feb 25 16:43:55 2015
+# File: //vanco-ifs-01/Project/projects/202994TransLink Modelling Support/Work Program/EMME TL RTM/2011/RTM_R2015_01 2011_BC/Worksheets/01 RTM Phase 2 Worksheets/02 Transit/03 Results/WS.G.T.R.14.Line Profile.emw
+#
+# String Name: name of worksheet (tr,subst)
+Name : PlotName
+Name = WS.G.T.R.14.Line Profile
+# Text Description: description of worksheet (tr,subst)
+Description = <h2>Line profile</h2>\
+This worksheet can be used to display:\
+<ul>\
+<li>The load profile of a <b>single</b> transit line, where\
+<ul>\
+<li><i>bars</i> represent segment volume\
+<li><i>up arrows</i> represent boarding passengers \
+<li><i>down arrows</i> represent alighting passengers\
+<li><i>right arrows</i> represent thru-passengers.\
+</ul>\
+<li>A network plot that shows the itinerary of the selected line.\
+</ul>\
+<p>\
+<b>Using this worksheet</b>\
+<ul>\
+<li>The initial line filter is set to the first line.\
+<ul>\
+<li>To display one transit line after another,\
+position the mouse in the <i>Line filter</i> input field\
+(in the <i>Line profile</i> layer) and then use the up and down arrow keys.\
+The ranges of the chart are automatically adjusted for the line selected, but can be changed.\
+<li>To choose a line in the associated transit line table, double-click the desired row to select it. \
+The line filter in the <i>Line profile</i> layer will change to <b>isMarked</b>.\
+</ul>\
+<li>By default, the value displayed on the X axis is the sequential segment number in line.\
+To specify a different value, use one of the <i>X display</i> predefined choices.\
+<li>Diagram <b>tips</b> display information about\
+boardings, alightings, thru-passengers or on-board passengers.\
+<li>By default, the <b>itinerary</b> of the selected line is displayed on the transit base network.\
+Use the <i>Network</i> layer to modify the display properties of the links and selected transit line.\
+<li><b>Full view</b> gives the window that contains all the links in the\
+<i>Network</i> layer, displayed in the upper right corner\
+of the inner frame of the chart.\
+All windowing commands (zoom-in, zoom-out, pan, predefined views)\
+apply to the network only.\
+The chart always fits the current view completely.\
+</ul>\
+<p>Note that this worksheet makes use of local configurable attributes.\
+There should <b>not</b> be two instances of this worksheet \
+opened at the same time.\
+<p><small>Copyright &copy; 2014, INRO. All rights reserved.</small>\
+<p>
+# Flags Flags: worksheet configuration flags
+Flags = 0x19
+# String Caption: caption that appears on window bar (tr,subst)
+Caption : //SubTitle
+Caption = %<Name>%
+# Box FullViewAdjust: viewport relative box for mapping full view bounding box
+FullViewAdjust = 0.6;0.6;0.9;0.9
+# String Active: name of currently active layer
+Active = Line profile
+# Bool AllowReordering: Layers reordering of this configuration is permitted
+AllowReordering = 0
+# Expression Condition: indicates that the worksheet is valid only if the condition is met (tr)
+Condition =  hasTransitAssignment
+# Float TransformationMatrix: coordinate transformation matrix
+TransformationMatrix : (0x200) /TransformationMatrix!/$WorksheetLoaded
+TransformationMatrix[] = 0
+TransformationMatrix[] = 0
+TransformationMatrix[] = 1
+TransformationMatrix[] = 1
+TransformationMatrix[] = 0
+TransformationMatrix[] = 0
+TransformationMatrix[] = 0
+TransformationMatrix[] = 0
+
+[Configurable attribute list]
+# String IncomingSyncs: regular expression to filter incoming sync signals
+IncomingSyncs = .
+# String OutgoingSyncs: regular expression to filter outgoing sync signals
+OutgoingSyncs = .
+
+[Configurable attribute]
+# String Name: configurable attribute name
+Name = lca_line_time
+# Text Description: description of configurable attribute (tr,subst)
+Description = Cumulated transit line time
+# String ExpressionType: domain of expression
+ExpressionType = transit segments
+# Expression Expression: expression for computing attribute values (tr,seg.,string)
+Expression = if(segno==1,timtr,timtr+last_value)
+# Filter Filter: filter used to compute attribute values (tr,seg.,string,max. 2 values)
+Filter : /LineSel1
+Filter = lindex==18
+# Integer Decimals: number of decimals for default formatting
+Decimals = 1
+
+[Configurable attribute]
+# String Name: configurable attribute name
+Name = lca_line_dist
+# Text Description: description of configurable attribute (tr,subst)
+Description = Cumulated line distance
+# String ExpressionType: domain of expression
+ExpressionType = transit segments
+# Expression Expression: expression for computing attribute values (tr,seg.,string)
+Expression = if(segno==1,length,length+last_value)
+# Filter Filter: filter used to compute attribute values (tr,seg.,string,max. 2 values)
+Filter : /LineSel1
+Filter = lindex==18
+# Integer Decimals: number of decimals for default formatting
+Decimals = 2
+
+[Configurable attribute]
+# String Name: configurable attribute name
+Name = lca_line_stopno
+# Text Description: description of configurable attribute (tr,subst)
+Description = Sequential stop index
+# String ExpressionType: domain of expression
+ExpressionType = transit segments
+# Expression Expression: expression for computing attribute values (tr,seg.,string)
+Expression = if(segno==1,isIStop,isIStop+last_value)
+# Filter Filter: filter used to compute attribute values (tr,seg.,string,max. 2 values)
+Filter : /LineSel1
+Filter = lindex==18
+# Integer Decimals: number of decimals for default formatting
+Decimals = 0
+
+[Background]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Background color
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xfc90000
+# Bool CFlag: display layer controls
+CFlag = 1
+# Bool SFlag: display layer on screen
+SFlag : ShowBackColor
+SFlag = 0
+# Bool MFlag: display layer under the magnifier
+MFlag : /ShowBackColor
+MFlag = 0
+# Bool LFlag: include layer in the legend window
+LFlag = 1
+# Bool IFlag: allow interactive input
+IFlag = 0
+# Style Style: style for filling background when no wallpaper is used
+Style : /BackgroundColor!/$WorksheetLoaded
+Style = 0x00000000 0x01f4f4f4 0x00000000 0x00000000
+
+[GIS vector]
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbc90000
+# Bool CFlag: display layer controls
+CFlag = 1
+# Bool SFlag: display layer on screen
+SFlag : SFlag/
+SFlag = 0
+# Bool MFlag: display layer under the magnifier
+MFlag : /SFlag
+MFlag = 0
+# Bool LFlag: include layer in the legend window
+LFlag = 1
+# Bool BFlag: include bounding box in full view
+BFlag = 0
+# Expression TextValue: expression for text value (tr,string,max. 12 values)
+TextValue = [TZ_2006_641 #1 Integer4 ] TZ
+# Break Breaks: exclusive upper bound to select style based on the index value
+Breaks[] = 0.00;
+Breaks[] = 9100;
+Breaks[] = 10000.00;
+# String BreakMethod: break compute method
+BreakMethod = Quantile
+# Style Style: fill / outline properties for shapes
+Style[] = 0x21a5a5a5 0x01ffffed 0x03000000 0x0000052c
+Style[] = 0x22a5a5a5 0x01a5a5a5 0x03ffffff 0x0000052c
+# String VectorFile: file specification for file to display (subst)
+VectorFile = Shapefiles for RTM/TZ_2006_641.shp
+# String Dataset: Dataset used from data source for drawing
+Dataset = 1 - TZ_2006_641
+
+[Inclusion]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Background layer(s)
+# Text Description: user definable layer description (tr,subst)
+Description = Includes user defined layers (in application mode,\
+control shown only if a file is specified and control is substituted)
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xb800000
+# Bool CFlag: display layer controls
+CFlag = 1
+# Bool SFlag: display layer on screen
+SFlag : ShowBackInclusion
+SFlag = 1
+# Bool MFlag: display layer under the magnifier
+MFlag : /ShowBackInclusion
+MFlag = 1
+# Bool LFlag: include layer in the legend window
+LFlag = 1
+# Bool IFlag: allow interactive input
+IFlag = 0
+# Bool TFlag: provide tips
+TFlag = 1
+# Bool AFlag: set active flag of filtered elements
+AFlag = 0
+# Bool BFlag: include bounding box in full view
+BFlag = 0
+# Bool EnableObjects: enable included objects
+EnableObjects = 1
+# Bool SubstituteControl: display control of first visible included layer instead of inclusion layer's control
+SubstituteControl = 1
+# Bool AutoHideControl: hide unsubstituted layer control
+AutoHideControl = 1
+# String ConfigurationFile: file containing configuration to include (subst)
+ConfigurationFile : (0x200) /UserBack!/$WorksheetLoaded
+ConfigurationFile = 
+
+[Link base]
+# Flags Flags: bit pattern containing layer flags
+Flags = 0x9e00000
+# Box BoundingBox: current bounding box of this layer (ro,nosave)
+BoundingBox : NetBB
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : ShowNetwork
+SFlag = 1
+# Bool MFlag: display layer under the magnifier
+MFlag : /ShowNetwork
+MFlag = 1
+# Bool LFlag: include layer in the legend window
+LFlag = 1
+# Bool IFlag: allow interactive input
+IFlag = 0
+# Bool TFlag: provide tips
+TFlag = 0
+# Bool AFlag: set active flag of filtered elements
+AFlag = 0
+# Bool BFlag: include bounding box in full view
+BFlag = 1
+# Float Offset: link thickness (pixels)
+Offset : Offset
+Offset = 0
+# Filter LinkFilter: expression for link filtering [,link iterator] (tr,link,string,max. 2 values)
+LinkFilter : LinkFilter
+LinkFilter = [transit network] isTransit
+# Bool DrawLinkBase: draw I-J base line of links
+DrawLinkBase : DrawLinkBase
+DrawLinkBase = 1
+# Bool DrawINode: draw a circle at the I-node of each selected link
+DrawINode : DrawINode
+DrawINode = 1
+# Bool DrawJNode: draw a circle at the J-node of each selected link
+DrawJNode : DrawJNode
+DrawJNode = 1
+# Integer HighligthedVertex: highlight vertex (-1 == none)
+HighligthedVertex : HighligthedVertex
+HighligthedVertex = 0
+# Break Breaks: exclusive upper bound to select style based on the index value
+Breaks : LinkBaseBreaks
+Breaks[] = 0;
+Breaks[] = 1;
+Breaks[] = 2;
+# Bool UseBreaks: use breaks
+UseBreaks : LinkBaseUseBreaks
+UseBreaks = 0
+# Integer BreakDecimals: break decimals
+BreakDecimals : LinkBaseBreakDecimals
+BreakDecimals = 2
+# String BreakMethod: break compute method
+BreakMethod : LinkBaseBreakMethod
+BreakMethod = Linear
+# Click ComputeBreaks: compute breaks (nosave)
+ComputeBreaks : LinkBaseComputeBreaks
+# Style Style: style for link outline and fill properties
+Style : LinkStyle
+Style[] = 0x217b7f6b 0x01d6d4b8 0x00000000 0x00000000
+Style[] = 0x21ffd7c3 0x01ffffff 0x00000000 0x00000000
+Style[] = 0x219c4d3d 0x01ff6b4c 0x00000000 0x00000000
+Style[] = 0x209c6e3d 0x01ffa94c 0x00000000 0x00000000
+Style[] = 0x209c803d 0x01ffcb4c 0x00000000 0x00000000
+Style[] = 0x21646464 0x01969696 0x00000000 0x00000000
+Style[] = 0x2196ab59 0x01c3de73 0x00000000 0x00000000
+# Expression StyleIndex: expression for link style index (tr,link)
+StyleIndex : LinkStyleIndex
+StyleIndex[] = 
+StyleIndex[] = 
+StyleIndex[] = [0: regular links; 1: connectors] isConnector
+StyleIndex[] = [0: regular; 1: connector; 2: one-way] which(1,isConnector,isOneWay)
+
+[Transit line]
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbe00000
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : ShowNetwork
+SFlag = 1
+# Bool MFlag: display layer under the magnifier
+MFlag : /ShowNetwork
+MFlag = 1
+# Bool LFlag: include layer in the legend window
+LFlag = 1
+# Bool AFlag: set active flag of filtered elements
+AFlag = 0
+# Bool BFlag: include bounding box in full view
+BFlag = 0
+# Bool ShowLineEnds: mark line ends and layovers graphically
+ShowLineEnds : ShowLineEnds
+ShowLineEnds = 1
+# Bool ShowTransitStops: show transit stops along the transit line as small circles
+ShowTransitStops : ShowTransitStops
+ShowTransitStops = 0
+# Float StopWidth: size of transit stops and layovers
+StopWidth : StopWidth
+StopWidth = -1
+# Float LineEndOffset: longitudinal offset of line ends
+LineEndOffset = 0
+# Style Style: style used to display transit line itineraries
+Style : LineStyle
+Style = 0x23ff0000 0x00ff0000 0x00000000 0x00000a0f
+# Filter LineFilter: expression for transit line filtering [,line iterator] (tr,line,string,max. 2 values)
+LineFilter : /LineSel1
+LineFilter = lindex==18
+# Filter LinkFilter: expression for link filtering [,link iterator] (tr,link,string,max. 2 values)
+LinkFilter : LinkFilter
+LinkFilter = [transit network] isTransit
+
+[Configurable control]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Network
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbd00000
+# String TranslationContext: context for translations of configuration texts (subst)
+TranslationContext[] = LinkBaseMapper
+TranslationContext[] = TransitLineMapper
+TranslationContext[] = SelectorField
+TranslationContext[] = Mapper
+# Bool CFlag: display layer controls
+CFlag = 1
+# Bool SFlag: display layer on screen
+SFlag : ShowNetwork
+SFlag = 1
+# Bool MFlag: display layer under the magnifier
+MFlag : /ShowNetwork
+MFlag = 1
+# Bool IFlag: allow interactive input
+IFlag = 0
+# Bool TFlag: provide tips
+TFlag = 0
+# String Layout: layout parameters (tr)
+Layout[] = Filter0;Filter;Link filter:;expression for link filter [,link iterator];0;0;0;0;links;
+Layout[] = Float0;Spinbox;Link offset:;link offset (pixels);1;1;0;0;-500;500;
+Layout[] = StyleLegend0;StyleLegend;Link style:;style for link value outline, fill and text properties;2;2;0;0;links;
+Layout[] = Style1;Style;Line style:;style for displaying transit segments on base network;4;4;0;0;;
+Layout[] = Bool0;Checkbox;Line ends;;5;5;0;0;;
+Layout[] = Bool1;Checkbox;Transit stops;;6;6;0;0;;
+Layout[] = Float1;Spinbox;Stop size:;size of transit stops and layovers;7;7;0;0;-1;20;Auto
+# Bool Bool0: 
+Bool0 : ShowLineEnds
+Bool0 = 1
+# Bool Bool1: 
+Bool1 : ShowTransitStops
+Bool1 = 0
+# Float Float0: link offset (pixels)
+Float0 : Offset
+Float0 = 0
+# Float Float1: size of transit stops and layovers
+Float1 : StopWidth
+Float1 = -1
+# Filter Filter0: expression for link filter [,link iterator] (tr,link,string,max. 2 values)
+Filter0 : LinkFilter
+Filter0 = [transit network] isTransit
+# Style Style1: style for displaying transit segments on base network
+Style1 : LineStyle
+Style1 = 0x23ff0000 0x00ff0000 0x00000000 0x00000a0f
+
+[[Style legend]]
+# String Name: user definable name of configurable object (tr)
+Name = StyleLegend0
+# String IncomingSyncs: regular expression to filter incoming sync signals
+IncomingSyncs = .
+# String OutgoingSyncs: regular expression to filter outgoing sync signals
+OutgoingSyncs = .
+# Expression StyleIndex (tr,link)
+StyleIndex : LinkStyleIndex
+StyleIndex[] = 
+StyleIndex[] = 
+StyleIndex[] = [0: regular links; 1: connectors] isConnector
+StyleIndex[] = [0: regular; 1: connector; 2: one-way] which(1,isConnector,isOneWay)
+# Style Style
+Style : (0x200) LinkStyle/Basenet!/$WorksheetLoaded
+Style[] = 0x217b7f6b 0x01d6d4b8 0x00000000 0x00000000
+Style[] = 0x21ffd7c3 0x01ffffff 0x00000000 0x00000000
+Style[] = 0x219c4d3d 0x01ff6b4c 0x00000000 0x00000000
+Style[] = 0x209c6e3d 0x01ffa94c 0x00000000 0x00000000
+Style[] = 0x209c803d 0x01ffcb4c 0x00000000 0x00000000
+Style[] = 0x21646464 0x01969696 0x00000000 0x00000000
+Style[] = 0x2196ab59 0x01c3de73 0x00000000 0x00000000
+# Break Breaks: exclusive upper bound to select style based on the index value
+Breaks : LinkBaseBreaks
+Breaks[] = 0;
+Breaks[] = 1;
+Breaks[] = 2;
+# Bool UseBreaks: use breaks
+UseBreaks : LinkBaseUseBreaks
+UseBreaks = 0
+# Integer BreakDecimals: break decimals
+BreakDecimals : LinkBaseBreakDecimals
+BreakDecimals = 2
+# String BreakMethod: break compute method
+BreakMethod : LinkBaseBreakMethod
+BreakMethod = Linear
+# Click ComputeBreaks: compute breaks (nosave)
+ComputeBreaks : LinkBaseComputeBreaks
+
+[Configurable control]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Frame and scales
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbda0000
+# String TranslationContext: context for translations of configuration texts (subst)
+TranslationContext[] = DiagramMapper
+TranslationContext[] = Mapper
+# Bool CFlag: display layer controls
+CFlag = 1
+# Bool SFlag: display layer on screen
+SFlag : SFlag/
+SFlag = 1
+# Bool MFlag: display layer under the magnifier
+MFlag : /SFlag
+MFlag = 0
+# Bool IFlag: allow interactive input
+IFlag = 0
+# Bool TFlag: provide tips
+TFlag = 0
+# String Layout: layout parameters (tr)
+Layout[] = Float0;Spinbox;Symbol size:;default symbol size;0;0;0;0;0;500;
+Layout[] = Integer0;Spinbox;Spacing:;spacing between x-axis values;1;1;0;0;0;100;
+Layout[] = Float2;Spinbox;X value direction:;direction angle (in degrees) in which the values are written on the X-axis;2;2;0;0;-360;360;
+Layout[] = Bool0;Checkbox;Scale text automatically;scale text/symbol size relative to full view;3;3;0;0;;
+Layout[] = Bool1;Checkbox;X value lines;draw vertical lines at values on x-axis;4;4;0;0;;
+Layout[] = Bool2;Checkbox;Y value lines;draw horizontal lines at values on y-axis;5;5;0;0;;
+Layout[] = Bool3;Checkbox;Stop nodes only;show nodes with transit stop only;6;6;0;0;;
+Layout[] = Bool4;Checkbox;Numeric values;show numeric values;7;7;0;0;;
+Layout[] = String0;String combo;Title:;chart title;8;8;0;0;;
+Layout[] = String1;String;X description:;description on horizontal axis;9;9;0;0;;
+Layout[] = String2;String;Y description:;description on vertical axis;10;10;0;0;;
+Layout[] = Float1;Multi-float;Margins:;diagram margin as fraction of total diagram width/height;11;11;0;0;;
+# Bool DisplayScreenFlagIcon: display screen flag icon
+DisplayScreenFlagIcon = 0
+# Bool Bool0: scale text/symbol size relative to full view
+Bool0 : RelativeSizing
+Bool0 = 0
+# Bool Bool1: draw vertical lines at values on x-axis
+Bool1 : DrawVerticalLines
+Bool1 = 0
+# Bool Bool2: draw horizontal lines at values on y-axis
+Bool2 : DrawHorizontalLines
+Bool2 = 0
+# Bool Bool3: show nodes with transit stop only
+Bool3 : LineStopsOnly/
+Bool3 = 1
+# Bool Bool4: show numeric values
+Bool4 : NumericValues
+Bool4 = 0
+# Integer Integer0: spacing between x-axis values
+Integer0 : Spacing/
+Integer0 = 1
+# Float Float0: default symbol size
+Float0 : SymbolSize
+Float0 = 10
+# Float Float1: diagram margin as fraction of total diagram width/height
+Float1 : Margin
+Float1 = 0.1
+# Float Float2: direction angle (in degrees) in which the values are written on the X-axis
+Float2 : XAngle/
+Float2 = 0
+# String String0: chart title
+String0 : Title//PlotName
+String0[] = %<ResultValues:LineDescription>%
+String0[] = Line profile\n%<ResultValues:LineDescription>%
+String0[] = %<ResultValues:LineDescription>%
+String0[] = 
+# String String1: description on horizontal axis
+String1 : XDescription
+String1[] = \nSegment
+String1[] = \nSegment
+String1[] = \nNode
+String1[] = \nLabel
+String1[] = \nMinutes
+String1[] = \nDist. (%<$UnitOfLength>%)
+# String String2: description on vertical axis
+String2 : YDescription
+String2 = Volume
+
+[Line parameter]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Line description
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbfb0000
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : SFlag/
+SFlag = 0
+# Bool MFlag: display layer under the magnifier
+MFlag : /SFlag
+MFlag = 0
+# Bool AFlag: set active flag of filtered elements
+AFlag = 0
+# Integer MaximumNumberOfValues: maximum number of values to be evaluated
+MaximumNumberOfValues = 1
+# Expression Value: expression for parameter values (tr,line,string)
+Value = tr("Line")+" "+line+": "+description
+# Filter Filter: expression for element filtering [, iterator] (tr,line,string,max. 2 values)
+Filter : /LineSel1
+Filter = lindex==18
+# String ResultValues: parameter in which results are stored (nosave)
+ResultValues : LineDescription/
+
+[Parameter conversion]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = LineSelector
+# Text Description: user definable layer description (tr,subst)
+Description : (0x800)
+Description = Maps the selected line (group: LineSel1) to a stop-segment filter,\
+when "Stops only" is asked for.
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbfb0000
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : SFlag/
+SFlag = 0
+# Bool MFlag: display layer under the magnifier
+MFlag : /SFlag
+MFlag = 0
+# Integer IA: integer parameter IA
+IA : /LineStopsOnly
+IA = 1
+# String SA: string parameter SA (subst)
+SA : /LineSel1
+SA = lindex==18
+# Expression Expression: expression for parameter conversion (tr,string,max. 12 values)
+Expression = if(IA,"("+SA+")&&isIStop",SA)
+# String SR: string result
+SR : LineSelector/
+SR = (lindex==18)&&isIStop
+
+[Parameter conversion]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Default line filter
+# Text Description: user definable layer description (tr,subst)
+Description = Compute the default filter depending if a line is marked or not
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbfb0000
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : SFlag/
+SFlag = 0
+# Bool MFlag: display layer under the magnifier
+MFlag : /SFlag
+MFlag = 0
+# Integer IA: integer parameter IA
+IA : /$NumberOfMarkedLines*
+IA = 1
+# Expression Expression: expression for parameter conversion (tr,string,max. 12 values)
+Expression = if(IA==0,"[first line] lindex==1","[line selected in the table] isMarked")
+# String SR: string result
+SR : DefaultLineFilter/
+SR = [line selected in the table] isMarked
+
+[Parameter conversion]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = XChoiceValue
+# Text Description: user definable layer description (tr,subst)
+Description : (0x800)
+Description = Computes the index used by the XValue parameter\
+of segment histogram and scatterplots for index following.
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbfb0000
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : SFlag/
+SFlag = 0
+# Bool MFlag: display layer under the magnifier
+MFlag : /SFlag
+MFlag = 0
+# Integer IA: integer parameter IA
+IA : /LineStopsOnly
+IA = 1
+# Expression Expression: expression for parameter conversion (tr,string,max. 12 values)
+Expression = IA+1
+# Float FR: floating point result
+FR = 2
+# Integer IR: integer result
+IR : XChoice/
+IR = 2
+# String SR: string result
+SR = 2.000000000000000
+# Box BR: box result
+BR = 2;0;0;0
+
+[Line parameter]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = First line
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbfb0000
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : SFlag/
+SFlag = 0
+# Bool MFlag: display layer under the magnifier
+MFlag : /SFlag
+MFlag = 0
+# Bool AFlag: set active flag of filtered elements
+AFlag = 0
+# Integer MaximumNumberOfValues: maximum number of values to be evaluated
+MaximumNumberOfValues = 1
+# Expression Value: expression for parameter values (tr,line,string)
+Value = "lindex=="+lindex
+# Filter Filter: expression for element filtering [, iterator] (tr,line,string,max. 2 values)
+Filter : /@SelectedLines
+Filter = [line selected in the table] isMarked
+# String ResultValues: parameter in which results are stored (nosave)
+ResultValues : LineSel1/
+
+[Parameter conversion]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = XTickMarks
+# Text Description: user definable layer description (tr,subst)
+Description : (0x800)
+Description = Computes XTick parameter: 0,0 for stop indices; 1,1 for stop node numbers
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbfb0000
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : SFlag/
+SFlag = 0
+# Bool MFlag: display layer under the magnifier
+MFlag : /SFlag
+MFlag = 0
+# Integer IA: integer parameter IA
+IA : /Spacing
+IA = 1
+# Expression Expression: expression for parameter conversion (tr,string,max. 12 values)
+Expression = 1,IA
+# Float FR: floating point result
+FR : XTick
+FR[] = 1
+FR[] = 1
+# Integer IR: integer result
+IR[] = 1
+IR[] = 1
+# String SR: string result
+SR[] = 1.000000000000000
+SR[] = 1.000000000000000
+# Box BR: box result
+BR = 1;1;0;0
+
+[Segment parameter]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = X-Display
+# Text Description: user definable layer description (tr,subst)
+Description : (0x800)
+Description = Generates sequential values for X-axis
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbfb0000
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : SFlag/
+SFlag = 0
+# Bool MFlag: display layer under the magnifier
+MFlag : /SFlag
+MFlag = 0
+# Bool AFlag: set active flag of filtered elements
+AFlag = 0
+# Bool NoEmptyValues: do not include empty values in result parameter
+NoEmptyValues : /LineStopsOnly
+NoEmptyValues = 1
+# Expression Value: expression for parameter values (tr,seg.,string)
+Value : (0x100) //X
+Value[] = string(segno)
+Value[] = string(segno)
+Value[] = string(i)
+Value[] = tr(label)
+Value[] = string(lca_line_time,1)
+Value[] = string(lca_line_dist,2)
+# Filter Filter: expression for element filtering [, iterator] (tr,seg.,string,max. 2 values)
+Filter : /LineSelector
+Filter = (lindex==18)&&isIStop
+# String ResultValues: parameter in which results are stored (nosave)
+ResultValues : XDisplayValue/
+
+[Segment histogram]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Volume
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbf00000
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : ShowLineProfile
+SFlag = 1
+# Bool MFlag: display layer under the magnifier
+MFlag : /ShowLineProfile
+MFlag = 1
+# Bool LFlag: include layer in the legend window
+LFlag = 0
+# Bool IFlag: allow interactive input
+IFlag = 0
+# Bool TFlag: provide tips
+TFlag = 0
+# Bool AFlag: set active flag of filtered elements
+AFlag = 0
+# Bool BFlag: include bounding box in full view
+BFlag = 0
+# Float XPosition: X-coordinate of upper left corner (nosave)
+XPosition : (0x80) XPosition
+# Float YPosition: Y-coordinate of upper left corner (nosave)
+YPosition : (0x80) YPosition
+# Float Width: width of rectangle (nosave)
+Width : (0x80) Width
+# Float Height: height of rectangle (nosave)
+Height : (0x80) Height
+# Box AutoPositionBox: viewport relative bounding box for automatic position
+AutoPositionBox = 0;0;1;1
+# Float AspectRatio: fixed aspect ratio of diagram
+AspectRatio = 1.50144517421722
+# Bool RelativeSizing: scale text/symbol size relative to full view
+RelativeSizing : RelativeSizing
+RelativeSizing = 0
+# Bool DrawHorizontalLines: draw horizontal lines at values on y-axis
+DrawHorizontalLines : DrawHorizontalLines
+DrawHorizontalLines = 0
+# Bool DrawVerticalLines: draw vertical lines at values on x-axis
+DrawVerticalLines : DrawVerticalLines
+DrawVerticalLines = 0
+# Style FrameStyle: style used to draw diagram frame (0:outer frame, 1:scales, 2:inner frame, 3:zero lines)
+FrameStyle : DiagFrame!
+FrameStyle[] = 0x00bebebe 0x01ffffff 0x48000000 0x00000000
+FrameStyle[] = 0x20000000 0x00ffffff 0x00000000 0x00000000
+FrameStyle[] = 0x00000000 0x00ffffff 0x00000000 0x00000000
+FrameStyle[] = 0x20646464 0x00ffffff 0x00000000 0x00000000
+FrameStyle[] = 0x20bebebe 0x00ffffff 0x00000000 0x00000000
+FrameStyle[] = 0x20bebebe 0x00ffffff 0x00000000 0x00000000
+# Float XRange: start, end and interval values on horizontal data axis
+XRange : XRange
+XRange[] = 0
+XRange[] = 43
+XRange[] = 1
+# Float YRange: start and end values on vertical weight axis
+YRange : YRange
+YRange[] = 0
+YRange[] = 500
+# Float Margin: diagram margin as fraction of total diagram width / height
+Margin : Margin
+Margin = 0.1
+# Float XTick: horizontal tick mark distance [0] and no. of tick marks between values [1]
+XTick : XTick
+XTick[] = 1
+XTick[] = 1
+# Float YTick: vertical tick mark distance [0] and no. of tick marks between values [1]
+YTick : YTick
+YTick[] = 0
+YTick[] = 0
+# Float TextSize: text size used in diagram frame
+TextSize : TextSize
+TextSize = 12
+# String Title: diagram title (tr,subst)
+Title : /Title
+Title[] = %<ResultValues:LineDescription>%
+Title[] = Line profile\n%<ResultValues:LineDescription>%
+Title[] = %<ResultValues:LineDescription>%
+Title[] = 
+# String XDescription: description on horizontal axis (tr,subst)
+XDescription : (0x100) XDescription/XDescription/X
+XDescription[] = \nSegment
+XDescription[] = \nSegment
+XDescription[] = \nNode
+XDescription[] = \nLabel
+XDescription[] = \nMinutes
+XDescription[] = \nDist. (%<$UnitOfLength>%)
+# String YDescription: description on vertical axis (tr,subst)
+YDescription : YDescription
+YDescription = Volume
+# Expression XValueString: expression that provides value strings on horizontal axis [, text angle] (tr,string,max. 2 values)
+XValueString : //XAngle
+XValueString = subst("%<ResultValues["+x+"]:XDisplayValue>%"),number(subst("%<Float2:XAngle>%"))
+# Bool NumericValues: show numeric values
+NumericValues : NumericValues
+NumericValues = 0
+# Click AutoX: set range of horizontal histogram axis to show entire histogram (nosave)
+AutoX : @AutoX/AutoX/LineS*
+# Click AutoY: set range of vertical histogram axis to show entire histogram (nosave)
+AutoY : //@AutoX
+# Click AutoPos: position histogram automatically according to current view (nosave)
+AutoPos : //$CurrentView
+# Style BarStyle: style used for histogram bars
+BarStyle : LineProfile!
+BarStyle[] = 0x20bfac64 0x01f2db8a 0x00000000 0x00000020
+BarStyle[] = 0x20ba6828 0x01ed8330 0x00000000 0x00000020
+BarStyle[] = 0x20b34626 0x01e65928 0x00000000 0x00000020
+# Expression XValue: transit segment expression for data value on X-axis (tr,seg.)
+XValue : (0x100) XValue/XValue/XChoice
+XValue[] = [sequential stop index] lca_line_stopno-1
+XValue[] = [sequential segment number in line] segno-1
+XValue[] = [sequential stop index] lca_line_stopno-1
+# Expression YValue: transit segment expression for weight value on Y-axis (tr,seg.,max. 6 values)
+YValue : (0x100) Y
+YValue[] = [Volume] min(voltr,capt), [,volume exceeding capacity](voltr-capt)*(voltr>capt)
+YValue[] = [Total volume] voltr
+YValue[] = [Volume] min(voltr,capt), [,volume exceeding capacity](voltr-capt)*(voltr>capt)
+YValue[] = [2 hours period - Volume] min(voltr,capt*2), [,volume exceeding capacity](voltr-(capt*2))*(voltr>(capt*2))
+YValue[] = [3 hours period - Volume] min(voltr,capt*3), [,volume exceeding capacity](voltr-(capt*3))*(voltr>(capt*3))
+YValue[] = [User defined expression] us1
+# Filter Filter: expression for transit segment filtering (tr,seg.,string,max. 2 values)
+Filter : LineSelector
+Filter = (lindex==18)&&isIStop
+
+[Segment scatterplot]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Segment volume
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbb00000
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : ShowLineProfile
+SFlag = 1
+# Bool MFlag: display layer under the magnifier
+MFlag : /ShowLineProfile
+MFlag = 1
+# Bool LFlag: include layer in the legend window
+LFlag = 0
+# Bool IFlag: allow interactive input
+IFlag = 0
+# Bool TFlag: provide tips
+TFlag = 1
+# Bool AFlag: set active flag of filtered elements
+AFlag = 0
+# Bool BFlag: include bounding box in full view
+BFlag = 0
+# Float XPosition: X-coordinate of upper left corner (nosave)
+XPosition : (0x80) XPosition
+# Float YPosition: Y-coordinate of upper left corner (nosave)
+YPosition : (0x80) YPosition
+# Float Width: width of rectangle (nosave)
+Width : (0x80) Width
+# Float Height: height of rectangle (nosave)
+Height : (0x80) Height
+# Float AspectRatio: fixed aspect ratio of diagram
+AspectRatio = 1.50144517421722
+# Bool RelativeSizing: scale text/symbol size relative to full view
+RelativeSizing : RelativeSizing
+RelativeSizing = 0
+# Style FrameStyle: style used to draw diagram frame (0:outer frame, 1:scales, 2:inner frame, 3:zero lines)
+FrameStyle : ClearFrame
+FrameStyle[] = 0x00000000 0x00ffff00 0xe80000ff 0x00000000
+FrameStyle[] = 0x00000000 0x00c0c0c0 0xe0000000 0x00000000
+FrameStyle[] = 0x00000000 0x00ffffff 0xe0000000 0x00000000
+# Float XRange: horizontal value range
+XRange : XRange
+XRange[] = 0
+XRange[] = 43
+XRange[] = 1
+# Float YRange: vertical value range
+YRange : YRange
+YRange[] = 0
+YRange[] = 500
+# Float Margin: diagram margin as fraction of total diagram width / height
+Margin : Margin
+Margin = 0.1
+# Float XTick: horizontal tick mark distance [0] and no. of tick marks between values [1]
+XTick : XTick
+XTick[] = 1
+XTick[] = 1
+# Float YTick: vertical tick mark distance [0] and no. of tick marks between values [1]
+YTick : YTick
+YTick[] = 0
+YTick[] = 0
+# Float TextSize: text size used in diagram frame
+TextSize : TextSize
+TextSize = 12
+# Style SymbolStyle: style used to display scatterplot symbols
+SymbolStyle[] = 0x00000000 0x0000ff00 0x00000000 0x0000003e
+SymbolStyle[] = 0x20000000 0x01aa55ff 0x00000000 0x0000003e
+# Expression XValue: transit segment expression for value on X-axis (tr,seg.)
+XValue : (0x100) //XChoice
+XValue[] = [sequential stop index] lca_line_stopno-0.5
+XValue[] = [sequential segment number in line] segno-0.5
+XValue[] = [sequential stop index] lca_line_stopno-0.5
+# Expression YValue: transit segment expression for value on Y-axis (tr,seg.)
+YValue = voltr
+# Filter Filter: expression for transit segment filtering (tr,seg.,string,max. 2 values)
+Filter : LineSelector
+Filter = (lindex==18)&&isIStop
+# Expression StyleIndex: transit segment expression for style index [,symbol index [,symbol size]] (tr,seg.,max. 3 values)
+StyleIndex = [large symbol for tip capture distance] 0,6,24
+# Expression TipExpression: transit segment tip value (tr,seg.,string,max. 6 values)
+TipExpression = tr("segment")+" "+string(i)+"-"+string(j),tr("volume=")+string(voltr,0)
+# Style RegressionStyle: style used to display linear regression
+RegressionStyle[] = 0x20000000 0x00ffffff 0x00000000 0x00000000
+RegressionStyle[] = 0x60000000 0x00ffffff 0x00000000 0x00000000
+
+[Segment scatterplot]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Thru trips
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbb00000
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : ShowLineProfile
+SFlag = 1
+# Bool MFlag: display layer under the magnifier
+MFlag : /ShowLineProfile
+MFlag = 1
+# Bool LFlag: include layer in the legend window
+LFlag = 0
+# Bool IFlag: allow interactive input
+IFlag = 0
+# Bool TFlag: provide tips
+TFlag = 1
+# Bool AFlag: set active flag of filtered elements
+AFlag = 0
+# Bool BFlag: include bounding box in full view
+BFlag = 0
+# Float XPosition: X-coordinate of upper left corner (nosave)
+XPosition : (0x80) XPosition
+# Float YPosition: Y-coordinate of upper left corner (nosave)
+YPosition : (0x80) YPosition
+# Float Width: width of rectangle (nosave)
+Width : (0x80) Width
+# Float Height: height of rectangle (nosave)
+Height : (0x80) Height
+# Float AspectRatio: fixed aspect ratio of diagram
+AspectRatio = 1.50144517421722
+# Style FrameStyle: style used to draw diagram frame (0:outer frame, 1:scales, 2:inner frame, 3:zero lines)
+FrameStyle : ClearFrame
+FrameStyle[] = 0x00000000 0x00ffff00 0xe80000ff 0x00000000
+FrameStyle[] = 0x00000000 0x00c0c0c0 0xe0000000 0x00000000
+FrameStyle[] = 0x00000000 0x00ffffff 0xe0000000 0x00000000
+# Float XRange: horizontal value range
+XRange : XRange
+XRange[] = 0
+XRange[] = 43
+XRange[] = 1
+# Float YRange: vertical value range
+YRange : YRange
+YRange[] = 0
+YRange[] = 500
+# Float Margin: diagram margin as fraction of total diagram width / height
+Margin : Margin
+Margin = 0.1
+# Float XTick: horizontal tick mark distance [0] and no. of tick marks between values [1]
+XTick : XTick
+XTick[] = 1
+XTick[] = 1
+# Float YTick: vertical tick mark distance [0] and no. of tick marks between values [1]
+YTick : YTick
+YTick[] = 0
+YTick[] = 0
+# Float TextSize: text size used in diagram frame
+TextSize : TextSize
+TextSize = 12
+# Float DefaultSize: default symbol size
+DefaultSize : SymbolSize
+DefaultSize = 10
+# String DefaultSymbol: default symbol index
+DefaultSymbol = Triangle
+# Style SymbolStyle: style used to display scatterplot symbols
+SymbolStyle[] = 0x00000000 0x00ffff00 0x00000000 0x0000000c
+SymbolStyle[] = 0x20000000 0x01ffff00 0x00000000 0x0000000c
+# Expression XValue: transit segment expression for value on X-axis (tr,seg.)
+XValue : (0x100) XValue/XValue/XChoice
+XValue[] = [sequential stop index] lca_line_stopno-1
+XValue[] = [sequential segment number in line] segno-1
+XValue[] = [sequential stop index] lca_line_stopno-1
+# Expression YValue: transit segment expression for value on Y-axis (tr,seg.)
+YValue = thrupass
+# Filter Filter: expression for transit segment filtering (tr,seg.,string,max. 2 values)
+Filter : LineSelector
+Filter = (lindex==18)&&isIStop
+# Expression StyleIndex: transit segment expression for style index [,symbol index [,symbol size]] (tr,seg.,max. 3 values)
+StyleIndex : (0x100) //ThruPassIndex
+StyleIndex[] = nint(thrupass)>0
+StyleIndex[] = 0
+StyleIndex[] = nint(thrupass)>0
+# Expression TipExpression: transit segment tip value (tr,seg.,string,max. 6 values)
+TipExpression = tr("node","Network")+" "+string(i),if(nint(thrupass)>0,string(thrupass,0)+" "+tr("thru-passengers"),"")
+# Style RegressionStyle: style used to display linear regression
+RegressionStyle[] = 0x20000000 0x00ffffff 0x00000000 0x00000000
+RegressionStyle[] = 0x60000000 0x00ffffff 0x00000000 0x00000000
+
+[Segment scatterplot]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Alightings
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbb00000
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : ShowLineProfile
+SFlag = 1
+# Bool MFlag: display layer under the magnifier
+MFlag : /ShowLineProfile
+MFlag = 1
+# Bool LFlag: include layer in the legend window
+LFlag = 0
+# Bool IFlag: allow interactive input
+IFlag = 0
+# Bool TFlag: provide tips
+TFlag = 1
+# Bool AFlag: set active flag of filtered elements
+AFlag = 0
+# Bool BFlag: include bounding box in full view
+BFlag = 0
+# Float XPosition: X-coordinate of upper left corner (nosave)
+XPosition : (0x80) XPosition
+# Float YPosition: Y-coordinate of upper left corner (nosave)
+YPosition : (0x80) YPosition
+# Float Width: width of rectangle (nosave)
+Width : (0x80) Width
+# Float Height: height of rectangle (nosave)
+Height : (0x80) Height
+# Float AspectRatio: fixed aspect ratio of diagram
+AspectRatio = 1.50144517421722
+# Style FrameStyle: style used to draw diagram frame (0:outer frame, 1:scales, 2:inner frame, 3:zero lines)
+FrameStyle : ClearFrame
+FrameStyle[] = 0x00000000 0x00ffff00 0xe80000ff 0x00000000
+FrameStyle[] = 0x00000000 0x00c0c0c0 0xe0000000 0x00000000
+FrameStyle[] = 0x00000000 0x00ffffff 0xe0000000 0x00000000
+# Float XRange: horizontal value range
+XRange : XRange
+XRange[] = 0
+XRange[] = 43
+XRange[] = 1
+# Float YRange: vertical value range
+YRange : YRange
+YRange[] = 0
+YRange[] = 500
+# Float Margin: diagram margin as fraction of total diagram width / height
+Margin : Margin
+Margin = 0.1
+# Float XTick: horizontal tick mark distance [0] and no. of tick marks between values [1]
+XTick : XTick
+XTick[] = 1
+XTick[] = 1
+# Float YTick: vertical tick mark distance [0] and no. of tick marks between values [1]
+YTick : YTick
+YTick[] = 0
+YTick[] = 0
+# Float TextSize: text size used in diagram frame
+TextSize : TextSize
+TextSize = 12
+# Float DefaultSize: default symbol size
+DefaultSize : SymbolSize
+DefaultSize = 10
+# String DefaultSymbol: default symbol index
+DefaultSymbol = Nabla
+# Style SymbolStyle: style used to display scatterplot symbols
+SymbolStyle[] = 0x00000000 0x0000ff00 0x00000000 0x0000003e
+SymbolStyle[] = 0x20000000 0x010000ff 0x00000000 0x0000003e
+# Expression XValue: transit segment expression for value on X-axis (tr,seg.)
+XValue : (0x100) XValue/XValue/XChoice
+XValue[] = [sequential stop index] lca_line_stopno-1
+XValue[] = [sequential segment number in line] segno-1
+XValue[] = [sequential stop index] lca_line_stopno-1
+# Expression YValue: transit segment expression for value on Y-axis (tr,seg.)
+YValue = alight
+# Filter Filter: expression for transit segment filtering (tr,seg.,string,max. 2 values)
+Filter : LineSelector
+Filter = (lindex==18)&&isIStop
+# Expression StyleIndex: transit segment expression for style index [,symbol index [,symbol size]] (tr,seg.,max. 3 values)
+StyleIndex : (0x100) //BoardAlightIndex
+StyleIndex[] = nint(alight)>0
+StyleIndex[] = 0
+StyleIndex[] = nint(alight)>0
+# Expression TipExpression: transit segment tip value (tr,seg.,string,max. 6 values)
+TipExpression = tr("node","Network")+" "+string(i),if(nint(alight)>0,tr("alightings=")+string(alight,0),"")
+# Style RegressionStyle: style used to display linear regression
+RegressionStyle[] = 0x20000000 0x00ffffff 0x00000000 0x00000000
+RegressionStyle[] = 0x60000000 0x00ffffff 0x00000000 0x00000000
+
+[Segment scatterplot]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Boardings
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbb00000
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : ShowLineProfile
+SFlag = 1
+# Bool MFlag: display layer under the magnifier
+MFlag : /ShowLineProfile
+MFlag = 1
+# Bool LFlag: include layer in the legend window
+LFlag = 0
+# Bool IFlag: allow interactive input
+IFlag = 0
+# Bool TFlag: provide tips
+TFlag = 1
+# Bool AFlag: set active flag of filtered elements
+AFlag = 0
+# Bool BFlag: include bounding box in full view
+BFlag = 0
+# Float XPosition: X-coordinate of upper left corner (nosave)
+XPosition : (0x80) XPosition
+# Float YPosition: Y-coordinate of upper left corner (nosave)
+YPosition : (0x80) YPosition
+# Float Width: width of rectangle (nosave)
+Width : (0x80) Width
+# Float Height: height of rectangle (nosave)
+Height : (0x80) Height
+# Box AutoPositionBox: viewport relative bounding box for automatic position
+AutoPositionBox = 0;0;1;1
+# Float AspectRatio: fixed aspect ratio of diagram
+AspectRatio = 1.50144517421722
+# Style FrameStyle: style used to draw diagram frame (0:outer frame, 1:scales, 2:inner frame, 3:zero lines)
+FrameStyle : ClearFrame
+FrameStyle[] = 0x00000000 0x00ffff00 0xe80000ff 0x00000000
+FrameStyle[] = 0x00000000 0x00c0c0c0 0xe0000000 0x00000000
+FrameStyle[] = 0x00000000 0x00ffffff 0xe0000000 0x00000000
+# Float XRange: horizontal value range
+XRange : XRange
+XRange[] = 0
+XRange[] = 43
+XRange[] = 1
+# Float YRange: vertical value range
+YRange : YRange
+YRange[] = 0
+YRange[] = 500
+# Float Margin: diagram margin as fraction of total diagram width / height
+Margin : Margin
+Margin = 0.1
+# Float XTick: horizontal tick mark distance [0] and no. of tick marks between values [1]
+XTick : XTick
+XTick[] = 1
+XTick[] = 1
+# Float YTick: vertical tick mark distance [0] and no. of tick marks between values [1]
+YTick : YTick
+YTick[] = 0
+YTick[] = 0
+# Float TextSize: text size used in diagram frame
+TextSize : TextSize
+TextSize = 12
+# Float DefaultSize: default symbol size
+DefaultSize : SymbolSize
+DefaultSize = 10
+# String DefaultSymbol: default symbol index
+DefaultSymbol = Delta
+# Style SymbolStyle: style used to display scatterplot symbols
+SymbolStyle[] = 0x00000000 0x0000ff00 0x00000000 0x0000003e
+SymbolStyle[] = 0x20000000 0x0100c000 0x00000000 0x0000003e
+# Expression XValue: transit segment expression for value on X-axis (tr,seg.)
+XValue : (0x100) XValue/XValue/XChoice
+XValue[] = [sequential stop index] lca_line_stopno-1
+XValue[] = [sequential segment number in line] segno-1
+XValue[] = [sequential stop index] lca_line_stopno-1
+# Expression YValue: transit segment expression for value on Y-axis (tr,seg.)
+YValue = board
+# Filter Filter: expression for transit segment filtering (tr,seg.,string,max. 2 values)
+Filter : LineSelector
+Filter = (lindex==18)&&isIStop
+# Expression StyleIndex: transit segment expression for style index [,symbol index [,symbol size]] (tr,seg.,max. 3 values)
+StyleIndex : (0x100) //BoardAlightIndex
+StyleIndex[] = nint(board)>0
+StyleIndex[] = 0
+StyleIndex[] = nint(board)>0
+# Expression TipExpression: transit segment tip value (tr,seg.,string,max. 6 values)
+TipExpression = tr("node","Network")+" "+string(i),if(nint(board)>0,tr("boardings=")+string(board,0),"")
+# Style RegressionStyle: style used to display linear regression
+RegressionStyle[] = 0x20000000 0x00ffffff 0x00000000 0x00000000
+RegressionStyle[] = 0x60000000 0x00ffffff 0x00000000 0x00000000
+
+[Configurable control]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Line profile
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbd00000
+# String TranslationContext: context for translations of configuration texts (subst)
+TranslationContext[] = HistogramMapper
+TranslationContext[] = TransitLineMapper
+TranslationContext[] = SelectorField
+TranslationContext[] = Mapper
+# Bool CFlag: display layer controls
+CFlag = 1
+# Bool SFlag: display layer on screen
+SFlag : ShowLineProfile
+SFlag = 1
+# Bool MFlag: display layer under the magnifier
+MFlag : /ShowLineProfile
+MFlag = 1
+# Bool IFlag: allow interactive input
+IFlag = 0
+# Bool TFlag: provide tips
+TFlag = 0
+# String Layout: layout parameters (tr)
+Layout[] = Filter0;Filter;Line filter:;expression for transit line filter;0;0;0;0;transit lines;
+Layout[] = Filter1;Filter;X display:;value to display on X-axis;1;1;0;0;transit segments;
+Layout[] = Expression0;Expression;Y value:;transit segment expression for weight value on Y-axis;2;2;0;0;transit segments;6;0
+Layout[] = Style1;Style;Bars:;style used for histogram bars;8;8;0;0;;
+Layout[] = Float0;Spinbox;Text size:;text size used in chart frame;7;7;0;0;0;100;
+Layout[] = Float2;Multi-float;X range:;start, end and interval values on horizontal data axis;5;5;0;0;;
+Layout[] = Float3;Multi-float;Y range:;start and end values on vertical weight axis;6;6;0;0;;
+Layout[] = Style0;Style;Frame:;style used to draw chart frame (0:outer frame, 1:scales, 2:inner frame, 3:zero lines);10;10;0;0;;
+Layout[] = Bool0;Checkbox;Show boardings and alightings;;11;11;0;0;;
+Layout[] = Bool1;Checkbox;Show thru-passengers;;12;12;0;0;;
+# Bool Bool0: 
+Bool0 : BoardAlight
+Bool0 = 1
+# Bool Bool1: 
+Bool1 : ThruPass
+Bool1 = 1
+# Click Click0: button parameter Click0 (nosave)
+Click0 : @AutoX
+# Click Click1: button parameter Click1 (nosave)
+Click1 : AutoX
+# Float Float0: text size used in chart frame
+Float0 : TextSize
+Float0 = 12
+# Float Float2: start, end and interval values on horizontal data axis
+Float2 : XRange
+Float2[] = 0
+Float2[] = 43
+Float2[] = 1
+# Float Float3: start and end values on vertical weight axis
+Float3 : YRange
+Float3[] = 0
+Float3[] = 500
+# Expression Expression0: transit segment expression for weight value on Y-axis (tr,seg.,max. 6 values)
+Expression0 : (0x30) Y
+Expression0[] = [Volume] min(voltr,capt), [,volume exceeding capacity](voltr-capt)*(voltr>capt)
+Expression0[] = [Total volume] voltr
+Expression0[] = [Volume] min(voltr,capt), [,volume exceeding capacity](voltr-capt)*(voltr>capt)
+Expression0[] = [2 hours period - Volume] min(voltr,capt*2), [,volume exceeding capacity](voltr-(capt*2))*(voltr>(capt*2))
+Expression0[] = [3 hours period - Volume] min(voltr,capt*3), [,volume exceeding capacity](voltr-(capt*3))*(voltr>(capt*3))
+Expression0[] = [User defined expression] us1
+# Filter Filter0: expression for transit line filter (tr,line,string,max. 2 values)
+Filter0 : @SelectedLines/DefaultLineFilter
+Filter0 = [line selected in the table] isMarked
+# Filter Filter1: value to display on X-axis (tr,seg.,string,max. 2 values)
+Filter1 : (0x70) X//
+Filter1[] = [Segment index] 1
+Filter1[] = [Segment index] 1
+Filter1[] = [Node numbers] 2
+Filter1[] = [Node labels] 3
+Filter1[] = [Line time] 4
+Filter1[] = [Line distance] 5
+# Style Style0: style used to draw chart frame (0:outer frame, 1:scales, 2:inner frame, 3:zero lines)
+Style0 : (0x200) DiagFrame!/DiagFrame!/$WorksheetLoaded
+Style0[] = 0x00bebebe 0x01ffffff 0x48000000 0x00000000
+Style0[] = 0x20000000 0x00ffffff 0x00000000 0x00000000
+Style0[] = 0x00000000 0x00ffffff 0x00000000 0x00000000
+Style0[] = 0x20646464 0x00ffffff 0x00000000 0x00000000
+Style0[] = 0x20bebebe 0x00ffffff 0x00000000 0x00000000
+Style0[] = 0x20bebebe 0x00ffffff 0x00000000 0x00000000
+# Style Style1: style used for histogram bars
+Style1 : (0x200) LineProfile!/LineProfile!/$WorksheetLoaded
+Style1[] = 0x20bfac64 0x01f2db8a 0x00000000 0x00000020
+Style1[] = 0x20ba6828 0x01ed8330 0x00000000 0x00000020
+Style1[] = 0x20b34626 0x01e65928 0x00000000 0x00000020
+
+[Parameter conversion]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Show boardings and alightings
+# Text Description: user definable layer description (tr,subst)
+Description = Compute style index for boardings and alightings
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbfb0000
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : SFlag/
+SFlag = 0
+# Bool MFlag: display layer under the magnifier
+MFlag : /SFlag
+MFlag = 0
+# Integer IA: integer parameter IA
+IA : /BoardAlight
+IA = 1
+# Expression Expression: expression for parameter conversion (tr,string,max. 12 values)
+Expression = IA+1
+# Float FR: floating point result
+FR = 2
+# Integer IR: integer result
+IR : BoardAlightIndex
+IR = 2
+# String SR: string result
+SR = 2.000000000000000
+# Box BR: box result
+BR = 2;0;0;0
+
+[Parameter conversion]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Show thru-passengers
+# Text Description: user definable layer description (tr,subst)
+Description = Compute style index for thru trips
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbfb0000
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : SFlag/
+SFlag = 0
+# Bool MFlag: display layer under the magnifier
+MFlag : /SFlag
+MFlag = 0
+# Integer IA: integer parameter IA
+IA : /ThruPass
+IA = 1
+# Expression Expression: expression for parameter conversion (tr,string,max. 12 values)
+Expression = IA+1
+# Float FR: floating point result
+FR = 2
+# Integer IR: integer result
+IR : ThruPassIndex
+IR = 2
+# String SR: string result
+SR = 2.000000000000000
+# Box BR: box result
+BR = 2;0;0;0
+
+[Parameter conversion]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Stop legend expression
+# Text Description: user definable layer description (tr,subst)
+Description = Compute legend expression
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbfb0000
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : SFlag/
+SFlag = 0
+# Bool MFlag: display layer under the magnifier
+MFlag : /SFlag
+MFlag = 0
+# Integer IA: integer parameter IA
+IA : /BoardAlight
+IA = 1
+# Integer IB: integer parameter IB
+IB : /ThruPass
+IB = 1
+# Expression Expression: expression for parameter conversion (tr,string,max. 12 values)
+Expression = if(IA,"Boardings;;Delta",";;"),if(IA,"Alightings;;Nabla",";;"),if(IB,"Thru-passengers;;Delta;;-90","")
+# String SR: string result
+SR : LegendString
+SR[] = Boardings;;Delta
+SR[] = Alightings;;Nabla
+SR[] = Thru-passengers;;Delta;;-90
+
+[Legend]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Stop legend
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xb700000
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : ShowLineProfile
+SFlag = 1
+# Bool MFlag: display layer under the magnifier
+MFlag : /ShowLineProfile
+MFlag = 1
+# Bool LFlag: include layer in the legend window
+LFlag = 0
+# Bool IFlag: allow interactive input
+IFlag = 1
+# Bool XFlag: intercept all graphic input
+XFlag = 0
+# Bool BFlag: include bounding box in full view
+BFlag = 0
+# Float TextSize: text size for scales and symbols
+TextSize : SymbolSize
+TextSize = 10
+# Float TextXPos: horizontal position of text anchor
+TextXPos : Margin
+TextXPos = 0.1
+# Float TextYPos: vertical position of text anchor
+TextYPos : Margin
+TextYPos = 0.1
+# Float GraphicStyleIncrement: style index increment used for graphic part of item
+GraphicStyleIncrement = 1
+# Integer TextLayout: layout definition
+TextLayout = 1380375
+# Text TextString: text that appears in item (tr,subst)
+TextString = %<SR[*\n]:LegendString>%
+# Style FrameStyle: style used for text and frame of items
+FrameStyle = 0x20000000 0x00ffffff 0x00000000 0x00000000
+# Style SymbolStyle: style used for graphic part of items
+SymbolStyle[] = 0x20000000 0x0100c000 0x00000000 0x0000000f
+SymbolStyle[] = 0x20000000 0x010000ff 0x00000000 0x0000000f
+SymbolStyle[] = 0x20000000 0x01ffff00 0x00000000 0x0000000f
+
+[Inclusion]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Associated table
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xbfa0000
+# Bool CFlag: display layer controls
+CFlag = 0
+# Bool SFlag: display layer on screen
+SFlag : SFlag/
+SFlag = 1
+# Bool MFlag: display layer under the magnifier
+MFlag : /SFlag
+MFlag = 0
+# Bool LFlag: include layer in the legend window
+LFlag = 0
+# Bool IFlag: allow interactive input
+IFlag = 0
+# Bool TFlag: provide tips
+TFlag = 0
+# Bool AFlag: set active flag of filtered elements
+AFlag = 0
+# Bool BFlag: include bounding box in full view
+BFlag = 0
+# Bool EnableObjects: enable included objects
+EnableObjects = 1
+# String ConfigurationFile: file containing configuration to include (subst)
+ConfigurationFile = %<$EmmePath>%/common/trsummary.emt
+
+[Inclusion]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Foreground layer(s)
+# Text Description: user definable layer description (tr,subst)
+Description = Includes user defined layers (in application mode,\
+control shown only if a file is specified and control is substituted)
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xb800000
+# Bool CFlag: display layer controls
+CFlag = 1
+# Bool SFlag: display layer on screen
+SFlag : ShowFrontInclusion
+SFlag = 1
+# Bool MFlag: display layer under the magnifier
+MFlag : /ShowFrontInclusion
+MFlag = 1
+# Bool LFlag: include layer in the legend window
+LFlag = 1
+# Bool IFlag: allow interactive input
+IFlag = 0
+# Bool TFlag: provide tips
+TFlag = 1
+# Bool AFlag: set active flag of filtered elements
+AFlag = 0
+# Bool BFlag: include bounding box in full view
+BFlag = 0
+# Bool EnableObjects: enable included objects
+EnableObjects = 1
+# Bool SubstituteControl: display control of first visible included layer instead of inclusion layer's control
+SubstituteControl = 1
+# Bool AutoHideControl: hide unsubstituted layer control
+AutoHideControl = 1
+# String ConfigurationFile: file containing configuration to include (subst)
+ConfigurationFile : (0x200) /UserFront!/$WorksheetLoaded
+ConfigurationFile = 
+
+[Inclusion]
+# String Name: layer name that appears on layer control tab (tr,subst)
+Name = Other inclusion
+# Text Description: user definable layer description (tr,subst)
+Description = Includes user defined layers (in application mode,\
+control shown only if a file is specified and control is substituted)
+# Flags Flags: bit pattern containing layer flags
+Flags = 0xb800000
+# Bool CFlag: display layer controls
+CFlag = 1
+# Bool SFlag: display layer on screen
+SFlag : ShowOtherInclusion
+SFlag = 1
+# Bool MFlag: display layer under the magnifier
+MFlag : /ShowOtherInclusion
+MFlag = 1
+# Bool LFlag: include layer in the legend window
+LFlag = 1
+# Bool IFlag: allow interactive input
+IFlag = 0
+# Bool TFlag: provide tips
+TFlag = 1
+# Bool AFlag: set active flag of filtered elements
+AFlag = 0
+# Bool BFlag: include bounding box in full view
+BFlag = 0
+# Bool EnableObjects: enable included objects
+EnableObjects = 1
+# Bool SubstituteControl: display control of first visible included layer instead of inclusion layer's control
+SubstituteControl = 1
+# Bool AutoHideControl: hide unsubstituted layer control
+AutoHideControl = 1
+# String ConfigurationFile: file containing configuration to include (subst)
+ConfigurationFile : (0x200) /UserConf!/$WorksheetLoaded
+ConfigurationFile[] = 
+ConfigurationFile[] = 
+ConfigurationFile[] = %<$ProjectPath>%/Worksheets/prnlegend.eml
+ConfigurationFile[] = %<$EmmePath>%/common/transform.eml
+

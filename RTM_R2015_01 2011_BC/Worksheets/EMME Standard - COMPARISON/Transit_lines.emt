@@ -1,0 +1,34 @@
+292ED8A4-37FA-4242-AE4E-D78DB768CA1D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
+# Emme table generated on Wed Nov 12 14:36:19 2014
+# File: //vanco-ifs-01/Project/projects/202994TransLink Modelling Support/Work Program/NG Model Validation/030C NG TL MODEL/030C NG TL MODEL/Worksheets/Comparison/Transit_lines.emt
+#
+[transit lines]
+# String Name: table name that appears in the table header (tr,subst)
+Name = Transit lines
+# Flags Flags: bit pattern containing table flags
+Flags = 0xa4
+# String SaveListConfiguration: file name to save current table configuration (subst,nosave)
+SaveListConfiguration : /$SaveListConfiguration
+# Click PrintCurrentListNoSetup: when clicked, current table will be printed without entering setup dialog (nosave)
+PrintCurrentListNoSetup : /$PrintCurrentListNoSetup/$PrintCurrentListNoSetup
+# String ExportCurrentTableToFile: when set to a file name, the current table is exported to it (nosave)
+ExportCurrentTableToFile : /$ExportCurrentTableToFile
+# Click CloseList: when clicked, table will be closed (nosave)
+CloseList : /$CloseList/$CloseList
+# Style Style: style used to generate table entries
+Style = 0x21000000 0x01ffffff 0x00000000 0x00000500
+# String ColumnDef: list column definitions (tr)
+ColumnDef[] = index;transit line index;8;0;index;0;;4;0
+ColumnDef[] = line;line name;-6;6;line;0;;4;0
+ColumnDef[] = @tfct;Line type by Function;8;7;@tfct;0;;4;0
+ColumnDef[] = @tcor;Line type by Corridor;8;7;@tcor;0;;4;0
+ColumnDef[] = @txsc;Line type by River Crossings;8;7;@txsc;0;;4;0
+ColumnDef[] = @tpty;Line type by Priority;8;7;@tpty;0;;4;0
+ColumnDef[] = @tloc;Line type by Location;8;7;@tloc;0;;4;0
+ColumnDef[] = @tldir;Line type by Direction;8;7;@tldir;0;;4;0
+ColumnDef[] = @tscvl;Total Volume;8;7;@tscvl;0;;4;0
+ColumnDef[] = @ttcol;Color (by line mode);8;7;@ttcol;0;;4;0
+ColumnDef[] = @txcol;Color (any);8;7;@txcol;0;;4;0
+ColumnDef[] = @text1;Extra 1;8;7;@text1;0;;4;0
+ColumnDef[] = @tscid;Transit line ID;8;7;@tscid;0;;4;0
+

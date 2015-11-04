@@ -1,0 +1,84 @@
+292ED8A4-37FA-4242-AE4E-D78DB768CA1D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
+# Emme table generated on Mon Nov 17 10:49:36 2014
+# File: //vanco-ifs-01/Project/projects/202994TransLink Modelling Support/Work Program/NG Model Validation/030C NG TL MODEL/030C NG TL MODEL/Worksheets/Links.emt
+#
+[links]
+# String Name: table name that appears in the table header (tr,subst)
+Name = Links
+# String SaveListConfiguration: file name to save current table configuration (subst,nosave)
+SaveListConfiguration : /$SaveListConfiguration
+# Click PrintCurrentListNoSetup: when clicked, current table will be printed without entering setup dialog (nosave)
+PrintCurrentListNoSetup : /$PrintCurrentListNoSetup/$PrintCurrentListNoSetup
+# String ExportCurrentTableToFile: when set to a file name, the current table is exported to it (nosave)
+ExportCurrentTableToFile : /$ExportCurrentTableToFile
+# Click CloseList: when clicked, table will be closed (nosave)
+CloseList : /$CloseList/$CloseList
+# Filter Filter: expression for link filtering [,link iterator] (tr,link,string,max. 2 values)
+Filter = [no connectors] not(isConnector)
+# Style Style: style used to generate table entries
+Style = 0x21000000 0x01ffffff 0x00000000 0x00000500
+# String ColumnDef: list column definitions (tr)
+ColumnDef[] = index;link index;8;0;index;0;;768;0
+ColumnDef[] = i;I-node of link;7;0;i;0;;768;0
+ColumnDef[] = j;J-node of link;7;0;j;0;;768;0
+ColumnDef[] = type;link type;5;0;type;0;;768;0
+ColumnDef[] = modes;link modes;8;0;modes;0;;768;0
+ColumnDef[] = vdf;volume-delay function index;4;0;vdf;0;;768;0
+ColumnDef[] = length;link length;8;7;length;0;;768;0
+ColumnDef[] = lanes;number of lanes;5;1;lanes;0;;768;0
+ColumnDef[] = Auto Volume (volau);auto volume;8;0;volau;0;;768;0
+ColumnDef[] = Additional Volume (volad);additional volume;8;0;volad;0;;768;0
+ColumnDef[] = Aux Transit Volume (volax);auxiliary transit volume;8;0;volax;0;;768;0
+ColumnDef[] = Auto Times (timau);auto times;8;2;timau;-1;-;768;0
+ColumnDef[] = Auto Speed (speedau);auto speed;6;2;speedau;0;;768;0
+ColumnDef[] = User Data 1 (ul1);link user data 1;8;7;ul1;0;;768;0
+ColumnDef[] = User Date 2 (ul2);link user data 2;8;7;ul2;0;;768;0
+ColumnDef[] = User Data 3 (ul3);link user data 3;8;7;ul3;0;;768;0
+ColumnDef[] = Electronic toll (1996$) (@tolls);Electronic toll (1996$);8;7;@tolls;0;;768;0
+ColumnDef[] = Heavy Truck Restriction (@tkpen);Heavy truck rout restriction;8;7;@tkpen;0;;768;0
+ColumnDef[] = SOV Operating Cost (@sovoc);SOV Operating Cost;8;7;@sovoc;0;;768;0
+ColumnDef[] = HOV Operating Cost (@hovoc);HOV auto operating cost;8;7;@hovoc;0;;768;0
+ColumnDef[] = Light Truck Operating Cost (@lgvoc);Light truck link operating cost;8;7;@lgvoc;0;;768;0
+ColumnDef[] = Heavy Truck Operating Cost (@hgvoc);Heavy truck operating cost;8;7;@hgvoc;0;;768;0
+ColumnDef[] = SOV Volume (@wsovl);SOV volume;8;7;@wsovl;0;;768;0
+ColumnDef[] = HOV Volume (@whovl);HOV volume;8;7;@whovl;0;;768;0
+ColumnDef[] = Light Truck Volume (@lgvol);Light truck volume;8;7;@lgvol;0;;768;0
+ColumnDef[] = Heavy Truck Volume (@hgvol);Heavy truck volume;8;7;@hgvol;0;;768;0
+ColumnDef[] = @sov1;sov1;8;7;@sov1;0;;768;0
+ColumnDef[] = @sov2;sov2;8;7;@sov2;0;;768;0
+ColumnDef[] = @sov3;sov3;8;7;@sov3;0;;768;0
+ColumnDef[] = @sov4;sov4;8;7;@sov4;0;;768;0
+ColumnDef[] = @sov5;sov5;8;7;@sov5;0;;768;0
+ColumnDef[] = @hov1;hov1;8;7;@hov1;0;;768;0
+ColumnDef[] = @hov2;hov2;8;7;@hov2;0;;768;0
+ColumnDef[] = @hov3;hov3;8;7;@hov3;0;;768;0
+ColumnDef[] = @hov4;hov4;8;7;@hov4;0;;768;0
+ColumnDef[] = @hov5;hov5;8;7;@hov5;0;;768;0
+ColumnDef[] = CB Light Trucks PCE (@llgcb);CB Light Trucks PCE;8;7;@llgcb;0;;768;0
+ColumnDef[] = CB Heavy Trucks PCE (@lhvcb);CB Heavy Trucks PCE;8;7;@lhvcb;0;;768;0
+ColumnDef[] = IR Light Trucks PCE (@llgir);IR Light Trucks PCE;8;7;@llgir;0;;768;0
+ColumnDef[] = IR Heavy Trucks PCE (@lhvir);IR Heavy Trucks PCE;8;7;@lhvir;0;;768;0
+ColumnDef[] = AP Heavy Trucks PCE (@lhvap);AP Heavy Trucks PCE;8;7;@lhvap;0;;768;0
+ColumnDef[] = RG Light Trucks PCE (@llgrg);RG Light Trucks PCE;8;7;@llgrg;0;;768;0
+ColumnDef[] = RG Heavy Trucks PCE (@lhvrg);RG Heavy Trucks PCE;8;7;@lhvrg;0;;768;0
+ColumnDef[] = Virtual Link Type (@ltype);Type (virtual link type);8;7;@ltype;0;;768;0
+ColumnDef[] = Link Type by Function (@lfct);Link type by Function;8;7;@lfct;0;;768;0
+ColumnDef[] = Link Type by Jurisdiction (@ljrd);Link type by Jurisdiction;8;7;@ljrd;0;;768;0
+ColumnDef[] = Link Type by MRN (@lmrn);Link type by MRN;8;7;@lmrn;0;;768;0
+ColumnDef[] = Link Type by Cross Section (@lxsc);Link type by Cross Section;8;7;@lxsc;0;;768;0
+ColumnDef[] = Link Type by Capacity (@lcap);Link type by Capacity;8;7;@lcap;0;;768;0
+ColumnDef[] = Link Type by Design (@lffs);Link type by Design;8;7;@lffs;0;;768;0
+ColumnDef[] = Link Type by Access (@lacc);Link Type by Access;8;7;@lacc;0;;768;0
+ColumnDef[] = Link Type by Location (@lmun);Link type by Location;8;7;@lmun;0;;768;0
+ColumnDef[] = Screenline ID (@lscid);Screenline ID;8;7;@lscid;0;;768;0
+ColumnDef[] = Total Screenline Volume (@lscvl);Total Screenline Volume;8;7;@lscvl;0;;768;0
+ColumnDef[] = Screenline Volume SOV (@lscso);Screenline Volume SOV;8;7;@lscso;0;;768;0
+ColumnDef[] = Screenline Volume HOV (@lscho);Screenline Volume HOV;8;7;@lscho;0;;768;0
+ColumnDef[] = Scr. Volume Light Truck (@lsclt);Scr. Volume Light Truck;8;7;@lsclt;0;;768;0
+ColumnDef[] = Scr. Volume Heavy Truck (@lscht);Scr. Volume Heavy Truck;8;7;@lscht;0;;768;0
+ColumnDef[] = Scr. Volume Other (@lscot);Scr. Volume Other;8;7;@lscot;0;;768;0
+ColumnDef[] = Link Type Colour (@ltcol);Color (link type);8;7;@ltcol;0;;768;0
+ColumnDef[] = Colour (@lxcol);Color (any link attribute);8;7;@lxcol;0;;768;0
+ColumnDef[] = Extra Link Attribute 1 (@lext1);Extra Link Attribute 1;8;7;@lext1;0;;768;0
+ColumnDef[] = Toll Stations (@ltoll);Toll Stations;8;7;@ltoll;0;;768;0
+

@@ -1,0 +1,175 @@
+292ED8A4-37FA-4242-AE4E-D78DB768CA1D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
+# Emme table generated on Wed Oct 8 11:42:50 2014
+# File: //vanco-ifs-01/Project/projects/202994TransLink Modelling Support/Work Program/NG Model Validation/02.0C NG TL MODEL/Worksheets/TL NG RTM Model Worksheets/Auto/04 Analysis/WS.P.A.A.31.VKT.emt
+#
+[Configurable attribute list]
+
+[Configurable attribute]
+# String Name: configurable attribute name
+Name = CongPaxVKT
+# String ExpressionType: domain of expression
+ExpressionType = links
+# Expression Expression: expression for computing attribute values (tr,link,string,max. 2 values)
+Expression = (volau-@lgvol-@hgvol)*length
+# Filter Filter: filter used to compute attribute values (tr,link,string,max. 2 values)
+Filter = (((xi+xj)/2<65 && (yi+yj)/2<21)||((xi+xj)/2<66.5 && (yi+yj)/2>=21))&&(((volau+volad-@lgvol-@hgvol)+@lgvol*1.3+@hgvol*3.1)/(int(vdf/10)*200*lanes))>1.25&& (vdf>=10 && vdf<99)
+# String AggregationPointer: pointer from expression to result element
+AggregationPointer = Pgen
+# String AggregationOperator: aggregation operator for computing result value
+AggregationOperator = +
+
+[Configurable attribute]
+# String Name: configurable attribute name
+Name = CongPaxMin
+# String ExpressionType: domain of expression
+ExpressionType = links
+# Expression Expression: expression for computing attribute values (tr,link,string,max. 2 values)
+Expression = (volau-@lgvol-@hgvol)*timau
+# Filter Filter: filter used to compute attribute values (tr,link,string,max. 2 values)
+Filter = (((xi+xj)/2<65 && (yi+yj)/2<21)||((xi+xj)/2<66.5 && (yi+yj)/2>=21))&&(((volau+volad-@lgvol-@hgvol)+@lgvol*1.3+@hgvol*3.1)/(int(vdf/10)*200*lanes))>1.25&& (vdf>=10 && vdf<99)
+# String AggregationPointer: pointer from expression to result element
+AggregationPointer = Pgen
+# String AggregationOperator: aggregation operator for computing result value
+AggregationOperator = +
+
+[Configurable attribute]
+# String Name: configurable attribute name
+Name = PostedPaxMin
+# String ExpressionType: domain of expression
+ExpressionType = links
+# Expression Expression: expression for computing attribute values (tr,link,string,max. 2 values)
+Expression = (volau-@lgvol-@hgvol)*length/((vdf%10)*10*((vdf%10).ne.0)+100*((vdf%10).eq.0))
+# Filter Filter: filter used to compute attribute values (tr,link,string,max. 2 values)
+Filter = (((xi+xj)/2<65 && (yi+yj)/2<21)||((xi+xj)/2<66.5 && (yi+yj)/2>=21))&&(((volau+volad-@lgvol-@hgvol)+@lgvol*1.3+@hgvol*3.1)/(int(vdf/10)*200*lanes))>1.25&& (vdf>=10 && vdf<99)
+# String AggregationPointer: pointer from expression to result element
+AggregationPointer = Pgen
+# String AggregationOperator: aggregation operator for computing result value
+AggregationOperator = +
+
+[Configurable attribute]
+# String Name: configurable attribute name
+Name = PaxVKT
+# String ExpressionType: domain of expression
+ExpressionType = links
+# Expression Expression: expression for computing attribute values (tr,link,string,max. 2 values)
+Expression = (volau-@lgvol-@hgvol)*length
+# Filter Filter: filter used to compute attribute values (tr,link,string,max. 2 values)
+Filter = (((xi+xj)/2<65 && (yi+yj)/2<21)||((xi+xj)/2<66.5 && (yi+yj)/2>=21))&&(vdf>=10&&vdf<99)
+# String AggregationPointer: pointer from expression to result element
+AggregationPointer = Pgen
+# String AggregationOperator: aggregation operator for computing result value
+AggregationOperator = +
+
+[Configurable attribute]
+# String Name: configurable attribute name
+Name = CongTrkVKTLg
+# String ExpressionType: domain of expression
+ExpressionType = links
+# Expression Expression: expression for computing attribute values (tr,link,string,max. 2 values)
+Expression = (@lgvol)*length
+# Filter Filter: filter used to compute attribute values (tr,link,string,max. 2 values)
+Filter = (((xi+xj)/2<65 && (yi+yj)/2<21)||((xi+xj)/2<66.5 && (yi+yj)/2>=21))&&(vdf>=10&&vdf<99)&& (((volau+volad-@lgvol-@hgvol)+@lgvol*1.3+@hgvol*3.1)/(int(vdf/10)*200*lanes))>1.25
+# String AggregationPointer: pointer from expression to result element
+AggregationPointer = Pgen
+# String AggregationOperator: aggregation operator for computing result value
+AggregationOperator = +
+
+[Configurable attribute]
+# String Name: configurable attribute name
+Name = CongTrkVKTHv
+# String ExpressionType: domain of expression
+ExpressionType = links
+# Expression Expression: expression for computing attribute values (tr,link,string,max. 2 values)
+Expression = (@hgvol)*length
+# Filter Filter: filter used to compute attribute values (tr,link,string,max. 2 values)
+Filter = (((xi+xj)/2<65 && (yi+yj)/2<21)||((xi+xj)/2<66.5 && (yi+yj)/2>=21))&&(vdf>=10&&vdf<99)&& (((volau+volad-@lgvol-@hgvol)+@lgvol*1.3+@hgvol*3.1)/(int(vdf/10)*200*lanes))>1.25
+# String AggregationPointer: pointer from expression to result element
+AggregationPointer = Pgen
+# String AggregationOperator: aggregation operator for computing result value
+AggregationOperator = +
+
+[Configurable attribute]
+# String Name: configurable attribute name
+Name = TrkVKTLg
+# String ExpressionType: domain of expression
+ExpressionType = links
+# Expression Expression: expression for computing attribute values (tr,link,string,max. 2 values)
+Expression = (@lgvol)*length
+# Filter Filter: filter used to compute attribute values (tr,link,string,max. 2 values)
+Filter = (((xi+xj)/2<65 && (yi+yj)/2<21)||((xi+xj)/2<66.5 && (yi+yj)/2>=21))&&(vdf>=10 && vdf<99)
+# String AggregationPointer: pointer from expression to result element
+AggregationPointer = Pgen
+# String AggregationOperator: aggregation operator for computing result value
+AggregationOperator = +
+
+[Configurable attribute]
+# String Name: configurable attribute name
+Name = TrkVKTHv
+# String ExpressionType: domain of expression
+ExpressionType = links
+# Expression Expression: expression for computing attribute values (tr,link,string,max. 2 values)
+Expression = (@hgvol)*length
+# Filter Filter: filter used to compute attribute values (tr,link,string,max. 2 values)
+Filter = (((xi+xj)/2<65 && (yi+yj)/2<21)||((xi+xj)/2<66.5 && (yi+yj)/2>=21))&&(vdf>=10 && vdf<99)
+# String AggregationPointer: pointer from expression to result element
+AggregationPointer = Pgen
+# String AggregationOperator: aggregation operator for computing result value
+AggregationOperator = +
+
+[Configurable attribute]
+# String Name: configurable attribute name
+Name = CongBsVKT
+# String ExpressionType: domain of expression
+ExpressionType = transit segments
+# Expression Expression: expression for computing attribute values (tr,seg.,string,max. 2 values)
+Expression = (60/hdw)*length
+# Filter Filter: filter used to compute attribute values (tr,seg.,string,max. 2 values)
+Filter = (mode=="b" ) &&(((xi+xj)/2<65 && (yi+yj)/2<21)||((xi+xj)/2<66.5 && (yi+yj)/2>=21))&& (((volau+volad-@lgvol-@hgvol)+@lgvol*1.3+@hgvol*3.1)/(int(vdf/10)*200*lanes))>1.25
+# String AggregationPointer: pointer from expression to result element
+AggregationPointer = Pgen
+# String AggregationOperator: aggregation operator for computing result value
+AggregationOperator = +
+
+[Configurable attribute]
+# String Name: configurable attribute name
+Name = BsVKT
+# String ExpressionType: domain of expression
+ExpressionType = transit segments
+# Expression Expression: expression for computing attribute values (tr,seg.,string,max. 2 values)
+Expression = (60/hdw)*length
+# Filter Filter: filter used to compute attribute values (tr,seg.,string,max. 2 values)
+Filter = ( mode=="b" ) &&(((xi+xj)/2<65 && (yi+yj)/2<21)||((xi+xj)/2<66.5 && (yi+yj)/2>=21))
+# String AggregationPointer: pointer from expression to result element
+AggregationPointer = Pgen
+# String AggregationOperator: aggregation operator for computing result value
+AggregationOperator = +
+
+[generic elements]
+# String Name: table name that appears in the table header (tr,subst)
+Name = WS.P.A.A.31.VKT
+# String SaveListConfiguration: file name to save current table configuration (subst,nosave)
+SaveListConfiguration : /$SaveListConfiguration
+# Click PrintCurrentListNoSetup: when clicked, current table will be printed without entering setup dialog (nosave)
+PrintCurrentListNoSetup : /$PrintCurrentListNoSetup/$PrintCurrentListNoSetup
+# String ExportCurrentTableToFile: when set to a file name, the current table is exported to it (nosave)
+ExportCurrentTableToFile : /$ExportCurrentTableToFile
+# Click CloseList: when clicked, table will be closed (nosave)
+CloseList : /$CloseList/$CloseList
+# Filter Filter: expression for generic element filtering [,generic element iterator] (tr,gen.,string,max. 2 values)
+Filter = index==0
+# Style Style: style used to generate table entries
+Style = 0x21000000 0x01ffffff 0x00000000 0x00000000
+# String ColumnDef: list column definitions (tr)
+ColumnDef[] = index;generic element index;6;0;index;0;;0;0
+ColumnDef[] = index;generic element index;8;0;index;0;;0;0
+ColumnDef[] = CongPaxVKT;;16;0;CongPaxVKT;0;;0;0
+ColumnDef[] = CongBsVKT;;16;0;CongBsVKT;0;;0;0
+ColumnDef[] = CongTrkVKTLg;;16;0;CongTrkVKTLg;0;;0;0
+ColumnDef[] = CongTrkVKTHv;;16;0;CongTrkVKTHv;0;;0;0
+ColumnDef[] = PaxVKT;;16;0;PaxVKT;0;;0;0
+ColumnDef[] = BsVKT;;16;0;BsVKT;0;;0;0
+ColumnDef[] = TrkVKTLg;;16;0;TrkVKTLg;0;;0;0
+ColumnDef[] = TrkVKTHv;;16;0;TrkVKTHv;0;;0;0
+ColumnDef[] = CongestedSpeed(Kph);;8;2;(CongPaxVKT)/(CongPaxMin)*60;0;;0;0
+ColumnDef[] = PostedSpeedonCongestedRoads(Kph);;8;2;CongPaxVKT/PostedPaxMin;0;;0;0
+

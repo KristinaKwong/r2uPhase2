@@ -1,0 +1,389 @@
+t matrices
+d mf70
+d mf71
+d mf72
+d mf73
+d mf74
+d mf75
+d mf76
+d mf77
+d mf78
+d mf79
+d mf80
+d mf81
+d mf82
+d mf83
+d mf84
+d mf85
+d mf86
+d mf87
+d mf88
+d mf89
+d mf710
+d mf711
+d mf712
+d mf713
+d mf714
+d mf715
+d mf716
+d mf717
+d mf718
+d mf719
+d mf720
+d mf721
+d mf722
+d mf723
+d mf724
+d mf725
+d mf726
+d mf727
+d mf728
+d mf729
+d mf730
+d mf731
+d mf732
+d mf733
+d mf734
+d mf735
+d mf736
+d mf737
+d mf738
+d mf739
+d mf740
+d mf741
+d mf742
+d mf743
+d mf744
+d mf745
+d mf746
+d mf747
+d mf748
+d mf749
+d mf750
+d mf751
+d mf752
+d mf753
+d mf754
+d mf755
+d mf756
+d mf757
+d mf758
+d mf759
+d mf760
+d mf761
+d mf762
+d mf763
+d mf764
+d mf765
+d mf766
+d mf767
+d mf768
+d mf769
+d mf770
+d mf771
+d mf772
+d mf773
+d mf774
+d mf775
+d mf776
+d mf777
+d mf778
+d mf779
+d mf780
+d mf781
+d mf782
+d mf783
+d mf784
+d mf785
+d mf786
+d mf787
+d mf788
+d mf789
+d mf790
+d mf791
+d mf792
+d mf793
+d mf794
+d mf795
+d mf796
+d mf797
+d mf798
+d mf799
+d mf800
+d mf801
+d mf802
+d mf803
+d mf804
+d mf805
+d mf806
+d mf807
+d mf808
+d mf809
+d mf810
+d mf811
+d mf812
+d mf813
+d mf814
+d mf815
+d mf816
+d mf817
+d mf818
+d mf819
+d mf820
+d mf821
+d mf822
+d mf823
+d mf824
+d mf825
+d mf826
+d mf827
+d mf828
+d mf829
+d mf830
+d mf831
+d mf832
+d mf833
+d mf834
+d mf835
+d mf836
+d mf837
+d mf838
+d mf839
+d mf840
+d mf841
+d mf842
+d mf843
+d mf844
+d mf845
+d mf846
+d mf847
+d mf848
+d mf849
+d mf850
+d mf851
+d mf852
+d mf853
+d mf854
+d mf855
+d mf856
+d mf857
+d mf858
+d mf859
+d mf860
+d mf861
+d mf862
+d mf863
+d mf864
+d mf865
+d mf866
+d mf867
+d mf868
+d mf869
+d mf870
+d mf871
+d mf872
+d mf873
+d mf874
+d mf875
+d mf876
+d mf877
+d mf878
+d mf879
+d mf880
+d mf881
+d mf997
+d mf998
+a matrix=mf70 AuPeT1 0 11-Auto Person Trips T1
+a matrix=mf71 BsPeT1 0 11-Bus Person Trips T1
+a matrix=mf72 RlPeT1 0 11-Rail Person Trips T1
+a matrix=mf73 AcPeT1 0 11-Active Person Trips T1
+a matrix=mf74 spare 0 Spare
+a matrix=mf75 AuPeT2 0 11-Auto Person Trips T2
+a matrix=mf76 BsPeT2 0 11-Bus Person Trips T2
+a matrix=mf77 RlPeT2 0 11-Rail Person Trips T2
+a matrix=mf78 AcPeT2 0 11-Active Person Trips T2
+a matrix=mf79 spare 0 Spare
+a matrix=mf80 AuPeT3 0 11-Auto Person Trips T3
+a matrix=mf81 BsPeT3 0 11-Bus Person Trips T3
+a matrix=mf82 RlPeT3 0 11-Rail Person Trips T3
+a matrix=mf83 AcPeT3 0 11-Active Person Trips T3
+a matrix=mf84 spare 0 Spare
+a matrix=mf85 AuPeT4 0 11-Auto Person Trips T4
+a matrix=mf86 BsPeT4 0 11-Bus Person Trips T4
+a matrix=mf87 RlPeT4 0 11-Rail Person Trips T4
+a matrix=mf88 AcPeT4 0 11-Active Person Trips T4
+a matrix=mf89 spare 0 Spare
+a matrix=mf710 f1111 0 TimeSlicedDemand WrSvLT1
+a matrix=mf711 f1112 0 TimeSlicedDemand WrSvLT2
+a matrix=mf712 f1113 0 TimeSlicedDemand WrSvLT3
+a matrix=mf713 f1114 0 TimeSlicedDemand WrSvLT4
+a matrix=mf714 f1115 0 TimeSlicedDemand WrSvLT5
+a matrix=mf715 f1116 0 TimeSlicedDemand WrSvLT6
+a matrix=mf716 f1117 0 TimeSlicedDemand WrSvLT7
+a matrix=mf717 f1211 0 TimeSlicedDemand WrSvMT1
+a matrix=mf718 f1212 0 TimeSlicedDemand WrSvMT2
+a matrix=mf719 f1213 0 TimeSlicedDemand WrSvMT3
+a matrix=mf720 f1214 0 TimeSlicedDemand WrSvMT4
+a matrix=mf721 f1215 0 TimeSlicedDemand WrSvMT5
+a matrix=mf722 f1216 0 TimeSlicedDemand WrSvMT6
+a matrix=mf723 f1217 0 TimeSlicedDemand WrSvMT7
+a matrix=mf724 f1311 0 TimeSlicedDemand WrSvHT1
+a matrix=mf725 f1312 0 TimeSlicedDemand WrSvHT2
+a matrix=mf726 f1313 0 TimeSlicedDemand WrSvHT3
+a matrix=mf727 f1314 0 TimeSlicedDemand WrSvHT4
+a matrix=mf728 f1315 0 TimeSlicedDemand WrSvHT5
+a matrix=mf729 f1316 0 TimeSlicedDemand WrSvHT6
+a matrix=mf730 f1317 0 TimeSlicedDemand WrSvHT7
+a matrix=mf731 f1121 0 TimeSlicedDemand WrHvLT1
+a matrix=mf732 f1122 0 TimeSlicedDemand WrHvLT2
+a matrix=mf733 f1123 0 TimeSlicedDemand WrHvLT3
+a matrix=mf734 f1124 0 TimeSlicedDemand WrHvLT4
+a matrix=mf735 f1125 0 TimeSlicedDemand WrHvLT5
+a matrix=mf736 f1126 0 TimeSlicedDemand WrHvLT6
+a matrix=mf737 f1127 0 TimeSlicedDemand WrHvLT7
+a matrix=mf738 f1221 0 TimeSlicedDemand WrHvMT1
+a matrix=mf739 f1222 0 TimeSlicedDemand WrHvMT2
+a matrix=mf740 f1223 0 TimeSlicedDemand WrHvMT3
+a matrix=mf741 f1224 0 TimeSlicedDemand WrHvMT4
+a matrix=mf742 f1225 0 TimeSlicedDemand WrHvMT5
+a matrix=mf743 f1226 0 TimeSlicedDemand WrHvMT6
+a matrix=mf744 f1227 0 TimeSlicedDemand WrHvMT7
+a matrix=mf745 f1321 0 TimeSlicedDemand WrHvHT1
+a matrix=mf746 f1322 0 TimeSlicedDemand WrHvHT2
+a matrix=mf747 f1323 0 TimeSlicedDemand WrHvHT3
+a matrix=mf748 f1324 0 TimeSlicedDemand WrHvHT4
+a matrix=mf749 f1325 0 TimeSlicedDemand WrHvHT5
+a matrix=mf750 f1326 0 TimeSlicedDemand WrHvHT6
+a matrix=mf751 f1327 0 TimeSlicedDemand WrHvHT7
+a matrix=mf752 f1131 0 TimeSlicedDemand WrH3LT1
+a matrix=mf753 f1132 0 TimeSlicedDemand WrH3LT2
+a matrix=mf754 f1133 0 TimeSlicedDemand WrH3LT3
+a matrix=mf755 f1134 0 TimeSlicedDemand WrH3LT4
+a matrix=mf756 f1135 0 TimeSlicedDemand WrH3LT5
+a matrix=mf757 f1136 0 TimeSlicedDemand WrH3LT6
+a matrix=mf758 f1137 0 TimeSlicedDemand WrH3LT7
+a matrix=mf759 f1231 0 TimeSlicedDemand WrH3MT1
+a matrix=mf760 f1232 0 TimeSlicedDemand WrH3MT2
+a matrix=mf761 f1233 0 TimeSlicedDemand WrH3MT3
+a matrix=mf762 f1234 0 TimeSlicedDemand WrH3MT4
+a matrix=mf763 f1235 0 TimeSlicedDemand WrH3MT5
+a matrix=mf764 f1236 0 TimeSlicedDemand WrH3MT6
+a matrix=mf765 f1237 0 TimeSlicedDemand WrH3MT7
+a matrix=mf766 f1331 0 TimeSlicedDemand WrH3HT1
+a matrix=mf767 f1332 0 TimeSlicedDemand WrH3HT2
+a matrix=mf768 f1333 0 TimeSlicedDemand WrH3HT3
+a matrix=mf769 f1334 0 TimeSlicedDemand WrH3HT4
+a matrix=mf770 f1335 0 TimeSlicedDemand WrH3HT5
+a matrix=mf771 f1336 0 TimeSlicedDemand WrH3HT6
+a matrix=mf772 f1337 0 TimeSlicedDemand WrH3HT7
+a matrix=mf773 f2111 0 TimeSlicedDemand OtSvLT1
+a matrix=mf774 f2112 0 TimeSlicedDemand OtSvLT2
+a matrix=mf775 f2113 0 TimeSlicedDemand OtSvLT3
+a matrix=mf776 f2114 0 TimeSlicedDemand OtSvLT4
+a matrix=mf777 f2115 0 TimeSlicedDemand OtSvLT5
+a matrix=mf778 f2116 0 TimeSlicedDemand OtSvLT6
+a matrix=mf779 f2117 0 TimeSlicedDemand OtSvLT7
+a matrix=mf780 f2121 0 TimeSlicedDemand OtHvLT1
+a matrix=mf781 f2122 0 TimeSlicedDemand OtHvLT2
+a matrix=mf782 f2123 0 TimeSlicedDemand OtHvLT3
+a matrix=mf783 f2124 0 TimeSlicedDemand OtHvLT4
+a matrix=mf784 f2125 0 TimeSlicedDemand OtHvLT5
+a matrix=mf785 f2126 0 TimeSlicedDemand OtHvLT6
+a matrix=mf786 f2127 0 TimeSlicedDemand OtHvLT7
+a matrix=mf787 f2131 0 TimeSlicedDemand OtH3LT1
+a matrix=mf788 f2132 0 TimeSlicedDemand OtH3LT2
+a matrix=mf789 f2133 0 TimeSlicedDemand OtH3LT3
+a matrix=mf790 f2134 0 TimeSlicedDemand OtH3LT4
+a matrix=mf791 f2135 0 TimeSlicedDemand OtH3LT5
+a matrix=mf792 f2136 0 TimeSlicedDemand OtH3LT6
+a matrix=mf793 f2137 0 TimeSlicedDemand OtH3LT7
+a matrix=mf794 f2411 0 TimeSlicedDemand OtSvMHT1
+a matrix=mf795 f2412 0 TimeSlicedDemand OtSvMHT2
+a matrix=mf796 f2413 0 TimeSlicedDemand OtSvMHT3
+a matrix=mf797 f2414 0 TimeSlicedDemand OtSvMHT4
+a matrix=mf798 f2415 0 TimeSlicedDemand OtSvMHT5
+a matrix=mf799 f2416 0 TimeSlicedDemand OtSvMHT6
+a matrix=mf800 f2417 0 TimeSlicedDemand OtSvMHT7
+a matrix=mf801 f2421 0 TimeSlicedDemand OtHvMHT1
+a matrix=mf802 f2422 0 TimeSlicedDemand OtHvMHT2
+a matrix=mf803 f2423 0 TimeSlicedDemand OtHvMHT3
+a matrix=mf804 f2424 0 TimeSlicedDemand OtHvMHT4
+a matrix=mf805 f2425 0 TimeSlicedDemand OtHvMHT5
+a matrix=mf806 f2426 0 TimeSlicedDemand OtHvMHT6
+a matrix=mf807 f2427 0 TimeSlicedDemand OtHvMHT7
+a matrix=mf808 f2431 0 TimeSlicedDemand OtH3MHT1
+a matrix=mf809 f2432 0 TimeSlicedDemand OtH3MHT2
+a matrix=mf810 f2433 0 TimeSlicedDemand OtH3MHT3
+a matrix=mf811 f2434 0 TimeSlicedDemand OtH3MHT4
+a matrix=mf812 f2435 0 TimeSlicedDemand OtH3MHT5
+a matrix=mf813 f2436 0 TimeSlicedDemand OtH3MHT6
+a matrix=mf814 f2437 0 TimeSlicedDemand OtH3MHT7
+a matrix=mf815 f3541 0 TimeSlicedDemand APrBsAInT1
+a matrix=mf816 f3542 0 TimeSlicedDemand APrBsAInT2
+a matrix=mf817 f3543 0 TimeSlicedDemand APrBsAInT3
+a matrix=mf818 f3544 0 TimeSlicedDemand APrBsAInT4
+a matrix=mf819 f3545 0 TimeSlicedDemand APrBsAInT5
+a matrix=mf820 f3546 0 TimeSlicedDemand APrBsAInT6
+a matrix=mf821 f3547 0 TimeSlicedDemand APrBsAInT7
+a matrix=mf822 f3551 0 TimeSlicedDemand APrRlAInT1
+a matrix=mf823 f3552 0 TimeSlicedDemand APrRlAInT2
+a matrix=mf824 f3553 0 TimeSlicedDemand APrRlAInT3
+a matrix=mf825 f3554 0 TimeSlicedDemand APrRlAInT4
+a matrix=mf826 f3555 0 TimeSlicedDemand APrRlAInT5
+a matrix=mf827 f3556 0 TimeSlicedDemand APrRlAInT6
+a matrix=mf828 f3557 0 TimeSlicedDemand APrRlAInT7
+a matrix=mf829 f3571 0 TimeSlicedDemand APrAcAInT1
+a matrix=mf830 f3572 0 TimeSlicedDemand APrAcAInT2
+a matrix=mf831 f3573 0 TimeSlicedDemand APrAcAInT3
+a matrix=mf832 f3574 0 TimeSlicedDemand APrAcAInT4
+a matrix=mf833 f3575 0 TimeSlicedDemand APrAcAInT5
+a matrix=mf834 f3576 0 TimeSlicedDemand APrAcAInT6
+a matrix=mf835 f3577 0 TimeSlicedDemand APrAcAInT7
+a matrix=mf836 f3581 0 TimeSlicedDemand APrSBAInT1
+a matrix=mf837 f3582 0 TimeSlicedDemand APrSBAInT2
+a matrix=mf838 f3583 0 TimeSlicedDemand APrSBAInT3
+a matrix=mf839 f3584 0 TimeSlicedDemand APrSBAInT4
+a matrix=mf840 f3585 0 TimeSlicedDemand APrSBAInT5
+a matrix=mf841 f3586 0 TimeSlicedDemand APrSBAInT6
+a matrix=mf842 f3587 0 TimeSlicedDemand APrSBAInT7
+a matrix=mf843 f1115v 0 11-TimeSlicedDemand WrSvLT5
+a matrix=mf844 f1215v 0 11-TimeSlicedDemand WrSvMT5
+a matrix=mf845 f1315v 0 11-TimeSlicedDemand WrSvHT5
+a matrix=mf846 f2115v 0 11-TimeSlicedDemand OtSvLT5
+a matrix=mf847 f2415v 0 11-TimeSlicedDemand OtSvMHT5
+a matrix=mf848 f1125v 0 11-TimeSlicedDemand WrHvLT5
+a matrix=mf849 f1225v 0 11-TimeSlicedDemand WrHvMT5
+a matrix=mf850 f1325v 0 11-TimeSlicedDemand WrHvHT5
+a matrix=mf851 f2125v 0 11-TimeSlicedDemand OtHvLT5
+a matrix=mf852 f2425v 0 11-TimeSlicedDemand OtHvMHT5
+a matrix=mf853 f3545b 0 11-Bus AM Demand
+a matrix=mf854 f3555r 0 11-Rail AM Demand
+a matrix=mf855 f3575a 0 11-Active AM Demand
+a matrix=mf856 f1116v 0 11-TimeSlicedDemand WrSvLT6
+a matrix=mf857 f1216v 0 11-TimeSlicedDemand WrSvMT6
+a matrix=mf858 f1316v 0 11-TimeSlicedDemand WrSvHT6
+a matrix=mf859 f2116v 0 11-TimeSlicedDemand OtSvLT6
+a matrix=mf860 f2416v 0 11-TimeSlicedDemand OtSvMHT6
+a matrix=mf861 f1126v 0 11-TimeSlicedDemand WrHvLT6
+a matrix=mf862 f1226v 0 11-TimeSlicedDemand WrHvMT6
+a matrix=mf863 f1326v 0 11-TimeSlicedDemand WrHvHT6
+a matrix=mf864 f2126v 0 11-TimeSlicedDemand OtHvLT6
+a matrix=mf865 f2426v 0 11-TimeSlicedDemand OtHvMHT6
+a matrix=mf866 f3546b 0 11-Bus MD Demand
+a matrix=mf867 f3556r 0 11-Rail MD Demand
+a matrix=mf868 f3576a 0 11-Active MD Demand
+a matrix=mf869 f1117v 0 11-TimeSlicedDemand WrSvLT7
+a matrix=mf870 f1217v 0 11-TimeSlicedDemand WrSvMT7
+a matrix=mf871 f1317v 0 11-TimeSlicedDemand WrSvHT7
+a matrix=mf872 f2117v 0 11-TimeSlicedDemand OtSvLT7
+a matrix=mf873 f2417v 0 11-TimeSlicedDemand OtSvMHT7
+a matrix=mf874 f1127v 0 11-TimeSlicedDemand WrHvLT7
+a matrix=mf875 f1227v 0 11-TimeSlicedDemand WrHvMT7
+a matrix=mf876 f1327v 0 11-TimeSlicedDemand WrHvHT7
+a matrix=mf877 f2127v 0 11-TimeSlicedDemand OtHvLT7
+a matrix=mf878 f2427v 0 11-TimeSlicedDemand OtHvMHT7
+a matrix=mf879 f3547b 0 11-Bus PM Demand
+a matrix=mf880 f3557r 0 11-Rail PM Demand
+a matrix=mf881 f3577a 0 11-Active PM Demand
+a matrix=mf997  rwkT5 0 Railbus T5 work (formerly 826)      
+a matrix=mf998  bwkT5 0 Transitbus T5 work (formerly 819)

@@ -1,0 +1,38 @@
+292ED8A4-37FA-4242-AE4E-D78DB768CA1D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
+# Emme table generated on Mon Nov 17 11:11:13 2014
+# File: //vanco-ifs-01/Project/projects/202994TransLink Modelling Support/Work Program/NG Model Validation/030C NG TL MODEL/030C NG TL MODEL/Worksheets/RTM Phase 2 Model Worksheets MS/02 Transit/03 Results/WS.T.T.R.10.Network Output.emt
+#
+[transit segments]
+# String Name: table name that appears in the table header (tr,subst)
+Name = WS.T.T.R.10.Network Output
+# String SaveListConfiguration: file name to save current table configuration (subst,nosave)
+SaveListConfiguration : /$SaveListConfiguration
+# Click PrintCurrentListNoSetup: when clicked, current table will be printed without entering setup dialog (nosave)
+PrintCurrentListNoSetup : /$PrintCurrentListNoSetup/$PrintCurrentListNoSetup
+# String ExportCurrentTableToFile: when set to a file name, the current table is exported to it (nosave)
+ExportCurrentTableToFile : /$ExportCurrentTableToFile
+# Click CloseList: when clicked, table will be closed (nosave)
+CloseList : /$CloseList/$CloseList
+# Style Style: style used to generate table entries
+Style = 0x21000000 0x01ffffff 0x00000000 0x00000500
+# String ColumnDef: list column definitions (tr)
+ColumnDef[] = index;transit segment index;8;0;index;0;;768;0
+ColumnDef[] = line;transit line;6;0;line;0;;768;0
+ColumnDef[] = i;I-node of segment;7;0;i;0;;768;0
+ColumnDef[] = j;J-node of segment;7;0;j;0;;768;0
+ColumnDef[] = Dwell Time (dwt);dwell time;8;2;dwt;0;;768;0
+ColumnDef[] = Transit Time Function (ttf);transit time function;8;0;ttf;0;;768;0
+ColumnDef[] = User Data1 (us1);segment user data 1;8;7;us1;0;;768;0
+ColumnDef[] = User Data2 (us2);segment user data 2;8;7;us2;0;;768;0
+ColumnDef[] = User Data3 (us3);segment user data 3;8;7;us3;0;;768;0
+ColumnDef[] = length;link length;8;7;length;0;;768;0
+ColumnDef[] = Transit Segment Volume (voltr);transit segment volume;8;0;voltr;0;;768;0
+ColumnDef[] = Transit Segment Time (timtr);transit segment time;8;2;timtr;0;;768;0
+ColumnDef[] = Total Volume (@sscvl);Total Volume;8;7;@sscvl;0;;768;0
+ColumnDef[] = Screenline Volume (@sscid);Screenline Volume;8;7;@sscid;0;;768;0
+ColumnDef[] = Transit Boardings (board);transit boardings;8;0;board;0;;768;0
+ColumnDef[] = Transit Alightings (alight);transit alightings at I-node;16;0;alight;0;;768;0
+ColumnDef[] = Transit Thru-Pass (thrupass);transit thru-passengers at I-node;16;0;thrupass;0;;768;0
+ColumnDef[] = Stop/Station ID (@nstid);Stop/Station ID;8;7;@nstid;0;;768;0
+ColumnDef[] = Stop Volume (@nscvl);Stop Volume;8;7;@nscvl;0;;768;0
+
