@@ -118,7 +118,7 @@ Whitespace is ignored.
                 if matrix:
                     value = line["Value"]
                     if not value:
-                        raise Exception("Missing value for parameter %s in settings file" % line["Label"])                    
+                        raise Exception("Missing value for parameter %s in settings file" % line["Label"])
                     value = value.lower()
                     value = float(truth_values.get(value, value))
                     result[line["Label"]] = value

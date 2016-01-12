@@ -41,4 +41,3 @@ class Util(_m.Tool()):
 		if mat:
 			mat.read_only = False
 		eb.delete_matrix(mat_id)
-	
