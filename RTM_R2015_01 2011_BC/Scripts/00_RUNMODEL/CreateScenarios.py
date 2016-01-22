@@ -57,13 +57,11 @@ class InputSettings(_m.Tool()):
             raise
 
     @_m.logbook_trace("00_00 Create Scenarios")
-    def __call__(self, am_scenario, md_scenario):
-        copy_scenario = _m.Modeller().tool(
-            "inro.emme.data.scenario.copy_scenario")
-        emmebank = _m.Modeller().emmebank
+    def __call__(self, eb, am_scenario, md_scenario):
+        copy_scenario = _m.Modeller().tool("inro.emme.data.scenario.copy_scenario")
 
-        am_scenario = emmebank.scenario(am_scenario)
-        md_scenario = emmebank.scenario(md_scenario)
+        am_scenario = eb.scenario(am_scenario)
+        md_scenario = eb.scenario(md_scenario)
 
         # Copy to new am scenarios
         copy_scenario(from_scenario=am_scenario,

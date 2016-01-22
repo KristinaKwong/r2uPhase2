@@ -120,9 +120,6 @@ class FullModelRun(_m.Tool()):
         #       - add global convergence measure
         copy_scenario = _m.Modeller().tool(
             "inro.emme.data.scenario.copy_scenario")
-        create_scenario = _m.Modeller().tool("translink.emme.stage1.step0.create_scen")
-        read_settings = _m.Modeller().tool("translink.emme.stage1.step0.settings")
-
         segmentation = _m.Modeller().tool("translink.emme.stage1.step1.segmentation")
         trip_productions = _m.Modeller().tool("translink.emme.stage2.step2.tripproduction")
         trip_attraction = _m.Modeller().tool("translink.emme.stage2.step2.tripattraction")
@@ -137,44 +134,13 @@ class FullModelRun(_m.Tool()):
 
         root_directory = os.path.dirname(eb.path) + "\\"
 
-        util = _m.Modeller().tool("translink.emme.util")
-        util.initmat(eb, "ms140", "AMScNo", "AM Scenario Number", 0)
-        util.initmat(eb, "ms141", "MDScNo", "MD Scenario Number", 0)
-        util.initmat(eb, "ms142", "ProNum", "Number of Processors", 0)
-        util.initmat(eb, "ms143", "ScCrMo", "Scenario Creation Module", 0)
-        util.initmat(eb, "ms144", "PrCal", "Parking Cost Adjustment", 0)
-        util.initmat(eb, "ms145", "DisSen", "Trip Dist Cost Sens", 0)
-        util.initmat(eb, "ms146", "MChSen", "Mode Choice Toll Sens", 0)
-        util.initmat(eb, "ms147", "AsgSen", "Assignment Toll Sens", 0)
-        util.initmat(eb, "ms148", "DsToSn", "Trip Dist Cost (Toll) Sens", 0)
-        util.initmat(eb, "md15", "CpBsDe", "Compound Base Density", 0)
-        util.initmat(eb, "md101", "CpHoDe", "Compound_Horizon_Density", 0)
-        util.initmat(eb, "md102", "BWrPrC", "Base_work_parkcost", 0)
-        util.initmat(eb, "md103", "BOtPrC", "Base_nonwork_parkcost", 0)
-        util.initmat(eb, "md104", "HWrPrC", "Horizon_work_parkcost", 0)
-        util.initmat(eb, "md105", "HOtPrC", "Horizon_nonwork_parkcost", 0)
-        util.initmat(eb, "md106", "PrInc1", "Calculated_work_park_cost_increment", 0)
-        util.initmat(eb, "md107", "PrInc2", "Calculated_nonwork_park_cost_increment", 0)
-        util.initmat(eb, "md108", "WrPrOr", "Work Parking Cost Override", 0)
-        util.initmat(eb, "md109", "OtPrOr", "Nonwork Park Cost Override", 0)
-
-        # Settings file
-        settings_file = os.path.join(root_directory, "settings.csv")
-        settings = read_settings(settings_file)
-
         #Create scenarios, depending on settings selection
         ##      Return_val = _m.Modeller().tool("translink.emme.scalar")
-
-        scenrun = eb.matrix("ms143")
         amscen = eb.matrix("ms140")
         mdscen = eb.matrix("ms141")
 
-        scenario_run = scenrun.data
         am_scen = amscen.data
         md_scen = mdscen.data
-
-        if scenario_run == 1:
-            create_scenario(am_scen, md_scen)
 
         # Segmentation (including auto ownership)
         segmentation(root_directory)
@@ -212,13 +178,14 @@ class FullModelRun(_m.Tool()):
                 overwrite=True)
             congested_transit(congested_transit_am, setup_ttfs=True)
 
-    @_m.logbook_trace("Stage 0 - Define Inputs")
+    @_m.logbook_trace("Stage 1 - Define Inputs")
     def stage1(self, eb, land_use_file1, land_use_file2):
         matrix_txn = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
         lu_file = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "LandUse", "Batchins.txt")
         matrix_txn(transaction_file=lu_file, throw_on_error=True)
 
         util = _m.Modeller().tool("translink.emme.util")
+
         util.initmat(eb, "mo19", "", "", 0)
         util.initmat(eb, "mo20", "", "", 0)
         util.initmat(eb, "mo23", "", "", 0)
@@ -235,6 +202,40 @@ class FullModelRun(_m.Tool()):
         util.initmat(eb, "mo28", "", "", 0)
         util.initmat(eb, "mo13", "", "", 0)
 
-        land_use = _m.Modeller().tool("translink.emme.stage1.step0.landuse")
         ## Call Model Tools - Socioeconomic segmentation, trip generation, trip distribution, mode choice, assignment
+        land_use = _m.Modeller().tool("translink.emme.stage1.step0.landuse")
         land_use(land_use_file1, land_use_file2)
+
+        ## Read the settings file
+        util.initmat(eb, "ms140", "AMScNo", "AM Scenario Number", 0)
+        util.initmat(eb, "ms141", "MDScNo", "MD Scenario Number", 0)
+        util.initmat(eb, "ms142", "ProNum", "Number of Processors", 0)
+        util.initmat(eb, "ms143", "ScCrMo", "Scenario Creation Module", 0)
+        util.initmat(eb, "ms144", "PrCal", "Parking Cost Adjustment", 0)
+        util.initmat(eb, "ms145", "DisSen", "Trip Dist Cost Sens", 0)
+        util.initmat(eb, "ms146", "MChSen", "Mode Choice Toll Sens", 0)
+        util.initmat(eb, "ms147", "AsgSen", "Assignment Toll Sens", 0)
+        util.initmat(eb, "ms148", "DsToSn", "Trip Dist Cost (Toll) Sens", 0)
+        util.initmat(eb, "md15", "CpBsDe", "Compound Base Density", 0)
+        util.initmat(eb, "md101", "CpHoDe", "Compound_Horizon_Density", 0)
+        util.initmat(eb, "md102", "BWrPrC", "Base_work_parkcost", 0)
+        util.initmat(eb, "md103", "BOtPrC", "Base_nonwork_parkcost", 0)
+        util.initmat(eb, "md104", "HWrPrC", "Horizon_work_parkcost", 0)
+        util.initmat(eb, "md105", "HOtPrC", "Horizon_nonwork_parkcost", 0)
+        util.initmat(eb, "md106", "PrInc1", "Calculated_work_park_cost_increment", 0)
+        util.initmat(eb, "md107", "PrInc2", "Calculated_nonwork_park_cost_increment", 0)
+        util.initmat(eb, "md108", "WrPrOr", "Work Parking Cost Override", 0)
+        util.initmat(eb, "md109", "OtPrOr", "Nonwork Park Cost Override", 0)
+
+        # Settings file
+        read_settings = _m.Modeller().tool("translink.emme.stage1.step0.settings")
+        settings_file = os.path.join(os.path.dirname(eb.path), "settings.csv")
+        settings = read_settings(settings_file)
+
+        create_scenario = _m.Modeller().tool("translink.emme.stage1.step0.create_scen")
+        scenario_run = eb.matrix("ms143").data
+        am_scen = eb.matrix("ms140").data
+        md_scen = eb.matrix("ms141").data
+
+        if scenario_run == 1:
+            create_scenario(eb, am_scen, md_scen)
