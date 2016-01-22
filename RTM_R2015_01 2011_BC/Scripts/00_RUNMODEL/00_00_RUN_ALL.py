@@ -137,12 +137,48 @@ class FullModelRun(_modeller.Tool()):
         congested_transit = _modeller.Modeller().tool("translink.emme.stage5.step11.congested_transit")
 
         emmebank = _modeller.Modeller().emmebank
+        eb = _modeller.Modeller().emmebank
         root_directory = os.path.dirname(emmebank.path) + "\\"
 
         ## Batchin Starter Accessibilities and initialize matrices for landuse inputs and mode settings
         matrix_file = os.path.join(root_directory, "00_RUNMODEL", "LandUse", "Batchins.txt")
         matrix_txn(transaction_file=matrix_file, throw_on_error=True)
 
+        util = _modeller.Modeller().tool("translink.emme.util")
+        util.initmat(eb, "mo19", "", "", 0)
+        util.initmat(eb, "mo20", "", "", 0)
+        util.initmat(eb, "mo23", "", "", 0)
+        util.initmat(eb, "mo24", "", "", 0)
+        util.initmat(eb, "mo25", "", "", 0)
+        util.initmat(eb, "mo26", "", "", 0)
+        util.initmat(eb, "mo50", "", "", 0)
+        util.initmat(eb, "mo51", "", "", 0)
+        util.initmat(eb, "mo52", "", "", 0)
+        util.initmat(eb, "mo53", "", "", 0)
+        util.initmat(eb, "mo393", "", "", 0)
+        util.initmat(eb, "mo394", "", "", 0)
+        util.initmat(eb, "mo27", "", "", 0)
+        util.initmat(eb, "mo28", "", "", 0)
+        util.initmat(eb, "mo13", "", "", 0)
+        util.initmat(eb, "ms140", "AMScNo", "AM Scenario Number", 0)
+        util.initmat(eb, "ms141", "MDScNo", "MD Scenario Number", 0)
+        util.initmat(eb, "ms142", "ProNum", "Number of Processors", 0)
+        util.initmat(eb, "ms143", "ScCrMo", "Scenario Creation Module", 0)
+        util.initmat(eb, "ms144", "PrCal", "Parking Cost Adjustment", 0)
+        util.initmat(eb, "ms145", "DisSen", "Trip Dist Cost Sens", 0)
+        util.initmat(eb, "ms146", "MChSen", "Mode Choice Toll Sens", 0)
+        util.initmat(eb, "ms147", "AsgSen", "Assignment Toll Sens", 0)
+        util.initmat(eb, "ms148", "DsToSn", "Trip Dist Cost (Toll) Sens", 0)
+        util.initmat(eb, "md15", "CpBsDe", "Compound Base Density", 0)
+        util.initmat(eb, "md101", "CpHoDe", "Compound_Horizon_Density", 0)
+        util.initmat(eb, "md102", "BWrPrC", "Base_work_parkcost", 0)
+        util.initmat(eb, "md103", "BOtPrC", "Base_nonwork_parkcost", 0)
+        util.initmat(eb, "md104", "HWrPrC", "Horizon_work_parkcost", 0)
+        util.initmat(eb, "md105", "HOtPrC", "Horizon_nonwork_parkcost", 0)
+        util.initmat(eb, "md106", "PrInc1", "Calculated_work_park_cost_increment", 0)
+        util.initmat(eb, "md107", "PrInc2", "Calculated_nonwork_park_cost_increment", 0)
+        util.initmat(eb, "md108", "WrPrOr", "Work Parking Cost Override", 0)
+        util.initmat(eb, "md109", "OtPrOr", "Nonwork Park Cost Override", 0)
         ## Call Model Tools - Socioeconomic segmentation, trip generation, trip distribution, mode choice, assignment
         land_use(land_use_file1, land_use_file2)
 
@@ -153,7 +189,6 @@ class FullModelRun(_modeller.Tool()):
         #Create scenarios, depending on settings selection
         ##      Return_val = _modeller.Modeller().tool("translink.emme.scalar")
 
-        eb = _modeller.Modeller().emmebank
         scenrun = eb.matrix("ms143")
         amscen = eb.matrix("ms140")
         mdscen = eb.matrix("ms141")
