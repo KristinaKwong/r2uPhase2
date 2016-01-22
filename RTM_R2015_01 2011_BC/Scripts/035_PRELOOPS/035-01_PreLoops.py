@@ -1,6 +1,5 @@
 ## Trip Production model - HDR
 import inro.modeller as _m
-import simplejson
 import traceback as _traceback
 
 class PreLoop(_m.Tool()):
@@ -257,53 +256,41 @@ class PreLoop(_m.Tool()):
 
     @_m.logbook_trace("Copy Starter Skims to appropriate locations")
     def Copy_Starter_Skims_Fares(self):
+        util = _m.Modeller().tool("translink.emme.util")
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        report = compute_matrix(util.matrix_spec("mf100", "mf893"))
+        report = compute_matrix(util.matrix_spec("mf101", "mf894"))
+        report = compute_matrix(util.matrix_spec("mf102", "mf895"))
+        report = compute_matrix(util.matrix_spec("mf103", "mf896"))
+        report = compute_matrix(util.matrix_spec("mf104", "mf897"))
+        report = compute_matrix(util.matrix_spec("mf105", "mf898"))
+        report = compute_matrix(util.matrix_spec("mf106", "mf899"))
+        report = compute_matrix(util.matrix_spec("mf107", "mf900"))
+        report = compute_matrix(util.matrix_spec("mf108", "mf901"))
+        report = compute_matrix(util.matrix_spec("mf109", "mf902"))
 
-        spec = """{
-                "expression": "1",
-                "result": "mf201",
-                "constraint": {
-                    "by_value": null,
-                    "by_zone": null
-                },
-                "aggregation": {
-                    "origins": null,
-                    "destinations": null
-                },
-                "type": "MATRIX_CALCULATION"
-            }"""
-        spec_as_dict = simplejson.loads(spec)
-        matrix1 = 100
-        matrix2 = 893
-        matrix3 = 160
-        matrix4 = 161
-        for i in range(28):
-            if i < 10:
-                expression = "mf" + str(matrix2 + i)
-                result = "mf" + str(matrix1 + i)
-            if i > 9 and i < 14:
-                expression = "mf" + str(matrix2 + i)
-                result = "mf" + str(matrix1 + i + 1)
-            if i > 13 and i < 19:
-                expression = "mf" + str(matrix2 + i)
-                result = "mf" + str(matrix1 + i + 2)
-            if i > 18 and i < 24:
-                expression = "mf" + str(matrix2 + i)
-                result = "mf" + str(matrix1 + i + 5)
-            if i > 23 and i < 26:
-                expression = "mf" + str(matrix2 + i)
-                result = "mf" + str(matrix1 + i + 39)
-            if i > 25 and i < 28:
-                expression = "mf" + str(matrix2 + i)
-                result = "mf" + str(matrix1 + i + 41)
-            spec_as_dict["expression"] = expression
-            spec_as_dict["result"] = result
-            report = compute_matrix(spec_as_dict)
+        report = compute_matrix(util.matrix_spec("mf111", "mf903"))
+        report = compute_matrix(util.matrix_spec("mf112", "mf904"))
+        report = compute_matrix(util.matrix_spec("mf113", "mf905"))
+        report = compute_matrix(util.matrix_spec("mf114", "mf906"))
 
-        expression = "mf" + str(matrix3)
-        result = "mf" + str(matrix4)
-        spec_as_dict["expression"] = expression
-        spec_as_dict["result"] = result
-        report = compute_matrix(spec_as_dict)
+        report = compute_matrix(util.matrix_spec("mf116", "mf907"))
+        report = compute_matrix(util.matrix_spec("mf117", "mf908"))
+        report = compute_matrix(util.matrix_spec("mf118", "mf909"))
+        report = compute_matrix(util.matrix_spec("mf119", "mf910"))
+        report = compute_matrix(util.matrix_spec("mf120", "mf911"))
+
+        report = compute_matrix(util.matrix_spec("mf124", "mf912"))
+        report = compute_matrix(util.matrix_spec("mf125", "mf913"))
+        report = compute_matrix(util.matrix_spec("mf126", "mf914"))
+        report = compute_matrix(util.matrix_spec("mf127", "mf915"))
+        report = compute_matrix(util.matrix_spec("mf128", "mf916"))
+
+        report = compute_matrix(util.matrix_spec("mf163", "mf917"))
+        report = compute_matrix(util.matrix_spec("mf164", "mf918"))
+
+        report = compute_matrix(util.matrix_spec("mf167", "mf919"))
+        report = compute_matrix(util.matrix_spec("mf168", "mf920"))
+
+        report = compute_matrix(util.matrix_spec("mf161", "mf160"))
