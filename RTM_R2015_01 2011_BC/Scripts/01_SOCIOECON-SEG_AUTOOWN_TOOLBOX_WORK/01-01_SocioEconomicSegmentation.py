@@ -185,10 +185,10 @@ class SocioEconomicSegmentation(_modeller.Tool()):
 
 			for mo_num in range(392, 398):
 				mo_value.append(my_emmebank.matrix("mo" + str(mo_num)))
-				
+
 			for mo_num in range(404, 560):
 				mo_value.append(my_emmebank.matrix("mo" + str(mo_num)))
-				
+
 			for mo_num in range(560, 716):
 				mo_value.append(my_emmebank.matrix("mo" + str(mo_num)))
 
@@ -646,4 +646,3 @@ class SocioEconomicSegmentation(_modeller.Tool()):
             process(transaction_file=matrix_file,
                     throw_on_error=True,
                     scenario=_modeller.Modeller().scenario)
-

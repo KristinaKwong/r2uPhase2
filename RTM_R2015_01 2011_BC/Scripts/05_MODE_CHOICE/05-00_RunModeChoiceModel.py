@@ -61,7 +61,7 @@ class ModeChoice(_modeller.Tool()):
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
-            
+
         pb.add_checkbox("run_park_and_ride", label="Run park and ride adjustment")
 
         return pb.render()

@@ -676,7 +676,7 @@ def calculate_final_period_demand(scenario):
     spec_list.append(build_spec("mf853+" + "mf819*mf996", "mf853"))
     spec_list.append(build_spec("mf854+" + "mf826*mf992", "mf854"))
     spec_list.append(build_spec("mf855+" + "mf833", "mf855"))
-    
+
     # Track work transit demand separately for park and ride model
     spec_list.append(build_spec("mf998 + mf819*mf996", "mf998"))
     spec_list.append(build_spec("mf997 + mf826*mf992", "mf997"))

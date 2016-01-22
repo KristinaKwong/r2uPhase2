@@ -15,20 +15,20 @@ class TruckAssign(_modeller.Tool()):
 		pb = _modeller.ToolPageBuilder(self, title="Convert Trucks to PCE",
 		   description="Tool that converts trucks to pces; lightx1.5; heavy x2.5",
 		   branding_text=" TransLink ")
-				
+
 
 		if self.tool_run_msg:
-			pb.add_html(self.tool_run_msg)			
-			
+			pb.add_html(self.tool_run_msg)
+
 		return pb.render()
 
 	def run(self):
-		
-		
+
+
 		self.tool_run_msg = ""
-				
+
 		try:
-			
+
 			self.__call__()
 			run_msg = "Tool completed"
 			self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
@@ -37,17 +37,17 @@ class TruckAssign(_modeller.Tool()):
 
 	def __call__(self,AMScenario,MDScenario):
 	### PCE Calculation
-		with _modeller.logbook_trace("Truck Assignment Tool"):		
-			
+		with _modeller.logbook_trace("Truck Assignment Tool"):
+
 			process = _modeller.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
 			root_directory = os.path.dirname(_modeller.Modeller().emmebank.path) + "\\"
 			matrix_file = os.path.join(root_directory, "TruckBatchFiles", "TruckAssignmentBatchinv1.txt")
 			process(transaction_file=matrix_file, throw_on_error=True)
-			
+
 			NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
 
 			compute_matrix = _modeller.Modeller().tool(NAMESPACE)
-			
+
 			SPEC1 = {
 					"expression": "EXPRESSION",
 					"result": "RESULT",
@@ -56,10 +56,10 @@ class TruckAssign(_modeller.Tool()):
 						"by_zone": {"origins": None, "destinations": None}
 					},
 					"aggregation": {"origins": None, "destinations": None},
-					"type": "MATRIX_CALCULATION"}				
-			
+					"type": "MATRIX_CALCULATION"}
+
 			AMList1=["mf1002","mf1012","mf1035","mf1005","mf1013","mf1021","mf1037"]
-			
+
 			AMList2=["mf1040","mf1042","mf1045","mf1041","mf1043","mf1044","mf1046"]
 
 			MDList1=["mf1003","mf1014","mf1036","mf1006","mf1015","mf1022","mf1038"]
@@ -67,8 +67,8 @@ class TruckAssign(_modeller.Tool()):
 			MDList2=["mf1047","mf1049","mf1052","mf1048","mf1050","mf1051","mf1053"]
 
 			Ratios=[1.5,1.5,1.5,2.5,2.5,2.5,2.5]
-			
-			
+
+
 			for i in range (len(AMList1)):
 				SPEC1['expression'] = AMList1[i]+"*"+str(Ratios[i])
 				SPEC1['result'] = AMList2[i]
@@ -76,29 +76,29 @@ class TruckAssign(_modeller.Tool()):
 				SPEC1['expression'] = MDList1[i]+"*"+str(Ratios[i])
 				SPEC1['result'] = MDList2[i]
 				compute_matrix(SPEC1)
-				
+
 			SPEC1['expression'] = "mf1002+mf1012+mf1035"
 			SPEC1['result'] = "mf980"
 			compute_matrix(SPEC1)
-			
+
 			SPEC1['expression'] = "mf1005+mf1013+mf1021+mf1037"
 			SPEC1['result'] = "mf981"
 			compute_matrix(SPEC1)
-			
+
 			SPEC1['expression'] = "mf1003+mf1014+mf1036"
 			SPEC1['result'] = "mf982"
 			compute_matrix(SPEC1)
-			
+
 			SPEC1['expression'] = "mf1006+mf1015+mf1022+mf1038"
 			SPEC1['result'] = "mf983"
 			compute_matrix(SPEC1)
-			
+
 #### Truck Assignment (for now based on stand-alone assumption)
 
 			AMTruckSpec="""{
 					"type": "SOLA_TRAFFIC_ASSIGNMENT",
 					"classes": [
-					
+
 					{
                         "mode": "d",
                         "demand": "mf20",
@@ -259,7 +259,7 @@ class TruckAssign(_modeller.Tool()):
                         },
                         "analysis": null
                     },
-				
+
 						{
 							"mode": "x",
 							"demand": "mf1040",
@@ -603,7 +603,7 @@ class TruckAssign(_modeller.Tool()):
                         },
                         "analysis": null
                     },
-				
+
 					{
 						"mode": "x",
 						"demand": "mf1047",
@@ -784,18 +784,18 @@ class TruckAssign(_modeller.Tool()):
 						"normalized_gap": 0.01
 				 }
 				}"""
-			
+
 			AMTruckSpec1=simplejson.loads(AMTruckSpec)
 			MDTruckSpec1=simplejson.loads(MDTruckSpec)
-				
-			
+
+
 			emmebank = _modeller.Modeller().emmebank
 			ScenAM = emmebank.scenario(AMScenario)
 			ScenMD = emmebank.scenario(MDScenario)
 			# Calculate SOV and HOV as Background Traffic
 			NETCALC = "inro.emme.network_calculation.network_calculator"
 			calc_att= _modeller.Modeller().tool(NETCALC)
-			
+
 			spec_dict = {
 					"result": None,
 					"expression": "@wsovl+@whovl",
@@ -805,10 +805,10 @@ class TruckAssign(_modeller.Tool()):
 					},
 					"type": "NETWORK_CALCULATION"
 				}
-			
+
 			expressions_list = [
 			['0', 'all', '@tkpen'],
-			['length*100', 'mode=n', '@tkpen'],			
+			['length*100', 'mode=n', '@tkpen'],
 			['length*0.56+@tolls*3+@tkpen', 'all', '@hgvoc'],
 			['@wsovl+@whovl','all','ul3']
 			]
@@ -819,18 +819,17 @@ class TruckAssign(_modeller.Tool()):
 				spec_dict['result'] = result
 				calc_att(spec_dict, scenario=ScenAM)
 				calc_att(spec_dict, scenario=ScenMD)
-			
-			
-			
-			
+
+
+
+
 			TRUCKASSIGN = "inro.emme.traffic_assignment.sola_traffic_assignment"
 			truckcassignment = _modeller.Modeller().tool(TRUCKASSIGN)
-			
+
 			for i in range (10, 17):
-			
+
 				AMTruckSpec1['classes'][i]['demand']=AMList1[i-10]
 				MDTruckSpec1['classes'][i]['demand']=MDList1[i-10]
-			
+
 			truckcassignment(AMTruckSpec1, scenario=ScenAM)
 			truckcassignment(MDTruckSpec1, scenario=ScenMD)
-	

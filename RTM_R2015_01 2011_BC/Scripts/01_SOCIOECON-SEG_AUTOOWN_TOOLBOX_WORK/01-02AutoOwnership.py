@@ -536,4 +536,3 @@ def Autos_PerHHSize(self):
             spec_as_dict["expression"] = expression
             spec_as_dict["result"] = "mo" + str(x + 716)
             report = compute_matrix(spec_as_dict)
-

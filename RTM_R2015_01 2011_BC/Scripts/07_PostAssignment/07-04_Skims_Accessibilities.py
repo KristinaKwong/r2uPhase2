@@ -173,7 +173,7 @@ class SkimsAccessibilities(_modeller.Tool()):
 				spec_as_dict['constraint']['by_value']['od_values'] = expressions_list[i][1]
 				spec_as_dict['result'] = expressions_list[i][2]
 				compute_matrix(spec_as_dict)
-				
+
 			spec_as_dict = {
 			"expression": "EXPRESSION",
 			"result": "RESULT",
