@@ -29,19 +29,19 @@
 ##---------------------------------------------------
 
 
-import inro.modeller as _modeller
+import inro.modeller as _m
 import os
 import traceback as _traceback
 
 
-class FullModelRun(_modeller.Tool()):
-    global_iterations = _modeller.Attribute(int)
-    land_use_file1 = _modeller.Attribute(_modeller.InstanceType)
-    land_use_file2 = _modeller.Attribute(_modeller.InstanceType)
-    max_distribution_iterations = _modeller.Attribute(int)
-    max_assignment_iterations = _modeller.Attribute(int)
+class FullModelRun(_m.Tool()):
+    global_iterations = _m.Attribute(int)
+    land_use_file1 = _m.Attribute(_m.InstanceType)
+    land_use_file2 = _m.Attribute(_m.InstanceType)
+    max_distribution_iterations = _m.Attribute(int)
+    max_assignment_iterations = _m.Attribute(int)
 
-    tool_run_msg = _modeller.Attribute(unicode)
+    tool_run_msg = _m.Attribute(unicode)
 
     def __init__(self):
         self.global_iterations = 6
@@ -49,8 +49,8 @@ class FullModelRun(_modeller.Tool()):
         self.max_assignment_iterations = 100
 
     def page(self):
-        loc = os.path.dirname(_modeller.Modeller().emmebank.path)
-        pb = _modeller.ToolPageBuilder(self)
+        loc = os.path.dirname(_m.Modeller().emmebank.path)
+        pb = _m.ToolPageBuilder(self)
         pb.title = "Full Model Run"
         pb.description = "Performs a full model run"
         pb.branding_text = "TransLink"
@@ -103,48 +103,48 @@ class FullModelRun(_modeller.Tool()):
                  self.land_use_file2, self.max_distribution_iterations,
                  self.max_assignment_iterations)
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, error:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(
+            self.tool_run_msg = _m.PageBuilder.format_exception(
                 error, _traceback.format_exc(error))
 
-    @_modeller.logbook_trace("Full Model Run")
+    @_m.logbook_trace("Full Model Run")
     def __call__(self, global_iterations, land_use_file1, land_use_file2,
                  max_distribution_iterations=60,
                  max_assignment_iterations=100):
         # TODO: - could check and report on convergence
         #         at each iteration (distribution and auto assignment)
         #       - add global convergence measure
-        matrix_txn = _modeller.Modeller().tool(
+        matrix_txn = _m.Modeller().tool(
             "inro.emme.data.matrix.matrix_transaction")
-        copy_scenario = _modeller.Modeller().tool(
+        copy_scenario = _m.Modeller().tool(
             "inro.emme.data.scenario.copy_scenario")
 
-        land_use = _modeller.Modeller().tool("translink.emme.stage1.step0.landuse")
-        create_scenario = _modeller.Modeller().tool("translink.emme.stage1.step0.create_scen")
-        read_settings = _modeller.Modeller().tool("translink.emme.stage1.step0.settings")
+        land_use = _m.Modeller().tool("translink.emme.stage1.step0.landuse")
+        create_scenario = _m.Modeller().tool("translink.emme.stage1.step0.create_scen")
+        read_settings = _m.Modeller().tool("translink.emme.stage1.step0.settings")
 
-        segmentation = _modeller.Modeller().tool("translink.emme.stage1.step1.segmentation")
-        trip_productions = _modeller.Modeller().tool("translink.emme.stage2.step2.tripproduction")
-        trip_attraction = _modeller.Modeller().tool("translink.emme.stage2.step2.tripattraction")
-        factor_trip_attractions = _modeller.Modeller().tool("translink.emme.stage2.step3.factoredtripattraction")
-        pre_loops = _modeller.Modeller().tool("translink.emme.stage2.step3.preloops")
-        trip_distribution = _modeller.Modeller().tool("translink.emme.stage3.step4.tripdistribution")
-        mode_choice = _modeller.Modeller().tool("translink.emme.stage3.step5.modechoice")
-        assignment = _modeller.Modeller().tool("translink.emme.stage3.step6.assignment")
-        post_assignment = _modeller.Modeller().tool("translink.emme.stage3.step7.postassign")
-        demand_adjust = _modeller.Modeller().tool("translink.emme.stage4.step8.demandadjustment")
-        congested_transit = _modeller.Modeller().tool("translink.emme.stage5.step11.congested_transit")
+        segmentation = _m.Modeller().tool("translink.emme.stage1.step1.segmentation")
+        trip_productions = _m.Modeller().tool("translink.emme.stage2.step2.tripproduction")
+        trip_attraction = _m.Modeller().tool("translink.emme.stage2.step2.tripattraction")
+        factor_trip_attractions = _m.Modeller().tool("translink.emme.stage2.step3.factoredtripattraction")
+        pre_loops = _m.Modeller().tool("translink.emme.stage2.step3.preloops")
+        trip_distribution = _m.Modeller().tool("translink.emme.stage3.step4.tripdistribution")
+        mode_choice = _m.Modeller().tool("translink.emme.stage3.step5.modechoice")
+        assignment = _m.Modeller().tool("translink.emme.stage3.step6.assignment")
+        post_assignment = _m.Modeller().tool("translink.emme.stage3.step7.postassign")
+        demand_adjust = _m.Modeller().tool("translink.emme.stage4.step8.demandadjustment")
+        congested_transit = _m.Modeller().tool("translink.emme.stage5.step11.congested_transit")
 
-        emmebank = _modeller.Modeller().emmebank
-        eb = _modeller.Modeller().emmebank
+        emmebank = _m.Modeller().emmebank
+        eb = _m.Modeller().emmebank
         root_directory = os.path.dirname(emmebank.path) + "\\"
 
         ## Batchin Starter Accessibilities and initialize matrices for landuse inputs and mode settings
         matrix_file = os.path.join(root_directory, "00_RUNMODEL", "LandUse", "Batchins.txt")
         matrix_txn(transaction_file=matrix_file, throw_on_error=True)
 
-        util = _modeller.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.emme.util")
         util.initmat(eb, "mo19", "", "", 0)
         util.initmat(eb, "mo20", "", "", 0)
         util.initmat(eb, "mo23", "", "", 0)
@@ -187,7 +187,7 @@ class FullModelRun(_modeller.Tool()):
         settings = read_settings(settings_file)
 
         #Create scenarios, depending on settings selection
-        ##      Return_val = _modeller.Modeller().tool("translink.emme.scalar")
+        ##      Return_val = _m.Modeller().tool("translink.emme.scalar")
 
         scenrun = eb.matrix("ms143")
         amscen = eb.matrix("ms140")
