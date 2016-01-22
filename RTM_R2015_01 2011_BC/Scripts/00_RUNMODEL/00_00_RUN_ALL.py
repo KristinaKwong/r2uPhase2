@@ -172,7 +172,7 @@ class FullModelRun(_modeller.Tool()):
         trip_productions(root_directory)
         trip_attraction(root_directory)
         factor_trip_attractions(root_directory)
-        pre_loops(root_directory)
+        pre_loops(emmebank)
 
         stopping_criteria = {
             "max_iterations": max_assignment_iterations,
