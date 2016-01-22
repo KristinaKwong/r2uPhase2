@@ -29,8 +29,6 @@ from collections import defaultdict
 
 
 class TripAttractions(_modeller.Tool()):
-    LandUse = _modeller.Attribute(_modeller.InstanceType)
-
     CoefficientsPerGrouping = _modeller.Attribute(_modeller.InstanceType)
     GroupingsPerPurpose = _modeller.Attribute(_modeller.InstanceType)
     OutputFile = _modeller.Attribute(_modeller.InstanceType)
@@ -55,7 +53,7 @@ mo20, mo365, mo366, mo367, mo368, mo369, mo370, mo371, mo372, mo373, mo374, mo37
         print "--------03-01 - RUN - TRIP ATTRACTIONS: " + str(datetime.now().strftime('%H:%M:%S'))
         self.tool_run_msg = ""
         try:
-            self.__call__(self.LandUse, self.CoefficientsPerGrouping, self.OutputFile, self.GroupingsPerPurpose)
+            self.__call__(self.CoefficientsPerGrouping, self.OutputFile, self.GroupingsPerPurpose)
             run_msg = "Tool completed"
             self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
         except Exception, e:
@@ -65,7 +63,6 @@ mo20, mo365, mo366, mo367, mo368, mo369, mo370, mo371, mo372, mo373, mo374, mo37
         with _modeller.logbook_trace("03-01 - Trip Attractions"):
             print "----03-01 - Trip Attractions: " + str(datetime.now().strftime('%H:%M:%S'))
 
-            LandUse = PathHeader + "03_TRIP_ATTRACTIONS/Inputs/31_VARIABLES.csv"
             CoefficientsPerGrouping = PathHeader + "03_TRIP_ATTRACTIONS/Inputs/32_COEFFICIENTS.csv"
             GroupingsPerPurpose = PathHeader + "03_TRIP_ATTRACTIONS/Inputs/33_GroupingsPerPurpose.csv"
             OutputFile = PathHeader + "03_TRIP_ATTRACTIONS/Outputs/03-01_OUTPUT_RESULTS.txt"
@@ -88,7 +85,7 @@ mo20, mo365, mo366, mo367, mo368, mo369, mo370, mo371, mo372, mo373, mo374, mo37
             self.Check_forNegatives()
 
             ## Output results
-            self.Output_Results(OutputFile, LandUse, CoefficientsPerGrouping, GroupingsPerPurpose)
+            self.Output_Results(OutputFile, CoefficientsPerGrouping, GroupingsPerPurpose)
 
             ## Export Matrices to CSV
             self.Export_Matrices(OutputFile)
@@ -103,7 +100,7 @@ mo20, mo365, mo366, mo367, mo368, mo369, mo370, mo371, mo372, mo373, mo374, mo37
 
         ##    Outputs results matrix to a file
 
-    def Output_Results(self, OutputFile, LandUse, CoefficientsPerGrouping, GroupingsPerPurpose):
+    def Output_Results(self, OutputFile, CoefficientsPerGrouping, GroupingsPerPurpose):
         with _modeller.logbook_trace("Output Results"):
             print "--------Output_Results, " + str(datetime.now().strftime('%H:%M:%S'))
             ##    Create emmebank object
@@ -154,7 +151,6 @@ mo20, mo365, mo366, mo367, mo368, mo369, mo370, mo371, mo372, mo373, mo374, mo37
             for Output in [Output_File, Output_File_GY, Output_File_GU]:
                 f = open(Output, 'a')
                 f.write("c ------Data Sources:\n")
-                f.write("c " + LandUse + "\n")
                 f.write("c " + CoefficientsPerGrouping + "\n")
                 f.write("c " + GroupingsPerPurpose + "\n")
                 f.close()
