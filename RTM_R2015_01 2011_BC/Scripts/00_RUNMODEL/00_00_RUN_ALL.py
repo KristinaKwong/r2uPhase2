@@ -112,15 +112,14 @@ class FullModelRun(_m.Tool()):
     def __call__(self, global_iterations, land_use_file1, land_use_file2,
                  max_distribution_iterations=60,
                  max_assignment_iterations=100):
+        eb = _m.Modeller().emmebank
+        self.stage1(eb, land_use_file1, land_use_file2)
+        return
         # TODO: - could check and report on convergence
         #         at each iteration (distribution and auto assignment)
         #       - add global convergence measure
-        matrix_txn = _m.Modeller().tool(
-            "inro.emme.data.matrix.matrix_transaction")
         copy_scenario = _m.Modeller().tool(
             "inro.emme.data.scenario.copy_scenario")
-
-        land_use = _m.Modeller().tool("translink.emme.stage1.step0.landuse")
         create_scenario = _m.Modeller().tool("translink.emme.stage1.step0.create_scen")
         read_settings = _m.Modeller().tool("translink.emme.stage1.step0.settings")
 
@@ -136,30 +135,9 @@ class FullModelRun(_m.Tool()):
         demand_adjust = _m.Modeller().tool("translink.emme.stage4.step8.demandadjustment")
         congested_transit = _m.Modeller().tool("translink.emme.stage5.step11.congested_transit")
 
-        emmebank = _m.Modeller().emmebank
-        eb = _m.Modeller().emmebank
-        root_directory = os.path.dirname(emmebank.path) + "\\"
-
-        ## Batchin Starter Accessibilities and initialize matrices for landuse inputs and mode settings
-        matrix_file = os.path.join(root_directory, "00_RUNMODEL", "LandUse", "Batchins.txt")
-        matrix_txn(transaction_file=matrix_file, throw_on_error=True)
+        root_directory = os.path.dirname(eb.path) + "\\"
 
         util = _m.Modeller().tool("translink.emme.util")
-        util.initmat(eb, "mo19", "", "", 0)
-        util.initmat(eb, "mo20", "", "", 0)
-        util.initmat(eb, "mo23", "", "", 0)
-        util.initmat(eb, "mo24", "", "", 0)
-        util.initmat(eb, "mo25", "", "", 0)
-        util.initmat(eb, "mo26", "", "", 0)
-        util.initmat(eb, "mo50", "", "", 0)
-        util.initmat(eb, "mo51", "", "", 0)
-        util.initmat(eb, "mo52", "", "", 0)
-        util.initmat(eb, "mo53", "", "", 0)
-        util.initmat(eb, "mo393", "", "", 0)
-        util.initmat(eb, "mo394", "", "", 0)
-        util.initmat(eb, "mo27", "", "", 0)
-        util.initmat(eb, "mo28", "", "", 0)
-        util.initmat(eb, "mo13", "", "", 0)
         util.initmat(eb, "ms140", "AMScNo", "AM Scenario Number", 0)
         util.initmat(eb, "ms141", "MDScNo", "MD Scenario Number", 0)
         util.initmat(eb, "ms142", "ProNum", "Number of Processors", 0)
@@ -179,8 +157,6 @@ class FullModelRun(_m.Tool()):
         util.initmat(eb, "md107", "PrInc2", "Calculated_nonwork_park_cost_increment", 0)
         util.initmat(eb, "md108", "WrPrOr", "Work Parking Cost Override", 0)
         util.initmat(eb, "md109", "OtPrOr", "Nonwork Park Cost Override", 0)
-        ## Call Model Tools - Socioeconomic segmentation, trip generation, trip distribution, mode choice, assignment
-        land_use(land_use_file1, land_use_file2)
 
         # Settings file
         settings_file = os.path.join(root_directory, "settings.csv")
@@ -207,7 +183,7 @@ class FullModelRun(_m.Tool()):
         trip_productions(root_directory)
         trip_attraction(root_directory)
         factor_trip_attractions(root_directory)
-        pre_loops(emmebank)
+        pre_loops(eb)
 
         stopping_criteria = {
             "max_iterations": max_assignment_iterations,
@@ -228,10 +204,37 @@ class FullModelRun(_m.Tool()):
         demand_adjust(root_directory, am_scen, md_scen, stopping_criteria)
 
         if settings.get("congested_transit") == 1:
-            am_scenario = emmebank.scenario(am_scen)
+            am_scenario = eb.scenario(am_scen)
             congested_transit_am = copy_scenario(
                 from_scenario=am_scenario,
                 scenario_id=am_scenario.number + 70,
                 scenario_title=am_scenario.title + ": cong transit "[:40],
                 overwrite=True)
             congested_transit(congested_transit_am, setup_ttfs=True)
+
+    @_m.logbook_trace("Stage 0 - Define Inputs")
+    def stage1(self, eb, land_use_file1, land_use_file2):
+        matrix_txn = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
+        lu_file = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "LandUse", "Batchins.txt")
+        matrix_txn(transaction_file=lu_file, throw_on_error=True)
+
+        util = _m.Modeller().tool("translink.emme.util")
+        util.initmat(eb, "mo19", "", "", 0)
+        util.initmat(eb, "mo20", "", "", 0)
+        util.initmat(eb, "mo23", "", "", 0)
+        util.initmat(eb, "mo24", "", "", 0)
+        util.initmat(eb, "mo25", "", "", 0)
+        util.initmat(eb, "mo26", "", "", 0)
+        util.initmat(eb, "mo50", "", "", 0)
+        util.initmat(eb, "mo51", "", "", 0)
+        util.initmat(eb, "mo52", "", "", 0)
+        util.initmat(eb, "mo53", "", "", 0)
+        util.initmat(eb, "mo393", "", "", 0)
+        util.initmat(eb, "mo394", "", "", 0)
+        util.initmat(eb, "mo27", "", "", 0)
+        util.initmat(eb, "mo28", "", "", 0)
+        util.initmat(eb, "mo13", "", "", 0)
+
+        land_use = _m.Modeller().tool("translink.emme.stage1.step0.landuse")
+        ## Call Model Tools - Socioeconomic segmentation, trip generation, trip distribution, mode choice, assignment
+        land_use(land_use_file1, land_use_file2)
