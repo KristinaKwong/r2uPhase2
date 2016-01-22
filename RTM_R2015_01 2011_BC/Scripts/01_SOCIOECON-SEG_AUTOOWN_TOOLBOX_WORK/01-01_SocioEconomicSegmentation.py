@@ -60,22 +60,21 @@ class SocioEconomicSegmentation(_modeller.Tool()):
             self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
 
-    def __call__(self, PathHeader):
+    def __call__(self, eb):
     ##        Start logging this under a new 'nest'
         with _modeller.logbook_trace("01-01 - Socio Economic Segmentation"):
             print "----01-01 - Socio Economic Segmentation: " + str(datetime.now().strftime('%H:%M:%S'))
-
+            PathHeader = os.path.dirname(eb.path) + "\\"
             HHWorkerRate = PathHeader + "01_SOCIOECON-SEG_AUTOOWN_TOOLBOX_WORK/Inputs/12_HH_Worker_Rates.csv"
             OutputFile = PathHeader + "01_SOCIOECON-SEG_AUTOOWN_TOOLBOX_WORK/Outputs/01-01_OUTPUT_RESULTS.txt"
             IncomeData = PathHeader + "01_SOCIOECON-SEG_AUTOOWN_TOOLBOX_WORK/Inputs/13_HHWrkrIncome.csv"
             AutoOwnershipCoefficients = PathHeader + "01_SOCIOECON-SEG_AUTOOWN_TOOLBOX_WORK/Inputs/14_AutoOwnershipCoefficients.csv"
             ##Batchin File
-            self.Matrix_Batchins(PathHeader)
+            self.Matrix_Batchins(eb)
 
             ## Calculate adjusted parking costs
             #Check for flag to run parking cost or otherwise
 
-            eb = _modeller.Modeller().emmebank
             parkcost = eb.matrix("ms144").data
             if (parkcost == 1):
                 ParkingCost = _modeller.Modeller().tool("translink.emme.stage1.step1.parkingcost")
@@ -633,13 +632,14 @@ class SocioEconomicSegmentation(_modeller.Tool()):
 
         ##    Batches in the batchin file
 
-    def Matrix_Batchins(self, PathHeader):
+    def Matrix_Batchins(self, eb):
         with _modeller.logbook_trace("Matrix Batchin"):
             print "--------Matrix_Batchins, " + str(datetime.now().strftime('%H:%M:%S'))
             ##        Sets up the 'matrix transaction' tool and runs it
             NAMESPACE = "inro.emme.data.matrix.matrix_transaction"
             process = _modeller.Modeller().tool(NAMESPACE)
             ##        Develops appropriate path files for the processor
+            PathHeader = os.path.dirname(eb.path) + "\\"
             matrix_file = PathHeader + "01_SOCIOECON-SEG_AUTOOWN_TOOLBOX_WORK/Inputs/MatrixTransactionFile.txt"
 
             ##        Creates process transaction

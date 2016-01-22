@@ -118,9 +118,6 @@ class FullModelRun(_m.Tool()):
         # TODO: - could check and report on convergence
         #         at each iteration (distribution and auto assignment)
         #       - add global convergence measure
-        copy_scenario = _m.Modeller().tool(
-            "inro.emme.data.scenario.copy_scenario")
-        segmentation = _m.Modeller().tool("translink.emme.stage1.step1.segmentation")
         trip_productions = _m.Modeller().tool("translink.emme.stage2.step2.tripproduction")
         trip_attraction = _m.Modeller().tool("translink.emme.stage2.step2.tripattraction")
         factor_trip_attractions = _m.Modeller().tool("translink.emme.stage2.step3.factoredtripattraction")
@@ -141,9 +138,6 @@ class FullModelRun(_m.Tool()):
 
         am_scen = amscen.data
         md_scen = mdscen.data
-
-        # Segmentation (including auto ownership)
-        segmentation(root_directory)
 
         # Trip Generation (production, attraction, factors)
         trip_productions(root_directory)
@@ -171,6 +165,7 @@ class FullModelRun(_m.Tool()):
 
         if settings.get("congested_transit") == 1:
             am_scenario = eb.scenario(am_scen)
+            copy_scenario = _m.Modeller().tool("inro.emme.data.scenario.copy_scenario")
             congested_transit_am = copy_scenario(
                 from_scenario=am_scenario,
                 scenario_id=am_scenario.number + 70,
@@ -239,3 +234,7 @@ class FullModelRun(_m.Tool()):
 
         if scenario_run == 1:
             create_scenario(eb, am_scen, md_scen)
+
+        # Segmentation (including auto ownership)
+        segmentation = _m.Modeller().tool("translink.emme.stage1.step1.segmentation")
+        segmentation(eb)
