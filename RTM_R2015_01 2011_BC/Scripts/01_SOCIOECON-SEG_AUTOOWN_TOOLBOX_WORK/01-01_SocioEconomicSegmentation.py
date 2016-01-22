@@ -21,7 +21,7 @@
 ##---------------------------------------------------
 
 
-import inro.modeller as _modeller
+import inro.modeller as _m
 import csv
 import os
 import traceback as _traceback
@@ -29,16 +29,16 @@ import traceback as _traceback
 from datetime import datetime
 
 
-class SocioEconomicSegmentation(_modeller.Tool()):
+class SocioEconomicSegmentation(_m.Tool()):
     ##Create global attributes (referring to dialogue boxes on the pages)
 
     ##Global attribute for Tool Run Message (successful/not successful)
-    tool_run_msg = _modeller.Attribute(unicode)
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        start_path = os.path.dirname(_modeller.Modeller().emmebank.path)
+        start_path = os.path.dirname(_m.Modeller().emmebank.path)
         ##Create various aspects to the page
-        pb = _modeller.ToolPageBuilder(self, title="Socio-economic Segmentation",
+        pb = _m.ToolPageBuilder(self, title="Socio-economic Segmentation",
                                        description="Collects Households Numbers, Workers Numbers, "
                                                    "Income and Auto Ownership Data and provides "
                                                    "various segmentation for use in Trip Production.",
@@ -55,14 +55,14 @@ class SocioEconomicSegmentation(_modeller.Tool()):
         try:
             self.__call__()
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
 
     def __call__(self, eb):
     ##        Start logging this under a new 'nest'
-        with _modeller.logbook_trace("01-01 - Socio Economic Segmentation"):
+        with _m.logbook_trace("01-01 - Socio Economic Segmentation"):
             print "----01-01 - Socio Economic Segmentation: " + str(datetime.now().strftime('%H:%M:%S'))
             PathHeader = os.path.dirname(eb.path) + "\\"
             HHWorkerRate = PathHeader + "01_SOCIOECON-SEG_AUTOOWN_TOOLBOX_WORK/Inputs/12_HH_Worker_Rates.csv"
@@ -77,7 +77,7 @@ class SocioEconomicSegmentation(_modeller.Tool()):
 
             parkcost = eb.matrix("ms144").data
             if (parkcost == 1):
-                ParkingCost = _modeller.Modeller().tool("translink.emme.stage1.step1.parkingcost")
+                ParkingCost = _m.Modeller().tool("translink.emme.stage1.step1.parkingcost")
                 ParkingCost()
 
             ##Create mo16, mo18 from existing matrices
@@ -102,7 +102,7 @@ class SocioEconomicSegmentation(_modeller.Tool()):
             self.Calculate_IncomeWorkersHousehold(IncData)
 
             ## Calculated Number of Households Per Worker, Per Income and Per Auto Ownership Category - mo113-mo268
-            AutoOwnership = _modeller.Modeller().module("translink.emme.stage1.step1.autoownership")
+            AutoOwnership = _m.Modeller().module("translink.emme.stage1.step1.autoownership")
 
             ## mo404-mo442 - Store utility value while for AutoOwn=0 for various HHSize, NumWorkers, IncomeCat
             AutoOwnership.Calculate_AutoOwnership_0Cars(self, AutoOwnCoeff)
@@ -139,19 +139,19 @@ class SocioEconomicSegmentation(_modeller.Tool()):
 
     #Export all mo matrices to CSV
     def Export_Matrices(self, OutputFile):
-        with _modeller.logbook_trace("Export_Matrices"):
+        with _m.logbook_trace("Export_Matrices"):
             print "--------Export_Matrices, " + str(datetime.now().strftime('%H:%M:%S'))
-            ExportToCSV = _modeller.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
+            ExportToCSV = _m.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
             list_of_matrices = ["mo" + str(i) for i in [1] + range(16, 21) + range(50, 60) + range(61, 398) + range(404, 716)]
             ExportToCSV(list_of_matrices, OutputFile)
 
         ##    Outputs results matrix to a file
 
     def Output_Results(self, OutputFile, HHWorkerRate, IncomeData, AutoOwnershipCoefficients):
-        with _modeller.logbook_trace("Output Results"):
+        with _m.logbook_trace("Output Results"):
 			print "--------Output_Results, " + str(datetime.now())
 			##    Create emmebank object
-			my_modeller = _modeller.Modeller()
+			my_modeller = _m.Modeller()
 			my_emmebank = my_modeller.desktop.data_explorer().active_database().core_emmebank
 
 			Output_File = OutputFile.replace(",", "")
@@ -195,7 +195,7 @@ class SocioEconomicSegmentation(_modeller.Tool()):
 				mo_value.append(my_emmebank.matrix("mo" + str(mo_num)))
 
 			##    Export matrices using the appended list of mo_value matrices
-			export_matrices = _modeller.Modeller().tool(
+			export_matrices = _m.Modeller().tool(
 				"inro.emme.data.matrix.export_matrices")
 
 			## Export all matrix data
@@ -239,10 +239,10 @@ class SocioEconomicSegmentation(_modeller.Tool()):
 			##     mo389-mo391 - Aggregate Num Workers in each Income Category
 
     def Aggregate_NumWorkerIncomeCategories(self):
-        with _modeller.logbook_trace("Aggregate Number of Worker Income Categories"):
+        with _m.logbook_trace("Aggregate Number of Worker Income Categories"):
             print "--------Aggregate Number of Worker Income Categories, " + str(datetime.now().strftime('%H:%M:%S'))
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             spec_as_dict = {
                 "expression": "EXPRESSION",
@@ -275,10 +275,10 @@ class SocioEconomicSegmentation(_modeller.Tool()):
             ##    mo365-mo388 - Aggregate Income Categories
 
     def Aggregate_IncomeCategories(self):
-        with _modeller.logbook_trace("Aggregate Income Categories"):
+        with _m.logbook_trace("Aggregate Income Categories"):
             print "--------Aggregate Income Categories, " + str(datetime.now().strftime('%H:%M:%S'))
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             spec_as_dict = {
                 "expression": "EXPRESSION",
@@ -340,10 +340,10 @@ class SocioEconomicSegmentation(_modeller.Tool()):
                 ##     mo269-mo364 - Aggregate Non-Workers
 
     def Aggregate_NonWorkers_and_Workers(self):
-        with _modeller.logbook_trace("Aggregate NonWorkers and Workers"):
+        with _m.logbook_trace("Aggregate NonWorkers and Workers"):
             print "--------Aggregate NonWorkers and Workers, " + str(datetime.now().strftime('%H:%M:%S'))
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             spec_as_dict = {
                 "expression": "EXPRESSION",
@@ -407,10 +407,10 @@ class SocioEconomicSegmentation(_modeller.Tool()):
                 ##     mo74-mo112 - Calculated Number of Households Per Worker Category and Per Income Category
 
     def Calculate_IncomeWorkersHousehold(self, IncomeData):
-        with _modeller.logbook_trace("Calculate Number of Households Per Worker Category Per Income Category"):
+        with _m.logbook_trace("Calculate Number of Households Per Worker Category Per Income Category"):
             print "--------Calculate_IncomeWorkersHousehold, " + str(datetime.now().strftime('%H:%M:%S'))
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             spec_as_dict = {
                 "expression": "mo61*0.005",
@@ -443,10 +443,10 @@ class SocioEconomicSegmentation(_modeller.Tool()):
                 ##     mo61-73 - Calculate Number of Households Per Worker category
 
     def Calculate_WorkersHousehold(self, HHData):
-        with _modeller.logbook_trace("Calculate Number of Workers Per Household Category"):
+        with _m.logbook_trace("Calculate Number of Workers Per Household Category"):
             print "--------Calculate_WorkersHousehold, " + str(datetime.now().strftime('%H:%M:%S'))
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             spec_as_dict2 = {
                 "expression": "EXPRESSION",
@@ -492,10 +492,10 @@ class SocioEconomicSegmentation(_modeller.Tool()):
                     ##    Calculate Number workers matrices - mo54-57, mo58, mo59
 
     def Calculate_Workers(self, HHData):
-        with _modeller.logbook_trace("Calculate Number of Workers"):
+        with _m.logbook_trace("Calculate Number of Workers"):
             print "--------Calculate_Workers, " + str(datetime.now().strftime('%H:%M:%S'))
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             ##Create specs for matrix calculation
             spec_as_dict = {
@@ -570,7 +570,7 @@ class SocioEconomicSegmentation(_modeller.Tool()):
 
     def Store_AutoOwnCoeff(self, AutoOwnCoefficients):
         print "--------Store_AutoOwnershipCoefficients, " + str(datetime.now().strftime('%H:%M:%S'))
-        with _modeller.logbook_trace("Store AutoOwnCoefficients"):
+        with _m.logbook_trace("Store AutoOwnCoefficients"):
             with open(AutoOwnCoefficients, 'rb') as f:
                 reader = csv.reader(f, dialect='excel')
                 header = reader.next()
@@ -583,7 +583,7 @@ class SocioEconomicSegmentation(_modeller.Tool()):
 
     def Store_IncomeData(self, IncomeData):
         print "--------Store_IncomeData, " + str(datetime.now().strftime('%H:%M:%S'))
-        with _modeller.logbook_trace("Store IncomeData"):
+        with _m.logbook_trace("Store IncomeData"):
             with open(IncomeData, 'rb') as f:
                 reader = csv.reader(f, dialect='excel')
                 header = reader.next()
@@ -593,7 +593,7 @@ class SocioEconomicSegmentation(_modeller.Tool()):
         return data
 
     def Store_TripRates(self, HHWorkerRate):
-        with _modeller.logbook_trace("Store HHWorkerRates"):
+        with _m.logbook_trace("Store HHWorkerRates"):
             print "--------Store_TripRates, " + str(datetime.now().strftime('%H:%M:%S'))
             with open(HHWorkerRate, 'rb') as f:
                 reader = csv.reader(f, dialect='excel')
@@ -605,11 +605,11 @@ class SocioEconomicSegmentation(_modeller.Tool()):
 
     ##Create mo16, mo18 from existing matrices
     def InitialMatrixCalculations(self):
-        with _modeller.logbook_trace("InitialMatrixCalculations"):
+        with _m.logbook_trace("InitialMatrixCalculations"):
             print "--------InitialMatrixCalculations, " + str(datetime.now().strftime('%H:%M:%S'))
 
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             spec_as_dict = {
                 "expression": "EXPRESSION",
@@ -633,11 +633,11 @@ class SocioEconomicSegmentation(_modeller.Tool()):
         ##    Batches in the batchin file
 
     def Matrix_Batchins(self, eb):
-        with _modeller.logbook_trace("Matrix Batchin"):
+        with _m.logbook_trace("Matrix Batchin"):
             print "--------Matrix_Batchins, " + str(datetime.now().strftime('%H:%M:%S'))
             ##        Sets up the 'matrix transaction' tool and runs it
             NAMESPACE = "inro.emme.data.matrix.matrix_transaction"
-            process = _modeller.Modeller().tool(NAMESPACE)
+            process = _m.Modeller().tool(NAMESPACE)
             ##        Develops appropriate path files for the processor
             PathHeader = os.path.dirname(eb.path) + "\\"
             matrix_file = PathHeader + "01_SOCIOECON-SEG_AUTOOWN_TOOLBOX_WORK/Inputs/MatrixTransactionFile.txt"
@@ -645,4 +645,4 @@ class SocioEconomicSegmentation(_modeller.Tool()):
             ##        Creates process transaction
             process(transaction_file=matrix_file,
                     throw_on_error=True,
-                    scenario=_modeller.Modeller().scenario)
+                    scenario=_m.Modeller().scenario)
