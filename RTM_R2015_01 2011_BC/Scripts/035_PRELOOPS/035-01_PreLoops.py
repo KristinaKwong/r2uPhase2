@@ -1,5 +1,5 @@
 ## Trip Production model - HDR
-import inro.modeller as _modeller
+import inro.modeller as _m
 
 import os
 import simplejson
@@ -7,17 +7,14 @@ import traceback as _traceback
 from datetime import datetime
 
 
-class PreLoop(_modeller.Tool()):
-    ##Modify path for new package implementation
-
-
+class PreLoop(_m.Tool()):
     ##Create global attributes (referring to dialogue boxes on the pages)
-    tool_run_msg = _modeller.Attribute(unicode)
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        start_path = os.path.dirname(_modeller.Modeller().emmebank.path)
+        start_path = os.path.dirname(_m.Modeller().emmebank.path)
         ##Create various aspects to the page
-        pb = _modeller.ToolPageBuilder(self, title="Pre Loops",
+        pb = _m.ToolPageBuilder(self, title="Pre Loops",
                                        description="Batches in required matrices for distribution and mode choice and copies initial skims ",
                                        branding_text="TransLink")
 
@@ -27,7 +24,7 @@ class PreLoop(_modeller.Tool()):
         return pb.render()
 
     def run(self):
-        with _modeller.logbook_trace("035-01 - RUN - PRELOOPS"):
+        with _m.logbook_trace("035-01 - RUN - PRELOOPS"):
             print "--------035-01 - RUN - TRIP PRELOOPS: " + str(datetime.now().strftime('%H:%M:%S'))
             ##        This gets executed when someone presses the big 'Start this Tool' button
             self.tool_run_msg = ""
@@ -35,14 +32,14 @@ class PreLoop(_modeller.Tool()):
             try:
                 self.__call__()
                 run_msg = "Tool completed"
-                self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+                self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
             except Exception, e:
-                self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+                self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
         pass
 
     def __call__(self, PathHeader):
     ##        Start logging this under a new 'nest'
-        with _modeller.logbook_trace("035-01 - PRELOOPS"):
+        with _m.logbook_trace("035-01 - PRELOOPS"):
             print "----035-01 - PRELOOPS: " + str(datetime.now().strftime('%H:%M:%S'))
             ##      Batches in trip distribution ij factors, trip distribution related matrices and intrazonal identity matrices
             self.Matrix_Batchins(PathHeader)
@@ -53,23 +50,23 @@ class PreLoop(_modeller.Tool()):
 
 
     def Matrix_Batchins(self, PathHeader):
-        with _modeller.logbook_trace("Matrix Batchin"):
+        with _m.logbook_trace("Matrix Batchin"):
             print "--------Matrix_Batchins, " + str(datetime.now().strftime('%H:%M:%S'))
             NAMESPACE = "inro.emme.data.matrix.matrix_transaction"
-            process = _modeller.Modeller().tool(NAMESPACE)
+            process = _m.Modeller().tool(NAMESPACE)
             matrix_file = PathHeader + "035_PRELOOPS/Inputs/MatrixTransactionFile.txt"
 
             ##        Creates process transaction
             process(transaction_file=matrix_file,
                     throw_on_error=True,
-                    scenario=_modeller.Modeller().scenario)
+                    scenario=_m.Modeller().scenario)
         pass
 
     ##      Copy Starter Skims to appropriate locations
     def Copy_Starter_Skims_Fares(self):
 
         NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool(NAMESPACE)
 
         spec = """{
                 "expression": "1",
