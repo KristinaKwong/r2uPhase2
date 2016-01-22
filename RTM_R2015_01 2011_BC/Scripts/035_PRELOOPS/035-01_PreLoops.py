@@ -24,45 +24,34 @@ class PreLoop(_m.Tool()):
         return pb.render()
 
     def run(self):
-        with _m.logbook_trace("035-01 - RUN - PRELOOPS"):
-            print "--------035-01 - RUN - TRIP PRELOOPS: " + str(datetime.now().strftime('%H:%M:%S'))
-            ##        This gets executed when someone presses the big 'Start this Tool' button
-            self.tool_run_msg = ""
+        self.tool_run_msg = ""
 
-            try:
-                self.__call__()
-                run_msg = "Tool completed"
-                self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
-            except Exception, e:
-                self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
-        pass
+        try:
+            self.__call__()
+            run_msg = "Tool completed"
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
+        except Exception, e:
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
+    @_m.logbook_trace("035-01 - PRELOOPS")
     def __call__(self, PathHeader):
-    ##        Start logging this under a new 'nest'
-        with _m.logbook_trace("035-01 - PRELOOPS"):
-            print "----035-01 - PRELOOPS: " + str(datetime.now().strftime('%H:%M:%S'))
-            ##      Batches in trip distribution ij factors, trip distribution related matrices and intrazonal identity matrices
-            self.Matrix_Batchins(PathHeader)
-            ##        Copies starter skims mf893-mf920 to appropriate locations between mf100 and mf170
-            self.Copy_Starter_Skims_Fares()
+        ##      Batches in trip distribution ij factors, trip distribution related matrices and intrazonal identity matrices
+        self.Matrix_Batchins(PathHeader)
+        ##        Copies starter skims mf893-mf920 to appropriate locations between mf100 and mf170
+        self.Copy_Starter_Skims_Fares()
 
-        pass
-
-
+    @_m.logbook_trace("Initialize Matrices")
     def Matrix_Batchins(self, PathHeader):
-        with _m.logbook_trace("Matrix Batchin"):
-            print "--------Matrix_Batchins, " + str(datetime.now().strftime('%H:%M:%S'))
-            NAMESPACE = "inro.emme.data.matrix.matrix_transaction"
-            process = _m.Modeller().tool(NAMESPACE)
-            matrix_file = PathHeader + "035_PRELOOPS/Inputs/MatrixTransactionFile.txt"
+        NAMESPACE = "inro.emme.data.matrix.matrix_transaction"
+        process = _m.Modeller().tool(NAMESPACE)
+        matrix_file = PathHeader + "035_PRELOOPS/Inputs/MatrixTransactionFile.txt"
 
-            ##        Creates process transaction
-            process(transaction_file=matrix_file,
-                    throw_on_error=True,
-                    scenario=_m.Modeller().scenario)
-        pass
+        ##        Creates process transaction
+        process(transaction_file=matrix_file,
+                throw_on_error=True,
+                scenario=_m.Modeller().scenario)
 
-    ##      Copy Starter Skims to appropriate locations
+    @_m.logbook_trace("Copy Starter Skims to appropriate locations")
     def Copy_Starter_Skims_Fares(self):
 
         NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
@@ -114,5 +103,3 @@ class PreLoop(_m.Tool()):
         spec_as_dict["expression"] = expression
         spec_as_dict["result"] = result
         report = compute_matrix(spec_as_dict)
-
-
