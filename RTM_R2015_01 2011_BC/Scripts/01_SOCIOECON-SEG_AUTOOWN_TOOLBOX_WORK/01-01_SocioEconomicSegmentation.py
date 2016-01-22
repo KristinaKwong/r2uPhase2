@@ -36,7 +36,6 @@ class SocioEconomicSegmentation(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        start_path = os.path.dirname(_m.Modeller().emmebank.path)
         ##Create various aspects to the page
         pb = _m.ToolPageBuilder(self, title="Socio-economic Segmentation",
                                        description="Collects Households Numbers, Workers Numbers, "
@@ -129,7 +128,7 @@ class SocioEconomicSegmentation(_m.Tool()):
         AutoOwnership.Autos_PerHHSize(self)
 
         # Output number of worker matrices
-        self.Output_Results(OutputFile, HHWorkerRate, IncomeData, AutoOwnershipCoefficients)
+        self.Output_Results(eb, OutputFile, HHWorkerRate, IncomeData, AutoOwnershipCoefficients)
 
         ## Export Matrices to CSV
         self.Export_Matrices(OutputFile)
@@ -142,11 +141,7 @@ class SocioEconomicSegmentation(_m.Tool()):
         ExportToCSV(list_of_matrices, OutputFile)
 
     @_m.logbook_trace("Output Results")
-    def Output_Results(self, OutputFile, HHWorkerRate, IncomeData, AutoOwnershipCoefficients):
-        ##    Create emmebank object
-        my_modeller = _m.Modeller()
-        my_emmebank = my_modeller.desktop.data_explorer().active_database().core_emmebank
-
+    def Output_Results(self, eb, OutputFile, HHWorkerRate, IncomeData, AutoOwnershipCoefficients):
         Output_File = OutputFile.replace(",", "")
         Output_File_GY = OutputFile.replace(",", "").replace(".", "_GY.")
         Output_File_GU = OutputFile.replace(",", "").replace(".", "_GU.")
@@ -157,39 +152,11 @@ class SocioEconomicSegmentation(_m.Tool()):
         mo_value = []
 
         ##    Loop to append all result matrices onto the variable 'mo_value'
-        for mo_num in range(54, 59):
-            mo_value.append(my_emmebank.matrix("mo" + str(mo_num)))
-
-        for mo_num in range(61, 74):
-            mo_value.append(my_emmebank.matrix("mo" + str(mo_num)))
-
-        for mo_num in range(74, 113):
-            mo_value.append(my_emmebank.matrix("mo" + str(mo_num)))
-
-        for mo_num in range(113, 269):
-            mo_value.append(my_emmebank.matrix("mo" + str(mo_num)))
-
-        for mo_num in range(269, 389):
-            mo_value.append(my_emmebank.matrix("mo" + str(mo_num)))
-
-        for mo_num in range(389, 392):
-            mo_value.append(my_emmebank.matrix("mo" + str(mo_num)))
-
-        for mo_num in range(392, 398):
-            mo_value.append(my_emmebank.matrix("mo" + str(mo_num)))
-
-        for mo_num in range(404, 560):
-            mo_value.append(my_emmebank.matrix("mo" + str(mo_num)))
-
-        for mo_num in range(560, 716):
-            mo_value.append(my_emmebank.matrix("mo" + str(mo_num)))
-
-        for mo_num in range(716, 719):
-            mo_value.append(my_emmebank.matrix("mo" + str(mo_num)))
+        for mo_num in range(54, 59) + range(61, 74) + range(74, 113) + range(113, 269) + range(269, 389) + range(389, 392) + range(392, 398) + range(404, 560) + range(560, 716) + range(716, 719):
+            mo_value.append(eb.matrix("mo%d" % mo_num))
 
         ##    Export matrices using the appended list of mo_value matrices
-        export_matrices = _m.Modeller().tool(
-            "inro.emme.data.matrix.export_matrices")
+        export_matrices = _m.Modeller().tool("inro.emme.data.matrix.export_matrices")
 
         ## Export all matrix data
         export_matrices(export_file=Output_File,
