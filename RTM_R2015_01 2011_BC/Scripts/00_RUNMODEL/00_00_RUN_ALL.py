@@ -114,14 +114,12 @@ class FullModelRun(_m.Tool()):
                  max_assignment_iterations=100):
         eb = _m.Modeller().emmebank
         self.stage1(eb, land_use_file1, land_use_file2)
+        self.stage2(eb)
         return
         # TODO: - could check and report on convergence
         #         at each iteration (distribution and auto assignment)
         #       - add global convergence measure
-        trip_productions = _m.Modeller().tool("translink.emme.stage2.step2.tripproduction")
-        trip_attraction = _m.Modeller().tool("translink.emme.stage2.step2.tripattraction")
-        factor_trip_attractions = _m.Modeller().tool("translink.emme.stage2.step3.factoredtripattraction")
-        pre_loops = _m.Modeller().tool("translink.emme.stage2.step3.preloops")
+
         trip_distribution = _m.Modeller().tool("translink.emme.stage3.step4.tripdistribution")
         mode_choice = _m.Modeller().tool("translink.emme.stage3.step5.modechoice")
         assignment = _m.Modeller().tool("translink.emme.stage3.step6.assignment")
@@ -139,11 +137,6 @@ class FullModelRun(_m.Tool()):
         am_scen = amscen.data
         md_scen = mdscen.data
 
-        # Trip Generation (production, attraction, factors)
-        trip_productions(root_directory)
-        trip_attraction(root_directory)
-        factor_trip_attractions(root_directory)
-        pre_loops(eb)
 
         stopping_criteria = {
             "max_iterations": max_assignment_iterations,
@@ -238,3 +231,18 @@ class FullModelRun(_m.Tool()):
         # Segmentation (including auto ownership)
         segmentation = _m.Modeller().tool("translink.emme.stage1.step1.segmentation")
         segmentation(eb)
+
+    @_m.logbook_trace("Stage 2 - Trip Generation")
+    def stage2(self, eb):
+        trip_productions = _m.Modeller().tool("translink.emme.stage2.step2.tripproduction")
+        trip_attraction = _m.Modeller().tool("translink.emme.stage2.step2.tripattraction")
+        factor_trip_attractions = _m.Modeller().tool("translink.emme.stage2.step3.factoredtripattraction")
+        pre_loops = _m.Modeller().tool("translink.emme.stage2.step3.preloops")
+
+        root_directory = os.path.dirname(eb.path) + "\\"
+
+        # Trip Generation (production, attraction, factors)
+        trip_productions(root_directory)
+        trip_attraction(root_directory)
+        factor_trip_attractions(root_directory)
+        pre_loops(eb)
