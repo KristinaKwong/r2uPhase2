@@ -368,83 +368,65 @@ class SocioEconomicSegmentation(_m.Tool()):
         NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
         compute_matrix = _m.Modeller().tool(NAMESPACE)
 
-        spec_as_dict = {
-            "expression": "mo61*0.005",
-            "result": "mo95",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {
-                    "origins": "gu1",
-                    "destinations": None
-                }
-            },
-            "aggregation": {
-                "origins": None,
-                "destinations": None
-            },
-            "type": "MATRIX_CALCULATION"
-        }
-
         ##Two loops: Go through IncomeData and extract multipliers and multiplies by matrix for HHSize x WorkerNumber
 
+        specs = []
         for inc_cat in range(3, 6):
             for row in range(1, IncomeData.__len__()):
-                spec_as_dict["expression"] = "mo" + str(((row - 1) % 13) + 61) + "*" + str(IncomeData[row][inc_cat])
-                spec_as_dict["result"] = "mo" + str(((row - 1) % 13) + 74 + (inc_cat - 3) * 13)
-                spec_as_dict["constraint"]["by_zone"]["origins"] = "gu" + str(IncomeData[row][0])
-
-                ##Outputs Matrices: mo74-mo112, HHSize x NumWorkers x Income
-                report = compute_matrix(spec_as_dict)
-
-            ##     mo61-73 - Calculate Number of Households Per Worker category
+                spec_as_dict = {
+                    "expression": "mo" + str(((row - 1) % 13) + 61) + "*" + str(IncomeData[row][inc_cat]),
+                    "result": "mo" + str(((row - 1) % 13) + 74 + (inc_cat - 3) * 13),
+                    "constraint": {
+                        "by_value": None,
+                        "by_zone": {
+                            "origins": "gu" + str(IncomeData[row][0]),
+                            "destinations": None
+                        }
+                    },
+                    "type": "MATRIX_CALCULATION"
+                }
+                specs.append(spec_as_dict)
+        
+        ##Outputs Matrices: mo74-mo112, HHSize x NumWorkers x Income
+        report = compute_matrix(specs)
 
     @_m.logbook_trace("Calculate Number of Workers Per Household Category")
     def Calculate_WorkersHousehold(self, HHData):
         NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
         compute_matrix = _m.Modeller().tool(NAMESPACE)
 
-        spec_as_dict2 = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": {
-                    "od_values": "mo18",
-                    "interval_min": 0,
-                    "interval_max": 0.2,
-                    "condition": "INCLUDE"
-                },
-                "by_zone": {
-                    "destinations": None,
-                    "origins": "gu1"
-                }
-            },
-            "aggregation": {
-                "origins": None,
-                "destinations": None
-            },
-            "type": "MATRIX_CALCULATION"
-        }
-
         ##    Dictionary for senior proportion lookup
         sr_prop_flag = {'0': "INCLUDE", '1': "EXCLUDE"}
 
-        ##
+        specs = []
         for count in range(1, HHData.__len__(), 4):
             mo_num = 0
             for hh in range(1, 5):
                 wkr = 0
                 while (hh >= wkr and wkr < 4):
-                    spec_as_dict2["expression"] = "mo" + str(hh + 49) + "*" + HHData[count + hh - 1][wkr + 3]
-                    spec_as_dict2["result"] = "mo" + str(mo_num + 61)
-                    spec_as_dict2["constraint"]["by_value"]["condition"] = sr_prop_flag[HHData[count][1]]
-                    spec_as_dict2["constraint"]["by_zone"]["origins"] = "gu" + str(HHData[count][0])
-
+                    spec_as_dict = {
+                        "expression": "mo" + str(hh + 49) + "*" + HHData[count + hh - 1][wkr + 3],
+                        "result": "mo" + str(mo_num + 61),
+                        "constraint": {
+                            "by_value": {
+                                "od_values": "mo18",
+                                "interval_min": 0,
+                                "interval_max": 0.2,
+                                "condition": sr_prop_flag[HHData[count][1]]
+                            },
+                            "by_zone": {
+                                "destinations": None,
+                                "origins": "gu" + str(HHData[count][0])
+                            }
+                        },
+                        "type": "MATRIX_CALCULATION"
+                    }
+                    specs.append(spec_as_dict)
                     ## Output Matrices: mo61-73. Number of Households by workers
-                    report = compute_matrix(spec_as_dict2)
                     wkr = wkr + 1
                     mo_num = mo_num + 1
 
-                ##    Calculate Number workers matrices - mo54-57, mo58, mo59
+        report = compute_matrix(specs)
 
     @_m.logbook_trace("Calculate Number of Workers")
     def Calculate_Workers(self, HHData):
