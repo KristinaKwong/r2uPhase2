@@ -67,9 +67,6 @@ class TripAttractions(_m.Tool()):
         ## md31-md41 Calculate Trip Rates
         self.Calculate_TripRates(coefficients_data)
 
-        ## md31-md41 Remove negative values from Trip Rates
-        self.Check_forNegatives()
-
         ## Output results
         self.Output_Results(eb, OutputFile, CoefficientsPerGrouping, GroupingsPerPurpose)
 
@@ -134,47 +131,10 @@ class TripAttractions(_m.Tool()):
             f.write("c " + GroupingsPerPurpose + "\n")
             f.close()
 
-    ## md31-md41 Remove negative values from Trip Rates
-    @_m.logbook_trace("Check_forNegatives")
-    def Check_forNegatives(self):
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
-
-        spec_as_dict = {
-            "expression": "0",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": {
-                    "od_values": "RESULT",
-                    "interval_min": -1000000000,
-                    "interval_max": 0,
-                    "condition": "INCLUDE"
-                },
-                "by_zone": {"origins": None, "destinations": None}
-            },
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
-
-        for i in range(1, 12):
-            spec_as_dict["result"] = "md" + str(30 + i)
-            spec_as_dict["constraint"]["by_value"]["od_values"] = "md" + str(30 + i)
-            # print spec_as_dict["constraint"]["by_value"]["interval_min"]
-            report = compute_matrix(spec_as_dict)
-
     @_m.logbook_trace("Calculate_TripRates")
     def Calculate_TripRates(self, coefficients_data):
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
-
-        spec_as_dict = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {"origins": None, "destinations": None}
-            },
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
 
         #Define Attraction attributes
         Variable_Matrix = [['Contruction/Mfg', 'md5'],
@@ -194,6 +154,7 @@ class TripAttractions(_m.Tool()):
         # print "coefficients_data",coefficients_data
         # print "groupings_per_purpose", groupings_per_purpose
         purposes = ["GY", "HBWL", "HBWM", "HBWH", "NHBW", "HBU", "HBSCHO", "HBSHOP", "HBPB", "HBSOC", "HBESC", "NHBO"]
+        specs = []
         for i in range(1, 15):
             gy = str(i)
             gy_value = "gy" + gy
@@ -203,10 +164,23 @@ class TripAttractions(_m.Tool()):
                 for x in Variable_Matrix:
                     expression = expression + " + " + purpose_gy_coeff[x[0]][0] + "*" + x[1]
 
-                spec_as_dict["expression"] = expression
-                spec_as_dict["result"] = "md" + str(j + 30)
-                spec_as_dict["constraint"]["by_zone"]["destinations"] = gy_value
-                report = compute_matrix(spec_as_dict)
+                spec_as_dict = {
+                    "expression": expression,
+                    "result": "md" + str(j + 30),
+                    "constraint": {
+                        "by_value": None,
+                        "by_zone": {"origins": None, "destinations": gy_value}
+                    },
+                    "type": "MATRIX_CALCULATION"
+                }
+                specs.append(spec_as_dict)
+
+        ## md31-md41 Remove negative values from Trip Rates
+        for j in range(1, len(purposes)):
+            mat = "md" + str(j + 30)
+            specs.append(util.matrix_spec(mat, mat +".max.0"))
+
+        report = compute_matrix(specs)
 
     @_m.logbook_trace("Store_Coefficients")
     def Store_Coefficients(self, CoefficientsPerGrouping):
