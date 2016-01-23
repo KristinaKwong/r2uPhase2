@@ -28,37 +28,30 @@ from collections import defaultdict
 
 
 class TripAttractions(_m.Tool()):
-    CoefficientsPerGrouping = _m.Attribute(_m.InstanceType)
-    GroupingsPerPurpose = _m.Attribute(_m.InstanceType)
-    OutputFile = _m.Attribute(_m.InstanceType)
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        start_path = os.path.dirname(_m.Modeller().emmebank.path)
-        pb = _m.ToolPageBuilder(self, title="Trip Attractions")
-        pb.description = """
-Trip Attractions<br>
-Data Needed from a prior Toolbox:<br>
-mo20, mo365, mo366, mo367, mo368, mo369, mo370, mo371, mo372, mo373, mo374, mo375, mo376"""
-        pb.branding_text = "TransLink"
+        pb = _m.ToolPageBuilder(self, title="Trip Attractions",
+                                       description="Collects trip rates and land use to output trip Attractions. <br> Then saves it to the databank and outputs data",
+                                       branding_text="TransLink")
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
-        # TODO: add inputs to page
-
         return pb.render()
 
     def run(self):
         self.tool_run_msg = ""
         try:
-            self.__call__(self.CoefficientsPerGrouping, self.OutputFile, self.GroupingsPerPurpose)
+            eb = _m.Modeller().emmebank
+            self.__call__(eb)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("03-01 - Trip Attractions")
-    def __call__(self, PathHeader):
+    def __call__(self, eb):
+        PathHeader = os.path.dirname(eb.path) + "\\"
         CoefficientsPerGrouping = PathHeader + "03_TRIP_ATTRACTIONS/Inputs/32_COEFFICIENTS.csv"
         GroupingsPerPurpose = PathHeader + "03_TRIP_ATTRACTIONS/Inputs/33_GroupingsPerPurpose.csv"
         OutputFile = PathHeader + "03_TRIP_ATTRACTIONS/Outputs/03-01_OUTPUT_RESULTS.txt"

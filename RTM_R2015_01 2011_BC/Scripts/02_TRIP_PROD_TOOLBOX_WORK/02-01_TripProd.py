@@ -25,17 +25,9 @@ import os
 import traceback as _traceback
 
 class TripProd(_m.Tool()):
-    ##Modify path for new package implementation
-
-    ##Create global attributes (referring to dialogue boxes on the pages)
-    TripRateFile = _m.Attribute(_m.InstanceType)
-    CalibrationFactors = _m.Attribute(_m.InstanceType)
-    OutputFile = _m.Attribute(_m.InstanceType)
-    last_mo_num = _m.Attribute(int) ##Last inputted MO number
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        start_path = os.path.dirname(_m.Modeller().emmebank.path)
         pb = _m.ToolPageBuilder(self, title="Trip Production",
                                        description="Collects trip rates and land use to output trip productions. <br> Then saves it to the databank and outputs data",
                                        branding_text="TransLink")

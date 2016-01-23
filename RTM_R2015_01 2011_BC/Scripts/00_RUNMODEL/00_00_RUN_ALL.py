@@ -243,6 +243,6 @@ class FullModelRun(_m.Tool()):
 
         # Trip Generation (production, attraction, factors)
         trip_productions(eb)
-        trip_attraction(root_directory)
+        trip_attraction(eb)
         factor_trip_attractions(root_directory)
         pre_loops(eb)
