@@ -386,7 +386,7 @@ class SocioEconomicSegmentation(_m.Tool()):
                     "type": "MATRIX_CALCULATION"
                 }
                 specs.append(spec_as_dict)
-        
+
         ##Outputs Matrices: mo74-mo112, HHSize x NumWorkers x Income
         report = compute_matrix(specs)
 
@@ -433,60 +433,64 @@ class SocioEconomicSegmentation(_m.Tool()):
         NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
         compute_matrix = _m.Modeller().tool(NAMESPACE)
 
-        ##Create specs for matrix calculation
-        spec_as_dict = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": {
-                    "od_values": "mo18",
-                    "interval_min": 0,
-                    "interval_max": 0.2,
-                    "condition": "INCLUDE"
-                },
-                "by_zone": {
-                    "destinations": None,
-                    "origins": "gu1"
-                }
-            },
-            "aggregation": {
-                "origins": None,
-                "destinations": None
-            },
-            "type": "MATRIX_CALCULATION"
-        }
-
-
-
         ##    Dictionary for senior proprtion lookup - set senior proportion constraint
         ## 0 - less than 20% Sr. Proportion
         ## 1 - more than 20% Sr. Proportion
         sr_prop_flag = {'0': "INCLUDE", '1': "EXCLUDE"}
 
+        specs = []
         for num_workers in range(0, 4):
             for count in range(1, HHData.__len__(), 4):
-                spec_as_dict["expression"] = "mo50*" + str(HHData[count + 0][num_workers + 3]) + " + mo51*" + str(
+                exp = "mo50*" + str(HHData[count + 0][num_workers + 3]) + " + mo51*" + str(
                     HHData[count + 1][num_workers + 3]) + " + mo52*" + str(
                     HHData[count + 2][num_workers + 3]) + " + mo53*" + str(HHData[count + 3][num_workers + 3])
-                spec_as_dict["result"] = "mo" + str(54 + num_workers)
-                spec_as_dict["constraint"]["by_value"]["condition"] = sr_prop_flag[
-                    HHData[count][1]] ## include/exclude (less than sr. over sr.)
-                spec_as_dict["constraint"]["by_zone"]["origins"] = "gu" + str(HHData[count][0])
+                spec_as_dict = {
+                    "expression": exp,
+                    "result": "mo" + str(54 + num_workers),
+                    "constraint": {
+                        "by_value": {
+                            "od_values": "mo18",
+                            "interval_min": 0,
+                            "interval_max": 0.2,
+                            "condition": sr_prop_flag[HHData[count][1]]
+                        },
+                        "by_zone": {
+                            "destinations": None,
+                            "origins": "gu" + str(HHData[count][0])
+                        }
+                    },
+                    "type": "MATRIX_CALCULATION"
+                }
+                specs.append(spec_as_dict)
 
-                ##Output Matrix: mo54-57. Number of households with X number of workers.  (Where X=1,2,3,4)
-                report = compute_matrix(spec_as_dict)
+        ##Output Matrix: mo54-57. Number of households with X number of workers.  (Where X=1,2,3,4)
+        report = compute_matrix(specs)
 
 
+        specs = []
         ## Create mo58 - 3+ worker adjustment factor
         num_workers = 4
         for count in range(1, HHData.__len__(), 4):
-            spec_as_dict["expression"] = str(HHData[count + 0][num_workers + 3])
-            spec_as_dict["result"] = "mo" + str(54 + num_workers)
-            spec_as_dict["constraint"]["by_value"]["condition"] = sr_prop_flag[
-                HHData[count][1]] ## include/exclude (less than sr. over sr.)
-            spec_as_dict["constraint"]["by_zone"]["origins"] = "gu" + str(HHData[count][0])
+            spec_as_dict = {
+                "expression": str(HHData[count + 0][num_workers + 3]),
+                "result": "mo" + str(54 + num_workers),
+                "constraint": {
+                    "by_value": {
+                        "od_values": "mo18",
+                        "interval_min": 0,
+                        "interval_max": 0.2,
+                        "condition": sr_prop_flag[HHData[count][1]]
+                    },
+                    "by_zone": {
+                        "destinations": None,
+                        "origins": "gu" + str(HHData[count][0])
+                    }
+                },
+                "type": "MATRIX_CALCULATION"
+            }
+            specs.append(spec_as_dict)
 
-            report = compute_matrix(spec_as_dict)
+        report = compute_matrix(specs)
 
         ## Calculate the total number of workers by adding the recently calculated columns of number of HH with X workers
         spec2 = {
