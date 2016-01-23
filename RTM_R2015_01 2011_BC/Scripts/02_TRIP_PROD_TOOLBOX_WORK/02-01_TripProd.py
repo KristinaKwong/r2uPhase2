@@ -167,146 +167,98 @@ class TripProd(_m.Tool()):
 
     @_m.logbook_trace("Aggregate_Purposes")
     def Aggregate_Purposes(self):
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        spec_as_dict = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {"origins": None, "destinations": None}
-            },
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
-
         mo_result_num = 904
+        specs = []
         for i in range(0, 3):
             x = i + 161
             expression = "mo" + str(x) + " + mo" + str(x + 3) + " + mo" + str(x + 6) + " + mo" + str(x + 9)
-            spec_as_dict["expression"] = expression
-            spec_as_dict["result"] = "mo" + str(mo_result_num)
-            report = compute_matrix(spec_as_dict)
+            specs.append(util.matrix_spec("mo" + str(mo_result_num), expression))
             mo_result_num = mo_result_num + 1
 
+        report = compute_matrix(specs)
+
+        specs = []
         for i in range(173, 268, 12):
             expression = "0"
             for x in range(0, 12):
                 expression = expression + " + mo" + str(x + i)
-            spec_as_dict["expression"] = expression
-            spec_as_dict["result"] = "mo" + str(mo_result_num)
-            #print str(mo_result_num) + expression
-            report = compute_matrix(spec_as_dict)
+            specs.append(util.matrix_spec("mo" + str(mo_result_num), expression))
             mo_result_num = mo_result_num + 1
+
+        report = compute_matrix(specs)
 
     ##mo899-mo903 - Calculate total number of auto
     @_m.logbook_trace("CalculateNumAutos")
     def CalculateNumAutos(self):
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        spec_as_dict = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {"origins": None, "destinations": None}
-            },
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
+        specs = []
 
-        mo_result_num = 899
         expression = "mo269"
         for i in range(270, 281):
             expression = expression + " + mo" + str(i)
-        spec_as_dict["expression"] = expression
-        spec_as_dict["result"] = "mo" + str(mo_result_num)
-        report = compute_matrix(spec_as_dict)
+        specs.append(util.matrix_spec("mo899", expression))
 
-        mo_result_num = 900
         expression = "mo281"
         for i in range(282, 293):
             expression = expression + " + mo" + str(i)
-        spec_as_dict["expression"] = expression
-        spec_as_dict["result"] = "mo" + str(mo_result_num)
-        report = compute_matrix(spec_as_dict)
+        specs.append(util.matrix_spec("mo900", expression))
 
-        mo_result_num = 901
         expression = "mo293"
         for i in range(294, 305):
             expression = expression + " + mo" + str(i)
-        spec_as_dict["expression"] = expression
-        spec_as_dict["result"] = "mo" + str(mo_result_num)
-        report = compute_matrix(spec_as_dict)
+        specs.append(util.matrix_spec("mo901", expression))
 
-        mo_result_num = 902
         expression = "mo305"
         for i in range(306, 317):
             expression = expression + " + mo" + str(i)
-        spec_as_dict["expression"] = expression
-        spec_as_dict["result"] = "mo" + str(mo_result_num)
-        report = compute_matrix(spec_as_dict)
+        specs.append(util.matrix_spec("mo902", expression))
 
-        mo_result_num = 903
-        spec_as_dict["expression"] = "mo900 + 2*mo901 + 3.35*mo902"
-        spec_as_dict["result"] = "mo" + str(mo_result_num)
-        report = compute_matrix(spec_as_dict)
+        specs.append(util.matrix_spec("mo903", "mo900 + 2*mo901 + 3.35*mo902"))
+
+        report = compute_matrix(specs)
 
     ##mo161-268 - Aggregate Income Auto Ownership
     @_m.logbook_trace("Aggregation_IncomeOwnership")
     def Aggregation_IncomeOwnership(self):
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        spec_as_dict = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {"origins": None, "destinations": None}
-            },
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
-
         mo_result_num = 161
+        specs = []
         for mo_num in range(404, 836, 4):
             expression = "mo" + str(mo_num) + \
                          " + mo" + str(mo_num + 1) + \
                          " + mo" + str(mo_num + 2) + \
                          " + mo" + str(mo_num + 3)
-            spec_as_dict["expression"] = expression
-            spec_as_dict["result"] = "mo" + str(mo_result_num)
-            report = compute_matrix(spec_as_dict)
+            specs.append(util.matrix_spec("mo" + str(mo_result_num), expression))
             mo_result_num = mo_result_num + 1
+
+        report = compute_matrix(specs)
 
     ## mo836-mo898 - Aggregation of production to income-ownership splits for each purpose
     @_m.logbook_trace("Aggregation")
     def Aggregation(self):
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        spec_as_dict = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {"origins": None, "destinations": None}
-            },
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
-
         ## mo836-mo871 - Purpose x AutoOwnership
+        specs = []
         mo_result_num = 836
         for mo_num in range(404, 836, 12):
             expression = "0"
             for x in range(0, 12):
                 expression = expression + "+ mo" + str(mo_num + x)
-            spec_as_dict["expression"] = expression
-            spec_as_dict["result"] = "mo" + str(mo_result_num)
+            specs.append(util.matrix_spec("mo" + str(mo_result_num), expression))
             mo_result_num = mo_result_num + 1
-            report = compute_matrix(spec_as_dict)
+        report = compute_matrix(specs)
 
         ## mo872-mo898 - Purpose x IncomeCategory
+        specs = []
         for mo_num in range(404, 836, 48):
             for i in range(0, 12, 4):
                 expression = "mo" + str(mo_num + i) + \
@@ -325,36 +277,25 @@ class TripProd(_m.Tool()):
                              " + mo" + str(mo_num + i + 37) + \
                              " + mo" + str(mo_num + i + 38) + \
                              " + mo" + str(mo_num + i + 39)
-                spec_as_dict["expression"] = expression
-                spec_as_dict["result"] = "mo" + str(mo_result_num)
+                specs.append(util.matrix_spec("mo" + str(mo_result_num), expression))
                 mo_result_num = mo_result_num + 1
-                report = compute_matrix(spec_as_dict)
+        report = compute_matrix(specs)
 
     @_m.logbook_trace("Calibration")
     def Calibration(self, Calibration_Factors):
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        ##    Create specs for matrix
-        spec_as_dict = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {"origins": None, "destinations": None}
-            },
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
+        specs = []
         for i in range(1, 432):
             expression = "0"
             for x in range(1, 15):
                 expression = expression + " + (mo29.eq." + str(x) + ")*" + Calibration_Factors[i][x + 5]
             expression = "mo" + str(403 + i) + "*(" + expression + ")"
             result = "mo" + str(403 + i)
-            #if (403 + i) < 549: print "result: " + result + " : " + expression
-            spec_as_dict["expression"] = expression
-            spec_as_dict["result"] = result
-            report = compute_matrix(spec_as_dict)
+            specs.append(util.matrix_spec(result, expression))
+
+        report = compute_matrix(specs)
 
     ##  mo404-mo835 Performs the actual matrix calculation from the LandUse 'mo's with the TripRates for the various trip purposes
     @_m.logbook_trace("Perform Matrix calculations")
