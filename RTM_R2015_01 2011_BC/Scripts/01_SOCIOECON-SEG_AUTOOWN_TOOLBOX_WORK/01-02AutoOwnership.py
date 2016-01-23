@@ -24,8 +24,6 @@
 ##---------------------------------------------------
 
 import inro.modeller as _m
-from datetime import datetime
-
 
 # TODO: add tool interface
 class AutoOwnershipTool(_m.Tool()):

@@ -26,9 +26,6 @@ import csv
 import os
 import traceback as _traceback
 
-from datetime import datetime
-
-
 class SocioEconomicSegmentation(_m.Tool()):
     ##Create global attributes (referring to dialogue boxes on the pages)
 
@@ -186,8 +183,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Aggregate Number of Worker Income Categories")
     def Aggregate_NumWorkerIncomeCategories(self):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
             "expression": "EXPRESSION",
@@ -221,8 +217,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Aggregate Income Categories")
     def Aggregate_IncomeCategories(self):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
             "expression": "EXPRESSION",
@@ -285,8 +280,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Aggregate NonWorkers and Workers")
     def Aggregate_NonWorkers_and_Workers(self):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
             "expression": "EXPRESSION",
@@ -351,8 +345,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Calculate Number of Households Per Worker Category Per Income Category")
     def Calculate_IncomeWorkersHousehold(self, IncomeData):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         ##Two loops: Go through IncomeData and extract multipliers and multiplies by matrix for HHSize x WorkerNumber
 
@@ -378,8 +371,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Calculate Number of Workers Per Household Category")
     def Calculate_WorkersHousehold(self, HHData):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         ##    Dictionary for senior proportion lookup
         sr_prop_flag = {'0': "INCLUDE", '1': "EXCLUDE"}
@@ -416,8 +408,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Calculate Number of Workers")
     def Calculate_Workers(self, HHData):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         ##    Dictionary for senior proprtion lookup - set senior proportion constraint
         ## 0 - less than 20% Sr. Proportion
@@ -547,8 +538,7 @@ class SocioEconomicSegmentation(_m.Tool()):
     ##Create mo16, mo18 from existing matrices
     @_m.logbook_trace("InitialMatrixCalculations")
     def InitialMatrixCalculations(self):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
             "expression": "EXPRESSION",

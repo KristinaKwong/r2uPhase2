@@ -124,9 +124,8 @@ class TripProd(_m.Tool()):
 
 
         ##    Export matrices using the appended list of mo_value matrices
-        NAMESPACE = "inro.emme.data.matrix.export_matrices"
-        export_matrices = _m.Modeller().tool(NAMESPACE)
-        export_matrices_gy = _m.Modeller().tool(NAMESPACE)
+        export_matrices = _m.Modeller().tool("inro.emme.data.matrix.export_matrices")
+        export_matrices_gy = _m.Modeller().tool("inro.emme.data.matrix.export_matrices")
 
         export_matrices(export_file=Output_File,
                         field_separator=' ',
@@ -168,8 +167,7 @@ class TripProd(_m.Tool()):
 
     @_m.logbook_trace("Aggregate_Purposes")
     def Aggregate_Purposes(self):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
             "expression": "EXPRESSION",
@@ -204,8 +202,7 @@ class TripProd(_m.Tool()):
     ##mo899-mo903 - Calculate total number of auto
     @_m.logbook_trace("CalculateNumAutos")
     def CalculateNumAutos(self):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
             "expression": "EXPRESSION",
@@ -258,8 +255,7 @@ class TripProd(_m.Tool()):
     ##mo161-268 - Aggregate Income Auto Ownership
     @_m.logbook_trace("Aggregation_IncomeOwnership")
     def Aggregation_IncomeOwnership(self):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
             "expression": "EXPRESSION",
@@ -286,8 +282,7 @@ class TripProd(_m.Tool()):
     ## mo836-mo898 - Aggregation of production to income-ownership splits for each purpose
     @_m.logbook_trace("Aggregation")
     def Aggregation(self):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
             "expression": "EXPRESSION",
@@ -337,8 +332,7 @@ class TripProd(_m.Tool()):
 
     @_m.logbook_trace("Calibration")
     def Calibration(self, Calibration_Factors):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         ##    Create specs for matrix
         spec_as_dict = {
@@ -365,8 +359,7 @@ class TripProd(_m.Tool()):
     ##  mo404-mo835 Performs the actual matrix calculation from the LandUse 'mo's with the TripRates for the various trip purposes
     @_m.logbook_trace("Perform Matrix calculations")
     def TripProduction(self, TripRate_Data, FirstResultMoNum):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         ##            Create specs for matrix
         spec_as_dict = {
