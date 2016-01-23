@@ -19,26 +19,26 @@
 ##--Supersedes all earlier versions of 02-01_TripProd
 ##---------------------------------------------------
 
-import inro.modeller as _modeller
+import inro.modeller as _m
 import csv
 import os
 import traceback as _traceback
 from datetime import datetime
 
 
-class TripProd(_modeller.Tool()):
+class TripProd(_m.Tool()):
     ##Modify path for new package implementation
 
     ##Create global attributes (referring to dialogue boxes on the pages)
-    TripRateFile = _modeller.Attribute(_modeller.InstanceType)
-    CalibrationFactors = _modeller.Attribute(_modeller.InstanceType)
-    OutputFile = _modeller.Attribute(_modeller.InstanceType)
-    last_mo_num = _modeller.Attribute(int) ##Last inputted MO number
-    tool_run_msg = _modeller.Attribute(unicode)
+    TripRateFile = _m.Attribute(_m.InstanceType)
+    CalibrationFactors = _m.Attribute(_m.InstanceType)
+    OutputFile = _m.Attribute(_m.InstanceType)
+    last_mo_num = _m.Attribute(int) ##Last inputted MO number
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        start_path = os.path.dirname(_modeller.Modeller().emmebank.path)
-        pb = _modeller.ToolPageBuilder(self, title="Trip Production",
+        start_path = os.path.dirname(_m.Modeller().emmebank.path)
+        pb = _m.ToolPageBuilder(self, title="Trip Production",
                                        description="Collects trip rates and land use to output trip productions. <br> Then saves it to the databank and outputs data",
                                        branding_text="TransLink")
 
@@ -52,12 +52,12 @@ class TripProd(_modeller.Tool()):
         try:
             self.__call__()
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     def __call__(self, PathHeader):
-        with _modeller.logbook_trace("02-01 - Trip Production"):
+        with _m.logbook_trace("02-01 - Trip Production"):
             print "----02-01 - Trip Production: " + str(datetime.now().strftime('%H:%M:%S'))
             TripRateFile = PathHeader + "02_TRIP_PROD_TOOLBOX_WORK/Inputs/21_TripRates_ALLPURPOSES.csv"
             CalibrationFactors = PathHeader + "02_TRIP_PROD_TOOLBOX_WORK/Inputs/22_CalibFactors.csv"
@@ -97,19 +97,19 @@ class TripProd(_modeller.Tool()):
 
     #Export all mo matrices to CSV
     def Export_Matrices(self, OutputFile):
-        with _modeller.logbook_trace("Export_Matrices"):
+        with _m.logbook_trace("Export_Matrices"):
             print "--------Export_Matrices, " + str(datetime.now().strftime('%H:%M:%S'))
-            ExportToCSV = _modeller.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
+            ExportToCSV = _m.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
             list_of_matrices = ["mo" + str(i) for i in range(161, 365) + range(404, 915)]
             ExportToCSV(list_of_matrices, OutputFile)
 
     ##    Outputs results matrix to a file
     def Output_Results(self, OutputFile, FirstResultMoNum, TripRateFile, CalibrationFactors):
-        with _modeller.logbook_trace("Output Results"):
+        with _m.logbook_trace("Output Results"):
             print "--------Output_Results, " + str(datetime.now().strftime('%H:%M:%S'))
 
             ##    Create emmebank object
-            my_modeller = _modeller.Modeller()
+            my_modeller = _m.Modeller()
             my_emmebank = my_modeller.desktop.data_explorer().active_database().core_emmebank
 
             Output_File = OutputFile.replace(",", "")
@@ -134,8 +134,8 @@ class TripProd(_modeller.Tool()):
 
             ##    Export matrices using the appended list of mo_value matrices
             NAMESPACE = "inro.emme.data.matrix.export_matrices"
-            export_matrices = _modeller.Modeller().tool(NAMESPACE)
-            export_matrices_gy = _modeller.Modeller().tool(NAMESPACE)
+            export_matrices = _m.Modeller().tool(NAMESPACE)
+            export_matrices_gy = _m.Modeller().tool(NAMESPACE)
 
             export_matrices(export_file=Output_File,
                             field_separator=' ',
@@ -176,10 +176,10 @@ class TripProd(_modeller.Tool()):
             #subprocess.Popen(r'explorer /select, ' + OutputFile.replace("/","\\").replace(",","") + '"')
 
     def Aggregate_Purposes(self):
-        with _modeller.logbook_trace("Aggregate_Purposes"):
+        with _m.logbook_trace("Aggregate_Purposes"):
             print "--------Aggregate_Purposes, " + str(datetime.now().strftime('%H:%M:%S'))
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             spec_as_dict = {
                 "expression": "EXPRESSION",
@@ -213,10 +213,10 @@ class TripProd(_modeller.Tool()):
 
     ##mo899-mo903 - Calculate total number of auto
     def CalculateNumAutos(self):
-        with _modeller.logbook_trace("CalculateNumAutos"):
+        with _m.logbook_trace("CalculateNumAutos"):
             print "--------CalculateNumAutos, " + str(datetime.now().strftime('%H:%M:%S'))
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             spec_as_dict = {
                 "expression": "EXPRESSION",
@@ -268,11 +268,11 @@ class TripProd(_modeller.Tool()):
 
     ##mo161-268 - Aggregate Income Auto Ownership
     def Aggregation_IncomeOwnership(self):
-        with _modeller.logbook_trace("Aggregation_IncomeOwnership"):
+        with _m.logbook_trace("Aggregation_IncomeOwnership"):
             print "--------Aggregation_IncomeOwnership, " + str(datetime.now().strftime('%H:%M:%S'))
 
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             spec_as_dict = {
                 "expression": "EXPRESSION",
@@ -298,10 +298,10 @@ class TripProd(_modeller.Tool()):
 
     ## mo836-mo898 - Aggregation of production to income-ownership splits for each purpose
     def Aggregation(self):
-        with _modeller.logbook_trace("Aggregation"):
+        with _m.logbook_trace("Aggregation"):
             print "--------Aggregation, " + str(datetime.now().strftime('%H:%M:%S'))
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             spec_as_dict = {
                 "expression": "EXPRESSION",
@@ -350,10 +350,10 @@ class TripProd(_modeller.Tool()):
                     report = compute_matrix(spec_as_dict)
 
     def Calibration(self, Calibration_Factors):
-        with _modeller.logbook_trace("Calibration"):
+        with _m.logbook_trace("Calibration"):
             print "--------Calibration, " + str(datetime.now().strftime('%H:%M:%S'))
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             ##    Create specs for matrix
             spec_as_dict = {
@@ -379,10 +379,10 @@ class TripProd(_modeller.Tool()):
 
     ##  mo404-mo835 Performs the actual matrix calculation from the LandUse 'mo's with the TripRates for the various trip purposes
     def TripProduction(self, TripRate_Data, FirstResultMoNum):
-        with _modeller.logbook_trace("Perform Matrix calculations"):
+        with _m.logbook_trace("Perform Matrix calculations"):
             print "--------TripProduction, " + str(datetime.now().strftime('%H:%M:%S'))
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             ##            Create specs for matrix
             spec_as_dict = {
@@ -417,7 +417,7 @@ class TripProd(_modeller.Tool()):
                     mo_result_num = mo_result_num + 1
 
     def Store_CalibrationFactors(self, CalibrationFactors):
-        with _modeller.logbook_trace("Store_CalibrationFactors"):
+        with _m.logbook_trace("Store_CalibrationFactors"):
             print "--------Store_CalibrationFactors, " + str(datetime.now().strftime('%H:%M:%S'))
             with open(CalibrationFactors, 'rb') as f:
                 reader = csv.reader(f, dialect='excel')
@@ -429,7 +429,7 @@ class TripProd(_modeller.Tool()):
 
     ##    Stores the triprates into a data structure and return it
     def Store_TripRates(self, TripRateFile):
-        with _modeller.logbook_trace("Store_TripRates"):
+        with _m.logbook_trace("Store_TripRates"):
             print "--------Store_TripRates, " + str(datetime.now().strftime('%H:%M:%S'))
             with open(TripRateFile, 'rb') as f:
                 reader = csv.reader(f, dialect='excel')
@@ -441,14 +441,14 @@ class TripProd(_modeller.Tool()):
 
     ##    Batches in the batchin file
     def Matrix_Batchins(self, PathHeader):
-        with _modeller.logbook_trace("Matrix Batchin"):
+        with _m.logbook_trace("Matrix Batchin"):
             print "--------Matrix_Batchins, " + str(datetime.now().strftime('%H:%M:%S'))
             ##        Sets up the 'matrix transaction' tool and runs it
             NAMESPACE = "inro.emme.data.matrix.matrix_transaction"
-            process = _modeller.Modeller().tool(NAMESPACE)
+            process = _m.Modeller().tool(NAMESPACE)
             matrix_file = PathHeader + "02_TRIP_PROD_TOOLBOX_WORK/Inputs/MatrixTransactionFile.txt"
 
             ##        Creates process transaction
             process(transaction_file=matrix_file,
                     throw_on_error=True,
-                    scenario=_modeller.Modeller().scenario)
+                    scenario=_m.Modeller().scenario)
