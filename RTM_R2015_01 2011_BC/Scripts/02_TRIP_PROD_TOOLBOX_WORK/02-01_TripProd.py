@@ -359,21 +359,11 @@ class TripProd(_m.Tool()):
     ##  mo404-mo835 Performs the actual matrix calculation from the LandUse 'mo's with the TripRates for the various trip purposes
     @_m.logbook_trace("Perform Matrix calculations")
     def TripProduction(self, TripRate_Data, FirstResultMoNum):
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        ##            Create specs for matrix
-        spec_as_dict = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {"origins": None, "destinations": None}
-            },
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
-
         ## Loop to do the expression calculations
+        specs = []
         for purpose_index in range(1, 10):
             mo_result_num = int(FirstResultMoNum) + (purpose_index - 1) * (96 / 2)
             if purpose_index <= 2:
@@ -387,11 +377,10 @@ class TripProd(_m.Tool()):
                 expression = "mo" + str(mo_num) + "*" + str(
                     TripRate_Data[mo_num - start_mo + 1 + shift_value][purpose_index + 3])
                 result = "mo" + str(mo_result_num)
-                spec_as_dict["expression"] = expression
-                spec_as_dict["result"] = result
-                #print "initial result: " + result + " : " + expression
-                report = compute_matrix(spec_as_dict)
+                specs.append(util.matrix_spec(result, expression))
                 mo_result_num = mo_result_num + 1
+
+        report = compute_matrix(specs)
 
     @_m.logbook_trace("Store_CalibrationFactors")
     def Store_CalibrationFactors(self, CalibrationFactors):
