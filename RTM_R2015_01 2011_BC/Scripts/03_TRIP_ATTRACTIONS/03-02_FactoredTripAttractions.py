@@ -22,43 +22,32 @@
 import inro.modeller as _m
 import os
 import traceback as _traceback
-from datetime import datetime
-
 
 class FactoredTripAttractions(_m.Tool()):
-    ##Modify path for new package implementation
-
-
-    OutputFile = _m.Attribute(_m.InstanceType)
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        start_path = os.path.dirname(_m.Modeller().emmebank.path)
         pb = _m.ToolPageBuilder(self, title="Trip Attractions",
                                        description="Factored Trip Attractions<br>Data Needed from a prior Module:<br>mo161-mo265",
                                        branding_text="TransLink")
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
-        # TODO: add PathHeader input to page
-
         return pb.render()
 
     def run(self):
-        print "--------03-02 - RUN - FACTORED TRIP ATTRACTIONS: " + str(datetime.now().strftime('%H:%M:%S'))
         self.tool_run_msg = ""
-        self.PathHeader = os.path.dirname(_m.Modeller().emmebank.path) + "\\"
-        self.OutputFile = self.PathHeader + "03_TRIP_ATTRACTIONS/Outputs/03-02_OUTPUT_RESULTS.txt"
-        print "self.OutputFile: ", self.OutputFile
         try:
-            self.__call__(self.PathHeader )
+            eb = _m.Modeller().emmebank
+            self.__call__(eb)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("03-02 - Factored Trip Attractions")
-    def __call__(self, PathHeader):
+    def __call__(self, eb):
+        PathHeader = os.path.dirname(eb.path) + "\\"
         OutputFile = PathHeader + "03_TRIP_ATTRACTIONS/Outputs/03-02_OUTPUT_RESULTS.txt"
 
         ## Define variables to store/locate values.
@@ -83,7 +72,7 @@ class FactoredTripAttractions(_m.Tool()):
         self.Apply_Factors(purpose_list, purpose_factors)
 
         ## Output results
-        self.Output_Results(OutputFile)
+        self.Output_Results(eb, OutputFile)
 
         ## Export Matrices to CSV
         self.Export_Matrices(OutputFile)
@@ -100,11 +89,7 @@ class FactoredTripAttractions(_m.Tool()):
         ##    Outputs results matrix to a file
 
     @_m.logbook_trace("Output Results")
-    def Output_Results(self, OutputFile):
-        ##    Create emmebank object
-        my_modeller = _m.Modeller()
-        my_emmebank = my_modeller.desktop.data_explorer().active_database().core_emmebank
-
+    def Output_Results(self, eb, OutputFile):
         Output_File = OutputFile.replace(",", "")
         Output_File_GY = OutputFile.replace(",", "").replace(".", "_GY.")
         Output_File_GU = OutputFile.replace(",", "").replace(".", "_GU.")
@@ -115,7 +100,7 @@ class FactoredTripAttractions(_m.Tool()):
 
         ##    Loop to append all result matrices onto the variable 'md_value'
         for mo_num in [24, 25] + range(31, 53):
-            md_value.append(my_emmebank.matrix("md" + str(mo_num)))
+            md_value.append(eb.matrix("md" + str(mo_num)))
 
 
         ##    Export matrices using the appended list of md_value matrices

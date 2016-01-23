@@ -239,10 +239,8 @@ class FullModelRun(_m.Tool()):
         factor_trip_attractions = _m.Modeller().tool("translink.emme.stage2.step3.factoredtripattraction")
         pre_loops = _m.Modeller().tool("translink.emme.stage2.step3.preloops")
 
-        root_directory = os.path.dirname(eb.path) + "\\"
-
         # Trip Generation (production, attraction, factors)
         trip_productions(eb)
         trip_attraction(eb)
-        factor_trip_attractions(root_directory)
+        factor_trip_attractions(eb)
         pre_loops(eb)
