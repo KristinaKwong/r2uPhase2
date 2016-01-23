@@ -56,7 +56,7 @@ class TripAttractions(_m.Tool()):
         GroupingsPerPurpose = PathHeader + "03_TRIP_ATTRACTIONS/Inputs/33_GroupingsPerPurpose.csv"
         OutputFile = PathHeader + "03_TRIP_ATTRACTIONS/Outputs/03-01_OUTPUT_RESULTS.txt"
         ##Batchin File
-        self.Matrix_Batchins(PathHeader)
+        self.Matrix_Batchins(eb)
 
         ## Creates Low and High Income Households from the 'mo' matrices
         self.CreateHouseholds_LowHighIncome_TotalPop()
@@ -305,11 +305,44 @@ class TripAttractions(_m.Tool()):
         report = compute_matrix(spec_as_dict)
 
     @_m.logbook_trace("Matrix Batchin")
-    def Matrix_Batchins(self, PathHeader):
-        process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
-        matrix_file = PathHeader + "03_TRIP_ATTRACTIONS/Inputs/MatrixTransactionFile.txt"
+    def Matrix_Batchins(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
 
-        ##        Creates process transaction
-        process(transaction_file=matrix_file,
-                throw_on_error=True,
-                scenario=_m.Modeller().scenario)
+        util.initmat(eb, "md20", "PpTt11", "2011_total_population", 0)
+        util.initmat(eb, "md24", "HhLwIn", "Household Low Income", 0)
+        util.initmat(eb, "md25", "HhMdIn", "Household Medium Income", 0)
+        util.initmat(eb, "md26", "HhHiIn", "Household High Income", 0)
+        util.initmat(eb, "md31", "aWkL", "AttracWkL", 0)
+        util.initmat(eb, "md32", "aWkM", "AttracWkM", 0)
+        util.initmat(eb, "md33", "aWkH", "AttracWkH", 0)
+        util.initmat(eb, "md34", "aNw", "AttracNw", 0)
+        util.initmat(eb, "md35", "aUv", "AttracUv", 0)
+        util.initmat(eb, "md36", "aSc", "AttracSc", 0)
+        util.initmat(eb, "md37", "aSh", "AttracSh", 0)
+        util.initmat(eb, "md38", "aPB", "AttracPB", 0)
+        util.initmat(eb, "md39", "aSo", "AttracSo", 0)
+        util.initmat(eb, "md40", "aEc", "AttracEc", 0)
+        util.initmat(eb, "md41", "aNo", "AttracNo", 0)
+        util.initmat(eb, "md42", "aWkLf", "FactoredAttracWkL", 0)
+        util.initmat(eb, "md43", "aWkMf", "FactoredAttracWkM", 0)
+        util.initmat(eb, "md44", "aWkHf", "FactoredAttracWkH", 0)
+        util.initmat(eb, "md45", "aNwf", "FactoredAttracNw", 0)
+        util.initmat(eb, "md46", "aUvnf", "NOTFactoredAttracUv", 0)
+        util.initmat(eb, "md47", "aScf", "FactoredAttracSc", 0)
+        util.initmat(eb, "md48", "aShf", "FactoredAttracSh", 0)
+        util.initmat(eb, "md49", "aPBf", "FactoredAttracPB", 0)
+        util.initmat(eb, "md50", "aSof", "FactoredAttracSo", 0)
+        util.initmat(eb, "md51", "aEcf", "FactoredAttracEc", 0)
+        util.initmat(eb, "md52", "aNof", "FactoredAttracNo", 0)
+        util.initmat(eb, "mo915", "p2-10f", "FactoredProducUvLA0", 0)
+        util.initmat(eb, "mo916", "p2-20f", "FactoredProducUvMA0", 0)
+        util.initmat(eb, "mo917", "p2-30f", "FactoredProducUvHA0", 0)
+        util.initmat(eb, "mo918", "p2-11f", "FactoredProducUvLA1", 0)
+        util.initmat(eb, "mo919", "p2-21f", "FactoredProducUvMA1", 0)
+        util.initmat(eb, "mo920", "p2-31f", "FactoredProducUvHA1", 0)
+        util.initmat(eb, "mo921", "p2-12f", "FactoredProducUvLA2", 0)
+        util.initmat(eb, "mo922", "p2-22f", "FactoredProducUvMA2", 0)
+        util.initmat(eb, "mo923", "p2-32f", "FactoredProducUvHA2", 0)
+        util.initmat(eb, "mo924", "p2-13f", "FactoredProducUvLA3+", 0)
+        util.initmat(eb, "mo925", "p2-23f", "FactoredProducUvMA3+", 0)
+        util.initmat(eb, "mo926", "p2-33f", "FactoredProducUvHA3+", 0)
