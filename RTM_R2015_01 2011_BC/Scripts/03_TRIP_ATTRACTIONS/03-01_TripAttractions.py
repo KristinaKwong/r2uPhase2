@@ -150,12 +150,12 @@ class TripAttractions(_m.Tool()):
 
         # print "coefficients_data",coefficients_data
         # print "groupings_per_purpose", groupings_per_purpose
-        purposes = ["GY", "HBWL", "HBWM", "HBWH", "NHBW", "HBU", "HBSCHO", "HBSHOP", "HBPB", "HBSOC", "HBESC", "NHBO"]
+        purposes = ["HBWL", "HBWM", "HBWH", "NHBW", "HBU", "HBSCHO", "HBSHOP", "HBPB", "HBSOC", "HBESC", "NHBO"]
         specs = []
         for i in range(1, 15):
             gy = str(i)
             gy_value = "gy" + gy
-            for j in range(1, len(purposes)):
+            for j in range(0, len(purposes)):
                 purpose_gy_coeff = coefficients_data[purposes[j]][gy]
                 expression = "0"
                 for x in Variable_Matrix:
@@ -163,7 +163,7 @@ class TripAttractions(_m.Tool()):
 
                 spec_as_dict = {
                     "expression": expression,
-                    "result": "md" + str(j + 30),
+                    "result": "md" + str(j + 31),
                     "constraint": {
                         "by_value": None,
                         "by_zone": {"origins": None, "destinations": gy_value}
@@ -173,8 +173,8 @@ class TripAttractions(_m.Tool()):
                 specs.append(spec_as_dict)
 
         ## md31-md41 Remove negative values from Trip Rates
-        for j in range(1, len(purposes)):
-            mat = "md" + str(j + 30)
+        for j in range(0, len(purposes)):
+            mat = "md" + str(j + 31)
             specs.append(util.matrix_spec(mat, mat +".max.0"))
 
         report = compute_matrix(specs)
