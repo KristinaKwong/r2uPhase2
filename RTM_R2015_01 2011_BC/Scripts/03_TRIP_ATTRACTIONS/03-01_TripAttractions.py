@@ -13,7 +13,7 @@
 ##--Called by: 00_00_RUN_ALL.PY
 ##--Calls:     None
 ##--Accesses:  MatrixTransactionFile.txt, 31_VARIABLES.csv,
-##--           32_COEFFICIENTS.csv, 33_GroupingsPerPurpose.csv
+##--           32_COEFFICIENTS.csv
 ##--Outputs: 03-01_OUTPUT_RESULTS.txt
 ##---------------------------------------------------
 ##--Status/additional notes:
@@ -53,7 +53,6 @@ class TripAttractions(_m.Tool()):
     def __call__(self, eb):
         PathHeader = os.path.dirname(eb.path) + "\\"
         CoefficientsPerGrouping = PathHeader + "03_TRIP_ATTRACTIONS/Inputs/32_COEFFICIENTS.csv"
-        GroupingsPerPurpose = PathHeader + "03_TRIP_ATTRACTIONS/Inputs/33_GroupingsPerPurpose.csv"
         OutputFile = PathHeader + "03_TRIP_ATTRACTIONS/Outputs/03-01_OUTPUT_RESULTS.txt"
         ##Batchin File
         self.Matrix_Batchins(eb)
@@ -68,7 +67,7 @@ class TripAttractions(_m.Tool()):
         self.Calculate_TripRates(coefficients_data)
 
         ## Output results
-        self.Output_Results(eb, OutputFile, CoefficientsPerGrouping, GroupingsPerPurpose)
+        self.Output_Results(eb, OutputFile, CoefficientsPerGrouping)
 
         ## Export Matrices to CSV
         self.Export_Matrices(OutputFile)
@@ -83,7 +82,7 @@ class TripAttractions(_m.Tool()):
         ##    Outputs results matrix to a file
 
     @_m.logbook_trace("Output Results")
-    def Output_Results(self, eb, OutputFile, CoefficientsPerGrouping, GroupingsPerPurpose):
+    def Output_Results(self, eb, OutputFile, CoefficientsPerGrouping):
         Output_File = OutputFile.replace(",", "")
         Output_File_GY = OutputFile.replace(",", "").replace(".", "_GY.")
         Output_File_GU = OutputFile.replace(",", "").replace(".", "_GU.")
@@ -128,7 +127,6 @@ class TripAttractions(_m.Tool()):
             f = open(Output, 'a')
             f.write("c ------Data Sources:\n")
             f.write("c " + CoefficientsPerGrouping + "\n")
-            f.write("c " + GroupingsPerPurpose + "\n")
             f.close()
 
     @_m.logbook_trace("Calculate_TripRates")
@@ -205,54 +203,22 @@ class TripAttractions(_m.Tool()):
     ##    Creates low and high-income households and transposes population and parking matrices
     @_m.logbook_trace("CreateHouseholds_LowHighIncome_TotalPop")
     def CreateHouseholds_LowHighIncome_TotalPop(self):
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        spec_as_dict = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {"origins": None, "destinations": None}
-            },
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
+        specs = []
 
-        spec_as_dict["expression"] = "mo365' + mo366' + mo367' + mo368'"
-        spec_as_dict["result"] = "md24"
-        report = compute_matrix(spec_as_dict)
-
-        spec_as_dict["expression"] = "mo369' + mo370' + mo371' + mo372'"
-        spec_as_dict["result"] = "md25"
-        report = compute_matrix(spec_as_dict)
-
-        spec_as_dict["expression"] = "mo373' + mo374' + mo375' + mo376'"
-        spec_as_dict["result"] = "md26"
-        report = compute_matrix(spec_as_dict)
-
-        spec_as_dict["expression"] = "mo20'"
-        spec_as_dict["result"] = "md20"
-        report = compute_matrix(spec_as_dict)
-
-        spec_as_dict["expression"] = "mo27'"
-        spec_as_dict["result"] = "md27"
-        report = compute_matrix(spec_as_dict)
-
-        spec_as_dict["expression"] = "mo28'"
-        spec_as_dict["result"] = "md28"
-        report = compute_matrix(spec_as_dict)
-
-        spec_as_dict["expression"] = "mo13'"
-        spec_as_dict["result"] = "md13"
-        report = compute_matrix(spec_as_dict)
-
-        spec_as_dict["expression"] = "mo17'"
-        spec_as_dict["result"] = "md17"
-        report = compute_matrix(spec_as_dict)
-
-        spec_as_dict["expression"] = "mo29'"
-        spec_as_dict["result"] = "md29"
-        report = compute_matrix(spec_as_dict)
+        specs.append(util.matrix_spec("md24", "mo365' + mo366' + mo367' + mo368'"))
+        specs.append(util.matrix_spec("md25", "mo369' + mo370' + mo371' + mo372'"))
+        specs.append(util.matrix_spec("md26", "mo373' + mo374' + mo375' + mo376'"))
+        specs.append(util.matrix_spec("md20", "mo20'"))
+        specs.append(util.matrix_spec("md27", "mo27'"))
+        specs.append(util.matrix_spec("md28", "mo28'"))
+        specs.append(util.matrix_spec("md13", "mo13'"))
+        specs.append(util.matrix_spec("md17", "mo17'"))
+        specs.append(util.matrix_spec("md29", "mo29'"))
+ 
+        report = compute_matrix(specs)
 
     @_m.logbook_trace("Matrix Batchin")
     def Matrix_Batchins(self, eb):
