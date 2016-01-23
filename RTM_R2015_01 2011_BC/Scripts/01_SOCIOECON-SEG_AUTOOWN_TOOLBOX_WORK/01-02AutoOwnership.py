@@ -38,12 +38,10 @@ class AutoOwnershipTool(_m.Tool()):
         return pb.render()
 
 
-## mo404-mo442 - Store utility value while for AutoOwn=0 for various HHSize, NumWorkers, IncomeCat
-def Calculate_AutoOwnership_0Cars(self, AutoOwnCoeff):
-    with _m.logbook_trace("Calculate AutoOwnership 0 Cars - Utilities"):
-        print "--------Calculate_AutoOwnership_0Cars, " + str(datetime.now().strftime('%H:%M:%S'))
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+    ## mo404-mo442 - Store utility value while for AutoOwn=0 for various HHSize, NumWorkers, IncomeCat
+    @_m.logbook_trace("Calculate AutoOwnership 0 Cars - Utilities")
+    def Calculate_AutoOwnership_0Cars(self, AutoOwnCoeff):
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         lowinc0 = AutoOwnCoeff.get('lowinc0', [0])[0]
         hiinc0 = AutoOwnCoeff.get('hiinc0', [0])[0]
@@ -147,12 +145,10 @@ def Calculate_AutoOwnership_0Cars(self, AutoOwnCoeff):
             report = compute_matrix(spec_as_dict)
 
 
-## mo443-mo481 - Store utility value while for AutoOwn=1 for various HHSize, NumWorkers, IncomeCat
-def Calculate_AutoOwnership_1Cars(self, AutoOwnCoeff):
-    with _m.logbook_trace("Calculate AutoOwnership 1 Cars - Utilities"):
-        print "--------Calculate_AutoOwnership_1Cars, " + str(datetime.now().strftime('%H:%M:%S'))
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+    ## mo443-mo481 - Store utility value while for AutoOwn=1 for various HHSize, NumWorkers, IncomeCat
+    @_m.logbook_trace("Calculate AutoOwnership 1 Cars - Utilities")
+    def Calculate_AutoOwnership_1Cars(self, AutoOwnCoeff):
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         bias1 = AutoOwnCoeff.get('1bias', [0])[0]
         lowinc1 = AutoOwnCoeff.get('lowinc1', [0])[0]
@@ -234,12 +230,11 @@ def Calculate_AutoOwnership_1Cars(self, AutoOwnCoeff):
             report = compute_matrix(spec_as_dict)
 
 
-## mo482-mo520 - Store utility value while for AutoOwn=2 for various HHSize, NumWorkers, IncomeCat
-def Calculate_AutoOwnership_2Cars(self, AutoOwnCoeff):
-    with _m.logbook_trace("Calculate AutoOwnership 2 Cars - Utilities"):
-        print "--------Calculate_AutoOwnership_2Cars, " + str(datetime.now().strftime('%H:%M:%S'))
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+    ## mo482-mo520 - Store utility value while for AutoOwn=2 for various HHSize, NumWorkers, IncomeCat
+    @_m.logbook_trace("Calculate AutoOwnership 2 Cars - Utilities")
+    def Calculate_AutoOwnership_2Cars(self, AutoOwnCoeff):
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
+        
         bias2 = AutoOwnCoeff.get('2bias', [0])
         wrkr2_c23 = AutoOwnCoeff.get('wrkr2_c23', [0])
         hiinc2 = AutoOwnCoeff.get('hiinc2', [0])[0]
@@ -327,12 +322,10 @@ def Calculate_AutoOwnership_2Cars(self, AutoOwnCoeff):
             spec_as_dict["result"] = "mo" + str(auto_own_one + 481)
             report = compute_matrix(spec_as_dict)
 
-## mo521-mo559 - Store utility value while for AutoOwn=3 for various HHSize, NumWorkers, IncomeCat
-def Calculate_AutoOwnership_3Cars(self, AutoOwnCoeff):
-    with _m.logbook_trace("Calculate AutoOwnership 3 Cars - Utilities"):
-        print "--------Calculate_AutoOwnership_3Cars, " + str(datetime.now().strftime('%H:%M:%S'))
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+    ## mo521-mo559 - Store utility value while for AutoOwn=3 for various HHSize, NumWorkers, IncomeCat
+    @_m.logbook_trace("Calculate AutoOwnership 3 Cars - Utilities")
+    def Calculate_AutoOwnership_3Cars(self, AutoOwnCoeff):
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         bias3 = AutoOwnCoeff.get('3bias', [0])
         wrkrs_c3 = AutoOwnCoeff.get('wrkrs_c3', [0])
@@ -425,12 +418,10 @@ def Calculate_AutoOwnership_3Cars(self, AutoOwnCoeff):
             spec_as_dict["result"] = "mo" + str(auto_own_one + 520)
             report = compute_matrix(spec_as_dict)
 
-## mo560-mo715 - Calculated probabilities of having a AutoOwnership 0-3 for HHSize, NumWorkers, IncomeCat
-def Calculate_Probabilities(self, AutoOwnCoeff):
-    with _m.logbook_trace("Calculate_Probabilities"):
-        print "--------Calculate_Probabilities, " + str(datetime.now().strftime('%H:%M:%S'))
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+    ## mo560-mo715 - Calculated probabilities of having a AutoOwnership 0-3 for HHSize, NumWorkers, IncomeCat
+    @_m.logbook_trace("Calculate_Probabilities")
+    def Calculate_Probabilities(self, AutoOwnCoeff):
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
             "expression": "EXPRESSION",
@@ -471,12 +462,10 @@ def Calculate_Probabilities(self, AutoOwnCoeff):
                 result_mo_num = result_mo_num + 1
 
 
-## mo113-mo268 - Calculated Number of Households Per Worker, Per Income and Per Auto Ownership Category
-def Calculate_AutoOwnership_PerHH(self):
-    with _m.logbook_trace("Calculate AutoOwnership Categories"):
-        print "--------Calculate_AutoOwnership, " + str(datetime.now().strftime('%H:%M:%S'))
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+    ## mo113-mo268 - Calculated Number of Households Per Worker, Per Income and Per Auto Ownership Category
+    @_m.logbook_trace("Calculate AutoOwnership Categories")
+    def Calculate_AutoOwnership_PerHH(self):
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
             "expression": "EXPRESSION",
@@ -503,12 +492,10 @@ def Calculate_AutoOwnership_PerHH(self):
                 report = compute_matrix(spec_as_dict)
                 count = count + 1
 
-## mo716-mo718 - Calculated Number of Auto Per HH Size
-def Autos_PerHHSize(self):
-    with _m.logbook_trace("Autos_PerHHSize"):
-        print "--------Autos_PerHHSize, " + str(datetime.now().strftime('%H:%M:%S'))
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+    ## mo716-mo718 - Calculated Number of Auto Per HH Size
+    @_m.logbook_trace("Autos_PerHHSize")
+    def Autos_PerHHSize(self):
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
             "expression": "EXPRESSION",
