@@ -64,11 +64,8 @@ class TripAttractions(_m.Tool()):
         ##Store Coefficients
         coefficients_data = self.Store_Coefficients(CoefficientsPerGrouping)
 
-        ##Store Groupings Per Purpose
-        groupings_per_purpose = self.Store_Groupings(GroupingsPerPurpose)
-
         ## md31-md41 Calculate Trip Rates
-        self.Calculate_TripRates(coefficients_data, groupings_per_purpose)
+        self.Calculate_TripRates(coefficients_data)
 
         ## md31-md41 Remove negative values from Trip Rates
         self.Check_forNegatives()
@@ -165,7 +162,7 @@ class TripAttractions(_m.Tool()):
             report = compute_matrix(spec_as_dict)
 
     @_m.logbook_trace("Calculate_TripRates")
-    def Calculate_TripRates(self, coefficients_data, groupings_per_purpose):
+    def Calculate_TripRates(self, coefficients_data):
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
@@ -196,35 +193,20 @@ class TripAttractions(_m.Tool()):
 
         # print "coefficients_data",coefficients_data
         # print "groupings_per_purpose", groupings_per_purpose
-
-        for i in range(1, len(groupings_per_purpose)):
-            for j in range(1, len(groupings_per_purpose[0])):
+        purposes = ["GY", "HBWL", "HBWM", "HBWH", "NHBW", "HBU", "HBSCHO", "HBSHOP", "HBPB", "HBSOC", "HBESC", "NHBO"]
+        for i in range(1, 15):
+            gy = str(i)
+            gy_value = "gy" + gy
+            for j in range(1, len(purposes)):
+                purpose_gy_coeff = coefficients_data[purposes[j]][gy]
                 expression = "0"
                 for x in Variable_Matrix:
-                    expression = expression + " + " + \
-                                 coefficients_data[groupings_per_purpose[0][j]][groupings_per_purpose[i][j]][x[0]][
-                                     0] + "*" + x[1]
-
-                gy_value = "gy" + groupings_per_purpose[i][0]
-                # print "expression: ", expression
-                # print "gy_value:",gy_value
-                # print "md"+str(j+30)
+                    expression = expression + " + " + purpose_gy_coeff[x[0]][0] + "*" + x[1]
 
                 spec_as_dict["expression"] = expression
                 spec_as_dict["result"] = "md" + str(j + 30)
                 spec_as_dict["constraint"]["by_zone"]["destinations"] = gy_value
                 report = compute_matrix(spec_as_dict)
-
-    @_m.logbook_trace("Store Store_Groupings")
-    def Store_Groupings(self, GroupingsPerPurpose):
-        with open(GroupingsPerPurpose, 'rb') as f:
-            reader = csv.reader(f, dialect='excel')
-            header = reader.next()
-            data = [header]
-            for row in reader:
-                data.append(row)
-                #dict_data = dict( (data[i][0],data[i][1:]) for i in range(0,len(data)))
-        return data
 
     @_m.logbook_trace("Store_Coefficients")
     def Store_Coefficients(self, CoefficientsPerGrouping):
