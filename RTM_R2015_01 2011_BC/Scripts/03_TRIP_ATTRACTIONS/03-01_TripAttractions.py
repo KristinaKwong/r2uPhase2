@@ -12,8 +12,7 @@
 ##---------------------------------------------------
 ##--Called by: 00_00_RUN_ALL.PY
 ##--Calls:     None
-##--Accesses:  MatrixTransactionFile.txt, 31_VARIABLES.csv,
-##--           32_COEFFICIENTS.csv
+##--Accesses:  32_COEFFICIENTS.csv
 ##--Outputs: 03-01_OUTPUT_RESULTS.txt
 ##---------------------------------------------------
 ##--Status/additional notes:
