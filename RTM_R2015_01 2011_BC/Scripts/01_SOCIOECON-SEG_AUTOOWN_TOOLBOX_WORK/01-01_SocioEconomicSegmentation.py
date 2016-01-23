@@ -98,22 +98,8 @@ class SocioEconomicSegmentation(_m.Tool()):
         self.Calculate_IncomeWorkersHousehold(IncData)
 
         ## Calculated Number of Households Per Worker, Per Income and Per Auto Ownership Category - mo113-mo268
-        AutoOwnership = _m.Modeller().module("translink.emme.stage1.step1.autoownership")
-
-        ## mo404-mo442 - Store utility value while for AutoOwn=0 for various HHSize, NumWorkers, IncomeCat
-        AutoOwnership.Calculate_AutoOwnership_0Cars(self, AutoOwnCoeff)
-        ## mo443-mo481 - Store utility value while for AutoOwn=1 for various HHSize, NumWorkers, IncomeCat
-        AutoOwnership.Calculate_AutoOwnership_1Cars(self, AutoOwnCoeff)
-        ## mo482-mo520 - Store utility value while for AutoOwn=2 for various HHSize, NumWorkers, IncomeCat
-        AutoOwnership.Calculate_AutoOwnership_2Cars(self, AutoOwnCoeff)
-        ## mo521-mo559 - Store utility value while for AutoOwn=3 for various HHSize, NumWorkers, IncomeCat
-        AutoOwnership.Calculate_AutoOwnership_3Cars(self, AutoOwnCoeff)
-
-        ## mo560-mo715 - Calculated probabilities of having a AutoOwnership0-3 for HHSize, NumWorkers, IncomeCat
-        AutoOwnership.Calculate_Probabilities(self, AutoOwnCoeff)
-
-        ## mo113-mo268 - Calculated Number of Households Per Worker, Per Income and Per Auto Ownership Category
-        AutoOwnership.Calculate_AutoOwnership_PerHH(self)
+        AutoOwnership = _m.Modeller().tool("translink.emme.stage1.step1.autoownership")
+        AutoOwnership(AutoOwnCoeff)
 
         ## mo269-mo364 - Aggregate Non-Workers
         self.Aggregate_NonWorkers_and_Workers()
@@ -125,7 +111,7 @@ class SocioEconomicSegmentation(_m.Tool()):
         self.Aggregate_NumWorkerIncomeCategories()
 
         ## mo716-mo718 - Calculated Number of Auto Per HH Size
-        AutoOwnership.Autos_PerHHSize(self)
+        self.Autos_PerHHSize()
 
         # Output number of worker matrices
         self.Output_Results(eb, OutputFile, HHWorkerRate, IncomeData, AutoOwnershipCoefficients)
@@ -540,6 +526,24 @@ class SocioEconomicSegmentation(_m.Tool()):
                 data.append(row)
         return data
 
+    ## mo716-mo718 - Calculated Number of Auto Per HH Size
+    @_m.logbook_trace("Autos_PerHHSize")
+    def Autos_PerHHSize(self):
+        util = _m.Modeller().tool("translink.emme.util")
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
+
+        ## Loop each set of Auto Ownership classification and perform summation.
+        specs = []
+        for x in range(0, 3):
+            expression = ""
+            for i in range(281 + x * 12, 281 + x * 12 + 12):
+                expression = expression + "mo" + str(i) + " + "
+            expression = expression + " 0"
+
+            specs.append(util.matrix_spec("mo" + str(x + 716), expression))
+
+        report = compute_matrix(specs)
+        
     ##Create mo16, mo18 from existing matrices
     @_m.logbook_trace("InitialMatrixCalculations")
     def InitialMatrixCalculations(self):
