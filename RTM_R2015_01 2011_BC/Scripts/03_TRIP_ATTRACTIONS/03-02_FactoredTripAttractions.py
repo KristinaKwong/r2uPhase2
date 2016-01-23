@@ -104,8 +104,7 @@ class FactoredTripAttractions(_m.Tool()):
 
 
         ##    Export matrices using the appended list of md_value matrices
-        export_matrices = _m.Modeller().tool(
-            "inro.emme.data.matrix.export_matrices")
+        export_matrices = _m.Modeller().tool("inro.emme.data.matrix.export_matrices")
 
         ## Export all matrix data
         export_matrices(export_file=Output_File,
@@ -141,8 +140,7 @@ class FactoredTripAttractions(_m.Tool()):
 
     @_m.logbook_trace("Apply_Factors")
     def Apply_Factors(self, purpose_list, purpose_factors):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
             "expression": "EXPRESSION",
@@ -178,8 +176,7 @@ class FactoredTripAttractions(_m.Tool()):
 
     @_m.logbook_trace("Calculate_Factors")
     def Calculate_Factors(self, purpose_list, purpose_factors):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
             "expression": "EXPRESSION",
