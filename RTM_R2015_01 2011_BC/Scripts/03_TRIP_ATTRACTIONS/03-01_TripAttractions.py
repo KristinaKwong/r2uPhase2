@@ -74,7 +74,7 @@ class TripAttractions(_m.Tool()):
         self.Check_forNegatives()
 
         ## Output results
-        self.Output_Results(OutputFile, CoefficientsPerGrouping, GroupingsPerPurpose)
+        self.Output_Results(eb, OutputFile, CoefficientsPerGrouping, GroupingsPerPurpose)
 
         ## Export Matrices to CSV
         self.Export_Matrices(OutputFile)
@@ -89,11 +89,7 @@ class TripAttractions(_m.Tool()):
         ##    Outputs results matrix to a file
 
     @_m.logbook_trace("Output Results")
-    def Output_Results(self, OutputFile, CoefficientsPerGrouping, GroupingsPerPurpose):
-        ##    Create emmebank object
-        my_modeller = _m.Modeller()
-        my_emmebank = my_modeller.desktop.data_explorer().active_database().core_emmebank
-
+    def Output_Results(self, eb, OutputFile, CoefficientsPerGrouping, GroupingsPerPurpose):
         Output_File = OutputFile.replace(",", "")
         Output_File_GY = OutputFile.replace(",", "").replace(".", "_GY.")
         Output_File_GU = OutputFile.replace(",", "").replace(".", "_GU.")
@@ -103,11 +99,10 @@ class TripAttractions(_m.Tool()):
 
         ##    Loop to append all result matrices onto the variable 'md_value'
         for mo_num in [24, 25, 26] + range(31, 42):
-            md_value.append(my_emmebank.matrix("md" + str(mo_num)))
+            md_value.append(eb.matrix("md" + str(mo_num)))
 
         ##    Export matrices using the appended list of md_value matrices
-        export_matrices = _m.Modeller().tool(
-            "inro.emme.data.matrix.export_matrices")
+        export_matrices = _m.Modeller().tool("inro.emme.data.matrix.export_matrices")
 
         ## Export all matrix data
         export_matrices(export_file=Output_File,
@@ -145,8 +140,7 @@ class TripAttractions(_m.Tool()):
     ## md31-md41 Remove negative values from Trip Rates
     @_m.logbook_trace("Check_forNegatives")
     def Check_forNegatives(self):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
             "expression": "0",
@@ -172,8 +166,7 @@ class TripAttractions(_m.Tool()):
 
     @_m.logbook_trace("Calculate_TripRates")
     def Calculate_TripRates(self, coefficients_data, groupings_per_purpose, PathHeader):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
             "expression": "EXPRESSION",
@@ -262,8 +255,7 @@ class TripAttractions(_m.Tool()):
     ##    Creates low and high-income households and transposes population and parking matrices
     @_m.logbook_trace("CreateHouseholds_LowHighIncome_TotalPop")
     def CreateHouseholds_LowHighIncome_TotalPop(self):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
             "expression": "EXPRESSION",
@@ -312,13 +304,9 @@ class TripAttractions(_m.Tool()):
         spec_as_dict["result"] = "md29"
         report = compute_matrix(spec_as_dict)
 
-        ##    Batches in the batchin file
-
     @_m.logbook_trace("Matrix Batchin")
     def Matrix_Batchins(self, PathHeader):
-        ##        Sets up the 'matrix transaction' tool and runs it
-        NAMESPACE = "inro.emme.data.matrix.matrix_transaction"
-        process = _m.Modeller().tool(NAMESPACE)
+        process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
         matrix_file = PathHeader + "03_TRIP_ATTRACTIONS/Inputs/MatrixTransactionFile.txt"
 
         ##        Creates process transaction
