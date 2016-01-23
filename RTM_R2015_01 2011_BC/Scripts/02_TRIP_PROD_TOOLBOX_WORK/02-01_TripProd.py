@@ -23,8 +23,6 @@ import inro.modeller as _m
 import csv
 import os
 import traceback as _traceback
-from datetime import datetime
-
 
 class TripProd(_m.Tool()):
     ##Modify path for new package implementation
@@ -90,7 +88,7 @@ class TripProd(_m.Tool()):
         self.Aggregate_Purposes()
 
         ##            Output these new result files
-        self.Output_Results(OutputFile, FirstResultMoNum, TripRateFile, CalibrationFactors)
+        self.Output_Results(eb, OutputFile, FirstResultMoNum, TripRateFile, CalibrationFactors)
 
         ## Export Matrices to CSV
         self.Export_Matrices(OutputFile)
@@ -104,12 +102,7 @@ class TripProd(_m.Tool()):
 
     ##    Outputs results matrix to a file
     @_m.logbook_trace("Output Results")
-    def Output_Results(self, OutputFile, FirstResultMoNum, TripRateFile, CalibrationFactors):
-
-        ##    Create emmebank object
-        my_modeller = _m.Modeller()
-        my_emmebank = my_modeller.desktop.data_explorer().active_database().core_emmebank
-
+    def Output_Results(self, eb, OutputFile, FirstResultMoNum, TripRateFile, CalibrationFactors):
         Output_File = OutputFile.replace(",", "")
         Output_File_GY = OutputFile.replace(",", "").replace(".", "_GY.")
         Output_File_GU = OutputFile.replace(",", "").replace(".", "_GU.")
@@ -118,16 +111,16 @@ class TripProd(_m.Tool()):
         mo_value = []
 
         for i in range(161, 269):
-            mo_value.append(my_emmebank.matrix("mo" + str(i)))
+            mo_value.append(eb.matrix("mo" + str(i)))
 
         ##    Two loops to append all result matrices onto the variable 'mo_value'
         for purpose_index in range(1, 10):
             mo_result_num = int(FirstResultMoNum) + (purpose_index - 1) * (96 / 2)
             for mo_num in range(0, 96 / 2):
-                mo_value.append(my_emmebank.matrix("mo" + str(mo_num + mo_result_num)))
+                mo_value.append(eb.matrix("mo" + str(mo_num + mo_result_num)))
 
         for i in range(899, 915):
-            mo_value.append(my_emmebank.matrix("mo" + str(i)))
+            mo_value.append(eb.matrix("mo" + str(i)))
 
 
         ##    Export matrices using the appended list of mo_value matrices
