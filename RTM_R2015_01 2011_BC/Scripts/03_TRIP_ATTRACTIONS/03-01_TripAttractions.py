@@ -20,7 +20,7 @@
 ##--Supersedes all earlier versions of 03-01_TripAttractions
 ##---------------------------------------------------
 
-import inro.modeller as _modeller
+import inro.modeller as _m
 import csv
 import os
 import traceback as _traceback
@@ -28,15 +28,15 @@ from datetime import datetime
 from collections import defaultdict
 
 
-class TripAttractions(_modeller.Tool()):
-    CoefficientsPerGrouping = _modeller.Attribute(_modeller.InstanceType)
-    GroupingsPerPurpose = _modeller.Attribute(_modeller.InstanceType)
-    OutputFile = _modeller.Attribute(_modeller.InstanceType)
-    tool_run_msg = _modeller.Attribute(unicode)
+class TripAttractions(_m.Tool()):
+    CoefficientsPerGrouping = _m.Attribute(_m.InstanceType)
+    GroupingsPerPurpose = _m.Attribute(_m.InstanceType)
+    OutputFile = _m.Attribute(_m.InstanceType)
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        start_path = os.path.dirname(_modeller.Modeller().emmebank.path)
-        pb = _modeller.ToolPageBuilder(self, title="Trip Attractions")
+        start_path = os.path.dirname(_m.Modeller().emmebank.path)
+        pb = _m.ToolPageBuilder(self, title="Trip Attractions")
         pb.description = """
 Trip Attractions<br>
 Data Needed from a prior Toolbox:<br>
@@ -55,12 +55,12 @@ mo20, mo365, mo366, mo367, mo368, mo369, mo370, mo371, mo372, mo373, mo374, mo37
         try:
             self.__call__(self.CoefficientsPerGrouping, self.OutputFile, self.GroupingsPerPurpose)
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     def __call__(self, PathHeader):
-        with _modeller.logbook_trace("03-01 - Trip Attractions"):
+        with _m.logbook_trace("03-01 - Trip Attractions"):
             print "----03-01 - Trip Attractions: " + str(datetime.now().strftime('%H:%M:%S'))
 
             CoefficientsPerGrouping = PathHeader + "03_TRIP_ATTRACTIONS/Inputs/32_COEFFICIENTS.csv"
@@ -92,19 +92,19 @@ mo20, mo365, mo366, mo367, mo368, mo369, mo370, mo371, mo372, mo373, mo374, mo37
 
     #Export all mo matrices to CSV
     def Export_Matrices(self, OutputFile):
-        with _modeller.logbook_trace("Export_Matrices"):
+        with _m.logbook_trace("Export_Matrices"):
             print "--------Export_Matrices, " + str(datetime.now().strftime('%H:%M:%S'))
-            ExportToCSV = _modeller.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
+            ExportToCSV = _m.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
             list_of_matrices = ["md" + str(i) for i in range(5, 12) + range(20, 27) + range(31, 42)]
             ExportToCSV(list_of_matrices, OutputFile)
 
         ##    Outputs results matrix to a file
 
     def Output_Results(self, OutputFile, CoefficientsPerGrouping, GroupingsPerPurpose):
-        with _modeller.logbook_trace("Output Results"):
+        with _m.logbook_trace("Output Results"):
             print "--------Output_Results, " + str(datetime.now().strftime('%H:%M:%S'))
             ##    Create emmebank object
-            my_modeller = _modeller.Modeller()
+            my_modeller = _m.Modeller()
             my_emmebank = my_modeller.desktop.data_explorer().active_database().core_emmebank
 
             Output_File = OutputFile.replace(",", "")
@@ -119,7 +119,7 @@ mo20, mo365, mo366, mo367, mo368, mo369, mo370, mo371, mo372, mo373, mo374, mo37
                 md_value.append(my_emmebank.matrix("md" + str(mo_num)))
 
             ##    Export matrices using the appended list of md_value matrices
-            export_matrices = _modeller.Modeller().tool(
+            export_matrices = _m.Modeller().tool(
                 "inro.emme.data.matrix.export_matrices")
 
             ## Export all matrix data
@@ -161,10 +161,10 @@ mo20, mo365, mo366, mo367, mo368, mo369, mo370, mo371, mo372, mo373, mo374, mo37
 
     ## md31-md41 Remove negative values from Trip Rates
     def Check_forNegatives(self):
-        with _modeller.logbook_trace("Check_forNegatives"):
+        with _m.logbook_trace("Check_forNegatives"):
             print "--------Check_forNegatives, " + str(datetime.now().strftime('%H:%M:%S'))
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             spec_as_dict = {
                 "expression": "0",
@@ -190,10 +190,10 @@ mo20, mo365, mo366, mo367, mo368, mo369, mo370, mo371, mo372, mo373, mo374, mo37
 
     def Calculate_TripRates(self, coefficients_data, groupings_per_purpose, PathHeader):
         print "--------Calculate_TripRates, " + str(datetime.now().strftime('%H:%M:%S'))
-        with _modeller.logbook_trace("Calculate_TripRates"):
+        with _m.logbook_trace("Calculate_TripRates"):
 
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             spec_as_dict = {
                 "expression": "EXPRESSION",
@@ -250,7 +250,7 @@ mo20, mo365, mo366, mo367, mo368, mo369, mo370, mo371, mo372, mo373, mo374, mo37
 
     def Store_Groupings(self, GroupingsPerPurpose):
         print "--------Store_Groupings, " + str(datetime.now().strftime('%H:%M:%S'))
-        with _modeller.logbook_trace("Store Store_Groupings"):
+        with _m.logbook_trace("Store Store_Groupings"):
             with open(GroupingsPerPurpose, 'rb') as f:
                 reader = csv.reader(f, dialect='excel')
                 header = reader.next()
@@ -262,7 +262,7 @@ mo20, mo365, mo366, mo367, mo368, mo369, mo370, mo371, mo372, mo373, mo374, mo37
 
     def Store_Coefficients(self, CoefficientsPerGrouping):
         print "--------Store_Coefficients, " + str(datetime.now().strftime('%H:%M:%S'))
-        with _modeller.logbook_trace("Store_Coefficients"):
+        with _m.logbook_trace("Store_Coefficients"):
             with open(CoefficientsPerGrouping, 'rb') as f:
                 reader = csv.reader(f, dialect='excel')
                 header = reader.next()
@@ -283,11 +283,11 @@ mo20, mo365, mo366, mo367, mo368, mo369, mo370, mo371, mo372, mo373, mo374, mo37
 
     ##    Creates low and high-income households and transposes population and parking matrices
     def CreateHouseholds_LowHighIncome_TotalPop(self):
-        with _modeller.logbook_trace("CreateHouseholds_LowHighIncome_TotalPop"):
+        with _m.logbook_trace("CreateHouseholds_LowHighIncome_TotalPop"):
             print "--------CreateHouseholds_LowHighIncome_TotalPop, " + str(datetime.now().strftime('%H:%M:%S'))
 
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             spec_as_dict = {
                 "expression": "EXPRESSION",
@@ -339,14 +339,14 @@ mo20, mo365, mo366, mo367, mo368, mo369, mo370, mo371, mo372, mo373, mo374, mo37
         ##    Batches in the batchin file
 
     def Matrix_Batchins(self, PathHeader):
-        with _modeller.logbook_trace("Matrix Batchin"):
+        with _m.logbook_trace("Matrix Batchin"):
             print "--------Matrix_Batchins, " + str(datetime.now().strftime('%H:%M:%S'))
             ##        Sets up the 'matrix transaction' tool and runs it
             NAMESPACE = "inro.emme.data.matrix.matrix_transaction"
-            process = _modeller.Modeller().tool(NAMESPACE)
+            process = _m.Modeller().tool(NAMESPACE)
             matrix_file = PathHeader + "03_TRIP_ATTRACTIONS/Inputs/MatrixTransactionFile.txt"
 
             ##        Creates process transaction
             process(transaction_file=matrix_file,
                     throw_on_error=True,
-                    scenario=_modeller.Modeller().scenario)
+                    scenario=_m.Modeller().scenario)
