@@ -68,7 +68,7 @@ class TripAttractions(_m.Tool()):
         groupings_per_purpose = self.Store_Groupings(GroupingsPerPurpose)
 
         ## md31-md41 Calculate Trip Rates
-        self.Calculate_TripRates(coefficients_data, groupings_per_purpose, PathHeader)
+        self.Calculate_TripRates(coefficients_data, groupings_per_purpose)
 
         ## md31-md41 Remove negative values from Trip Rates
         self.Check_forNegatives()
@@ -165,7 +165,7 @@ class TripAttractions(_m.Tool()):
             report = compute_matrix(spec_as_dict)
 
     @_m.logbook_trace("Calculate_TripRates")
-    def Calculate_TripRates(self, coefficients_data, groupings_per_purpose, PathHeader):
+    def Calculate_TripRates(self, coefficients_data, groupings_per_purpose):
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
@@ -209,12 +209,6 @@ class TripAttractions(_m.Tool()):
                 # print "expression: ", expression
                 # print "gy_value:",gy_value
                 # print "md"+str(j+30)
-
-                f = open(PathHeader + '03_TRIP_ATTRACTIONS/Inputs/RegressionEquations', 'a')
-                # f.write("--------------------------------------------------\n")
-                f.write("md" + str(j + 30) + " : " + groupings_per_purpose[i][
-                    j] + " : " + gy_value + " : " + expression + "\n")
-                f.close()
 
                 spec_as_dict["expression"] = expression
                 spec_as_dict["result"] = "md" + str(j + 30)
