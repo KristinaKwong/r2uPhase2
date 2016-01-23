@@ -49,14 +49,16 @@ class TripProd(_m.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            self.__call__()
+            eb = _m.Modeller().emmebank
+            self.__call__(eb)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("02-01 - Trip Production")
-    def __call__(self, PathHeader):
+    def __call__(self, eb):
+        PathHeader = os.path.dirname(eb.path) + "\\"
         TripRateFile = PathHeader + "02_TRIP_PROD_TOOLBOX_WORK/Inputs/21_TripRates_ALLPURPOSES.csv"
         CalibrationFactors = PathHeader + "02_TRIP_PROD_TOOLBOX_WORK/Inputs/22_CalibFactors.csv"
         OutputFile = PathHeader + "02_TRIP_PROD_TOOLBOX_WORK/Outputs/02-01_OUTPUT_FILE.txt"

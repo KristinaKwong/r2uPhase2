@@ -242,7 +242,7 @@ class FullModelRun(_m.Tool()):
         root_directory = os.path.dirname(eb.path) + "\\"
 
         # Trip Generation (production, attraction, factors)
-        trip_productions(root_directory)
+        trip_productions(eb)
         trip_attraction(root_directory)
         factor_trip_attractions(root_directory)
         pre_loops(eb)
