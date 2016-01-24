@@ -55,7 +55,6 @@ class TripDistributions(_m.Tool()):
         self.max_iterations = 50
 
     def page(self):
-        start_path = os.path.dirname(_m.Modeller().emmebank.path)
         pb = _m.ToolPageBuilder(
             self, title="Trip Distributions",
             description="""Inputs matrices, calculates impedances and
@@ -75,17 +74,15 @@ class TripDistributions(_m.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            root_directory = os.path.dirname(_m.Modeller().emmebank.path)
-            self.__call__(root_directory, self.max_iterations)
+            eb = _m.Modeller().emmebank
+            self.__call__(eb, self.max_iterations)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("04-01 - Trip Distributions")
-    def __call__(self, root_directory, max_iterations):
-        output_file = os.path.join(root_directory, "04_TRIP_DISTRIBUTIONS/Outputs/04-01_OUTPUT_RESULTS.txt")
-
+    def __call__(self, eb, max_iterations):
         # Matrix Impedance Calculation
         self.impedance_calcs()
 
@@ -165,38 +162,27 @@ class TripDistributions(_m.Tool()):
 
         ##EXPORT OR OUTPUT MATRICES AS DESIRED:
         # ## Output results
-        self.output_results(output_file)
-
-        # ## Export Matrices to CSV
-        self.export_matrices(output_file)
-
-    #Export all mo matrices to CSV
-    @_m.logbook_trace("Export_Matrices")
-    def export_matrices(self, output_file):
-        ExportToCSV = _m.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
-        list_of_matrices = ["md" + str(i) for i in range(5, 12) + range(20, 26) + range(31, 53)] + ["mo" + str(i)
-                                                                                                    for i in
-                                                                                                    range(915, 927)]
-        ExportToCSV(list_of_matrices, output_file)
-
-        ##    Outputs results matrix to a file
+        self.output_results(eb)
 
     @_m.logbook_trace("Output Results")
-    def output_results(self, output_file):
-        ##    Create emmebank object
-        my_modeller = _m.Modeller()
-        my_emmebank = my_modeller.desktop.data_explorer().active_database().core_emmebank
+    def output_results(self, eb):
+        output_path = os.path.join(os.path.dirname(eb.path), "04_TRIP_DISTRIBUTIONS", "Outputs")
+        output_file =    os.path.join(output_path, "04-01_OUTPUT_RESULTS.txt")
+        output_file_gy = os.path.join(output_path, "04-01_OUTPUT_RESULTS_GY.txt")
+        output_file_gu = os.path.join(output_path, "04-01_OUTPUT_RESULTS_GU.txt")
+        output_file_csv = os.path.join(output_path, "04-01_OUTPUT_RESULTS_matrices.csv")
 
-        Output_File = output_file.replace(",", "")
-        Output_File_GY = output_file.replace(",", "").replace(".", "_GY.")
-        Output_File_GU = output_file.replace(",", "").replace(".", "_GU.")
+        util = _m.Modeller().tool("translink.emme.util")
+        list_of_matrices = ["md" + str(i) for i in range(5, 12) + range(20, 26) + range(31, 53)]
+        list_of_matrices = list_of_matrices  + ["mo" + str(i) for i in range(915, 927)]
+        util.export_csv(eb, list_of_matrices, output_file_csv)
 
         ##    List to hold matrix objects
         md_value = []
 
         ##    Loop to append all result matrices onto the variable 'md_value'
         for mo_num in [24, 25] + range(31, 53):
-            md_value.append(my_emmebank.matrix("md" + str(mo_num)))
+            md_value.append(eb.matrix("md" + str(mo_num)))
 
 
         ##    Export matrices using the appended list of md_value matrices
@@ -204,7 +190,7 @@ class TripDistributions(_m.Tool()):
             "inro.emme.data.matrix.export_matrices")
 
         ## Export all matrix data
-        export_matrices(export_file=Output_File,
+        export_matrices(export_file=output_file,
                         field_separator=' ',
                         matrices=md_value,
                         export_format="PROMPT_DATA_FORMAT",
@@ -212,7 +198,7 @@ class TripDistributions(_m.Tool()):
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         ## Export matrix data aggregated to the gy ensemble
-        export_matrices(export_file=Output_File_GY,
+        export_matrices(export_file=output_file_gy,
                         field_separator=' ',
                         matrices=md_value,
                         partition_aggregation={'destinations': 'gy', 'operator': 'sum'},
@@ -221,7 +207,7 @@ class TripDistributions(_m.Tool()):
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         ## Export matrix data aggregated to the gu ensemble
-        export_matrices(export_file=Output_File_GU,
+        export_matrices(export_file=output_file_gu,
                         field_separator=' ',
                         matrices=md_value,
                         partition_aggregation={'destinations': 'gu', 'operator': 'sum'},
@@ -230,16 +216,11 @@ class TripDistributions(_m.Tool()):
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         ## Append the inputted data sources to each of the Output Files
-        for Output in [Output_File, Output_File_GY, Output_File_GU]:
+        for Output in [output_file, output_file_gy, output_file_gu]:
             f = open(Output, 'a')
             f.write("c ------Data Sources:\n")
-            f.write("c " + Output_File + "\n")
+            f.write("c " + output_file + "\n")
             f.close()
-
-            ##    Open up window with the OutputFile Selected
-            # No, no random pop-up explorer.
-            #print "----------------OutputFile: ", Output_File
-            #subprocess.Popen(r'explorer /select, ' + OutputFile.replace("/","\\").replace(",","") + '"')
 
             ## Transpose mfs function for mf241 thru
 
