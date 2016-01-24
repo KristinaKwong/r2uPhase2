@@ -74,11 +74,11 @@ class TripAttractions(_m.Tool()):
         output_file =    os.path.join(output_path, "03-01_OUTPUT_RESULTS.txt")
         output_file_gy = os.path.join(output_path, "03-01_OUTPUT_RESULTS_GY.txt")
         output_file_gu = os.path.join(output_path, "03-01_OUTPUT_RESULTS_GU.txt")
+        output_file_csv = os.path.join(output_path, "03-01_OUTPUT_RESULTS_matrices.csv")
 
-        with _m.logbook_trace("Export_Matrices"):
-            ExportToCSV = _m.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
-            list_of_matrices = ["md" + str(i) for i in range(5, 12) + range(20, 27) + range(31, 42)]
-            ExportToCSV(list_of_matrices, output_file)
+        util = _m.Modeller().tool("translink.emme.util")
+        list_of_matrices = ["md" + str(i) for i in range(5, 12) + range(20, 27) + range(31, 42)]
+        util.export_csv(eb, list_of_matrices, output_file_csv)
 
         ##    List to hold matrix objects
         md_value = []

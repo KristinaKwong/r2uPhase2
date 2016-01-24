@@ -1,6 +1,7 @@
 import inro.modeller as _m
 import inro.emme as _emme
 import os
+import csv as csv
 
 class Util(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
@@ -49,3 +50,27 @@ class Util(_m.Tool()):
             "expression": expression
         }
         return spec
+        
+    @_m.logbook_trace("Export Matrices to CSV file", save_arguments=True)
+    def export_csv(self, eb, list_of_matrices, output_file):
+        scenario = list(eb.scenarios())[0]
+        zones = scenario.zone_numbers
+
+        matrix_data = []
+        matrix_name = []
+        matrix_desc = []
+        for matrix_id in list_of_matrices:
+            matrix = eb.matrix(matrix_id)
+            matrix_data.append(matrix.get_data(scenario.id))
+            matrix_name.append(matrix.name)
+            matrix_desc.append(matrix.description)
+
+        with open(output_file, 'wb') as f:
+            writer = csv.writer(f, dialect='excel')
+            writer.writerow(["matrices:"] + list_of_matrices)
+            writer.writerow(["name:"] + matrix_name)
+            writer.writerow(["description"] + matrix_desc)
+
+            for z in zones:
+                writer.writerow([z] + [data.get(z) for data in matrix_data])
+                

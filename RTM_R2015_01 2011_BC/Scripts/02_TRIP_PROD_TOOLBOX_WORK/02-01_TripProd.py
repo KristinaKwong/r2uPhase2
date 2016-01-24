@@ -88,11 +88,11 @@ class TripProd(_m.Tool()):
         output_file =    os.path.join(output_path, "02-01_OUTPUT_FILE.txt")
         output_file_gy = os.path.join(output_path, "02-01_OUTPUT_FILE_GY.txt")
         output_file_gu = os.path.join(output_path, "02-01_OUTPUT_FILE_GU.txt")
+        output_file_csv = os.path.join(output_path, "02-01_OUTPUT_FILE_matrices.csv")
 
-        with _m.logbook_trace("Export_Matrices"):
-            ExportToCSV = _m.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
-            list_of_matrices = ["mo" + str(i) for i in range(161, 365) + range(404, 915)]
-            ExportToCSV(list_of_matrices, output_file)
+        util = _m.Modeller().tool("translink.emme.util")
+        list_of_matrices = ["mo" + str(i) for i in range(161, 365) + range(404, 915)]
+        util.export_csv(eb, list_of_matrices, output_file_csv)
 
         ##    List to hold matrix objects
         mo_value = []
