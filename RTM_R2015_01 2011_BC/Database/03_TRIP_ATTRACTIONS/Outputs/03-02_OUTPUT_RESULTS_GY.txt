@@ -1,5 +1,5 @@
 c Emme Modeller - Matrix Transaction
-c Date: 2015-02-27 15:45:34
+c Date: 2016-01-24 12:16:47
 c Project:        TL_RTM_Release_2015_01.00 [2011 Base Case]                  
 t matrices
 a matrix=md24  HhLwIn   0.0 Household Low Income                    
@@ -363,4 +363,4 @@ a matrix=md52    aNof   0.0 FactoredAttracNo
     all   gy13  12870.39
     all   gy14  94612.33
 c ------Data Sources:
-c C:\EMME TL RTM\2011\RTM_R2015_01 2011_BC\Database\03_TRIP_ATTRACTIONS/Outputs/03-02_OUTPUT_RESULTS.txt
+c C:\proj\rtm-streamline\WorkingModels\RTM_R2015_01 2011_BC\Database\03_TRIP_ATTRACTIONS/Outputs/03-02_OUTPUT_RESULTS.txt
