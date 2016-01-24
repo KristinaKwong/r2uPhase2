@@ -225,53 +225,29 @@ class TripDistributions(_m.Tool()):
 
     @_m.logbook_trace("transposemfs")
     def transpose_full_matrices(self):
-        copy_matrix = _m.Modeller().tool("inro.emme.data.matrix.copy_matrix")
-        transpose_matrix = _m.Modeller().tool("inro.emme.data.matrix.transpose_matrix")
-        eb = _m.Modeller().emmebank
-        matrixnum = 241
-        newmatnum = 310
-        for i in range(63):
-            matrix_one = eb.matrix("mf" + str(matrixnum + i))
-            matrix_two = copy_matrix(from_matrix=matrix_one, matrix_id="mf" + str(newmatnum + i))
-            matrix_three = eb.matrix("mf" + str(newmatnum + i))
-            transpose_matrix(matrix=matrix_three)
-            # matrix transpose calculation
-
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        spec_dict = {
-            "expression": "1",
-            "result": "mf201",
-            "constraint": {"by_value": None, "by_zone": None},
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
         matrixnum = 241
         newmatnum = 310
+        specs = []
         for i in range(63):
-            expression1 = "0.5*mf" + str(newmatnum + i) + "+0.5*mf" + str(matrixnum + i)
-            result = "mf" + str(newmatnum + i)
-            spec_dict["expression"] = expression1
-            spec_dict["result"] = result
-            report = compute_matrix(spec_dict)
+            specs.append(util.matrix_spec("mf" + str(newmatnum + i), "mf" + str(matrixnum + i) + "'"))
 
+        report = compute_matrix(specs)
 
-            ##     Matrix balancing. Need list of input mo, md and impedance (mf) matrices, as well as output matrices
+        matrixnum = 241
+        newmatnum = 310
+        specs = []
+        for i in range(63):
+            specs.append(util.matrix_spec("mf" + str(newmatnum + i), "0.5*mf" + str(newmatnum + i) + "+0.5*mf" + str(matrixnum + i)))
+
+        report = compute_matrix(specs)
 
     @_m.logbook_trace("Run matrix balancing to multiple productions")
     def matrix_balancing(self, mo_list, md_list, impedance_list, output_list, max_iterations):
-        # Perform matrix calculation to aggregate matrices.
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
-        spec_dict_matcalc = {
-            "expression": "",
-            "result": "",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {"origins": None, "destinations": None}
-            },
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
 
         # Used to allocate results to  the 'scratch' matrices
         num_scratch = 0
@@ -281,13 +257,13 @@ class TripDistributions(_m.Tool()):
         #  (contains '+') adding mo matrices up for aggregation.
         # Performs calulation and saves result in a scratch matrix.
         # then inserts scratch matrix instead of the initial expresssion
+        specs = []
         for i in range(0, len(mo_list)):
             if "+" in mo_list[i]:
-                spec_dict_matcalc["expression"] = mo_list[i]
-                spec_dict_matcalc["result"] = results[num_scratch]
-                report = compute_matrix(spec_dict_matcalc)
+                specs.append(util.matrix_spec(results[num_scratch], mo_list[i]))
                 mo_list[i] = results[num_scratch]
                 num_scratch = num_scratch + 1
+        report = compute_matrix(specs)
 
         #Begin balmprod
         balancing_multiple_productions = _m.Modeller().tool("inro.emme.matrix_calculation.balancing_multiple_productions")
