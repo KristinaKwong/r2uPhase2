@@ -232,15 +232,9 @@ class TripDistributions(_m.Tool()):
         newmatnum = 310
         specs = []
         for i in range(63):
-            specs.append(util.matrix_spec("mf" + str(newmatnum + i), "mf" + str(matrixnum + i) + "'"))
-
-        report = compute_matrix(specs)
-
-        matrixnum = 241
-        newmatnum = 310
-        specs = []
-        for i in range(63):
-            specs.append(util.matrix_spec("mf" + str(newmatnum + i), "0.5*mf" + str(newmatnum + i) + "+0.5*mf" + str(matrixnum + i)))
+            result = "mf%d" % (newmatnum + i)
+            expression = "0.5 * mf%d + 0.5 * mf%d'" % (matrixnum + i, matrixnum + i)
+            specs.append(util.matrix_spec(result, expression))
 
         report = compute_matrix(specs)
 
