@@ -59,7 +59,6 @@ class SocioEconomicSegmentation(_m.Tool()):
     def __call__(self, eb):
         PathHeader = os.path.dirname(eb.path) + "\\"
         HHWorkerRate = PathHeader + "01_SOCIOECON-SEG_AUTOOWN_TOOLBOX_WORK/Inputs/12_HH_Worker_Rates.csv"
-        OutputFile = PathHeader + "01_SOCIOECON-SEG_AUTOOWN_TOOLBOX_WORK/Outputs/01-01_OUTPUT_RESULTS.txt"
         IncomeData = PathHeader + "01_SOCIOECON-SEG_AUTOOWN_TOOLBOX_WORK/Inputs/13_HHWrkrIncome.csv"
         AutoOwnershipCoefficients = PathHeader + "01_SOCIOECON-SEG_AUTOOWN_TOOLBOX_WORK/Inputs/14_AutoOwnershipCoefficients.csv"
         ##Batchin File
@@ -111,25 +110,19 @@ class SocioEconomicSegmentation(_m.Tool()):
         self.Autos_PerHHSize()
 
         # Output number of worker matrices
-        self.Output_Results(eb, OutputFile, HHWorkerRate, IncomeData, AutoOwnershipCoefficients)
-
-        ## Export Matrices to CSV
-        self.Export_Matrices(OutputFile)
-
-    #Export all mo matrices to CSV
-    @_m.logbook_trace("Export_Matrices")
-    def Export_Matrices(self, OutputFile):
-        ExportToCSV = _m.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
-        list_of_matrices = ["mo" + str(i) for i in [1] + range(16, 21) + range(50, 60) + range(61, 398) + range(404, 716)]
-        ExportToCSV(list_of_matrices, OutputFile)
+        self.Output_Results(eb, HHWorkerRate, IncomeData, AutoOwnershipCoefficients)
 
     @_m.logbook_trace("Output Results")
-    def Output_Results(self, eb, OutputFile, HHWorkerRate, IncomeData, AutoOwnershipCoefficients):
-        Output_File = OutputFile.replace(",", "")
-        Output_File_GY = OutputFile.replace(",", "").replace(".", "_GY.")
-        Output_File_GU = OutputFile.replace(",", "").replace(".", "_GU.")
-        # TODO: the replace(".", ...) means that the directory cannot have a "."
-        #       in the path....
+    def Output_Results(self, eb, HHWorkerRate, IncomeData, AutoOwnershipCoefficients):
+        output_path = os.path.join(os.path.dirname(eb.path), "01_SOCIOECON-SEG_AUTOOWN_TOOLBOX_WORK", "Outputs")
+        output_file =    os.path.join(output_path, "01-01_OUTPUT_RESULTS.txt")
+        output_file_gy = os.path.join(output_path, "01-01_OUTPUT_RESULTS_GY.txt")
+        output_file_gu = os.path.join(output_path, "01-01_OUTPUT_RESULTS_GU.txt")
+
+        with _m.logbook_trace("Export_Matrices"):
+            ExportToCSV = _m.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
+            list_of_matrices = ["mo" + str(i) for i in [1] + range(16, 21) + range(50, 60) + range(61, 398) + range(404, 716)]
+            ExportToCSV(list_of_matrices, output_file)
 
         ##    List to hold matrix objects
         mo_value = []
@@ -142,7 +135,7 @@ class SocioEconomicSegmentation(_m.Tool()):
         export_matrices = _m.Modeller().tool("inro.emme.data.matrix.export_matrices")
 
         ## Export all matrix data
-        export_matrices(export_file=Output_File,
+        export_matrices(export_file=output_file,
                         field_separator=' ',
                         matrices=mo_value,
                         export_format="PROMPT_DATA_FORMAT",
@@ -150,7 +143,7 @@ class SocioEconomicSegmentation(_m.Tool()):
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         ## Export matrix data aggregated to the gy ensemble
-        export_matrices(export_file=Output_File_GY,
+        export_matrices(export_file=output_file_gy,
                         field_separator=' ',
                         matrices=mo_value,
                         partition_aggregation={'origins': 'gy', 'operator': 'sum'},
@@ -159,7 +152,7 @@ class SocioEconomicSegmentation(_m.Tool()):
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         ## Export matrix data aggregated to the gu ensemble
-        export_matrices(export_file=Output_File_GU,
+        export_matrices(export_file=output_file_gu,
                         field_separator=' ',
                         matrices=mo_value,
                         partition_aggregation={'origins': 'gu', 'operator': 'sum'},
@@ -167,7 +160,7 @@ class SocioEconomicSegmentation(_m.Tool()):
                         skip_default_values=True,
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
-        for Output in [Output_File, Output_File_GY, Output_File_GU]:
+        for Output in [output_file, output_file_gy, output_file_gu]:
             f = open(Output, 'a')
             f.write("c ------Data Sources:\n")
             f.write("c " + HHWorkerRate + "\n")
@@ -175,12 +168,7 @@ class SocioEconomicSegmentation(_m.Tool()):
             f.write("c " + AutoOwnershipCoefficients + "\n")
             f.close()
 
-            ##    Open up window with the OutputFile Selected
-            ##print "----------------OutputFile: ", Output_File
-            ##subprocess.Popen(r'explorer /select, ' + OutputFile.replace("/","\\").replace(",","") + '"')
-
-        ##     mo389-mo391 - Aggregate Num Workers in each Income Category
-
+    ##     mo389-mo391 - Aggregate Num Workers in each Income Category
     @_m.logbook_trace("Aggregate Number of Worker Income Categories")
     def Aggregate_NumWorkerIncomeCategories(self):
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
@@ -534,7 +522,7 @@ class SocioEconomicSegmentation(_m.Tool()):
             specs.append(util.matrix_spec("mo" + str(x + 716), expression))
 
         report = compute_matrix(specs)
-        
+
     ##Create mo16, mo18 from existing matrices
     @_m.logbook_trace("InitialMatrixCalculations")
     def InitialMatrixCalculations(self):

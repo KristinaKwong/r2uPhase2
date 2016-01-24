@@ -47,9 +47,6 @@ class FactoredTripAttractions(_m.Tool()):
 
     @_m.logbook_trace("03-02 - Factored Trip Attractions")
     def __call__(self, eb):
-        PathHeader = os.path.dirname(eb.path) + "\\"
-        OutputFile = PathHeader + "03_TRIP_ATTRACTIONS/Outputs/03-02_OUTPUT_RESULTS.txt"
-
         ## Define variables to store/locate values.
         purpose_list = ['HBWL', 'HBWM', 'HBWH', 'NHBW', 'HBU', 'HBSCHO', 'HBSHOP', 'HBPB', 'HBSOC', 'HBESC', 'NHBO']
         purpose_factors = {'HBWL': {'moSum': 0, 'mdSum': 0, 'Factor': 0},
@@ -72,28 +69,20 @@ class FactoredTripAttractions(_m.Tool()):
         self.Apply_Factors(purpose_list, purpose_factors)
 
         ## Output results
-        self.Output_Results(eb, OutputFile)
-
-        ## Export Matrices to CSV
-        self.Export_Matrices(OutputFile)
-
-    #Export all mo matrices to CSV
-    @_m.logbook_trace("Export_Matrices")
-    def Export_Matrices(self, OutputFile):
-        ExportToCSV = _m.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
-        list_of_matrices = ["md" + str(i) for i in range(5, 12) + range(20, 26) + range(31, 53)] + ["mo" + str(i)
-                                                                                                    for i in
-                                                                                                    range(915, 927)]
-        ExportToCSV(list_of_matrices, OutputFile)
-
-        ##    Outputs results matrix to a file
+        self.Output_Results(eb)
 
     @_m.logbook_trace("Output Results")
-    def Output_Results(self, eb, OutputFile):
-        Output_File = OutputFile.replace(",", "")
-        Output_File_GY = OutputFile.replace(",", "").replace(".", "_GY.")
-        Output_File_GU = OutputFile.replace(",", "").replace(".", "_GU.")
-        # TODO: replace "." means file path cannot contain a "." elsewhere
+    def Output_Results(self, eb):
+        output_path = os.path.join(os.path.dirname(eb.path), "03_TRIP_ATTRACTIONS", "Outputs")
+        output_file =    os.path.join(output_path, "03-02_OUTPUT_RESULTS.txt")
+        output_file_gy = os.path.join(output_path, "03-02_OUTPUT_RESULTS_GY.txt")
+        output_file_gu = os.path.join(output_path, "03-02_OUTPUT_RESULTS_GU.txt")
+
+        with _m.logbook_trace("Export_Matrices"):
+            ExportToCSV = _m.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
+            list_of_matrices = ["md" + str(i) for i in range(5, 12) + range(20, 26) + range(31, 53)]
+            list_of_matrices = list_of_matrices + ["mo" + str(i) for i in range(915, 927)]
+            ExportToCSV(list_of_matrices, output_file)
 
         ##    List to hold matrix objects
         md_value = []
@@ -107,7 +96,7 @@ class FactoredTripAttractions(_m.Tool()):
         export_matrices = _m.Modeller().tool("inro.emme.data.matrix.export_matrices")
 
         ## Export all matrix data
-        export_matrices(export_file=Output_File,
+        export_matrices(export_file=output_file,
                         field_separator=' ',
                         matrices=md_value,
                         export_format="PROMPT_DATA_FORMAT",
@@ -115,7 +104,7 @@ class FactoredTripAttractions(_m.Tool()):
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         ## Export matrix data aggregated to the gy ensemble
-        export_matrices(export_file=Output_File_GY,
+        export_matrices(export_file=output_file_gy,
                         field_separator=' ',
                         matrices=md_value,
                         partition_aggregation={'destinations': 'gy', 'operator': 'sum'},
@@ -124,7 +113,7 @@ class FactoredTripAttractions(_m.Tool()):
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         ## Export matrix data aggregated to the gu ensemble
-        export_matrices(export_file=Output_File_GU,
+        export_matrices(export_file=output_file_gu,
                         field_separator=' ',
                         matrices=md_value,
                         partition_aggregation={'destinations': 'gu', 'operator': 'sum'},
@@ -132,10 +121,10 @@ class FactoredTripAttractions(_m.Tool()):
                         skip_default_values=True,
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
-        for Output in [Output_File, Output_File_GY, Output_File_GU]:
+        for Output in [output_file, output_file_gy, output_file_gu]:
             f = open(Output, 'a')
             f.write("c ------Data Sources:\n")
-            f.write("c " + Output_File + "\n")
+            f.write("c " + output_file + "\n")
             f.close()
 
     @_m.logbook_trace("Apply_Factors")

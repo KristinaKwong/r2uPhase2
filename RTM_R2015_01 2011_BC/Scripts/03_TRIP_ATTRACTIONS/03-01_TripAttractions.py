@@ -52,7 +52,7 @@ class TripAttractions(_m.Tool()):
     def __call__(self, eb):
         PathHeader = os.path.dirname(eb.path) + "\\"
         CoefficientsPerGrouping = PathHeader + "03_TRIP_ATTRACTIONS/Inputs/32_COEFFICIENTS.csv"
-        OutputFile = PathHeader + "03_TRIP_ATTRACTIONS/Outputs/03-01_OUTPUT_RESULTS.txt"
+
         ##Batchin File
         self.Matrix_Batchins(eb)
 
@@ -66,25 +66,19 @@ class TripAttractions(_m.Tool()):
         self.Calculate_TripRates(coefficients_data)
 
         ## Output results
-        self.Output_Results(eb, OutputFile, CoefficientsPerGrouping)
-
-        ## Export Matrices to CSV
-        self.Export_Matrices(OutputFile)
-
-    #Export all mo matrices to CSV
-    @_m.logbook_trace("Export_Matrices")
-    def Export_Matrices(self, OutputFile):
-        ExportToCSV = _m.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
-        list_of_matrices = ["md" + str(i) for i in range(5, 12) + range(20, 27) + range(31, 42)]
-        ExportToCSV(list_of_matrices, OutputFile)
-
-        ##    Outputs results matrix to a file
+        self.Output_Results(eb, CoefficientsPerGrouping)
 
     @_m.logbook_trace("Output Results")
-    def Output_Results(self, eb, OutputFile, CoefficientsPerGrouping):
-        Output_File = OutputFile.replace(",", "")
-        Output_File_GY = OutputFile.replace(",", "").replace(".", "_GY.")
-        Output_File_GU = OutputFile.replace(",", "").replace(".", "_GU.")
+    def Output_Results(self, eb, CoefficientsPerGrouping):
+        output_path = os.path.join(os.path.dirname(eb.path), "03_TRIP_ATTRACTIONS", "Outputs")
+        output_file =    os.path.join(output_path, "03-01_OUTPUT_RESULTS.txt")
+        output_file_gy = os.path.join(output_path, "03-01_OUTPUT_RESULTS_GY.txt")
+        output_file_gu = os.path.join(output_path, "03-01_OUTPUT_RESULTS_GU.txt")
+
+        with _m.logbook_trace("Export_Matrices"):
+            ExportToCSV = _m.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
+            list_of_matrices = ["md" + str(i) for i in range(5, 12) + range(20, 27) + range(31, 42)]
+            ExportToCSV(list_of_matrices, output_file)
 
         ##    List to hold matrix objects
         md_value = []
@@ -97,7 +91,7 @@ class TripAttractions(_m.Tool()):
         export_matrices = _m.Modeller().tool("inro.emme.data.matrix.export_matrices")
 
         ## Export all matrix data
-        export_matrices(export_file=Output_File,
+        export_matrices(export_file=output_file,
                         field_separator=' ',
                         matrices=md_value,
                         export_format="PROMPT_DATA_FORMAT",
@@ -105,7 +99,7 @@ class TripAttractions(_m.Tool()):
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         ## Export matrix data aggregated to the gy ensemble
-        export_matrices(export_file=Output_File_GY,
+        export_matrices(export_file=output_file_gy,
                         field_separator=' ',
                         matrices=md_value,
                         partition_aggregation={'destinations': 'gy', 'operator': 'sum'},
@@ -114,7 +108,7 @@ class TripAttractions(_m.Tool()):
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         ## Export matrix data aggregated to the gu ensemble
-        export_matrices(export_file=Output_File_GU,
+        export_matrices(export_file=output_file_gu,
                         field_separator=' ',
                         matrices=md_value,
                         partition_aggregation={'destinations': 'gu', 'operator': 'sum'},
@@ -122,7 +116,7 @@ class TripAttractions(_m.Tool()):
                         skip_default_values=True,
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
-        for Output in [Output_File, Output_File_GY, Output_File_GU]:
+        for Output in [output_file, output_file_gy, output_file_gu]:
             f = open(Output, 'a')
             f.write("c ------Data Sources:\n")
             f.write("c " + CoefficientsPerGrouping + "\n")
@@ -216,7 +210,7 @@ class TripAttractions(_m.Tool()):
         specs.append(util.matrix_spec("md13", "mo13'"))
         specs.append(util.matrix_spec("md17", "mo17'"))
         specs.append(util.matrix_spec("md29", "mo29'"))
- 
+
         report = compute_matrix(specs)
 
     @_m.logbook_trace("Matrix Batchin")

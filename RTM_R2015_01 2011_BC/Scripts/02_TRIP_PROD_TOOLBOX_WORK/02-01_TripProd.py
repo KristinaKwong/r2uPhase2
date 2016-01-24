@@ -51,7 +51,6 @@ class TripProd(_m.Tool()):
         PathHeader = os.path.dirname(eb.path) + "\\"
         TripRateFile = PathHeader + "02_TRIP_PROD_TOOLBOX_WORK/Inputs/21_TripRates_ALLPURPOSES.csv"
         CalibrationFactors = PathHeader + "02_TRIP_PROD_TOOLBOX_WORK/Inputs/22_CalibFactors.csv"
-        OutputFile = PathHeader + "02_TRIP_PROD_TOOLBOX_WORK/Outputs/02-01_OUTPUT_FILE.txt"
         FirstResultMoNum = "404"
 
         self.Matrix_Batchins(eb)
@@ -80,24 +79,20 @@ class TripProd(_m.Tool()):
         self.Aggregate_Purposes()
 
         ##            Output these new result files
-        self.Output_Results(eb, OutputFile, FirstResultMoNum, TripRateFile, CalibrationFactors)
-
-        ## Export Matrices to CSV
-        self.Export_Matrices(OutputFile)
-
-    #Export all mo matrices to CSV
-    @_m.logbook_trace("Export_Matrices")
-    def Export_Matrices(self, OutputFile):
-        ExportToCSV = _m.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
-        list_of_matrices = ["mo" + str(i) for i in range(161, 365) + range(404, 915)]
-        ExportToCSV(list_of_matrices, OutputFile)
+        self.Output_Results(eb, FirstResultMoNum, TripRateFile, CalibrationFactors)
 
     ##    Outputs results matrix to a file
     @_m.logbook_trace("Output Results")
-    def Output_Results(self, eb, OutputFile, FirstResultMoNum, TripRateFile, CalibrationFactors):
-        Output_File = OutputFile.replace(",", "")
-        Output_File_GY = OutputFile.replace(",", "").replace(".", "_GY.")
-        Output_File_GU = OutputFile.replace(",", "").replace(".", "_GU.")
+    def Output_Results(self, eb, FirstResultMoNum, TripRateFile, CalibrationFactors):
+        output_path = os.path.join(os.path.dirname(eb.path), "02_TRIP_PROD_TOOLBOX_WORK", "Outputs")
+        output_file =    os.path.join(output_path, "02-01_OUTPUT_FILE.txt")
+        output_file_gy = os.path.join(output_path, "02-01_OUTPUT_FILE_GY.txt")
+        output_file_gu = os.path.join(output_path, "02-01_OUTPUT_FILE_GU.txt")
+
+        with _m.logbook_trace("Export_Matrices"):
+            ExportToCSV = _m.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
+            list_of_matrices = ["mo" + str(i) for i in range(161, 365) + range(404, 915)]
+            ExportToCSV(list_of_matrices, output_file)
 
         ##    List to hold matrix objects
         mo_value = []
@@ -119,7 +114,7 @@ class TripProd(_m.Tool()):
         export_matrices = _m.Modeller().tool("inro.emme.data.matrix.export_matrices")
         export_matrices_gy = _m.Modeller().tool("inro.emme.data.matrix.export_matrices")
 
-        export_matrices(export_file=Output_File,
+        export_matrices(export_file=output_file,
                         field_separator=' ',
                         matrices=mo_value,
                         export_format="PROMPT_DATA_FORMAT",
@@ -127,7 +122,7 @@ class TripProd(_m.Tool()):
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         ## Export matrix data aggregated to the gy ensemble
-        export_matrices_gy(export_file=Output_File_GY,
+        export_matrices_gy(export_file=output_file_gy,
                            field_separator=' ',
                            matrices=mo_value,
                            partition_aggregation={'origins': 'gy', 'operator': 'sum'},
@@ -136,7 +131,7 @@ class TripProd(_m.Tool()):
                            full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         ## Export matrix data aggregated to the gu ensemble
-        export_matrices_gy(export_file=Output_File_GU,
+        export_matrices_gy(export_file=output_file_gu,
                            field_separator=' ',
                            matrices=mo_value,
                            partition_aggregation={'origins': 'gu', 'operator': 'sum'},
@@ -144,18 +139,13 @@ class TripProd(_m.Tool()):
                            skip_default_values=True,
                            full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
-        for Output in [Output_File, Output_File_GY, Output_File_GU]:
+        for Output in [output_file, output_file_gy, output_file_gu]:
             f = open(Output, 'a')
             f.write("c ------Data Sources:\n")
             f.write("c " + TripRateFile + "\n")
             f.write("c " + CalibrationFactors + "\n")
-            f.write("c " + OutputFile + "\n")
+            f.write("c " + output_file + "\n")
             f.close()
-
-
-        ##    Open up window with the OutputFile Selected
-        print "----------------OutputFile: ", Output_File
-        #subprocess.Popen(r'explorer /select, ' + OutputFile.replace("/","\\").replace(",","") + '"')
 
     @_m.logbook_trace("Aggregate_Purposes")
     def Aggregate_Purposes(self):
