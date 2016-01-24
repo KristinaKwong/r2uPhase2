@@ -171,64 +171,32 @@ class SocioEconomicSegmentation(_m.Tool()):
     ##     mo389-mo391 - Aggregate Num Workers in each Income Category
     @_m.logbook_trace("Aggregate Number of Worker Income Categories")
     def Aggregate_NumWorkerIncomeCategories(self):
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        spec_as_dict = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {
-                    "origins": None,
-                    "destinations": None
-                }
-            },
-            "aggregation": {
-                "origins": None,
-                "destinations": None
-            },
-            "type": "MATRIX_CALCULATION"
-        }
-
         result_mo_num = 389
+        specs = []
         for count in range(377, 388, 4):
-            spec_as_dict["expression"] = "mo" + str(count + 0) + "*0 +" + "mo" + str(
+            expression = "mo" + str(count + 0) + "*0 +" + "mo" + str(
                 count + 1) + "*1 +" + "mo" + str(count + 2) + "*2 +" + "mo" + str(count + 3) + "*mo58"
-            spec_as_dict["result"] = "mo" + str(result_mo_num)
-            #                print "mo"+str(count+0) + "*0 +" + "mo"+str(count+1) + "*1 +" + "mo"+str(count+2) + "*2 +" + "mo"+str(count+3) + "*mo58"
-            #                print "mo"+str(result_mo_num)
-            ##Outputs Matrices: mo389-mo391. Income Cat x Num Workers
-            report = compute_matrix(spec_as_dict)
+            result = "mo" + str(result_mo_num)
             result_mo_num = result_mo_num + 1
+            specs.append(util.matrix_spec(result, expression))
 
-        ##    mo365-mo388 - Aggregate Income Categories
+        ##Outputs Matrices: mo389-mo391. Income Cat x Num Workers
+        report = compute_matrix(specs)
 
     @_m.logbook_trace("Aggregate Income Categories")
     def Aggregate_IncomeCategories(self):
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
-
-        spec_as_dict = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {
-                    "origins": None,
-                    "destinations": None
-                }
-            },
-            "aggregation": {
-                "origins": None,
-                "destinations": None
-            },
-            "type": "MATRIX_CALCULATION"
-        }
 
         start_mo_num = 73
         result_mo_num = 365
 
         ## create additional columns to add household size and income categories
         hh_expression = []
+        specs = []
         for count in range(start_mo_num, 112, 13):
             hh_expression = ["mo" + str(1 + count) + " + mo" + str(2 + count),
                              "mo" + str(3 + count) + " + mo" + str(4 + count) + " + mo" + str(5 + count),
@@ -238,15 +206,15 @@ class SocioEconomicSegmentation(_m.Tool()):
                                  12 + count) + " + mo" + str(13 + count)
             ]
             for hh_ex in hh_expression:
-                spec_as_dict["expression"] = hh_ex
-                spec_as_dict["result"] = "mo" + str(result_mo_num)
-
-                ##Outputs Matrices: mo365-mo376. HHSize x Income
-                report = compute_matrix(spec_as_dict)
+                specs.append(util.matrix_spec("mo" + str(result_mo_num), hh_ex))
                 result_mo_num = result_mo_num + 1
+
+        ##Outputs Matrices: mo365-mo376. HHSize x Income
+        report = compute_matrix(specs)
 
         ## create additional columns to add worker number and income categories
         wk_expression = []
+        specs = []
         for count in range(start_mo_num, 112, 13):
             wk_expression = [
                 "mo" + str(1 + count) + " + mo" + str(3 + count) + " + mo" + str(6 + count) + " + mo" + str(
@@ -257,41 +225,23 @@ class SocioEconomicSegmentation(_m.Tool()):
                 "mo" + str(9 + count) + " + mo" + str(13 + count)
             ]
             for wk_ex in wk_expression:
-                spec_as_dict["expression"] = wk_ex
-                spec_as_dict["result"] = "mo" + str(result_mo_num)
-
-                ##Outputs Matrices: mo377-mo388. NumWorkers x Income
-                report = compute_matrix(spec_as_dict)
+                specs.append(util.matrix_spec("mo" + str(result_mo_num), wk_ex))
                 result_mo_num = result_mo_num + 1
 
-            ##     mo269-mo364 - Aggregate Non-Workers
+        ##Outputs Matrices: mo377-mo388. NumWorkers x Income
+        report = compute_matrix(specs)
 
     @_m.logbook_trace("Aggregate NonWorkers and Workers")
     def Aggregate_NonWorkers_and_Workers(self):
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
-
-        spec_as_dict = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {
-                    "origins": None,
-                    "destinations": None
-                }
-            },
-            "aggregation": {
-                "origins": None,
-                "destinations": None
-            },
-            "type": "MATRIX_CALCULATION"
-        }
 
         start_mo_num = 112
         result_mo_num = 269
 
         ## create additional columns to aggregate to Non-workers
         hh_expression = []
+        specs = []
         for count in range(start_mo_num, 268, 13):
             hh_expression = ["mo" + str(1 + count) + " + mo" + str(2 + count),
                              "mo" + str(3 + count) + " + mo" + str(4 + count) + " + mo" + str(5 + count),
@@ -301,16 +251,15 @@ class SocioEconomicSegmentation(_m.Tool()):
                                  12 + count) + " + mo" + str(13 + count)
             ]
             for hh_ex in hh_expression:
-                spec_as_dict["expression"] = hh_ex
-                spec_as_dict["result"] = "mo" + str(result_mo_num)
-                # print "mo"+str(result_mo_num) + " = " + hh_ex
+                specs.append(util.matrix_spec("mo" + str(result_mo_num), hh_ex))
+                result_mo_num = result_mo_num + 1
 
                 ##Outputs Matrices: mo269-mo316. NonWorkers: HHSize x Income x AutoOwnership
-                report = compute_matrix(spec_as_dict)
-                result_mo_num = result_mo_num + 1
+        report = compute_matrix(specs)
 
         ## create additional columns to aggregate to Workers
         wk_expression = []
+        specs = []
         for count in range(start_mo_num, 268, 13):
             wk_expression = [
                 "mo" + str(1 + count) + " + mo" + str(3 + count) + " + mo" + str(6 + count) + " + mo" + str(
@@ -321,13 +270,10 @@ class SocioEconomicSegmentation(_m.Tool()):
                 "mo" + str(9 + count) + " + mo" + str(13 + count)
             ]
             for wk_ex in wk_expression:
-                spec_as_dict["expression"] = wk_ex
-                spec_as_dict["result"] = "mo" + str(result_mo_num)
-                # print "mo"+str(result_mo_num) + " = " + wk_ex
-
-                ##Outputs Matrices: mo317-mo364. Workers: NumWorkers x Income x AutoOwnership
-                report = compute_matrix(spec_as_dict)
+                specs.append(util.matrix_spec("mo" + str(result_mo_num), wk_ex))
                 result_mo_num = result_mo_num + 1
+
+        report = compute_matrix(specs)
 
             ##     mo74-mo112 - Calculated Number of Households Per Worker Category and Per Income Category
 
@@ -396,6 +342,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Calculate Number of Workers")
     def Calculate_Workers(self, HHData):
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         ##    Dictionary for senior proprtion lookup - set senior proportion constraint
@@ -458,19 +405,7 @@ class SocioEconomicSegmentation(_m.Tool()):
         report = compute_matrix(specs)
 
         ## Calculate the total number of workers by adding the recently calculated columns of number of HH with X workers
-        spec2 = {
-            "expression": "mo55+mo56*2+mo57*mo58",
-            "result": "mo59",
-            "constraint": {
-                "by_value": None,
-                "by_zone": None
-            },
-            "aggregation": {
-                "origins": None,
-                "destinations": None
-            },
-            "type": "MATRIX_CALCULATION"
-        }
+        spec2 = util.matrix_spec("mo59", "mo55+mo56*2+mo57*mo58")
         report = compute_matrix(spec2)
 
     @_m.logbook_trace("Store AutoOwnCoefficients")
@@ -526,28 +461,15 @@ class SocioEconomicSegmentation(_m.Tool()):
     ##Create mo16, mo18 from existing matrices
     @_m.logbook_trace("InitialMatrixCalculations")
     def InitialMatrixCalculations(self):
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        spec_as_dict = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {"origins": None, "destinations": None}
-            },
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
+        specs = []
 
-        spec_as_dict["expression"] = "mo19/(mo20+0.00000000001)"
-        spec_as_dict["result"] = "mo18"
-        report = compute_matrix(spec_as_dict)
-
-        spec_as_dict["expression"] = "10000*mo20/(mo17+0.00000000001)"
-        spec_as_dict["result"] = "mo16"
-        report = compute_matrix(spec_as_dict)
-
-        ##    Batches in the batchin file
+        specs.append(util.matrix_spec("mo18", "mo19/(mo20+0.00000000001)"))
+        specs.append(util.matrix_spec("mo16", "10000*mo20/(mo17+0.00000000001)"))
+ 
+        report = compute_matrix(specs)
 
     @_m.logbook_trace("Matrix Batchin")
     def Matrix_Batchins(self, eb):
