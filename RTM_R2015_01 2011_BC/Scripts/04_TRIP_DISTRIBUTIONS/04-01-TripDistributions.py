@@ -186,8 +186,7 @@ class TripDistributions(_m.Tool()):
 
 
         ##    Export matrices using the appended list of md_value matrices
-        export_matrices = _m.Modeller().tool(
-            "inro.emme.data.matrix.export_matrices")
+        export_matrices = _m.Modeller().tool("inro.emme.data.matrix.export_matrices")
 
         ## Export all matrix data
         export_matrices(export_file=output_file,
@@ -226,10 +225,8 @@ class TripDistributions(_m.Tool()):
 
     @_m.logbook_trace("transposemfs")
     def transpose_full_matrices(self):
-        NAMESPACE = "inro.emme.data.matrix.copy_matrix"
-        TRANNAMESPACE = "inro.emme.data.matrix.transpose_matrix"
-        copy_matrix = _m.Modeller().tool(NAMESPACE)
-        transpose_matrix = _m.Modeller().tool(TRANNAMESPACE)
+        copy_matrix = _m.Modeller().tool("inro.emme.data.matrix.copy_matrix")
+        transpose_matrix = _m.Modeller().tool("inro.emme.data.matrix.transpose_matrix")
         eb = _m.Modeller().emmebank
         matrixnum = 241
         newmatnum = 310
@@ -239,8 +236,8 @@ class TripDistributions(_m.Tool()):
             matrix_three = eb.matrix("mf" + str(newmatnum + i))
             transpose_matrix(matrix=matrix_three)
             # matrix transpose calculation
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_dict = {
             "expression": "1",
@@ -264,8 +261,7 @@ class TripDistributions(_m.Tool()):
     @_m.logbook_trace("Run matrix balancing to multiple productions")
     def matrix_balancing(self, mo_list, md_list, impedance_list, output_list, max_iterations):
         # Perform matrix calculation to aggregate matrices.
-        compute_matrix = _m.Modeller().tool(
-            "inro.emme.matrix_calculation.matrix_calculator")
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
         spec_dict_matcalc = {
             "expression": "",
             "result": "",
@@ -294,12 +290,7 @@ class TripDistributions(_m.Tool()):
                 num_scratch = num_scratch + 1
 
         #Begin balmprod
-        # Prior to Emme 4.1.2 Matrix balancing to multiple productions
-        # was distributed as a separate toolbox with namespace:
-        # "inro.support.case6163.matrix_balancing_multiple_productions"
-        balancing_multiple_productions = _m.Modeller().tool(
-            "inro.emme.matrix_calculation.balancing_multiple_productions")
-
+        balancing_multiple_productions = _m.Modeller().tool("inro.emme.matrix_calculation.balancing_multiple_productions")
         spec_dict_matbal = {
             "type": "MATRIX_BALANCING_MULTIPLE_PRODUCTIONS",
             "destination_totals": "destinations",
@@ -326,8 +317,7 @@ class TripDistributions(_m.Tool()):
     #Calculate impedances for each purpose based on the original distribution macro distestall.mac
     @_m.logbook_trace("Calculate impedances")
     def impedance_calcs(self):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_dict = {
             "expression": "EXPRESSION",
@@ -654,8 +644,7 @@ class TripDistributions(_m.Tool()):
     #Calculate transit impedances (separate procedure because the spec is different - including constraint values)
     @_m.logbook_trace("Calculate transit impedances")
     def Impedance_Transit(self):
-        compute_matrix = _m.Modeller().tool(
-            "inro.emme.matrix_calculation.matrix_calculator")
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec_dict = {
             "expression": "mf925.max.200",
