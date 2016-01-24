@@ -84,8 +84,6 @@ class TripDistributions(_m.Tool()):
 
     @_m.logbook_trace("04-01 - Trip Distributions")
     def __call__(self, root_directory, max_iterations):
-        print "----04-01 - Trip Distributions: " + str(datetime.now().strftime('%H:%M:%S'))
-
         output_file = os.path.join(root_directory, "04_TRIP_DISTRIBUTIONS/Outputs/04-01_OUTPUT_RESULTS.txt")
 
         # Matrix Impedance Calculation
@@ -173,122 +171,117 @@ class TripDistributions(_m.Tool()):
         self.export_matrices(output_file)
 
     #Export all mo matrices to CSV
+    @_m.logbook_trace("Export_Matrices")
     def export_matrices(self, output_file):
-        with _m.logbook_trace("Export_Matrices"):
-            print "--------Export_Matrices, " + str(datetime.now().strftime('%H:%M:%S'))
-            ExportToCSV = _m.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
-            list_of_matrices = ["md" + str(i) for i in range(5, 12) + range(20, 26) + range(31, 53)] + ["mo" + str(i)
-                                                                                                        for i in
-                                                                                                        range(915, 927)]
-            ExportToCSV(list_of_matrices, output_file)
+        ExportToCSV = _m.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
+        list_of_matrices = ["md" + str(i) for i in range(5, 12) + range(20, 26) + range(31, 53)] + ["mo" + str(i)
+                                                                                                    for i in
+                                                                                                    range(915, 927)]
+        ExportToCSV(list_of_matrices, output_file)
 
-            ##    Outputs results matrix to a file
+        ##    Outputs results matrix to a file
 
+    @_m.logbook_trace("Output Results")
     def output_results(self, output_file):
-        with _m.logbook_trace("Output Results"):
-            print "--------Output_Results, " + str(datetime.now().strftime('%H:%M:%S'))
-            ##    Create emmebank object
-            my_modeller = _m.Modeller()
-            my_emmebank = my_modeller.desktop.data_explorer().active_database().core_emmebank
+        ##    Create emmebank object
+        my_modeller = _m.Modeller()
+        my_emmebank = my_modeller.desktop.data_explorer().active_database().core_emmebank
 
-            Output_File = output_file.replace(",", "")
-            Output_File_GY = output_file.replace(",", "").replace(".", "_GY.")
-            Output_File_GU = output_file.replace(",", "").replace(".", "_GU.")
+        Output_File = output_file.replace(",", "")
+        Output_File_GY = output_file.replace(",", "").replace(".", "_GY.")
+        Output_File_GU = output_file.replace(",", "").replace(".", "_GU.")
 
-            ##    List to hold matrix objects
-            md_value = []
+        ##    List to hold matrix objects
+        md_value = []
 
-            ##    Loop to append all result matrices onto the variable 'md_value'
-            for mo_num in [24, 25] + range(31, 53):
-                md_value.append(my_emmebank.matrix("md" + str(mo_num)))
+        ##    Loop to append all result matrices onto the variable 'md_value'
+        for mo_num in [24, 25] + range(31, 53):
+            md_value.append(my_emmebank.matrix("md" + str(mo_num)))
 
 
-            ##    Export matrices using the appended list of md_value matrices
-            export_matrices = _m.Modeller().tool(
-                "inro.emme.data.matrix.export_matrices")
+        ##    Export matrices using the appended list of md_value matrices
+        export_matrices = _m.Modeller().tool(
+            "inro.emme.data.matrix.export_matrices")
 
-            ## Export all matrix data
-            export_matrices(export_file=Output_File,
-                            field_separator=' ',
-                            matrices=md_value,
-                            export_format="PROMPT_DATA_FORMAT",
-                            skip_default_values=True,
-                            full_matrix_line_format="ONE_ENTRY_PER_LINE")
+        ## Export all matrix data
+        export_matrices(export_file=Output_File,
+                        field_separator=' ',
+                        matrices=md_value,
+                        export_format="PROMPT_DATA_FORMAT",
+                        skip_default_values=True,
+                        full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
-            ## Export matrix data aggregated to the gy ensemble
-            export_matrices(export_file=Output_File_GY,
-                            field_separator=' ',
-                            matrices=md_value,
-                            partition_aggregation={'destinations': 'gy', 'operator': 'sum'},
-                            export_format="PROMPT_DATA_FORMAT",
-                            skip_default_values=True,
-                            full_matrix_line_format="ONE_ENTRY_PER_LINE")
+        ## Export matrix data aggregated to the gy ensemble
+        export_matrices(export_file=Output_File_GY,
+                        field_separator=' ',
+                        matrices=md_value,
+                        partition_aggregation={'destinations': 'gy', 'operator': 'sum'},
+                        export_format="PROMPT_DATA_FORMAT",
+                        skip_default_values=True,
+                        full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
-            ## Export matrix data aggregated to the gu ensemble
-            export_matrices(export_file=Output_File_GU,
-                            field_separator=' ',
-                            matrices=md_value,
-                            partition_aggregation={'destinations': 'gu', 'operator': 'sum'},
-                            export_format="PROMPT_DATA_FORMAT",
-                            skip_default_values=True,
-                            full_matrix_line_format="ONE_ENTRY_PER_LINE")
+        ## Export matrix data aggregated to the gu ensemble
+        export_matrices(export_file=Output_File_GU,
+                        field_separator=' ',
+                        matrices=md_value,
+                        partition_aggregation={'destinations': 'gu', 'operator': 'sum'},
+                        export_format="PROMPT_DATA_FORMAT",
+                        skip_default_values=True,
+                        full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
-            ## Append the inputted data sources to each of the Output Files
-            for Output in [Output_File, Output_File_GY, Output_File_GU]:
-                f = open(Output, 'a')
-                f.write("c ------Data Sources:\n")
-                f.write("c " + Output_File + "\n")
-                f.close()
+        ## Append the inputted data sources to each of the Output Files
+        for Output in [Output_File, Output_File_GY, Output_File_GU]:
+            f = open(Output, 'a')
+            f.write("c ------Data Sources:\n")
+            f.write("c " + Output_File + "\n")
+            f.close()
 
-                ##    Open up window with the OutputFile Selected
-                # No, no random pop-up explorer.
-                #print "----------------OutputFile: ", Output_File
-                #subprocess.Popen(r'explorer /select, ' + OutputFile.replace("/","\\").replace(",","") + '"')
+            ##    Open up window with the OutputFile Selected
+            # No, no random pop-up explorer.
+            #print "----------------OutputFile: ", Output_File
+            #subprocess.Popen(r'explorer /select, ' + OutputFile.replace("/","\\").replace(",","") + '"')
 
-                ## Transpose mfs function for mf241 thru
+            ## Transpose mfs function for mf241 thru
 
+    @_m.logbook_trace("transposemfs")
     def transpose_full_matrices(self):
-        with _m.logbook_trace("transposemfs"):
-            print "--------transposemfs, " + str(datetime.now())
-            NAMESPACE = "inro.emme.data.matrix.copy_matrix"
-            TRANNAMESPACE = "inro.emme.data.matrix.transpose_matrix"
-            copy_matrix = _m.Modeller().tool(NAMESPACE)
-            transpose_matrix = _m.Modeller().tool(TRANNAMESPACE)
-            eb = _m.Modeller().emmebank
-            matrixnum = 241
-            newmatnum = 310
-            for i in range(63):
-                matrix_one = eb.matrix("mf" + str(matrixnum + i))
-                matrix_two = copy_matrix(from_matrix=matrix_one, matrix_id="mf" + str(newmatnum + i))
-                matrix_three = eb.matrix("mf" + str(newmatnum + i))
-                transpose_matrix(matrix=matrix_three)
-                # matrix transpose calculation
-            NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _m.Modeller().tool(NAMESPACE)
+        NAMESPACE = "inro.emme.data.matrix.copy_matrix"
+        TRANNAMESPACE = "inro.emme.data.matrix.transpose_matrix"
+        copy_matrix = _m.Modeller().tool(NAMESPACE)
+        transpose_matrix = _m.Modeller().tool(TRANNAMESPACE)
+        eb = _m.Modeller().emmebank
+        matrixnum = 241
+        newmatnum = 310
+        for i in range(63):
+            matrix_one = eb.matrix("mf" + str(matrixnum + i))
+            matrix_two = copy_matrix(from_matrix=matrix_one, matrix_id="mf" + str(newmatnum + i))
+            matrix_three = eb.matrix("mf" + str(newmatnum + i))
+            transpose_matrix(matrix=matrix_three)
+            # matrix transpose calculation
+        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
+        compute_matrix = _m.Modeller().tool(NAMESPACE)
 
-            spec_dict = {
-                "expression": "1",
-                "result": "mf201",
-                "constraint": {"by_value": None, "by_zone": None},
-                "aggregation": {"origins": None, "destinations": None},
-                "type": "MATRIX_CALCULATION"
-            }
-            matrixnum = 241
-            newmatnum = 310
-            for i in range(63):
-                expression1 = "0.5*mf" + str(newmatnum + i) + "+0.5*mf" + str(matrixnum + i)
-                result = "mf" + str(newmatnum + i)
-                spec_dict["expression"] = expression1
-                spec_dict["result"] = result
-                report = compute_matrix(spec_dict)
+        spec_dict = {
+            "expression": "1",
+            "result": "mf201",
+            "constraint": {"by_value": None, "by_zone": None},
+            "aggregation": {"origins": None, "destinations": None},
+            "type": "MATRIX_CALCULATION"
+        }
+        matrixnum = 241
+        newmatnum = 310
+        for i in range(63):
+            expression1 = "0.5*mf" + str(newmatnum + i) + "+0.5*mf" + str(matrixnum + i)
+            result = "mf" + str(newmatnum + i)
+            spec_dict["expression"] = expression1
+            spec_dict["result"] = result
+            report = compute_matrix(spec_dict)
 
 
-                ##     Matrix balancing. Need list of input mo, md and impedance (mf) matrices, as well as output matrices
+            ##     Matrix balancing. Need list of input mo, md and impedance (mf) matrices, as well as output matrices
 
     @_m.logbook_trace("Run matrix balancing to multiple productions")
     def matrix_balancing(self, mo_list, md_list, impedance_list, output_list, max_iterations):
-        print "--------balmprod, " + str(datetime.now())
-
         # Perform matrix calculation to aggregate matrices.
         compute_matrix = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_calculator")
@@ -352,12 +345,9 @@ class TripDistributions(_m.Tool()):
     #Calculate impedances for each purpose based on the original distribution macro distestall.mac
     @_m.logbook_trace("Calculate impedances")
     def impedance_calcs(self):
-        print "--------Impedance_Calcs, " + str(datetime.now().strftime('%H:%M:%S'))
         NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-
         compute_matrix = _m.Modeller().tool(NAMESPACE)
 
-        print "--------Impedance_Calcs, " + str(datetime.now().strftime('%H:%M:%S'))
         spec_dict = {
             "expression": "EXPRESSION",
             "result": "RESULT",
@@ -683,7 +673,6 @@ class TripDistributions(_m.Tool()):
     #Calculate transit impedances (separate procedure because the spec is different - including constraint values)
     @_m.logbook_trace("Calculate transit impedances")
     def Impedance_Transit(self):
-        print "--------Transit Impedance_Calcs, " + str(datetime.now().strftime('%H:%M:%S'))
         compute_matrix = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_calculator")
 
