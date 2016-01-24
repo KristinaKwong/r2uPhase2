@@ -27,7 +27,7 @@
 ##--Supersedes all earlier versions of 04-01-TripDistributions
 ##---------------------------------------------------
 
-import inro.modeller as _modeller
+import inro.modeller as _m
 
 import os
 import traceback as _traceback
@@ -47,16 +47,16 @@ nhwd = str(-0.106)    #Non-home-based work
 nhod = str(-0.138)    #Non-home-based other
 
 
-class TripDistributions(_modeller.Tool()):
-    max_iterations = _modeller.Attribute(int)
-    tool_run_msg = _modeller.Attribute(unicode)
+class TripDistributions(_m.Tool()):
+    max_iterations = _m.Attribute(int)
+    tool_run_msg = _m.Attribute(unicode)
 
     def __init__(self):
         self.max_iterations = 50
 
     def page(self):
-        start_path = os.path.dirname(_modeller.Modeller().emmebank.path)
-        pb = _modeller.ToolPageBuilder(
+        start_path = os.path.dirname(_m.Modeller().emmebank.path)
+        pb = _m.ToolPageBuilder(
             self, title="Trip Distributions",
             description="""Inputs matrices, calculates impedances and
             balances matrices
@@ -75,14 +75,14 @@ class TripDistributions(_modeller.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            root_directory = os.path.dirname(_modeller.Modeller().emmebank.path)
+            root_directory = os.path.dirname(_m.Modeller().emmebank.path)
             self.__call__(root_directory, self.max_iterations)
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    @_modeller.logbook_trace("04-01 - Trip Distributions")
+    @_m.logbook_trace("04-01 - Trip Distributions")
     def __call__(self, root_directory, max_iterations):
         print "----04-01 - Trip Distributions: " + str(datetime.now().strftime('%H:%M:%S'))
 
@@ -174,9 +174,9 @@ class TripDistributions(_modeller.Tool()):
 
     #Export all mo matrices to CSV
     def export_matrices(self, output_file):
-        with _modeller.logbook_trace("Export_Matrices"):
+        with _m.logbook_trace("Export_Matrices"):
             print "--------Export_Matrices, " + str(datetime.now().strftime('%H:%M:%S'))
-            ExportToCSV = _modeller.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
+            ExportToCSV = _m.Modeller().tool("translink.emme.stage4.step9.exporttocsv")
             list_of_matrices = ["md" + str(i) for i in range(5, 12) + range(20, 26) + range(31, 53)] + ["mo" + str(i)
                                                                                                         for i in
                                                                                                         range(915, 927)]
@@ -185,10 +185,10 @@ class TripDistributions(_modeller.Tool()):
             ##    Outputs results matrix to a file
 
     def output_results(self, output_file):
-        with _modeller.logbook_trace("Output Results"):
+        with _m.logbook_trace("Output Results"):
             print "--------Output_Results, " + str(datetime.now().strftime('%H:%M:%S'))
             ##    Create emmebank object
-            my_modeller = _modeller.Modeller()
+            my_modeller = _m.Modeller()
             my_emmebank = my_modeller.desktop.data_explorer().active_database().core_emmebank
 
             Output_File = output_file.replace(",", "")
@@ -204,7 +204,7 @@ class TripDistributions(_modeller.Tool()):
 
 
             ##    Export matrices using the appended list of md_value matrices
-            export_matrices = _modeller.Modeller().tool(
+            export_matrices = _m.Modeller().tool(
                 "inro.emme.data.matrix.export_matrices")
 
             ## Export all matrix data
@@ -248,13 +248,13 @@ class TripDistributions(_modeller.Tool()):
                 ## Transpose mfs function for mf241 thru
 
     def transpose_full_matrices(self):
-        with _modeller.logbook_trace("transposemfs"):
+        with _m.logbook_trace("transposemfs"):
             print "--------transposemfs, " + str(datetime.now())
             NAMESPACE = "inro.emme.data.matrix.copy_matrix"
             TRANNAMESPACE = "inro.emme.data.matrix.transpose_matrix"
-            copy_matrix = _modeller.Modeller().tool(NAMESPACE)
-            transpose_matrix = _modeller.Modeller().tool(TRANNAMESPACE)
-            eb = _modeller.Modeller().emmebank
+            copy_matrix = _m.Modeller().tool(NAMESPACE)
+            transpose_matrix = _m.Modeller().tool(TRANNAMESPACE)
+            eb = _m.Modeller().emmebank
             matrixnum = 241
             newmatnum = 310
             for i in range(63):
@@ -264,7 +264,7 @@ class TripDistributions(_modeller.Tool()):
                 transpose_matrix(matrix=matrix_three)
                 # matrix transpose calculation
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             spec_dict = {
                 "expression": "1",
@@ -285,12 +285,12 @@ class TripDistributions(_modeller.Tool()):
 
                 ##     Matrix balancing. Need list of input mo, md and impedance (mf) matrices, as well as output matrices
 
-    @_modeller.logbook_trace("Run matrix balancing to multiple productions")
+    @_m.logbook_trace("Run matrix balancing to multiple productions")
     def matrix_balancing(self, mo_list, md_list, impedance_list, output_list, max_iterations):
         print "--------balmprod, " + str(datetime.now())
 
         # Perform matrix calculation to aggregate matrices.
-        compute_matrix = _modeller.Modeller().tool(
+        compute_matrix = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_calculator")
         spec_dict_matcalc = {
             "expression": "",
@@ -323,7 +323,7 @@ class TripDistributions(_modeller.Tool()):
         # Prior to Emme 4.1.2 Matrix balancing to multiple productions
         # was distributed as a separate toolbox with namespace:
         # "inro.support.case6163.matrix_balancing_multiple_productions"
-        balancing_multiple_productions = _modeller.Modeller().tool(
+        balancing_multiple_productions = _m.Modeller().tool(
             "inro.emme.matrix_calculation.balancing_multiple_productions")
 
         spec_dict_matbal = {
@@ -350,12 +350,12 @@ class TripDistributions(_modeller.Tool()):
         balancing_multiple_productions(spec_dict_matbal)
 
     #Calculate impedances for each purpose based on the original distribution macro distestall.mac
-    @_modeller.logbook_trace("Calculate impedances")
+    @_m.logbook_trace("Calculate impedances")
     def impedance_calcs(self):
         print "--------Impedance_Calcs, " + str(datetime.now().strftime('%H:%M:%S'))
         NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
 
-        compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool(NAMESPACE)
 
         print "--------Impedance_Calcs, " + str(datetime.now().strftime('%H:%M:%S'))
         spec_dict = {
@@ -681,10 +681,10 @@ class TripDistributions(_modeller.Tool()):
         report = compute_matrix(spec_dict)
 
     #Calculate transit impedances (separate procedure because the spec is different - including constraint values)
-    @_modeller.logbook_trace("Calculate transit impedances")
+    @_m.logbook_trace("Calculate transit impedances")
     def Impedance_Transit(self):
         print "--------Transit Impedance_Calcs, " + str(datetime.now().strftime('%H:%M:%S'))
-        compute_matrix = _modeller.Modeller().tool(
+        compute_matrix = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_calculator")
 
         spec_dict = {
