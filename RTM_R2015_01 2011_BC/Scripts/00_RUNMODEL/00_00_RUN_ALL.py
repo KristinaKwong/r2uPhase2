@@ -228,7 +228,7 @@ class FullModelRun(_m.Tool()):
         for iteration_number in range(global_iterations):
             trip_distribution(eb, max_distribution_iterations)
             mode_choice(eb, iteration_number, global_iterations, run_park_ride)
-            assignment(root_directory, iteration_number, stopping_criteria)
+            assignment(eb, iteration_number, stopping_criteria)
             post_assignment(root_directory, iteration_number, stopping_criteria)
             return
 

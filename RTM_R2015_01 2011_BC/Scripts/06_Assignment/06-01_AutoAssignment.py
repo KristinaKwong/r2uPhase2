@@ -79,28 +79,25 @@ class AutoAssignment(_modeller.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            emmebank = _modeller.Modeller().emmebank
-            root_directory = os.path.dirname(emmebank.path)
+            eb = _modeller.Modeller().emmebank
             stopping_criteria = {
                 "relative_gap": self.relative_gap,
                 "best_relative_gap": self.best_relative_gap,
                 "normalized_gap": self.normalized_gap,
                 "max_iterations": self.max_iterations
             }
-            self(root_directory, self.am_scenario, self.md_scenario, stopping_criteria)
+            self(eb, self.am_scenario, self.md_scenario, stopping_criteria)
             run_msg = "Tool completed"
             self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
         except Exception, e:
             self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_modeller.logbook_trace("06-01 - Auto Assignment")
-    def __call__(self, root_directory, scenarioam, scenariomd, stopping_criteria):
-        toll_file = os.path.join(
-            root_directory, "06_Assignment", "Inputs", "tollinput.csv")
-        set_tools = _modeller.Modeller().tool(
-            "translink.emme.stage3.step6.tollset")
+    def __call__(self, eb, scenarioam, scenariomd, stopping_criteria):
+        toll_file = os.path.join(os.path.dirname(eb.path), "06_Assignment", "Inputs", "tollinput.csv")
+        set_tools = _modeller.Modeller().tool("translink.emme.stage3.step6.tollset")
         set_tools(toll_file, scenarioam, scenariomd)
-        self.matrix_batchins(root_directory)
+        self.matrix_batchins(eb)
         self.calculate_auto_cost(scenarioam, scenariomd)
         self.auto_assignment(scenarioam, scenariomd, stopping_criteria)
 
@@ -349,11 +346,9 @@ class AutoAssignment(_modeller.Tool()):
         return spec
 
     @_modeller.logbook_trace("Matrix Batchin")
-    def matrix_batchins(self, root_directory):
-        process = _modeller.Modeller().tool(
-            "inro.emme.data.matrix.matrix_transaction")
-        matrix_file = os.path.join(
-            root_directory, "06_Assignment", "Inputs", "AssignmentBatchin.txt")
+    def matrix_batchins(self, eb):
+        process = _modeller.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
+        matrix_file = os.path.join(os.path.dirname(eb.path), "06_Assignment", "Inputs", "AssignmentBatchin.txt")
         process(transaction_file=matrix_file,
                 throw_on_error=True,
                 scenario=_modeller.Modeller().scenario)

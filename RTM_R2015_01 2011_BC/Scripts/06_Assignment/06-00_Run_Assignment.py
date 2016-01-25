@@ -40,33 +40,39 @@ class Assignment(_m.Tool()):
 
     def run(self):
         self.tool_run_msg = ""
+        
+        stopping_criteria = {
+            "max_iterations": 250,
+            "relative_gap": 0.0,
+            "best_relative_gap": 0.01,
+            "normalized_gap": 0.01
+        }
         try:
-            start_path = os.path.dirname(_m.Modeller().emmebank.path) + "\\"
-            self.__call__(start_path, 0, 250)
+            eb =_m.Modeller().emmebank
+            self.__call__(eb, 0, stopping_criteria)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("06-00 - Assignment")
-    def __call__(self, PathHeader, IterationNumber, max_iterations):
-        emmebank = _m.Modeller().emmebank
-        amscen1 = int(emmebank.matrix("ms140").data)
-        mdscen1 = int(emmebank.matrix("ms141").data)
+    def __call__(self, eb, IterationNumber, max_iterations):
+        amscen1 = int(eb.matrix("ms140").data)
+        mdscen1 = int(eb.matrix("ms141").data)
         amscen2 = amscen1 + 30
         mdscen2 = mdscen1 + 30
 
         if IterationNumber % 2 == 0:
-            scenarioam = emmebank.scenario(amscen1)
-            scenariomd = emmebank.scenario(mdscen1)
+            scenarioam = eb.scenario(amscen1)
+            scenariomd = eb.scenario(mdscen1)
         else:
-            scenarioam = emmebank.scenario(amscen2)
-            scenariomd = emmebank.scenario(mdscen2)
+            scenarioam = eb.scenario(amscen2)
+            scenariomd = eb.scenario(mdscen2)
 
         AutoAssignment = _m.Modeller().tool("translink.emme.stage3.step6.autoassignment")
         BusAssignment = _m.Modeller().tool("translink.emme.stage3.step6.busassignment")
         RailAssignment = _m.Modeller().tool("translink.emme.stage3.step6.railassignment")
 
-        AutoAssignment(PathHeader, scenarioam, scenariomd, max_iterations)
+        AutoAssignment(eb, scenarioam, scenariomd, max_iterations)
         BusAssignment(scenarioam, scenariomd)
         RailAssignment(scenarioam, scenariomd)
