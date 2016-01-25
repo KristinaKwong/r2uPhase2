@@ -127,23 +127,8 @@ class FullModelRun(_m.Tool()):
         run_park_ride = settings.get("park_and_ride")
 
         self.stage3(eb, global_iterations, max_distribution_iterations, run_park_ride, stopping_criteria)
-        return
-        demand_adjust = _m.Modeller().tool("translink.emme.stage4.step8.demandadjustment")
-        congested_transit = _m.Modeller().tool("translink.emme.stage5.step11.congested_transit")
 
-        am_scen = eb.matrix("ms140").data
-        md_scen = eb.matrix("ms141").data
-        demand_adjust(root_directory, am_scen, md_scen, stopping_criteria)
-
-        if settings.get("congested_transit") == 1:
-            am_scenario = eb.scenario(am_scen)
-            copy_scenario = _m.Modeller().tool("inro.emme.data.scenario.copy_scenario")
-            congested_transit_am = copy_scenario(
-                from_scenario=am_scenario,
-                scenario_id=am_scenario.number + 70,
-                scenario_title=am_scenario.title + ": cong transit "[:40],
-                overwrite=True)
-            congested_transit(congested_transit_am, setup_ttfs=True)
+        self.stage4(eb, settings, stopping_criteria)
 
     @_m.logbook_trace("Stage 1 - Define Inputs")
     def stage1(self, eb, land_use_file1, land_use_file2):
@@ -246,3 +231,25 @@ class FullModelRun(_m.Tool()):
             assignment(root_directory, iteration_number, stopping_criteria)
             post_assignment(root_directory, iteration_number, stopping_criteria)
             return
+
+
+    @_m.logbook_trace("Stage 4 - Post Processing")
+    def stage4(self, eb, settings, stopping_criteria):
+        demand_adjust = _m.Modeller().tool("translink.emme.stage4.step8.demandadjustment")
+        congested_transit = _m.Modeller().tool("translink.emme.stage5.step11.congested_transit")
+
+        root_directory = os.path.dirname(eb.path) + "\\"
+
+        am_scen = eb.matrix("ms140").data
+        md_scen = eb.matrix("ms141").data
+        demand_adjust(root_directory, am_scen, md_scen, stopping_criteria)
+
+        if settings.get("congested_transit") == 1:
+            am_scenario = eb.scenario(am_scen)
+            copy_scenario = _m.Modeller().tool("inro.emme.data.scenario.copy_scenario")
+            congested_transit_am = copy_scenario(
+                from_scenario=am_scenario,
+                scenario_id=am_scenario.number + 70,
+                scenario_title=am_scenario.title + ": cong transit "[:40],
+                overwrite=True)
+            congested_transit(congested_transit_am, setup_ttfs=True)
