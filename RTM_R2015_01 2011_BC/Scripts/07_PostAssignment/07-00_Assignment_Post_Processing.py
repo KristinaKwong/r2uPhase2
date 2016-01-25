@@ -26,8 +26,6 @@ class PostAssignment(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        start_path = os.path.dirname(_m.Modeller().emmebank.path)
-
         pb = _m.ToolPageBuilder(self, title="Post Assignment",
                                        description=""" Performs Auto, Transit and Rail Assignments
                                         """,
@@ -41,52 +39,45 @@ class PostAssignment(_m.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            PathHeader = os.path.dirname(_m.Modeller().emmebank.path) + "\\"
-            self.__call__(PathHeader, 0)
+            eb = _m.Modeller().emmebank
+            self.__call__(eb, 0)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("07-00 - RUN - Post Assignment")
-    def __call__(self, root_directory, iteration_number, stopping_criteria):
+    def __call__(self, eb, iteration_number, stopping_criteria):
         util = _m.Modeller().tool("translink.emme.util")
-        emmebank = _m.Modeller().emmebank
-        am_scenario_id = int(emmebank.matrix("ms140").data)
-        md_scenario_id = int(emmebank.matrix("ms141").data)
+        am_scenario_id = int(eb.matrix("ms140").data)
+        md_scenario_id = int(eb.matrix("ms141").data)
 
-        am_temp_scenario, md_temp_scenario = self.copy_scenario(
-            am_scenario_id, md_scenario_id, iteration_number)
+        am_temp_scenario, md_temp_scenario = self.copy_scenario(eb, am_scenario_id, md_scenario_id, iteration_number)
 
-        gen_transit = _m.Modeller().tool(
-            "translink.emme.stage3.step7.gentranskim")
-        toll_skim = _m.Modeller().tool(
-            "translink.emme.stage3.step7.tollskim")
-        access_skim = _m.Modeller().tool(
-            "translink.emme.stage3.step7.skimaccess")
+        gen_transit = _m.Modeller().tool("translink.emme.stage3.step7.gentranskim")
+        toll_skim = _m.Modeller().tool("translink.emme.stage3.step7.tollskim")
+        access_skim = _m.Modeller().tool("translink.emme.stage3.step7.skimaccess")
 
         gen_transit(am_temp_scenario, md_temp_scenario)
         toll_skim(am_temp_scenario, md_temp_scenario, stopping_criteria)
-        access_skim(root_directory, iteration_number)
+        access_skim(eb, iteration_number)
         util.del_scen(am_temp_scenario)
         util.del_scen(md_temp_scenario)
 
     @_m.logbook_trace("Copy Scenario")
-    def copy_scenario(self, am_scenario_id, md_scenario_id, iteration_number):
-        emmebank = _m.Modeller().emmebank
+    def copy_scenario(self, eb, am_scenario_id, md_scenario_id, iteration_number):
 
         # TODO: would be easier to always run on the same scenario
         #       and at the beginning of each iteration
         #       make a backup copy of each scenario
         if (iteration_number % 2 == 0 ):
-            am_scenario = emmebank.scenario(am_scenario_id)
-            md_scenario = emmebank.scenario(md_scenario_id)
+            am_scenario = eb.scenario(am_scenario_id)
+            md_scenario = eb.scenario(md_scenario_id)
         else:
-            am_scenario = emmebank.scenario(am_scenario_id + 30)
-            md_scenario = emmebank.scenario(md_scenario_id + 30)
+            am_scenario = eb.scenario(am_scenario_id + 30)
+            md_scenario = eb.scenario(md_scenario_id + 30)
 
-        copy_scenario = _m.Modeller().tool(
-            "inro.emme.data.scenario.copy_scenario")
+        copy_scenario = _m.Modeller().tool("inro.emme.data.scenario.copy_scenario")
         newscenam = copy_scenario(from_scenario=am_scenario,
                                   scenario_id=am_scenario_id + 50000 + iteration_number,
                                   scenario_title="AM scenario copy for various skims",

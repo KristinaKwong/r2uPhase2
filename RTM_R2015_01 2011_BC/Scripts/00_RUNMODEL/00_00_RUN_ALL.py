@@ -221,15 +221,13 @@ class FullModelRun(_m.Tool()):
         assignment = _m.Modeller().tool("translink.emme.stage3.step6.assignment")
         post_assignment = _m.Modeller().tool("translink.emme.stage3.step7.postassign")
 
-        root_directory = os.path.dirname(eb.path) + "\\"
-
         #Distribution, mode choice and assignment
         #Iterate distribution, mode choice and assignment steps to indicated number of iterations
         for iteration_number in range(global_iterations):
             trip_distribution(eb, max_distribution_iterations)
             mode_choice(eb, iteration_number, global_iterations, run_park_ride)
             assignment(eb, iteration_number, stopping_criteria)
-            post_assignment(root_directory, iteration_number, stopping_criteria)
+            post_assignment(eb, iteration_number, stopping_criteria)
             return
 
 

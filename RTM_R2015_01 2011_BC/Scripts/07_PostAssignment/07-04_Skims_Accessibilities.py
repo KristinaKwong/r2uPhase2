@@ -25,7 +25,6 @@ class SkimsAccessibilities(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        start_path = os.path.dirname(_m.Modeller().emmebank.path)
         ##Create various aspects to the page
         pb = _m.ToolPageBuilder(self, title="Weighted Skims and new accessibilities",
                                        description=""" Generates new weighted skims and calculates
@@ -41,19 +40,18 @@ class SkimsAccessibilities(_m.Tool()):
         with _m.logbook_trace("07-04 - RUN - Weighted Skims and Accessibilities"):
 
 			self.tool_run_msg = ""
-			emmebank = _m.Modeller().emmebank
-			PathHeader = os.path.dirname(emmebank.path)
+			eb = _m.Modeller().emmebank
 			try:
-				self.__call__(PathHeader, 1)
+				self.__call__(eb, 1)
 				run_msg = "Tool completed"
 				self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
 			except Exception, e:
 				self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    def __call__(self, PathHeader, IterationNumber):
+    def __call__(self, eb, IterationNumber):
     ##        Start logging this under a new 'nest'
         with _m.logbook_trace("07-04 - Weighted Skims and New Accessibilities"):
-            self.Matrix_Batchins(PathHeader)
+            self.Matrix_Batchins(eb)
             self.weightedskims(IterationNumber)
             self.accessibilities()
 
@@ -212,14 +210,26 @@ class SkimsAccessibilities(_m.Tool()):
 			spec_as_dict['result'] = expressions_list[n][1]
 			compute_matrix(spec_as_dict)
 
+    @_m.logbook_trace("Matrix Batchin")
+    def Matrix_Batchins(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
 
-    def Matrix_Batchins(self, PathHeader):
-        with _m.logbook_trace("Matrix Batchin"):
-        ##
-            NAMESPACE = "inro.emme.data.matrix.matrix_transaction"
-            process = _m.Modeller().tool(NAMESPACE)
-            matrix_file = PathHeader + "/07_PostAssignment/Inputs/Accessibilities.txt"
-            ##        Creates process transaction
-            process(transaction_file=matrix_file,
-                    throw_on_error=True,
-                    scenario=_m.Modeller().scenario)
+        util.initmat(eb, "mo47", "AuAc", "Auto Accessibility", 0)
+        util.initmat(eb, "mo954", "ReAuAc", "Retail Auto Accessibility", 0)
+        util.initmat(eb, "mo955", "ReTrAc", "Retail Transit Accessibility", 0)
+        util.initmat(eb, "mo48", "PsAuAc", "Post-sec Auto Accessibility", 0)
+        util.initmat(eb, "mo957", "PSTrAc", "PS Transit Accessibility", 0)
+        util.initmat(eb, "mo392", "TrAc", "Transit Accessibility", 0)
+        util.initmat(eb, "mo960", "AuSrAc", "Serv Emp Ind Auto Accessibility", 0)
+        util.initmat(eb, "mo961", "TrSrAc", "Serv Emp Ind Transit Accessibility", 0)
+        util.initmat(eb, "mo980", "WaEmAc", "Tot Emp Walk Accessibility", 0)
+        util.initmat(eb, "mo981", "BkEmAc", "Tot Emp Bike Accessibility", 0)
+        util.initmat(eb, "mo982", "TrEmAc", "Tot Emp Transit Accessibility", 0)
+        util.initmat(eb, "mo983", "AuEmAc", "Tot Emp Auto Accessibility", 0)
+        util.initmat(eb, "mo984", "WaRtAc", "Ret Emp Ind Walk Accessibility", 0)
+        util.initmat(eb, "mo985", "BkRtAc", "Ret Emp Ind Bike Accessibility", 0)
+        util.initmat(eb, "mo986", "TrRtAc", "Ret Emp Ind Transit Accessibility", 0)
+        util.initmat(eb, "mo987", "AuRtAc", "Ret Emp Ind Auto Accessibility", 0)
+        util.initmat(eb, "mo988", "MaEmAc", "Max Tot Emp Accessibility", 0)
+        util.initmat(eb, "mo989", "SMEmAc", "Max Sus Tot Emp Accessibility", 0)
+        util.initmat(eb, "mo990", "SMRtAc", "Max Sus Tot Emp Accessibility", 0)
