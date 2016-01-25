@@ -39,23 +39,23 @@
 # NHB work 6
 ##---------------------------------------------------
 
-import inro.modeller as _modeller
+import inro.modeller as _m
 
 import os
 import traceback as _traceback
 
-utilities = _modeller.Modeller().module(
+utilities = _m.Modeller().module(
     "translink.emme.stage3.step5.utilities")
 build_spec = utilities.build_spec
 
 
-class ModeChoice(_modeller.Tool()):
-    tool_run_msg = _modeller.Attribute(unicode)
-    run_park_and_ride = _modeller.Attribute(bool)
+class ModeChoice(_m.Tool()):
+    tool_run_msg = _m.Attribute(unicode)
+    run_park_and_ride = _m.Attribute(bool)
 
     def page(self):
-        start_path = os.path.dirname(_modeller.Modeller().emmebank.path)
-        pb = _modeller.ToolPageBuilder(self, title="Mode Choice Model",
+        start_path = os.path.dirname(_m.Modeller().emmebank.path)
+        pb = _m.ToolPageBuilder(self, title="Mode Choice Model",
                                        description="Tool for running mode choice models on nine purposes and exports results at the gy to gy level",
                                        branding_text="Translink")
 
@@ -68,15 +68,15 @@ class ModeChoice(_modeller.Tool()):
 
     def run(self):
         self.tool_run_msg = ""
-        base_folder = os.path.dirname(_modeller.Modeller().emmebank.path) + "\\"
+        base_folder = os.path.dirname(_m.Modeller().emmebank.path) + "\\"
         try:
             self.__call__(base_folder, 0, 1, self.run_park_and_ride)
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    @_modeller.logbook_trace("05-00 - Call Mode Choice Modules")
+    @_m.logbook_trace("05-00 - Call Mode Choice Modules")
     def __call__(self, root_directory, iteration_number, max_iterations, run_park_and_ride=False):
         ## Matrices used for mode choice are from mf374-mf702,
         ## these store utilities, probabilities and various demands (work vs non work)
@@ -84,7 +84,7 @@ class ModeChoice(_modeller.Tool()):
             iteration_number + 1))
 
         ## Mode Choice Modules
-        module_lookup = _modeller.Modeller().module
+        module_lookup = _m.Modeller().module
         home_base_work = module_lookup("translink.emme.stage3.step5.modechoicehbw")
         home_base_school = module_lookup("translink.emme.stage3.step5.modechoicehbschool")
         home_base_shopping = module_lookup("translink.emme.stage3.step5.modechoicehbshop")
@@ -94,10 +94,10 @@ class ModeChoice(_modeller.Tool()):
         home_base_escort = module_lookup("translink.emme.stage3.step5.modechoicehbesc")
         non_home_base_other = module_lookup("translink.emme.stage3.step5.modechoicenhbo")
         non_home_base_work = module_lookup("translink.emme.stage3.step5.modechoicenhbw")
-        park_and_ride = _modeller.Modeller().tool("translink.emme.stage3.step5.parkandride")
+        park_and_ride = _m.Modeller().tool("translink.emme.stage3.step5.parkandride")
 
         is_last_iteration = (iteration_number == (max_iterations - 1))
-        scenario = _modeller.Modeller().scenario
+        scenario = _m.Modeller().scenario
 
         self.calculate_flag_matrices(scenario)
 
@@ -116,9 +116,9 @@ class ModeChoice(_modeller.Tool()):
 
         self.add_external_demand(scenario)
 
-    @_modeller.logbook_trace("Calculate flag matrices")
+    @_m.logbook_trace("Calculate flag matrices")
     def calculate_flag_matrices(self, scenario):
-        compute_matrix = _modeller.Modeller().tool(
+        compute_matrix = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_calculator")
 
         expressions_list = [
@@ -144,7 +144,7 @@ class ModeChoice(_modeller.Tool()):
 
         compute_matrix(spec_list, scenario)
 
-    @_modeller.logbook_trace("Add external demand to non-work SOV / HOV")
+    @_m.logbook_trace("Add external demand to non-work SOV / HOV")
     def add_external_demand(self, scenario):
         spec = {
             "expression": "",
@@ -154,7 +154,7 @@ class ModeChoice(_modeller.Tool()):
             "type": "MATRIX_CALCULATION"
         }
         ## Add external SOV/HOV matrices to non work med/high matrices
-        compute_matrix = _modeller.Modeller().tool(
+        compute_matrix = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_calculator")
 
         spec["expression"] = "mf847+mf978"
