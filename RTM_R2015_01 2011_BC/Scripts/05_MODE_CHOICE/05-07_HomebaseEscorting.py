@@ -5,23 +5,23 @@
 ##--Purpose: HBescorting Mode Choice Model
 ##---------------------------------------------------------------------
 from datetime import datetime
-import inro.modeller as _modeller
+import inro.modeller as _m
 import os
 
-process_matrix_trans = _modeller.Modeller().tool(
+process_matrix_trans = _m.Modeller().tool(
     "inro.emme.data.matrix.matrix_transaction")
-compute_matrix = _modeller.Modeller().tool(
+compute_matrix = _m.Modeller().tool(
     "inro.emme.matrix_calculation.matrix_calculator")
 
-utilities = _modeller.Modeller().module(
+utilities = _m.Modeller().module(
     "translink.emme.stage3.step5.utilities")
 build_spec = utilities.build_spec
 
 
 # TODO: add tool interface to mode choice procedure
-class ModeChoiceHBEsc(_modeller.Tool()):
+class ModeChoiceHBEsc(_m.Tool()):
     def page(self):
-        pb = _modeller.ToolPageBuilder(self)
+        pb = _m.ToolPageBuilder(self)
         pb.title = "Mode Choice Model"
         pb.description = "Not to be used directly, module containing methods to calculate mode choice model. (etc)."
         pb.branding_text = "TransLink"
@@ -30,7 +30,7 @@ class ModeChoiceHBEsc(_modeller.Tool()):
         return pb.render()
 
 
-@_modeller.logbook_trace("Home-base Escorting")
+@_m.logbook_trace("Home-base Escorting")
 def run_model(scenario, data_folder, iteration_number, is_last_iteration):
     matrix_file = os.path.join(data_folder, "05_MODE_CHOICE/Inputs/NonWorkBatchin.txt")
     process_matrix_trans(matrix_file, scenario=scenario)
@@ -48,7 +48,7 @@ def run_model(scenario, data_folder, iteration_number, is_last_iteration):
     utilities.calculate_demand(
         scenario, demand_start=364, probability_start=441, result_start=640)
 
-    ExportModeChoice = _modeller.Modeller().module("translink.emme.stage3.step5.exportmodechoice")
+    ExportModeChoice = _m.Modeller().module("translink.emme.stage3.step5.exportmodechoice")
     if is_last_iteration:
         purp = 7
         ExportModeChoice.Agg_Exp_Demand(data_folder, purp, iteration_number)
@@ -67,7 +67,7 @@ def run_model(scenario, data_folder, iteration_number, is_last_iteration):
         utilities.export_matrices_report(data_folder, "esco", range(773, 843))
 
 
-@_modeller.logbook_trace("continue aggregating non work demand, escorting")
+@_m.logbook_trace("continue aggregating non work demand, escorting")
 def aggregate_non_work_demand(scenario):
     spec_list = []
     matrixnum = 640
@@ -82,7 +82,7 @@ def aggregate_non_work_demand(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_Walk_utility")
+@_m.logbook_trace("Calculate_Walk_utility")
 def calculate_walk(scenario):
 # Walk utility stored in matrices mf419-mf427
     print "--------Calculate_Walk_utility, " + str(datetime.now().strftime('%H:%M:%S'))
@@ -147,7 +147,7 @@ def calculate_walk(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_Rail_utility")
+@_m.logbook_trace("Calculate_Rail_utility")
 def calculate_rail(scenario):
     # Rail utility stored between matrices mf410-mf418
     print "--------Calculate_Rail_utility, " + str(datetime.now().strftime('%H:%M:%S'))
@@ -226,7 +226,7 @@ def calculate_rail(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_Bus_utlity")
+@_m.logbook_trace("Calculate_Bus_utlity")
 def calculate_bus(scenario):
     # Bus utility stored between matrices mf401-mf409
     print "--------Calculate_Bus_utility, " + str(datetime.now().strftime('%H:%M:%S'))
@@ -306,7 +306,7 @@ def calculate_bus(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_HOV2_utility")
+@_m.logbook_trace("Calculate_HOV2_utility")
 def calculate_hov2(scenario):
 # HOV2 utility stored between matrices mf383-mf391
     print "--------Calculate_HOV2_utility, " + str(datetime.now().strftime('%H:%M:%S'))
@@ -385,7 +385,7 @@ def calculate_hov2(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_SOV_utility")
+@_m.logbook_trace("Calculate_SOV_utility")
 def calculate_sov(scenario):
 # SOV utility stored between matrices mf374-mf382
     print "--------Calculate_SOV_utility, " + str(datetime.now().strftime('%H:%M:%S'))
@@ -453,7 +453,7 @@ def calculate_sov(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_Home-base-escorting Blend Skims")
+@_m.logbook_trace("Calculate_Home-base-escorting Blend Skims")
 def calculate_blends(scenario):
     print "--------Calculate_Home-base_Escorting_blends, " + str(datetime.now().strftime('%H:%M:%S'))
     emmebank = scenario.emmebank

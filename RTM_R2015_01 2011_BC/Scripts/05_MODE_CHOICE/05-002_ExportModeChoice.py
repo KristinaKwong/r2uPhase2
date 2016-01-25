@@ -4,16 +4,16 @@
 ##--Path: translink.emme.stage3.step5.exportmodechoice
 ##--Purpose: Exporting Mode Choice Out
 ##---------------------------------------------------------------------
-import inro.modeller as _modeller
+import inro.modeller as _m
 from datetime import datetime
 
 
 # TODO: add tool interface to mode choice procedure
-class ModeChoiceHBSchool(_modeller.Tool()):
+class ModeChoiceHBSchool(_m.Tool()):
     tool_run_msg = ""
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self)
+        pb = _m.ToolPageBuilder(self)
         pb.title = "Export Mode Choice Demand"
         pb.description = "Not to be used directly, module containing methods to export mode choice demand"
         pb.branding_text = "TransLink"
@@ -23,10 +23,10 @@ class ModeChoiceHBSchool(_modeller.Tool()):
 
 
 def Export_Demand(filename):
-    with _modeller.logbook_trace("Output Results"):
+    with _m.logbook_trace("Output Results"):
         print "--------Output_Results, " + str(datetime.now())
         ##    Create emmebank object
-        my_modeller = _modeller.Modeller()
+        my_modeller = _m.Modeller()
         my_emmebank = my_modeller.desktop.data_explorer().active_database().core_emmebank
 
         ##    List to hold matrix objects
@@ -39,7 +39,7 @@ def Export_Demand(filename):
             mf_value.append(my_emmebank.matrix("mf" + str(mf_num)))
 
             ##    Export matrices using the appended list of mf_value matrices
-        export_matrices = _modeller.Modeller().tool(
+        export_matrices = _m.Modeller().tool(
             "inro.emme.data.matrix.export_matrices")
 
         ## Export matrix data aggregated to the gy ensemble
@@ -56,14 +56,14 @@ def Export_Demand(filename):
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
 ## Aggregate purpose-level results by mode into matrices mf882 - mf890
-@_modeller.logbook_trace("Aggregate purpose-level results by mode into matrices mf882 - mf890")
+@_m.logbook_trace("Aggregate purpose-level results by mode into matrices mf882 - mf890")
 def Agg_Exp_Demand(PathHeader, purp, n):
     purp_list = ['Hbw', 'HbSc', 'HbSh', 'HbPb', 'HbU', 'HbSoc', 'HbEsc', 'NHBO', 'NHBW']
     income = ['lowinc', 'medinc', 'highinc']
     auto = ['_zero_auto', '_one_auto', '_twoplus_auto']
-    with _modeller.logbook_trace("Aggregate Demand " + purp_list[purp - 1]):
+    with _m.logbook_trace("Aggregate Demand " + purp_list[purp - 1]):
         NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool(NAMESPACE)
 
         matagg = 882
         spec_as_dict = {
@@ -165,10 +165,10 @@ def Agg_Exp_Demand(PathHeader, purp, n):
 
 
 def Export_Matrix_Batchins(PathHeader, purp):
-    with _modeller.logbook_trace("Matrix Batchin"):
+    with _m.logbook_trace("Matrix Batchin"):
     ##        Sets up the 'matrix transaction' tool and runs it
         NAMESPACE = "inro.emme.data.matrix.matrix_transaction"
-        process = _modeller.Modeller().tool(NAMESPACE)
+        process = _m.Modeller().tool(NAMESPACE)
         if purp == 1:
             matrix_file = PathHeader + "05_MODE_CHOICE/Inputs/Outputmatrix1.txt"
         else:
@@ -176,4 +176,4 @@ def Export_Matrix_Batchins(PathHeader, purp):
             ##        Creates process transaction
         process(transaction_file=matrix_file,
                 throw_on_error=True,
-                scenario=_modeller.Modeller().scenario)
+                scenario=_m.Modeller().scenario)

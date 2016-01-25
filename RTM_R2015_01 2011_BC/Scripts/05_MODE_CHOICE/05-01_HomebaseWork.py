@@ -4,27 +4,27 @@
 ##--Path: translink.emme.stage3.step5.modechoicehbw
 ##--Purpose: HBW Mode Choice Model
 ##---------------------------------------------------------------------
-import inro.modeller as _modeller
+import inro.modeller as _m
 from datetime import datetime
 import traceback as _traceback
 import os
 
 
-process_matrix_trans = _modeller.Modeller().tool(
+process_matrix_trans = _m.Modeller().tool(
     "inro.emme.data.matrix.matrix_transaction")
-compute_matrix = _modeller.Modeller().tool(
+compute_matrix = _m.Modeller().tool(
     "inro.emme.matrix_calculation.matrix_calculator")
 
-utilities = _modeller.Modeller().module(
+utilities = _m.Modeller().module(
     "translink.emme.stage3.step5.utilities")
 build_spec = utilities.build_spec
 
 
-class ModeChoiceHBW(_modeller.Tool()):
+class ModeChoiceHBW(_m.Tool()):
     tool_run_msg = ""
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self)
+        pb = _m.ToolPageBuilder(self)
         pb.title = "Mode Choice Model"
         pb.description = "Not to be used directly, module containing methods to calculate mode choice model. (etc)."
         pb.branding_text = "TransLink"
@@ -37,17 +37,17 @@ class ModeChoiceHBW(_modeller.Tool()):
     def run(self):
         self.tool_run_msg = ""
         # TODO: add tool interface to mode choice procedure
-        root_directory = os.path.dirname(_modeller.Modeller().emmebank.path) + "\\"
-        scenario = _modeller.Modeller().scenario
+        root_directory = os.path.dirname(_m.Modeller().emmebank.path) + "\\"
+        scenario = _m.Modeller().scenario
         try:
             run_model(scenario, root_directory, 0, False)
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
 
-@_modeller.logbook_trace("Home-base work")
+@_m.logbook_trace("Home-base work")
 def run_model(scenario, data_folder, iteration_number, is_last_iteration):
 
     # TODO: the transaction deletes and recreates the matrices used in this tool
@@ -72,7 +72,7 @@ def run_model(scenario, data_folder, iteration_number, is_last_iteration):
                                result_start=505)
 
     if is_last_iteration:
-        ExportModeChoice = _modeller.Modeller().module("translink.emme.stage3.step5.exportmodechoice")
+        ExportModeChoice = _m.Modeller().module("translink.emme.stage3.step5.exportmodechoice")
         purp = 1
         ExportModeChoice.Agg_Exp_Demand(data_folder, purp, iteration_number)
 
@@ -90,7 +90,7 @@ def run_model(scenario, data_folder, iteration_number, is_last_iteration):
         utilities.export_matrices_report(data_folder, "work", range(710, 843))
 
 
-@_modeller.logbook_trace("Calculate_Bike_utility")
+@_m.logbook_trace("Calculate_Bike_utility")
 def calculate_bike(scenario):
 # Bike utility stored in matrices mf428-mf436
     print "--------Calculate_Bike_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
@@ -137,7 +137,7 @@ def calculate_bike(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_Walk_utility")
+@_m.logbook_trace("Calculate_Walk_utility")
 def calculate_walk(scenario):
 # Walk utility stored in matrices mf419-mf427
     emmebank = scenario.emmebank
@@ -197,7 +197,7 @@ def calculate_walk(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_Rail_utility")
+@_m.logbook_trace("Calculate_Rail_utility")
 def calculate_rail(scenario):
 # Rail utility stored between matrices mf410-mf418
     emmebank = scenario.emmebank
@@ -285,7 +285,7 @@ def calculate_rail(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_Bus_utility")
+@_m.logbook_trace("Calculate_Bus_utility")
 def calculate_bus(scenario):
 # Bus utility stored between matrices mf401-mf409
     emmebank = scenario.emmebank
@@ -367,7 +367,7 @@ def calculate_bus(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_HOV3_utility")
+@_m.logbook_trace("Calculate_HOV3_utility")
 def calculate_hov3(scenario):
 # HOV3 utility stored between matrices mf392-mf400
     emmebank = scenario.emmebank
@@ -440,7 +440,7 @@ def calculate_hov3(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_HOV2_utlity")
+@_m.logbook_trace("Calculate_HOV2_utlity")
 def calculate_hov2(scenario):
 # HOV2 utility stored between matrices mf383-mf391
     print "--------Calculate_HOV2_utility, " + str(datetime.now().strftime('%H:%M:%S'))
@@ -511,7 +511,7 @@ def calculate_hov2(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_SOV_utility")
+@_m.logbook_trace("Calculate_SOV_utility")
 def calculate_sov(scenario):
 # SOV utility stored between matrices mf374-mf382
     print "--------Calculate_SOV_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
@@ -563,7 +563,7 @@ def calculate_sov(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate home-base work blend skims")
+@_m.logbook_trace("Calculate home-base work blend skims")
 def calculate_blends(scenario):
     print "--------Calculate_Home-base_Work_blends, " + str(datetime.now().strftime('%H:%M:%S'))
     expressions_list = [
@@ -598,7 +598,7 @@ def calculate_blends(scenario):
 #    ADD ON (rs)
 #    Main module time slicing the matrices
 #********
-@_modeller.logbook_trace("Time slicing home-base work")
+@_m.logbook_trace("Time slicing home-base work")
 def time_slice_home_base_work(data_folder, scenario):
     print "Time slicing HBW matrices begins" + str(datetime.now().strftime('%H:%M:%S'))
 
@@ -693,7 +693,7 @@ def time_slice_home_base_work(data_folder, scenario):
     print "Time slicing HBW matrices completed." + str(datetime.now().strftime('%H:%M:%S'))
 
 
-@_modeller.logbook_trace("Calculate final period demands")
+@_m.logbook_trace("Calculate final period demands")
 def calculate_final_period_demand(scenario):
     msAutOccWork3Plus = "ms60"
     msAutOccUniv3Plus = "ms61"

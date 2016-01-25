@@ -4,28 +4,28 @@
 ##--Path: translink.emme.stage3.step5.modechoicenhbw
 ##--Purpose: NHBW Mode Choice Model
 ##---------------------------------------------------------------------
-import inro.modeller as _modeller
+import inro.modeller as _m
 import traceback as _traceback
 from datetime import datetime
 import os
 
 
-process_matrix_trans = _modeller.Modeller().tool(
+process_matrix_trans = _m.Modeller().tool(
     "inro.emme.data.matrix.matrix_transaction")
-compute_matrix = _modeller.Modeller().tool(
+compute_matrix = _m.Modeller().tool(
     "inro.emme.matrix_calculation.matrix_calculator")
 
-utilities = _modeller.Modeller().module(
+utilities = _m.Modeller().module(
     "translink.emme.stage3.step5.utilities")
 build_spec = utilities.build_spec
 
 
 # TODO: add tool interface to mode choice procedure
-class ModeChoiceNHBW(_modeller.Tool()):
+class ModeChoiceNHBW(_m.Tool()):
     tool_run_msg = ""
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self)
+        pb = _m.ToolPageBuilder(self)
         pb.title = "Mode Choice Model"
         pb.description = "Not to be used directly, module containing methods to calculate mode choice model. (etc)."
         pb.branding_text = "TransLink"
@@ -37,18 +37,18 @@ class ModeChoiceNHBW(_modeller.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            scenario = _modeller.Modeller().scenario
+            scenario = _m.Modeller().scenario
             PathHeader = os.path.dirname(scenario.emmebank.path) + "\\"
             IterationNumber = 1
             run_model(scenario, PathHeader, IterationNumber, True)
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
             raise
 
 
-@_modeller.logbook_trace("Non-home-base work")
+@_m.logbook_trace("Non-home-base work")
 def run_model(scenario, data_folder, iteration_number, is_last_iteration):
     matrix_file = os.path.join(data_folder, "05_MODE_CHOICE/Inputs/NonWorkBatchin.txt")
     process_matrix_trans(matrix_file, scenario=scenario)
@@ -67,7 +67,7 @@ def run_model(scenario, data_folder, iteration_number, is_last_iteration):
     utilities.calculate_demand(
         scenario, demand_start=304, probability_start=444, result_start=643, num_segments=3)
 
-    ExportModeChoice = _modeller.Modeller().module("translink.emme.stage3.step5.exportmodechoice")
+    ExportModeChoice = _m.Modeller().module("translink.emme.stage3.step5.exportmodechoice")
     if is_last_iteration:
         purp = 9
         ExportModeChoice.Agg_Exp_Demand(data_folder, purp, iteration_number)
@@ -91,7 +91,7 @@ def run_model(scenario, data_folder, iteration_number, is_last_iteration):
 
 
 ## Aggregate nonwork demand in matrices mf 505-567 with home-base-work matrices
-@_modeller.logbook_trace("Aggregate work demand")
+@_m.logbook_trace("Aggregate work demand")
 def aggregate_non_work_demand(scenario):
     # KB: why is this function different from every other "aggregate_non_work_demand"?
     #     and this should be part of work demand?
@@ -111,7 +111,7 @@ def aggregate_non_work_demand(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_Bike_utlity")
+@_m.logbook_trace("Calculate_Bike_utlity")
 def calculate_bike(scenario):
     # Bike utility stored in matrices mf428-mf436
     print "--------Calculate_Bike_utlity, " + str(datetime.now().strftime('%H:%M:%S'))
@@ -169,7 +169,7 @@ def calculate_bike(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_Walk_utlity")
+@_m.logbook_trace("Calculate_Walk_utlity")
 def calculate_walk(scenario):
     # Walk utility stored in matrices mf419-mf427
     print "--------Calculate_Walk_utility, " + str(datetime.now().strftime('%H:%M:%S'))
@@ -227,7 +227,7 @@ def calculate_walk(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_Rail_utlity")
+@_m.logbook_trace("Calculate_Rail_utlity")
 def calculate_rail(scenario):
     # Rail utility stored between matrices mf410-mf418
     print "--------Calculate_Rail_utility, " + str(datetime.now().strftime('%H:%M:%S'))
@@ -295,7 +295,7 @@ def calculate_rail(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_Bus_utility")
+@_m.logbook_trace("Calculate_Bus_utility")
 def calculate_bus(scenario):
     # Bus utility stored between matrices mf401-mf409
     print "--------Calculate_Bus_utility, " + str(datetime.now().strftime('%H:%M:%S'))
@@ -363,7 +363,7 @@ def calculate_bus(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_HOV2_utility")
+@_m.logbook_trace("Calculate_HOV2_utility")
 def calculate_hov2(scenario):
     # HOV2 utility stored between matrices mf383-mf391
     print "--------Calculate_HOV2_utility, " + str(datetime.now().strftime('%H:%M:%S'))
@@ -411,7 +411,7 @@ def calculate_hov2(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_SOV_utility")
+@_m.logbook_trace("Calculate_SOV_utility")
 def calculate_sov(scenario):
     # SOV utility stored between matrices mf374-mf382
     print "--------Calculate_SOV_utility, " + str(datetime.now().strftime('%H:%M:%S'))
@@ -456,7 +456,7 @@ def calculate_sov(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_non_home_base_work_blends")
+@_m.logbook_trace("Calculate_non_home_base_work_blends")
 def calculate_blends(scenario):
     print "--------Calculate_non_home_base_work_blends, " + str(datetime.now().strftime('%H:%M:%S'))
     emmebank = scenario.emmebank
@@ -491,7 +491,7 @@ def calculate_blends(scenario):
 #    ADD ON (rs)
 #    Main module time slicing the matrices
 #********
-@_modeller.logbook_trace("Time slice non-home base work")
+@_m.logbook_trace("Time slice non-home base work")
 def time_slice_non_home_base_work(scenario, data_folder):
     print "Time slicing NON-HOME BASE WORK trip matrices begin" + str(datetime.now().strftime('%H:%M:%S'))
     #
@@ -576,7 +576,7 @@ def time_slice_non_home_base_work(scenario, data_folder):
 #********
 #    Module - it is identical to matrix-calculation() (rs)
 #********
-@_modeller.logbook_trace("Calculate final period demands")
+@_m.logbook_trace("Calculate final period demands")
 def calculate_final_period_demand(scenario):
     msAutOccWork3Plus = "ms60"
     msAutOccUniv3Plus = "ms61"

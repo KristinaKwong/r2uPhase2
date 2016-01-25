@@ -5,23 +5,23 @@
 ##--Purpose: Contains several common methods to the
 ##           various mode-choice by purpose sub-models
 ##---------------------------------------------------------------------
-import inro.modeller as _modeller
+import inro.modeller as _m
 import os
 import contextlib as _context
 
-compute_matrix = _modeller.Modeller().tool(
+compute_matrix = _m.Modeller().tool(
     "inro.emme.matrix_calculation.matrix_calculator")
-process_matrix_trans = _modeller.Modeller().tool(
+process_matrix_trans = _m.Modeller().tool(
     "inro.emme.data.matrix.matrix_transaction")
-export_matrices = _modeller.Modeller().tool(
+export_matrices = _m.Modeller().tool(
     "inro.emme.data.matrix.export_matrices")
 
 
-class ModeChoiceUtilities(_modeller.Tool()):
+class ModeChoiceUtilities(_m.Tool()):
     tool_run_msg = ""
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self)
+        pb = _m.ToolPageBuilder(self)
         pb.title = "Mode Choice Model - Utilities"
         pb.description = "Not to be used directly, module containing methods to calculate mode choice model. (etc)."
         pb.branding_text = "TransLink"
@@ -47,7 +47,7 @@ def build_spec(expression=None, result=None, by_value=None, origins=None, destin
     return spec
 
 
-@_modeller.logbook_trace("Calculate demand")
+@_m.logbook_trace("Calculate demand")
 def calculate_demand(scenario, demand_start, probability_start, result_start, num_segments=9):
     spec_list = []
     for i in range(num_segments):
@@ -95,7 +95,7 @@ def export_matrices_report(data_folder, purpose, full_report_matrices):
 
 
 
-@_modeller.logbook_trace("Calculate probabilities")
+@_m.logbook_trace("Calculate probabilities")
 def calculate_probabilities(scenario, nests, theta, utility_start_id=374, result_start_id=441, num_segments=9):
     ## Specify the mode choice structure and the corresponding matrix ids for inputs
     ## and outputs
