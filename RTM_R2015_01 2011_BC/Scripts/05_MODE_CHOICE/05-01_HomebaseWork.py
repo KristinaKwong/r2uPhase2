@@ -36,11 +36,10 @@ class ModeChoiceHBW(_m.Tool()):
 
     def run(self):
         self.tool_run_msg = ""
-        # TODO: add tool interface to mode choice procedure
-        root_directory = os.path.dirname(_m.Modeller().emmebank.path) + "\\"
+        eb = _m.Modeller().emmebank
         scenario = _m.Modeller().scenario
         try:
-            run_model(scenario, root_directory, 0, False)
+            run_model(scenario, eb, 0, False)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
@@ -48,11 +47,12 @@ class ModeChoiceHBW(_m.Tool()):
 
 
 @_m.logbook_trace("Home-base work")
-def run_model(scenario, data_folder, iteration_number, is_last_iteration):
+def run_model(scenario, eb, iteration_number, is_last_iteration):
 
     # TODO: the transaction deletes and recreates the matrices used in this tool
     #       this may be clearer and faster directly using the API to set the matrix
     #       names and descriptions
+    data_folder = os.path.dirname(eb.path) + "\\"
     matrix_file = os.path.join(data_folder, "05_MODE_CHOICE/Inputs/WorkBatchin.txt")
     process_matrix_trans(transaction_file=matrix_file, scenario=scenario)
 

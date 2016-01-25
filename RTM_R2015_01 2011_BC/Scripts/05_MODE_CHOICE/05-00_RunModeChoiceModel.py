@@ -50,7 +50,6 @@ class ModeChoice(_m.Tool()):
 
     @_m.logbook_trace("05-00 - Call Mode Choice Modules")
     def __call__(self, eb, iteration_number, max_iterations, run_park_and_ride=False):
-        root_directory = os.path.dirname(eb.path) + "\\"
         ## Matrices used for mode choice are from mf374-mf702,
         ## these store utilities, probabilities and various demands (work vs non work)
         print ("05-00 Run the Mode choice model on nine purposes and export results, iteration number: " + str(
@@ -74,15 +73,15 @@ class ModeChoice(_m.Tool()):
         self.calculate_flag_matrices()
 
         scenario = _m.Modeller().scenario
-        home_base_work.run_model(scenario, root_directory, iteration_number, is_last_iteration)
-        home_base_school.run_model(scenario, root_directory, iteration_number, is_last_iteration)
-        home_base_shopping.run_model(scenario, root_directory, iteration_number, is_last_iteration)
-        home_base_personal_business.run_model(scenario, root_directory, iteration_number, is_last_iteration)
-        home_base_university.run_model(scenario, root_directory, iteration_number, is_last_iteration)
-        home_base_social.run_model(scenario, root_directory, iteration_number, is_last_iteration)
-        home_base_escort.run_model(scenario, root_directory, iteration_number, is_last_iteration)
-        non_home_base_other.run_model(scenario, root_directory, iteration_number, is_last_iteration)
-        non_home_base_work.run_model(scenario, root_directory, iteration_number, is_last_iteration)
+        home_base_work.run_model(scenario, eb, iteration_number, is_last_iteration)
+        home_base_school.run_model(scenario, eb, iteration_number, is_last_iteration)
+        home_base_shopping.run_model(scenario, eb, iteration_number, is_last_iteration)
+        home_base_personal_business.run_model(scenario, eb, iteration_number, is_last_iteration)
+        home_base_university.run_model(scenario, eb, iteration_number, is_last_iteration)
+        home_base_social.run_model(scenario, eb, iteration_number, is_last_iteration)
+        home_base_escort.run_model(scenario, eb, iteration_number, is_last_iteration)
+        non_home_base_other.run_model(scenario, eb, iteration_number, is_last_iteration)
+        non_home_base_work.run_model(scenario, eb, iteration_number, is_last_iteration)
 
         if run_park_and_ride:
             park_and_ride(scenario)

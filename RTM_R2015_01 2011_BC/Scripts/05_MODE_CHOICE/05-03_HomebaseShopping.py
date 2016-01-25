@@ -31,8 +31,8 @@ class ModeChoiceHBShopping(_m.Tool()):
 
 
 @_m.logbook_trace("Home-base Shopping")
-def run_model(scenario, data_folder, iteration_number, is_last_iteration):
-
+def run_model(scenario, eb, iteration_number, is_last_iteration):
+    data_folder = os.path.dirname(eb.path) + "\\"
     matrix_file = os.path.join(data_folder, "05_MODE_CHOICE/Inputs/NonWorkBatchin.txt")
     process_matrix_trans(matrix_file, scenario=scenario)
 

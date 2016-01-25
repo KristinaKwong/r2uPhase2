@@ -37,10 +37,9 @@ class ModeChoiceNHBW(_m.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            scenario = _m.Modeller().scenario
-            PathHeader = os.path.dirname(scenario.emmebank.path) + "\\"
+            eb = _m.Modeller().emmebank
             IterationNumber = 1
-            run_model(scenario, PathHeader, IterationNumber, True)
+            run_model(scenario, eb, IterationNumber, True)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
@@ -49,7 +48,8 @@ class ModeChoiceNHBW(_m.Tool()):
 
 
 @_m.logbook_trace("Non-home-base work")
-def run_model(scenario, data_folder, iteration_number, is_last_iteration):
+def run_model(scenario, eb, iteration_number, is_last_iteration):
+    data_folder = os.path.dirname(eb.path) + "\\"
     matrix_file = os.path.join(data_folder, "05_MODE_CHOICE/Inputs/NonWorkBatchin.txt")
     process_matrix_trans(matrix_file, scenario=scenario)
 
