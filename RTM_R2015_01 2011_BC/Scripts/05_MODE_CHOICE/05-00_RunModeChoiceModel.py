@@ -44,11 +44,6 @@ import inro.modeller as _m
 import os
 import traceback as _traceback
 
-utilities = _m.Modeller().module(
-    "translink.emme.stage3.step5.utilities")
-build_spec = utilities.build_spec
-
-
 class ModeChoice(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
     run_park_and_ride = _m.Attribute(bool)
@@ -99,8 +94,9 @@ class ModeChoice(_m.Tool()):
         is_last_iteration = (iteration_number == (max_iterations - 1))
         scenario = _m.Modeller().scenario
 
-        self.calculate_flag_matrices(scenario)
+        self.calculate_flag_matrices()
 
+        return
         home_base_work.run_model(scenario, root_directory, iteration_number, is_last_iteration)
         home_base_school.run_model(scenario, root_directory, iteration_number, is_last_iteration)
         home_base_shopping.run_model(scenario, root_directory, iteration_number, is_last_iteration)
@@ -117,32 +113,28 @@ class ModeChoice(_m.Tool()):
         self.add_external_demand(scenario)
 
     @_m.logbook_trace("Calculate flag matrices")
-    def calculate_flag_matrices(self, scenario):
-        compute_matrix = _m.Modeller().tool(
-            "inro.emme.matrix_calculation.matrix_calculator")
+    def calculate_flag_matrices(self):
+        util = _m.Modeller().tool("translink.emme.util")
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        expressions_list = [
-            ['(mf107.gt.0)', 'mf110'],
-            ['(mf112.gt.0)', 'mf115'],
-            ['(mf117.gt.0)', 'mf121'],
-            ['(mf125.gt.0)', 'mf129'],
-            ['(mf128.lt.50)', 'mf130'],
-            ['(mf107.gt.0)*(mf109.lt.60)*((mf106+mf107+mf108+mf109).lt.180)*(mf108.lt.6)', 'mf132'],
-            ['(mf112.gt.0)*(mf114.lt.60)*((mf111+mf112+mf113+mf114).lt.180)*(mf113.lt.6)', 'mf133'],
-            ['(mf117.gt.0)*(mf120.lt.75)*((mf116+mf117+mf118).lt.150)*(mf119.lt.7)', 'mf134'],
-            ['(mf125.gt.0)*(mf128.lt.75)*((mf124+mf125+mf126).lt.150)*(mf127.lt.7)', 'mf135'],
-            ['(mf134+mf135).gt.0', 'mf157'],
-            ['mf108-(mf110.eq.1)', 'mf136'],
-            ['mf113-(mf115.eq.1)', 'mf137'],
-            ['mf119-(mf121.eq.1)', 'mf138'],
-            ['mf127-(mf129.eq.1)', 'mf139'],
-            ['(mf132+mf133).gt.0', 'mf151']]
+        specs = []
+        specs.append(util.matrix_spec("mf110", "(mf107.gt.0)"))
+        specs.append(util.matrix_spec("mf115", "(mf112.gt.0)"))
+        specs.append(util.matrix_spec("mf121", "(mf117.gt.0)"))
+        specs.append(util.matrix_spec("mf129", "(mf125.gt.0)"))
+        specs.append(util.matrix_spec("mf130", "(mf128.lt.50)"))
+        specs.append(util.matrix_spec("mf132", "(mf107.gt.0)*(mf109.lt.60)*((mf106+mf107+mf108+mf109).lt.180)*(mf108.lt.6)"))
+        specs.append(util.matrix_spec("mf133", "(mf112.gt.0)*(mf114.lt.60)*((mf111+mf112+mf113+mf114).lt.180)*(mf113.lt.6)"))
+        specs.append(util.matrix_spec("mf134", "(mf117.gt.0)*(mf120.lt.75)*((mf116+mf117+mf118).lt.150)*(mf119.lt.7)"))
+        specs.append(util.matrix_spec("mf135", "(mf125.gt.0)*(mf128.lt.75)*((mf124+mf125+mf126).lt.150)*(mf127.lt.7)"))
+        specs.append(util.matrix_spec("mf157", "(mf134+mf135).gt.0"))
+        specs.append(util.matrix_spec("mf136", "mf108-(mf110.eq.1)"))
+        specs.append(util.matrix_spec("mf137", "mf113-(mf115.eq.1)"))
+        specs.append(util.matrix_spec("mf138", "mf119-(mf121.eq.1)"))
+        specs.append(util.matrix_spec("mf139", "mf127-(mf129.eq.1)"))
+        specs.append(util.matrix_spec("mf151", "(mf132+mf133).gt.0"))
 
-        spec_list = []
-        for expression, result in expressions_list:
-            spec_list.append(build_spec(expression, result))
-
-        compute_matrix(spec_list, scenario)
+        compute_matrix(specs)
 
     @_m.logbook_trace("Add external demand to non-work SOV / HOV")
     def add_external_demand(self, scenario):
