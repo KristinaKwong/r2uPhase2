@@ -1,26 +1,22 @@
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Util.py - Collection of Model Utility Method
+##---------------------------------------------------------------------
 import inro.modeller as _m
-import inro.emme as _emme
+
 import os
 import csv as csv
 
 class Util(_m.Tool()):
-    tool_run_msg = _m.Attribute(unicode)
-
     def page(self):
-        start_path = os.path.dirname(_m.Modeller().emmebank.path)
-
         pb = _m.ToolPageBuilder(self)
         pb.title = "Translink Utility Toolbox"
         pb.description = "Collection of Utility Methods for Model Execution"
         pb.branding_text = "TransLink"
-
-        if self.tool_run_msg:
-            pb.add_html(self.tool_run_msg)
+        pb.runnable = False
 
         return pb.render()
-
-    def run(self):
-        pass
 
     def __call__(self):
         pass
