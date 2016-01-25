@@ -107,57 +107,6 @@ def aggregate_non_work_demand(scenario):
     compute_matrix(spec_list, scenario)
 
 
-def old_calculate_probabilities():
-    # no longer used, maintained for reference only
-    with _modeller.logbook_trace("Calculate_Probabilities"):
-        ## Probabilities are saved in matrices mf441-mf503 and are calculated from utilities stored in matrices mf374-mf436
-        print "--------Calculate_Probabilities, " + str(datetime.now().strftime('%H:%M:%S'))
-        spec_as_dict = build_spec("", "")
-
-        tiny = str(0.000001)
-        mfresult = 441
-        startmf = 374
-        e = str(2.71828182846)
-        theta = str(0.915891936773)
-        for i in range(9):
-            for k in range(7):
-                expression1 = ("(" + e + "^" + "(mf" + str(startmf + i + 0 * 9) + ")+" + e + "^" + "(mf" + str(
-                    startmf + i + 1 * 9) + ")+" +
-                               e + "^" + "(mf" + str(startmf + i + 2 * 9) + ")+" + tiny + ")" + "^" + "(" + theta + ")")
-                expression2 = "(" + e + "^" + "(mf" + str(startmf + i + 3 * 9) + ")+" + e + "^" + "(mf" + str(
-                    startmf + i + 4 * 9) + ")+" + tiny + ")" + "^" + "(" + theta + ")"
-                expression3 = "(" + e + "^" + "(mf" + str(
-                    startmf + i + 5 * 9) + ")+" + tiny + ")" + "^" + "(" + theta + ")"
-                if k < 3:
-                    newexp = (
-                        "((" + expression1 + ")" + "/" + "((" + expression1 + ")+" + "(" + expression2 + ")+" + "(" + expression3 + ")))" + "*" +
-                    "(" + e + "^" + "(mf" + str(
-                            startmf + i + k * 9) + "))" + "/" + "(" + tiny + "+" + e + "^" + "(mf" + str(
-                            startmf + i + 0 * 9) + ")+" + e + "^"
-                    + "(mf" + str(startmf + i + 1 * 9) + ")+" + e + "^" + "(mf" + str(startmf + i + 2 * 9) + "))")
-
-                if k > 2 and k < 5:
-                    newexp = (
-                        "((" + expression2 + ")" + "/" + "((" + expression1 + ")+" + "(" + expression2 + ")+" + "(" + expression3 + ")))" +
-                    "*" + "(" + e + "^" + "(mf" + str(startmf + i + k * 9) + "))" + "/" + "(" + tiny + "+" + e + "^" +
-                    "(mf" + str(startmf + i + 3 * 9) + ")+" + e + "^" + "(mf" + str(startmf + i + 4 * 9) + "))")
-
-                if k > 4 and k < 6:
-                    newexp = (
-                        "((" + expression3 + ")" + "/" + "((" + expression1 + ")+" + "(" + expression2 + ")+" + "(" + expression3 +
-                    ")))" + "*" + "(" + e + "^" + "(mf" + str(
-                            startmf + i + k * 9) + "))" + "/" + "(" + tiny + "+" + e + "^" + "(mf" + str(
-                            startmf + i + 5 * 9) + "))")
-
-                if k == 6:
-                    newexp = "0"
-
-                result = "mf" + str(mfresult + i + k * 9)
-                spec_as_dict["expression"] = newexp
-                spec_as_dict["result"] = result
-                report = compute_matrix(spec_as_dict)
-
-
 @_modeller.logbook_trace("Calculate_Walk_Utility")
 def calculate_walk(scenario):
     print "--------Calculate_Walk_Utility, " + str(datetime.now().strftime('%H:%M:%S'))

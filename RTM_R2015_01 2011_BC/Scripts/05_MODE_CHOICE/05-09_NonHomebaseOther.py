@@ -112,54 +112,6 @@ def aggregate_non_work_demand(scenario):
     compute_matrix(spec_list, scenario)
 
 
-@_modeller.logbook_trace("Calculate_Probabilities")
-def old_calculate_probabilities(scenario):
-    # no longer used, maintained for reference only
-    print "--------Calculate_Probabilities, " + str(datetime.now().strftime('%H:%M:%S'))
-    spec_list = []
-
-    tiny = str(0.000001)
-    mfresult = 444
-    startmf = 377
-    e = str(2.71828182846)
-    theta = str(0.95)
-    for i in range(3):
-
-        for k in range(7):
-            expression1 = "(" + e + "^" + "(mf" + str(startmf + i + 0 * 9) + ")+" + e + "^" + "(mf" + str(
-                startmf + i + 1 * 9) + ")+" + tiny + ")" + "^" + "(" + theta + ")"
-            expression2 = "(" + e + "^" + "(mf" + str(startmf + i + 3 * 9) + ")+" + e + "^" + "(mf" + str(
-                startmf + i + 4 * 9) + ")+" + tiny + ")" + "^" + "(" + theta + ")"
-            expression3 = "(" + e + "^" + "(mf" + str(startmf + i + 5 * 9) + ")+" + e + "^" + "(mf" + str(
-                startmf + i + 6 * 9) + ")+" + tiny + ")" + "^" + "(" + theta + ")"
-
-            if k < 2:
-                newexp = (
-                    "((" + expression1 + ")" + "/" + "((" + expression1 + ")+" + "(" + expression2 + ")+" + "(" + expression3 + ")))" + "*"
-                    + "(" + e + "^" + "(mf" + str(startmf + i + k * 9) + "))" + "/" + "(" + tiny + "+" + e + "^" +
-                    "(mf" + str(startmf + i + 0 * 9) + ")+" + e + "^" + "(mf" + str(startmf + i + 1 * 9) + "))")
-
-            if k == 2:
-                newexp = "0"
-
-            if 2 < k < 5:
-                newexp = (
-                    "((" + expression2 + ")" + "/" + "((" + expression1 + ")+" + "(" + expression2 + ")+" + "(" + expression3 + ")))" +
-                    "*" + "(" + e + "^" + "(mf" + str(startmf + i + k * 9) + "))" + "/" + "(" + tiny + "+" + e +
-                    "^" + "(mf" + str(startmf + i + 3 * 9) + ")+" + e + "^" + "(mf" + str(startmf + i + 4 * 9) + "))")
-
-            if 4 < k < 7:
-                newexp = ("((" + expression3 + ")" + "/" + "((" + expression1 + ")+" + "(" + expression2 + ")+" +
-                          "(" + expression3 + ")))" + "*" + "(" + e + "^" + "(mf" + str(
-                    startmf + i + k * 9) + "))" + "/" + "(" + tiny + "+" + e +
-                          "^" + "(mf" + str(startmf + i + 5 * 9) + ")+" + e + "^" + "(mf" + str(
-                    startmf + i + 6 * 9) + "))")
-
-            result = "mf" + str(mfresult + i + k * 9)
-            spec_list.append(build_spec(newexp, result))
-    compute_matrix(spec_list, scenario)
-
-
 @_modeller.logbook_trace("Calculate_Bike_Utility")
 def calculate_bike(scenario):
     # Bike utility stored in matrices mf428-mf436

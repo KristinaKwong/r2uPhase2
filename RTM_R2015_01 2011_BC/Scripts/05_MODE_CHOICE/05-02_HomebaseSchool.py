@@ -115,64 +115,6 @@ def aggregate_non_work_demand(scenario):
     compute_matrix(spec_list, scenario)
 
 
-def old_calculate_probabilities(scenario):
-    # no longer used, maintained for reference
-    tiny = str(0.000001)
-    mfresult = 441
-    startmf = 374
-    theta = str(0.454424821545)
-    spec_list = []
-    for i in range(9):
-
-        expression1 = ("(exp(mf" + str(startmf + i + 0 * 9) + ")"
-                       "+exp(mf" + str(startmf + i + 1 * 9) + ")"
-                       "+exp(mf" + str(startmf + i + 2 * 9) + ")+" + tiny + ")" + "^" + "(" + theta + ")")
-        expression1_result = "mf925"
-        spec_list.append(build_spec(expression1, expression1_result))
-
-        expression2 = ("(exp(mf" + str(startmf + i + 3 * 9) + ")"
-                       "+exp(mf" + str(startmf + i + 4 * 9) + ")+" + tiny + ")" + "^" + "(" + theta + ")")
-        expression2_result = "mf926"
-        spec_list.append(build_spec(expression2, expression2_result))
-
-        expression3 = ("(exp(mf" + str(startmf + i + 5 * 9) + ")"
-                       "+exp(mf" + str(startmf + i + 6 * 9) + ")+" + tiny + ")" + "^" + "(" + theta + ")")
-        expression3_result = "mf927"
-        spec_list.append(build_spec(expression3, expression3_result))
-
-        # TODO: precompute denominator
-        denominator = "((" + expression1_result + ")+" + "(" + expression2_result + ")+" + "(" + expression3_result + "))"
-
-        # Optional TODO: can also pre-calculate the portions of the expressions which
-        #                do not change between expressions in the same nest
-        for k in range(0, 3):
-            newexp = ("((" + expression1_result + ")" + "/" + denominator + ")" +
-                      "*(exp(mf" + str(startmf + i + k * 9) + "))" +
-                      "/" + "(" + tiny + "+exp(mf" + str(startmf + i + 0 * 9) + ")"
-                                         "+exp(mf" + str(startmf + i + 1 * 9) + ")"
-                                         "+exp(mf" + str(startmf + i + 2 * 9) + "))")
-            result = "mf" + str(mfresult + i + k * 9)
-            spec_list.append(build_spec(newexp, result))
-
-        for k in range(3, 5):
-            newexp = ("((" + expression2_result + ")" + "/" + denominator + ")" +
-                      "*(exp(mf" + str(startmf + i + k * 9) + "))" +
-                      "/" + "(" + tiny + "+exp(mf" + str(startmf + i + 3 * 9) + ")"
-                                         "+exp(mf" + str(startmf + i + 4 * 9) + "))")
-            result = "mf" + str(mfresult + i + k * 9)
-            spec_list.append(build_spec(newexp, result))
-
-        for k in range(5, 7):
-            newexp = ("((" + expression3_result + ")" + "/" + denominator + ")" +
-                      "*(exp(mf" + str(startmf + i + k * 9) + "))" +
-                      "/" + "(" + tiny + "+exp(mf" + str(startmf + i + 5 * 9) + ")"
-                                         "+exp(mf" + str(startmf + i + 6 * 9) + "))")
-
-            result = "mf" + str(mfresult + i + k * 9)
-            spec_list.append(build_spec(newexp, result))
-    compute_matrix(spec_list, scenario)
-
-
 @_modeller.logbook_trace("Calculate_Bike")
 def calculate_bike(scenario):
     # Bike utility stored in matrices mf428-mf436
