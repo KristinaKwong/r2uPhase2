@@ -1,31 +1,9 @@
-##--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model
-##--00_02_settings.py
-##--Path: translink.emme.settings
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Path: translink.emme.stage1.step0.settings
 ##--Purpose: sets model values
-##--------------------------------------------------
-##--Last modified 2015-02-12 Kevin Bragg (INRO)
-##--Reason: Added check for missing values and raise
-##--Last modified 2015-01-21 Kevin Bragg (INRO)
-##--Reason: Add reference for congested transit
-##          assignment and park and ride in settings
-##--Last modified 2014-02-14 Kevin Bragg (INRO)
-##--Reason: Update to Emme 4.0 namespaces
-##          Code cleanup PEP 8 compliance
-##          Changed format of settings.csv file
-##          Added page description, logging of settings report
-##--Last modified 2013-11-01 Rhys Wolff (HDR)
-##--Last modification reason - development
-##---------------------------------------------------
-##--Called by: Model run procedure
-##--Calls:     None
-##--Accesses:  settings.csv
-##--Outputs: None
-##---------------------------------------------------
-##--Status/additional notes:
-##--Supersedes all earlier versions of settings.py
-##---------------------------------------------------
-
+##---------------------------------------------------------------------
 import inro.modeller as _m
 import traceback as _traceback
 import csv

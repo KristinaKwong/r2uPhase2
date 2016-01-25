@@ -1,11 +1,12 @@
-##--------------------------------------------------
-##--TransLink NG Model - Regional Truck Model
-##--Description: This module generates light and heavy regional truck matrices
-##--Landuse Based Model produces trip light and heavy productions and attractions which are balanced
-##--Trip Distribution is conducted using gravity model
-##--Time Slice Factors used to derive AM and MD truck traffic
-
-
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Path: translink.emme.stage5.step10.regionaltruck
+##--Purpose: This module generates light and heavy regional truck matrices
+##--         Landuse Based Model produces trip light and heavy productions and attractions which are balanced
+##--         Trip Distribution is conducted using gravity model
+##--         Time Slice Factors used to derive AM and MD truck traffic
+##---------------------------------------------------------------------
 import inro.modeller as _modeller
 import os
 import traceback as _traceback

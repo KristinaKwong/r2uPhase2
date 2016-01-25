@@ -1,32 +1,9 @@
-##--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
 ##--
-##--Path:
-##--Purpose:
-##--------------------------------------------------
-##--Last modified 2014-02-25 Kevin Bragg (INRO)
-##         Optimization of matrix calculation expressions:
-##          - used matrix multi-calculation feature
-##          - moved evaluation of certain expressions
-##            outside of for loops which do not change
-##          - added constraint.by_value where applicable
-##          - optimized probability calculations
-##         Moved common functions to
-##         05-11_ModeChoiceUtilities tool to improve
-##         code reuse
-##--Last modified 2014-02-14 Kevin Bragg (INRO)
-##--Reason: Update to Emme 4.0 namespaces
-##          Code cleanup PEP 8 compliance
-##---------------------------------------------------
-##--Called by:
-##--Calls:
-##--Accesses:
-##--Outputs:
-##---------------------------------------------------
-##--Status/additional notes:
-##---------------------------------------------------
-## 05-07 HBescorting Mode Choice Model
-
+##--Path: translink.emme.stage3.step5.modechoicehbesc
+##--Purpose: HBescorting Mode Choice Model
+##---------------------------------------------------------------------
 from datetime import datetime
 import inro.modeller as _modeller
 import os

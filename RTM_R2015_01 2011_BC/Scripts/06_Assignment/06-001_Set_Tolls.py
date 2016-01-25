@@ -1,26 +1,9 @@
-##--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model
-##--set_tolls.py
-##--Path: translink.emme.tollset
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Path: translink.emme.stage3.step6.tollset
 ##--Purpose: initialize @tolls and read in values from external file
-##--------------------------------------------------
-##--Last modified 2014-06-13 Kevin Bragg (INRO)
-##--Reason: Minor formatting correction
-##--Last modified 2014-02-14 Kevin Bragg (INRO)
-##--Reason: Update to Emme 4.0 namespaces
-##          Code cleanup PEP 8 compliance
-##--Last modified 2013-10-21 Rhys Wolff (HDR)
-##--Last modification reason - development
-##---------------------------------------------------
-##--Called by: Assignment scripts
-##--Calls:     None
-##--Accesses:  tollinput.csv
-##--Outputs: None
-##---------------------------------------------------
-##--Status/additional notes:
-##--Supersedes all earlier versions of set_tolls.py
-##---------------------------------------------------
-
+##---------------------------------------------------------------------
 import inro.modeller as _m
 import traceback as _traceback
 import os

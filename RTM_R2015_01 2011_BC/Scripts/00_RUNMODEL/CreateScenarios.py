@@ -1,28 +1,11 @@
-##--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model
-##--createscenarios.py
-##--Path: translink.emme.tools.create_scen
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Path: translink.emme.stage1.step0.create_scen
 ##--Purpose: create scenarios
-##--------------------------------------------------
-##--Last modified 2014-02-14 Kevin Bragg (INRO)
-##--Reason: Update to Emme 4.0 namespaces
-##          Code cleanup PEP 8 compliance
-##--Last modified 2013-11-05 Rhys Wolff (HDR)
-##--Last modification reason - development
-##---------------------------------------------------
-##--Called by:  Run
-##--Calls:      None
-##--Accesses:   None
-##--Outputs: None
-##---------------------------------------------------
-##--Status/additional notes:
-##--Supersedes all earlier versions of createscenarios.py
-##---------------------------------------------------
-
-
+##---------------------------------------------------------------------
 import inro.modeller as _m
 import traceback as _traceback
-
 
 class InputSettings(_m.Tool()):
     am_scenario = _m.Attribute(_m.InstanceType)

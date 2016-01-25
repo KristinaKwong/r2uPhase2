@@ -1,31 +1,9 @@
-##--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
 ##--
-##--Path:
-##--Purpose:
-##--------------------------------------------------
-##--Last modified 2014-06-13 Kevin Bragg (INRO)
-##--Reason: Adding addition of external demand
-##         (moved from AutoAssignment tool)
-##--Last modified 2014-02-25 Kevin Bragg (INRO)
-##         Optimization of matrix calculation expressions:
-##          - used matrix multi-calculation feature
-##          - moved evaluation of certain expressions
-##            outside of for loops which do not change
-##          - added constraint.by_value where applicable
-##          - optimized probability calculations
-##         Moved common functions to
-##         05-11_ModeChoiceUtilities tool to improve
-##         code reuse
-##--Last modified 2014-02-14 Kevin Bragg (INRO)
-##--Reason: Update to Emme 4.0 namespaces
-##          Code cleanup PEP 8 compliance
-##---------------------------------------------------
-##--Called by:
-##--Calls:
-##--Accesses:
-##--Outputs:
-##---------------------------------------------------
+##--Path: translink.emme.stage3.step5.modechoice
+##--Purpose: Run mode choice component of RTM
+##---------------------------------------------------------------------
 ##--Status/additional notes:
 ## Number of mode choices for each trip type:
 # work 7
@@ -38,7 +16,6 @@
 # NHB other 6
 # NHB work 6
 ##---------------------------------------------------
-
 import inro.modeller as _m
 
 import os

@@ -1,29 +1,13 @@
-##--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model
-##--00_01_landuse.py
-##--Path: translink.emme.landuse
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Path: translink.emme.stage1.step0.landuse
 ##--Purpose: input land use from external files
-##--------------------------------------------------
-##--Last modified 2014-02-14 Kevin Bragg (INRO)
-##--Reason: Update to Emme 4.0 namespaces
-##          Code cleanup PEP 8 compliance
-##--Last modified 2013-10-23 Rhys Wolff (HDR)
-##--Last modification reason - development
-##---------------------------------------------------
-##--Called by: Model run procedure
-##--Calls:     None
-##--Accesses:  main_pop_file.csv, second_pop_file.csv
-##--Outputs: None
-##---------------------------------------------------
-##--Status/additional notes:
-##--Supersedes all earlier versions of landuse.py
-##---------------------------------------------------
-
+##---------------------------------------------------------------------
 import inro.modeller as _m
 import traceback as _traceback
 import csv
 import os
-
 
 class InputLandUse(_m.Tool()):
     LandUse1 = _m.Attribute(unicode)

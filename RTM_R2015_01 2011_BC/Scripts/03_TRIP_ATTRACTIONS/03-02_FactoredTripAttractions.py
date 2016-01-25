@@ -1,24 +1,9 @@
-##--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model - HDR
-##--03-02_FactoredTripAttractions.PY
-##--Path: translink.emme.factoredtripattraction
-##--Purpose of 03-02_FactoredTripAttractions: factor attraction totals for RTM generation model
-##--------------------------------------------------
-##--Last modified 2014-02-14 Kevin Bragg (INRO)
-##--Reason: Update to Emme 4.0 namespaces
-##          Code cleanup PEP 8 compliance
-##--Last modified 2013-09-03 Rhys Wolff (HDR)
-##--Last modification reason - add comments and notes
-##---------------------------------------------------
-##--Called by: 00_00_RUN_ALL.PY
-##--Calls:     None
-##--Accesses:  None
-##--Outputs: 03-02_OUTPUT_RESULTS.txt
-##---------------------------------------------------
-##--Status/additional notes:
-##--Supersedes all earlier versions of 03-02_FactoredTripAttractions
-##---------------------------------------------------
-
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Path: translink.emme.stage2.step3.factoredtripattraction
+##--Purpose: factor attraction totals for RTM generation model
+##---------------------------------------------------------------------
 import inro.modeller as _m
 import os
 import traceback as _traceback

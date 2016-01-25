@@ -1,7 +1,8 @@
 ##---------------------------------------------------------------------
 ##--TransLink Phase 3 Regional Transportation Model
 ##--
-##--Util.py - Collection of Model Utility Method
+##--Path: translink.emme.util
+##--Purpose: Model Utility Methods
 ##---------------------------------------------------------------------
 import inro.modeller as _m
 

@@ -1,40 +1,12 @@
-##--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
 ##--
-##--Path:
-##--Purpose:
-##--------------------------------------------------
-##--Last modified 2014-06-13 Kevin Bragg (INRO)
-##--Reason: Changed auto assignment to SOLA assignment
-##          Moved adding of external demand to
-##          RunModeChoiceModel tool
-##--Last modified 2014-04-17 Kevin Bragg (INRO)
-##--Reason: Restructured auto assignment to
-##          generate specification.
-##          Centralized generation of spec for use
-##          with 07-03_Auto_Assignment_tolls.py
-##          Changed inputs to take stopping_criteria
-##          instead of max_iterations.
-##--Last modified 2014-04-07 Kevin Bragg (INRO)
-##--Reason: Add parameters for max iterations of
-##          distribution and assignment steps
-##--Last modified 2014-02-14 Kevin Bragg (INRO)
-##--Reason: Update to Emme 4.0 namespaces
-##          Code cleanup PEP 8 compliance
-##---------------------------------------------------
-##--Called by: 07-03_Auto_Assignment_tolls.py: uses generate_specification
-##             08_01_Auto_Assignment_tolls.py: uses generate_specification
-##--Calls:
-##--Accesses:
-##--Outputs:
-##---------------------------------------------------
-##--Status/additional notes:
-##---------------------------------------------------
-
+##--Path: translink.emme.stage3.step6.autoassignment
+##--Purpose: Auto assignment procedure
+##---------------------------------------------------------------------
 import inro.modeller as _m
 import os
 import traceback as _traceback
-
 
 class AutoAssignment(_m.Tool()):
 

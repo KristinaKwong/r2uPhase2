@@ -1,4 +1,9 @@
-## Trip Production model - HDR
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Path: translink.emme.stage2.step3.preloops
+##--Purpose: Move starting skims where needed
+##---------------------------------------------------------------------
 import inro.modeller as _m
 import traceback as _traceback
 

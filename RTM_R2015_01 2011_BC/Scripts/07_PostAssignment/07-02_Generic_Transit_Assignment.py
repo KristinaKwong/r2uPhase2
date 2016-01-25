@@ -1,21 +1,9 @@
-#--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
 ##--
-##--Path:
-##--Purpose:
-##--------------------------------------------------
-##--Last modified 2014-02-14 Kevin Bragg (INRO)
-##--Reason: Update to Emme 4.0 namespaces
-##          Code cleanup PEP 8 compliance
-##---------------------------------------------------
-##--Called by:
-##--Calls:
-##--Accesses:
-##--Outputs:
-##---------------------------------------------------
-##--Status/additional notes:
-##---------------------------------------------------
-
+##--Path: translink.emme.stage3.step7.gentranskim
+##--Purpose: Generates a generic transit skim
+##---------------------------------------------------------------------
 import inro.modeller as _m
 import os
 import simplejson

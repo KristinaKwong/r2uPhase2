@@ -1,10 +1,11 @@
-##--------------------------------------------------
-##--TransLink NG Model - External Truck Model
-##--Description: This module generates external light and heavy truck matrices
-##--Regression functions are used to generate base and future demand
-##--Trip Distribution is conducted using 1999 Truck O-D survey
-
-
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Path: translink.emme.stage5.step10.externaltruck
+##--Purpose: This module generates external light and heavy truck matrices
+##--         Regression functions are used to generate base and future demand
+##--         Trip Distribution is conducted using 1999 Truck O-D survey
+##---------------------------------------------------------------------
 import inro.modeller as _modeller
 import os
 import traceback as _traceback

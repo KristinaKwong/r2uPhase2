@@ -1,30 +1,14 @@
-##--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model - HDR
-##--03-01_TripAttractions.PY
-##--Path: translink.emme.tripattraction
-##--Purpose of 03-01_TripAttractions: develop attraction totals for RTM generation model
-##--------------------------------------------------
-##--Last modified 2014-02-14 Kevin Bragg (INRO)
-##--Reason: Update to Emme 4.0 namespaces
-##          Code cleanup PEP 8 compliance
-##--Last modified 2013-09-03 Rhys Wolff (HDR)
-##--Last modification reason - add comments and notes
-##---------------------------------------------------
-##--Called by: 00_00_RUN_ALL.PY
-##--Calls:     None
-##--Accesses:  32_COEFFICIENTS.csv
-##--Outputs: 03-01_OUTPUT_RESULTS.txt
-##---------------------------------------------------
-##--Status/additional notes:
-##--Supersedes all earlier versions of 03-01_TripAttractions
-##---------------------------------------------------
-
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Path: translink.emme.stage2.step2.tripattraction
+##--Purpose: develop attraction totals for RTM generation model
+##---------------------------------------------------------------------
 import inro.modeller as _m
 import csv
 import os
 import traceback as _traceback
 from collections import defaultdict
-
 
 class TripAttractions(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)

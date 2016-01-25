@@ -1,41 +1,12 @@
-# #--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model
-##--05-11_parkandride.py
-##--Path: translink.emme.parkandride
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Path: translink.emme.stage3.step5.parkandride
 ##--Purpose: reassigns transit demand to park and ride
-##--------------------------------------------------
-##--Last modified 2015-02-03 Bryce Sharman (INRO)
-##--Last modification reasons:
-##  - Added park and ride leg trips to the assignment matrices
-##    for auto (mf847 and mf844) and transit (mf854 and mf853)
-##  - Fixed loss of trips in park and ride leg demand (auto and transit)
-##      - added gp29 to constraints
-##      - changed calculation of residual parking lot capacity md65
-#         to always leave one spot left
-##      - added additional constraints (using mf995) on the calculated
-##        PNR total demand (mf204)to be consistent with the input
-##        impedance constraints for bus and rail (mf200 and mf201)
-##--Last modified 2015-01-19 Kevin Bragg (INRO)
-##--Last modification reasons:
-##  - updated to PEP 8
-##  - converted from PARKRIDE.MAC to Two-leg trip chain tool
-##  - began integrating with model run
-##--Last modified 2013-12-13 Rhys Wolff (HDR)
-##--Last modification reason - development
-##---------------------------------------------------
-##--Called by: Model run procedure
-##--Calls:     None
-##--Accesses:
-##--Outputs: None
-##---------------------------------------------------
-##--Status/additional notes:
-##--Supersedes all earlier versions of parkandride.py
-##---------------------------------------------------
-
+##---------------------------------------------------------------------
 import inro.modeller as _m
 import traceback as _traceback
 import os
-
 
 # Mode split coefficients (based on those used in Phase 1 model)
 mode1 = str(0.075)  #Exponential coefficient

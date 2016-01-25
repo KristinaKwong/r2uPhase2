@@ -1,22 +1,9 @@
-##--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
 ##--
-##--Path:
-##--Purpose:
-##--------------------------------------------------
-##--Last modified 2014-02-14 Kevin Bragg (INRO)
-##--Reason: Update to Emme 4.0 namespaces
-##          Code cleanup PEP 8 compliance
-##---------------------------------------------------
-##--Called by:
-##--Calls:
-##--Accesses:
-##--Outputs:
-##---------------------------------------------------
-##--Status/additional notes:
-##---------------------------------------------------
-## 05-100 Exporting Mode Choice Out
-
+##--Path: translink.emme.stage3.step5.exportmodechoice
+##--Purpose: Exporting Mode Choice Out
+##---------------------------------------------------------------------
 import inro.modeller as _modeller
 from datetime import datetime
 

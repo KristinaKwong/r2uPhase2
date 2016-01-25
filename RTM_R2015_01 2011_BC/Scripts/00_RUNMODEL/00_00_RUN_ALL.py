@@ -1,38 +1,12 @@
-##--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model
-##--00_00_RUN_ALL.PY
-##--Path: translink.emme.runall
-##--Purpose of 00_00_RUN_ALL:
-##--------------------------------------------------
-##--Last modified 2015-01-19 Kevin Bragg (INRO)
-##--Reason: Add reference for congested transit assignment
-##--Last modified 2014-04-17 Kevin Bragg (INRO)
-##          Added stopping_criteria input to all
-##          traffic assignments
-##          (instead of max_iterations).
-##--Last modified 2014-04-07 Kevin Bragg (INRO)
-##--Reason: Add parameters for max iterations of
-##          distribution and assignment steps
-##--Last modified 2014-02-14 Kevin Bragg (INRO)
-##--Reason: Update to Emme 4.0 namespaces
-##          Code cleanup PEP 8 compliance
-##--Last modified 2013-11-05 Rhys Wolff (HDR)
-##--Last modification reason - add create scenario check and settings input
-##---------------------------------------------------
-##--Called by: user
-##--Calls:     all model components
-##--Accesses:  user-specified
-##--Outputs:
-##---------------------------------------------------
-##--Status/additional notes:
-##--Supersedes all earlier versions of 00_00_RUN_ALL.PY
-##---------------------------------------------------
-
-
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Path: translink.emme.stage1.step0.runall
+##--Purpose: Full model run
+##---------------------------------------------------------------------
 import inro.modeller as _m
 import os
 import traceback as _traceback
-
 
 class FullModelRun(_m.Tool()):
     global_iterations = _m.Attribute(int)

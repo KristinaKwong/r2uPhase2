@@ -1,27 +1,12 @@
-#--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
 ##--
-##--Path:
-##--Purpose:
-##--------------------------------------------------
-##--Last modified 2015-01-20 Kevin Bragg (INRO)
-##--Reason: minor formatting changes
-##--Last modified 2015-01-15 Shuguang (INRO)
-##--Reason: new
-##---------------------------------------------------
-##--Called by:
-##--Calls:
-##--Accesses:
-##--Outputs:
-##---------------------------------------------------
-##--Status/additional notes:
-##---------------------------------------------------
-
-
+##--Path: 
+##--Purpose: Performs two class transit assignment for bus and rail on on AM and PM scenarios
+##---------------------------------------------------------------------
 import inro.modeller as _modeller
 import os
 import traceback as _traceback
-
 
 class TwoClassTransitAssignment(_modeller.Tool()):
     tool_run_msg = _modeller.Attribute(unicode)

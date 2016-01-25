@@ -1,26 +1,9 @@
-##--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model
-##--01-01_SocioEconomicSegmentation.PY
-##--Path: translink.emme.segmentation
-##--Purpose of 01-01_SocioEconomicSegmentation:
-##--------------------------------------------------
-##--Last modified 2014-02-14 Kevin Bragg (INRO)
-##--Reason: Update to Emme 4.0 namespaces
-##          Code cleanup PEP 8 compliance
-##--Last modified 2013-11-05 Rhys Wolff (HDR)
-##--Last modification reason - add  parkcost flag
-##--Add parking cost call
-##---------------------------------------------------
-##--Called by: 00_00_RUN_ALL
-##--Calls:     01-02AutoOwnership 01-03ParkingCost
-##--Accesses:  Auto ownership toolbox CSV files
-##--Outputs: Auto ownership toolbox txt files
-##---------------------------------------------------
-##--Status/additional notes:
-##--Supersedes all earlier versions of 01-01_SocioEconomicSegmentation.PY
-##---------------------------------------------------
-
-
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Path: translink.emme.stage1.step1.segmentation
+##--Purpose: 
+##---------------------------------------------------------------------
 import inro.modeller as _m
 import csv
 import os

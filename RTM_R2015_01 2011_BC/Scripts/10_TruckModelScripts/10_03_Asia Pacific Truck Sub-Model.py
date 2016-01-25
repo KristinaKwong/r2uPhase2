@@ -1,15 +1,14 @@
-##--------------------------------------------------
-##--TransLink NG Model - Regional Truck Model
-##--Description: This module generates Asia Pacific Trucks (heavy trucks)
-##--Tables based on Port Metro Vancouver GPS Study##--
-
-
-
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Path: translink.emme.stage5.step10.asiapacifictruck
+##--Purpose: This module generates Asia Pacific Trucks (heavy trucks)
+##--         Tables based on Port Metro Vancouver GPS Study
+##---------------------------------------------------------------------
 import inro.modeller as _modeller
 import os
 import traceback as _traceback
 from datetime import datetime
-
 
 class AsiaPacificTruckModel(_modeller.Tool()):
 	tool_run_msg = _modeller.Attribute(unicode)

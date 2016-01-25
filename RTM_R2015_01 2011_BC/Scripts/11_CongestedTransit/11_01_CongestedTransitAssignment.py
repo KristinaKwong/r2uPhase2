@@ -1,29 +1,12 @@
-#--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
 ##--
-##--Path:
-##--Purpose:
-##--------------------------------------------------
-##--Last modified 2015-02-06 Shuguang (INRO)
-##--Reason: Changing to congestion on both rail and bus
-##--Last modified 2015-01-19 Kevin Bragg (INRO)
-##--Reason: integration with main "Run all" and
-##          minor formatting changes
-##--Last modified 2015-01-15 Shuguang (INRO)
-##--Reason: new
-##---------------------------------------------------
-##--Called by:
-##--Calls:
-##--Accesses:
-##--Outputs:
-##---------------------------------------------------
-##--Status/additional notes:
-##---------------------------------------------------
-
-
+##--Path: translink.emme.stage5.step11.congested_transit
+##--Purpose: Performs a two-class (bus and rail) Congested transit
+##--         assignment on AM scenario
+##---------------------------------------------------------------------
 import inro.modeller as _modeller
 import traceback as _traceback
-
 
 class CongestedTransitAssignment(_modeller.Tool()):
 

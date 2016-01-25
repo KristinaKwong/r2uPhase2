@@ -1,32 +1,9 @@
-##--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model - HDR
-##--04-01-TripDistributions.PY
-##--Path: translink.emme.tripdistributions
-##--Purpose of 04-01-TripDistributions: run distribution component of RTM
-##--------------------------------------------------
-##--Last modified 2014-06-13 Kevin Bragg (INRO)
-##--Reason: Changed to use the 4.1.2 namespace of
-##          matrix balancing multiple productions
-##          Added tool page interface and run
-##--Last modified 2014-04-07 Kevin Bragg (INRO)
-##--Reason: Add parameters for max iterations of
-##          distribution and assignment steps
-##--Last modified 2014-02-14 Kevin Bragg (INRO)
-##--Reason: Update to Emme 4.0 namespaces
-##          Code cleanup PEP 8 compliance
-##--Last modified 2013-09-03 Rhys Wolff (HDR)
-##--Last modification reason - add comments and notes
-##--Added option to include cost/km variation (store in ms101)
-##---------------------------------------------------
-##--Called by: 00_00_RUN_ALL.PY
-##--Calls:     None
-##--Accesses:  None
-##--Outputs: 04-01_OUTPUT_RESULTS.txt
-##---------------------------------------------------
-##--Status/additional notes:  Added option to include cost/km variation
-##--Supersedes all earlier versions of 04-01-TripDistributions
-##---------------------------------------------------
-
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Path: translink.emme.stage3.step4.tripdistribution
+##--Purpose: Run distribution component of RTM
+##---------------------------------------------------------------------
 import inro.modeller as _m
 
 import os

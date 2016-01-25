@@ -1,24 +1,9 @@
-##--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model - HDR
-##--02-01_TripProd.PY
-##--Path: translink.emme.tripproduction
-##--Purpose of 02-01_TripProd: develop production totals for RTM generation model
-##--------------------------------------------------
-##--Last modified 2014-02-14 Kevin Bragg (INRO)
-##--Reason: Update to Emme 4.0 namespaces
-##          Code cleanup PEP 8 compliance
-##--Last modified 2013-09-03 Rhys Wolff (HDR)
-##--Last modification reason - add comments and notes
-##---------------------------------------------------
-##--Called by: 00_00_RUN_ALL.PY
-##--Calls:     None
-##--Accesses:  21_TripRates_ALLPURPOSES.csv, 22_CalibFactors.csv, MatrixTransactionFile.txt
-##--Outputs: 02-01_OUTPUT_FILE.txt
-##---------------------------------------------------
-##--Status/additional notes:
-##--Supersedes all earlier versions of 02-01_TripProd
-##---------------------------------------------------
-
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Path: translink.emme.stage2.step2.tripproduction
+##--Purpose: develop production totals for RTM generation model
+##---------------------------------------------------------------------
 import inro.modeller as _m
 import csv
 import os

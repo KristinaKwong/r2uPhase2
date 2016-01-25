@@ -1,27 +1,13 @@
-##--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model
-##--01-03parkingcost.PY
-##--Path: translink.emme.parkingcost
-##--Purpose of File: Incorporate parking cost for designated horizon year
-##--------------------------------------------------
-##--Last modified 2014-04-07 Kevin Bragg (INRO)
-##--Reason: Further code cleanup and PEP 8 compliance
-##--Last modified 2014-02-14 Kevin Bragg (INRO)
-##--Reason: Update to Emme 4.0 namespaces
-##          Code cleanup PEP 8 compliance
-##--Last modified 2013-09-04 Rhys Wolff (HDR)
-##--Last modification reason - code development
-##---------------------------------------------------
-##--Called by: 01-01_SocioEconomicSegmentation
-##--Calls: None
-##--Accesses:
-##--Outputs: None
-##---------------------------------------------------
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Path: translink.emme.stage1.step1.parkingcost
+##--Purpose: Incorporate parking cost for designated horizon year
+##---------------------------------------------------------------------
 ##--Status/additional notes:
 ## Calculate Parking Cost based on base year variables
 ## If run on base year, will produce no change in costs
 ##---------------------------------------------------
-
 
 import inro.modeller as _modeller
 import traceback as _traceback

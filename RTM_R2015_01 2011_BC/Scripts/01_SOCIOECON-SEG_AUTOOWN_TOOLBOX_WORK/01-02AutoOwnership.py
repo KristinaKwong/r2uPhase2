@@ -1,28 +1,9 @@
-##--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model
-##--01-02AutoOwnership.PY
-##--Path: translink.emme.autoownership
-##--Purpose of 01-02AutoOwnership:
-##--------------------------------------------------
-##--Last modified 2014-04-07 Kevin Bragg (INRO)
-##--Reason: Further code cleanup and PEP 8 compliance
-##--Last modified 2014-02-14 Kevin Bragg (INRO)
-##--Reason: Update to Emme 4.0 namespaces
-##          Code cleanup PEP 8 compliance
-##--Last modified 2013-08-29 Rhys Wolff (HDR)
-##--Last modification reason - add comments and notes
-##--scratch matrix use replaced by compound expressions
-##--matrices mo30 to mo43, mo395 to mo403 no longer used.
-##---------------------------------------------------
-##--Called by: 01-01SocioeconomicSegmentation
-##--Calls:     None
-##--Accesses:  None
-##--Outputs: Auto ownership toolbox txt files
-##---------------------------------------------------
-##--Status/additional notes:
-##--Supersedes all earlier versions of 01-02AutoOwnership.PY
-##---------------------------------------------------
-
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Path: translink.emme.stage1.step1.autoownership
+##--Purpose: 
+##---------------------------------------------------------------------
 import inro.modeller as _m
 
 # TODO: add tool interface

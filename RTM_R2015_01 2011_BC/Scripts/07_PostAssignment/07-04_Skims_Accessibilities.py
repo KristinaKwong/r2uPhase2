@@ -1,25 +1,12 @@
-#--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
 ##--
-##--Path:
-##--Purpose:
-##--------------------------------------------------
-##--Last modified 2014-02-14 Kevin Bragg (INRO)
-##--Reason: Update to Emme 4.0 namespaces
-##          Code cleanup PEP 8 compliance
-##---------------------------------------------------
-##--Called by:
-##--Calls:
-##--Accesses:
-##--Outputs:
-##---------------------------------------------------
-##--Status/additional notes:
-##---------------------------------------------------
-
+##--Path: translink.emme.stage3.step7.skimaccess
+##--Purpose: Generates new weighted skims and accessibilities
+##---------------------------------------------------------------------
 import inro.modeller as _m
 import os
 import traceback as _traceback
-
 
 class SkimsAccessibilities(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)

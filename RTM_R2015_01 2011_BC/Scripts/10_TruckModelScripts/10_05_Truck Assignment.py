@@ -1,4 +1,9 @@
-
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
+##--
+##--Path: translink.emme.stage5.step10.truckassign
+##--Purpose: Convert Trucks to PCE
+##---------------------------------------------------------------------
 import inro.modeller as _modeller
 import os
 import traceback as _traceback

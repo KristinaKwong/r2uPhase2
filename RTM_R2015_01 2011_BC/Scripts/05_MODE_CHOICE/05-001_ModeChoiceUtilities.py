@@ -1,35 +1,10 @@
-##--------------------------------------------------
-##--TransLink Phase 2 Regional Transportation Model
+##---------------------------------------------------------------------
+##--TransLink Phase 3 Regional Transportation Model
 ##--
-##--Path: 05-11_ModeChoiceUtilities.py
-##--Namespace: "translink.emme.modechoicetools.utilities"
+##--Path: translink.emme.stage3.step5.utilities
 ##--Purpose: Contains several common methods to the
 ##           various mode-choice by purpose sub-models
-##--------------------------------------------------
-##--Last modified 2014-02-25 Kevin Bragg (INRO)
-##          - Created tool
-##          - Moved expressions common to multiple
-##            mode choice tools to improve code reuse
-##---------------------------------------------------
-##--Called by:  05-01_HomebaseWork
-##              05-02_HomebaseSchool
-##              05-03_HomebaseShopping
-##              05-04_HomebasePersonalBusiness
-##              05-05_HomebaseUniversity
-##              05-06_HomebaseSocialRecreation
-##              05-07_HomebaseEscorting
-##              05-08_NonHomebaseOther
-##              05-09_NonHomebaseWork
-##--Calls:      None
-##--Accesses: Matrices mf441-mf503 (calculate_probabilities)
-##            Also matrices as specified for calculate_demand
-##--Outputs:  Matrices mf374-mf436(calculate_probabilities)
-##            Also matrices as specified for calculate_demand
-##---------------------------------------------------
-##--Status/additional notes:
-##---------------------------------------------------
-## 05-01 HBW Mode Choice Model - HDR
-
+##---------------------------------------------------------------------
 import inro.modeller as _modeller
 import os
 import contextlib as _context
