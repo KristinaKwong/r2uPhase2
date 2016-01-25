@@ -113,7 +113,9 @@ class FullModelRun(_m.Tool()):
                  max_distribution_iterations=60,
                  max_assignment_iterations=100):
         eb = _m.Modeller().emmebank
-        self.stage1(eb, land_use_file1, land_use_file2)
+
+        settings = self.stage1(eb, land_use_file1, land_use_file2)
+
         self.stage2(eb)
 
         # TODO: - could check and report on convergence
@@ -149,9 +151,9 @@ class FullModelRun(_m.Tool()):
         #Iterate distribution, mode choice and assignment steps to indicated number of iterations
         for iteration_number in range(global_iterations):
             trip_distribution(eb, max_distribution_iterations)
-            return
             mode_choice(root_directory, iteration_number, global_iterations, run_park_ride)
             assignment(root_directory, iteration_number, stopping_criteria)
+            return
             post_assignment(root_directory, iteration_number, stopping_criteria)
 
         demand_adjust(root_directory, am_scen, md_scen, stopping_criteria)
@@ -231,6 +233,8 @@ class FullModelRun(_m.Tool()):
         # Segmentation (including auto ownership)
         segmentation = _m.Modeller().tool("translink.emme.stage1.step1.segmentation")
         segmentation(eb)
+
+        return settings
 
     @_m.logbook_trace("Stage 2 - Trip Generation")
     def stage2(self, eb):
