@@ -236,11 +236,9 @@ class FullModelRun(_m.Tool()):
         demand_adjust = _m.Modeller().tool("translink.emme.stage4.step8.demandadjustment")
         congested_transit = _m.Modeller().tool("translink.emme.stage5.step11.congested_transit")
 
-        root_directory = os.path.dirname(eb.path) + "\\"
-
         am_scen = eb.matrix("ms140").data
         md_scen = eb.matrix("ms141").data
-        demand_adjust(root_directory, am_scen, md_scen, stopping_criteria)
+        demand_adjust(eb, am_scen, md_scen, stopping_criteria)
 
         if settings.get("congested_transit") == 1:
             am_scenario = eb.scenario(am_scen)

@@ -34,8 +34,6 @@ class DemandAdjustment(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        start_path = os.path.dirname(_m.Modeller().emmebank.path)
-
         pb = _m.ToolPageBuilder(self, title="Adjust AM and MD Auto Demand",
                                        description=""" Applies adjustments to AM and MD Auto Demand""",
                                        branding_text="TransLink")
@@ -47,13 +45,11 @@ class DemandAdjustment(_m.Tool()):
 
     def run(self):
         self.tool_run_msg = ""
-        root_directory = 'C:/2045_with_adjustments/Database/'
         try:
             # TODO: add inputs in page and run
-            emmebank = _m.Modeller().emmebank
-            root_directory = os.path.dirname(emmebank.path) + "\\"
-            am_scenario = emmebank.scenario(21000)
-            md_scenario = emmebank.scenario(22000)
+            eb = _m.Modeller().emmebank
+            am_scenario = eb.scenario(21000)
+            md_scenario = eb.scenario(22000)
             stopping_criteria = {
                 "max_iterations": 0,
                 "relative_gap": 0.0,
@@ -61,19 +57,19 @@ class DemandAdjustment(_m.Tool()):
                 "normalized_gap": 0.01
             }
 
-            self.__call__(root_directory, am_scenario, md_scenario, stopping_criteria)
+            self.__call__(eb, am_scenario, md_scenario, stopping_criteria)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("08-01 - AM and MD Demand Adjustment")
-    def __call__(self, root_directory, am_scenario, md_scenario, stopping_criteria):
+    def __call__(self, eb, am_scenario, md_scenario, stopping_criteria):
         bus_assignment = _m.Modeller().tool(
             "translink.emme.stage3.step6.busassignment")
         rail_assignment = _m.Modeller().tool(
             "translink.emme.stage3.step6.railassignment")
-        self.matrix_batchins(root_directory)
+        self.matrix_batchins(eb)
         self.demand_adjustment(am_scenario)
         am_adj_scenario, md_adj_scenario = self.copy_scenarios(am_scenario, md_scenario)
         self.auto_assignment(am_adj_scenario, md_adj_scenario, stopping_criteria)
@@ -412,11 +408,38 @@ class DemandAdjustment(_m.Tool()):
             compute_matrix(spec, scenario=scenario)
 
     @_m.logbook_trace("Matrix Batchin")
-    def matrix_batchins(self, root_directory):
-        process = _m.Modeller().tool(
-            "inro.emme.data.matrix.matrix_transaction")
-        matrix_file = root_directory + "/08_DemandAdjustment/Inputs/MatrixTransactionFile.txt"
+    def matrix_batchins(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
 
-        process(transaction_file=matrix_file,
-                throw_on_error=True,
-                scenario=_m.Modeller().scenario)
+        util.initmat(eb, "mf19", "AVhD1", "11-Veh-AMPH-nonworkext-adjusted-SOV", 0)
+        util.initmat(eb, "mf20", "AVhD2", "11-Veh-AMPH-worklow-adjusted-SOV", 0)
+        util.initmat(eb, "mf21", "AVhD3", "11-Veh-AMPH-workmed-adjusted-SOV", 0)
+        util.initmat(eb, "mf22", "AVhD4", "11-Veh-AMPH-workhigh-adjusted-SOV", 0)
+        util.initmat(eb, "mf23", "AVhD5", "11-Veh-AMPH-nonworklow-adjusted-SOV", 0)
+        util.initmat(eb, "mf24", "AVhD6", "11-Veh-AMPH-nonworkmed-high-adjusted-SOV", 0)
+        util.initmat(eb, "mf25", "AVhD7", "11-Veh-AMPH-nonworkext-adjusted-HOV", 0)
+        util.initmat(eb, "mf26", "AVhD8", "11-Veh-AMPH-worklow-adjusted-HOV", 0)
+        util.initmat(eb, "mf27", "AVhD9", "11-Veh-AMPH-workmed-adjusted-HOV", 0)
+        util.initmat(eb, "mf28", "AVhD10", "11-Veh-AMPH-workhigh-adjusted-HOV", 0)
+        util.initmat(eb, "mf29", "AVhD11", "11-Veh-AMPH-nonworklow-adjusted-HOV", 0)
+        util.initmat(eb, "mf30", "AVhD12", "11-Veh-AMPH-nonworkmed-high-adjusted-HOV", 0)
+        util.initmat(eb, "mf31", "ALgD13", "11-Veh-AMPH-adjusted-Light Trucks", 0)
+        util.initmat(eb, "mf32", "AHgD14", "11-Veh-AMPH-adjusted-Heavy Trucks", 0)
+        util.initmat(eb, "mf51", "MVhD1", "11-Veh-MDPH-nonworkext-adjusted-SOV", 0)
+        util.initmat(eb, "mf52", "MVhD2", "11-Veh-MDPH-worklow-adjusted-SOV", 0)
+        util.initmat(eb, "mf53", "MVhD3", "11-Veh-MDPH-workmed-adjusted-SOV", 0)
+        util.initmat(eb, "mf54", "MVhD4", "11-Veh-MDPH-workhigh-adjusted-SOV", 0)
+        util.initmat(eb, "mf55", "MVhD5", "11-Veh-MDPH-nonworklow-adjusted-SOV", 0)
+        util.initmat(eb, "mf56", "MVhD6", "11-Veh-MDPH-nonworkmed-high-adjusted-SV", 0)
+        util.initmat(eb, "mf57", "MVhD7", "11-Veh-MDPH-nonworkext-adjusted-HOV", 0)
+        util.initmat(eb, "mf58", "MVhD8", "11-Veh-MDPH-worklow-adjusted-HOV", 0)
+        util.initmat(eb, "mf59", "MVhD9", "11-Veh-MDPH-workmed-adjusted-HOV", 0)
+        util.initmat(eb, "mf60", "MVhD10", "11-Veh-MDPH-workhigh-adjusted-HOV", 0)
+        util.initmat(eb, "mf61", "MVhD11", "11-Veh-MDPH-nonworklow-adjusted-HOV", 0)
+        util.initmat(eb, "mf62", "MVhD12", "11-Veh-MDPH-nonworkmed-high-adjusted-HOV", 0)
+        util.initmat(eb, "mf63", "MVhD13", "11-Veh-MDPH-adjusted-LGV", 0)
+        util.initmat(eb, "mf64", "MVhD14", "11-Veh-MDPH-adjusted-HGV", 0)
+        util.initmat(eb, "mf66", "jAuDsA", "Adj. Final Skim AutoDistanceAM", 0)
+        util.initmat(eb, "mf67", "jAuTmA", "Adj. Final Skim AutoTimeAM", 0)
+        util.initmat(eb, "mf68", "jAuDsM", "Adj. Final Skim AutoDistanceMD", 0)
+        util.initmat(eb, "mf69", "jAuTmM", "Adj. Final Skim AutoTimeMD", 0)
