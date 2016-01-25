@@ -118,27 +118,6 @@ class FullModelRun(_m.Tool()):
 
         self.stage2(eb)
 
-        # TODO: - could check and report on convergence
-        #         at each iteration (distribution and auto assignment)
-        #       - add global convergence measure
-        trip_distribution = _m.Modeller().tool("translink.emme.stage3.step4.tripdistribution")
-        mode_choice = _m.Modeller().tool("translink.emme.stage3.step5.modechoice")
-        assignment = _m.Modeller().tool("translink.emme.stage3.step6.assignment")
-        post_assignment = _m.Modeller().tool("translink.emme.stage3.step7.postassign")
-        demand_adjust = _m.Modeller().tool("translink.emme.stage4.step8.demandadjustment")
-        congested_transit = _m.Modeller().tool("translink.emme.stage5.step11.congested_transit")
-
-        root_directory = os.path.dirname(eb.path) + "\\"
-
-        #Create scenarios, depending on settings selection
-        ##      Return_val = _m.Modeller().tool("translink.emme.scalar")
-        amscen = eb.matrix("ms140")
-        mdscen = eb.matrix("ms141")
-
-        am_scen = amscen.data
-        md_scen = mdscen.data
-
-
         stopping_criteria = {
             "max_iterations": max_assignment_iterations,
             "relative_gap": 0.0,
@@ -147,15 +126,13 @@ class FullModelRun(_m.Tool()):
         }
         run_park_ride = settings.get("park_and_ride")
 
-        #Distribution, mode choice and assignment
-        #Iterate distribution, mode choice and assignment steps to indicated number of iterations
-        for iteration_number in range(global_iterations):
-            trip_distribution(eb, max_distribution_iterations)
-            mode_choice(root_directory, iteration_number, global_iterations, run_park_ride)
-            assignment(root_directory, iteration_number, stopping_criteria)
-            return
-            post_assignment(root_directory, iteration_number, stopping_criteria)
+        self.stage3(eb, global_iterations, max_distribution_iterations, run_park_ride, stopping_criteria)
+        return
+        demand_adjust = _m.Modeller().tool("translink.emme.stage4.step8.demandadjustment")
+        congested_transit = _m.Modeller().tool("translink.emme.stage5.step11.congested_transit")
 
+        am_scen = eb.matrix("ms140").data
+        md_scen = eb.matrix("ms141").data
         demand_adjust(root_directory, am_scen, md_scen, stopping_criteria)
 
         if settings.get("congested_transit") == 1:
@@ -248,3 +225,24 @@ class FullModelRun(_m.Tool()):
         trip_attraction(eb)
         factor_trip_attractions(eb)
         pre_loops(eb)
+
+    @_m.logbook_trace("Stage 3 - Model Iteration")
+    def stage3(self, eb, global_iterations, max_distribution_iterations, run_park_ride, stopping_criteria):
+                # TODO: - could check and report on convergence
+        #         at each iteration (distribution and auto assignment)
+        #       - add global convergence measure
+        trip_distribution = _m.Modeller().tool("translink.emme.stage3.step4.tripdistribution")
+        mode_choice = _m.Modeller().tool("translink.emme.stage3.step5.modechoice")
+        assignment = _m.Modeller().tool("translink.emme.stage3.step6.assignment")
+        post_assignment = _m.Modeller().tool("translink.emme.stage3.step7.postassign")
+
+        root_directory = os.path.dirname(eb.path) + "\\"
+
+        #Distribution, mode choice and assignment
+        #Iterate distribution, mode choice and assignment steps to indicated number of iterations
+        for iteration_number in range(global_iterations):
+            trip_distribution(eb, max_distribution_iterations)
+            mode_choice(root_directory, iteration_number, global_iterations, run_park_ride)
+            assignment(root_directory, iteration_number, stopping_criteria)
+            post_assignment(root_directory, iteration_number, stopping_criteria)
+            return
