@@ -31,21 +31,21 @@
 ##--Status/additional notes:
 ##---------------------------------------------------
 
-import inro.modeller as _modeller
+import inro.modeller as _m
 import os
 import traceback as _traceback
 
 
-class AutoAssignment(_modeller.Tool()):
+class AutoAssignment(_m.Tool()):
 
-    am_scenario = _modeller.Attribute(_modeller.InstanceType)
-    md_scenario = _modeller.Attribute(_modeller.InstanceType)
-    relative_gap = _modeller.Attribute(float)
-    best_relative_gap = _modeller.Attribute(float)
-    normalized_gap = _modeller.Attribute(float)
-    max_iterations = _modeller.Attribute(int)
+    am_scenario = _m.Attribute(_m.InstanceType)
+    md_scenario = _m.Attribute(_m.InstanceType)
+    relative_gap = _m.Attribute(float)
+    best_relative_gap = _m.Attribute(float)
+    normalized_gap = _m.Attribute(float)
+    max_iterations = _m.Attribute(int)
 
-    tool_run_msg = _modeller.Attribute(unicode)
+    tool_run_msg = _m.Attribute(unicode)
 
     def __init__(self):
         self.relative_gap = 0.0001
@@ -54,7 +54,7 @@ class AutoAssignment(_modeller.Tool()):
         self.max_iterations = 60
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(
+        pb = _m.ToolPageBuilder(
             self,
             title="Auto_Assignment",
             description="Performs a multi-class auto assignment with "
@@ -79,7 +79,7 @@ class AutoAssignment(_modeller.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            eb = _modeller.Modeller().emmebank
+            eb = _m.Modeller().emmebank
             stopping_criteria = {
                 "relative_gap": self.relative_gap,
                 "best_relative_gap": self.best_relative_gap,
@@ -88,14 +88,14 @@ class AutoAssignment(_modeller.Tool()):
             }
             self(eb, self.am_scenario, self.md_scenario, stopping_criteria)
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    @_modeller.logbook_trace("06-01 - Auto Assignment")
+    @_m.logbook_trace("06-01 - Auto Assignment")
     def __call__(self, eb, scenarioam, scenariomd, stopping_criteria):
         toll_file = os.path.join(os.path.dirname(eb.path), "06_Assignment", "Inputs", "tollinput.csv")
-        set_tools = _modeller.Modeller().tool("translink.emme.stage3.step6.tollset")
+        set_tools = _m.Modeller().tool("translink.emme.stage3.step6.tollset")
         set_tools(toll_file, scenarioam, scenariomd)
         self.matrix_batchins(eb)
         self.calculate_auto_cost(scenarioam, scenariomd)
@@ -103,7 +103,7 @@ class AutoAssignment(_modeller.Tool()):
 
     # create attributes for various vehicle classes,
     # calculate generalized costs on links and transit effective headways
-    @_modeller.logbook_trace("Calculate Auto Cost")
+    @_m.logbook_trace("Calculate Auto Cost")
     def calculate_auto_cost(self, am_scenario, md_scenario):
         eb = am_scenario.emmebank
 
@@ -112,9 +112,9 @@ class AutoAssignment(_modeller.Tool()):
         toll_sens = str(eb.matrix("ms147").data)
 
         # Delete any unused attributes that might pre-exist and create attributes to store SOV and HOV volumes by class
-        delete_extra = _modeller.Modeller().tool(
+        delete_extra = _m.Modeller().tool(
             "inro.emme.data.extra_attribute.delete_extra_attribute")
-        create_extra = _modeller.Modeller().tool(
+        create_extra = _m.Modeller().tool(
             "inro.emme.data.extra_attribute.create_extra_attribute")
 
         del_list = ['@s1cst', '@s2cst', '@s3cst', '@s1vol', '@s2vol',
@@ -163,7 +163,7 @@ class AutoAssignment(_modeller.Tool()):
         # @lgvoc: light truck gc;
         # @hgvoc: heavy truck gc
 
-        calc_extra_attribute = _modeller.Modeller().tool(
+        calc_extra_attribute = _m.Modeller().tool(
             "inro.emme.network_calculation.network_calculator")
         spec = {
             "result": "",
@@ -225,14 +225,14 @@ class AutoAssignment(_modeller.Tool()):
             calc_extra_attribute(spec, scenario=md_scenario)
 
 
-    @_modeller.logbook_trace("Auto Traffic Assignment")
+    @_m.logbook_trace("Auto Traffic Assignment")
     def auto_assignment(self, am_scenario, md_scenario, stopping_criteria):
         # 12 assignment classes: SOV: work by income (low, med, high) nonwork by income (low, med/high);
         #    HOV work by income (low, med, high) nonwork by income (low, med/high), light trucks, heavy trucks
         eb = am_scenario.emmebank
-        network_calculator = _modeller.Modeller().tool(
+        network_calculator = _m.Modeller().tool(
             "inro.emme.network_calculation.network_calculator")
-        assign_traffic = _modeller.Modeller().tool(
+        assign_traffic = _m.Modeller().tool(
             "inro.emme.traffic_assignment.sola_traffic_assignment")
 
         num_processors = int(eb.matrix("ms142").data)
@@ -345,7 +345,7 @@ class AutoAssignment(_modeller.Tool()):
         }
         return spec
 
-    @_modeller.logbook_trace("Matrix Batchin")
+    @_m.logbook_trace("Matrix Batchin")
     def matrix_batchins(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
         util.initmat(eb, "mf930", "eAuDsA", "Interm Skim AutoDistanceAM", 0)
