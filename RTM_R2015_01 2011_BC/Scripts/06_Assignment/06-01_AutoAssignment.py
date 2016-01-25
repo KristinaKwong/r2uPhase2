@@ -112,10 +112,8 @@ class AutoAssignment(_m.Tool()):
         toll_sens = str(eb.matrix("ms147").data)
 
         # Delete any unused attributes that might pre-exist and create attributes to store SOV and HOV volumes by class
-        delete_extra = _m.Modeller().tool(
-            "inro.emme.data.extra_attribute.delete_extra_attribute")
-        create_extra = _m.Modeller().tool(
-            "inro.emme.data.extra_attribute.create_extra_attribute")
+        delete_extra = _m.Modeller().tool("inro.emme.data.extra_attribute.delete_extra_attribute")
+        create_extra = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
 
         del_list = ['@s1cst', '@s2cst', '@s3cst', '@s1vol', '@s2vol',
                     '@s3vol', '@cpen', '@name', '@len', '@trncp',
@@ -163,8 +161,7 @@ class AutoAssignment(_m.Tool()):
         # @lgvoc: light truck gc;
         # @hgvoc: heavy truck gc
 
-        calc_extra_attribute = _m.Modeller().tool(
-            "inro.emme.network_calculation.network_calculator")
+        calc_extra_attribute = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         spec = {
             "result": "",
             "expression": "",
@@ -230,10 +227,8 @@ class AutoAssignment(_m.Tool()):
         # 12 assignment classes: SOV: work by income (low, med, high) nonwork by income (low, med/high);
         #    HOV work by income (low, med, high) nonwork by income (low, med/high), light trucks, heavy trucks
         eb = am_scenario.emmebank
-        network_calculator = _m.Modeller().tool(
-            "inro.emme.network_calculation.network_calculator")
-        assign_traffic = _m.Modeller().tool(
-            "inro.emme.traffic_assignment.sola_traffic_assignment")
+        network_calculator = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
+        assign_traffic = _m.Modeller().tool("inro.emme.traffic_assignment.sola_traffic_assignment")
 
         num_processors = int(eb.matrix("ms142").data)
 

@@ -17,18 +17,16 @@
 ##---------------------------------------------------
 
 
-import inro.modeller as _modeller
+import inro.modeller as _m
 import os
 import traceback as _traceback
 
 
-class Rail_Assignment(_modeller.Tool()):
-    tool_run_msg = _modeller.Attribute(unicode)
+class Rail_Assignment(_m.Tool()):
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        start_path = os.path.dirname(_modeller.Modeller().emmebank.path)
-
-        pb = _modeller.ToolPageBuilder(self, title="Rail_Assignment",
+        pb = _m.ToolPageBuilder(self, title="Rail_Assignment",
                                        description=""" Performs a standard transit assignment with
                                         on rail demand
                                         """,
@@ -40,25 +38,24 @@ class Rail_Assignment(_modeller.Tool()):
         return pb.render()
 
     def run(self):
-        with _modeller.logbook_trace("06-03 - RUN - RAIL ASSIGNMENT"):
+        with _m.logbook_trace("06-03 - RUN - RAIL ASSIGNMENT"):
             self.tool_run_msg = ""
             try:
                 # TODO: scenario selectors to page and run method
-                emmebank = _modeller.Modeller().emmebank
-                am_scenario = emmebank.scenario(21000)
-                md_scenario = emmebank.scenario(22000)
+                eb = _m.Modeller().emmebank
+                am_scenario = eb.scenario(21000)
+                md_scenario = eb.scenario(22000)
                 self(am_scenario, md_scenario)
                 run_msg = "Tool completed"
-                self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+                self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
             except Exception, e:
-                self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+                self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
         pass
 
-    @_modeller.logbook_trace("06-03 - Rail Assignment")
+    @_m.logbook_trace("06-03 - Rail Assignment")
     def __call__(self, scenarioam, scenariomd):
-        NAMESPACE = "inro.emme.transit_assignment.extended_transit_assignment"
-        RailSkim = _modeller.Modeller().tool("translink.emme.stage3.step7.railskim")
-        railassign = _modeller.Modeller().tool(NAMESPACE)
+        RailSkim = _m.Modeller().tool("translink.emme.stage3.step7.railskim")
+        railassign = _m.Modeller().tool("inro.emme.transit_assignment.extended_transit_assignment")
         # TODO: what does the "skim" do and why is it a separate script?
 
         spec_as_dict = {

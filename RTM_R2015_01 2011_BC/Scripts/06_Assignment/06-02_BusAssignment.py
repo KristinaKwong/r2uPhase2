@@ -17,15 +17,15 @@
 ##---------------------------------------------------
 
 
-import inro.modeller as _modeller
+import inro.modeller as _m
 import traceback as _traceback
 
 
-class BusAssignment(_modeller.Tool()):
-    tool_run_msg = _modeller.Attribute(unicode)
+class BusAssignment(_m.Tool()):
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self, title="Bus_Assignment",
+        pb = _m.ToolPageBuilder(self, title="Bus_Assignment",
                                        description=""" Performs a standard transit assignment with
                                         only the "bus" mode selected
                                         """,
@@ -37,20 +37,19 @@ class BusAssignment(_modeller.Tool()):
         return pb.render()
 
     def run(self):
-        scenarioam = _modeller.Modeller().emmebank.scenario(21060)
-        scenariomd = _modeller.Modeller().emmebank.scenario(22000)
+        scenarioam = _m.Modeller().emmebank.scenario(21060)
+        scenariomd = _m.Modeller().emmebank.scenario(22000)
         self.tool_run_msg = ""
         try:
             self.__call__(scenarioam, scenariomd)
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    @_modeller.logbook_trace("Bus Assignment")
+    @_m.logbook_trace("Bus Assignment")
     def __call__(self, scenarioam, scenariomd):
-        NAMESPACE = "inro.emme.transit_assignment.standard_transit_assignment"
-        busassign = _modeller.Modeller().tool(NAMESPACE)
+        busassign = _m.Modeller().tool("inro.emme.transit_assignment.standard_transit_assignment")
         ## Rail Excluded from the network
         ## auxiliary weight: 1.75, waiting time factor: 0.5, wait time weight: 2.25, boarding weight: 4
         spec_as_dict = {
