@@ -51,6 +51,11 @@ class Util(_m.Tool()):
         }
         return spec
 
+    @_m.logbook_trace("Delete Scenarios", save_arguments=True)
+    def del_scen(self, scenario):
+        delete_scen = _m.Modeller().tool("inro.emme.data.scenario.delete_scenario")
+        delete_scen(scenario)
+
     @_m.logbook_trace("Export Matrices to CSV file", save_arguments=True)
     def export_csv(self, eb, list_of_matrices, output_file):
         scenario = list(eb.scenarios())[0]

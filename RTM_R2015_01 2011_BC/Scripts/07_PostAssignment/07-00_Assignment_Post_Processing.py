@@ -50,6 +50,7 @@ class PostAssignment(_m.Tool()):
 
     @_m.logbook_trace("07-00 - RUN - Post Assignment")
     def __call__(self, root_directory, iteration_number, stopping_criteria):
+        util = _m.Modeller().tool("translink.emme.util")
         emmebank = _m.Modeller().emmebank
         am_scenario_id = int(emmebank.matrix("ms140").data)
         md_scenario_id = int(emmebank.matrix("ms141").data)
@@ -63,13 +64,12 @@ class PostAssignment(_m.Tool()):
             "translink.emme.stage3.step7.tollskim")
         access_skim = _m.Modeller().tool(
             "translink.emme.stage3.step7.skimaccess")
-        delete_scenario = _m.Modeller().tool(
-            "translink.emme.stage3.step7.deletescenario")
 
         gen_transit(am_temp_scenario, md_temp_scenario)
         toll_skim(am_temp_scenario, md_temp_scenario, stopping_criteria)
         access_skim(root_directory, iteration_number)
-        delete_scenario(am_temp_scenario, md_temp_scenario)
+        util.del_scen(am_temp_scenario)
+        util.del_scen(md_temp_scenario)
 
     @_m.logbook_trace("Copy Scenario")
     def copy_scenario(self, am_scenario_id, md_scenario_id, iteration_number):
