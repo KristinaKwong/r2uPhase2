@@ -63,16 +63,17 @@ class ModeChoice(_m.Tool()):
 
     def run(self):
         self.tool_run_msg = ""
-        base_folder = os.path.dirname(_m.Modeller().emmebank.path) + "\\"
         try:
-            self.__call__(base_folder, 0, 1, self.run_park_and_ride)
+            eb = _m.Modeller().emmebank
+            self.__call__(eb, 0, 1, self.run_park_and_ride)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("05-00 - Call Mode Choice Modules")
-    def __call__(self, root_directory, iteration_number, max_iterations, run_park_and_ride=False):
+    def __call__(self, eb, iteration_number, max_iterations, run_park_and_ride=False):
+        root_directory = os.path.dirname(eb.path) + "\\"
         ## Matrices used for mode choice are from mf374-mf702,
         ## these store utilities, probabilities and various demands (work vs non work)
         print ("05-00 Run the Mode choice model on nine purposes and export results, iteration number: " + str(

@@ -227,7 +227,7 @@ class FullModelRun(_m.Tool()):
         #Iterate distribution, mode choice and assignment steps to indicated number of iterations
         for iteration_number in range(global_iterations):
             trip_distribution(eb, max_distribution_iterations)
-            mode_choice(root_directory, iteration_number, global_iterations, run_park_ride)
+            mode_choice(eb, iteration_number, global_iterations, run_park_ride)
             assignment(root_directory, iteration_number, stopping_criteria)
             post_assignment(root_directory, iteration_number, stopping_criteria)
             return
