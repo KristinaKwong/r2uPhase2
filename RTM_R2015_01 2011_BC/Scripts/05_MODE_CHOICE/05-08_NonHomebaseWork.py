@@ -70,7 +70,7 @@ def run_model(scenario, eb, iteration_number, is_last_iteration):
     ExportModeChoice = _m.Modeller().tool("translink.emme.stage3.step5.exportmodechoice")
     if is_last_iteration:
         purp = 9
-        ExportModeChoice.Agg_Exp_Demand(data_folder, purp, iteration_number)
+        ExportModeChoice.Agg_Exp_Demand(eb, data_folder, purp, iteration_number)
 
     # KB:   the non-home base WORK appears to be using the same
     #       components as the other NON-work purposes

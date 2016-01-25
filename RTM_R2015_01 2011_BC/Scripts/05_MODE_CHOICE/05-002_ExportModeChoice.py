@@ -56,7 +56,7 @@ class ModeChoiceHBSchool(_m.Tool()):
 
     ## Aggregate purpose-level results by mode into matrices mf882 - mf890
     @_m.logbook_trace("Aggregate purpose-level results by mode into matrices mf882 - mf890")
-    def Agg_Exp_Demand(self, PathHeader, purp, n):
+    def Agg_Exp_Demand(self, eb, PathHeader, purp, n):
         purp_list = ['Hbw', 'HbSc', 'HbSh', 'HbPb', 'HbU', 'HbSoc', 'HbEsc', 'NHBO', 'NHBW']
         income = ['lowinc', 'medinc', 'highinc']
         auto = ['_zero_auto', '_one_auto', '_twoplus_auto']
@@ -77,7 +77,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                 for p in range(3):
                     for i in range(3):
 
-                        self.Export_Matrix_Batchins(PathHeader, purp)
+                        self.Export_Matrix_Batchins(eb)
                         for j in range(7):
                             for k in range(3):
                                 if p == 0:
@@ -107,7 +107,7 @@ class ModeChoiceHBSchool(_m.Tool()):
 
             if purp > 1 and purp < 8:
                 startmat = 640
-                self.Export_Matrix_Batchins(PathHeader, purp)
+                self.Export_Matrix_Batchins(eb)
                 for j in range(7):
                     for k in range(9):
                         if purp == 2:
@@ -134,7 +134,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                 self.Export_Demand(exportfile)
 
             if purp > 7:
-                self.Export_Matrix_Batchins(PathHeader, purp)
+                self.Export_Matrix_Batchins(eb)
                 startmat = 643
                 for j in range(7):
                     for k in range(3):
@@ -149,7 +149,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                 if purp == 8:
                     nwmat = 568
                     for i in range(3):
-                        self.Export_Matrix_Batchins(PathHeader, purp)
+                        self.Export_Matrix_Batchins(eb)
                         for j in range(8):
                             for k in range(3):
                                 expression1 = "mf" + str(matagg + j) + "+" + "mf" + str(nwmat + 9 * j + k + 3 * i)
@@ -162,16 +162,15 @@ class ModeChoiceHBSchool(_m.Tool()):
                             n) + '.txt'
                         self.Export_Demand(exportfile)
 
-    def Export_Matrix_Batchins(self, PathHeader, purp):
-        with _m.logbook_trace("Matrix Batchin"):
-        ##        Sets up the 'matrix transaction' tool and runs it
-            NAMESPACE = "inro.emme.data.matrix.matrix_transaction"
-            process = _m.Modeller().tool(NAMESPACE)
-            if purp == 1:
-                matrix_file = PathHeader + "05_MODE_CHOICE/Inputs/Outputmatrix1.txt"
-            else:
-                matrix_file = PathHeader + "05_MODE_CHOICE/Inputs/Outputmatrix2.txt"
-                ##        Creates process transaction
-            process(transaction_file=matrix_file,
-                    throw_on_error=True,
-                    scenario=_m.Modeller().scenario)
+    @_m.logbook_trace("Clear Calculation Matrices")
+    def Export_Matrix_Batchins(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
+
+        util.initmat(eb, "mf882", "Calc1", "Calculation 1", 0)
+        util.initmat(eb, "mf883", "Calc2", "Calculation 2", 0)
+        util.initmat(eb, "mf884", "Calc3", "Calculation 3", 0)
+        util.initmat(eb, "mf885", "Calc4", "Calculation 4", 0)
+        util.initmat(eb, "mf886", "Calc5", "Calculation 5", 0)
+        util.initmat(eb, "mf887", "Calc6", "Calculation 6", 0)
+        util.initmat(eb, "mf888", "Calc7", "Calculation 7", 0)
+        util.initmat(eb, "mf889", "Calc8", "Calculation 8", 0)
