@@ -38,9 +38,15 @@ class PostAssignment(_m.Tool()):
 
     def run(self):
         self.tool_run_msg = ""
+        stopping_criteria = {
+            "max_iterations": 100,
+            "relative_gap": 0.0,
+            "best_relative_gap": 0.01,
+            "normalized_gap": 0.01
+        }
         try:
             eb = _m.Modeller().emmebank
-            self.__call__(eb, 0)
+            self.__call__(eb, 0, stopping_criteria)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:

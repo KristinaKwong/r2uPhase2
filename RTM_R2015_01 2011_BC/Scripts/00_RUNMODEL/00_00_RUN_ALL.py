@@ -228,8 +228,6 @@ class FullModelRun(_m.Tool()):
             mode_choice(eb, iteration_number, global_iterations, run_park_ride)
             assignment(eb, iteration_number, stopping_criteria)
             post_assignment(eb, iteration_number, stopping_criteria)
-            return
-
 
     @_m.logbook_trace("Stage 4 - Post Processing")
     def stage4(self, eb, settings, stopping_criteria):
