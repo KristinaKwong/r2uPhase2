@@ -25,18 +25,18 @@
 ##--Status/additional notes:
 ##---------------------------------------------------
 
-import inro.modeller as _modeller
+import inro.modeller as _m
 import os
 import traceback as _traceback
 
 
-class DemandAdjustment(_modeller.Tool()):
-    tool_run_msg = _modeller.Attribute(unicode)
+class DemandAdjustment(_m.Tool()):
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        start_path = os.path.dirname(_modeller.Modeller().emmebank.path)
+        start_path = os.path.dirname(_m.Modeller().emmebank.path)
 
-        pb = _modeller.ToolPageBuilder(self, title="Adjust AM and MD Auto Demand",
+        pb = _m.ToolPageBuilder(self, title="Adjust AM and MD Auto Demand",
                                        description=""" Applies adjustments to AM and MD Auto Demand""",
                                        branding_text="TransLink")
 
@@ -50,7 +50,7 @@ class DemandAdjustment(_modeller.Tool()):
         root_directory = 'C:/2045_with_adjustments/Database/'
         try:
             # TODO: add inputs in page and run
-            emmebank = _modeller.Modeller().emmebank
+            emmebank = _m.Modeller().emmebank
             root_directory = os.path.dirname(emmebank.path) + "\\"
             am_scenario = emmebank.scenario(21000)
             md_scenario = emmebank.scenario(22000)
@@ -63,15 +63,15 @@ class DemandAdjustment(_modeller.Tool()):
 
             self.__call__(root_directory, am_scenario, md_scenario, stopping_criteria)
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    @_modeller.logbook_trace("08-01 - AM and MD Demand Adjustment")
+    @_m.logbook_trace("08-01 - AM and MD Demand Adjustment")
     def __call__(self, root_directory, am_scenario, md_scenario, stopping_criteria):
-        bus_assignment = _modeller.Modeller().tool(
+        bus_assignment = _m.Modeller().tool(
             "translink.emme.stage3.step6.busassignment")
-        rail_assignment = _modeller.Modeller().tool(
+        rail_assignment = _m.Modeller().tool(
             "translink.emme.stage3.step6.railassignment")
         self.matrix_batchins(root_directory)
         self.demand_adjustment(am_scenario)
@@ -81,9 +81,9 @@ class DemandAdjustment(_modeller.Tool()):
         rail_assignment(am_adj_scenario, md_adj_scenario)
 
     def copy_scenarios(self, am_scenario_id, md_scenario_id):
-        copy_scenario = _modeller.Modeller().tool(
+        copy_scenario = _m.Modeller().tool(
             "inro.emme.data.scenario.copy_scenario")
-        emmebank = _modeller.Modeller().emmebank
+        emmebank = _m.Modeller().emmebank
         am_scenario = emmebank.scenario(am_scenario_id)
         md_scenario = emmebank.scenario(md_scenario_id)
 
@@ -100,22 +100,22 @@ class DemandAdjustment(_modeller.Tool()):
                                  overwrite=True)
         return am_adj_scenario, md_adj_scenario
 
-    @_modeller.logbook_trace("Auto Traffic Assignment")
+    @_m.logbook_trace("Auto Traffic Assignment")
     def auto_assignment(self, am_adj_scenario, md_adj_scenario, stopping_criteria):
-        create_extra = _modeller.Modeller().tool(
+        create_extra = _m.Modeller().tool(
             "inro.emme.data.extra_attribute.create_extra_attribute")
-        del_extra = _modeller.Modeller().tool(
+        del_extra = _m.Modeller().tool(
             "inro.emme.data.extra_attribute.delete_extra_attribute")
-        network_calculator = _modeller.Modeller().tool(
+        network_calculator = _m.Modeller().tool(
             "inro.emme.network_calculation.network_calculator")
-        assign_traffic = _modeller.Modeller().tool(
+        assign_traffic = _m.Modeller().tool(
             "inro.emme.traffic_assignment.sola_traffic_assignment")
-        translink_auto_assignment = _modeller.Modeller().tool(
+        translink_auto_assignment = _m.Modeller().tool(
             "translink.emme.stage3.step6.autoassignment")
-        compute_matrix = _modeller.Modeller().tool(
+        compute_matrix = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_calculator")
 
-        emmebank = _modeller.Modeller().emmebank
+        emmebank = _m.Modeller().emmebank
         num_processors = int(emmebank.matrix("ms142").data)
         del_list = ['@s1cst', '@s2cst', '@s3cst', '@s1vol', '@s2vol', '@s3vol', '@cpen', '@name', '@len', '@trncp',
                     '@hwycl', '@hcst']
@@ -233,11 +233,11 @@ class DemandAdjustment(_modeller.Tool()):
             spec['result'] = result
             compute_matrix(spec)
 
-    @_modeller.logbook_trace("Demand adjustment")
+    @_m.logbook_trace("Demand adjustment")
     def demand_adjustment(self, scenario):
-        compute_matrix = _modeller.Modeller().tool(
+        compute_matrix = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_calculator")
-        emmebank = _modeller.Modeller().emmebank
+        emmebank = _m.Modeller().emmebank
         scenario = emmebank.scenario(scenario)
 
         spec = {
@@ -411,12 +411,12 @@ class DemandAdjustment(_modeller.Tool()):
             spec['constraint']['by_value']['od_values'] = by_value_mat
             compute_matrix(spec, scenario=scenario)
 
-    @_modeller.logbook_trace("Matrix Batchin")
+    @_m.logbook_trace("Matrix Batchin")
     def matrix_batchins(self, root_directory):
-        process = _modeller.Modeller().tool(
+        process = _m.Modeller().tool(
             "inro.emme.data.matrix.matrix_transaction")
         matrix_file = root_directory + "/08_DemandAdjustment/Inputs/MatrixTransactionFile.txt"
 
         process(transaction_file=matrix_file,
                 throw_on_error=True,
-                scenario=_modeller.Modeller().scenario)
+                scenario=_m.Modeller().scenario)
