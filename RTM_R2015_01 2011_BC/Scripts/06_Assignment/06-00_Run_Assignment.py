@@ -19,16 +19,16 @@
 ##--Status/additional notes:
 ##---------------------------------------------------
 
-import inro.modeller as _modeller
+import inro.modeller as _m
 import os
 import traceback as _traceback
 
 
-class Assignment(_modeller.Tool()):
-    tool_run_msg = _modeller.Attribute(unicode)
+class Assignment(_m.Tool()):
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self)
+        pb = _m.ToolPageBuilder(self)
         pb.title = "Assignment"
         pb.description = "Performs Auto, Transit and Rail Assignments"
         pb.branding_text = "TransLink"
@@ -41,16 +41,16 @@ class Assignment(_modeller.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            start_path = os.path.dirname(_modeller.Modeller().emmebank.path) + "\\"
+            start_path = os.path.dirname(_m.Modeller().emmebank.path) + "\\"
             self.__call__(start_path, 0, 250)
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    @_modeller.logbook_trace("06-00 - Assignment")
+    @_m.logbook_trace("06-00 - Assignment")
     def __call__(self, PathHeader, IterationNumber, max_iterations):
-        emmebank = _modeller.Modeller().emmebank
+        emmebank = _m.Modeller().emmebank
         amscen1 = int(emmebank.matrix("ms140").data)
         mdscen1 = int(emmebank.matrix("ms141").data)
         amscen2 = amscen1 + 30
@@ -63,9 +63,9 @@ class Assignment(_modeller.Tool()):
             scenarioam = emmebank.scenario(amscen2)
             scenariomd = emmebank.scenario(mdscen2)
 
-        AutoAssignment = _modeller.Modeller().tool("translink.emme.stage3.step6.autoassignment")
-        BusAssignment = _modeller.Modeller().tool("translink.emme.stage3.step6.busassignment")
-        RailAssignment = _modeller.Modeller().tool("translink.emme.stage3.step6.railassignment")
+        AutoAssignment = _m.Modeller().tool("translink.emme.stage3.step6.autoassignment")
+        BusAssignment = _m.Modeller().tool("translink.emme.stage3.step6.busassignment")
+        RailAssignment = _m.Modeller().tool("translink.emme.stage3.step6.railassignment")
 
         AutoAssignment(PathHeader, scenarioam, scenariomd, max_iterations)
         BusAssignment(scenarioam, scenariomd)
