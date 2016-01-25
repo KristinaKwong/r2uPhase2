@@ -31,7 +31,6 @@ import inro.modeller as _m
 
 import os
 import traceback as _traceback
-from datetime import datetime
 
 # Distribution coefficients and proportions
 hwld = str(-0.072)    #Home-based work 1
@@ -287,348 +286,226 @@ class TripDistributions(_m.Tool()):
     #Calculate impedances for each purpose based on the original distribution macro distestall.mac
     @_m.logbook_trace("Calculate impedances")
     def impedance_calcs(self):
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        spec_dict = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {"origins": None, "destinations": None}
-            },
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
+        _m.logbook_trace("HBWL-Purpose Distribution")
+        specs = []
 
-        print "--------Impedance_Calcs, " + str(datetime.now().strftime('%H:%M:%S'))
-
-        print "--------HBWL-Purpose Distribution, " + str(datetime.now().strftime('%H:%M:%S'))
         #Calculate transit impedance
-        expression = "((mf164+(mf163*2))*ms50)+(((mf167*2)+mf168)*(1-ms50))"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf925"
-        report = compute_matrix(spec_dict)
-        #Apply transit impedance constraint
-        self.Impedance_Transit()
+        specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms50)+(((mf167*2)+mf168)*(1-ms50))"))
+        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
-        amexpression = "ms50*(mf101+(ms148*ms103)*mf102*ms104+(ms102+ms101*ms145)*mf100*ms104)"
-        spec_dict["expression"] = amexpression
-        spec_dict["result"] = "mf210"
-        report = compute_matrix(spec_dict)
-        #Midday is calculated as (1-AM proportional factor)
-        mdexpression = "mf210+((1-ms50)*(mf104+(ms148*ms103)*mf105*ms104+(ms102+ms101*ms145)*mf103*ms104)+(mo27/2+md27/2)*ms104)"
-        spec_dict["expression"] = mdexpression
-        spec_dict["result"] = "mf210"
-        report = compute_matrix(spec_dict)
-        #Combine AM and midday expressions
-        expression = "exp(" + str(hwld) + "*mf210)"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf210"
-        report = compute_matrix(spec_dict)
-        #Multiply by purpose and OD-specific Rij factors
-        expression = "(mf210+exp(" + str(hwld) + "*(mf925+ms104*mf160)))*mf169"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf210"
-        report = compute_matrix(spec_dict)
+        specs.append(util.matrix_spec("mf210", "ms50*(mf101+(ms148*ms103)*mf102*ms104+(ms102+ms101*ms145)*mf100*ms104)"))
 
-        print "--------HBWM-Purpose Distribution, " + str(datetime.now().strftime('%H:%M:%S'))
-        expression = "((mf164+(mf163*2))*ms50)+(((mf167*2)+mf168)*(1-ms50))"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf925"
-        report = compute_matrix(spec_dict)
-        #Apply transit impedance constraint
-        self.Impedance_Transit()
+        #Midday is calculated as (1-AM proportional factor)
+        specs.append(util.matrix_spec("mf210", "mf210+((1-ms50)*(mf104+(ms148*ms103)*mf105*ms104+(ms102+ms101*ms145)*mf103*ms104)+(mo27/2+md27/2)*ms104)"))
+
+        #Combine AM and midday expressions
+        specs.append(util.matrix_spec("mf210", "exp(" + str(hwld) + "*mf210)"))
+
+        #Multiply by purpose and OD-specific Rij factors
+        specs.append(util.matrix_spec("mf210", "(mf210+exp(" + str(hwld) + "*(mf925+ms104*mf160)))*mf169"))
+
+        report = compute_matrix(specs)
+
+        _m.logbook_trace("HBWM-Purpose Distribution")
+        specs = []
+
+        specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms50)+(((mf167*2)+mf168)*(1-ms50))"))
+        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
-        amexpression = "ms50*(mf101+(ms148*ms103)*mf102*ms105+(ms102+ms101*ms145)*mf100*ms105)"
-        spec_dict["expression"] = amexpression
-        spec_dict["result"] = "mf211"
-        report = compute_matrix(spec_dict)
-        #Midday is calculated as (1-AM proportional factor)
-        mdexpression = "mf211+((1-ms50)*(mf104+(ms148*ms103)*mf105*ms105+(ms102+ms101*ms145)*mf103*ms105)+(mo27/2+md27/2)*ms105)"
-        spec_dict["expression"] = mdexpression
-        spec_dict["result"] = "mf211"
-        report = compute_matrix(spec_dict)
-        #Combine AM and midday expressions
-        expression = "exp(" + str(hwmd) + "*mf211)"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf211"
-        report = compute_matrix(spec_dict)
-        #Multiply by purpose and OD-specific Rij factors
-        expression = "(mf211+exp(" + str(hwmd) + "*(mf925+ms105*mf160)))*mf170"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf211"
-        report = compute_matrix(spec_dict)
+        specs.append(util.matrix_spec("mf211", "ms50*(mf101+(ms148*ms103)*mf102*ms105+(ms102+ms101*ms145)*mf100*ms105)"))
 
-        print "--------hbwh-Purpose Distribution, " + str(datetime.now().strftime('%H:%M:%S'))
-        expression = "((mf164+(mf163*2))*ms50)+(((mf167*2)+mf168)*(1-ms50))"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf925"
-        report = compute_matrix(spec_dict)
-        #Apply transit impedance constraint
-        self.Impedance_Transit()
+        #Midday is calculated as (1-AM proportional factor)
+        specs.append(util.matrix_spec("mf211", "mf211+((1-ms50)*(mf104+(ms148*ms103)*mf105*ms105+(ms102+ms101*ms145)*mf103*ms105)+(mo27/2+md27/2)*ms105)"))
+
+        #Combine AM and midday expressions
+        specs.append(util.matrix_spec("mf211", "exp(" + str(hwmd) + "*mf211)"))
+
+        #Multiply by purpose and OD-specific Rij factors
+        specs.append(util.matrix_spec("mf211", "(mf211+exp(" + str(hwmd) + "*(mf925+ms105*mf160)))*mf170"))
+
+        report = compute_matrix(specs)
+
+        _m.logbook_trace("HBWH-Purpose Distribution")
+        specs = []
+
+        specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms50)+(((mf167*2)+mf168)*(1-ms50))"))
+        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
-        amexpression = "ms50*(mf101+(ms148*ms103)*mf102*ms106+(ms102+ms101*ms145)*mf100*ms106)"
-        spec_dict["expression"] = amexpression
-        spec_dict["result"] = "mf212"
-        report = compute_matrix(spec_dict)
-        #Midday is calculated as (1-AM proportional factor)
-        mdexpression = "mf212+((1-ms50)*(mf104+(ms148*ms103)*mf105*ms106+(ms102+ms101*ms145)*mf103*ms106)+(mo27/2+md27/2)*ms106)"
-        spec_dict["expression"] = mdexpression
-        spec_dict["result"] = "mf212"
-        report = compute_matrix(spec_dict)
-        #Combine AM and midday expressions
-        expression = "exp(" + str(hwhd) + "*mf212)"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf212"
-        report = compute_matrix(spec_dict)
-        #Multiply by purpose and OD-specific Rij factors
-        expression = "(mf212+exp(" + str(hwhd) + "*(mf925+ms106*mf160)))*mf171"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf212"
-        report = compute_matrix(spec_dict)
+        specs.append(util.matrix_spec("mf212", "ms50*(mf101+(ms148*ms103)*mf102*ms106+(ms102+ms101*ms145)*mf100*ms106)"))
 
-        print "--------hbu_-Purpose Distribution, " + str(datetime.now().strftime('%H:%M:%S'))
-        expression = "((mf164+(mf163*2))*ms51)+(((mf167*2)+mf168)*(1-ms51))"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf925"
-        report = compute_matrix(spec_dict)
-        #Apply transit impedance constraint
-        self.Impedance_Transit()
+        #Midday is calculated as (1-AM proportional factor)
+        specs.append(util.matrix_spec("mf212", "mf212+((1-ms50)*(mf104+(ms148*ms103)*mf105*ms106+(ms102+ms101*ms145)*mf103*ms106)+(mo27/2+md27/2)*ms106)"))
+
+        #Combine AM and midday expressions
+        specs.append(util.matrix_spec("mf212", "exp(" + str(hwhd) + "*mf212)"))
+
+        #Multiply by purpose and OD-specific Rij factors
+        specs.append(util.matrix_spec("mf212", "(mf212+exp(" + str(hwhd) + "*(mf925+ms106*mf160)))*mf171"))
+
+        report = compute_matrix(specs)
+
+        _m.logbook_trace("hbu_-Purpose Distribution")
+        specs = []
+
+        specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms51)+(((mf167*2)+mf168)*(1-ms51))"))
+        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
-        amexpression = "ms51*(mf101+(ms148*ms103)*mf102*ms107+(ms102+ms101*ms145)*mf100*ms107)"
-        spec_dict["expression"] = amexpression
-        spec_dict["result"] = "mf213"
-        report = compute_matrix(spec_dict)
-        #Midday is calculated as (1-AM proportional factor)
-        mdexpression = "mf213+((1-ms51)*(mf104+(ms148*ms103)*mf105*ms107+(ms102+ms101*ms145)*mf103*ms107)+(mo28/2+md28/2)*ms107)"
-        spec_dict["expression"] = mdexpression
-        spec_dict["result"] = "mf213"
-        report = compute_matrix(spec_dict)
-        #Combine AM and midday expressions
-        expression = "exp(" + str(hund) + "*mf213)"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf213"
-        report = compute_matrix(spec_dict)
-        #Multiply by purpose and OD-specific Rij factors
-        expression = "(mf213+exp(" + str(hund) + "*(mf925+ms107*mf160*0.25)))*mf172"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf213"
-        report = compute_matrix(spec_dict)
+        specs.append(util.matrix_spec("mf213", "ms51*(mf101+(ms148*ms103)*mf102*ms107+(ms102+ms101*ms145)*mf100*ms107)"))
 
-        print "--------hbsc-Purpose Distribution, " + str(datetime.now().strftime('%H:%M:%S'))
-        expression = "((mf164+(mf163*2))*ms52)+(((mf167*2)+mf168)*(1-ms52))"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf925"
-        report = compute_matrix(spec_dict)
-        #Apply transit impedance constraint
-        self.Impedance_Transit()
+        #Midday is calculated as (1-AM proportional factor)
+        specs.append(util.matrix_spec("mf213", "mf213+((1-ms51)*(mf104+(ms148*ms103)*mf105*ms107+(ms102+ms101*ms145)*mf103*ms107)+(mo28/2+md28/2)*ms107)"))
+
+        #Combine AM and midday expressions
+        specs.append(util.matrix_spec("mf213", "exp(" + str(hund) + "*mf213)"))
+
+        #Multiply by purpose and OD-specific Rij factors
+        specs.append(util.matrix_spec("mf213", "(mf213+exp(" + str(hund) + "*(mf925+ms107*mf160*0.25)))*mf172"))
+
+        report = compute_matrix(specs)
+
+        _m.logbook_trace("hbsc-Purpose Distribution")
+        specs = []
+
+        specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms52)+(((mf167*2)+mf168)*(1-ms52))"))
+        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
-        amexpression = "ms52*(mf101+(ms148*ms103)*mf102*ms108+(ms102+ms101*ms145)*mf100*ms108)"
-        spec_dict["expression"] = amexpression
-        spec_dict["result"] = "mf214"
-        report = compute_matrix(spec_dict)
-        #Midday is calculated as (1-AM proportional factor)
-        mdexpression = "mf214+((1-ms52)*(mf104+(ms148*ms103)*mf105*ms108+(ms102+ms101*ms145)*mf103*ms108)+(mo28/2+md28/2)*ms108)"
-        spec_dict["expression"] = mdexpression
-        spec_dict["result"] = "mf214"
-        report = compute_matrix(spec_dict)
-        #Combine AM and midday expressions
-        expression = "exp(" + str(hscd) + "*mf214)"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf214"
-        report = compute_matrix(spec_dict)
-        #Multiply by purpose and OD-specific Rij factors
-        expression = "(mf214+exp(" + str(hscd) + "*(mf925+ms108*mf160*0.65)))*mf173"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf214"
-        report = compute_matrix(spec_dict)
+        specs.append(util.matrix_spec("mf214", "ms52*(mf101+(ms148*ms103)*mf102*ms108+(ms102+ms101*ms145)*mf100*ms108)"))
 
-        print "--------hbsh-Purpose Distribution, " + str(datetime.now().strftime('%H:%M:%S'))
-        expression = "((mf164+(mf163*2))*ms53)+(((mf167*2)+mf168)*(1-ms53))"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf925"
-        report = compute_matrix(spec_dict)
-        #Apply transit impedance constraint
-        self.Impedance_Transit()
+        #Midday is calculated as (1-AM proportional factor)
+        specs.append(util.matrix_spec("mf214", "mf214+((1-ms52)*(mf104+(ms148*ms103)*mf105*ms108+(ms102+ms101*ms145)*mf103*ms108)+(mo28/2+md28/2)*ms108)"))
+
+        #Combine AM and midday expressions
+        specs.append(util.matrix_spec("mf214", "exp(" + str(hscd) + "*mf214)"))
+
+        #Multiply by purpose and OD-specific Rij factors
+        specs.append(util.matrix_spec("mf214", "(mf214+exp(" + str(hscd) + "*(mf925+ms108*mf160*0.65)))*mf173"))
+
+        report = compute_matrix(specs)
+
+        _m.logbook_trace("hbsh-Purpose Distribution")
+        specs = []
+
+        specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms53)+(((mf167*2)+mf168)*(1-ms53))"))
+        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
-        amexpression = "ms53*(mf101+ms103*mf102*ms109+(ms102+ms101)*mf100*ms109)"
-        spec_dict["expression"] = amexpression
-        spec_dict["result"] = "mf215"
-        report = compute_matrix(spec_dict)
-        #Midday is calculated as (1-AM proportional factor)
-        mdexpression = "mf215+((1-ms53)*(mf104+ms103*mf105*ms109+(ms102+ms101)*mf103*ms109)+(mo28/2+md28/2)*ms109)"
-        spec_dict["expression"] = mdexpression
-        spec_dict["result"] = "mf215"
-        report = compute_matrix(spec_dict)
-        #Combine AM and midday expressions
-        expression = "exp(" + str(hshd) + "*mf215)"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf215"
-        report = compute_matrix(spec_dict)
-        #Multiply by purpose and OD-specific Rij factors
-        expression = "(mf215+exp(" + str(hshd) + "*(mf925+ms109*mf160)))*mf174"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf215"
-        report = compute_matrix(spec_dict)
+        specs.append(util.matrix_spec("mf215", "ms53*(mf101+ms103*mf102*ms109+(ms102+ms101)*mf100*ms109)"))
 
-        print "--------hbe_-Purpose Distribution, " + str(datetime.now().strftime('%H:%M:%S'))
-        expression = "((mf164+(mf163*2))*ms56)+(((mf167*2)+mf168)*(1-ms56))"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf925"
-        report = compute_matrix(spec_dict)
-        #Apply transit impedance constraint
-        self.Impedance_Transit()
+        #Midday is calculated as (1-AM proportional factor)
+        specs.append(util.matrix_spec("mf215", "mf215+((1-ms53)*(mf104+ms103*mf105*ms109+(ms102+ms101)*mf103*ms109)+(mo28/2+md28/2)*ms109)"))
+
+        #Combine AM and midday expressions
+        specs.append(util.matrix_spec("mf215", "exp(" + str(hshd) + "*mf215)"))
+
+        #Multiply by purpose and OD-specific Rij factors
+        specs.append(util.matrix_spec("mf215", "(mf215+exp(" + str(hshd) + "*(mf925+ms109*mf160)))*mf174"))
+
+        report = compute_matrix(specs)
+
+        _m.logbook_trace("hbe_-Purpose Distribution")
+        specs = []
+
+        specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms56)+(((mf167*2)+mf168)*(1-ms56))"))
+        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
-        amexpression = "ms56*(mf101+ms103*mf102*ms112+(ms102+ms101)*mf100*ms112)"
-        spec_dict["expression"] = amexpression
-        spec_dict["result"] = "mf218"
-        report = compute_matrix(spec_dict)
-        #Midday is calculated as (1-AM proportional factor)
-        mdexpression = "mf218+((1-ms56)*(mf104+ms103*mf105*ms112+(ms102+ms101)*mf103*ms112)+(mo28/2+md28/2)*ms112)"
-        spec_dict["expression"] = mdexpression
-        spec_dict["result"] = "mf218"
-        report = compute_matrix(spec_dict)
-        #Combine AM and midday expressions
-        expression = "exp(" + str(hesd) + "*mf218)"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf218"
-        report = compute_matrix(spec_dict)
-        #Multiply by purpose and OD-specific Rij factors
-        expression = "(mf218+exp(" + str(hesd) + "*(mf925+ms112*mf160)))*mf177"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf218"
-        report = compute_matrix(spec_dict)
+        specs.append(util.matrix_spec("mf218", "ms56*(mf101+ms103*mf102*ms112+(ms102+ms101)*mf100*ms112)"))
 
-        print "--------hbso-Purpose Distribution, " + str(datetime.now().strftime('%H:%M:%S'))
-        expression = "((mf164+(mf163*2))*ms55)+(((mf167*2)+mf168)*(1-ms55))"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf925"
-        report = compute_matrix(spec_dict)
-        #Apply transit impedance constraint
-        self.Impedance_Transit()
+        #Midday is calculated as (1-AM proportional factor)
+        specs.append(util.matrix_spec("mf218", "mf218+((1-ms56)*(mf104+ms103*mf105*ms112+(ms102+ms101)*mf103*ms112)+(mo28/2+md28/2)*ms112)"))
+
+        #Combine AM and midday expressions
+        specs.append(util.matrix_spec("mf218", "exp(" + str(hesd) + "*mf218)"))
+
+        #Multiply by purpose and OD-specific Rij factors
+        specs.append(util.matrix_spec("mf218", "(mf218+exp(" + str(hesd) + "*(mf925+ms112*mf160)))*mf177"))
+
+        report = compute_matrix(specs)
+
+        _m.logbook_trace("hbso-Purpose Distribution")
+        specs = []
+
+        specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms55)+(((mf167*2)+mf168)*(1-ms55))"))
+        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
-        amexpression = "ms55*(mf101+ms103*mf102*ms111+(ms102+ms101)*mf100*ms111)"
-        spec_dict["expression"] = amexpression
-        spec_dict["result"] = "mf217"
-        report = compute_matrix(spec_dict)
-        #Midday is calculated as (1-AM proportional factor)
-        mdexpression = "mf217+((1-ms55)*(mf104+ms103*mf105*ms111+(ms102+ms101)*mf103*ms111)+(mo28/2+md28/2)*ms111)"
-        spec_dict["expression"] = mdexpression
-        spec_dict["result"] = "mf217"
-        report = compute_matrix(spec_dict)
-        #Combine AM and midday expressions
-        expression = "exp(" + str(hsod) + "*mf217)"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf217"
-        report = compute_matrix(spec_dict)
-        #Multiply by purpose and OD-specific Rij factors
-        expression = "(mf217+exp(" + str(hsod) + "*(mf925+ms111*mf160)))*mf176"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf217"
-        report = compute_matrix(spec_dict)
+        specs.append(util.matrix_spec("mf217", "ms55*(mf101+ms103*mf102*ms111+(ms102+ms101)*mf100*ms111)"))
 
-        print "--------hbpb-Purpose Distribution, " + str(datetime.now().strftime('%H:%M:%S'))
-        expression = "((mf164+(mf163*2))*ms54)+(((mf167*2)+mf168)*(1-ms54))"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf925"
-        report = compute_matrix(spec_dict)
-        #Apply transit impedance constraint
-        self.Impedance_Transit()
+        #Midday is calculated as (1-AM proportional factor)
+        specs.append(util.matrix_spec("mf217", "mf217+((1-ms55)*(mf104+ms103*mf105*ms111+(ms102+ms101)*mf103*ms111)+(mo28/2+md28/2)*ms111)"))
+
+        #Combine AM and midday expressions
+        specs.append(util.matrix_spec("mf217", "exp(" + str(hsod) + "*mf217)"))
+
+        #Multiply by purpose and OD-specific Rij factors
+        specs.append(util.matrix_spec("mf217", "(mf217+exp(" + str(hsod) + "*(mf925+ms111*mf160)))*mf176"))
+
+        report = compute_matrix(specs)
+
+        _m.logbook_trace("hbpb-Purpose Distribution")
+        specs = []
+
+        specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms54)+(((mf167*2)+mf168)*(1-ms54))"))
+        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
-        amexpression = "ms54*(mf101+ms103*mf102*ms110+(ms102+ms101)*mf100*ms110)"
-        spec_dict["expression"] = amexpression
-        spec_dict["result"] = "mf216"
-        report = compute_matrix(spec_dict)
-        #Midday is calculated as (1-AM proportional factor)
-        mdexpression = "mf216+((1-ms54)*(mf104+ms103*mf105*ms110+(ms102+ms101)*mf103*ms110)+(mo28/2+md28/2)*ms110)"
-        spec_dict["expression"] = mdexpression
-        spec_dict["result"] = "mf216"
-        report = compute_matrix(spec_dict)
-        #Combine AM and midday expressions
-        expression = "exp(" + str(hpbd) + "*mf216)"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf216"
-        report = compute_matrix(spec_dict)
-        #Multiply by purpose and OD-specific Rij factors
-        expression = "(mf216+exp(" + str(hpbd) + "*(mf925+ms110*mf160)))*mf175"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf216"
-        report = compute_matrix(spec_dict)
+        specs.append(util.matrix_spec("mf216", "ms54*(mf101+ms103*mf102*ms110+(ms102+ms101)*mf100*ms110)"))
 
-        print "--------nhbo-Purpose Distribution, " + str(datetime.now().strftime('%H:%M:%S'))
-        expression = "((mf164+(mf163*2))*ms58)+(((mf167*2)+mf168)*(1-ms58))"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf925"
-        report = compute_matrix(spec_dict)
-        #Apply transit impedance constraint
-        self.Impedance_Transit()
+        #Midday is calculated as (1-AM proportional factor)
+        specs.append(util.matrix_spec("mf216", "mf216+((1-ms54)*(mf104+ms103*mf105*ms110+(ms102+ms101)*mf103*ms110)+(mo28/2+md28/2)*ms110)"))
+
+        #Combine AM and midday expressions
+        specs.append(util.matrix_spec("mf216", "exp(" + str(hpbd) + "*mf216)"))
+
+        #Multiply by purpose and OD-specific Rij factors
+        specs.append(util.matrix_spec("mf216", "(mf216+exp(" + str(hpbd) + "*(mf925+ms110*mf160)))*mf175"))
+
+        report = compute_matrix(specs)
+
+        _m.logbook_trace("nhbo-Purpose Distribution")
+        specs = []
+
+        specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms58)+(((mf167*2)+mf168)*(1-ms58))"))
+        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
-        amexpression = "ms58*(mf101+ms103*mf102*ms114+(ms102+ms101)*mf100*ms114)"
-        spec_dict["expression"] = amexpression
-        spec_dict["result"] = "mf220"
-        report = compute_matrix(spec_dict)
-        #Midday is calculated as (1-AM proportional factor)
-        mdexpression = "mf220+((1-ms58)*(mf104+ms103*mf105*ms114+(ms102+ms101)*mf103*ms114)+(mo28/2+md28/2)*ms114)"
-        spec_dict["expression"] = mdexpression
-        spec_dict["result"] = "mf220"
-        report = compute_matrix(spec_dict)
-        #Combine AM and midday expressions
-        expression = "exp(" + str(nhod) + "*mf220)"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf220"
-        report = compute_matrix(spec_dict)
-        #Multiply by purpose and OD-specific Rij factors
-        expression = "(mf220+exp(" + str(nhod) + "*(mf925+ms114*mf160)))*mf179"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf220"
-        report = compute_matrix(spec_dict)
+        specs.append(util.matrix_spec("mf220", "ms58*(mf101+ms103*mf102*ms114+(ms102+ms101)*mf100*ms114)"))
 
-        print "--------nhbw-Purpose Distribution, " + str(datetime.now().strftime('%H:%M:%S'))
-        expression = "((mf164+(mf163*2))*ms57)+(((mf167*2)+mf168)*(1-ms57))"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf925"
-        report = compute_matrix(spec_dict)
-        #Apply transit impedance constraint
-        self.Impedance_Transit()
+        #Midday is calculated as (1-AM proportional factor)
+        specs.append(util.matrix_spec("mf220", "mf220+((1-ms58)*(mf104+ms103*mf105*ms114+(ms102+ms101)*mf103*ms114)+(mo28/2+md28/2)*ms114)"))
+
+        #Combine AM and midday expressions
+        specs.append(util.matrix_spec("mf220", "exp(" + str(nhod) + "*mf220)"))
+
+        #Multiply by purpose and OD-specific Rij factors
+        specs.append(util.matrix_spec("mf220", "(mf220+exp(" + str(nhod) + "*(mf925+ms114*mf160)))*mf179"))
+
+        report = compute_matrix(specs)
+
+        _m.logbook_trace("nhbw-Purpose Distribution")
+        specs = []
+
+        specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms57)+(((mf167*2)+mf168)*(1-ms57))"))
+        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
-        amexpression = "ms57*(mf101+ms103*mf102*ms113+(ms102+ms101)*mf100*ms113)"
-        spec_dict["expression"] = amexpression
-        spec_dict["result"] = "mf219"
-        report = compute_matrix(spec_dict)
+        specs.append(util.matrix_spec("mf219", "ms57*(mf101+ms103*mf102*ms113+(ms102+ms101)*mf100*ms113)"))
+
         #Midday is calculated as (1-AM proportional factor)
-        mdexpression = "mf219+((1-ms57)*(mf104+ms103*mf105*ms113+(ms102+ms101)*mf103*ms113)+(mo27/2+md27/2)*ms113)"
-        spec_dict["expression"] = mdexpression
-        spec_dict["result"] = "mf219"
-        report = compute_matrix(spec_dict)
+        specs.append(util.matrix_spec("mf219", "mf219+((1-ms57)*(mf104+ms103*mf105*ms113+(ms102+ms101)*mf103*ms113)+(mo27/2+md27/2)*ms113)"))
+
         #Combine AM and midday expressions
-        expression = "exp(" + str(nhwd) + "*mf219)"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf219"
-        report = compute_matrix(spec_dict)
+        specs.append(util.matrix_spec("mf219", "exp(" + str(nhwd) + "*mf219)"))
+
         #Multiply by purpose and OD-specific Rij factors
-        expression = "(mf219+exp(" + str(nhwd) + "*(mf925+ms113*mf160)))*mf178"
-        spec_dict["expression"] = expression
-        spec_dict["result"] = "mf219"
-        report = compute_matrix(spec_dict)
+        specs.append(util.matrix_spec("mf219", "(mf219+exp(" + str(nhwd) + "*(mf925+ms113*mf160)))*mf178"))
 
-    #Calculate transit impedances (separate procedure because the spec is different - including constraint values)
-    @_m.logbook_trace("Calculate transit impedances")
-    def Impedance_Transit(self):
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
-
-        spec_dict = {
-            "expression": "mf925.max.200",
-            "result": "mf925",
-            "constraint": {
-                "by_value": {
-                    "od_values": "mf925",
-                    "interval_min": 0.1,
-                    "interval_max": 120,
-                    "condition": "EXCLUDE"
-                },
-                "by_zone": None
-            },
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
-        report = compute_matrix(spec_dict)
+        report = compute_matrix(specs)
