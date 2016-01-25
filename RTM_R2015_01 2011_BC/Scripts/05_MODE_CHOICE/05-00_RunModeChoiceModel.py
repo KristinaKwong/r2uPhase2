@@ -93,11 +93,10 @@ class ModeChoice(_m.Tool()):
         park_and_ride = _m.Modeller().tool("translink.emme.stage3.step5.parkandride")
 
         is_last_iteration = (iteration_number == (max_iterations - 1))
-        scenario = _m.Modeller().scenario
 
         self.calculate_flag_matrices()
 
-        return
+        scenario = _m.Modeller().scenario
         home_base_work.run_model(scenario, root_directory, iteration_number, is_last_iteration)
         home_base_school.run_model(scenario, root_directory, iteration_number, is_last_iteration)
         home_base_shopping.run_model(scenario, root_directory, iteration_number, is_last_iteration)
@@ -111,7 +110,7 @@ class ModeChoice(_m.Tool()):
         if run_park_and_ride:
             park_and_ride(scenario)
 
-        self.add_external_demand(scenario)
+        self.add_external_demand()
 
     @_m.logbook_trace("Calculate flag matrices")
     def calculate_flag_matrices(self):
@@ -138,30 +137,14 @@ class ModeChoice(_m.Tool()):
         compute_matrix(specs)
 
     @_m.logbook_trace("Add external demand to non-work SOV / HOV")
-    def add_external_demand(self, scenario):
-        spec = {
-            "expression": "",
-            "result": "",
-            "constraint": {"by_value": None, "by_zone": None},
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
-        ## Add external SOV/HOV matrices to non work med/high matrices
-        compute_matrix = _m.Modeller().tool(
-            "inro.emme.matrix_calculation.matrix_calculator")
+    def add_external_demand(self):
+        util = _m.Modeller().tool("translink.emme.util")
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        spec["expression"] = "mf847+mf978"
-        spec["result"] = "mf847"
-        compute_matrix(spec, scenario)
+        specs = []
+        specs.append(util.matrix_spec("mf847", "mf847+mf978"))
+        specs.append(util.matrix_spec("mf852", "mf852+mf979"))
+        specs.append(util.matrix_spec("mf860", "mf860+mf984"))
+        specs.append(util.matrix_spec("mf865", "mf865+mf985"))
 
-        spec["expression"] = "mf852+mf979"
-        spec["result"] = "mf852"
-        compute_matrix(spec, scenario)
-
-        spec["expression"] = "mf860+mf984"
-        spec["result"] = "mf860"
-        compute_matrix(spec, scenario)
-
-        spec["expression"] = "mf865+mf985"
-        spec["result"] = "mf865"
-        compute_matrix(spec, scenario)
+        compute_matrix(specs)
