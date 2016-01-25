@@ -51,7 +51,7 @@ def run_model(scenario, data_folder, iteration_number, is_last_iteration):
     utilities.calculate_demand(
         scenario, demand_start=307, probability_start=444, result_start=643, num_segments=3)
 
-    ExportModeChoice = _m.Modeller().module("translink.emme.stage3.step5.exportmodechoice")
+    ExportModeChoice = _m.Modeller().tool("translink.emme.stage3.step5.exportmodechoice")
     if is_last_iteration:
         purp = 8
         ExportModeChoice.Agg_Exp_Demand(data_folder, purp, iteration_number)
