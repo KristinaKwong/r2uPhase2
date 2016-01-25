@@ -5,8 +5,7 @@
 ##--Purpose: Exporting Mode Choice Out
 ##---------------------------------------------------------------------
 import inro.modeller as _m
-from datetime import datetime
-
+import os
 
 # TODO: add tool interface to mode choice procedure
 class ModeChoiceHBSchool(_m.Tool()):
@@ -23,7 +22,6 @@ class ModeChoiceHBSchool(_m.Tool()):
 
     @_m.logbook_trace("Output Results")
     def Export_Demand(self, filename):
-        print "--------Output_Results, " + str(datetime.now())
         ##    Create emmebank object
         my_modeller = _m.Modeller()
         my_emmebank = my_modeller.desktop.data_explorer().active_database().core_emmebank
@@ -56,7 +54,8 @@ class ModeChoiceHBSchool(_m.Tool()):
 
     ## Aggregate purpose-level results by mode into matrices mf882 - mf890
     @_m.logbook_trace("Aggregate purpose-level results by mode into matrices mf882 - mf890")
-    def Agg_Exp_Demand(self, eb, PathHeader, purp, n):
+    def Agg_Exp_Demand(self, eb, purp, n):
+        output_folder = os.path.join(os.path.dirname(eb.path), "05_MODE_CHOICE", "Outputs", "")
         purp_list = ['Hbw', 'HbSc', 'HbSh', 'HbPb', 'HbU', 'HbSoc', 'HbEsc', 'NHBO', 'NHBW']
         income = ['lowinc', 'medinc', 'highinc']
         auto = ['_zero_auto', '_one_auto', '_twoplus_auto']
@@ -93,15 +92,15 @@ class ModeChoiceHBSchool(_m.Tool()):
                                 spec_as_dict["result"] = result
                                 report = compute_matrix(spec_as_dict)
                         if p == 0:
-                            exportfile = PathHeader + '05_MODE_CHOICE/Outputs/' + purp_list[
+                            exportfile = output_folder + purp_list[
                                 purp - 1] + '/Overall_Results_' + purp_list[purp - 1] + "_" + income[i] + "_" + str(
                                 n) + '.txt'
                         if p == 1:
-                            exportfile = PathHeader + '05_MODE_CHOICE/Outputs/' + purp_list[
+                            exportfile = output_folder + purp_list[
                                 purp - 1] + '/Overall_Results_' + purp_list[purp - 1] + "_" + auto[i] + "_" + str(
                                 n) + '.txt'
                         if p == 2:
-                            exportfile = PathHeader + '05_MODE_CHOICE/Outputs/' + purp_list[
+                            exportfile = output_folder + purp_list[
                                 purp - 1] + '/Overall_Results_' + purp_list[purp - 1] + "_" + str(n) + '.txt'
                         self.Export_Demand(exportfile)
 
@@ -129,7 +128,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                             spec_as_dict["result"] = result
                             report = compute_matrix(spec_as_dict)
 
-                exportfile = PathHeader + '05_MODE_CHOICE/Outputs/' + purp_list[purp - 1] + '/Overall_Results_' + purp_list[
+                exportfile = output_folder + purp_list[purp - 1] + '/Overall_Results_' + purp_list[
                     purp - 1] + "_" + str(n) + '.txt'
                 self.Export_Demand(exportfile)
 
@@ -143,7 +142,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                         spec_as_dict["expression"] = expression1
                         spec_as_dict["result"] = result
                         report = compute_matrix(spec_as_dict)
-                exportfile = PathHeader + '05_MODE_CHOICE/Outputs/' + purp_list[purp - 1] + '/Overall_Results_' + purp_list[
+                exportfile = output_folder + purp_list[purp - 1] + '/Overall_Results_' + purp_list[
                     purp - 1] + "_" + str(n) + '.txt'
                 self.Export_Demand(exportfile)
                 if purp == 8:
@@ -158,7 +157,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                                 spec_as_dict["result"] = result
                                 report = compute_matrix(spec_as_dict)
 
-                        exportfile = PathHeader + '05_MODE_CHOICE/Outputs/Nonwork/Overall_Results_' + income[i] + "_" + str(
+                        exportfile = output_folder + 'Nonwork/Overall_Results_' + income[i] + "_" + str(
                             n) + '.txt'
                         self.Export_Demand(exportfile)
 
