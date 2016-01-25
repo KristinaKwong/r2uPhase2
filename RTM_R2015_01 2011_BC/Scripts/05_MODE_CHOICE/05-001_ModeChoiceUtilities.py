@@ -21,10 +21,11 @@ class ModeChoiceUtilities(_modeller.Tool()):
     tool_run_msg = ""
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self, runnable=False)
+        pb = _modeller.ToolPageBuilder(self)
         pb.title = "Mode Choice Model - Utilities"
-        pb.description = ("Not to be used directly, module containing "
-                          "methods to calculate mode choice model. (etc).")
+        pb.description = "Not to be used directly, module containing methods to calculate mode choice model. (etc)."
+        pb.branding_text = "TransLink"
+        pb.runnable = False
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)

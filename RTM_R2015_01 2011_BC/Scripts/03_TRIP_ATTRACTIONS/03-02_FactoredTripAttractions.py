@@ -12,9 +12,10 @@ class FactoredTripAttractions(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        pb = _m.ToolPageBuilder(self, title="Trip Attractions",
-                                       description="Factored Trip Attractions<br>Data Needed from a prior Module:<br>mo161-mo265",
-                                       branding_text="TransLink")
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "Trip Attractions"
+        pb.description = "Factored Trip Attractions<br>Data Needed from a prior Module:<br>mo161-mo265"
+        pb.branding_text = "TransLink"
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)

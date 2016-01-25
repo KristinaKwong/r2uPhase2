@@ -11,11 +11,10 @@ class BusAssignment(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        pb = _m.ToolPageBuilder(self, title="Bus_Assignment",
-                                       description=""" Performs a standard transit assignment with
-                                        only the "bus" mode selected
-                                        """,
-                                       branding_text="TransLink")
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "Bus Assignment"
+        pb.description = "Performs a standard transit assignment with only the bus mode selected"
+        pb.branding_text = "TransLink"
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)

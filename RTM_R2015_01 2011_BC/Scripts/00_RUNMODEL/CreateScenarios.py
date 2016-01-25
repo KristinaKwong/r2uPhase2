@@ -14,7 +14,7 @@ class InputSettings(_m.Tool()):
     tool_run_msg = ""
 
     def page(self):
-        pb = _m.ToolPageBuilder(self, title="Create Scenarios")
+        pb = _m.ToolPageBuilder(self)
         pb.title = "Create Scenarios"
         pb.description = "Create AM and Mid-Day Scenarios."
         pb.branding_text = "TransLink"

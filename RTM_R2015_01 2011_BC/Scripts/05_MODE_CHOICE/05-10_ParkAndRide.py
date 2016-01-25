@@ -22,11 +22,11 @@ class ParkAndRide(_m.Tool()):
     scenario = _m.Attribute(_m.InstanceType)
 
     def page(self):
-        pb = _m.ToolPageBuilder(self, title="Park and Ride Module")
-        pb.title = "Converts bus and rail demand to park and ride"
-        pb.description = "Adjusts transit matrices."
-
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "Park and Ride Module"
+        pb.description = "Converts bus and rail demand to park and ride"
         pb.branding_text = "TransLink"
+
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
 

@@ -31,13 +31,13 @@ class TripDistributions(_m.Tool()):
         self.max_iterations = 50
 
     def page(self):
-        pb = _m.ToolPageBuilder(
-            self, title="Trip Distributions",
-            description="""Inputs matrices, calculates impedances and
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "Trip Distributions"
+        pb.description = """Inputs matrices, calculates impedances and
             balances matrices
             <br>Data Needed from a prior Module:
-            <br>mo161-mo265, md42-md52""",
-            branding_text="TransLink")
+            <br>mo161-mo265, md42-md52"""
+        pb.branding_text = "TransLink"
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)

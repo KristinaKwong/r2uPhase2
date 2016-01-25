@@ -15,9 +15,7 @@ class InputSettings(_m.Tool()):
     tool_run_msg = ""
 
     def page(self):
-        emmebank_dir = os.path.dirname(_m.Modeller().emmebank.path)
-
-        pb = _m.ToolPageBuilder(self, title="Land Use Input Module")
+        pb = _m.ToolPageBuilder(self)
         pb.title = "Define model run settings"
         pb.description = """
 <div align="left">
@@ -42,6 +40,8 @@ Whitespace is ignored.
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
+
+        emmebank_dir = os.path.dirname(_m.Modeller().emmebank.path)
 
         pb.add_select_file(tool_attribute_name="file_name",
                            window_type="file",

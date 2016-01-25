@@ -12,9 +12,10 @@ class DemandAdjustment(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        pb = _m.ToolPageBuilder(self, title="Adjust AM and MD Auto Demand",
-                                       description=""" Applies adjustments to AM and MD Auto Demand""",
-                                       branding_text="TransLink")
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "Adjust AM and MD Auto Demand"
+        pb.description = "Applies adjustments to AM and MD Auto Demand"
+        pb.branding_text = "TransLink"
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)

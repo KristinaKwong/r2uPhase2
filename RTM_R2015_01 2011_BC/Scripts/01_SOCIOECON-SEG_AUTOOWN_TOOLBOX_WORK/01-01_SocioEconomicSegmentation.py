@@ -16,12 +16,12 @@ class SocioEconomicSegmentation(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        ##Create various aspects to the page
-        pb = _m.ToolPageBuilder(self, title="Socio-economic Segmentation",
-                                       description="Collects Households Numbers, Workers Numbers, "
-                                                   "Income and Auto Ownership Data and provides "
-                                                   "various segmentation for use in Trip Production.",
-                                       branding_text=" TransLink")
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "Socio-economic Segmentation"
+        pb.description = "Collects Households Numbers, Workers Numbers, " +\
+                         "Income and Auto Ownership Data and provides " +\
+                         "various segmentation for use in Trip Production."
+        pb.branding_text = "TransLink"
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)

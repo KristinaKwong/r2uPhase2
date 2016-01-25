@@ -9,11 +9,12 @@ import inro.modeller as _m
 # TODO: add tool interface
 class AutoOwnershipTool(_m.Tool()):
     def page(self):
-        pb = _m.ToolPageBuilder(self,
-                                       title="The Auto Ownership Modeller -913",
-                                       description="Not to be used directly, called from "
-                                                   "SocioEconomicSegmentation",
-                                       runnable=False)
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "The Auto Ownership Modeller -913"
+        pb.description = "Not to be used directly, called from Socioeconomic segmentation"
+        pb.branding_text = "TransLink"
+        pb.runnable = False
+
         return pb.render()
 
     @_m.logbook_trace("Auto Ownership Submodel")

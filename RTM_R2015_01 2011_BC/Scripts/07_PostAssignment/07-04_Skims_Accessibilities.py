@@ -12,11 +12,10 @@ class SkimsAccessibilities(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        ##Create various aspects to the page
-        pb = _m.ToolPageBuilder(self, title="Weighted Skims and new accessibilities",
-                                       description=""" Generates new weighted skims and calculates
-                            new accessibilities    """,
-                                       branding_text="- Translink - HDR CORPORATION")
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "Weighted Skims and new accessibilities"
+        pb.description = "Generates new weighted skims and calculates new accessibilities"
+        pb.branding_text = "TransLink"
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)

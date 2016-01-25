@@ -24,14 +24,14 @@ class CongestedTransitAssignment(_modeller.Tool()):
         self.setup_ttfs = True
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(
-            self, title="Congested_Transit_Assignment",
-            description="""
+        pb = _modeller.ToolPageBuilder(self)
+        pb.title = "Congested Transit Assignment"
+        pb.description = """
                 Performs a two-class (bus and rail) Congested transit
                 assignment on AM scenario.
                 Note: make sure there is sufficient space for
-                temporary and result extra attributes before running.""",
-            branding_text="- Translink ")
+                temporary and result extra attributes before running."""
+        pb.branding_text = "TransLink"
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)

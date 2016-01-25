@@ -13,10 +13,10 @@ class RailAssignment(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        pb = _m.ToolPageBuilder(self, title="Rail_Skim",
-                                       description=""" Calculates Rail Skims
-                                        """,
-                                       branding_text="- Translink - HDR CORPORATION")
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "Rail Skim"
+        pb.description = "Calculates Rail Skims"
+        pb.branding_text = "TransLink"
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)

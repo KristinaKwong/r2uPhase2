@@ -16,11 +16,10 @@ class Transit_Assignment(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        start_path = os.path.dirname(_m.Modeller().emmebank.path)
-        pb = _m.ToolPageBuilder(self, title="Generic Transit Assignment",
-                                       description=""" Generates a generic transit skim
-                                        """,
-                                       branding_text=" Translink ")
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "Generic Transit Assignment"
+        pb.description = "Generates a generic transit skim"
+        pb.branding_text = "TransLink"
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)

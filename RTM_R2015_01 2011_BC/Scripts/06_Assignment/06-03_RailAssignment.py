@@ -12,11 +12,10 @@ class Rail_Assignment(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        pb = _m.ToolPageBuilder(self, title="Rail_Assignment",
-                                       description=""" Performs a standard transit assignment with
-                                        on rail demand
-                                        """,
-                                       branding_text="TransLink")
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "Rail Assignment"
+        pb.description = "Performs a standard transit assignment with on rail demand"
+        pb.branding_text = "TransLink"
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)

@@ -15,11 +15,11 @@ class TwoClassTransitAssignment(_modeller.Tool()):
     md_scenario = _modeller.Attribute(_modeller.InstanceType)
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self, title="Two_Class_Transit_Assignment",
-                                       description=""" Performs two class transit assignment for bus
-                                       and rail on on AM and PM scenarios.
-                                        """,
-                                       branding_text="- Translink ")
+        pb = _modeller.ToolPageBuilder(self)
+        pb.title = "Two_Class_Transit_Assignment"
+        pb.description = "Performs two class transit assignment for bus and rail on on AM and PM scenarios"
+        pb.branding_text = "TransLink"
+
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
 

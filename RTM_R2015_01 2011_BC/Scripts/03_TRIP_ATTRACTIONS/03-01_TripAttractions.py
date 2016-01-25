@@ -14,9 +14,10 @@ class TripAttractions(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        pb = _m.ToolPageBuilder(self, title="Trip Attractions",
-                                       description="Collects trip rates and land use to output trip Attractions. <br> Then saves it to the databank and outputs data",
-                                       branding_text="TransLink")
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "Trip Attractions"
+        pb.description = "Collects trip rates and land use to output trip Attractions. <br> Then saves it to the databank and outputs data"
+        pb.branding_text = "TransLink"
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)

@@ -12,10 +12,10 @@ class PostAssignment(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        pb = _m.ToolPageBuilder(self, title="Post Assignment",
-                                       description=""" Performs Auto, Transit and Rail Assignments
-                                        """,
-                                       branding_text="TransLink")
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "Post Assignment"
+        pb.description = "Performs Auto, Transit and Rail Assignments"
+        pb.branding_text = "TransLink"
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)

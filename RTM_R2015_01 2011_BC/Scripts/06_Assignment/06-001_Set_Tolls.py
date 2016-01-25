@@ -14,11 +14,11 @@ class SetTolls(_m.Tool()):
     tool_run_msg = ""
 
     def page(self):
-        pb = _m.ToolPageBuilder(self, title="Toll Input Module")
-        pb.title = "Add toll values to extra attribute"
-        pb.description = """Sets tolls based on specified file input.
-                         """
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "Toll Input Module"
+        pb.description = "Add toll values to extra attribute"
         pb.branding_text = "TransLink"
+
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
 

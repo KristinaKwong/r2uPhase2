@@ -12,10 +12,10 @@ class PreLoop(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        ##Create various aspects to the page
-        pb = _m.ToolPageBuilder(self, title="Pre Loops",
-                                       description="Batches in required matrices for distribution and mode choice and copies initial skims ",
-                                       branding_text="TransLink")
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "Pre Loops"
+        pb.description = "Batches in required matrices for distribution and mode choice and copies initial skims "
+        pb.branding_text = "TransLink"
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)

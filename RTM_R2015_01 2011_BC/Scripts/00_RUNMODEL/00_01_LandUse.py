@@ -16,14 +16,15 @@ class InputLandUse(_m.Tool()):
     tool_run_msg = ""
 
     def page(self):
-        loc = os.path.dirname(_m.Modeller().emmebank.path)
-        pb = _m.ToolPageBuilder(self, title="Land Use Input Module")
-        pb.title = "Import year-specific land use information to the databank"
-        pb.description = """Enters land use based on specified file input.
-                         """
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "Land Use Input Module"
+        pb.description = "Enters land use based on specified file input."
         pb.branding_text = "TransLink"
+
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
+
+        loc = os.path.dirname(_m.Modeller().emmebank.path)
 
         pb.add_select_file(tool_attribute_name="LandUse1",
                            window_type="file",

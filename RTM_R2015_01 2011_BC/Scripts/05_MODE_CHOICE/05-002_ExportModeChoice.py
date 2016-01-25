@@ -13,11 +13,12 @@ class ModeChoiceHBSchool(_modeller.Tool()):
     tool_run_msg = ""
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self,
-                                       title="Export Mode Choice Demand",
-                                       description="Not to be used directly, module containing "
-                                                   "methods to export mode choice demand",
-                                       runnable=False)
+        pb = _modeller.ToolPageBuilder(self)
+        pb.title = "Export Mode Choice Demand"
+        pb.description = "Not to be used directly, module containing methods to export mode choice demand"
+        pb.branding_text = "TransLink"
+        pb.runnable=False
+
         return pb.render()
 
 

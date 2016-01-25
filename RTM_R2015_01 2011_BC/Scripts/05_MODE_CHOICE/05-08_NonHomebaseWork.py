@@ -25,11 +25,11 @@ class ModeChoiceNHBW(_modeller.Tool()):
     tool_run_msg = ""
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self,
-                                       title="Mode Choice Model",
-                                       description="Not to be used directly, module containing "
-                                                   "methods to calculate mode choice model. (etc).",
-                                       runnable=True)
+        pb = _modeller.ToolPageBuilder(self)
+        pb.title = "Mode Choice Model"
+        pb.description = "Not to be used directly, module containing methods to calculate mode choice model. (etc)."
+        pb.branding_text = "TransLink"
+
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
         return pb.render()

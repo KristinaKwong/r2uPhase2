@@ -26,10 +26,10 @@ class ModeChoice(_m.Tool()):
     run_park_and_ride = _m.Attribute(bool)
 
     def page(self):
-        start_path = os.path.dirname(_m.Modeller().emmebank.path)
-        pb = _m.ToolPageBuilder(self, title="Mode Choice Model",
-                                       description="Tool for running mode choice models on nine purposes and exports results at the gy to gy level",
-                                       branding_text="Translink")
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "Mode Choice Model"
+        pb.description = "Tool for running mode choice models on nine purposes and exports results at the gy to gy level"
+        pb.branding_text = "TransLink"
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)

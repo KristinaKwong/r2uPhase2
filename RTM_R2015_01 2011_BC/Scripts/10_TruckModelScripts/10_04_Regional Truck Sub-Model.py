@@ -33,12 +33,10 @@ class RegTruckModel(_modeller.Tool()):
 	tool_run_msg = _modeller.Attribute(unicode)
 
 	def page(self):
-		start_path = os.path.dirname(_modeller.Modeller().emmebank.path)
-
-		pb = _modeller.ToolPageBuilder(self, title="Regional Truck Trips Model",
-		   description="Generates base/future forecasts for regional light and heavy trucks trips",
-		   branding_text=" TransLink ")
-
+        pb = _modeller.ToolPageBuilder(self)
+        pb.title = "Regional Truck Trips Model"
+        pb.description = "Generates base/future forecasts for regional light and heavy trucks trips"
+        pb.branding_text = "TransLink"
 
 		if self.tool_run_msg:
 			pb.add_html(self.tool_run_msg)

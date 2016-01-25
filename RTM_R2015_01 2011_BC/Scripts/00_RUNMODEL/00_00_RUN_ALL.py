@@ -23,7 +23,6 @@ class FullModelRun(_m.Tool()):
         self.max_assignment_iterations = 100
 
     def page(self):
-        loc = os.path.dirname(_m.Modeller().emmebank.path)
         pb = _m.ToolPageBuilder(self)
         pb.title = "Full Model Run"
         pb.description = "Performs a full model run"
@@ -36,6 +35,8 @@ class FullModelRun(_m.Tool()):
                         size="3",
                         title="Global model iterations:",
                         note="Use 6 iterations in normal operation")
+
+        loc = os.path.dirname(_m.Modeller().emmebank.path)
 
         pb.add_select_file(tool_attribute_name="land_use_file1",
                            window_type="file",

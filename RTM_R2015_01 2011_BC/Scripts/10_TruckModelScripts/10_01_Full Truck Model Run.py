@@ -29,11 +29,10 @@ class FullTruckModel(_modeller.Tool()):
 	tool_run_msg = _modeller.Attribute(unicode)
 
 	def page(self):
-		start_path = os.path.dirname(_modeller.Modeller().emmebank.path)
-
-		pb = _modeller.ToolPageBuilder(self, title="Full Truck Model Run",
-		   description="Run Full Truck Model",
-		   branding_text=" TransLink ")
+        pb = _modeller.ToolPageBuilder(self)
+        pb.title = "Full Truck Model Run"
+        pb.description = "Run Full Truck Model"
+        pb.branding_text = "TransLink"
 
 		pb.add_select_scenario(tool_attribute_name="AMScenario",title="Select AM Scenario")
 

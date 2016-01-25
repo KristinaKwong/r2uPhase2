@@ -26,13 +26,12 @@ class AutoAssignment(_m.Tool()):
         self.max_iterations = 60
 
     def page(self):
-        pb = _m.ToolPageBuilder(
-            self,
-            title="Auto_Assignment",
-            description="Performs a multi-class auto assignment with "
-            "12 classes. An analysis is also performed to calculate "
-            "auto distance and auto time.",
-            branding_text="Translink")
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "Auto Assignment"
+        pb.description = "Performs a multi-class auto assignment with " +\
+                         "12 classes. An analysis is also performed to calculate " +\
+                         "auto distance and auto time."
+        pb.branding_text = "TransLink"
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)

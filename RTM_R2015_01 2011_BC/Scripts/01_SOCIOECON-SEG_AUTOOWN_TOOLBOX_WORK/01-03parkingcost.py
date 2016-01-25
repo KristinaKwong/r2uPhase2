@@ -17,13 +17,12 @@ class ParkingCostTool(_modeller.Tool()):
     tool_run_msg = _modeller.Attribute(unicode)
 
     def page(self):
+        pb = _m.ToolPageBuilder(self)
+        pb.title = "Parking Costs"
+        pb.description = "Calculates Horizon Parking Costs. Not to be used directly, called from Socioeconomic segmentation"
+        pb.branding_text = "TransLink"
+        pb.runnable = False
 
-        ##Create various aspects to the page
-        pb = _modeller.ToolPageBuilder(self, title="Parking Costs",
-                    description="Calculates Horizon Parking Costs. "
-                    "Not to be used directly, called from "
-                    "Socioeconomic segmentation",
-                    branding_text="TransLink")
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
 

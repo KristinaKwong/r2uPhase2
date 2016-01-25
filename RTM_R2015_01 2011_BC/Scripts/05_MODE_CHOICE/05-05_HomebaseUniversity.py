@@ -21,11 +21,12 @@ build_spec = utilities.build_spec
 # TODO: add tool interface to mode choice procedure
 class ModeChoiceHBUni(_modeller.Tool()):
     def page(self):
-        pb = _modeller.ToolPageBuilder(self,
-                                       title="Mode Choice Model",
-                                       description="Not to be used directly, module containing "
-                                                   "methods to calculate mode choice model. (etc).",
-                                       runnable=False)
+        pb = _modeller.ToolPageBuilder(self)
+        pb.title = "Mode Choice Model"
+        pb.description = "Not to be used directly, module containing methods to calculate mode choice model. (etc)."
+        pb.branding_text = "TransLink"
+        pb.runnable=False
+
         return pb.render()
 
 
