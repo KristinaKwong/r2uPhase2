@@ -16,18 +16,18 @@
 ##--Status/additional notes:
 ##---------------------------------------------------
 
-import inro.modeller as _modeller
+import inro.modeller as _m
 import os
 import traceback as _traceback
 
 
-class SkimsAccessibilities(_modeller.Tool()):
-    tool_run_msg = _modeller.Attribute(unicode)
+class SkimsAccessibilities(_m.Tool()):
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        start_path = os.path.dirname(_modeller.Modeller().emmebank.path)
+        start_path = os.path.dirname(_m.Modeller().emmebank.path)
         ##Create various aspects to the page
-        pb = _modeller.ToolPageBuilder(self, title="Weighted Skims and new accessibilities",
+        pb = _m.ToolPageBuilder(self, title="Weighted Skims and new accessibilities",
                                        description=""" Generates new weighted skims and calculates
                             new accessibilities    """,
                                        branding_text="- Translink - HDR CORPORATION")
@@ -38,29 +38,29 @@ class SkimsAccessibilities(_modeller.Tool()):
         return pb.render()
 
     def run(self):
-        with _modeller.logbook_trace("07-04 - RUN - Weighted Skims and Accessibilities"):
+        with _m.logbook_trace("07-04 - RUN - Weighted Skims and Accessibilities"):
 
 			self.tool_run_msg = ""
-			emmebank = _modeller.Modeller().emmebank
+			emmebank = _m.Modeller().emmebank
 			PathHeader = os.path.dirname(emmebank.path)
 			try:
 				self.__call__(PathHeader, 1)
 				run_msg = "Tool completed"
-				self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+				self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
 			except Exception, e:
-				self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+				self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     def __call__(self, PathHeader, IterationNumber):
     ##        Start logging this under a new 'nest'
-        with _modeller.logbook_trace("07-04 - Weighted Skims and New Accessibilities"):
+        with _m.logbook_trace("07-04 - Weighted Skims and New Accessibilities"):
             self.Matrix_Batchins(PathHeader)
             self.weightedskims(IterationNumber)
             self.accessibilities()
 
     def weightedskims(self, IterationNumber):
-        with _modeller.logbook_trace("Weighted Skims"):
+        with _m.logbook_trace("Weighted Skims"):
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             if IterationNumber == 0:
                 j = 0.5
@@ -131,9 +131,9 @@ class SkimsAccessibilities(_modeller.Tool()):
                 compute_matrix(spec_as_dict)
 
     def accessibilities(self):
-		with _modeller.logbook_trace("Accessibilities Calculation"):
+		with _m.logbook_trace("Accessibilities Calculation"):
 			NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-			compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+			compute_matrix = _m.Modeller().tool(NAMESPACE)
 			spec_as_dict = {
 					"expression": "EXPRESSION",
 					"result": "RESULT",
@@ -214,12 +214,12 @@ class SkimsAccessibilities(_modeller.Tool()):
 
 
     def Matrix_Batchins(self, PathHeader):
-        with _modeller.logbook_trace("Matrix Batchin"):
+        with _m.logbook_trace("Matrix Batchin"):
         ##
             NAMESPACE = "inro.emme.data.matrix.matrix_transaction"
-            process = _modeller.Modeller().tool(NAMESPACE)
+            process = _m.Modeller().tool(NAMESPACE)
             matrix_file = PathHeader + "/07_PostAssignment/Inputs/Accessibilities.txt"
             ##        Creates process transaction
             process(transaction_file=matrix_file,
                     throw_on_error=True,
-                    scenario=_modeller.Modeller().scenario)
+                    scenario=_m.Modeller().scenario)

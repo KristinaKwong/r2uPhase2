@@ -17,18 +17,18 @@
 ##---------------------------------------------------
 ## 07-00 Post Assignment processes
 
-import inro.modeller as _modeller
+import inro.modeller as _m
 import os
 import traceback as _traceback
 
 
-class PostAssignment(_modeller.Tool()):
-    tool_run_msg = _modeller.Attribute(unicode)
+class PostAssignment(_m.Tool()):
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        start_path = os.path.dirname(_modeller.Modeller().emmebank.path)
+        start_path = os.path.dirname(_m.Modeller().emmebank.path)
 
-        pb = _modeller.ToolPageBuilder(self, title="Post Assignment",
+        pb = _m.ToolPageBuilder(self, title="Post Assignment",
                                        description=""" Performs Auto, Transit and Rail Assignments
                                         """,
                                        branding_text="TransLink")
@@ -41,29 +41,29 @@ class PostAssignment(_modeller.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            PathHeader = os.path.dirname(_modeller.Modeller().emmebank.path) + "\\"
+            PathHeader = os.path.dirname(_m.Modeller().emmebank.path) + "\\"
             self.__call__(PathHeader, 0)
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    @_modeller.logbook_trace("07-00 - RUN - Post Assignment")
+    @_m.logbook_trace("07-00 - RUN - Post Assignment")
     def __call__(self, root_directory, iteration_number, stopping_criteria):
-        emmebank = _modeller.Modeller().emmebank
+        emmebank = _m.Modeller().emmebank
         am_scenario_id = int(emmebank.matrix("ms140").data)
         md_scenario_id = int(emmebank.matrix("ms141").data)
 
         am_temp_scenario, md_temp_scenario = self.copy_scenario(
             am_scenario_id, md_scenario_id, iteration_number)
 
-        gen_transit = _modeller.Modeller().tool(
+        gen_transit = _m.Modeller().tool(
             "translink.emme.stage3.step7.gentranskim")
-        toll_skim = _modeller.Modeller().tool(
+        toll_skim = _m.Modeller().tool(
             "translink.emme.stage3.step7.tollskim")
-        access_skim = _modeller.Modeller().tool(
+        access_skim = _m.Modeller().tool(
             "translink.emme.stage3.step7.skimaccess")
-        delete_scenario = _modeller.Modeller().tool(
+        delete_scenario = _m.Modeller().tool(
             "translink.emme.stage3.step7.deletescenario")
 
         gen_transit(am_temp_scenario, md_temp_scenario)
@@ -71,9 +71,9 @@ class PostAssignment(_modeller.Tool()):
         access_skim(root_directory, iteration_number)
         delete_scenario(am_temp_scenario, md_temp_scenario)
 
-    @_modeller.logbook_trace("Copy Scenario")
+    @_m.logbook_trace("Copy Scenario")
     def copy_scenario(self, am_scenario_id, md_scenario_id, iteration_number):
-        emmebank = _modeller.Modeller().emmebank
+        emmebank = _m.Modeller().emmebank
 
         # TODO: would be easier to always run on the same scenario
         #       and at the beginning of each iteration
@@ -85,7 +85,7 @@ class PostAssignment(_modeller.Tool()):
             am_scenario = emmebank.scenario(am_scenario_id + 30)
             md_scenario = emmebank.scenario(md_scenario_id + 30)
 
-        copy_scenario = _modeller.Modeller().tool(
+        copy_scenario = _m.Modeller().tool(
             "inro.emme.data.scenario.copy_scenario")
         newscenam = copy_scenario(from_scenario=am_scenario,
                                   scenario_id=am_scenario_id + 50000 + iteration_number,

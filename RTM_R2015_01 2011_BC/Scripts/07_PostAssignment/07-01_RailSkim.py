@@ -16,16 +16,16 @@
 ##--Status/additional notes:
 ##---------------------------------------------------
 
-import inro.modeller as _modeller
+import inro.modeller as _m
 import traceback as _traceback
 from copy import deepcopy as _deepcopy
 
 
-class RailAssignment(_modeller.Tool()):
-    tool_run_msg = _modeller.Attribute(unicode)
+class RailAssignment(_m.Tool()):
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self, title="Rail_Skim",
+        pb = _m.ToolPageBuilder(self, title="Rail_Skim",
                                        description=""" Calculates Rail Skims
                                         """,
                                        branding_text="- Translink - HDR CORPORATION")
@@ -40,14 +40,14 @@ class RailAssignment(_modeller.Tool()):
         try:
             self.__call__()
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    @_modeller.logbook_trace("07-01 - Rail Skims")
+    @_m.logbook_trace("07-01 - Rail Skims")
     def __call__(self, i, scenarionumber):
         NAMESPACE = "inro.emme.transit_assignment.extended.matrix_results"
-        railskim = _modeller.Modeller().tool(NAMESPACE)
+        railskim = _m.Modeller().tool(NAMESPACE)
         # Note: could remove the None items from the tmplt
         tmplt_spec = {
             "by_mode_subset": {

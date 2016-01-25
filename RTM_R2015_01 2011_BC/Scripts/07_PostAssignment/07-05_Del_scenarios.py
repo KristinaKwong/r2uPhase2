@@ -16,15 +16,15 @@
 ##--Status/additional notes:
 ##---------------------------------------------------
 ## 05-01 Mode Choice - HDR
-import inro.modeller as _modeller
+import inro.modeller as _m
 import traceback as _traceback
 
-class DeleteScenario(_modeller.Tool()):
+class DeleteScenario(_m.Tool()):
 
-    tool_run_msg = _modeller.Attribute(unicode)
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self, title="Delete Skim Scenarios",
+        pb = _m.ToolPageBuilder(self, title="Delete Skim Scenarios",
                     description=""" Deletes scenarios used for skim generation""",
                     branding_text=" Translink ")
 
@@ -37,14 +37,14 @@ class DeleteScenario(_modeller.Tool()):
         try:
             self.__call__()
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    @_modeller.logbook_trace("Delete Scenarios")
+    @_m.logbook_trace("Delete Scenarios")
     def __call__(self, TempScenAM, TempScenMD):
         NAMESPACE="inro.emme.data.scenario.delete_scenario"
-        delete_scenario=_modeller.Modeller().tool(NAMESPACE)
+        delete_scenario=_m.Modeller().tool(NAMESPACE)
 
         delete_scenario(TempScenAM)
         delete_scenario(TempScenMD)

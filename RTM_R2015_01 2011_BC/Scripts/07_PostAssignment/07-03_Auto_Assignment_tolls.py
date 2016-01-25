@@ -25,18 +25,18 @@
 ##--Status/additional notes:
 ##---------------------------------------------------
 
-import inro.modeller as _modeller
+import inro.modeller as _m
 import os
 import traceback as _traceback
 
 
-class TollSkim(_modeller.Tool()):
-    tool_run_msg = _modeller.Attribute(unicode)
+class TollSkim(_m.Tool()):
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        start_path = os.path.dirname(_modeller.Modeller().emmebank.path)
+        start_path = os.path.dirname(_m.Modeller().emmebank.path)
 
-        pb = _modeller.ToolPageBuilder(self, title="Auto Assignment for toll skims",
+        pb = _m.ToolPageBuilder(self, title="Auto Assignment for toll skims",
                                        description=""" Generates skims for tolls
                                         """,
                                        branding_text=" Translink ")
@@ -52,16 +52,16 @@ class TollSkim(_modeller.Tool()):
             # TODO: add these inputs to the page
             self.__call__()
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    @_modeller.logbook_trace("07-03 - Auto Toll Skim")
+    @_m.logbook_trace("07-03 - Auto Toll Skim")
     def __call__(self, am_scenario, md_scenario, stopping_criteria):
         eb = am_scenario.emmebank
-        assign_traffic = _modeller.Modeller().tool(
+        assign_traffic = _m.Modeller().tool(
             "inro.emme.traffic_assignment.sola_traffic_assignment")
-        translink_auto_assignment = _modeller.Modeller().tool(
+        translink_auto_assignment = _m.Modeller().tool(
             "translink.emme.stage3.step6.autoassignment")
 
         num_processors = int(eb.matrix("ms142").data)

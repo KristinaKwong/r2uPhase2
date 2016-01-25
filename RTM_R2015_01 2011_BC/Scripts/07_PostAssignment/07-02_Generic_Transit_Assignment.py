@@ -16,20 +16,20 @@
 ##--Status/additional notes:
 ##---------------------------------------------------
 
-import inro.modeller as _modeller
+import inro.modeller as _m
 import os
 import simplejson
 import traceback as _traceback
 
-eb = _modeller.Modeller().emmebank
+eb = _m.Modeller().emmebank
 
 
-class Transit_Assignment(_modeller.Tool()):
-    tool_run_msg = _modeller.Attribute(unicode)
+class Transit_Assignment(_m.Tool()):
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        start_path = os.path.dirname(_modeller.Modeller().emmebank.path)
-        pb = _modeller.ToolPageBuilder(self, title="Generic Transit Assignment",
+        start_path = os.path.dirname(_m.Modeller().emmebank.path)
+        pb = _m.ToolPageBuilder(self, title="Generic Transit Assignment",
                                        description=""" Generates a generic transit skim
                                         """,
                                        branding_text=" Translink ")
@@ -44,14 +44,14 @@ class Transit_Assignment(_modeller.Tool()):
         try:
             self.__call__()
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    @_modeller.logbook_trace("07-02 - Generic Transit Skim")
+    @_m.logbook_trace("07-02 - Generic Transit Skim")
     def __call__(self, scenarioam, scenariomd):
         NAMESPACE = "inro.emme.transit_assignment.standard_transit_assignment"
-        genskim = _modeller.Modeller().tool(NAMESPACE)
+        genskim = _m.Modeller().tool(NAMESPACE)
         spec_as_dict = {
             "modes": ["b", "f", "g", "l", "r", "s", "a", "p", "h"],
             "demand": "mf853",
