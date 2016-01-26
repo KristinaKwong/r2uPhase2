@@ -426,7 +426,7 @@ class TruckAssign(_m.Tool()):
                         }
                     ],
                     "performance_settings": {
-                        "number_of_processors": 8
+                        "number_of_processors": 4
                     },
                     "background_traffic": {
                         "link_component": null,
@@ -770,7 +770,7 @@ class TruckAssign(_m.Tool()):
                     }
                 ],
                 "performance_settings": {
-                    "number_of_processors": 8
+                    "number_of_processors": 4
                 },
                 "background_traffic": {
                     "link_component": null,
