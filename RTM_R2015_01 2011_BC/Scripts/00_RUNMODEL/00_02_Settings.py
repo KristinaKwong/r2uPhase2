@@ -64,7 +64,10 @@ Whitespace is ignored.
 
     @_m.logbook_trace("Read settings from settings.csv", save_arguments=True)
     def __call__(self, file_name):
+        util = _m.Modeller().tool("translink.emme.util")
         eb = _m.Modeller().emmebank
+        util.initmat(eb, "ms149", "year", "Model Horizon Year", 0)
+
         # Scalars to hold corresponding settings
         input_mats = {'am_scenario': 'ms140',
                       'md_scenario': 'ms141',
@@ -76,7 +79,8 @@ Whitespace is ignored.
                       'toll_assign_sens': 'ms147',
                       'toll_dist_sens': 'ms148',
                       'congested_transit': 'not_a_matrix',
-                      'park_and_ride': 'not_a_matrix'}
+                      'park_and_ride': 'not_a_matrix',
+                      'model_year': 'ms149'}
         # TODO: these scalars could be created (overwritten) from this script
         # NOTE: the setting implementation uses a mixture of old-style
         #       EMME/2 convention of saving settings as booleans in

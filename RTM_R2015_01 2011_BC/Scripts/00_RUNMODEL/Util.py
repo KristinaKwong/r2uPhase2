@@ -53,6 +53,10 @@ class Util(_m.Tool()):
         delete_scen = _m.Modeller().tool("inro.emme.data.scenario.delete_scenario")
         delete_scen(scenario)
 
+    def get_year(self, eb):
+        year = str(int(eb.matrix("ms149").data))
+        return year
+
     @_m.logbook_trace("Export Matrices to CSV file", save_arguments=True)
     def export_csv(self, eb, list_of_matrices, output_file):
         scenario = list(eb.scenarios())[0]
