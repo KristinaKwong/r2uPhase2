@@ -122,8 +122,13 @@ q
 ~/  Peak Hour Factoring: Factor from Peak Period to Peak Hour Demand
 ~/                   	
 ~/******************
-~<zeroSpecGenv1.mac
 3.21
+~/ Zero special generators
+~+;1;y;mf1030;n;0;;;y;3420;3540;6730;7100;;*;2
+~+;1;y;mf1030;n;0;;;y;*;3420;3540;6730;7100;;2
+~+;1;y;mf1033;n;0;;;y;3420;3540;6730;7100;;*;2
+~+;1;y;mf1033;n;0;;;y;*;3420;3540;6730;7100;;2
+~/ Calculate trips
 ~+;1;y;mf1035;y;RGLgAM;Rg LgTruck AM Trips;y;;mf1031*mf1025*ms154;;;n;2
 ~+;1;y;mf1036;y;RGLgMD;Rg LgTruck MD Trips;y;;mf1031*mf1026*ms155;;;n;2
 ~+;1;y;mf1037;y;RGHvAM;Rg HvTruck AM Trips;y;;mf1034*mf1027*ms154;;;n;2
