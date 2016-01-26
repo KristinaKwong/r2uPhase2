@@ -166,18 +166,15 @@ class FullTruckModel(_m.Tool()):
                 self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
 
-
+    @_m.logbook_trace("Full Truck Model Run")
     def __call__(self, Year, Sensitivity, AMScenario,MDScenario, ExtGrowth1, ExtGrowth2, CascadeGrowth1, CascadeGrowth2, RegionalGrowth1, RegionalGrowth2, AsiaPacificGrowth):
+        eb = _m.Modeller().emmebank
 
-
-
-        with _m.logbook_trace("Full Truck Model Run"):
-
-            ExternalModel=_m.Modeller().tool("translink.emme.stage5.step10.externaltruck")
-            ExternalModel(Year,Sensitivity,ExtGrowth1,ExtGrowth2, CascadeGrowth1, CascadeGrowth2)
-            AsiaPacificModel=_m.Modeller().tool("translink.emme.stage5.step10.asiapacifictruck")
-            AsiaPacificModel(Year)
-            RegionalModel=_m.Modeller().tool("translink.emme.stage5.step10.regionaltruck")
-            RegionalModel(Year,Sensitivity,RegionalGrowth1, RegionalGrowth2)
-            TruckAssign=_m.Modeller().tool("translink.emme.stage5.step10.truckassign")
-            TruckAssign(AMScenario,MDScenario)
+        ExternalModel=_m.Modeller().tool("translink.emme.stage5.step10.externaltruck")
+        ExternalModel(Year,Sensitivity,ExtGrowth1,ExtGrowth2, CascadeGrowth1, CascadeGrowth2)
+        AsiaPacificModel=_m.Modeller().tool("translink.emme.stage5.step10.asiapacifictruck")
+        AsiaPacificModel(Year)
+        RegionalModel=_m.Modeller().tool("translink.emme.stage5.step10.regionaltruck")
+        RegionalModel(Year,Sensitivity,RegionalGrowth1, RegionalGrowth2)
+        TruckAssign=_m.Modeller().tool("translink.emme.stage5.step10.truckassign")
+        TruckAssign(eb, AMScenario, MDScenario)

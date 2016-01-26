@@ -31,14 +31,13 @@ class TruckAssign(_m.Tool()):
         self.tool_run_msg = ""
 
         try:
-
-            self.__call__()
+            self.__call__(_m.Modeller().emmebank)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    def __call__(self,AMScenario,MDScenario):
+    def __call__(self, eb, AMScenario, MDScenario):
     ### PCE Calculation
         with _m.logbook_trace("Truck Assignment Tool"):
             util = _m.Modeller().tool("translink.emme.util")
@@ -58,19 +57,7 @@ class TruckAssign(_m.Tool()):
             util.initmat(eb, "mf1052", "RGLgMp", "RG LgTruck MD PCE", 0)
             util.initmat(eb, "mf1053", "RGHvMp", "RG HvTruck MD PCE", 0)
             
-            NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-
-            compute_matrix = _m.Modeller().tool(NAMESPACE)
-
-            SPEC1 = {
-                    "expression": "EXPRESSION",
-                    "result": "RESULT",
-                    "constraint": {
-                        "by_value": None,
-                        "by_zone": {"origins": None, "destinations": None}
-                    },
-                    "aggregation": {"origins": None, "destinations": None},
-                    "type": "MATRIX_CALCULATION"}
+            compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
             AMList1=["mf1002","mf1012","mf1035","mf1005","mf1013","mf1021","mf1037"]
 
@@ -82,30 +69,19 @@ class TruckAssign(_m.Tool()):
 
             Ratios=[1.5,1.5,1.5,2.5,2.5,2.5,2.5]
 
-
+            specs = []
             for i in range (len(AMList1)):
-                SPEC1['expression'] = AMList1[i]+"*"+str(Ratios[i])
-                SPEC1['result'] = AMList2[i]
-                compute_matrix(SPEC1)
-                SPEC1['expression'] = MDList1[i]+"*"+str(Ratios[i])
-                SPEC1['result'] = MDList2[i]
-                compute_matrix(SPEC1)
+                specs.append(util.matrix_spec(AMList2[i], AMList1[i] + "*" + str(Ratios[i])))
+                specs.append(util.matrix_spec(MDList2[i], MDList1[i] + "*" + str(Ratios[i])))
 
-            SPEC1['expression'] = "mf1002+mf1012+mf1035"
-            SPEC1['result'] = "mf980"
-            compute_matrix(SPEC1)
+            compute_matrix(specs)
 
-            SPEC1['expression'] = "mf1005+mf1013+mf1021+mf1037"
-            SPEC1['result'] = "mf981"
-            compute_matrix(SPEC1)
-
-            SPEC1['expression'] = "mf1003+mf1014+mf1036"
-            SPEC1['result'] = "mf982"
-            compute_matrix(SPEC1)
-
-            SPEC1['expression'] = "mf1006+mf1015+mf1022+mf1038"
-            SPEC1['result'] = "mf983"
-            compute_matrix(SPEC1)
+            specs = []
+            specs.append(util.matrix_spec("mf980", "mf1002 + mf1012 + mf1035"))
+            specs.append(util.matrix_spec("mf981", "mf1005 + mf1013 + mf1021 + mf1037"))
+            specs.append(util.matrix_spec("mf982", "mf1003 + mf1014 + mf1036"))
+            specs.append(util.matrix_spec("mf983", "mf1006 + mf1015 + mf1022 + mf1038"))
+            compute_matrix(specs)
 
 #### Truck Assignment (for now based on stand-alone assumption)
 
@@ -803,12 +779,10 @@ class TruckAssign(_m.Tool()):
             MDTruckSpec1=simplejson.loads(MDTruckSpec)
 
 
-            emmebank = _m.Modeller().emmebank
-            ScenAM = emmebank.scenario(AMScenario)
-            ScenMD = emmebank.scenario(MDScenario)
+            ScenAM = eb.scenario(AMScenario)
+            ScenMD = eb.scenario(MDScenario)
             # Calculate SOV and HOV as Background Traffic
-            NETCALC = "inro.emme.network_calculation.network_calculator"
-            calc_att= _m.Modeller().tool(NETCALC)
+            calc_att= _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
 
             spec_dict = {
                     "result": None,
@@ -834,11 +808,7 @@ class TruckAssign(_m.Tool()):
                 calc_att(spec_dict, scenario=ScenAM)
                 calc_att(spec_dict, scenario=ScenMD)
 
-
-
-
-            TRUCKASSIGN = "inro.emme.traffic_assignment.sola_traffic_assignment"
-            truckcassignment = _m.Modeller().tool(TRUCKASSIGN)
+            truckcassignment = _m.Modeller().tool("inro.emme.traffic_assignment.sola_traffic_assignment")
 
             for i in range (10, 17):
 
