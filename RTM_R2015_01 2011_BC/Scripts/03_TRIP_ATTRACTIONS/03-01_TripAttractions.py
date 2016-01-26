@@ -202,7 +202,10 @@ class TripAttractions(_m.Tool()):
     def Matrix_Batchins(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
 
-        util.initmat(eb, "md20", "PpTt11", "2011_total_population", 0)
+        year = util.get_year(eb)
+        yr = year[2:]
+
+        util.initmat(eb, "md20", "PpTt" + yr, year + "_total_population", 0)
         util.initmat(eb, "md24", "HhLwIn", "Household Low Income", 0)
         util.initmat(eb, "md25", "HhMdIn", "Household Medium Income", 0)
         util.initmat(eb, "md26", "HhHiIn", "Household High Income", 0)
