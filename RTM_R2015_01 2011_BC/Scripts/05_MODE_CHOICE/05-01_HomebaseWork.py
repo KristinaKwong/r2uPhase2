@@ -10,8 +10,6 @@ import traceback as _traceback
 import os
 
 
-process_matrix_trans = _m.Modeller().tool(
-    "inro.emme.data.matrix.matrix_transaction")
 compute_matrix = _m.Modeller().tool(
     "inro.emme.matrix_calculation.matrix_calculator")
 
@@ -79,8 +77,7 @@ def run_model(scenario, eb, iteration_number, is_last_iteration):
     #    Initialize matrices for resulted matrices
     #    - this should be done once only. (rs- will confirm with Ali the sequence)
     #********
-    folder = os.path.join(data_folder, "TimeSlicingFactors")
-    utilities.process_transaction_list(scenario, folder, ['dmMatInit'])
+    utilities.dmMatInit_Full(eb)
     time_slice_home_base_work(data_folder, scenario)
     calculate_final_period_demand(scenario)
 
@@ -599,10 +596,6 @@ def calculate_blends(scenario):
 #********
 @_m.logbook_trace("Time slicing home-base work")
 def time_slice_home_base_work(data_folder, scenario):
-    print "Time slicing HBW matrices begins" + str(datetime.now().strftime('%H:%M:%S'))
-
-    file_name = os.path.join(data_folder, "TimeSlicingFactors", 'dmMatInit.311')
-    process_matrix_trans(file_name, scenario=scenario)
 
     #
     #    Preparing expressions for calculation
