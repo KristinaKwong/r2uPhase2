@@ -50,8 +50,7 @@ class ModeChoiceNHBW(_m.Tool()):
 @_m.logbook_trace("Non-home-base work")
 def run_model(scenario, eb, iteration_number, is_last_iteration):
     data_folder = os.path.dirname(eb.path) + "\\"
-    matrix_file = os.path.join(data_folder, "05_MODE_CHOICE/Inputs/NonWorkBatchin.txt")
-    process_matrix_trans(matrix_file, scenario=scenario)
+    utilities.dmMatInit_NonWork(eb)
 
     calculate_blends(scenario)
     calculate_sov(scenario)
