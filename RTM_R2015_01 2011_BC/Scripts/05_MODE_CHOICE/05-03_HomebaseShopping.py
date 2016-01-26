@@ -59,9 +59,7 @@ def run_model(scenario, eb, iteration_number, is_last_iteration):
     #********
     #    Initialize matrices for resulted matrices - this should be done once only. (rs- will confirm with Ali the sequence)
     #********
-    folder = os.path.join(data_folder, "TimeSlicingFactors")
-    utilities.process_transaction_list(scenario, folder, ['dmMatInitParts'])
-
+    utilities.dmMatInitParts(eb)
     time_slice_shopping(scenario, data_folder)
     calculate_final_period_demand(scenario)
     if is_last_iteration:
