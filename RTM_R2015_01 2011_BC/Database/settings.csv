@@ -1,7 +1,7 @@
 Label,              Setting,                                Value
 am_scenario,        AM Scenario,                            21000
 md_scenario,        Midday Scenario,                        22000
-num_processors,     Number of Processors,                   8
+num_processors,     Number of Processors,                   4
 create_scenarios,   Scenario creation module,               On
 park_cost_adjust,   Parking cost adjustment module,         Off
 cost_sens,          Distribution cost sensitivity (0 to 1), 1
