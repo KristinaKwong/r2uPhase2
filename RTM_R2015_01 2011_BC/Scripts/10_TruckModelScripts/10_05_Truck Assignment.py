@@ -4,18 +4,18 @@
 ##--Path: translink.emme.stage5.step10.truckassign
 ##--Purpose: Convert Trucks to PCE
 ##---------------------------------------------------------------------
-import inro.modeller as _modeller
+import inro.modeller as _m
 import os
 import traceback as _traceback
 
 import simplejson
 
 
-class TruckAssign(_modeller.Tool()):
-    tool_run_msg = _modeller.Attribute(unicode)
+class TruckAssign(_m.Tool()):
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self)
+        pb = _m.ToolPageBuilder(self)
         pb.title = "Convert Trucks to PCE"
         pb.description = "Tool that converts trucks to pces; lightx1.5; heavy x2.5"
         pb.branding_text = "TransLink"
@@ -34,22 +34,22 @@ class TruckAssign(_modeller.Tool()):
 
             self.__call__()
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     def __call__(self,AMScenario,MDScenario):
     ### PCE Calculation
-        with _modeller.logbook_trace("Truck Assignment Tool"):
+        with _m.logbook_trace("Truck Assignment Tool"):
 
-            process = _modeller.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
-            root_directory = os.path.dirname(_modeller.Modeller().emmebank.path) + "\\"
+            process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
+            root_directory = os.path.dirname(_m.Modeller().emmebank.path) + "\\"
             matrix_file = os.path.join(root_directory, "TruckBatchFiles", "TruckAssignmentBatchinv1.txt")
             process(transaction_file=matrix_file, throw_on_error=True)
 
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
 
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             SPEC1 = {
                     "expression": "EXPRESSION",
@@ -792,12 +792,12 @@ class TruckAssign(_modeller.Tool()):
             MDTruckSpec1=simplejson.loads(MDTruckSpec)
 
 
-            emmebank = _modeller.Modeller().emmebank
+            emmebank = _m.Modeller().emmebank
             ScenAM = emmebank.scenario(AMScenario)
             ScenMD = emmebank.scenario(MDScenario)
             # Calculate SOV and HOV as Background Traffic
             NETCALC = "inro.emme.network_calculation.network_calculator"
-            calc_att= _modeller.Modeller().tool(NETCALC)
+            calc_att= _m.Modeller().tool(NETCALC)
 
             spec_dict = {
                     "result": None,
@@ -827,7 +827,7 @@ class TruckAssign(_modeller.Tool()):
 
 
             TRUCKASSIGN = "inro.emme.traffic_assignment.sola_traffic_assignment"
-            truckcassignment = _modeller.Modeller().tool(TRUCKASSIGN)
+            truckcassignment = _m.Modeller().tool(TRUCKASSIGN)
 
             for i in range (10, 17):
 

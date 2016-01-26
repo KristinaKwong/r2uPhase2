@@ -4,31 +4,31 @@
 ##--Path: translink.emme.stage5.step10.truckmodel
 ##--Purpose: Run Full truck Model
 ##---------------------------------------------------------------------
-import inro.modeller as _modeller
+import inro.modeller as _m
 import os
 import traceback as _traceback
 
-class FullTruckModel(_modeller.Tool()):
+class FullTruckModel(_m.Tool()):
 
-    Year= _modeller.Attribute(str)
-    Sensitivity=_modeller.Attribute(str)
-    ExtGrowth1=_modeller.Attribute(float)
-    ExtGrowth2=_modeller.Attribute(float)
-    AMScenario=_modeller.Attribute(_modeller.InstanceType)
-    MDScenario=_modeller.Attribute(_modeller.InstanceType)
-    CascadeGrowth1=_modeller.Attribute(float)
-    CascadeGrowth2=_modeller.Attribute(float)
-    RegionalGrowth1=_modeller.Attribute(float)
-    RegionalGrowth2=_modeller.Attribute(float)
-    AsiaPacificGrowth=_modeller.Attribute(str)
-
-
+    Year= _m.Attribute(str)
+    Sensitivity=_m.Attribute(str)
+    ExtGrowth1=_m.Attribute(float)
+    ExtGrowth2=_m.Attribute(float)
+    AMScenario=_m.Attribute(_m.InstanceType)
+    MDScenario=_m.Attribute(_m.InstanceType)
+    CascadeGrowth1=_m.Attribute(float)
+    CascadeGrowth2=_m.Attribute(float)
+    RegionalGrowth1=_m.Attribute(float)
+    RegionalGrowth2=_m.Attribute(float)
+    AsiaPacificGrowth=_m.Attribute(str)
 
 
-    tool_run_msg = _modeller.Attribute(unicode)
+
+
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self)
+        pb = _m.ToolPageBuilder(self)
         pb.title = "Full Truck Model Run"
         pb.description = "Run Full Truck Model"
         pb.branding_text = "TransLink"
@@ -157,13 +157,13 @@ class FullTruckModel(_modeller.Tool()):
 
 
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
 
 
         except Exception, e:
 
 
-                self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+                self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
 
 
@@ -171,13 +171,13 @@ class FullTruckModel(_modeller.Tool()):
 
 
 
-        with _modeller.logbook_trace("Full Truck Model Run"):
+        with _m.logbook_trace("Full Truck Model Run"):
 
-            ExternalModel=_modeller.Modeller().tool("translink.emme.stage5.step10.externaltruck")
+            ExternalModel=_m.Modeller().tool("translink.emme.stage5.step10.externaltruck")
             ExternalModel(Year,Sensitivity,ExtGrowth1,ExtGrowth2, CascadeGrowth1, CascadeGrowth2)
-            AsiaPacificModel=_modeller.Modeller().tool("translink.emme.stage5.step10.asiapacifictruck")
+            AsiaPacificModel=_m.Modeller().tool("translink.emme.stage5.step10.asiapacifictruck")
             AsiaPacificModel(Year)
-            RegionalModel=_modeller.Modeller().tool("translink.emme.stage5.step10.regionaltruck")
+            RegionalModel=_m.Modeller().tool("translink.emme.stage5.step10.regionaltruck")
             RegionalModel(Year,Sensitivity,RegionalGrowth1, RegionalGrowth2)
-            TruckAssign=_modeller.Modeller().tool("translink.emme.stage5.step10.truckassign")
+            TruckAssign=_m.Modeller().tool("translink.emme.stage5.step10.truckassign")
             TruckAssign(AMScenario,MDScenario)

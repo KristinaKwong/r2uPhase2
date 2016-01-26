@@ -5,15 +5,15 @@
 ##--Purpose: This module generates Asia Pacific Trucks (heavy trucks)
 ##--         Tables based on Port Metro Vancouver GPS Study
 ##---------------------------------------------------------------------
-import inro.modeller as _modeller
+import inro.modeller as _m
 import os
 import traceback as _traceback
 
-class AsiaPacificTruckModel(_modeller.Tool()):
-    tool_run_msg = _modeller.Attribute(unicode)
+class AsiaPacificTruckModel(_m.Tool()):
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self)
+        pb = _m.ToolPageBuilder(self)
         pb.title = "Asia Pacific Truck Trips Model"
         pb.description = "Generates base/future forecasts for Asia Pacific trucks trips"
         pb.branding_text = "TransLink"
@@ -32,22 +32,22 @@ class AsiaPacificTruckModel(_modeller.Tool()):
             Year=2011
             self.__call__(Year)
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     def __call__(self,Year):
 
-        with _modeller.logbook_trace("Asia Pacific Truck Model"):
+        with _m.logbook_trace("Asia Pacific Truck Model"):
             #Batch input Asia Pacific matrix from TruckBatchFiles (gg ensemble format)
-                process = _modeller.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
-                root_directory = os.path.dirname(_modeller.Modeller().emmebank.path) + "\\"
+                process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
+                root_directory = os.path.dirname(_m.Modeller().emmebank.path) + "\\"
                 matrix_file = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"AsiaPacificv1.txt")
                 process(transaction_file=matrix_file, throw_on_error=True)
 
                 NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
             #Distribute Asia Pacific matrix for 'Other locations' based on non-retail employment
-                compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+                compute_matrix = _m.Modeller().tool(NAMESPACE)
 
 
                 Spec1={

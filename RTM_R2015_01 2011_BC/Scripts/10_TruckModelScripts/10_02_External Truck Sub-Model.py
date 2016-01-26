@@ -6,10 +6,10 @@
 ##--         Regression functions are used to generate base and future demand
 ##--         Trip Distribution is conducted using 1999 Truck O-D survey
 ##---------------------------------------------------------------------
-import inro.modeller as _modeller
+import inro.modeller as _m
 import os
 import traceback as _traceback
-eb = _modeller.Modeller().emmebank
+eb = _m.Modeller().emmebank
 
 # Regression coefficients:
 
@@ -41,7 +41,7 @@ CBH11=3267.0
 ExL11=1579.0
 ExH11=3718.0
 
-class ExternalTruckModel(_modeller.Tool()):
+class ExternalTruckModel(_m.Tool()):
 
 
     spec_as_dict = {
@@ -55,13 +55,13 @@ class ExternalTruckModel(_modeller.Tool()):
     "type": "MATRIX_CALCULATION"
 }
 
-    #    Analysis_Year = _modeller.Attribute(int)
-    #    GDP_CAGR = _modeller.Attribute(float)
-    #    Quarter = _modeller.Attribute(int)
-    tool_run_msg = _modeller.Attribute(unicode)
+    #    Analysis_Year = _m.Attribute(int)
+    #    GDP_CAGR = _m.Attribute(float)
+    #    Quarter = _m.Attribute(int)
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self)
+        pb = _m.ToolPageBuilder(self)
         pb.title = "External Truck Trips Model"
         pb.description = "Generates base/future forecasts for external light and heavy trucks trips"
         pb.branding_text = "TransLink"
@@ -80,13 +80,13 @@ class ExternalTruckModel(_modeller.Tool()):
         try:
             self.__call__(Year)
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     def __call__(self,Year, Sensitivity, ExtGrowth1,ExtGrowth2, CascadeGrowth1, CascadeGrowth2):
 
-        with _modeller.logbook_trace("External Truck Trips Model"):
+        with _m.logbook_trace("External Truck Trips Model"):
 
         # Call Modules of External Model
             self.CrossBorder(Year, Sensitivity, CascadeGrowth1, CascadeGrowth2) # Import Cascade Cross-Border Matrices
@@ -96,12 +96,12 @@ class ExternalTruckModel(_modeller.Tool()):
 
     def CrossBorder(self, Year, Sensitivity, CascadeGrowth1, CascadeGrowth2):
 
-        with _modeller.logbook_trace("Import Cascade Cross-Border Matrices"):
+        with _m.logbook_trace("Import Cascade Cross-Border Matrices"):
 
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
-            process = _modeller.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
-            root_directory = os.path.dirname(_modeller.Modeller().emmebank.path) + "\\"
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
+            process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
+            root_directory = os.path.dirname(_m.Modeller().emmebank.path) + "\\"
             matrix_file1 = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"CrossBorderv1.txt")
             matrix_file2 = os.path.join(root_directory, "TruckBatchFiles", "IRBatchIn.txt")
             process(transaction_file=matrix_file1, throw_on_error=True)
@@ -156,11 +156,11 @@ class ExternalTruckModel(_modeller.Tool()):
     # Inputs: Regression Functions and directional factors
     # Outputs: 24 hours trip generation - mo4,mo6,md404,md406 (Light From, Heavy From, Light To, Heavy To)
 
-        with _modeller.logbook_trace("Trip Generation"):
+        with _m.logbook_trace("Trip Generation"):
 
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
 
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
 
             TripGenSpec=self.spec_as_dict
 
@@ -287,9 +287,9 @@ class ExternalTruckModel(_modeller.Tool()):
 
     #   Adjusts Inter-regional mo and md totals by subtracting Cross-border mo/mds with inter-regional zone end
 
-        with _modeller.logbook_trace("Adjust Inter Regional mos and mds with Cross-Border mos and mds"):
+        with _m.logbook_trace("Adjust Inter Regional mos and mds with Cross-Border mos and mds"):
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
             AdjustSpec=self.spec_as_dict
             ResultList=["mo1003","md203"]
 
@@ -328,10 +328,10 @@ class ExternalTruckModel(_modeller.Tool()):
     # Inputs: mo4, mo6, md404, md406, mf182 (O-D Survey Light Trucks Distribution), mf183 (O-D Survey Heavy Truck Distribution)
     # Outputs: mf184, mf185 (24 hour Light Truck O-D, 24 hour Heavy Truck O-D)
 
-        with _modeller.logbook_trace("Trip Distribution"):
+        with _m.logbook_trace("Trip Distribution"):
 
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
             TripDistSpec=self.spec_as_dict
 
             ResultList=['mf1010','mf1011']
@@ -348,9 +348,9 @@ class ExternalTruckModel(_modeller.Tool()):
     # Inputs: mf184, mf185, Time Slice Factors from Screenline volumes
     # Outputs: Light AM, Light MD, Heavy AM, Heavy MD - mf186, mf188, mf187, mf189
 
-        with _modeller.logbook_trace("Time Slicing"):
+        with _m.logbook_trace("Time Slicing"):
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
             TimeSliceSpec=self.spec_as_dict
 
     # IB                 Light Trucks AM            Light Trucks MD               Heavy Trucks AM         Heavy Trucks MD

@@ -7,16 +7,16 @@
 ##--         Trip Distribution is conducted using gravity model
 ##--         Time Slice Factors used to derive AM and MD truck traffic
 ##---------------------------------------------------------------------
-import inro.modeller as _modeller
+import inro.modeller as _m
 import os
 import traceback as _traceback
 
-eb = _modeller.Modeller().emmebank
+eb = _m.Modeller().emmebank
 
 RgL11=107040
 RgH11=45950
 
-class RegTruckModel(_modeller.Tool()):
+class RegTruckModel(_m.Tool()):
 
     spec_as_dict = {
             "expression": "EXPRESSION",
@@ -30,10 +30,10 @@ class RegTruckModel(_modeller.Tool()):
         }
 
 
-    tool_run_msg = _modeller.Attribute(unicode)
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self)
+        pb = _m.ToolPageBuilder(self)
         pb.title = "Regional Truck Trips Model"
         pb.description = "Generates base/future forecasts for regional light and heavy trucks trips"
         pb.branding_text = "TransLink"
@@ -51,27 +51,27 @@ class RegTruckModel(_modeller.Tool()):
         try:
             self.__call__()
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     def __call__(self, Year, Sensitivity, RegionalGrowth1, RegionalGrowth2):
 
-        with _modeller.logbook_trace("Regional Truck Model"):
+        with _m.logbook_trace("Regional Truck Model"):
 
-            process = _modeller.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
-            root_directory = os.path.dirname(_modeller.Modeller().emmebank.path) + "\\"
+            process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
+            root_directory = os.path.dirname(_m.Modeller().emmebank.path) + "\\"
             matrix_file1 = os.path.join(root_directory, "TruckBatchFiles", "RGBatchIn.txt")
             process(transaction_file=matrix_file1, throw_on_error=True)
 
             NAMESPACE="inro.emme.prompt.run_macro"
         # Run regional truck model Macro
 
-            run_macro=_modeller.Modeller().tool(NAMESPACE)
+            run_macro=_m.Modeller().tool(NAMESPACE)
             run_macro(macro_name="trkmodamregv1.mac")
 
             MATCALC = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _modeller.Modeller().tool(MATCALC)
+            compute_matrix = _m.Modeller().tool(MATCALC)
 
 
             RegSpec=self.spec_as_dict
