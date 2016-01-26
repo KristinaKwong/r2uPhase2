@@ -53,8 +53,7 @@ def run_model(scenario, eb, iteration_number, is_last_iteration):
     #       this may be clearer and faster directly using the API to set the matrix
     #       names and descriptions
     data_folder = os.path.dirname(eb.path) + "\\"
-    matrix_file = os.path.join(data_folder, "05_MODE_CHOICE/Inputs/WorkBatchin.txt")
-    process_matrix_trans(transaction_file=matrix_file, scenario=scenario)
+    utilities.dmMatInit_Work(eb)
 
     calculate_blends(scenario)
     calculate_sov(scenario)
