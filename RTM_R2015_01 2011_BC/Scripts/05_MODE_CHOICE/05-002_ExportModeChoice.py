@@ -56,9 +56,13 @@ class ModeChoiceHBSchool(_m.Tool()):
     @_m.logbook_trace("Aggregate purpose-level results by mode into matrices mf882 - mf890")
     def Agg_Exp_Demand(self, eb, purp, n):
         output_folder = os.path.join(os.path.dirname(eb.path), "05_MODE_CHOICE", "Outputs", "")
+        file_suffix = "_" + str(n) + ".txt"
+
         purp_list = ['Hbw', 'HbSc', 'HbSh', 'HbPb', 'HbU', 'HbSoc', 'HbEsc', 'NHBO', 'NHBW']
         income = ['lowinc', 'medinc', 'highinc']
         auto = ['_zero_auto', '_one_auto', '_twoplus_auto']
+
+        purpose_folder = os.path.join(os.path.dirname(eb.path), "05_MODE_CHOICE", "Outputs", purp_list[purp - 1])
         with _m.logbook_trace("Aggregate Demand " + purp_list[purp - 1]):
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
             compute_matrix = _m.Modeller().tool(NAMESPACE)
@@ -92,16 +96,11 @@ class ModeChoiceHBSchool(_m.Tool()):
                                 spec_as_dict["result"] = result
                                 report = compute_matrix(spec_as_dict)
                         if p == 0:
-                            exportfile = output_folder + purp_list[
-                                purp - 1] + '/Overall_Results_' + purp_list[purp - 1] + "_" + income[i] + "_" + str(
-                                n) + '.txt'
+                            exportfile = purpose_folder + '/Overall_Results_' + purp_list[purp - 1] + "_" + income[i] + file_suffix
                         if p == 1:
-                            exportfile = output_folder + purp_list[
-                                purp - 1] + '/Overall_Results_' + purp_list[purp - 1] + "_" + auto[i] + "_" + str(
-                                n) + '.txt'
+                            exportfile = purpose_folder + '/Overall_Results_' + purp_list[purp - 1] + "_" + auto[i] + file_suffix
                         if p == 2:
-                            exportfile = output_folder + purp_list[
-                                purp - 1] + '/Overall_Results_' + purp_list[purp - 1] + "_" + str(n) + '.txt'
+                            exportfile = purpose_folder + '/Overall_Results_' + purp_list[purp - 1] + file_suffix
                         self.Export_Demand(exportfile)
 
             if purp > 1 and purp < 8:
@@ -128,8 +127,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                             spec_as_dict["result"] = result
                             report = compute_matrix(spec_as_dict)
 
-                exportfile = output_folder + purp_list[purp - 1] + '/Overall_Results_' + purp_list[
-                    purp - 1] + "_" + str(n) + '.txt'
+                exportfile = purpose_folder + '/Overall_Results_' + purp_list[purp - 1] + file_suffix
                 self.Export_Demand(exportfile)
 
             if purp > 7:
@@ -142,8 +140,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                         spec_as_dict["expression"] = expression1
                         spec_as_dict["result"] = result
                         report = compute_matrix(spec_as_dict)
-                exportfile = output_folder + purp_list[purp - 1] + '/Overall_Results_' + purp_list[
-                    purp - 1] + "_" + str(n) + '.txt'
+                exportfile = purpose_folder + '/Overall_Results_' + purp_list[purp - 1] + file_suffix
                 self.Export_Demand(exportfile)
                 if purp == 8:
                     nwmat = 568
@@ -157,8 +154,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                                 spec_as_dict["result"] = result
                                 report = compute_matrix(spec_as_dict)
 
-                        exportfile = output_folder + 'Nonwork/Overall_Results_' + income[i] + "_" + str(
-                            n) + '.txt'
+                        exportfile = output_folder + 'Nonwork/Overall_Results_' + income[i] + file_suffix
                         self.Export_Demand(exportfile)
 
     @_m.logbook_trace("Clear Calculation Matrices")
