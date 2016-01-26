@@ -8,7 +8,6 @@
 import inro.modeller as _modeller
 import os
 import traceback as _traceback
-from datetime import datetime
 
 class AsiaPacificTruckModel(_modeller.Tool()):
     tool_run_msg = _modeller.Attribute(unicode)

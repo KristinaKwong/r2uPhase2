@@ -9,7 +9,6 @@
 import inro.modeller as _modeller
 import os
 import traceback as _traceback
-from datetime import datetime
 eb = _modeller.Modeller().emmebank
 
 # Regression coefficients:
@@ -74,7 +73,6 @@ class ExternalTruckModel(_modeller.Tool()):
         return pb.render()
 
     def run(self):
-        print " Run External Truck Trips Model: " + str(datetime.now().strftime('%H:%M:%S'))
         ##        User start
         self.tool_run_msg = ""
         #GDP FOrecasts: 2011, 2031, 2045 in Real 2009 $ Value

@@ -10,7 +10,7 @@
 import inro.modeller as _modeller
 import os
 import traceback as _traceback
-from datetime import datetime
+
 eb = _modeller.Modeller().emmebank
 
 RgL11=107040
