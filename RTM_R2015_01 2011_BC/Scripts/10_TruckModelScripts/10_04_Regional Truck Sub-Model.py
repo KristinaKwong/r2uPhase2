@@ -64,11 +64,9 @@ class RegTruckModel(_m.Tool()):
             matrix_file1 = os.path.join(root_directory, "TruckBatchFiles", "RGBatchIn.txt")
             process(transaction_file=matrix_file1, throw_on_error=True)
 
-            NAMESPACE="inro.emme.prompt.run_macro"
-        # Run regional truck model Macro
-
-            run_macro=_m.Modeller().tool(NAMESPACE)
-            run_macro(macro_name="trkmodamregv1.mac")
+            # Run regional truck model Macro
+            run_macro=_m.Modeller().tool("inro.emme.prompt.run_macro")
+            run_macro(macro_name="../Scripts/10_TruckModelScripts/trkmodamregv1.mac")
 
             MATCALC = "inro.emme.matrix_calculation.matrix_calculator"
             compute_matrix = _m.Modeller().tool(MATCALC)
