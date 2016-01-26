@@ -41,12 +41,23 @@ class TruckAssign(_m.Tool()):
     def __call__(self,AMScenario,MDScenario):
     ### PCE Calculation
         with _m.logbook_trace("Truck Assignment Tool"):
+            util = _m.Modeller().tool("translink.emme.util")
 
-            process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
-            root_directory = os.path.dirname(_m.Modeller().emmebank.path) + "\\"
-            matrix_file = os.path.join(root_directory, "TruckBatchFiles", "TruckAssignmentBatchinv1.txt")
-            process(transaction_file=matrix_file, throw_on_error=True)
-
+            util.initmat(eb, "mf1040", "CBLgAp", "CB LgTruck AM PCE", 0)
+            util.initmat(eb, "mf1041", "CBHvAp", "CB HvTruck AM PCE", 0)
+            util.initmat(eb, "mf1042", "IRLgAp", "IR LgTruck AM PCE", 0)
+            util.initmat(eb, "mf1043", "IRHvAp", "IR HvTruck AM PCE", 0)
+            util.initmat(eb, "mf1044", "APHvAp", "AP HvTruck AM PCE", 0)
+            util.initmat(eb, "mf1045", "RGLgAp", "RG LgTruck AM PCE", 0)
+            util.initmat(eb, "mf1046", "RGHvAp", "RG HvTruck AM PCE", 0)
+            util.initmat(eb, "mf1047", "CBLgMp", "CB LgTruck MD PCE", 0)
+            util.initmat(eb, "mf1048", "CBHvMp", "CB HvTruck MD PCE", 0)
+            util.initmat(eb, "mf1049", "IRLgMp", "IR LgTruck MD PCE", 0)
+            util.initmat(eb, "mf1050", "IRHvMp", "IR HvTruck MD PCE", 0)
+            util.initmat(eb, "mf1051", "APHvMp", "AP HvTruck MD PCE", 0)
+            util.initmat(eb, "mf1052", "RGLgMp", "RG LgTruck MD PCE", 0)
+            util.initmat(eb, "mf1053", "RGHvMp", "RG HvTruck MD PCE", 0)
+            
             NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
 
             compute_matrix = _m.Modeller().tool(NAMESPACE)
