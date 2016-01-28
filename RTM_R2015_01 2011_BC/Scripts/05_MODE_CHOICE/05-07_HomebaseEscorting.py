@@ -25,7 +25,7 @@ class ModeChoiceHBEsc(_m.Tool()):
         pb.title = "Mode Choice Model"
         pb.description = "Not to be used directly, module containing methods to calculate mode choice model. (etc)."
         pb.branding_text = "TransLink"
-        pb.runnable=False
+        pb.runnable = False
 
         return pb.render()
 

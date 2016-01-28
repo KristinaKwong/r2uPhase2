@@ -16,7 +16,7 @@ class ModeChoiceHBSchool(_m.Tool()):
         pb.title = "Export Mode Choice Demand"
         pb.description = "Not to be used directly, module containing methods to export mode choice demand"
         pb.branding_text = "TransLink"
-        pb.runnable=False
+        pb.runnable = False
 
         return pb.render()
 
