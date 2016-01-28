@@ -53,7 +53,10 @@ class InputLandUse(_m.Tool()):
 
     @_m.logbook_trace("Import land use data", save_arguments=True)
     def __call__(self, file1, file2):
-        init_mat = _m.Modeller().tool("inro.emme.data.matrix.init_matrix")
+        util = _m.Modeller().tool("translink.emme.util")
+
+        eb = _m.Modeller().emmebank
+
         # Define matrices for storage (must pre-exist)
         inputmats = []
         #Define matrices for POP04, POP512, POP1317, POP1824, POP2444, POP4564, POP65p, totpop
@@ -66,12 +69,8 @@ class InputLandUse(_m.Tool()):
         inputmats.extend(['mo393', 'mo394', 'mo27', 'mo28', 'mo13'])
 
         with _m.logbook_trace("Initializing matrices to zero"):
-            # TODO: create matrices if they do not already exist
-            num_inits = len(inputmats)
-            eb = _m.Modeller().emmebank
-            for x in xrange(0, num_inits):
-                inputval = eb.matrix(inputmats[x])
-                init_mat(matrix=inputval, init_value=0)
+            for mat_id in inputmats:
+                util.initmat(eb, mat_id, "", "", 0)
 
         # TODO: change the file reading to use the normal design pattern
         with _m.logbook_trace("Read new matrices from csv file1 and file2"):
@@ -102,7 +101,6 @@ class InputLandUse(_m.Tool()):
 
         with _m.logbook_trace("Copy numbers from first list into corresponding matrices"):
             #Assuming first column holds zone numbers, other columns hold matrix values in order above
-            eb = _m.Modeller().emmebank
             #Input values from first file
             for x in xrange(0, file1_matnum):
                 y = x + 1   #first column in matrix list corresponds to second column in data list, and so on
