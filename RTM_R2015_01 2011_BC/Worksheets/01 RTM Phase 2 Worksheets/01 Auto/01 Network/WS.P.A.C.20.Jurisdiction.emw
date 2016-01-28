@@ -2814,7 +2814,7 @@ TextString[] = Road Network\
 Jurisdiction (@ljrd)
 TextString[] = TransLink Regional\
 Transportation Model
-TextString[] = Shapefiles for RTM/ctmhz_logo_translink_off.gif
+TextString[] = %<$ProjectPath>%/Media/Shapefiles for RTM/ctmhz_logo_translink_off.gif
 # Style SymbolStyle: style used for graphic part of items
 SymbolStyle[] = 0x210000ff 0x01ffffff 0x00ffffff 0x00000000
 SymbolStyle[] = 0x21ff0000 0x01ffffff 0x00ffffff 0x00000000

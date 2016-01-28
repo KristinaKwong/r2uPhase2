@@ -1,6 +1,6 @@
 D2461A6A-1F51-4A2C-87AC-6C3C49AA9DF7 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 2 0
 # Emme worksheet generated on Wed Feb 25 16:00:36 2015
-# File: //vanco-ifs-01/Project/projects/202994TransLink Modelling Support/Work Program/EMME TL RTM/2011/RTM_R2015_01 2011_BC/Worksheets/01 RTM Phase 2 Worksheets/03 Matrix/1 Distribution (spatial)/WS.P.M.D.23.Employment Bike Access.emw
+# File: Worksheets/01 RTM Phase 2 Worksheets/03 Matrix/1 Distribution (spatial)/WS.P.M.D.23.Employment Bike Access.emw
 #
 # String Name: name of worksheet (tr,subst)
 Name : PlotName
@@ -2800,7 +2800,7 @@ TextString[] = Matrix - Employment Bike Access\
 (Numbers show absolute values)
 TextString[] = TransLink Regional\
 Transportation Model
-TextString[] = Shapefiles for RTM/ctmhz_logo_translink_off.gif
+TextString[] = %<$ProjectPath>%/Media/Shapefiles for RTM/ctmhz_logo_translink_off.gif
 # Style FrameStyle: style used for text and frame of items
 FrameStyle = 0x20000000 0x01ffffff 0x00000000 0x00000500
 # Style SymbolStyle: style used for graphic part of items
