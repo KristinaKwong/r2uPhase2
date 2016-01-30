@@ -549,6 +549,8 @@ def time_slice_home_base_university(scenario, data_folder):
 #    Module - it is identical to matrix-calculation() (rs)
 #********
 def calculate_final_period_demand(scenario):
+    util = _m.Modeller().tool("translink.emme.util")
+
     msAutOccWork3Plus = "ms60"
     msAutOccUniv3Plus = "ms61"
     msAutOccGSch2Plus = "ms62"
@@ -572,34 +574,34 @@ def calculate_final_period_demand(scenario):
     #
     #    For school and university trips with med/high income should be assigned to SOV-low_inc (mf846)or HOV-low_inc (mf851)
     #
-    spec_list = []
-    spec_list.append(build_spec("mf846+" + "mf777", "mf846"))
-    spec_list.append(build_spec("mf846+" + "mf798", "mf846"))
-    spec_list.append(build_spec("mf851+" + "(mf784/2)+(mf791/" + msAutOccUniv3Plus + ")", "mf851"))
-    spec_list.append(build_spec("mf851+" + "(mf805/2)+(mf812/" + msAutOccUniv3Plus + ")", "mf851"))
-    spec_list.append(build_spec("mf853+" + "mf819*mf996", "mf853"))
-    spec_list.append(build_spec("mf854+" + "mf826*mf992", "mf854"))
-    spec_list.append(build_spec("mf855+" + "mf833", "mf855"))
+    specs = []
+    specs.append(build_spec("mf846+" + "mf777", "mf846"))
+    specs.append(build_spec("mf846+" + "mf798", "mf846"))
+    specs.append(build_spec("mf851+" + "(mf784/2)+(mf791/" + msAutOccUniv3Plus + ")", "mf851"))
+    specs.append(build_spec("mf851+" + "(mf805/2)+(mf812/" + msAutOccUniv3Plus + ")", "mf851"))
+    specs.append(build_spec("mf853+" + "mf819*mf996", "mf853"))
+    specs.append(build_spec("mf854+" + "mf826*mf992", "mf854"))
+    specs.append(build_spec("mf855+" + "mf833", "mf855"))
     #
     #    Midday
     #
-    spec_list.append(build_spec("mf859+" + "mf778", "mf859"))
-    spec_list.append(build_spec("mf859+" + "mf799", "mf859"))
-    spec_list.append(build_spec("mf864+" + "(mf785/2)+(mf792/" + msAutOccUniv3PlusM + ")", "mf864"))
-    spec_list.append(build_spec("mf864+" + "(mf806/2)+(mf813/" + msAutOccUniv3PlusM + ")", "mf864"))
-    spec_list.append(build_spec("mf866+" + "mf820", "mf866"))
-    spec_list.append(build_spec("mf867+" + "mf827", "mf867"))
-    spec_list.append(build_spec("mf868+" + "mf834", "mf868"))
+    specs.append(build_spec("mf859+" + "mf778", "mf859"))
+    specs.append(build_spec("mf859+" + "mf799", "mf859"))
+    specs.append(build_spec("mf864+" + "(mf785/2)+(mf792/" + msAutOccUniv3PlusM + ")", "mf864"))
+    specs.append(build_spec("mf864+" + "(mf806/2)+(mf813/" + msAutOccUniv3PlusM + ")", "mf864"))
+    specs.append(build_spec("mf866+" + "mf820", "mf866"))
+    specs.append(build_spec("mf867+" + "mf827", "mf867"))
+    specs.append(build_spec("mf868+" + "mf834", "mf868"))
     #
     #    PM peak hour
     #
-    spec_list.append(build_spec("mf872+" + "mf779", "mf872"))
-    spec_list.append(build_spec("mf872+" + "mf800", "mf872"))
-    spec_list.append(build_spec("mf877+" + "(mf786/2)+(mf793/" + msAutOccUniv3Plus + ")", "mf877"))
-    spec_list.append(build_spec("mf877+" + "(mf807/2)+(mf814/" + msAutOccUniv3Plus + ")", "mf877"))
-    spec_list.append(build_spec("mf879+" + "mf821", "mf879"))
-    spec_list.append(build_spec("mf880+" + "mf828", "mf880"))
-    spec_list.append(build_spec("mf881+" + "mf835", "mf881"))
+    specs.append(build_spec("mf872+" + "mf779", "mf872"))
+    specs.append(build_spec("mf872+" + "mf800", "mf872"))
+    specs.append(build_spec("mf877+" + "(mf786/2)+(mf793/" + msAutOccUniv3Plus + ")", "mf877"))
+    specs.append(build_spec("mf877+" + "(mf807/2)+(mf814/" + msAutOccUniv3Plus + ")", "mf877"))
+    specs.append(build_spec("mf879+" + "mf821", "mf879"))
+    specs.append(build_spec("mf880+" + "mf828", "mf880"))
+    specs.append(build_spec("mf881+" + "mf835", "mf881"))
 
     #
     #    Accumulated demand matrices of 4 time periods by modes (auto person, bus, rail, active)
@@ -610,24 +612,24 @@ def calculate_final_period_demand(scenario):
     #
     #    Auto person - 2 income levels & SOV & 2person & 3+person
     #
-    spec_list.append(build_spec("mf70+mf773+mf794+mf780+mf801+mf787+mf808", "mf70"))
-    spec_list.append(build_spec("mf71+mf815", "mf71"))
-    spec_list.append(build_spec("mf72+mf822", "mf72"))
-    spec_list.append(build_spec("mf73+mf829", "mf73"))
+    specs.append(build_spec("mf70+mf773+mf794+mf780+mf801+mf787+mf808", "mf70"))
+    specs.append(build_spec("mf71+mf815", "mf71"))
+    specs.append(build_spec("mf72+mf822", "mf72"))
+    specs.append(build_spec("mf73+mf829", "mf73"))
 
-    spec_list.append(build_spec("mf75+mf774+mf795+mf781+mf802+mf788+mf809", "mf75"))
-    spec_list.append(build_spec("mf76+mf816", "mf76"))
-    spec_list.append(build_spec("mf77+mf823", "mf77"))
-    spec_list.append(build_spec("mf78+mf830", "mf78"))
+    specs.append(build_spec("mf75+mf774+mf795+mf781+mf802+mf788+mf809", "mf75"))
+    specs.append(build_spec("mf76+mf816", "mf76"))
+    specs.append(build_spec("mf77+mf823", "mf77"))
+    specs.append(build_spec("mf78+mf830", "mf78"))
 
-    spec_list.append(build_spec("mf80+mf775+mf796+mf782+mf803+mf789+mf810", "mf80"))
-    spec_list.append(build_spec("mf81+mf817", "mf81"))
-    spec_list.append(build_spec("mf82+mf824", "mf82"))
-    spec_list.append(build_spec("mf83+mf831", "mf83"))
+    specs.append(build_spec("mf80+mf775+mf796+mf782+mf803+mf789+mf810", "mf80"))
+    specs.append(build_spec("mf81+mf817", "mf81"))
+    specs.append(build_spec("mf82+mf824", "mf82"))
+    specs.append(build_spec("mf83+mf831", "mf83"))
 
-    spec_list.append(build_spec("mf85+mf776+mf797+mf783+mf804+mf790+mf811", "mf85"))
-    spec_list.append(build_spec("mf86+mf818", "mf86"))
-    spec_list.append(build_spec("mf87+mf825", "mf87"))
-    spec_list.append(build_spec("mf88+mf832", "mf88"))
+    specs.append(build_spec("mf85+mf776+mf797+mf783+mf804+mf790+mf811", "mf85"))
+    specs.append(build_spec("mf86+mf818", "mf86"))
+    specs.append(build_spec("mf87+mf825", "mf87"))
+    specs.append(build_spec("mf88+mf832", "mf88"))
 
-    compute_matrix(spec_list, scenario)
+    compute_matrix(specs, scenario)

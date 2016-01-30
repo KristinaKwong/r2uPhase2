@@ -676,6 +676,8 @@ def time_slice_home_base_work(data_folder, scenario):
 
 @_m.logbook_trace("Calculate final period demands")
 def calculate_final_period_demand(scenario):
+    util = _m.Modeller().tool("translink.emme.util")
+
     msAutOccWork3Plus = "ms60"
     msAutOccUniv3Plus = "ms61"
     msAutOccGSch2Plus = "ms62"
@@ -700,44 +702,44 @@ def calculate_final_period_demand(scenario):
     #
     #    Generate AM peak hour demand
     #
-    spec_list = []
-    spec_list.append(build_spec("mf714", "mf843"))
-    spec_list.append(build_spec("mf721", "mf844"))
-    spec_list.append(build_spec("mf728", "mf845"))
-    spec_list.append(build_spec("(mf735/2)+(mf756/" + msAutOccWork3Plus + ")", "mf848"))
-    spec_list.append(build_spec("(mf742/2)+(mf763/" + msAutOccWork3Plus + ")", "mf849"))
-    spec_list.append(build_spec("(mf749/2)+(mf770/" + msAutOccWork3Plus + ")", "mf850"))
-    spec_list.append(build_spec("mf819", "mf853"))
-    spec_list.append(build_spec("mf826", "mf854"))
-    spec_list.append(build_spec("mf833", "mf855"))
+    specs = []
+    specs.append(build_spec("mf714", "mf843"))
+    specs.append(build_spec("mf721", "mf844"))
+    specs.append(build_spec("mf728", "mf845"))
+    specs.append(build_spec("(mf735/2)+(mf756/" + msAutOccWork3Plus + ")", "mf848"))
+    specs.append(build_spec("(mf742/2)+(mf763/" + msAutOccWork3Plus + ")", "mf849"))
+    specs.append(build_spec("(mf749/2)+(mf770/" + msAutOccWork3Plus + ")", "mf850"))
+    specs.append(build_spec("mf819", "mf853"))
+    specs.append(build_spec("mf826", "mf854"))
+    specs.append(build_spec("mf833", "mf855"))
 
     # Track work transit demand separately for park and ride model
-    spec_list.append(build_spec("mf819", "mf998"))
-    spec_list.append(build_spec("mf826", "mf997"))
+    specs.append(build_spec("mf819", "mf998"))
+    specs.append(build_spec("mf826", "mf997"))
     #
     #     Generate midday hour demand
     #
-    spec_list.append(build_spec("mf715", "mf856"))
-    spec_list.append(build_spec("mf722", "mf857"))
-    spec_list.append(build_spec("mf729", "mf858"))
-    spec_list.append(build_spec("(mf736/2)+(mf757/" + msAutOccWork3PlusM + ")", "mf861"))
-    spec_list.append(build_spec("(mf743/2)+(mf764/" + msAutOccWork3PlusM + ")", "mf862"))
-    spec_list.append(build_spec("(mf750/2)+(mf771/" + msAutOccWork3PlusM + ")", "mf863"))
-    spec_list.append(build_spec("mf820", "mf866"))
-    spec_list.append(build_spec("mf827", "mf867"))
-    spec_list.append(build_spec("mf834", "mf868"))
+    specs.append(build_spec("mf715", "mf856"))
+    specs.append(build_spec("mf722", "mf857"))
+    specs.append(build_spec("mf729", "mf858"))
+    specs.append(build_spec("(mf736/2)+(mf757/" + msAutOccWork3PlusM + ")", "mf861"))
+    specs.append(build_spec("(mf743/2)+(mf764/" + msAutOccWork3PlusM + ")", "mf862"))
+    specs.append(build_spec("(mf750/2)+(mf771/" + msAutOccWork3PlusM + ")", "mf863"))
+    specs.append(build_spec("mf820", "mf866"))
+    specs.append(build_spec("mf827", "mf867"))
+    specs.append(build_spec("mf834", "mf868"))
     #
     #     Generate PM peak hour demand
     #
-    spec_list.append(build_spec("mf716", "mf869"))
-    spec_list.append(build_spec("mf723", "mf870"))
-    spec_list.append(build_spec("mf730", "mf871"))
-    spec_list.append(build_spec("(mf737/2)+(mf758/" + msAutOccWork3Plus + ")", "mf874"))
-    spec_list.append(build_spec("(mf744/2)+(mf765/" + msAutOccWork3Plus + ")", "mf875"))
-    spec_list.append(build_spec("(mf751/2)+(mf772/" + msAutOccWork3Plus + ")", "mf876"))
-    spec_list.append(build_spec("mf821", "mf879"))
-    spec_list.append(build_spec("mf828", "mf880"))
-    spec_list.append(build_spec("mf835", "mf881"))
+    specs.append(build_spec("mf716", "mf869"))
+    specs.append(build_spec("mf723", "mf870"))
+    specs.append(build_spec("mf730", "mf871"))
+    specs.append(build_spec("(mf737/2)+(mf758/" + msAutOccWork3Plus + ")", "mf874"))
+    specs.append(build_spec("(mf744/2)+(mf765/" + msAutOccWork3Plus + ")", "mf875"))
+    specs.append(build_spec("(mf751/2)+(mf772/" + msAutOccWork3Plus + ")", "mf876"))
+    specs.append(build_spec("mf821", "mf879"))
+    specs.append(build_spec("mf828", "mf880"))
+    specs.append(build_spec("mf835", "mf881"))
     #
     #    Accumulated demand matrices of 4 time periods by modes (auto person, bus, rail, active)
     #    mf70-mf73 : T1(before 6am and after 7pm) - auto person, bus, rail, active
@@ -745,24 +747,24 @@ def calculate_final_period_demand(scenario):
     #    mf80-mf83 : T3(10am-2pm) - auto person, bus, rail, active
     #    mf85-mf88 : T4(2pm-7pm) - auto person, bus, rail, active
     #
-    spec_list.append(build_spec("mf710+mf717+mf724+mf731+mf738+mf745+mf752+mf759+mf766", "mf70"))
-    spec_list.append(build_spec("mf815*mf928", "mf71"))
-    spec_list.append(build_spec("mf822*mf975", "mf72"))
-    spec_list.append(build_spec("mf829", "mf73"))
+    specs.append(build_spec("mf710+mf717+mf724+mf731+mf738+mf745+mf752+mf759+mf766", "mf70"))
+    specs.append(build_spec("mf815*mf928", "mf71"))
+    specs.append(build_spec("mf822*mf975", "mf72"))
+    specs.append(build_spec("mf829", "mf73"))
 
-    spec_list.append(build_spec("mf711+mf718+mf725+mf732+mf739+mf746+mf753+mf760+mf767", "mf75"))
-    spec_list.append(build_spec("mf816", "mf76"))
-    spec_list.append(build_spec("mf823", "mf77"))
-    spec_list.append(build_spec("mf830", "mf78"))
+    specs.append(build_spec("mf711+mf718+mf725+mf732+mf739+mf746+mf753+mf760+mf767", "mf75"))
+    specs.append(build_spec("mf816", "mf76"))
+    specs.append(build_spec("mf823", "mf77"))
+    specs.append(build_spec("mf830", "mf78"))
 
-    spec_list.append(build_spec("mf712+mf719+mf726+mf733+mf740+mf747+mf754+mf761+mf768", "mf80"))
-    spec_list.append(build_spec("mf817*mf929", "mf81"))
-    spec_list.append(build_spec("mf824*mf976", "mf82"))
-    spec_list.append(build_spec("mf831", "mf83"))
+    specs.append(build_spec("mf712+mf719+mf726+mf733+mf740+mf747+mf754+mf761+mf768", "mf80"))
+    specs.append(build_spec("mf817*mf929", "mf81"))
+    specs.append(build_spec("mf824*mf976", "mf82"))
+    specs.append(build_spec("mf831", "mf83"))
 
-    spec_list.append(build_spec("mf713+mf720+mf727+mf734+mf741+mf748+mf755+mf762+mf769", "mf85"))
-    spec_list.append(build_spec("mf818", "mf86"))
-    spec_list.append(build_spec("mf825", "mf87"))
-    spec_list.append(build_spec("mf832", "mf88"))
+    specs.append(build_spec("mf713+mf720+mf727+mf734+mf741+mf748+mf755+mf762+mf769", "mf85"))
+    specs.append(build_spec("mf818", "mf86"))
+    specs.append(build_spec("mf825", "mf87"))
+    specs.append(build_spec("mf832", "mf88"))
 
-    compute_matrix(spec_list, scenario)
+    compute_matrix(specs, scenario)
