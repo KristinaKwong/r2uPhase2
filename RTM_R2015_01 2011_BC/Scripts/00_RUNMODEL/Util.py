@@ -23,6 +23,17 @@ class Util(_m.Tool()):
         pass
 
     def initmat(self, eb, mat_id, name, description, value=0):
+        """Fully Initialize a matrix whether it currently exists or not.
+
+        Returns the initialized matrix object.
+
+        Arguments:
+        eb -- the emmebank object to initialize the matrix in
+        mat_id -- the id of the matrix to initialize, eg ms01
+        name -- the name to set for the matrix
+        description - the description to set for the matrix
+        value -- the initial value for all matrix elements (default 0)
+        """
         mat = eb.matrix(mat_id)
         if mat:
             mat.read_only = False
@@ -35,12 +46,24 @@ class Util(_m.Tool()):
         return mat
 
     def delmat(self, eb, mat_id):
+        """Delete a matrix whether it currently exists or not or is protected against deletion.
+
+        Arguments:
+        eb -- the emmebank object to delete the matrix in
+        mat_id -- the id of the matrix to delete, eg ms01
+        """
         mat = eb.matrix(mat_id)
         if mat:
             mat.read_only = False
         eb.delete_matrix(mat_id)
 
     def matrix_spec(self, result, expression):
+        """Returns a matrix specification dictionary with a result and expression set.
+
+        Arguments:
+        result -- the string stored in the "result" key
+        expression -- the string stored in the "expression" key
+        """
         spec = {
             "type": "MATRIX_CALCULATION",
             "result": result,
@@ -50,15 +73,32 @@ class Util(_m.Tool()):
 
     @_m.logbook_trace("Delete Scenarios", save_arguments=True)
     def del_scen(self, scenario):
+        """Delete the given scenario.
+
+        Arguments:
+        scenario -- the scenario to delete
+        """
         delete_scen = _m.Modeller().tool("inro.emme.data.scenario.delete_scenario")
         delete_scen(scenario)
 
     def get_year(self, eb):
+        """Returns a string containing the 4-digit year for the current model.
+
+        Arguments:
+        eb -- The emmebank to be queried
+        """
         year = str(int(eb.matrix("ms149").data))
         return year
 
     @_m.logbook_trace("Export Matrices to CSV file", save_arguments=True)
     def export_csv(self, eb, list_of_matrices, output_file):
+        """Write individual mo/md matrices including a descriptive header in csv format.
+
+        Arguments:
+        eb -- the emmebank containing the matrices to be exported
+        list_of_matrices -- a list of matrix identifiers
+        output_file -- the fully qualified path to the file to output the matrices to
+        """
         scenario = list(eb.scenarios())[0]
         zones = scenario.zone_numbers
 
