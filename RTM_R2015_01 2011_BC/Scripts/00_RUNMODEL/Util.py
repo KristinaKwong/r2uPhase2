@@ -67,7 +67,8 @@ class Util(_m.Tool()):
         spec = {
             "type": "MATRIX_CALCULATION",
             "result": result,
-            "expression": expression
+            "expression": expression,
+            "constraint": {}
         }
         return spec
 
