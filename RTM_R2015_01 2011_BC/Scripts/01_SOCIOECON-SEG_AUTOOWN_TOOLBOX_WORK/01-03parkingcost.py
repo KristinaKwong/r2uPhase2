@@ -46,19 +46,8 @@ class ParkingCostTool(_m.Tool()):
         # in the preceding steps of the model?
         # md15 also needs to be initialized. - KB
         #*************************************
-        compute_matrix = _m.Modeller().tool(
-            "inro.emme.matrix_calculation.matrix_calculator")
-
-        spec_as_dict = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {"origins": None, "destinations": None}
-            },
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
+        util = _m.Modeller().tool("translink.emme.util")
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         #emmebank = _m.Modeller().emmebank
         #emmebank.create_matrix("md15")
@@ -70,72 +59,45 @@ class ParkingCostTool(_m.Tool()):
         nwk1 = str(0.1325)
         nwk2 = str(0.0006)
         nwk3 = str(0.0000002)
+
+        specs = []
         #Transpose base density
-        spec_as_dict["expression"] = "(mo15')"
-        spec_as_dict["result"] = "md15"
-        report = compute_matrix(spec_as_dict)
+        specs.append(util.matrix_spec("md15", "(mo15')"))
 
         #Calculate horizon density
-        spec_as_dict["expression"] = "(mo20' + md12)/(0.000001+(mo17'))*10000"
-        spec_as_dict["result"] = "md101"
-        report = compute_matrix(spec_as_dict)
+        specs.append(util.matrix_spec("md101", "(mo20' + md12)/(0.000001+(mo17'))*10000"))
 
         #Recalculate base parking (work)
-        spec_as_dict["expression"] = str(work1) + " + (md15*" + str(work2) + ") - (" + str(work3) + "*md15*md15)"
-        spec_as_dict["result"] = "md102"
-        report = compute_matrix(spec_as_dict)
+        specs.append(util.matrix_spec("md102", str(work1) + " + (md15*" + str(work2) + ") - (" + str(work3) + "*md15*md15)"))
 
         #Recalculate base parking (nonwork)
-        spec_as_dict["expression"] = str(nwk1) + " + (md15*" + str(nwk2) + ") - (" + str(nwk3) + "*md15*md15)"
-        spec_as_dict["result"] = "md103"
-        report = compute_matrix(spec_as_dict)
+        specs.append(util.matrix_spec("md103", str(nwk1) + " + (md15*" + str(nwk2) + ") - (" + str(nwk3) + "*md15*md15)"))
 
         #Calculate future parking (work)
-        spec_as_dict["expression"] = str(work1) + " + (md101*" + str(work2) + ") - (" + str(work3) + "*md101*md101)"
-        spec_as_dict["result"] = "md104"
-        report = compute_matrix(spec_as_dict)
+        specs.append(util.matrix_spec("md104", str(work1) + " + (md101*" + str(work2) + ") - (" + str(work3) + "*md101*md101)"))
 
         #Calculate future parking (nonwork)
-        spec_as_dict["expression"] = str(nwk1) + " + (md101*" + str(nwk2) + ") - (" + str(nwk3) + "*md101*md101)"
-        spec_as_dict["result"] = "md105"
-        report = compute_matrix(spec_as_dict)
+        specs.append(util.matrix_spec("md105", str(nwk1) + " + (md101*" + str(nwk2) + ") - (" + str(nwk3) + "*md101*md101)"))
 
         #Work change calculation
-        spec_as_dict["expression"] = "(((nint((md104-md102)*20))*0.05).max.0)"
-        spec_as_dict["result"] = "md106"
-        report = compute_matrix(spec_as_dict)
+        specs.append(util.matrix_spec("md106", "(((nint((md104-md102)*20))*0.05).max.0)"))
 
         #Nonwork change calculation
-        spec_as_dict["expression"] = "(((nint((md105-md103)*20))*0.05).max.0)"
-        spec_as_dict["result"] = "md107"
-        report = compute_matrix(spec_as_dict)
+        specs.append(util.matrix_spec("md107", "(((nint((md105-md103)*20))*0.05).max.0)"))
 
         #Apply work increment
-        spec_as_dict["expression"] = "mo27+(md106')"
-        spec_as_dict["result"] = "mo27"
-        report = compute_matrix(spec_as_dict)
+        specs.append(util.matrix_spec("mo27", "mo27+(md106')"))
 
         #Apply nonwork increment
-        spec_as_dict["expression"] = "mo28+(md107')"
-        spec_as_dict["result"] = "mo28"
-        report = compute_matrix(spec_as_dict)
+        specs.append(util.matrix_spec("mo28", "mo28+(md107')"))
 
         #Override with zone-specific values
-        spec_as_dict["expression"] = "(mo27*(md108'.lt.0))+(md108'*(md108'.ge.0))"
-        spec_as_dict["result"] = "mo27"
-        report = compute_matrix(spec_as_dict)
+        specs.append(util.matrix_spec("mo27", "(mo27*(md108'.lt.0))+(md108'*(md108'.ge.0))"))
+        specs.append(util.matrix_spec("mo28", "(mo28*(md109'.lt.0))+(md109'*(md109'.ge.0))"))
 
-        #Override with zone-specific values
-        spec_as_dict["expression"] = "(mo28*(md109'.lt.0))+(md109'*(md109'.ge.0))"
-        spec_as_dict["result"] = "mo28"
-        report = compute_matrix(spec_as_dict)
+        #Create Work and NonWork Transposed Matrices
+        specs.append(util.matrix_spec("md27", "(mo27')"))
+        specs.append(util.matrix_spec("md28", "(mo28')"))
 
-        #Work transpose
-        spec_as_dict["expression"] = "(mo27')"
-        spec_as_dict["result"] = "md27"
-        report = compute_matrix(spec_as_dict)
-
-        #Nonwork transpose
-        spec_as_dict["expression"] = "(mo28')"
-        spec_as_dict["result"] = "md28"
-        report = compute_matrix(spec_as_dict)
+        #Run Matrix Computations
+        report = compute_matrix(specs)
