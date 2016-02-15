@@ -5,26 +5,26 @@
 ##--Purpose: Performs a two-class (bus and rail) Congested transit
 ##--         assignment on AM scenario
 ##---------------------------------------------------------------------
-import inro.modeller as _modeller
+import inro.modeller as _m
 import traceback as _traceback
 
-class CongestedTransitAssignment(_modeller.Tool()):
+class CongestedTransitAssignment(_m.Tool()):
 
-    tool_run_msg = _modeller.Attribute(unicode)
-    setup_ttfs = _modeller.Attribute(bool)
-    am_scenario = _modeller.Attribute(_modeller.InstanceType)
-    alpha = _modeller.Attribute(float)
-    beta = _modeller.Attribute(float)
+    tool_run_msg = _m.Attribute(unicode)
+    setup_ttfs = _m.Attribute(bool)
+    am_scenario = _m.Attribute(_m.InstanceType)
+    alpha = _m.Attribute(float)
+    beta = _m.Attribute(float)
 
     def __init__(self):
-        emmebank = _modeller.Modeller().emmebank
+        emmebank = _m.Modeller().emmebank
         self.am_scenario = emmebank.scenario(21060)
         self.alpha = 5
         self.beta = 4
         self.setup_ttfs = True
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self)
+        pb = _m.ToolPageBuilder(self)
         pb.title = "Congested Transit Assignment"
         pb.description = """
                 Performs a two-class (bus and rail) Congested transit
@@ -56,17 +56,17 @@ class CongestedTransitAssignment(_modeller.Tool()):
         try:
             self(self.am_scenario, self.setup_ttfs, self.alpha, self.beta)
             run_msg = "Tool completed"
-            self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
-            self.tool_run_msg = _modeller.PageBuilder.format_exception(
+            self.tool_run_msg = _m.PageBuilder.format_exception(
                 e, _traceback.format_exc(e))
 
-    @_modeller.logbook_trace("10-10 - Congested Transit Assignment")
+    @_m.logbook_trace("10-10 - Congested Transit Assignment")
     def __call__(self, scenarioam,  setup_ttfs, alpha=7, beta=3):
         if setup_ttfs:
             self.setup_congestion_ttfs(scenarioam)
 
-        congested_transit_assign = _modeller.Modeller().tool(
+        congested_transit_assign = _m.Modeller().tool(
             "inro.emme.transit_assignment.congested_transit_assignment")
 
         spec = [
@@ -154,14 +154,14 @@ class CongestedTransitAssignment(_modeller.Tool()):
             stopping_criteria=stop, class_names=["bus", "rail"])
 
     def setup_congestion_ttfs(self, scenario):
-        with _modeller.logbook_trace("Creating congestion function ft7"):
+        with _m.logbook_trace("Creating congestion function ft7"):
             emmebank = scenario.emmebank
             ft7 = emmebank.function("ft7")
             if not ft7:
                 ft7 = emmebank.create_function("ft7", "length")
             ft7.expression = "(60 * length / speed)"
 
-        with _modeller.logbook_trace("Setting transit mode segments to use ft7"):
+        with _m.logbook_trace("Setting transit mode segments to use ft7"):
             network = scenario.get_partial_network(
                 ["TRANSIT_SEGMENT"], include_attributes=False)
             values = scenario.get_attribute_values(

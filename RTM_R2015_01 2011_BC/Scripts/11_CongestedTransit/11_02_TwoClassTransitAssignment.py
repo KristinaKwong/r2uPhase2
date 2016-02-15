@@ -1,21 +1,21 @@
 ##---------------------------------------------------------------------
 ##--TransLink Phase 3 Regional Transportation Model
 ##--
-##--Path: 
+##--Path:
 ##--Purpose: Performs two class transit assignment for bus and rail on on AM and PM scenarios
 ##---------------------------------------------------------------------
-import inro.modeller as _modeller
+import inro.modeller as _m
 import os
 import traceback as _traceback
 
-class TwoClassTransitAssignment(_modeller.Tool()):
-    tool_run_msg = _modeller.Attribute(unicode)
+class TwoClassTransitAssignment(_m.Tool()):
+    tool_run_msg = _m.Attribute(unicode)
 
-    am_scenario = _modeller.Attribute(_modeller.InstanceType)
-    md_scenario = _modeller.Attribute(_modeller.InstanceType)
+    am_scenario = _m.Attribute(_m.InstanceType)
+    md_scenario = _m.Attribute(_m.InstanceType)
 
     def page(self):
-        pb = _modeller.ToolPageBuilder(self)
+        pb = _m.ToolPageBuilder(self)
         pb.title = "Two_Class_Transit_Assignment"
         pb.description = "Performs two class transit assignment for bus and rail on on AM and PM scenarios"
         pb.branding_text = "TransLink"
@@ -28,19 +28,19 @@ class TwoClassTransitAssignment(_modeller.Tool()):
         return pb.render()
 
     def run(self):
-        with _modeller.logbook_trace("10-11 - RUN - TWO CLASS TRANSIT ASSIGNMENT"):
+        with _m.logbook_trace("10-11 - RUN - TWO CLASS TRANSIT ASSIGNMENT"):
             self.tool_run_msg = ""
             try:
                 self(self.am_scenario, self.md_scenario)
                 run_msg = "Tool completed"
-                self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+                self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
             except Exception, e:
-                self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+                self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    @_modeller.logbook_trace("10-11 - Two Class Transit Assignment")
+    @_m.logbook_trace("10-11 - Two Class Transit Assignment")
     def __call__(self, scenarioam, scenariomd):
         NAMESPACE = "inro.emme.transit_assignment.extended_transit_assignment"
-        transit_assign = _modeller.Modeller().tool(NAMESPACE)
+        transit_assign = _m.Modeller().tool(NAMESPACE)
 
         bus_spec = {
             "modes": ["b", "g", "a", "p"],
