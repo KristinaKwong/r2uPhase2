@@ -88,6 +88,8 @@ class ModeChoice(_m.Tool()):
 
         self.add_external_demand()
 
+        self.clean_matrices(eb)
+
     @_m.logbook_trace("Calculate flag matrices")
     def calculate_flag_matrices(self):
         util = _m.Modeller().tool("translink.emme.util")
@@ -124,3 +126,18 @@ class ModeChoice(_m.Tool()):
         specs.append(util.matrix_spec("mf865", "mf865+mf985"))
 
         compute_matrix(specs)
+
+    def clean_matrices(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
+
+        # Delete mf374-mf436 (Utilities)
+        for i in range(374, 437):
+            util.delmat(eb, "mf%d" % i)
+
+        # Delete mf441 - mf503 (Probabilities)
+        for i in range(441, 504):
+            util.delmat(eb, "mf%d" % i)
+
+        # Delete mf568 - mf639 (Demand)
+        for i in range(568, 640):
+            util.delmat(eb, "mf%d" % i)
