@@ -21,11 +21,7 @@ class ModeChoiceHBSchool(_m.Tool()):
         return pb.render()
 
     @_m.logbook_trace("Output Results")
-    def Export_Demand(self, filename):
-        ##    Create emmebank object
-        my_modeller = _m.Modeller()
-        my_emmebank = my_modeller.desktop.data_explorer().active_database().core_emmebank
-
+    def Export_Demand(self, eb, filename):
         ##    List to hold matrix objects
         mf_value = []
 
@@ -33,7 +29,7 @@ class ModeChoiceHBSchool(_m.Tool()):
         # for mf_num in range(870,878):
         for mf_num in range(882, 890):
             # print "mf"+str(mf_num)
-            mf_value.append(my_emmebank.matrix("mf" + str(mf_num)))
+            mf_value.append(eb.matrix("mf" + str(mf_num)))
 
             ##    Export matrices using the appended list of mf_value matrices
         export_matrices = _m.Modeller().tool(
@@ -101,7 +97,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                             exportfile = purpose_folder + '/Overall_Results_' + purp_list[purp - 1] + "_" + auto[i] + file_suffix
                         if p == 2:
                             exportfile = purpose_folder + '/Overall_Results_' + purp_list[purp - 1] + file_suffix
-                        self.Export_Demand(exportfile)
+                        self.Export_Demand(eb, exportfile)
 
             if purp > 1 and purp < 8:
                 startmat = 640
@@ -128,7 +124,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                             report = compute_matrix(spec_as_dict)
 
                 exportfile = purpose_folder + '/Overall_Results_' + purp_list[purp - 1] + file_suffix
-                self.Export_Demand(exportfile)
+                self.Export_Demand(eb, exportfile)
 
             if purp > 7:
                 self.Export_Matrix_Batchins(eb)
@@ -141,7 +137,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                         spec_as_dict["result"] = result
                         report = compute_matrix(spec_as_dict)
                 exportfile = purpose_folder + '/Overall_Results_' + purp_list[purp - 1] + file_suffix
-                self.Export_Demand(exportfile)
+                self.Export_Demand(eb, exportfile)
                 if purp == 8:
                     nwmat = 568
                     for i in range(3):
@@ -155,7 +151,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                                 report = compute_matrix(spec_as_dict)
 
                         exportfile = output_folder + 'Nonwork/Overall_Results_' + income[i] + file_suffix
-                        self.Export_Demand(exportfile)
+                        self.Export_Demand(eb, exportfile)
 
     @_m.logbook_trace("Clear Calculation Matrices")
     def Export_Matrix_Batchins(self, eb):
