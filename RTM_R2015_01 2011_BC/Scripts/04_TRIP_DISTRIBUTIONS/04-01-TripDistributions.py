@@ -266,12 +266,19 @@ class TripDistributions(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
+        # FIXME: this was likely intended to constrain the max impedence to 200 minutes, but instead
+        # caps all impedences above 120 minutes to 200 minutes. This has been preserved for compatibility
+        # purposes.
+        # It is likely what was intended was util.matrix_spec("mf925", "mf925.min.200") with no value constraints
+        transit_constraint_spec = util.matrix_spec("mf925", "mf925.max.200")
+        transit_constraint_spec["constraint"]["by_value"] = {"od_values": "mf925", "interval_min": 0.01, "interval_max": 120, "condition": "EXCLUDE"}
+
         _m.logbook_trace("HBWL-Purpose Distribution")
         specs = []
 
         #Calculate transit impedance
         specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms50)+(((mf167*2)+mf168)*(1-ms50))"))
-        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+        specs.append(transit_constraint_spec)
 
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
         specs.append(util.matrix_spec("mf210", "ms50*(mf101+(ms148*ms103)*mf102*ms104+(ms102+ms101*ms145)*mf100*ms104)"))
@@ -291,7 +298,7 @@ class TripDistributions(_m.Tool()):
         specs = []
 
         specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms50)+(((mf167*2)+mf168)*(1-ms50))"))
-        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+        specs.append(transit_constraint_spec)
 
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
         specs.append(util.matrix_spec("mf211", "ms50*(mf101+(ms148*ms103)*mf102*ms105+(ms102+ms101*ms145)*mf100*ms105)"))
@@ -311,7 +318,7 @@ class TripDistributions(_m.Tool()):
         specs = []
 
         specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms50)+(((mf167*2)+mf168)*(1-ms50))"))
-        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+        specs.append(transit_constraint_spec)
 
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
         specs.append(util.matrix_spec("mf212", "ms50*(mf101+(ms148*ms103)*mf102*ms106+(ms102+ms101*ms145)*mf100*ms106)"))
@@ -331,7 +338,7 @@ class TripDistributions(_m.Tool()):
         specs = []
 
         specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms51)+(((mf167*2)+mf168)*(1-ms51))"))
-        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+        specs.append(transit_constraint_spec)
 
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
         specs.append(util.matrix_spec("mf213", "ms51*(mf101+(ms148*ms103)*mf102*ms107+(ms102+ms101*ms145)*mf100*ms107)"))
@@ -351,7 +358,7 @@ class TripDistributions(_m.Tool()):
         specs = []
 
         specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms52)+(((mf167*2)+mf168)*(1-ms52))"))
-        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+        specs.append(transit_constraint_spec)
 
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
         specs.append(util.matrix_spec("mf214", "ms52*(mf101+(ms148*ms103)*mf102*ms108+(ms102+ms101*ms145)*mf100*ms108)"))
@@ -371,7 +378,7 @@ class TripDistributions(_m.Tool()):
         specs = []
 
         specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms53)+(((mf167*2)+mf168)*(1-ms53))"))
-        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+        specs.append(transit_constraint_spec)
 
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
         specs.append(util.matrix_spec("mf215", "ms53*(mf101+ms103*mf102*ms109+(ms102+ms101)*mf100*ms109)"))
@@ -391,7 +398,7 @@ class TripDistributions(_m.Tool()):
         specs = []
 
         specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms56)+(((mf167*2)+mf168)*(1-ms56))"))
-        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+        specs.append(transit_constraint_spec)
 
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
         specs.append(util.matrix_spec("mf218", "ms56*(mf101+ms103*mf102*ms112+(ms102+ms101)*mf100*ms112)"))
@@ -411,7 +418,7 @@ class TripDistributions(_m.Tool()):
         specs = []
 
         specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms55)+(((mf167*2)+mf168)*(1-ms55))"))
-        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+        specs.append(transit_constraint_spec)
 
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
         specs.append(util.matrix_spec("mf217", "ms55*(mf101+ms103*mf102*ms111+(ms102+ms101)*mf100*ms111)"))
@@ -431,7 +438,7 @@ class TripDistributions(_m.Tool()):
         specs = []
 
         specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms54)+(((mf167*2)+mf168)*(1-ms54))"))
-        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+        specs.append(transit_constraint_spec)
 
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
         specs.append(util.matrix_spec("mf216", "ms54*(mf101+ms103*mf102*ms110+(ms102+ms101)*mf100*ms110)"))
@@ -451,7 +458,7 @@ class TripDistributions(_m.Tool()):
         specs = []
 
         specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms58)+(((mf167*2)+mf168)*(1-ms58))"))
-        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+        specs.append(transit_constraint_spec)
 
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
         specs.append(util.matrix_spec("mf220", "ms58*(mf101+ms103*mf102*ms114+(ms102+ms101)*mf100*ms114)"))
@@ -471,7 +478,7 @@ class TripDistributions(_m.Tool()):
         specs = []
 
         specs.append(util.matrix_spec("mf925", "((mf164+(mf163*2))*ms57)+(((mf167*2)+mf168)*(1-ms57))"))
-        specs.append(util.matrix_spec("mf925", "mf925.max.200"))
+        specs.append(transit_constraint_spec)
 
         #Calculate overall impedance using distribution by purpose coefficient and AM proportional factor
         specs.append(util.matrix_spec("mf219", "ms57*(mf101+ms103*mf102*ms113+(ms102+ms101)*mf100*ms113)"))
