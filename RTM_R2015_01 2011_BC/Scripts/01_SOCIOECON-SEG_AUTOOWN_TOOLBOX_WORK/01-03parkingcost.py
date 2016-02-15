@@ -9,12 +9,12 @@
 ## If run on base year, will produce no change in costs
 ##---------------------------------------------------
 
-import inro.modeller as _modeller
+import inro.modeller as _m
 import traceback as _traceback
 
 ##Interactive code - use for running the test (user-input version)
-class ParkingCostTool(_modeller.Tool()):
-    tool_run_msg = _modeller.Attribute(unicode)
+class ParkingCostTool(_m.Tool()):
+    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
@@ -33,11 +33,11 @@ class ParkingCostTool(_modeller.Tool()):
             try:
                 self()
                 run_msg = "Tool completed"
-                self.tool_run_msg = _modeller.PageBuilder.format_info(run_msg)
+                self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
             except Exception, e:
-                self.tool_run_msg = _modeller.PageBuilder.format_exception(e, _traceback.format_exc(e))
+                self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    @_modeller.logbook_trace("Calculate Parking Costs")
+    @_m.logbook_trace("Calculate Parking Costs")
     def __call__(self):
         #*************************************
         # THIS TOOL CURRENTLY DOES NOT RUN
@@ -46,7 +46,7 @@ class ParkingCostTool(_modeller.Tool()):
         # in the preceding steps of the model?
         # md15 also needs to be initialized. - KB
         #*************************************
-        compute_matrix = _modeller.Modeller().tool(
+        compute_matrix = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_calculator")
 
         spec_as_dict = {
@@ -60,7 +60,7 @@ class ParkingCostTool(_modeller.Tool()):
             "type": "MATRIX_CALCULATION"
         }
 
-        #emmebank = _modeller.Modeller().emmebank
+        #emmebank = _m.Modeller().emmebank
         #emmebank.create_matrix("md15")
 
         ##Definitions of work and nonwork parking cost coefficients
