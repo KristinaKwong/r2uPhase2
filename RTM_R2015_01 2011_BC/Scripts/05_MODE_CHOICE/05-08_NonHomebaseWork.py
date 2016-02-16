@@ -37,7 +37,6 @@ class ModeChoiceNHBW(_m.Tool()):
 
     @_m.logbook_trace("Non-home-base work")
     def run_model(self, scenario, eb, iteration_number, is_last_iteration):
-        data_folder = os.path.dirname(eb.path) + "\\"
         utilities.dmMatInit_NonWork(eb)
 
         self.calculate_blends(scenario)
@@ -68,7 +67,7 @@ class ModeChoiceNHBW(_m.Tool()):
         # Initialize matrices for resulted matrices - this should be done once only. (rs- will confirm with Ali the sequence)
         # ********
         utilities.dmMatInitParts(eb)
-        self.time_slice_non_home_base_work(scenario, data_folder)
+        self.time_slice_non_home_base_work(eb, scenario)
         self.calculate_final_period_demand(scenario)
 
         if is_last_iteration:
@@ -477,7 +476,8 @@ class ModeChoiceNHBW(_m.Tool()):
     #    Main module time slicing the matrices
     #********
     @_m.logbook_trace("Time slice non-home base work")
-    def time_slice_non_home_base_work(self, scenario, data_folder):
+    def time_slice_non_home_base_work(self, eb, scenario):
+        slice_folder = os.path.join(os.path.dirname(eb.path), "TimeSlicingFactors")
         print "Time slicing NON-HOME BASE WORK trip matrices begin" + str(datetime.now().strftime('%H:%M:%S'))
         #
         #    Preparing expressions for calculation
@@ -544,10 +544,9 @@ class ModeChoiceNHBW(_m.Tool()):
         #    Start matrix number to store the demand by TOD
         #********
         aResultMatrix = [794, 801, 815, 822, 829]
-        folder = os.path.join(data_folder, "TimeSlicingFactors")
 
         for files, demand, result in zip(aTSFactor, arDmMatrix, aResultMatrix):
-            utilities.process_transaction_list(scenario, folder, files)
+            utilities.process_transaction_list(scenario, slice_folder, files)
             spec_list = []
             for time_period in range(0, 7):
                 result_name = "mf" + str(result + time_period)

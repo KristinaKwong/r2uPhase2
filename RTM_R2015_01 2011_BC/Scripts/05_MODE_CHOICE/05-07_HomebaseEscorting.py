@@ -32,7 +32,6 @@ class ModeChoiceHBEsc(_m.Tool()):
 
     @_m.logbook_trace("Home-base Escorting")
     def run_model(self, scenario, eb, iteration_number, is_last_iteration):
-        data_folder = os.path.dirname(eb.path) + "\\"
         utilities.dmMatInit_NonWork(eb)
 
         self.calculate_blends(scenario)
@@ -59,7 +58,7 @@ class ModeChoiceHBEsc(_m.Tool()):
         #    Initialize matrices for resulted matrices - this should be done once only. (rs- will confirm with Ali the sequence)
         #********
         utilities.dmMatInitParts(eb)
-        self.time_slice_escorting(scenario, data_folder)
+        self.time_slice_escorting(eb, scenario)
         self.calculate_final_period_demand(scenario)
         if is_last_iteration:
             utilities.export_matrices_report(eb, "esco", range(773, 843))
@@ -485,7 +484,8 @@ class ModeChoiceHBEsc(_m.Tool()):
     #    ADD ON (rs)
     #    Main module time slicing the matrices
     #********
-    def time_slice_escorting(self, scenario, data_folder):
+    def time_slice_escorting(self, eb, scenario):
+        slice_folder = os.path.join(os.path.dirname(eb.path), "TimeSlicingFactors")
         print "Time slicing Escorting trip matrices begin" + str(datetime.now().strftime('%H:%M:%S'))
         #
         #    Preparing expressions for calculation
@@ -571,10 +571,9 @@ class ModeChoiceHBEsc(_m.Tool()):
         #    Start matrix number to store the demand by TOD
         #********
         aResultMatrix = [773, 794, 780, 801, 815, 822, 829]
-        folder = os.path.join(data_folder, "TimeSlicingFactors")
 
         for files, demand, result in zip(aTSFactor, arDmMatrix, aResultMatrix):
-            utilities.process_transaction_list(scenario, folder, files)
+            utilities.process_transaction_list(scenario, slice_folder, files)
             spec_list = []
             for time_period in range(0, 7):
                 result_name = "mf" + str(result + time_period)

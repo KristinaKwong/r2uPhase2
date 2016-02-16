@@ -35,11 +35,6 @@ class ModeChoiceHBW(_m.Tool()):
 
     @_m.logbook_trace("Home-base work")
     def run_model(self, scenario, eb, iteration_number, is_last_iteration):
-
-        # TODO: the transaction deletes and recreates the matrices used in this tool
-        #       this may be clearer and faster directly using the API to set the matrix
-        #       names and descriptions
-        data_folder = os.path.dirname(eb.path) + "\\"
         utilities.dmMatInit_Work(eb)
 
         self.calculate_blends(scenario)
@@ -67,7 +62,7 @@ class ModeChoiceHBW(_m.Tool()):
         #    - this should be done once only. (rs- will confirm with Ali the sequence)
         #********
         utilities.dmMatInit_Full(eb)
-        self.time_slice_home_base_work(data_folder, scenario)
+        self.time_slice_home_base_work(eb, scenario)
         self.calculate_final_period_demand(scenario)
 
         # only export matrix data on the final iteration
@@ -584,8 +579,8 @@ class ModeChoiceHBW(_m.Tool()):
     #    Main module time slicing the matrices
     #********
     @_m.logbook_trace("Time slicing home-base work")
-    def time_slice_home_base_work(self, data_folder, scenario):
-
+    def time_slice_home_base_work(self, eb, scenario):
+        slice_folder = os.path.join(os.path.dirname(eb.path), "TimeSlicingFactors")
         #
         #    Preparing expressions for calculation
         #
@@ -659,10 +654,9 @@ class ModeChoiceHBW(_m.Tool()):
         #    Start matrix number to store the demand by TOD
         #********
         arResultMatrix = [710, 717, 724, 731, 738, 745, 752, 759, 766, 815, 822, 829]
-        folder = os.path.join(data_folder, "TimeSlicingFactors")
 
         for files, demand, result in zip(arFileName, arDmMatrix, arResultMatrix):
-            utilities.process_transaction_list(scenario, folder, files)
+            utilities.process_transaction_list(scenario, slice_folder, files)
             #    Range was increased to 7 from 6 time period
             spec_list = []
             for time_period in range(0, 7):
