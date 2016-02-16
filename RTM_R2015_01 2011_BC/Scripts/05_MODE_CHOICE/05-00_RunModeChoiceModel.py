@@ -61,7 +61,7 @@ class ModeChoice(_m.Tool()):
         module_lookup = _m.Modeller().module
         home_base_work = _m.Modeller().tool("translink.emme.stage3.step5.modechoicehbw")
         home_base_school = _m.Modeller().tool("translink.emme.stage3.step5.modechoicehbschool")
-        home_base_shopping = module_lookup("translink.emme.stage3.step5.modechoicehbshop")
+        home_base_shopping = _m.Modeller().tool("translink.emme.stage3.step5.modechoicehbshop")
         home_base_personal_business = module_lookup("translink.emme.stage3.step5.modechoicehbpersonalbusiness")
         home_base_university = module_lookup("translink.emme.stage3.step5.modechoicehbuniversity")
         home_base_social = module_lookup("translink.emme.stage3.step5.modechoicehbsocial")
