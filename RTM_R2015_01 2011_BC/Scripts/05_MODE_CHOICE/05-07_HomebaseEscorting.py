@@ -25,7 +25,7 @@ class ModeChoiceHBEsc(_m.Tool()):
 
 
     @_m.logbook_trace("Home-base Escorting")
-    def run_model(self, scenario, eb, iteration_number, is_last_iteration):
+    def __call__(self, eb, scenario, iteration_number, is_last_iteration):
         utilities.dmMatInit_NonWork(eb)
 
         self.calculate_blends(scenario)

@@ -72,15 +72,15 @@ class ModeChoice(_m.Tool()):
         self.calculate_flag_matrices()
 
         scenario = _m.Modeller().scenario
-        home_base_work.run_model(scenario, eb, iteration_number, is_last_iteration)
-        home_base_school.run_model(scenario, eb, iteration_number, is_last_iteration)
-        home_base_shopping.run_model(scenario, eb, iteration_number, is_last_iteration)
-        home_base_personal_business.run_model(scenario, eb, iteration_number, is_last_iteration)
-        home_base_university.run_model(scenario, eb, iteration_number, is_last_iteration)
-        home_base_social.run_model(scenario, eb, iteration_number, is_last_iteration)
-        home_base_escort.run_model(scenario, eb, iteration_number, is_last_iteration)
-        non_home_base_other.run_model(scenario, eb, iteration_number, is_last_iteration)
-        non_home_base_work.run_model(scenario, eb, iteration_number, is_last_iteration)
+        home_base_work(eb, scenario, iteration_number, is_last_iteration)
+        home_base_school(eb, scenario, iteration_number, is_last_iteration)
+        home_base_shopping(eb, scenario, iteration_number, is_last_iteration)
+        home_base_personal_business(eb, scenario, iteration_number, is_last_iteration)
+        home_base_university(eb, scenario, iteration_number, is_last_iteration)
+        home_base_social(eb, scenario, iteration_number, is_last_iteration)
+        home_base_escort(eb, scenario, iteration_number, is_last_iteration)
+        non_home_base_other(eb, scenario, iteration_number, is_last_iteration)
+        non_home_base_work(eb, scenario, iteration_number, is_last_iteration)
 
         if run_park_and_ride:
             park_and_ride(scenario)

@@ -27,7 +27,7 @@ class ModeChoiceHBW(_m.Tool()):
         return pb.render()
 
     @_m.logbook_trace("Home-base work")
-    def run_model(self, scenario, eb, iteration_number, is_last_iteration):
+    def __call__(self, eb, scenario, iteration_number, is_last_iteration):
         utilities.dmMatInit_Work(eb)
 
         self.calculate_blends(scenario)
