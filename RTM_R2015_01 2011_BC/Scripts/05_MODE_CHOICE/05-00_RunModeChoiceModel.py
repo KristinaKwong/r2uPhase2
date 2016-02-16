@@ -24,6 +24,7 @@ import traceback as _traceback
 class ModeChoice(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
     run_park_and_ride = _m.Attribute(bool)
+    preserve_matrices = _m.Attribute(bool)
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
@@ -35,6 +36,7 @@ class ModeChoice(_m.Tool()):
             pb.add_html(self.tool_run_msg)
 
         pb.add_checkbox("run_park_and_ride", label="Run park and ride adjustment")
+        pb.add_checkbox("preserve_matrices", label="Preserve Intermediate Matrix results")
 
         return pb.render()
 
@@ -42,14 +44,14 @@ class ModeChoice(_m.Tool()):
         self.tool_run_msg = ""
         try:
             eb = _m.Modeller().emmebank
-            self.__call__(eb, 0, 1, self.run_park_and_ride)
+            self.__call__(eb, 0, 1, self.run_park_and_ride, self.preserve_matrices)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("05-00 - Call Mode Choice Modules")
-    def __call__(self, eb, iteration_number, max_iterations, run_park_and_ride=False):
+    def __call__(self, eb, iteration_number, max_iterations, run_park_and_ride=False, preserve_matrices=False):
         ## Matrices used for mode choice are from mf374-mf702,
         ## these store utilities, probabilities and various demands (work vs non work)
         print ("05-00 Run the Mode choice model on nine purposes and export results, iteration number: " + str(
@@ -88,7 +90,8 @@ class ModeChoice(_m.Tool()):
 
         self.add_external_demand()
 
-        self.clean_matrices(eb)
+        if not preserve_matrices:
+            self.clean_matrices(eb)
 
     @_m.logbook_trace("Calculate flag matrices")
     def calculate_flag_matrices(self):
