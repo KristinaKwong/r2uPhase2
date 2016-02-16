@@ -51,6 +51,8 @@ class ModeChoiceHBSchool(_m.Tool()):
     ## Aggregate purpose-level results by mode into matrices mf882 - mf890
     @_m.logbook_trace("Aggregate purpose-level results by mode into matrices mf882 - mf890")
     def Agg_Exp_Demand(self, eb, purp, n):
+        util = _m.Modeller().tool("translink.emme.util")
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
         output_folder = os.path.join(os.path.dirname(eb.path), "05_MODE_CHOICE", "Outputs", "")
         file_suffix = "_" + str(n) + ".txt"
 
@@ -60,23 +62,14 @@ class ModeChoiceHBSchool(_m.Tool()):
 
         purpose_folder = os.path.join(os.path.dirname(eb.path), "05_MODE_CHOICE", "Outputs", purp_list[purp - 1])
         with _m.logbook_trace("Aggregate Demand " + purp_list[purp - 1]):
-            NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _m.Modeller().tool(NAMESPACE)
-
             matagg = 882
-            spec_as_dict = {
-                "expression": "1",
-                "result": "mf201",
-                "constraint": {"by_value": None, "by_zone": None},
-                "aggregation": {"origins": None, "destinations": None},
-                "type": "MATRIX_CALCULATION"
-            }
             if purp == 1:
                 startmat = 505
                 for p in range(3):
                     for i in range(3):
 
                         self.Export_Matrix_Batchins(eb)
+                        specs = []
                         for j in range(7):
                             for k in range(3):
                                 if p == 0:
@@ -88,9 +81,8 @@ class ModeChoiceHBSchool(_m.Tool()):
                                         startmat + 9 * j + k) + "+" + "mf" + str(
                                         startmat + 9 * j + 3 + k) + "+" + "mf" + str(startmat + 9 * j + 6 + k)
                                 result = "mf" + str(matagg + j)
-                                spec_as_dict["expression"] = expression1
-                                spec_as_dict["result"] = result
-                                report = compute_matrix(spec_as_dict)
+                                specs.append(util.matrix_spec(result, expression1))
+                        report = compute_matrix(specs)
                         if p == 0:
                             exportfile = purpose_folder + '/Overall_Results_' + purp_list[purp - 1] + "_" + income[i] + file_suffix
                         if p == 1:
@@ -102,6 +94,7 @@ class ModeChoiceHBSchool(_m.Tool()):
             if purp > 1 and purp < 8:
                 startmat = 640
                 self.Export_Matrix_Batchins(eb)
+                specs = []
                 for j in range(7):
                     for k in range(9):
                         if purp == 2:
@@ -113,15 +106,12 @@ class ModeChoiceHBSchool(_m.Tool()):
                                 result = "mf" + str(matagg + j + 5)
                             else:
                                 result = "mf" + str(matagg + j)
-                            spec_as_dict["expression"] = expression1
-                            spec_as_dict["result"] = result
-                            report = compute_matrix(spec_as_dict)
+                            specs.append(util.matrix_spec(result, expression1))
                         else:
                             expression1 = "mf" + str(matagg + j) + "+" + "mf" + str(startmat + k + 9 * j)
                             result = "mf" + str(matagg + j)
-                            spec_as_dict["expression"] = expression1
-                            spec_as_dict["result"] = result
-                            report = compute_matrix(spec_as_dict)
+                            specs.append(util.matrix_spec(result, expression1))
+                report = compute_matrix(specs)
 
                 exportfile = purpose_folder + '/Overall_Results_' + purp_list[purp - 1] + file_suffix
                 self.Export_Demand(eb, exportfile)
@@ -129,26 +119,26 @@ class ModeChoiceHBSchool(_m.Tool()):
             if purp > 7:
                 self.Export_Matrix_Batchins(eb)
                 startmat = 643
+                specs = []
                 for j in range(7):
                     for k in range(3):
                         expression1 = "mf" + str(matagg + j) + "+" + "mf" + str(startmat + k + 9 * j)
                         result = "mf" + str(matagg + j)
-                        spec_as_dict["expression"] = expression1
-                        spec_as_dict["result"] = result
-                        report = compute_matrix(spec_as_dict)
+                        specs.append(util.matrix_spec(result, expression1))
+                report = compute_matrix(specs)
                 exportfile = purpose_folder + '/Overall_Results_' + purp_list[purp - 1] + file_suffix
                 self.Export_Demand(eb, exportfile)
                 if purp == 8:
                     nwmat = 568
                     for i in range(3):
                         self.Export_Matrix_Batchins(eb)
+                        specs = []
                         for j in range(8):
                             for k in range(3):
                                 expression1 = "mf" + str(matagg + j) + "+" + "mf" + str(nwmat + 9 * j + k + 3 * i)
                                 result = "mf" + str(matagg + j)
-                                spec_as_dict["expression"] = expression1
-                                spec_as_dict["result"] = result
-                                report = compute_matrix(spec_as_dict)
+                                specs.append(util.matrix_spec(result, expression1))
+                        report = compute_matrix(specs)
 
                         exportfile = output_folder + 'Nonwork/Overall_Results_' + income[i] + file_suffix
                         self.Export_Demand(eb, exportfile)
