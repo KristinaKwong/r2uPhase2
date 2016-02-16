@@ -141,3 +141,7 @@ class ModeChoice(_m.Tool()):
         # Delete mf568 - mf639 (Demand)
         for i in range(568, 640):
             util.delmat(eb, "mf%d" % i)
+
+        # Delete mf710 - mf842 (TimeSlicedDemand all time periods)
+        for i in range(710, 843):
+            util.delmat(eb, "mf%d" % i)
