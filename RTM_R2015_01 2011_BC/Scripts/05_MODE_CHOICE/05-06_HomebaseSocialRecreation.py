@@ -30,699 +30,699 @@ class ModeChoiceHBSocial(_m.Tool()):
 
         return pb.render()
 
-@_m.logbook_trace("Home-base social recreation")
-def run_model(scenario, eb, iteration_number, is_last_iteration):
-    data_folder = os.path.dirname(eb.path) + "\\"
-    utilities.dmMatInit_NonWork(eb)
-
-    calculate_blends(scenario)
-    calculate_sov(scenario)
-    calculate_hov2(scenario)
-    calculate_bus(scenario)
-    calculate_rail(scenario)
-    calculate_walk(scenario)
-    calculate_bike(scenario)
-    utilities.calculate_probabilities(
-        scenario, nests=[[0, 1], [3, 4], [5, 6]], theta=0.95)
-    utilities.calculate_demand(
-        scenario, demand_start=355, probability_start=441, result_start=640)
-
-    ExportModeChoice = _m.Modeller().tool("translink.emme.stage3.step5.exportmodechoice")
-    if is_last_iteration:
-        purp = 6
-        ExportModeChoice.Agg_Exp_Demand(eb, purp, iteration_number)
-
-    aggregate_non_work_demand(scenario)
-    #********
-    #    Initialize matrices for resulted matrices - this should be done once only. (rs- will confirm with Ali the sequence)
-    #********
-    utilities.dmMatInitParts(eb)
-    time_slice_social_recreation(scenario, data_folder)
-    calculate_final_period_demand(scenario)
-
-    if is_last_iteration:
-        utilities.export_matrices_report(data_folder, "soc", range(773, 843))
-
-
-@_m.logbook_trace("continue aggregating non work demand, social_recreation")
-def aggregate_non_work_demand(scenario):
-    print "--------Aggregate Non-work demand, " + str(datetime.now().strftime('%H:%M:%S'))
-    matrixnum = 640
-    resultmat = 568
-    spec_list = []
-    for i in range(0, 63):
-        expression = "mf" + str(resultmat + i) + "+" + "mf" + str(matrixnum + i)
-        result = "mf" + str(resultmat + i)
-        spec_list.append(build_spec(expression, result))
-    for i in range(63, 72):
-        expression = "mf" + str(resultmat + i) + "+" + "0"
-        result = "mf" + str(resultmat + i)
-        spec_list.append(build_spec(expression, result))
-    compute_matrix(spec_list, scenario)
-
-
-@_m.logbook_trace("Calculate_Bike")
-def calculate_bike(scenario):
-    print "--------Calculate_Bike_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
-    # Bike utility stored in matrices mf428-mf436
-    emmebank = scenario.emmebank
-
-    alt_spec_cons = str(-2.53325416178)
-    zero_cars = str(1.89853885412)
-    sen20_bk = str(-0.416690093206)
-    #bkscr_bk = str(0.582651776309)
-    distance = str(-0.197686182484)
-    cbd = str(0.563492008694)
-    cs_bk_250 = str(0.379405295115)
-    intrazonal = str(0.715347142379)
-    rurl = str(-1.03145009805)
-
-    mode_mf = 427
-    spec_list = []
-    constraint = {"od_values": "mf159",
-                  "interval_min": 0,
-                  "interval_max": 0,
-                  "condition": "EXCLUDE"}
-
-    #au_dst
-    expression_2 = distance + "*mf144"
-    expression_2 = expression_2 + " + " + sen20_bk + "*((mo19/(mo20+0.00001)).gt.(0.19999))"
-    spec_list.append(build_spec(expression_2, "mf926", constraint))
-
-    # bk_invan: (ifeq(gyo,4) and ifeq(gyd,4)) + (ifeq(gyo,3) and ifeq(gyd,3))
-    expression_3 = cbd + "*(((mo29.eq.3)+(md29.eq.3)).ge.1)"
-    expression_3 = expression_3 + " + " + cs_bk_250 + "*(((mo395+mo396).gt.0))"
-    expression_3 = expression_3 + " + " + intrazonal + "*((q.eq.p))"
-    expression_3 = expression_3 + " + " + rurl + "*((((mo29.ge.11)*(mo29.lt.15))+((md29.ge.11)*(md29.lt.15))).ge.1)"
-    spec_list.append(build_spec(expression_3, "mf927", constraint))
-
-    for i in range(1, 10):
-        expression_1 = alt_spec_cons
-        if i in (1, 4, 7):
-            expression_1 = expression_1 + " + " + zero_cars
-        spec_list.append(build_spec(expression_1, "mf925", constraint))
-
-        result = "mf" + str(mode_mf + i)
-        emmebank.matrix(result).initialize(-9999)
-        print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
-        expression = "mf925 + mf926 + mf927"
-        spec_list.append(build_spec(expression, result, constraint))
-    compute_matrix(spec_list, scenario)
-
-
-@_m.logbook_trace("Calculate_Walk_Utility")
-def calculate_walk(scenario):
-    print "--------Calculate_Walk Utility, " + str(datetime.now().strftime('%H:%M:%S'))
-    emmebank = scenario.emmebank
-    # Walk utility stored in matrices mf419-mf427
-
-    alt_spec_cons = str(1.04271233749)
-    low_inc = str(0.267099150745)
-    hi_inc = str(-0.177389220948)
-    zero_cars = str(2.1481544522)
-    two_plus_car = str(-0.338243374254)
-    sen20_wk = str(0.380104895856)
-    distance = str(-0.884131228378)
-    vanx = str(-1.55201032643)
-    intra_van = str(-0.637942362812)
-    dens = str(0.00341468189319)
-    auto_acc = str(0.00346439336054)
-    #van_locar = str(0.265095647661)
-    cs_wlk_250 = str(0.379405295115)
-    intrazonal = str(0.347798951676)
-
-    mode_mf = 418
-    spec_list = []
-    constraint = {"od_values": "mf158",
-                  "interval_min": 0,
-                  "interval_max": 0,
-                  "condition": "EXCLUDE"}
-
-    #expression_2 = expression_2 + " + " + sen20_wk + "*((mo19/(mo20+0.00001)).gt.(0.19999))"
-    #au_dst
-    expression_2 = distance + "*mf144"
-    # auto accessibilities: autoempt (i.e auto accessibilities)
-    expression_2 = expression_2 + " + " + dens + "*(((md5+md6+md7+md8+md9+md10+md11)*10000/(md17)).min.200)"
-    # p725*(vanod*iflt(veh2,2))
-    #if (i<>3 and i<>6 and i<>9): expression_2 = expression_2 + " + " + van_locar + "*(((mo29.eq.4)+(md29.eq.4)).ge.1)"
-    expression_2 = expression_2 + "+" + auto_acc + "*(mo47)"
-    expression_2 = expression_2 + " + " + intra_van + "*((mo29.eq.4)*(md29.eq.4))"
-    spec_list.append(build_spec(expression_2, "mf926", constraint))
-
-    # intra-vancouver: 1 if (ifeq(gyo,3)*ifeq(gyd,4)) + (ifeq(gyo,4)*ifeq(gyd,3))
-    expression_3 = vanx + "*(((mo29.eq.3)*(md29.eq.4) + (mo29.eq.4)*(md29.eq.3)).ge.1)"
-    expression_3 = expression_3 + " + " + cs_wlk_250 + "*(((mo395+mo396).gt.0))"
-    expression_3 = expression_3 + " + " + intrazonal + "*((q.eq.p))"
-    spec_list.append(build_spec(expression_3, "mf927", constraint))
-
-    for i in range(1, 10):
-        expression_1 = alt_spec_cons
-        if i < 4:
-            expression_1 = expression_1 + " + " + low_inc + "*((mo29.ne.3)*(md29.ne.3))"
-        if i > 6:
-            expression_1 = expression_1 + " + " + hi_inc
-        if i == 1 or i == 4 or i == 7:
-            expression_1 = expression_1 + " + " + zero_cars
-        if (i == 3 or i == 6 or i == 9):
-            expression_1 = expression_1 + " + " + two_plus_car + "*(((mo29.gt.11)+(md29.gt.11)).ge.1)"
-        #1 (if cars = 2/3) * ifne(gyo,5)*ifne(gyd,5)* ifne(gyo,3)*ifne(gyd,3)* ifne(gyo,4)*ifne(gyd,4)
-        spec_list.append(build_spec(expression_1, "mf925", constraint))
-
-        result = "mf" + str(mode_mf + i)
-        emmebank.matrix(result).initialize(-9999)
-        print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
-        expression = "(mf925 + mf926 + mf927)"
-        spec_list.append(build_spec(expression, result, constraint))
-    compute_matrix(spec_list, scenario)
-
-
-@_m.logbook_trace("Calculate_Rail_Utility")
-def calculate_rail(scenario):
-    # Rail utility stored between matrices mf410-mf418
-    print "--------Calculate_Rail_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
-    emmebank = scenario.emmebank
-
-    alt_spec_cons = str(-0.540325242543)
-    lo_inc = str(0.653398616963)
-    hi_inc = str(-0.33201286203)
-    zero_cars = str(2.95272234998)
-    pop_dens = str(0.0031043766821)
-    emp_dens = str(0.00449241170922)
-    van = str(-0.383537913355)
-    intra_van = str(-0.840151143718)
-    cost_all_inc = str(-0.0702404628224)
-    rt_fare = "mf161"
-    cost_low_inc = str(-0.0702404628224)
-    rt_brd = "mf155"
-    cost_med_inc = str(-0.0702404628224)
-    cost_high_inc = str(-0.0702404628224)
-    cbd = str(0.371564941324)
-    tran_acc = str(0.0979125231061)
-    within_gy = str(-1.2419229288)
-
-    mode_mf = 409
-    spec_list = []
-    constraint = {"od_values": "mf157",
-                  "interval_min": 0,
-                  "interval_max": 0,
-                  "condition": "EXCLUDE"}
-
-   # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
-    expression_2 = cbd + "*(((mo29.eq.3)+(md29.eq.3)).ge.1)"
-    expression_2 = expression_2 + " + " + van + "*(((mo29.eq.4)+(md29.eq.4)).ge.1)"
-
-    # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
-    # dens: min((max((POP11o*10000)/area,0)),100)*(ifne(gyo,3)*ifne(gyo,4))
-    expression_2 = expression_2 + " + " + pop_dens + "*(((mo20*10000/(mo17)).min.100)*(mo29.ne.3)*(mo29.ne.4))"
-
-    expression_2 = expression_2 + " + " + emp_dens + "*((((md5+md6+md7+md8+md9+md10+md11)*10000/(md17)).min.200)*(md29.ne.3)*(md29.ne.4))"
-    spec_list.append(build_spec(expression_2, "mf926", constraint))
-
-    #relative accessibilities (auto-transit): (max(autoempt-transit2,0))
-    expression_3 = tran_acc + "*(1*((((mo392).min.200)).max.0))*(mo29.ne.3)*(md29.ne.3)"
-    expression_3 = expression_3 + " + " + within_gy + "*(mo29.eq.md29)"
-    expression_3 = expression_3 + " + " + intra_van + "*((mo29.eq.4)*(md29.eq.4))"
-    spec_list.append(build_spec(expression_3, "mf927", constraint))
-
-    for i in range(1, 10):
-        expression_1 = alt_spec_cons + "-0.3*(((mo29.eq.4)+(md29.eq.4)).ge.1)" \
-                                       "-0.25*(mo29.eq.5)" \
-                                       "+0.3*(mo29.eq.3)" \
-                                       "-0.2*(mo29.eq.7)" \
-                                       "-0.3*(mo29.eq.1)"
-        if i < 4:
-            expression_1 = expression_1 + " + " + lo_inc
-        #*(hiin*ifne(cbdod,1)*ifne(rurod,1))
-        if i > 6:
-            expression_1 = expression_1 + " + " + hi_inc + "*((mo29.ne.3)*(md29.ne.3)*(mo29.lt.12)*(md29.lt.12))"
-        if i in (1, 4, 7):
-            expression_1 = expression_1 + " + " + zero_cars
-
-        # cost (all incomes) :
-        expression_1 = expression_1 + " + " + cost_all_inc + "*" + rt_fare
-
-        # if low income: (rt_wait/3) + (rt_aux/3) + (rt_ivtb/6) +  (rt_ivtr/6) +(rt_brd*10/6)
-        if i < 4:
-            expression_1 = expression_1 + " + " + cost_low_inc + \
-                           "*((mf154/6) + (mf156/6) + (mf152/12) + ((mf153+10*(mo29.lt.3))/12) + (mf155*5/6))"
-
-        # # if med income: (rt_wait*2/3) + (rt_aux*2/3) + (rt_ivtb/3) +  (rt_ivtr/3) +(rt_brd*10/3)
-        if (3 < i < 7):
-            expression_1 = expression_1 + " + " + cost_med_inc + \
-                           "*((mf154/3) + (mf156/3) + (mf152/6) + ((mf153+10*(mo29.lt.3))/6) + (mf155*10/6))"
-
-        # # if high income: (rt_wait*2/3) + (rt_aux*2/3) + (rt_ivtb/6) +  (rt_ivtr/6) +(rt_brd*10/6)
-        if i > 6:
-            expression_1 = expression_1 + " + " + cost_high_inc + \
-                           "*((mf154/3) + (mf156/3) + (mf152/6) + ((mf153+5*(mo29.lt.3))/6) + (mf155*10/6))"
-
-        spec_list.append(build_spec(expression_1, "mf925", constraint))
-
-        result = "mf" + str(mode_mf + i)
-        emmebank.matrix(result).initialize(-9999)
-        print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
-        expression = "mf925 + mf926 + mf927"
-        spec_list.append(build_spec(expression, result, constraint))
-    compute_matrix(spec_list, scenario)
-
-
-@_m.logbook_trace("Calculate_Bus_Utility")
-def calculate_bus(scenario):
-    print "--------Calculate_Bus, " + str(datetime.now().strftime('%H:%M:%S'))
-    # Bus utility stored between matrices mf401-mf409
-    emmebank = scenario.emmebank
-
-    alt_spec_cons = str(-2.00753680078)
-    lo_inc = str(0.495461130067)
-    high_inc = str(-0.33201286203)
-    zero_cars = str(3.38582872719)
-    one_car_nr = str(0.282402663756)
-    cost_all_inc = str(-0.0702404628224)
-    rt_fare = "mf160"
-    cost_low_inc = str(-0.0702404628224)
-    bs_brd = "mf149"
-    cost_med_inc = str(-0.0702404628224)
-    cost_high_inc = str(-0.0702404628224)
-    emp_dens = str(0.00449241170922)
-    intra_van = str(-0.27655078912)
-    cbd = str(0.658559660214)
-    gy6 = str(-0.362160161639)
-    gy1012 = str(-0.572859508218)
-    #tran_acc = str(0.0487922576961)
-    #within_gy_not_van = str(-0.776829172883)
-
-    mode_mf = 400
-    spec_list = []
-    constraint = {"od_values": "mf151",
-                  "interval_min": 0,
-                  "interval_max": 0,
-                  "condition": "EXCLUDE"}
-
-    # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
-    expression_2 = cbd + "*(((mo29.eq.3)+(md29.eq.3)).ge.1)"
-    expression_2 = expression_2 + " + " + gy6 + "*(((mo29.eq.6)+(md29.eq.6)).ge.1)"
-    expression_2 = expression_2 + " + " + gy1012 + "*(((mo29.eq.10)+(md29.eq.10)+(mo29.eq.12)+(md29.eq.12)).ge.1)"
-
-    # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
-    expression_2 = expression_2 + " + " + intra_van + "*((mo29.eq.4)*(md29.eq.4))"
-    spec_list.append(build_spec(expression_2, "mf926", constraint))
-
-    #relative accessibilities (auto-transit): (max(autoempt-transit2,0))
-    #expression_3 = expression_3 + " + " + tran_acc + "*((((mo392).min.200)).max.0)*(mo29.ne.3)*(md29.ne.3)*(mo29.lt.12)*(md29.lt.12)"
-    expression_3 = emp_dens + "*((((md5+md6+md7+md8+md9+md10+md11)*10000/(md17)).min.200)*(mo29.ne.3)*(md29.ne.3)*(md29.ne.4))"
-    spec_list.append(build_spec(expression_3, "mf927", constraint))
-
-    for i in range(1, 10):
-        expression_1 = alt_spec_cons + "-0.2*(((mo29.eq.4).or.(md29.eq.4)))+0.15*(mo29.eq.5)"
-        if i < 4:
-            expression_1 = expression_1 + " + " + lo_inc
-        if i > 6:
-            expression_1 = expression_1 + " + " + high_inc
-        if i in (1, 4, 7):
-            expression_1 = expression_1 + " + " + zero_cars
-        #+ p62*(ifeq(useveh2,1)*ifne(rurod,1))
-        if i in (2, 5, 8):
-            expression_1 = expression_1 + " + " + one_car_nr + "*((mo29.lt.12)*(md29.lt.12))"
-
-        # cost (all incomes) :
-        expression_1 = expression_1 + " + " + cost_all_inc + "*" + rt_fare
-
-        # if low income: (bs_wait/3) + (bs_aux/3) + (bs_ivtb/6) + (bs_brd*10/6)
-        if i < 4:
-            expression_1 = expression_1 + " + " + cost_low_inc + "*((mf147/6) + (mf150/6) + (mf148/12) + (" + bs_brd + "*5/6))"
-
-        # if med income: (bs_wait*2/3) + (bs_aux*2/3) + (bs_ivtb/3) + (bs_brd*5)
-        if 3 < i < 7:
-            expression_1 = expression_1 + " + " + cost_med_inc + "*((mf147/3) + (mf150/3) + (mf148/6) + (" + bs_brd + "*2.5))"
-
-        # if high income: (bs_wait*2/3) + (bs_aux*2/3) + (bs_ivtb/3) + (bs_brd*5)
-        if i > 6:
-            expression_1 = expression_1 + " + " + cost_high_inc + "*((mf147/3) + (mf150/3) + (mf148/6) + (" + bs_brd + "*2.5))"
-
-        spec_list.append(build_spec(expression_1, "mf925", constraint))
-
-        result = "mf" + str(mode_mf + i)
-        emmebank.matrix(result).initialize(-9999)
-        print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
-        expression = "mf925 + mf926 + mf927"
-        spec_list.append(build_spec(expression, result, constraint))
-    compute_matrix(spec_list, scenario)
-
-
-@_m.logbook_trace("Calculate_HOV2_utility")
-def calculate_hov2(scenario):
-    # HOV2 utility stored between matrices mf383-mf391
-    print "--------Calculate_HOV2_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
-
-    alt_spec_cons = str(0.211986033176)
-    low_inc = str(0.244657517886)
-    # high_inc = str(-0.708370852764)
-    zero_cars = str(0.613879199084)
-    twoplus_cars = str(0.667630550329)
-    cost_all_inc = str(-0.0702404628224)
-    au_prk = "md28"
-    cost_low_inc = str(-0.0702404628224)
-    cost_med_inc = str(-0.0702404628224)
-    cost_high_inc = str(-0.0702404628224)
-    cbd = str(-1.71516378376)
-    auto_acc = str(0.00679661389603)
-    intra_van = str(-1.4399239065)
-    #ret_dens = str(0.00617014015912)
-    #rural = str(0.295199509485)
-    #within_gy = str(-0.222647811404)
-
-
-    mode_mf = 382
-    spec_list = []
-
-    # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
-    expression_2 = cbd + "*(((mo29.eq.3)+(md29.eq.3)).ge.1)"
-
-    # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
-    expression_2 = expression_2 + " + " + intra_van + "*((mo29.eq.4)*(md29.eq.4))"
-    spec_list.append(build_spec(expression_2, "mf926"))
-
-    # rural : 1 if (ifgt(gyo,11) or ifgt(gyd,11))
-    #expression_2 = expression_2 + " + " + rural + "*((((mo29.gt.11)*(mo29.lt.15))+((md29.gt.11)*(md29.lt.15))).ge.1)"
-
-    # within gy   1 if gyo=gyd
-    #expression_3 = expression_3 + " + " + within_gy_not_rural + "*(mo29.eq.md29)"
-    #expression_3 = expression_3 + " + " + ret_dens + "*(min((max((md8*10000)/mo17,0)),200))"
-    # auto accessibilities: autoempt (i.e auto accessibilities)
-    expression_3 = auto_acc + "*(mo47)"
-    spec_list.append(build_spec(expression_3, "mf927"))
-
-    for i in range(1, 10):
-        expression_1 = alt_spec_cons
-
-        if i < 4:
-            expression_1 = expression_1 + " + " + low_inc
-        #if i>6: expression_1 = expression_1 + " + " + high_inc
-        if i in (1, 4, 7):
-            expression_1 = expression_1 + " + " + zero_cars
-        if i in (3, 6, 9):
-            expression_1 = expression_1 + " + " + twoplus_cars
-
-        #COST ALL INCOMES: (0.09*au_dst) + (1.25*au_toll) + (0.5*au_prk)
-        expression_1 = expression_1 + " + " + cost_all_inc + \
-                       "*((ms18*mf144/ms65) + (ms19*mf146/ms65) + ((mo28/2+md28/2)/ms65))"
-
-        if i < 4:
-            expression_1 = expression_1 + " + " + cost_low_inc + "*(mf145/12)"
-        if 3 < i < 7:
-            expression_1 = expression_1 + " + " + cost_med_inc + "*(mf145/6)"
-        if i > 6:
-            expression_1 = expression_1 + " + " + cost_high_inc + "*(mf145/6)"
-
-        spec_list.append(build_spec(expression_1, "mf925"))
-
-        result = "mf" + str(mode_mf + i)
-        print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
-        expression = "mf925 + mf926 + mf927"
-        spec_list.append(build_spec(expression, result))
-    compute_matrix(spec_list, scenario)
-
-
-@_m.logbook_trace("Calculate_SOV")
-def calculate_sov(scenario):
-    # SOV utility stored between matrices mf374-mf382
-    print "--------Calculate_SOV_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
-
-    twoplus_cars = str(0.475724860124)
-    cost_all_inc = str(-0.0702404628224)
-    au_prk = "md28"
-    cost_low_inc = str(-0.0702404628224)
-    cost_med_inc = str(-0.0702404628224)
-    cost_high_inc = str(-0.0702404628224)
-    cbd = str(-2.15614616762)
-    intra_van = str(-1.77231859435)
-    van = str(0.239131352397)
-    auto_acc = str(0.00868508007988)
-    rural = str(0.118210127524)
-
-    mode_mf = 373
-    spec_list = []
-
-    for i in range(1, 10):
-        expression = "0"
-
-        if i in (3, 6, 9):
-            expression = expression + " + " + twoplus_cars
-
-        #cost all incomes: (0.18*au_dst) + (2.5*au_toll) + au_prk
-        expression = expression + " + " + cost_all_inc + "*((ms18*mf144) + (ms19*mf146) + md28/2 + mo28/2)"
-
-        if i < 4:
-            expression = expression + " + " + cost_low_inc + "*(mf145/12)"
-        if 3 < i < 7:
-            expression = expression + " + " + cost_med_inc + "*(mf145/6)"
-        if i > 6:
-            expression = expression + " + " + cost_high_inc + "*(mf145/6)"
-
-        # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
-        expression = expression + " + " + cbd + "*(((mo29.eq.3)+(md29.eq.3)).ge.1)"
-        expression = expression + " + " + van + "*(((mo29.eq.4)+(md29.eq.4)).ge.1)"
-        # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
-        expression = expression + " + " + intra_van + "*((mo29.eq.4)*(md29.eq.4))"
-
-        # auto accessibilities: autoempt (i.e auto accessibilities)
-        expression = expression + " + " + auto_acc + "*(mo47)"
-
-        # rural : 1 if (ifgt(gyo,11) or ifgt(gyd,11))
-        expression = expression + " + " + rural + "*((((mo29.gt.10)*(mo29.lt.15))+((md29.gt.10)*(md29.lt.15))).ge.1)"
-
-        result = "mf" + str(mode_mf + i)
-        print result + " : " + expression
-        spec_list.append(build_spec(expression, result))
-    compute_matrix(spec_list, scenario)
-
-
-@_m.logbook_trace("Calculate Blended Skims, social recreational")
-def calculate_blends(scenario):
-    print "--------Calculate Blended Skims, social recreational," + str(datetime.now().strftime('%H:%M:%S'))
-
-    expressions_list = [
-        ['(mf110.eq.1)*(ms55+((mf115.eq.0)*(1-ms55)))', 'mf140'],
-        ['1-mf140', 'mf141'],
-        ['(mf121.eq.1)*(ms55+(((mf129.eq.0)+(mf130.eq.0)).ge.1)*(1-ms55))', 'mf142'],
-        ['1-mf142', 'mf143'],
-        ['mf100*ms55+mf103*(1-ms55)', 'mf144'],
-        ['mf101*ms55+mf104*(1-ms55)', 'mf145'],
-        ['mf102*ms55+mf105*(1-ms55)', 'mf146'],
-        ['mf106*(mf140+(mf140.eq.1)*0.10)+mf111*mf141', 'mf147'],
-        ['mf107*mf140+mf112*mf141', 'mf148'],
-        ['mf136*mf140+mf137*mf141', 'mf149'],
-        ['mf109*mf140+mf114*mf141', 'mf150'],
-        ['mf116*mf142+mf124*mf143', 'mf152'],
-        ['mf117*mf142+mf125*mf143', 'mf153'],
-        ['mf118*mf142+mf126*mf143', 'mf154'],
-        ['mf138*mf142+mf139*mf143', 'mf155'],
-        ['mf120*mf142+mf128*mf143', 'mf156'],
-        ['(mf100.lt.10)', 'mf158'],
-        ['(mf100.lt.20)', 'mf159']
-    ]
-    spec_list = []
-    for expression, result in expressions_list:
-        spec_list.append(build_spec(expression, result))
-    compute_matrix(spec_list, scenario)
-
-
-#********
-#    ADD ON (rs)
-#    Main module time slicing the matrices
-#********
-@_m.logbook_trace("Time slice social recreation")
-def time_slice_social_recreation(scenario, data_folder):
-    print "Time slicing SOCIAL RECREATION trip matrices begin" + str(datetime.now().strftime('%H:%M:%S'))
-    #
-    #    Preparing expressions for calculation
-    #
-    nBegSOVIncLow = 640
-    nBegSOVIncMed = 643
-    nBegSOVIncHigh = 646
-    nBegHv2IncLow = 649
-    nBegHv2IncMed = 652
-    nBegHv2IncHigh = 655
-    # nBegHv3IncLow  = 658
-    # nBegHv3IncMed  = 661
-    # nBegHv3IncHigh = 664
-    nBegBusIncLow = 667
-    nBegBusIncMed = 670
-    nBegBusIncHigh = 673
-    nBegRailIncLow = 676
-    nBegRailIncMed = 679
-    nBegRailIncHigh = 682
-    nBegActive = 685
-
-    dmSOVLowInc = "("
-    for nCnt1 in range(nBegSOVIncLow, nBegSOVIncLow + 2):
-        dmSOVLowInc = dmSOVLowInc + "mf" + str(nCnt1) + "+"
-    dmSOVLowInc = dmSOVLowInc + "mf" + str(nBegSOVIncLow + 2) + ")"
-
-    dmSOVMedHighInc = "("
-    for nCnt1 in range(nBegSOVIncMed, nBegSOVIncMed + 5):
-        dmSOVMedHighInc = dmSOVMedHighInc + "mf" + str(nCnt1) + "+"
-    dmSOVMedHighInc = dmSOVMedHighInc + "mf" + str(nBegSOVIncMed + 5) + ")"
-
-    dmHv2LowInc = "("
-    for nCnt1 in range(nBegHv2IncLow, nBegHv2IncLow + 2):
-        dmHv2LowInc = dmHv2LowInc + "mf" + str(nCnt1) + "+"
-    dmHv2LowInc = dmHv2LowInc + "mf" + str(nBegHv2IncLow + 2) + ")"
-
-    dmHv2MedHighInc = "("
-    for nCnt1 in range(nBegHv2IncMed, nBegHv2IncMed + 5):
-        dmHv2MedHighInc = dmHv2MedHighInc + "mf" + str(nCnt1) + "+"
-    dmHv2MedHighInc = dmHv2MedHighInc + "mf" + str(nBegHv2IncMed + 5) + ")"
-
-    # dmHv3LowInc = "("
-    # for nCnt1 in range(nBegHv3IncLow,nBegHv3IncLow+2): dmHv3LowInc = dmHv3LowInc+"mf"+str(nCnt1)+"+"
-    # dmHv3LowInc=dmHv3LowInc+"mf"+str(nBegHv3IncLow+2)+")"
-
-    # dmHv3MedHighInc = "("
-    # for nCnt1 in range(nBegHv3IncMed,nBegHv3IncMed+5): dmHv3MedHighInc = dmHv3MedHighInc+"mf"+str(nCnt1)+"+"
-    # dmHv3MedHighInc=dmHv3MedHighInc+"mf"+str(nBegHv3IncMed+5)+")"
-
-    dmBus = "("
-    for nCnt1 in range(nBegBusIncLow, nBegBusIncLow + 8):
-        dmBus = dmBus + "mf" + str(nCnt1) + "+"
-    dmBus = dmBus + "mf" + str(nBegBusIncLow + 8) + ")"
-
-    dmRail = "("
-    for nCnt1 in range(nBegRailIncLow, nBegRailIncLow + 8):
-        dmRail = dmRail + "mf" + str(nCnt1) + "+"
-    dmRail = dmRail + "mf" + str(nBegRailIncLow + 8) + ")"
-
-    dmActive = "("
-    for nCnt1 in range(nBegActive, nBegActive + 17): dmActive = \
-        dmActive + "mf" + str(nCnt1) + "+"
-    dmActive = dmActive + "mf" + str(nBegActive + 17) + ")"
-
-    arDmMatrix = [dmSOVLowInc, dmSOVMedHighInc,
-                  dmHv2LowInc, dmHv2MedHighInc,
-                  dmBus, dmRail, dmActive]
-
-    #
-    #    Correction - rail applies to time period
-    #
-    aTSFactor = [
-        ['ShpPBSocSOVT1', 'ShpPBSocSOVT2', 'ShpPBSocSOVT3', 'ShpPBSocSOVT4', 'ShpPBSocSOVT5', 'ShpPBSocAutoT6',
-         'ShpPBSocSOVT8'],
-        ['ShpPBSocSOVT1', 'ShpPBSocSOVT2', 'ShpPBSocSOVT3', 'ShpPBSocSOVT4', 'ShpPBSocSOVT5', 'ShpPBSocAutoT6',
-         'ShpPBSocSOVT8'],
-        ['ShpPBSoc2perT1', 'ShpPBSoc2perT2', 'ShpPBSoc2perT3', 'ShpPBSoc2perT4', 'ShpPBSoc2perT5', 'ShpPBSocAutoT6',
-         'ShpPBSoc2perT8'],
-        ['ShpPBSoc2perT1', 'ShpPBSoc2perT2', 'ShpPBSoc2perT3', 'ShpPBSoc2perT4', 'ShpPBSoc2perT5', 'ShpPBSocAutoT6',
-         'ShpPBSoc2perT8'],
-        ['ShpPBSocTrnBusT1', 'ShpPBSocTrnBusT2', 'ShpPBSocTrnBusT3', 'ShpPBSocTrnBusT4', 'ShpPBSocTransitT5',
-         'ShpPBSocTransitT6', 'ShpPBSocTransitT7', ],
-        ['ShpPBSocRailT1', 'ShpPBSocRailT2', 'ShpPBSocRailT3', 'ShpPBSocRailT4', 'ShpPBSocTransitT5',
-         'ShpPBSocTransitT6', 'ShpPBSocTransitT7', ],
-        ['ShpPBSocActiveT1', 'ShpPBSocActiveT2', 'ShpPBSocActiveT3', 'ShpPBSocActiveT4', 'ShpPBSocActiveT5',
-         'ShpPBSocActiveT6', 'ShpPBSocActiveT7']]
-
-    #********
-    #    Start matrix number to store the demand by TOD
-    #********
-    aResultMatrix = [773, 794, 780, 801, 815, 822, 829]
-
-    folder = os.path.join(data_folder, "TimeSlicingFactors")
-
-    for files, demand, result in zip(aTSFactor, arDmMatrix, aResultMatrix):
-        utilities.process_transaction_list(scenario, folder, files)
+    @_m.logbook_trace("Home-base social recreation")
+    def run_model(self, scenario, eb, iteration_number, is_last_iteration):
+        data_folder = os.path.dirname(eb.path) + "\\"
+        utilities.dmMatInit_NonWork(eb)
+
+        self.calculate_blends(scenario)
+        self.calculate_sov(scenario)
+        self.calculate_hov2(scenario)
+        self.calculate_bus(scenario)
+        self.calculate_rail(scenario)
+        self.calculate_walk(scenario)
+        self.calculate_bike(scenario)
+        utilities.calculate_probabilities(
+            scenario, nests=[[0, 1], [3, 4], [5, 6]], theta=0.95)
+        utilities.calculate_demand(
+            scenario, demand_start=355, probability_start=441, result_start=640)
+
+        ExportModeChoice = _m.Modeller().tool("translink.emme.stage3.step5.exportmodechoice")
+        if is_last_iteration:
+            purp = 6
+            ExportModeChoice.Agg_Exp_Demand(eb, purp, iteration_number)
+
+        self.aggregate_non_work_demand(scenario)
+        #********
+        #    Initialize matrices for resulted matrices - this should be done once only. (rs- will confirm with Ali the sequence)
+        #********
+        utilities.dmMatInitParts(eb)
+        self.time_slice_social_recreation(scenario, data_folder)
+        self.calculate_final_period_demand(scenario)
+
+        if is_last_iteration:
+            utilities.export_matrices_report(data_folder, "soc", range(773, 843))
+
+
+    @_m.logbook_trace("continue aggregating non work demand, social_recreation")
+    def aggregate_non_work_demand(self, scenario):
+        print "--------Aggregate Non-work demand, " + str(datetime.now().strftime('%H:%M:%S'))
+        matrixnum = 640
+        resultmat = 568
         spec_list = []
-        for time_period in range(0, 7):
-            result_name = "mf" + str(result + time_period)
-            expression = result_name + "+" + demand + "*mf" + str(703 + time_period)
-            spec_list.append(build_spec(expression, result_name))
+        for i in range(0, 63):
+            expression = "mf" + str(resultmat + i) + "+" + "mf" + str(matrixnum + i)
+            result = "mf" + str(resultmat + i)
+            spec_list.append(build_spec(expression, result))
+        for i in range(63, 72):
+            expression = "mf" + str(resultmat + i) + "+" + "0"
+            result = "mf" + str(resultmat + i)
+            spec_list.append(build_spec(expression, result))
         compute_matrix(spec_list, scenario)
 
-    print "Time slicing SOCIAL RECREATION matrices completed." + str(datetime.now().strftime('%H:%M:%S'))
+
+    @_m.logbook_trace("Calculate_Bike")
+    def calculate_bike(self, scenario):
+        print "--------Calculate_Bike_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
+        # Bike utility stored in matrices mf428-mf436
+        emmebank = scenario.emmebank
+
+        alt_spec_cons = str(-2.53325416178)
+        zero_cars = str(1.89853885412)
+        sen20_bk = str(-0.416690093206)
+        #bkscr_bk = str(0.582651776309)
+        distance = str(-0.197686182484)
+        cbd = str(0.563492008694)
+        cs_bk_250 = str(0.379405295115)
+        intrazonal = str(0.715347142379)
+        rurl = str(-1.03145009805)
+
+        mode_mf = 427
+        spec_list = []
+        constraint = {"od_values": "mf159",
+                      "interval_min": 0,
+                      "interval_max": 0,
+                      "condition": "EXCLUDE"}
+
+        #au_dst
+        expression_2 = distance + "*mf144"
+        expression_2 = expression_2 + " + " + sen20_bk + "*((mo19/(mo20+0.00001)).gt.(0.19999))"
+        spec_list.append(build_spec(expression_2, "mf926", constraint))
+
+        # bk_invan: (ifeq(gyo,4) and ifeq(gyd,4)) + (ifeq(gyo,3) and ifeq(gyd,3))
+        expression_3 = cbd + "*(((mo29.eq.3)+(md29.eq.3)).ge.1)"
+        expression_3 = expression_3 + " + " + cs_bk_250 + "*(((mo395+mo396).gt.0))"
+        expression_3 = expression_3 + " + " + intrazonal + "*((q.eq.p))"
+        expression_3 = expression_3 + " + " + rurl + "*((((mo29.ge.11)*(mo29.lt.15))+((md29.ge.11)*(md29.lt.15))).ge.1)"
+        spec_list.append(build_spec(expression_3, "mf927", constraint))
+
+        for i in range(1, 10):
+            expression_1 = alt_spec_cons
+            if i in (1, 4, 7):
+                expression_1 = expression_1 + " + " + zero_cars
+            spec_list.append(build_spec(expression_1, "mf925", constraint))
+
+            result = "mf" + str(mode_mf + i)
+            emmebank.matrix(result).initialize(-9999)
+            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
+            expression = "mf925 + mf926 + mf927"
+            spec_list.append(build_spec(expression, result, constraint))
+        compute_matrix(spec_list, scenario)
 
 
-#********
-#    Module - it is identical to matrix-calculation() (rs)
-#********
-@_m.logbook_trace("Calculate final period demands")
-def calculate_final_period_demand(scenario):
-    util = _m.Modeller().tool("translink.emme.util")
+    @_m.logbook_trace("Calculate_Walk_Utility")
+    def calculate_walk(self, scenario):
+        print "--------Calculate_Walk Utility, " + str(datetime.now().strftime('%H:%M:%S'))
+        emmebank = scenario.emmebank
+        # Walk utility stored in matrices mf419-mf427
 
-    msAutOccWork3Plus = "ms60"
-    msAutOccUniv3Plus = "ms61"
-    msAutOccGSch2Plus = "ms62"
-    msAutOccShop2Plus = "ms63"
-    msAutOccPerB2Plus = "ms64"
-    msAutOccSocR2Plus = "ms65"
-    msAutOccEcor2Plus = "ms66"
-    msAutOccNhbW2Plus = "ms67"
-    msAutOccNhbO2Plus = "ms68"
+        alt_spec_cons = str(1.04271233749)
+        low_inc = str(0.267099150745)
+        hi_inc = str(-0.177389220948)
+        zero_cars = str(2.1481544522)
+        two_plus_car = str(-0.338243374254)
+        sen20_wk = str(0.380104895856)
+        distance = str(-0.884131228378)
+        vanx = str(-1.55201032643)
+        intra_van = str(-0.637942362812)
+        dens = str(0.00341468189319)
+        auto_acc = str(0.00346439336054)
+        #van_locar = str(0.265095647661)
+        cs_wlk_250 = str(0.379405295115)
+        intrazonal = str(0.347798951676)
 
-    msAutOccWork3PlusM = "ms90"
-    msAutOccUniv3PlusM = "ms91"
-    msAutOccGSch2PlusM = "ms92"
-    msAutOccShop2PlusM = "ms93"
-    msAutOccPerB2PlusM = "ms94"
-    msAutOccSocR2PlusM = "ms95"
-    msAutOccEcor2PlusM = "ms96"
-    msAutOccNhbW2PlusM = "ms97"
-    msAutOccNhbO2PlusM = "ms98"
+        mode_mf = 418
+        spec_list = []
+        constraint = {"od_values": "mf158",
+                      "interval_min": 0,
+                      "interval_max": 0,
+                      "condition": "EXCLUDE"}
 
-    specs = []
+        #expression_2 = expression_2 + " + " + sen20_wk + "*((mo19/(mo20+0.00001)).gt.(0.19999))"
+        #au_dst
+        expression_2 = distance + "*mf144"
+        # auto accessibilities: autoempt (i.e auto accessibilities)
+        expression_2 = expression_2 + " + " + dens + "*(((md5+md6+md7+md8+md9+md10+md11)*10000/(md17)).min.200)"
+        # p725*(vanod*iflt(veh2,2))
+        #if (i<>3 and i<>6 and i<>9): expression_2 = expression_2 + " + " + van_locar + "*(((mo29.eq.4)+(md29.eq.4)).ge.1)"
+        expression_2 = expression_2 + "+" + auto_acc + "*(mo47)"
+        expression_2 = expression_2 + " + " + intra_van + "*((mo29.eq.4)*(md29.eq.4))"
+        spec_list.append(build_spec(expression_2, "mf926", constraint))
 
-    specs.append(build_spec("mf846+" + "mf777", "mf846"))
-    specs.append(build_spec("mf847+" + "mf798", "mf847"))
-    specs.append(build_spec("mf851+" + "(mf784/" + msAutOccSocR2Plus + ")", "mf851"))
-    specs.append(build_spec("mf852+" + "(mf805/" + msAutOccSocR2Plus + ")", "mf852"))
-    specs.append(build_spec("mf853+" + "mf819*mf996", "mf853"))
-    specs.append(build_spec("mf854+" + "mf826*mf992", "mf854"))
-    specs.append(build_spec("mf855+" + "mf833", "mf855"))
-    #
-    #    Midday
-    #
-    specs.append(build_spec("mf859+" + "mf778", "mf859"))
-    specs.append(build_spec("mf860+" + "mf799", "mf860"))
-    specs.append(build_spec("mf864+" + "(mf785/" + msAutOccSocR2PlusM + ")", "mf864"))
-    specs.append(build_spec("mf865+" + "(mf806/" + msAutOccSocR2PlusM + ")", "mf865"))
-    specs.append(build_spec("mf866+" + "mf820", "mf866"))
-    specs.append(build_spec("mf867+" + "mf827", "mf867"))
-    specs.append(build_spec("mf868+" + "mf834", "mf868"))
-    #
-    #    PM peak hour
-    #
-    specs.append(build_spec("mf872+" + "mf779", "mf872"))
-    specs.append(build_spec("mf873+" + "mf800", "mf873"))
-    specs.append(build_spec("mf877+" + "(mf786/" + msAutOccSocR2Plus + ")", "mf877"))
-    specs.append(build_spec("mf878+" + "(mf807/" + msAutOccSocR2Plus + ")", "mf878"))
-    specs.append(build_spec("mf879+" + "mf821", "mf879"))
-    specs.append(build_spec("mf880+" + "mf828", "mf880"))
-    specs.append(build_spec("mf881+" + "mf835", "mf881"))
+        # intra-vancouver: 1 if (ifeq(gyo,3)*ifeq(gyd,4)) + (ifeq(gyo,4)*ifeq(gyd,3))
+        expression_3 = vanx + "*(((mo29.eq.3)*(md29.eq.4) + (mo29.eq.4)*(md29.eq.3)).ge.1)"
+        expression_3 = expression_3 + " + " + cs_wlk_250 + "*(((mo395+mo396).gt.0))"
+        expression_3 = expression_3 + " + " + intrazonal + "*((q.eq.p))"
+        spec_list.append(build_spec(expression_3, "mf927", constraint))
 
-    #
-    #    Accumulated demand matrices of 4 time periods by modes (auto person, bus, rail, active)
-    #    mf70-mf73 : T1(before 6am and after 7pm) - auto person, bus, rail, active
-    #    mf75-mf78 : T2(6am-10am) - auto person, bus, rail, active
-    #    mf80-mf83 : T3(10am-2pm) - auto person, bus, rail, active
-    #    mf85-mf88 : T4(2pm-7pm) - auto person, bus, rail, active
-    #
-    #    Auto person - 2 income levels & SOV & 2+person
-    #
-    specs.append(build_spec("mf70+mf773+mf794+mf780+mf801", "mf70"))
-    specs.append(build_spec("mf71+mf815", "mf71"))
-    specs.append(build_spec("mf72+mf822", "mf72"))
-    specs.append(build_spec("mf73+mf829", "mf73"))
+        for i in range(1, 10):
+            expression_1 = alt_spec_cons
+            if i < 4:
+                expression_1 = expression_1 + " + " + low_inc + "*((mo29.ne.3)*(md29.ne.3))"
+            if i > 6:
+                expression_1 = expression_1 + " + " + hi_inc
+            if i == 1 or i == 4 or i == 7:
+                expression_1 = expression_1 + " + " + zero_cars
+            if (i == 3 or i == 6 or i == 9):
+                expression_1 = expression_1 + " + " + two_plus_car + "*(((mo29.gt.11)+(md29.gt.11)).ge.1)"
+            #1 (if cars = 2/3) * ifne(gyo,5)*ifne(gyd,5)* ifne(gyo,3)*ifne(gyd,3)* ifne(gyo,4)*ifne(gyd,4)
+            spec_list.append(build_spec(expression_1, "mf925", constraint))
 
-    specs.append(build_spec("mf75+mf774+mf795+mf781+mf802", "mf75"))
-    specs.append(build_spec("mf76+mf816", "mf76"))
-    specs.append(build_spec("mf77+mf823", "mf77"))
-    specs.append(build_spec("mf78+mf830", "mf78"))
+            result = "mf" + str(mode_mf + i)
+            emmebank.matrix(result).initialize(-9999)
+            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
+            expression = "(mf925 + mf926 + mf927)"
+            spec_list.append(build_spec(expression, result, constraint))
+        compute_matrix(spec_list, scenario)
 
-    specs.append(build_spec("mf80+mf775+mf796+mf782+mf803", "mf80"))
-    specs.append(build_spec("mf81+mf817", "mf81"))
-    specs.append(build_spec("mf82+mf824", "mf82"))
-    specs.append(build_spec("mf83+mf831", "mf83"))
 
-    specs.append(build_spec("mf85+mf776+mf797+mf783+mf804", "mf85"))
-    specs.append(build_spec("mf86+mf818", "mf86"))
-    specs.append(build_spec("mf87+mf825", "mf87"))
-    specs.append(build_spec("mf88+mf832", "mf88"))
+    @_m.logbook_trace("Calculate_Rail_Utility")
+    def calculate_rail(self, scenario):
+        # Rail utility stored between matrices mf410-mf418
+        print "--------Calculate_Rail_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
+        emmebank = scenario.emmebank
 
-    compute_matrix(specs, scenario)
+        alt_spec_cons = str(-0.540325242543)
+        lo_inc = str(0.653398616963)
+        hi_inc = str(-0.33201286203)
+        zero_cars = str(2.95272234998)
+        pop_dens = str(0.0031043766821)
+        emp_dens = str(0.00449241170922)
+        van = str(-0.383537913355)
+        intra_van = str(-0.840151143718)
+        cost_all_inc = str(-0.0702404628224)
+        rt_fare = "mf161"
+        cost_low_inc = str(-0.0702404628224)
+        rt_brd = "mf155"
+        cost_med_inc = str(-0.0702404628224)
+        cost_high_inc = str(-0.0702404628224)
+        cbd = str(0.371564941324)
+        tran_acc = str(0.0979125231061)
+        within_gy = str(-1.2419229288)
+
+        mode_mf = 409
+        spec_list = []
+        constraint = {"od_values": "mf157",
+                      "interval_min": 0,
+                      "interval_max": 0,
+                      "condition": "EXCLUDE"}
+
+       # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
+        expression_2 = cbd + "*(((mo29.eq.3)+(md29.eq.3)).ge.1)"
+        expression_2 = expression_2 + " + " + van + "*(((mo29.eq.4)+(md29.eq.4)).ge.1)"
+
+        # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
+        # dens: min((max((POP11o*10000)/area,0)),100)*(ifne(gyo,3)*ifne(gyo,4))
+        expression_2 = expression_2 + " + " + pop_dens + "*(((mo20*10000/(mo17)).min.100)*(mo29.ne.3)*(mo29.ne.4))"
+
+        expression_2 = expression_2 + " + " + emp_dens + "*((((md5+md6+md7+md8+md9+md10+md11)*10000/(md17)).min.200)*(md29.ne.3)*(md29.ne.4))"
+        spec_list.append(build_spec(expression_2, "mf926", constraint))
+
+        #relative accessibilities (auto-transit): (max(autoempt-transit2,0))
+        expression_3 = tran_acc + "*(1*((((mo392).min.200)).max.0))*(mo29.ne.3)*(md29.ne.3)"
+        expression_3 = expression_3 + " + " + within_gy + "*(mo29.eq.md29)"
+        expression_3 = expression_3 + " + " + intra_van + "*((mo29.eq.4)*(md29.eq.4))"
+        spec_list.append(build_spec(expression_3, "mf927", constraint))
+
+        for i in range(1, 10):
+            expression_1 = alt_spec_cons + "-0.3*(((mo29.eq.4)+(md29.eq.4)).ge.1)" \
+                                           "-0.25*(mo29.eq.5)" \
+                                           "+0.3*(mo29.eq.3)" \
+                                           "-0.2*(mo29.eq.7)" \
+                                           "-0.3*(mo29.eq.1)"
+            if i < 4:
+                expression_1 = expression_1 + " + " + lo_inc
+            #*(hiin*ifne(cbdod,1)*ifne(rurod,1))
+            if i > 6:
+                expression_1 = expression_1 + " + " + hi_inc + "*((mo29.ne.3)*(md29.ne.3)*(mo29.lt.12)*(md29.lt.12))"
+            if i in (1, 4, 7):
+                expression_1 = expression_1 + " + " + zero_cars
+
+            # cost (all incomes) :
+            expression_1 = expression_1 + " + " + cost_all_inc + "*" + rt_fare
+
+            # if low income: (rt_wait/3) + (rt_aux/3) + (rt_ivtb/6) +  (rt_ivtr/6) +(rt_brd*10/6)
+            if i < 4:
+                expression_1 = expression_1 + " + " + cost_low_inc + \
+                               "*((mf154/6) + (mf156/6) + (mf152/12) + ((mf153+10*(mo29.lt.3))/12) + (mf155*5/6))"
+
+            # # if med income: (rt_wait*2/3) + (rt_aux*2/3) + (rt_ivtb/3) +  (rt_ivtr/3) +(rt_brd*10/3)
+            if (3 < i < 7):
+                expression_1 = expression_1 + " + " + cost_med_inc + \
+                               "*((mf154/3) + (mf156/3) + (mf152/6) + ((mf153+10*(mo29.lt.3))/6) + (mf155*10/6))"
+
+            # # if high income: (rt_wait*2/3) + (rt_aux*2/3) + (rt_ivtb/6) +  (rt_ivtr/6) +(rt_brd*10/6)
+            if i > 6:
+                expression_1 = expression_1 + " + " + cost_high_inc + \
+                               "*((mf154/3) + (mf156/3) + (mf152/6) + ((mf153+5*(mo29.lt.3))/6) + (mf155*10/6))"
+
+            spec_list.append(build_spec(expression_1, "mf925", constraint))
+
+            result = "mf" + str(mode_mf + i)
+            emmebank.matrix(result).initialize(-9999)
+            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
+            expression = "mf925 + mf926 + mf927"
+            spec_list.append(build_spec(expression, result, constraint))
+        compute_matrix(spec_list, scenario)
+
+
+    @_m.logbook_trace("Calculate_Bus_Utility")
+    def calculate_bus(self, scenario):
+        print "--------Calculate_Bus, " + str(datetime.now().strftime('%H:%M:%S'))
+        # Bus utility stored between matrices mf401-mf409
+        emmebank = scenario.emmebank
+
+        alt_spec_cons = str(-2.00753680078)
+        lo_inc = str(0.495461130067)
+        high_inc = str(-0.33201286203)
+        zero_cars = str(3.38582872719)
+        one_car_nr = str(0.282402663756)
+        cost_all_inc = str(-0.0702404628224)
+        rt_fare = "mf160"
+        cost_low_inc = str(-0.0702404628224)
+        bs_brd = "mf149"
+        cost_med_inc = str(-0.0702404628224)
+        cost_high_inc = str(-0.0702404628224)
+        emp_dens = str(0.00449241170922)
+        intra_van = str(-0.27655078912)
+        cbd = str(0.658559660214)
+        gy6 = str(-0.362160161639)
+        gy1012 = str(-0.572859508218)
+        #tran_acc = str(0.0487922576961)
+        #within_gy_not_van = str(-0.776829172883)
+
+        mode_mf = 400
+        spec_list = []
+        constraint = {"od_values": "mf151",
+                      "interval_min": 0,
+                      "interval_max": 0,
+                      "condition": "EXCLUDE"}
+
+        # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
+        expression_2 = cbd + "*(((mo29.eq.3)+(md29.eq.3)).ge.1)"
+        expression_2 = expression_2 + " + " + gy6 + "*(((mo29.eq.6)+(md29.eq.6)).ge.1)"
+        expression_2 = expression_2 + " + " + gy1012 + "*(((mo29.eq.10)+(md29.eq.10)+(mo29.eq.12)+(md29.eq.12)).ge.1)"
+
+        # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
+        expression_2 = expression_2 + " + " + intra_van + "*((mo29.eq.4)*(md29.eq.4))"
+        spec_list.append(build_spec(expression_2, "mf926", constraint))
+
+        #relative accessibilities (auto-transit): (max(autoempt-transit2,0))
+        #expression_3 = expression_3 + " + " + tran_acc + "*((((mo392).min.200)).max.0)*(mo29.ne.3)*(md29.ne.3)*(mo29.lt.12)*(md29.lt.12)"
+        expression_3 = emp_dens + "*((((md5+md6+md7+md8+md9+md10+md11)*10000/(md17)).min.200)*(mo29.ne.3)*(md29.ne.3)*(md29.ne.4))"
+        spec_list.append(build_spec(expression_3, "mf927", constraint))
+
+        for i in range(1, 10):
+            expression_1 = alt_spec_cons + "-0.2*(((mo29.eq.4).or.(md29.eq.4)))+0.15*(mo29.eq.5)"
+            if i < 4:
+                expression_1 = expression_1 + " + " + lo_inc
+            if i > 6:
+                expression_1 = expression_1 + " + " + high_inc
+            if i in (1, 4, 7):
+                expression_1 = expression_1 + " + " + zero_cars
+            #+ p62*(ifeq(useveh2,1)*ifne(rurod,1))
+            if i in (2, 5, 8):
+                expression_1 = expression_1 + " + " + one_car_nr + "*((mo29.lt.12)*(md29.lt.12))"
+
+            # cost (all incomes) :
+            expression_1 = expression_1 + " + " + cost_all_inc + "*" + rt_fare
+
+            # if low income: (bs_wait/3) + (bs_aux/3) + (bs_ivtb/6) + (bs_brd*10/6)
+            if i < 4:
+                expression_1 = expression_1 + " + " + cost_low_inc + "*((mf147/6) + (mf150/6) + (mf148/12) + (" + bs_brd + "*5/6))"
+
+            # if med income: (bs_wait*2/3) + (bs_aux*2/3) + (bs_ivtb/3) + (bs_brd*5)
+            if 3 < i < 7:
+                expression_1 = expression_1 + " + " + cost_med_inc + "*((mf147/3) + (mf150/3) + (mf148/6) + (" + bs_brd + "*2.5))"
+
+            # if high income: (bs_wait*2/3) + (bs_aux*2/3) + (bs_ivtb/3) + (bs_brd*5)
+            if i > 6:
+                expression_1 = expression_1 + " + " + cost_high_inc + "*((mf147/3) + (mf150/3) + (mf148/6) + (" + bs_brd + "*2.5))"
+
+            spec_list.append(build_spec(expression_1, "mf925", constraint))
+
+            result = "mf" + str(mode_mf + i)
+            emmebank.matrix(result).initialize(-9999)
+            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
+            expression = "mf925 + mf926 + mf927"
+            spec_list.append(build_spec(expression, result, constraint))
+        compute_matrix(spec_list, scenario)
+
+
+    @_m.logbook_trace("Calculate_HOV2_utility")
+    def calculate_hov2(self, scenario):
+        # HOV2 utility stored between matrices mf383-mf391
+        print "--------Calculate_HOV2_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
+
+        alt_spec_cons = str(0.211986033176)
+        low_inc = str(0.244657517886)
+        # high_inc = str(-0.708370852764)
+        zero_cars = str(0.613879199084)
+        twoplus_cars = str(0.667630550329)
+        cost_all_inc = str(-0.0702404628224)
+        au_prk = "md28"
+        cost_low_inc = str(-0.0702404628224)
+        cost_med_inc = str(-0.0702404628224)
+        cost_high_inc = str(-0.0702404628224)
+        cbd = str(-1.71516378376)
+        auto_acc = str(0.00679661389603)
+        intra_van = str(-1.4399239065)
+        #ret_dens = str(0.00617014015912)
+        #rural = str(0.295199509485)
+        #within_gy = str(-0.222647811404)
+
+
+        mode_mf = 382
+        spec_list = []
+
+        # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
+        expression_2 = cbd + "*(((mo29.eq.3)+(md29.eq.3)).ge.1)"
+
+        # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
+        expression_2 = expression_2 + " + " + intra_van + "*((mo29.eq.4)*(md29.eq.4))"
+        spec_list.append(build_spec(expression_2, "mf926"))
+
+        # rural : 1 if (ifgt(gyo,11) or ifgt(gyd,11))
+        #expression_2 = expression_2 + " + " + rural + "*((((mo29.gt.11)*(mo29.lt.15))+((md29.gt.11)*(md29.lt.15))).ge.1)"
+
+        # within gy   1 if gyo=gyd
+        #expression_3 = expression_3 + " + " + within_gy_not_rural + "*(mo29.eq.md29)"
+        #expression_3 = expression_3 + " + " + ret_dens + "*(min((max((md8*10000)/mo17,0)),200))"
+        # auto accessibilities: autoempt (i.e auto accessibilities)
+        expression_3 = auto_acc + "*(mo47)"
+        spec_list.append(build_spec(expression_3, "mf927"))
+
+        for i in range(1, 10):
+            expression_1 = alt_spec_cons
+
+            if i < 4:
+                expression_1 = expression_1 + " + " + low_inc
+            #if i>6: expression_1 = expression_1 + " + " + high_inc
+            if i in (1, 4, 7):
+                expression_1 = expression_1 + " + " + zero_cars
+            if i in (3, 6, 9):
+                expression_1 = expression_1 + " + " + twoplus_cars
+
+            #COST ALL INCOMES: (0.09*au_dst) + (1.25*au_toll) + (0.5*au_prk)
+            expression_1 = expression_1 + " + " + cost_all_inc + \
+                           "*((ms18*mf144/ms65) + (ms19*mf146/ms65) + ((mo28/2+md28/2)/ms65))"
+
+            if i < 4:
+                expression_1 = expression_1 + " + " + cost_low_inc + "*(mf145/12)"
+            if 3 < i < 7:
+                expression_1 = expression_1 + " + " + cost_med_inc + "*(mf145/6)"
+            if i > 6:
+                expression_1 = expression_1 + " + " + cost_high_inc + "*(mf145/6)"
+
+            spec_list.append(build_spec(expression_1, "mf925"))
+
+            result = "mf" + str(mode_mf + i)
+            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
+            expression = "mf925 + mf926 + mf927"
+            spec_list.append(build_spec(expression, result))
+        compute_matrix(spec_list, scenario)
+
+
+    @_m.logbook_trace("Calculate_SOV")
+    def calculate_sov(self, scenario):
+        # SOV utility stored between matrices mf374-mf382
+        print "--------Calculate_SOV_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
+
+        twoplus_cars = str(0.475724860124)
+        cost_all_inc = str(-0.0702404628224)
+        au_prk = "md28"
+        cost_low_inc = str(-0.0702404628224)
+        cost_med_inc = str(-0.0702404628224)
+        cost_high_inc = str(-0.0702404628224)
+        cbd = str(-2.15614616762)
+        intra_van = str(-1.77231859435)
+        van = str(0.239131352397)
+        auto_acc = str(0.00868508007988)
+        rural = str(0.118210127524)
+
+        mode_mf = 373
+        spec_list = []
+
+        for i in range(1, 10):
+            expression = "0"
+
+            if i in (3, 6, 9):
+                expression = expression + " + " + twoplus_cars
+
+            #cost all incomes: (0.18*au_dst) + (2.5*au_toll) + au_prk
+            expression = expression + " + " + cost_all_inc + "*((ms18*mf144) + (ms19*mf146) + md28/2 + mo28/2)"
+
+            if i < 4:
+                expression = expression + " + " + cost_low_inc + "*(mf145/12)"
+            if 3 < i < 7:
+                expression = expression + " + " + cost_med_inc + "*(mf145/6)"
+            if i > 6:
+                expression = expression + " + " + cost_high_inc + "*(mf145/6)"
+
+            # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
+            expression = expression + " + " + cbd + "*(((mo29.eq.3)+(md29.eq.3)).ge.1)"
+            expression = expression + " + " + van + "*(((mo29.eq.4)+(md29.eq.4)).ge.1)"
+            # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
+            expression = expression + " + " + intra_van + "*((mo29.eq.4)*(md29.eq.4))"
+
+            # auto accessibilities: autoempt (i.e auto accessibilities)
+            expression = expression + " + " + auto_acc + "*(mo47)"
+
+            # rural : 1 if (ifgt(gyo,11) or ifgt(gyd,11))
+            expression = expression + " + " + rural + "*((((mo29.gt.10)*(mo29.lt.15))+((md29.gt.10)*(md29.lt.15))).ge.1)"
+
+            result = "mf" + str(mode_mf + i)
+            print result + " : " + expression
+            spec_list.append(build_spec(expression, result))
+        compute_matrix(spec_list, scenario)
+
+
+    @_m.logbook_trace("Calculate Blended Skims, social recreational")
+    def calculate_blends(self, scenario):
+        print "--------Calculate Blended Skims, social recreational," + str(datetime.now().strftime('%H:%M:%S'))
+
+        expressions_list = [
+            ['(mf110.eq.1)*(ms55+((mf115.eq.0)*(1-ms55)))', 'mf140'],
+            ['1-mf140', 'mf141'],
+            ['(mf121.eq.1)*(ms55+(((mf129.eq.0)+(mf130.eq.0)).ge.1)*(1-ms55))', 'mf142'],
+            ['1-mf142', 'mf143'],
+            ['mf100*ms55+mf103*(1-ms55)', 'mf144'],
+            ['mf101*ms55+mf104*(1-ms55)', 'mf145'],
+            ['mf102*ms55+mf105*(1-ms55)', 'mf146'],
+            ['mf106*(mf140+(mf140.eq.1)*0.10)+mf111*mf141', 'mf147'],
+            ['mf107*mf140+mf112*mf141', 'mf148'],
+            ['mf136*mf140+mf137*mf141', 'mf149'],
+            ['mf109*mf140+mf114*mf141', 'mf150'],
+            ['mf116*mf142+mf124*mf143', 'mf152'],
+            ['mf117*mf142+mf125*mf143', 'mf153'],
+            ['mf118*mf142+mf126*mf143', 'mf154'],
+            ['mf138*mf142+mf139*mf143', 'mf155'],
+            ['mf120*mf142+mf128*mf143', 'mf156'],
+            ['(mf100.lt.10)', 'mf158'],
+            ['(mf100.lt.20)', 'mf159']
+        ]
+        spec_list = []
+        for expression, result in expressions_list:
+            spec_list.append(build_spec(expression, result))
+        compute_matrix(spec_list, scenario)
+
+
+    #********
+    #    ADD ON (rs)
+    #    Main module time slicing the matrices
+    #********
+    @_m.logbook_trace("Time slice social recreation")
+    def time_slice_social_recreation(self, scenario, data_folder):
+        print "Time slicing SOCIAL RECREATION trip matrices begin" + str(datetime.now().strftime('%H:%M:%S'))
+        #
+        #    Preparing expressions for calculation
+        #
+        nBegSOVIncLow = 640
+        nBegSOVIncMed = 643
+        nBegSOVIncHigh = 646
+        nBegHv2IncLow = 649
+        nBegHv2IncMed = 652
+        nBegHv2IncHigh = 655
+        # nBegHv3IncLow  = 658
+        # nBegHv3IncMed  = 661
+        # nBegHv3IncHigh = 664
+        nBegBusIncLow = 667
+        nBegBusIncMed = 670
+        nBegBusIncHigh = 673
+        nBegRailIncLow = 676
+        nBegRailIncMed = 679
+        nBegRailIncHigh = 682
+        nBegActive = 685
+
+        dmSOVLowInc = "("
+        for nCnt1 in range(nBegSOVIncLow, nBegSOVIncLow + 2):
+            dmSOVLowInc = dmSOVLowInc + "mf" + str(nCnt1) + "+"
+        dmSOVLowInc = dmSOVLowInc + "mf" + str(nBegSOVIncLow + 2) + ")"
+
+        dmSOVMedHighInc = "("
+        for nCnt1 in range(nBegSOVIncMed, nBegSOVIncMed + 5):
+            dmSOVMedHighInc = dmSOVMedHighInc + "mf" + str(nCnt1) + "+"
+        dmSOVMedHighInc = dmSOVMedHighInc + "mf" + str(nBegSOVIncMed + 5) + ")"
+
+        dmHv2LowInc = "("
+        for nCnt1 in range(nBegHv2IncLow, nBegHv2IncLow + 2):
+            dmHv2LowInc = dmHv2LowInc + "mf" + str(nCnt1) + "+"
+        dmHv2LowInc = dmHv2LowInc + "mf" + str(nBegHv2IncLow + 2) + ")"
+
+        dmHv2MedHighInc = "("
+        for nCnt1 in range(nBegHv2IncMed, nBegHv2IncMed + 5):
+            dmHv2MedHighInc = dmHv2MedHighInc + "mf" + str(nCnt1) + "+"
+        dmHv2MedHighInc = dmHv2MedHighInc + "mf" + str(nBegHv2IncMed + 5) + ")"
+
+        # dmHv3LowInc = "("
+        # for nCnt1 in range(nBegHv3IncLow,nBegHv3IncLow+2): dmHv3LowInc = dmHv3LowInc+"mf"+str(nCnt1)+"+"
+        # dmHv3LowInc=dmHv3LowInc+"mf"+str(nBegHv3IncLow+2)+")"
+
+        # dmHv3MedHighInc = "("
+        # for nCnt1 in range(nBegHv3IncMed,nBegHv3IncMed+5): dmHv3MedHighInc = dmHv3MedHighInc+"mf"+str(nCnt1)+"+"
+        # dmHv3MedHighInc=dmHv3MedHighInc+"mf"+str(nBegHv3IncMed+5)+")"
+
+        dmBus = "("
+        for nCnt1 in range(nBegBusIncLow, nBegBusIncLow + 8):
+            dmBus = dmBus + "mf" + str(nCnt1) + "+"
+        dmBus = dmBus + "mf" + str(nBegBusIncLow + 8) + ")"
+
+        dmRail = "("
+        for nCnt1 in range(nBegRailIncLow, nBegRailIncLow + 8):
+            dmRail = dmRail + "mf" + str(nCnt1) + "+"
+        dmRail = dmRail + "mf" + str(nBegRailIncLow + 8) + ")"
+
+        dmActive = "("
+        for nCnt1 in range(nBegActive, nBegActive + 17): dmActive = \
+            dmActive + "mf" + str(nCnt1) + "+"
+        dmActive = dmActive + "mf" + str(nBegActive + 17) + ")"
+
+        arDmMatrix = [dmSOVLowInc, dmSOVMedHighInc,
+                      dmHv2LowInc, dmHv2MedHighInc,
+                      dmBus, dmRail, dmActive]
+
+        #
+        #    Correction - rail applies to time period
+        #
+        aTSFactor = [
+            ['ShpPBSocSOVT1', 'ShpPBSocSOVT2', 'ShpPBSocSOVT3', 'ShpPBSocSOVT4', 'ShpPBSocSOVT5', 'ShpPBSocAutoT6',
+             'ShpPBSocSOVT8'],
+            ['ShpPBSocSOVT1', 'ShpPBSocSOVT2', 'ShpPBSocSOVT3', 'ShpPBSocSOVT4', 'ShpPBSocSOVT5', 'ShpPBSocAutoT6',
+             'ShpPBSocSOVT8'],
+            ['ShpPBSoc2perT1', 'ShpPBSoc2perT2', 'ShpPBSoc2perT3', 'ShpPBSoc2perT4', 'ShpPBSoc2perT5', 'ShpPBSocAutoT6',
+             'ShpPBSoc2perT8'],
+            ['ShpPBSoc2perT1', 'ShpPBSoc2perT2', 'ShpPBSoc2perT3', 'ShpPBSoc2perT4', 'ShpPBSoc2perT5', 'ShpPBSocAutoT6',
+             'ShpPBSoc2perT8'],
+            ['ShpPBSocTrnBusT1', 'ShpPBSocTrnBusT2', 'ShpPBSocTrnBusT3', 'ShpPBSocTrnBusT4', 'ShpPBSocTransitT5',
+             'ShpPBSocTransitT6', 'ShpPBSocTransitT7', ],
+            ['ShpPBSocRailT1', 'ShpPBSocRailT2', 'ShpPBSocRailT3', 'ShpPBSocRailT4', 'ShpPBSocTransitT5',
+             'ShpPBSocTransitT6', 'ShpPBSocTransitT7', ],
+            ['ShpPBSocActiveT1', 'ShpPBSocActiveT2', 'ShpPBSocActiveT3', 'ShpPBSocActiveT4', 'ShpPBSocActiveT5',
+             'ShpPBSocActiveT6', 'ShpPBSocActiveT7']]
+
+        #********
+        #    Start matrix number to store the demand by TOD
+        #********
+        aResultMatrix = [773, 794, 780, 801, 815, 822, 829]
+
+        folder = os.path.join(data_folder, "TimeSlicingFactors")
+
+        for files, demand, result in zip(aTSFactor, arDmMatrix, aResultMatrix):
+            utilities.process_transaction_list(scenario, folder, files)
+            spec_list = []
+            for time_period in range(0, 7):
+                result_name = "mf" + str(result + time_period)
+                expression = result_name + "+" + demand + "*mf" + str(703 + time_period)
+                spec_list.append(build_spec(expression, result_name))
+            compute_matrix(spec_list, scenario)
+
+        print "Time slicing SOCIAL RECREATION matrices completed." + str(datetime.now().strftime('%H:%M:%S'))
+
+
+    #********
+    #    Module - it is identical to matrix-calculation() (rs)
+    #********
+    @_m.logbook_trace("Calculate final period demands")
+    def calculate_final_period_demand(self, scenario):
+        util = _m.Modeller().tool("translink.emme.util")
+
+        msAutOccWork3Plus = "ms60"
+        msAutOccUniv3Plus = "ms61"
+        msAutOccGSch2Plus = "ms62"
+        msAutOccShop2Plus = "ms63"
+        msAutOccPerB2Plus = "ms64"
+        msAutOccSocR2Plus = "ms65"
+        msAutOccEcor2Plus = "ms66"
+        msAutOccNhbW2Plus = "ms67"
+        msAutOccNhbO2Plus = "ms68"
+
+        msAutOccWork3PlusM = "ms90"
+        msAutOccUniv3PlusM = "ms91"
+        msAutOccGSch2PlusM = "ms92"
+        msAutOccShop2PlusM = "ms93"
+        msAutOccPerB2PlusM = "ms94"
+        msAutOccSocR2PlusM = "ms95"
+        msAutOccEcor2PlusM = "ms96"
+        msAutOccNhbW2PlusM = "ms97"
+        msAutOccNhbO2PlusM = "ms98"
+
+        specs = []
+
+        specs.append(build_spec("mf846+" + "mf777", "mf846"))
+        specs.append(build_spec("mf847+" + "mf798", "mf847"))
+        specs.append(build_spec("mf851+" + "(mf784/" + msAutOccSocR2Plus + ")", "mf851"))
+        specs.append(build_spec("mf852+" + "(mf805/" + msAutOccSocR2Plus + ")", "mf852"))
+        specs.append(build_spec("mf853+" + "mf819*mf996", "mf853"))
+        specs.append(build_spec("mf854+" + "mf826*mf992", "mf854"))
+        specs.append(build_spec("mf855+" + "mf833", "mf855"))
+        #
+        #    Midday
+        #
+        specs.append(build_spec("mf859+" + "mf778", "mf859"))
+        specs.append(build_spec("mf860+" + "mf799", "mf860"))
+        specs.append(build_spec("mf864+" + "(mf785/" + msAutOccSocR2PlusM + ")", "mf864"))
+        specs.append(build_spec("mf865+" + "(mf806/" + msAutOccSocR2PlusM + ")", "mf865"))
+        specs.append(build_spec("mf866+" + "mf820", "mf866"))
+        specs.append(build_spec("mf867+" + "mf827", "mf867"))
+        specs.append(build_spec("mf868+" + "mf834", "mf868"))
+        #
+        #    PM peak hour
+        #
+        specs.append(build_spec("mf872+" + "mf779", "mf872"))
+        specs.append(build_spec("mf873+" + "mf800", "mf873"))
+        specs.append(build_spec("mf877+" + "(mf786/" + msAutOccSocR2Plus + ")", "mf877"))
+        specs.append(build_spec("mf878+" + "(mf807/" + msAutOccSocR2Plus + ")", "mf878"))
+        specs.append(build_spec("mf879+" + "mf821", "mf879"))
+        specs.append(build_spec("mf880+" + "mf828", "mf880"))
+        specs.append(build_spec("mf881+" + "mf835", "mf881"))
+
+        #
+        #    Accumulated demand matrices of 4 time periods by modes (auto person, bus, rail, active)
+        #    mf70-mf73 : T1(before 6am and after 7pm) - auto person, bus, rail, active
+        #    mf75-mf78 : T2(6am-10am) - auto person, bus, rail, active
+        #    mf80-mf83 : T3(10am-2pm) - auto person, bus, rail, active
+        #    mf85-mf88 : T4(2pm-7pm) - auto person, bus, rail, active
+        #
+        #    Auto person - 2 income levels & SOV & 2+person
+        #
+        specs.append(build_spec("mf70+mf773+mf794+mf780+mf801", "mf70"))
+        specs.append(build_spec("mf71+mf815", "mf71"))
+        specs.append(build_spec("mf72+mf822", "mf72"))
+        specs.append(build_spec("mf73+mf829", "mf73"))
+
+        specs.append(build_spec("mf75+mf774+mf795+mf781+mf802", "mf75"))
+        specs.append(build_spec("mf76+mf816", "mf76"))
+        specs.append(build_spec("mf77+mf823", "mf77"))
+        specs.append(build_spec("mf78+mf830", "mf78"))
+
+        specs.append(build_spec("mf80+mf775+mf796+mf782+mf803", "mf80"))
+        specs.append(build_spec("mf81+mf817", "mf81"))
+        specs.append(build_spec("mf82+mf824", "mf82"))
+        specs.append(build_spec("mf83+mf831", "mf83"))
+
+        specs.append(build_spec("mf85+mf776+mf797+mf783+mf804", "mf85"))
+        specs.append(build_spec("mf86+mf818", "mf86"))
+        specs.append(build_spec("mf87+mf825", "mf87"))
+        specs.append(build_spec("mf88+mf832", "mf88"))
+
+        compute_matrix(specs, scenario)
