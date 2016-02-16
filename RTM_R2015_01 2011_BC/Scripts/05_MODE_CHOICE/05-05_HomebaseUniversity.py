@@ -510,7 +510,7 @@ class ModeChoiceHBUni(_m.Tool()):
         aResultMatrix = [773, 794, 780, 801, 787, 808, 815, 822, 829]
 
         for files, demand, result in zip(aTSFactor, arDmMatrix, aResultMatrix):
-            utilities.process_timeslicing_list(eb, scenario, slice_folder, files)
+            utilities.process_timeslicing_list(eb, scenario, files)
             spec_list = []
             for time_period in range(0, 7):
                 result_name = "mf" + str(result + time_period)
