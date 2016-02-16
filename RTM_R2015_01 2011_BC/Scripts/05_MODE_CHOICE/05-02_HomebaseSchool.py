@@ -445,6 +445,7 @@ class ModeChoiceHBSchool(_m.Tool()):
     #********
     @_m.logbook_trace("Time slicing grade school")
     def time_slice_grade_school(self, eb, scenario):
+        util = _m.Modeller().tool("translink.emme.util")
         #
         #    Preparing expressions for calculation
         #
@@ -465,48 +466,19 @@ class ModeChoiceHBSchool(_m.Tool()):
         nBegRailIncHigh = 682
         nBegActive = 685
 
-        dmSOVLowInc = "("
-        for nCnt1 in range(nBegSOVIncLow, nBegSOVIncLow + 2):
-            dmSOVLowInc = dmSOVLowInc + "mf" + str(nCnt1) + "+"
-        dmSOVLowInc = dmSOVLowInc + "mf" + str(nBegSOVIncLow + 2) + ")"
+        dmSOVLowInc = util.matrix_sum(["mf%d" % i for i in range(nBegSOVIncLow, nBegSOVIncLow + 3)])
 
-        dmSOVMedHighInc = "("
-        for nCnt1 in range(nBegSOVIncMed, nBegSOVIncMed + 5):
-            dmSOVMedHighInc = dmSOVMedHighInc + "mf" + str(nCnt1) + "+"
-        dmSOVMedHighInc = dmSOVMedHighInc + "mf" + str(nBegSOVIncMed + 5) + ")"
+        dmSOVMedHighInc = util.matrix_sum(["mf%d" % i for i in range(nBegSOVIncMed, nBegSOVIncMed + 6)])
 
-        dmHv2LowInc = "("
-        for nCnt1 in range(nBegHv2IncLow, nBegHv2IncLow + 2):
-            dmHv2LowInc = dmHv2LowInc + "mf" + str(nCnt1) + "+"
-        dmHv2LowInc = dmHv2LowInc + "mf" + str(nBegHv2IncLow + 2) + ")"
+        dmHv2LowInc = util.matrix_sum(["mf%d" % i for i in range(nBegHv2IncLow, nBegHv2IncLow + 3)])
 
-        dmHv2MedHighInc = "("
-        for nCnt1 in range(nBegHv2IncMed, nBegHv2IncMed + 5):
-            dmHv2MedHighInc = dmHv2MedHighInc + "mf" + str(nCnt1) + "+"
-        dmHv2MedHighInc = dmHv2MedHighInc + "mf" + str(nBegHv2IncMed + 5) + ")"
+        dmHv2MedHighInc = util.matrix_sum(["mf%d" % i for i in range(nBegHv2IncMed, nBegHv2IncMed + 6)])
 
-        # dmHv3LowInc = "("
-        # for nCnt1 in range(nBegHv3IncLow,nBegHv3IncLow+2):
-        #     dmHv3LowInc = dmHv3LowInc+"mf"+str(nCnt1)+"+"
-        # dmHv3LowInc=dmHv3LowInc+"mf"+str(nBegHv3IncLow+2)+")"
+        dmBus = util.matrix_sum(["mf%d" % i for i in range(nBegBusIncLow, nBegBusIncLow + 9)])
 
-        # dmHv3MedHighInc = "("
-        # for nCnt1 in range(nBegHv3IncMed,nBegHv3IncMed+5):
-        #     dmHv3MedHighInc = dmHv3MedHighInc+"mf"+str(nCnt1)+"+"
-        # dmHv3MedHighInc=dmHv3MedHighInc+"mf"+str(nBegHv3IncMed+5)+")"
+        dmRail = util.matrix_sum(["mf%d" % i for i in range(nBegRailIncLow, nBegRailIncLow + 9)])
 
-        dmBus = "("
-        for nCnt1 in range(nBegBusIncLow, nBegBusIncLow + 8):
-            dmBus = dmBus + "mf" + str(nCnt1) + "+"
-        dmBus = dmBus + "mf" + str(nBegBusIncLow + 8) + ")"
-
-        dmRail = "("
-        for nCnt1 in range(nBegRailIncLow, nBegRailIncLow + 8): dmRail = dmRail + "mf" + str(nCnt1) + "+"
-        dmRail = dmRail + "mf" + str(nBegRailIncLow + 8) + ")"
-
-        dmActive = "("
-        for nCnt1 in range(nBegActive, nBegActive + 17): dmActive = dmActive + "mf" + str(nCnt1) + "+"
-        dmActive = dmActive + "mf" + str(nBegActive + 17) + ")"
+        dmActive = util.matrix_sum(["mf%d" % i for i in range(nBegActive, nBegActive + 18)])
 
         arDmMatrix = [dmSOVLowInc, dmSOVMedHighInc,
                       dmHv2LowInc, dmHv2MedHighInc,
