@@ -72,6 +72,16 @@ class Util(_m.Tool()):
         }
         return spec
 
+    def matrix_sum(self, matrices):
+        """Returns a string representation of a summation expression containing all matrix names passed in.
+
+        Arguments:
+        matrices -- a list of matrix names
+        """
+
+        sum = "(" + " + ".join(matrices) + ")"
+        return sum
+
     @_m.logbook_trace("Delete Scenarios", save_arguments=True)
     def del_scen(self, scenario):
         """Delete the given scenario.
