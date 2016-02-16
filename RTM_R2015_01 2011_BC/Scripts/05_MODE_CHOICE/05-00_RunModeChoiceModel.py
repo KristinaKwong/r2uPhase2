@@ -58,7 +58,6 @@ class ModeChoice(_m.Tool()):
             iteration_number + 1))
 
         ## Mode Choice Modules
-        module_lookup = _m.Modeller().module
         home_base_work = _m.Modeller().tool("translink.emme.stage3.step5.modechoicehbw")
         home_base_school = _m.Modeller().tool("translink.emme.stage3.step5.modechoicehbschool")
         home_base_shopping = _m.Modeller().tool("translink.emme.stage3.step5.modechoicehbshop")
@@ -67,7 +66,7 @@ class ModeChoice(_m.Tool()):
         home_base_social = _m.Modeller().tool("translink.emme.stage3.step5.modechoicehbsocial")
         home_base_escort = _m.Modeller().tool("translink.emme.stage3.step5.modechoicehbesc")
         non_home_base_other = _m.Modeller().tool("translink.emme.stage3.step5.modechoicenhbo")
-        non_home_base_work = module_lookup("translink.emme.stage3.step5.modechoicenhbw")
+        non_home_base_work = _m.Modeller().tool("translink.emme.stage3.step5.modechoicenhbw")
         park_and_ride = _m.Modeller().tool("translink.emme.stage3.step5.parkandride")
 
         is_last_iteration = (iteration_number == (max_iterations - 1))
