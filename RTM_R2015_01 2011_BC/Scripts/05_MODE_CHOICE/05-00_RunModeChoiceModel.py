@@ -54,8 +54,6 @@ class ModeChoice(_m.Tool()):
     def __call__(self, eb, iteration_number, max_iterations, run_park_and_ride=False, preserve_matrices=False):
         ## Matrices used for mode choice are from mf374-mf702,
         ## these store utilities, probabilities and various demands (work vs non work)
-        print ("05-00 Run the Mode choice model on nine purposes and export results, iteration number: " + str(
-            iteration_number + 1))
 
         ## Mode Choice Modules
         home_base_work = _m.Modeller().tool("translink.emme.stage3.step5.modechoicehbw")

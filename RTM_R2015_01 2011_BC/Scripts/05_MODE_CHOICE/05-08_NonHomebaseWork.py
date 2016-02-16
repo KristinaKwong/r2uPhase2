@@ -6,7 +6,6 @@
 ##---------------------------------------------------------------------
 import inro.modeller as _m
 import traceback as _traceback
-from datetime import datetime
 import os
 
 
@@ -79,7 +78,6 @@ class ModeChoiceNHBW(_m.Tool()):
     def aggregate_non_work_demand(self, scenario):
         # KB: why is this function different from every other "aggregate_non_work_demand"?
         #     and this should be part of work demand?
-        print "--------Calculate_Demand, " + str(datetime.now().strftime('%H:%M:%S'))
         spec_list = []
         matrixnum = 643
         resultmat = 508
@@ -98,7 +96,6 @@ class ModeChoiceNHBW(_m.Tool()):
     @_m.logbook_trace("Calculate_Bike_utlity")
     def calculate_bike(self, scenario):
         # Bike utility stored in matrices mf428-mf436
-        print "--------Calculate_Bike_utlity, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         alt_spec_cons = str(-5.59693336915)
@@ -147,7 +144,6 @@ class ModeChoiceNHBW(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
         compute_matrix(spec_list, scenario)
@@ -156,7 +152,6 @@ class ModeChoiceNHBW(_m.Tool()):
     @_m.logbook_trace("Calculate_Walk_utlity")
     def calculate_walk(self, scenario):
         # Walk utility stored in matrices mf419-mf427
-        print "--------Calculate_Walk_utility, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         alt_spec_cons = str(0.169933759873)
@@ -205,7 +200,6 @@ class ModeChoiceNHBW(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
         compute_matrix(spec_list, scenario)
@@ -214,7 +208,6 @@ class ModeChoiceNHBW(_m.Tool()):
     @_m.logbook_trace("Calculate_Rail_utlity")
     def calculate_rail(self, scenario):
         # Rail utility stored between matrices mf410-mf418
-        print "--------Calculate_Rail_utility, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         alt_spec_cons = str(-.270380946937)
@@ -273,7 +266,6 @@ class ModeChoiceNHBW(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
         compute_matrix(spec_list, scenario)
@@ -282,7 +274,6 @@ class ModeChoiceNHBW(_m.Tool()):
     @_m.logbook_trace("Calculate_Bus_utility")
     def calculate_bus(self, scenario):
         # Bus utility stored between matrices mf401-mf409
-        print "--------Calculate_Bus_utility, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         alt_spec_cons = str(-1.74573644783)
@@ -341,7 +332,6 @@ class ModeChoiceNHBW(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
         compute_matrix(spec_list, scenario)
@@ -350,7 +340,6 @@ class ModeChoiceNHBW(_m.Tool()):
     @_m.logbook_trace("Calculate_HOV2_utility")
     def calculate_hov2(self, scenario):
         # HOV2 utility stored between matrices mf383-mf391
-        print "--------Calculate_HOV2_utility, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         alt_spec_cons = str(-1.50506819449)
@@ -389,7 +378,6 @@ class ModeChoiceNHBW(_m.Tool()):
             spec_list.append(build_spec(expression_1, "mf925"))
 
             result = "mf" + str(mode_mf + i)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result))
         compute_matrix(spec_list, scenario)
@@ -398,7 +386,6 @@ class ModeChoiceNHBW(_m.Tool()):
     @_m.logbook_trace("Calculate_SOV_utility")
     def calculate_sov(self, scenario):
         # SOV utility stored between matrices mf374-mf382
-        print "--------Calculate_SOV_utility, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         twoplus_cars = str(0.725011702685)
@@ -435,14 +422,12 @@ class ModeChoiceNHBW(_m.Tool()):
             #expression = expression + " + " + rural + "*((((mo29.gt.10)*(mo29.lt.15))+((md29.gt.10)*(md29.lt.15))).ge.1)"
 
             result = "mf" + str(mode_mf + i)
-            print result + " : " + expression
             spec_list.append(build_spec(expression, result))
         compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_non_home_base_work_blends")
     def calculate_blends(self, scenario):
-        print "--------Calculate_non_home_base_work_blends, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         expressions_list = [
@@ -478,7 +463,6 @@ class ModeChoiceNHBW(_m.Tool()):
     @_m.logbook_trace("Time slice non-home base work")
     def time_slice_non_home_base_work(self, eb, scenario):
         slice_folder = os.path.join(os.path.dirname(eb.path), "TimeSlicingFactors")
-        print "Time slicing NON-HOME BASE WORK trip matrices begin" + str(datetime.now().strftime('%H:%M:%S'))
         #
         #    Preparing expressions for calculation
         #
@@ -554,7 +538,6 @@ class ModeChoiceNHBW(_m.Tool()):
                 spec_list.append(build_spec(expression, result_name))
             compute_matrix(spec_list, scenario)
 
-        print "Time slicing NON-HOME BASE WORK matrices completed." + str(datetime.now().strftime('%H:%M:%S'))
 
 
     #********

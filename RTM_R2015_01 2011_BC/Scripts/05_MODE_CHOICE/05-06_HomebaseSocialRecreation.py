@@ -5,7 +5,6 @@
 ##--Purpose: HBSocRec Mode Choice Model
 ##---------------------------------------------------------------------
 import inro.modeller as _m
-from datetime import datetime
 import os
 
 
@@ -65,7 +64,6 @@ class ModeChoiceHBSocial(_m.Tool()):
 
     @_m.logbook_trace("continue aggregating non work demand, social_recreation")
     def aggregate_non_work_demand(self, scenario):
-        print "--------Aggregate Non-work demand, " + str(datetime.now().strftime('%H:%M:%S'))
         matrixnum = 640
         resultmat = 568
         spec_list = []
@@ -82,7 +80,6 @@ class ModeChoiceHBSocial(_m.Tool()):
 
     @_m.logbook_trace("Calculate_Bike")
     def calculate_bike(self, scenario):
-        print "--------Calculate_Bike_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
         # Bike utility stored in matrices mf428-mf436
         emmebank = scenario.emmebank
 
@@ -123,7 +120,6 @@ class ModeChoiceHBSocial(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
         compute_matrix(spec_list, scenario)
@@ -131,7 +127,6 @@ class ModeChoiceHBSocial(_m.Tool()):
 
     @_m.logbook_trace("Calculate_Walk_Utility")
     def calculate_walk(self, scenario):
-        print "--------Calculate_Walk Utility, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
         # Walk utility stored in matrices mf419-mf427
 
@@ -189,7 +184,6 @@ class ModeChoiceHBSocial(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "(mf925 + mf926 + mf927)"
             spec_list.append(build_spec(expression, result, constraint))
         compute_matrix(spec_list, scenario)
@@ -198,7 +192,6 @@ class ModeChoiceHBSocial(_m.Tool()):
     @_m.logbook_trace("Calculate_Rail_Utility")
     def calculate_rail(self, scenario):
         # Rail utility stored between matrices mf410-mf418
-        print "--------Calculate_Rail_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         alt_spec_cons = str(-0.540325242543)
@@ -279,7 +272,6 @@ class ModeChoiceHBSocial(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
         compute_matrix(spec_list, scenario)
@@ -287,7 +279,6 @@ class ModeChoiceHBSocial(_m.Tool()):
 
     @_m.logbook_trace("Calculate_Bus_Utility")
     def calculate_bus(self, scenario):
-        print "--------Calculate_Bus, " + str(datetime.now().strftime('%H:%M:%S'))
         # Bus utility stored between matrices mf401-mf409
         emmebank = scenario.emmebank
 
@@ -362,7 +353,6 @@ class ModeChoiceHBSocial(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
         compute_matrix(spec_list, scenario)
@@ -371,7 +361,6 @@ class ModeChoiceHBSocial(_m.Tool()):
     @_m.logbook_trace("Calculate_HOV2_utility")
     def calculate_hov2(self, scenario):
         # HOV2 utility stored between matrices mf383-mf391
-        print "--------Calculate_HOV2_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
 
         alt_spec_cons = str(0.211986033176)
         low_inc = str(0.244657517886)
@@ -436,7 +425,6 @@ class ModeChoiceHBSocial(_m.Tool()):
             spec_list.append(build_spec(expression_1, "mf925"))
 
             result = "mf" + str(mode_mf + i)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result))
         compute_matrix(spec_list, scenario)
@@ -445,7 +433,6 @@ class ModeChoiceHBSocial(_m.Tool()):
     @_m.logbook_trace("Calculate_SOV")
     def calculate_sov(self, scenario):
         # SOV utility stored between matrices mf374-mf382
-        print "--------Calculate_SOV_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
 
         twoplus_cars = str(0.475724860124)
         cost_all_inc = str(-0.0702404628224)
@@ -491,14 +478,12 @@ class ModeChoiceHBSocial(_m.Tool()):
             expression = expression + " + " + rural + "*((((mo29.gt.10)*(mo29.lt.15))+((md29.gt.10)*(md29.lt.15))).ge.1)"
 
             result = "mf" + str(mode_mf + i)
-            print result + " : " + expression
             spec_list.append(build_spec(expression, result))
         compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate Blended Skims, social recreational")
     def calculate_blends(self, scenario):
-        print "--------Calculate Blended Skims, social recreational," + str(datetime.now().strftime('%H:%M:%S'))
 
         expressions_list = [
             ['(mf110.eq.1)*(ms55+((mf115.eq.0)*(1-ms55)))', 'mf140'],
@@ -533,7 +518,6 @@ class ModeChoiceHBSocial(_m.Tool()):
     @_m.logbook_trace("Time slice social recreation")
     def time_slice_social_recreation(self, eb, scenario):
         slice_folder = os.path.join(os.path.dirname(eb.path), "TimeSlicingFactors")
-        print "Time slicing SOCIAL RECREATION trip matrices begin" + str(datetime.now().strftime('%H:%M:%S'))
         #
         #    Preparing expressions for calculation
         #
@@ -634,7 +618,6 @@ class ModeChoiceHBSocial(_m.Tool()):
                 spec_list.append(build_spec(expression, result_name))
             compute_matrix(spec_list, scenario)
 
-        print "Time slicing SOCIAL RECREATION matrices completed." + str(datetime.now().strftime('%H:%M:%S'))
 
 
     #********

@@ -5,7 +5,6 @@
 ##--Purpose: HBW Mode Choice Model
 ##---------------------------------------------------------------------
 import inro.modeller as _m
-from datetime import datetime
 import traceback as _traceback
 import os
 
@@ -73,7 +72,6 @@ class ModeChoiceHBW(_m.Tool()):
     @_m.logbook_trace("Calculate_Bike_utility")
     def calculate_bike(self, scenario):
     # Bike utility stored in matrices mf428-mf436
-        print "--------Calculate_Bike_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
 
         alt_spec_cons = str(-3.12234881162)
         med_inc = str(0.290849423975)
@@ -110,7 +108,6 @@ class ModeChoiceHBW(_m.Tool()):
             spec_list.append(build_spec(expression_1, "mf925"))
 
             result = "mf" + str(mode_mf + i)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "(mf925 + mf926 + mf927)" + "*" + "mf159" + "-" + "(9999*(mf159.eq.0))"
             spec_list.append(build_spec(expression, result))
 
@@ -121,7 +118,6 @@ class ModeChoiceHBW(_m.Tool()):
     def calculate_walk(self, scenario):
     # Walk utility stored in matrices mf419-mf427
         emmebank = scenario.emmebank
-        print "--------Calculate_Walk_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
 
         alt_spec_cons = str(1.40212378940)
         low_inc = str(0.385297511895)
@@ -170,7 +166,6 @@ class ModeChoiceHBW(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
 
@@ -181,7 +176,6 @@ class ModeChoiceHBW(_m.Tool()):
     def calculate_rail(self, scenario):
     # Rail utility stored between matrices mf410-mf418
         emmebank = scenario.emmebank
-        print "--------Calculate_Rail_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
         alt_spec_cons = str(0.312309200971)
         low_inc = str(-0.256035812912)
         high_inc = str(-0.819321180333)
@@ -258,7 +252,6 @@ class ModeChoiceHBW(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
 
@@ -269,7 +262,6 @@ class ModeChoiceHBW(_m.Tool()):
     def calculate_bus(self, scenario):
     # Bus utility stored between matrices mf401-mf409
         emmebank = scenario.emmebank
-        print "--------Calculate_Bus_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
 
         alt_spec_cons = str(-1.05896691913)
         low_inc = str(0.345931413405)
@@ -340,7 +332,6 @@ class ModeChoiceHBW(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            print result + " : " + expression_1 + ", " + expression_2 #+ ", " + expression_3
             expression = "mf925 + mf926"    #+  "+ mf927 "
             spec_list.append(build_spec(expression, result, constraint))
 
@@ -351,7 +342,6 @@ class ModeChoiceHBW(_m.Tool()):
     def calculate_hov3(self, scenario):
     # HOV3 utility stored between matrices mf392-mf400
         emmebank = scenario.emmebank
-        print "--------Calculate_HOV3_utility, " + str(datetime.now().strftime('%H:%M:%S'))
 
         alt_spec_cons = str(-3.49821743739)
         low_inc = str(0.356656133368)
@@ -413,7 +403,6 @@ class ModeChoiceHBW(_m.Tool()):
             spec_list.append(build_spec(expression_1, "mf925"))
 
             result = "mf" + str(mode_mf + i)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result))
 
@@ -423,7 +412,6 @@ class ModeChoiceHBW(_m.Tool()):
     @_m.logbook_trace("Calculate_HOV2_utlity")
     def calculate_hov2(self, scenario):
     # HOV2 utility stored between matrices mf383-mf391
-        print "--------Calculate_HOV2_utility, " + str(datetime.now().strftime('%H:%M:%S'))
 
         alt_spec_cons = str(-1.93452982905)
         low_inc = str(0.356656133368)
@@ -484,7 +472,6 @@ class ModeChoiceHBW(_m.Tool()):
             spec_list.append(build_spec(expression_1, "mf925"))
 
             result = "mf" + str(mode_mf + i)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result))
 
@@ -494,7 +481,6 @@ class ModeChoiceHBW(_m.Tool()):
     @_m.logbook_trace("Calculate_SOV_utility")
     def calculate_sov(self, scenario):
     # SOV utility stored between matrices mf374-mf382
-        print "--------Calculate_SOV_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
 
         high_inc = str(-0.613941251950)
         twoplus_cars = str(1.55180600932)
@@ -537,7 +523,6 @@ class ModeChoiceHBW(_m.Tool()):
             expression = expression + " + " + rural + "*((((mo29.ge.12)*(mo29.lt.15))+((md29.ge.12)*(md29.lt.15))).ge.1)"
 
             result = "mf" + str(mode_mf + i)
-            print result + " : " + expression
             spec_list.append(build_spec(expression, result))
 
         compute_matrix(spec_list, scenario)
@@ -545,7 +530,6 @@ class ModeChoiceHBW(_m.Tool()):
 
     @_m.logbook_trace("Calculate home-base work blend skims")
     def calculate_blends(self, scenario):
-        print "--------Calculate_Home-base_Work_blends, " + str(datetime.now().strftime('%H:%M:%S'))
         expressions_list = [
             ['(mf110.eq.1)*(ms50+((mf115.eq.0)*(1-ms50)))', 'mf140'],
             ['1-mf140', 'mf141'],
@@ -631,7 +615,6 @@ class ModeChoiceHBW(_m.Tool()):
                       dmHv3IncLow, dmHv3IncMed, dmHv3IncHigh,
                       dmBus, dmRail, dmActive]
 
-        # for nCnt1 in range(0,6): print arDmMatrix[nCnt1]
         #
         #    PM peak hour TSF was generated by Delcan. T7 Active mode was prepared at TransLink.
         #    SOV and 2-per by income range,
@@ -664,8 +647,6 @@ class ModeChoiceHBW(_m.Tool()):
                 expression = result_name + "+" + demand + "*mf" + str(703 + time_period)
                 spec_list.append(build_spec(expression, result_name))
             compute_matrix(spec_list, scenario)
-
-        print "Time slicing HBW matrices completed." + str(datetime.now().strftime('%H:%M:%S'))
 
 
     @_m.logbook_trace("Calculate final period demands")

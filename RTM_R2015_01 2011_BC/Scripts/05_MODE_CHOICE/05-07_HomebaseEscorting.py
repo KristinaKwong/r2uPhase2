@@ -4,7 +4,6 @@
 ##--Path: translink.emme.stage3.step5.modechoicehbesc
 ##--Purpose: HBescorting Mode Choice Model
 ##---------------------------------------------------------------------
-from datetime import datetime
 import inro.modeller as _m
 import os
 
@@ -82,7 +81,6 @@ class ModeChoiceHBEsc(_m.Tool()):
     @_m.logbook_trace("Calculate_Walk_utility")
     def calculate_walk(self, scenario):
     # Walk utility stored in matrices mf419-mf427
-        print "--------Calculate_Walk_utility, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         alt_spec_cons = str(0.0868032781316)
@@ -138,7 +136,6 @@ class ModeChoiceHBEsc(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "(mf925 + mf926 + mf927)"
             spec_list.append(build_spec(expression, result, constraint))
         compute_matrix(spec_list, scenario)
@@ -147,7 +144,6 @@ class ModeChoiceHBEsc(_m.Tool()):
     @_m.logbook_trace("Calculate_Rail_utility")
     def calculate_rail(self, scenario):
         # Rail utility stored between matrices mf410-mf418
-        print "--------Calculate_Rail_utility, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         alt_spec_cons = str(-4.67171026411)
@@ -217,7 +213,6 @@ class ModeChoiceHBEsc(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
         compute_matrix(spec_list, scenario)
@@ -226,7 +221,6 @@ class ModeChoiceHBEsc(_m.Tool()):
     @_m.logbook_trace("Calculate_Bus_utlity")
     def calculate_bus(self, scenario):
         # Bus utility stored between matrices mf401-mf409
-        print "--------Calculate_Bus_utility, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         alt_spec_cons = str(-6.58474918593)
@@ -297,7 +291,6 @@ class ModeChoiceHBEsc(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
         compute_matrix(spec_list, scenario)
@@ -306,7 +299,6 @@ class ModeChoiceHBEsc(_m.Tool()):
     @_m.logbook_trace("Calculate_HOV2_utility")
     def calculate_hov2(self, scenario):
     # HOV2 utility stored between matrices mf383-mf391
-        print "--------Calculate_HOV2_utility, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         alt_spec_cons = str(0.915606740026)
@@ -376,7 +368,6 @@ class ModeChoiceHBEsc(_m.Tool()):
             spec_list.append(build_spec(expression_3, "mf927"))
 
             result = "mf" + str(mode_mf + i)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result))
         compute_matrix(spec_list, scenario)
@@ -385,7 +376,6 @@ class ModeChoiceHBEsc(_m.Tool()):
     @_m.logbook_trace("Calculate_SOV_utility")
     def calculate_sov(self, scenario):
     # SOV utility stored between matrices mf374-mf382
-        print "--------Calculate_SOV_utility, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         low_inc = str(0.415284584773)
@@ -445,14 +435,12 @@ class ModeChoiceHBEsc(_m.Tool()):
             #expression = expression + " + " + rural + "*((((mo29.gt.11)*(mo29.lt.15))+((md29.gt.11)*(md29.lt.15))).ge.1)"
 
             result = "mf" + str(mode_mf + i)
-            print result + " : " + expression
             spec_list.append(build_spec(expression, result))
         compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Home-base-escorting Blend Skims")
     def calculate_blends(self, scenario):
-        print "--------Calculate_Home-base_Escorting_blends, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         expressions_list = [
@@ -486,7 +474,6 @@ class ModeChoiceHBEsc(_m.Tool()):
     #********
     def time_slice_escorting(self, eb, scenario):
         slice_folder = os.path.join(os.path.dirname(eb.path), "TimeSlicingFactors")
-        print "Time slicing Escorting trip matrices begin" + str(datetime.now().strftime('%H:%M:%S'))
         #
         #    Preparing expressions for calculation
         #
@@ -581,7 +568,6 @@ class ModeChoiceHBEsc(_m.Tool()):
                 spec_list.append(build_spec(expression, result_name))
             compute_matrix(spec_list, scenario)
 
-        print "Time slicing Escorting matrices completed." + str(datetime.now().strftime('%H:%M:%S'))
 
 
     #********

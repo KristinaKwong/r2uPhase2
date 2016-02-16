@@ -5,7 +5,6 @@
 ##--Purpose: HBU Mode Choice Model
 ##---------------------------------------------------------------------
 import inro.modeller as _m
-from datetime import datetime
 import os
 
 process_matrix_trans = _m.Modeller().tool(
@@ -68,7 +67,6 @@ class ModeChoiceHBUni(_m.Tool()):
     @_m.logbook_trace("continue aggregating non work demand, university")
     def aggregate_non_work_demand(self, scenario):
         ## Aggregate nonwork demand in matrices mf568-mf639
-        print "--------Aggregate Non-work demand, " + str(datetime.now().strftime('%H:%M:%S'))
         spec_list = []
         matrixnum = 640
         resultmat = 568
@@ -84,7 +82,6 @@ class ModeChoiceHBUni(_m.Tool()):
 
     @_m.logbook_trace("Calculate_Walk_Utility")
     def calculate_walk(self, scenario):
-        print "--------Calculate_Walk_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
         # Walk utility stored in matrices mf419-mf427
         emmebank = scenario.emmebank
 
@@ -127,7 +124,6 @@ class ModeChoiceHBUni(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "(mf925 + mf926 + mf927)"
             spec_list.append(build_spec(expression, result, constraint))
         compute_matrix(spec_list, scenario)
@@ -136,7 +132,6 @@ class ModeChoiceHBUni(_m.Tool()):
     @_m.logbook_trace("Calculate_Rail_Utility")
     def calculate_rail(self, scenario):
         # Rail utility stored between matrices mf410-mf418
-        print "--------Calculate_Rail_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         alt_spec_cons = str(1.97933584013)
@@ -187,7 +182,6 @@ class ModeChoiceHBUni(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
         compute_matrix(spec_list, scenario)
@@ -196,7 +190,6 @@ class ModeChoiceHBUni(_m.Tool()):
     @_m.logbook_trace("Calculate_Bus_Utility")
     def calculate_bus(self, scenario):
         # Bus utility stored between matrices mf401-mf409
-        print "--------Calculate_Bus_utility, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         alt_spec_cons = str(2.12500836788)
@@ -233,7 +226,6 @@ class ModeChoiceHBUni(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            print result + " : " + expression_1 + ", " + expression_2
             expression = "mf925 + mf926"
             spec_list.append(build_spec(expression, result, constraint))
         compute_matrix(spec_list, scenario)
@@ -242,7 +234,6 @@ class ModeChoiceHBUni(_m.Tool()):
     @_m.logbook_trace("Calculate_HOV3_Utility")
     def calculate_hov3(self, scenario):
         # HOV3 utility stored between matrices mf392-mf400
-        print "--------Calculate_HOV3_Utility, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         alt_spec_cons = str(-2.87504697385)
@@ -287,7 +278,6 @@ class ModeChoiceHBUni(_m.Tool()):
             spec_list.append(build_spec(expression_1, "mf925"))
 
             result = "mf" + str(mode_mf + i)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result))
         compute_matrix(spec_list, scenario)
@@ -296,7 +286,6 @@ class ModeChoiceHBUni(_m.Tool()):
     @_m.logbook_trace("Calculate_HOV2_Utility")
     def calculate_hov2(self, scenario):
         # HOV2 utility stored between matrices mf383-mf391
-        print "--------Calculate_HOV2_utility, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         alt_spec_cons = str(-1.28728366115)
@@ -339,7 +328,6 @@ class ModeChoiceHBUni(_m.Tool()):
             spec_list.append(build_spec(expression_1, "mf925"))
 
             result = "mf" + str(mode_mf + i)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result))
         compute_matrix(spec_list, scenario)
@@ -348,7 +336,6 @@ class ModeChoiceHBUni(_m.Tool()):
     @_m.logbook_trace("Calculate_SOV_utility")
     def calculate_sov(self, scenario):
         # SOV utility stored between matrices mf374-mf382
-        print "--------Calculate_SOV_utility, " + str(datetime.now().strftime('%H:%M:%S'))
         emmebank = scenario.emmebank
 
         high_inc = str(0.294204778843)
@@ -394,7 +381,6 @@ class ModeChoiceHBUni(_m.Tool()):
             spec_list.append(build_spec(expression_1, "mf925"))
 
             result = "mf" + str(mode_mf + i)
-            print result + " : " + expression_1 + ", " + expression_2 + ", " + expression_3
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result))
         compute_matrix(spec_list, scenario)
@@ -402,7 +388,6 @@ class ModeChoiceHBUni(_m.Tool()):
 
     @_m.logbook_trace("Calculate_MFs_Additional_Attributes")
     def calculate_blends(self, scenario):
-        print "--------Calculate_MFs_Additional_Attributes, " + str(datetime.now().strftime('%H:%M:%S'))
 
         expressions_list = [
             ['(mf110.eq.1)*(ms51+((mf115.eq.0)*(1-ms51)))', 'mf140'],
@@ -436,7 +421,6 @@ class ModeChoiceHBUni(_m.Tool()):
     @_m.logbook_trace("Time slice home-base university")
     def time_slice_home_base_university(self, eb, scenario):
         slice_folder = os.path.join(os.path.dirname(eb.path), "TimeSlicingFactors")
-        print "Time slicing University trip matrices begin" + str(datetime.now().strftime('%H:%M:%S'))
         #
         #    Preparing expressions for calculation
         #
@@ -540,8 +524,6 @@ class ModeChoiceHBUni(_m.Tool()):
                 expression = result_name + "+" + demand + "*mf" + str(703 + time_period)
                 spec_list.append(build_spec(expression, result_name))
             compute_matrix(spec_list, scenario)
-
-        print "Time slicing University matrices completed." + str(datetime.now().strftime('%H:%M:%S'))
 
 
     #********
