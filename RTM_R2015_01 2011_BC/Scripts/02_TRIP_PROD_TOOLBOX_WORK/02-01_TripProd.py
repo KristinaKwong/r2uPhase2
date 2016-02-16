@@ -150,10 +150,8 @@ class TripProd(_m.Tool()):
 
         specs = []
         for i in range(173, 268, 12):
-            expression = "0"
-            for x in range(0, 12):
-                expression = expression + " + mo" + str(x + i)
-            specs.append(util.matrix_spec("mo" + str(mo_result_num), expression))
+            exp = util.matrix_sum(["mo%d" % n for n in range(i, i + 12)])
+            specs.append(util.matrix_spec("mo" + str(mo_result_num), exp))
             mo_result_num = mo_result_num + 1
 
         report = compute_matrix(specs)
@@ -166,25 +164,17 @@ class TripProd(_m.Tool()):
 
         specs = []
 
-        expression = "mo269"
-        for i in range(270, 281):
-            expression = expression + " + mo" + str(i)
-        specs.append(util.matrix_spec("mo899", expression))
+        exp = util.matrix_sum(["mo%d" % i for i in range(269, 281)])
+        specs.append(util.matrix_spec("mo899", exp))
 
-        expression = "mo281"
-        for i in range(282, 293):
-            expression = expression + " + mo" + str(i)
-        specs.append(util.matrix_spec("mo900", expression))
+        exp = util.matrix_sum(["mo%d" % i for i in range(281, 293)])
+        specs.append(util.matrix_spec("mo900", exp))
 
-        expression = "mo293"
-        for i in range(294, 305):
-            expression = expression + " + mo" + str(i)
-        specs.append(util.matrix_spec("mo901", expression))
+        exp = util.matrix_sum(["mo%d" % i for i in range(293, 305)])
+        specs.append(util.matrix_spec("mo901", exp))
 
-        expression = "mo305"
-        for i in range(306, 317):
-            expression = expression + " + mo" + str(i)
-        specs.append(util.matrix_spec("mo902", expression))
+        exp = util.matrix_sum(["mo%d" % i for i in range(305, 317)])
+        specs.append(util.matrix_spec("mo902", exp))
 
         specs.append(util.matrix_spec("mo903", "mo900 + 2*mo901 + 3.35*mo902"))
 
@@ -199,10 +189,7 @@ class TripProd(_m.Tool()):
         mo_result_num = 161
         specs = []
         for mo_num in range(404, 836, 4):
-            expression = "mo" + str(mo_num) + \
-                         " + mo" + str(mo_num + 1) + \
-                         " + mo" + str(mo_num + 2) + \
-                         " + mo" + str(mo_num + 3)
+            expression = util.matrix_sum(["mo%d" % i for i in range(mo_num, mo_num + 4)])
             specs.append(util.matrix_spec("mo" + str(mo_result_num), expression))
             mo_result_num = mo_result_num + 1
 
