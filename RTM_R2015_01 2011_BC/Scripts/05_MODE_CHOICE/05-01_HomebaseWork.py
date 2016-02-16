@@ -5,17 +5,11 @@
 ##--Purpose: HBW Mode Choice Model
 ##---------------------------------------------------------------------
 import inro.modeller as _m
-import traceback as _traceback
 import os
 
-
-compute_matrix = _m.Modeller().tool(
-    "inro.emme.matrix_calculation.matrix_calculator")
-
-utilities = _m.Modeller().module(
-    "translink.emme.stage3.step5.utilities")
+compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
+utilities = _m.Modeller().module("translink.emme.stage3.step5.utilities")
 build_spec = utilities.build_spec
-
 
 class ModeChoiceHBW(_m.Tool()):
     tool_run_msg = ""

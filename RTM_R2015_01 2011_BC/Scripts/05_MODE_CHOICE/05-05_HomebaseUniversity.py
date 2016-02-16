@@ -7,15 +7,10 @@
 import inro.modeller as _m
 import os
 
-process_matrix_trans = _m.Modeller().tool(
-    "inro.emme.data.matrix.matrix_transaction")
-compute_matrix = _m.Modeller().tool(
-    "inro.emme.matrix_calculation.matrix_calculator")
-
-utilities = _m.Modeller().module(
-    "translink.emme.stage3.step5.utilities")
+process_matrix_trans = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
+compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
+utilities = _m.Modeller().module("translink.emme.stage3.step5.utilities")
 build_spec = utilities.build_spec
-
 
 # TODO: add tool interface to mode choice procedure
 class ModeChoiceHBUni(_m.Tool()):

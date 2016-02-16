@@ -7,15 +7,10 @@
 import inro.modeller as _m
 import os
 
-process_matrix_trans = _m.Modeller().tool(
-    "inro.emme.data.matrix.matrix_transaction")
-compute_matrix = _m.Modeller().tool(
-    "inro.emme.matrix_calculation.matrix_calculator")
-
-utilities = _m.Modeller().module(
-    "translink.emme.stage3.step5.utilities")
+process_matrix_trans = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
+compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
+utilities = _m.Modeller().module("translink.emme.stage3.step5.utilities")
 build_spec = utilities.build_spec
-
 
 # TODO: add tool interface to mode choice procedure
 class ModeChoiceNHBO(_m.Tool()):
@@ -443,7 +438,7 @@ class ModeChoiceNHBO(_m.Tool()):
     #    Main module time slicing the matrices
     #********
     @_m.logbook_trace("Time slice non-home base others")
-    def time_slice_non_home_base_others(self, scenario, data_folder):
+    def time_slice_non_home_base_others(self, eb, scenario):
         slice_folder = os.path.join(os.path.dirname(eb.path), "TimeSlicingFactors")
         #
         #    Preparing expressions for calculation
