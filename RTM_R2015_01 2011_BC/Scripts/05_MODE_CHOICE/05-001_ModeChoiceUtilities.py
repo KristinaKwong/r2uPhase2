@@ -64,8 +64,9 @@ def process_transaction_list(scenario, base_folder, file_names):
                              scenario=scenario)
 
 
-def export_matrices_report(data_folder, purpose, full_report_matrices):
-    file_name = os.path.join(data_folder, "reporting", purpose + "_fullRep.311")
+def export_matrices_report(eb, purpose, full_report_matrices):
+    rep_folder = os.path.join(os.path.dirname(eb.path), "reporting")
+    file_name = os.path.join(rep_folder, purpose + "_fullRep.311")
     matrix_list = []
     for nCnt in full_report_matrices:
         matrix_list.append("mf" + str(nCnt))
@@ -76,7 +77,7 @@ def export_matrices_report(data_folder, purpose, full_report_matrices):
         skip_default_values=True,
         append_to_file=False)
 
-    file_name = os.path.join(data_folder, "reporting", purpose + "_PkHrRep.311")
+    file_name = os.path.join(rep_folder, purpose + "_PkHrRep.311")
     matrix_list = []
     for nCnt in range(0, 9):
         matrix_list.append("mf" + str(777 + (nCnt * 7)))

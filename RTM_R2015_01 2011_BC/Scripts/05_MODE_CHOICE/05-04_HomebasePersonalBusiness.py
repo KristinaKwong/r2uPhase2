@@ -61,7 +61,7 @@ class ModeChoiceHBPB(_m.Tool()):
         self.calculate_final_period_demand(scenario)
 
         if is_last_iteration:
-            utilities.export_matrices_report(data_folder, "pBusi", range(773, 843))
+            utilities.export_matrices_report(eb, "pBusi", range(773, 843))
 
 
     @_m.logbook_trace("continue aggregating non work demand, personal business")

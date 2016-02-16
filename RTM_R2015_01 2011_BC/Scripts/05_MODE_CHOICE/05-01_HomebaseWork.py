@@ -72,7 +72,7 @@ class ModeChoiceHBW(_m.Tool()):
 
         # only export matrix data on the final iteration
         if is_last_iteration:
-            utilities.export_matrices_report(data_folder, "work", range(710, 843))
+            utilities.export_matrices_report(eb, "work", range(710, 843))
 
 
     @_m.logbook_trace("Calculate_Bike_utility")
