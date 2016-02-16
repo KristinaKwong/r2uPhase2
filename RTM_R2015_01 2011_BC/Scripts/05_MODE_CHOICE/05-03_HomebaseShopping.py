@@ -5,7 +5,6 @@
 ##--Purpose: HBSHOPPING Mode Choice Model
 ##---------------------------------------------------------------------
 import inro.modeller as _m
-import os
 
 process_matrix_trans = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
 compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
@@ -509,7 +508,6 @@ class ModeChoiceHBShopping(_m.Tool()):
     #********
     @_m.logbook_trace("Time slice home base shopping")
     def time_slice_shopping(self, eb, scenario):
-        slice_folder = os.path.join(os.path.dirname(eb.path), "TimeSlicingFactors")
         #
         #    Preparing expressions for calculation
         #
@@ -602,7 +600,7 @@ class ModeChoiceHBShopping(_m.Tool()):
         aResultMatrix = [773, 794, 780, 801, 815, 822, 829]
 
         for files, demand, result in zip(aTSFactor, arDmMatrix, aResultMatrix):
-            utilities.process_transaction_list(scenario, slice_folder, files)
+            utilities.process_timeslicing_list(eb, scenario, files)
             spec_list = []
             for time_period in range(0, 7):
                 result_name = "mf" + str(result + time_period)

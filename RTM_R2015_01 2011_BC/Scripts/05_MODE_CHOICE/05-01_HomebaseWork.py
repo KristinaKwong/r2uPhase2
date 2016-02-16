@@ -5,7 +5,6 @@
 ##--Purpose: HBW Mode Choice Model
 ##---------------------------------------------------------------------
 import inro.modeller as _m
-import os
 
 compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 utilities = _m.Modeller().module("translink.emme.stage3.step5.utilities")
@@ -558,7 +557,6 @@ class ModeChoiceHBW(_m.Tool()):
     #********
     @_m.logbook_trace("Time slicing home-base work")
     def time_slice_home_base_work(self, eb, scenario):
-        slice_folder = os.path.join(os.path.dirname(eb.path), "TimeSlicingFactors")
         #
         #    Preparing expressions for calculation
         #
@@ -633,7 +631,7 @@ class ModeChoiceHBW(_m.Tool()):
         arResultMatrix = [710, 717, 724, 731, 738, 745, 752, 759, 766, 815, 822, 829]
 
         for files, demand, result in zip(arFileName, arDmMatrix, arResultMatrix):
-            utilities.process_transaction_list(scenario, slice_folder, files)
+            utilities.process_timeslicing_list(eb, scenario, files)
             #    Range was increased to 7 from 6 time period
             spec_list = []
             for time_period in range(0, 7):

@@ -58,7 +58,8 @@ def calculate_demand(scenario, demand_start, probability_start, result_start, nu
     compute_matrix(spec_list, scenario)
 
 
-def process_transaction_list(scenario, base_folder, file_names):
+def process_timeslicing_list(eb, scenario, file_names):
+    base_folder = os.path.join(os.path.dirname(eb.path), "TimeSlicingFactors")
     for name in file_names:
         process_matrix_trans(transaction_file=os.path.join(base_folder, name + '.311'),
                              scenario=scenario)
