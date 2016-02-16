@@ -672,43 +672,43 @@ class ModeChoiceHBW(_m.Tool()):
         #    Generate AM peak hour demand
         #
         specs = []
-        specs.append(build_spec("mf714", "mf843"))
-        specs.append(build_spec("mf721", "mf844"))
-        specs.append(build_spec("mf728", "mf845"))
-        specs.append(build_spec("(mf735/2)+(mf756/" + msAutOccWork3Plus + ")", "mf848"))
-        specs.append(build_spec("(mf742/2)+(mf763/" + msAutOccWork3Plus + ")", "mf849"))
-        specs.append(build_spec("(mf749/2)+(mf770/" + msAutOccWork3Plus + ")", "mf850"))
-        specs.append(build_spec("mf819", "mf853"))
-        specs.append(build_spec("mf826", "mf854"))
-        specs.append(build_spec("mf833", "mf855"))
+        specs.append(util.matrix_spec("mf843", "mf714"))
+        specs.append(util.matrix_spec("mf844", "mf721"))
+        specs.append(util.matrix_spec("mf845", "mf728"))
+        specs.append(util.matrix_spec("mf848", "(mf735/2)+(mf756/" + msAutOccWork3Plus + ")"))
+        specs.append(util.matrix_spec("mf849", "(mf742/2)+(mf763/" + msAutOccWork3Plus + ")"))
+        specs.append(util.matrix_spec("mf850", "(mf749/2)+(mf770/" + msAutOccWork3Plus + ")"))
+        specs.append(util.matrix_spec("mf853", "mf819"))
+        specs.append(util.matrix_spec("mf854", "mf826"))
+        specs.append(util.matrix_spec("mf855", "mf833"))
 
         # Track work transit demand separately for park and ride model
-        specs.append(build_spec("mf819", "mf998"))
-        specs.append(build_spec("mf826", "mf997"))
+        specs.append(util.matrix_spec("mf998", "mf819"))
+        specs.append(util.matrix_spec("mf997", "mf826"))
         #
         #     Generate midday hour demand
         #
-        specs.append(build_spec("mf715", "mf856"))
-        specs.append(build_spec("mf722", "mf857"))
-        specs.append(build_spec("mf729", "mf858"))
-        specs.append(build_spec("(mf736/2)+(mf757/" + msAutOccWork3PlusM + ")", "mf861"))
-        specs.append(build_spec("(mf743/2)+(mf764/" + msAutOccWork3PlusM + ")", "mf862"))
-        specs.append(build_spec("(mf750/2)+(mf771/" + msAutOccWork3PlusM + ")", "mf863"))
-        specs.append(build_spec("mf820", "mf866"))
-        specs.append(build_spec("mf827", "mf867"))
-        specs.append(build_spec("mf834", "mf868"))
+        specs.append(util.matrix_spec("mf856", "mf715"))
+        specs.append(util.matrix_spec("mf857", "mf722"))
+        specs.append(util.matrix_spec("mf858", "mf729"))
+        specs.append(util.matrix_spec("mf861", "(mf736/2)+(mf757/" + msAutOccWork3PlusM + ")"))
+        specs.append(util.matrix_spec("mf862", "(mf743/2)+(mf764/" + msAutOccWork3PlusM + ")"))
+        specs.append(util.matrix_spec("mf863", "(mf750/2)+(mf771/" + msAutOccWork3PlusM + ")"))
+        specs.append(util.matrix_spec("mf866", "mf820"))
+        specs.append(util.matrix_spec("mf867", "mf827"))
+        specs.append(util.matrix_spec("mf868", "mf834"))
         #
         #     Generate PM peak hour demand
         #
-        specs.append(build_spec("mf716", "mf869"))
-        specs.append(build_spec("mf723", "mf870"))
-        specs.append(build_spec("mf730", "mf871"))
-        specs.append(build_spec("(mf737/2)+(mf758/" + msAutOccWork3Plus + ")", "mf874"))
-        specs.append(build_spec("(mf744/2)+(mf765/" + msAutOccWork3Plus + ")", "mf875"))
-        specs.append(build_spec("(mf751/2)+(mf772/" + msAutOccWork3Plus + ")", "mf876"))
-        specs.append(build_spec("mf821", "mf879"))
-        specs.append(build_spec("mf828", "mf880"))
-        specs.append(build_spec("mf835", "mf881"))
+        specs.append(util.matrix_spec("mf869", "mf716"))
+        specs.append(util.matrix_spec("mf870", "mf723"))
+        specs.append(util.matrix_spec("mf871", "mf730"))
+        specs.append(util.matrix_spec("mf874", "(mf737/2)+(mf758/" + msAutOccWork3Plus + ")"))
+        specs.append(util.matrix_spec("mf875", "(mf744/2)+(mf765/" + msAutOccWork3Plus + ")"))
+        specs.append(util.matrix_spec("mf876", "(mf751/2)+(mf772/" + msAutOccWork3Plus + ")"))
+        specs.append(util.matrix_spec("mf879", "mf821"))
+        specs.append(util.matrix_spec("mf880", "mf828"))
+        specs.append(util.matrix_spec("mf881", "mf835"))
         #
         #    Accumulated demand matrices of 4 time periods by modes (auto person, bus, rail, active)
         #    mf70-mf73 : T1(before 6am and after 7pm) - auto person, bus, rail, active
@@ -716,24 +716,24 @@ class ModeChoiceHBW(_m.Tool()):
         #    mf80-mf83 : T3(10am-2pm) - auto person, bus, rail, active
         #    mf85-mf88 : T4(2pm-7pm) - auto person, bus, rail, active
         #
-        specs.append(build_spec("mf710+mf717+mf724+mf731+mf738+mf745+mf752+mf759+mf766", "mf70"))
-        specs.append(build_spec("mf815*mf928", "mf71"))
-        specs.append(build_spec("mf822*mf975", "mf72"))
-        specs.append(build_spec("mf829", "mf73"))
+        specs.append(util.matrix_spec("mf70", "mf710+mf717+mf724+mf731+mf738+mf745+mf752+mf759+mf766"))
+        specs.append(util.matrix_spec("mf71", "mf815*mf928"))
+        specs.append(util.matrix_spec("mf72", "mf822*mf975"))
+        specs.append(util.matrix_spec("mf73", "mf829"))
 
-        specs.append(build_spec("mf711+mf718+mf725+mf732+mf739+mf746+mf753+mf760+mf767", "mf75"))
-        specs.append(build_spec("mf816", "mf76"))
-        specs.append(build_spec("mf823", "mf77"))
-        specs.append(build_spec("mf830", "mf78"))
+        specs.append(util.matrix_spec("mf75", "mf711+mf718+mf725+mf732+mf739+mf746+mf753+mf760+mf767"))
+        specs.append(util.matrix_spec("mf76", "mf816"))
+        specs.append(util.matrix_spec("mf77", "mf823"))
+        specs.append(util.matrix_spec("mf78", "mf830"))
 
-        specs.append(build_spec("mf712+mf719+mf726+mf733+mf740+mf747+mf754+mf761+mf768", "mf80"))
-        specs.append(build_spec("mf817*mf929", "mf81"))
-        specs.append(build_spec("mf824*mf976", "mf82"))
-        specs.append(build_spec("mf831", "mf83"))
+        specs.append(util.matrix_spec("mf80", "mf712+mf719+mf726+mf733+mf740+mf747+mf754+mf761+mf768"))
+        specs.append(util.matrix_spec("mf81", "mf817*mf929"))
+        specs.append(util.matrix_spec("mf82", "mf824*mf976"))
+        specs.append(util.matrix_spec("mf83", "mf831"))
 
-        specs.append(build_spec("mf713+mf720+mf727+mf734+mf741+mf748+mf755+mf762+mf769", "mf85"))
-        specs.append(build_spec("mf818", "mf86"))
-        specs.append(build_spec("mf825", "mf87"))
-        specs.append(build_spec("mf832", "mf88"))
+        specs.append(util.matrix_spec("mf85", "mf713+mf720+mf727+mf734+mf741+mf748+mf755+mf762+mf769"))
+        specs.append(util.matrix_spec("mf86", "mf818"))
+        specs.append(util.matrix_spec("mf87", "mf825"))
+        specs.append(util.matrix_spec("mf88", "mf832"))
 
         compute_matrix(specs, scenario)

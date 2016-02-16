@@ -643,33 +643,33 @@ class ModeChoiceHBSocial(_m.Tool()):
 
         specs = []
 
-        specs.append(build_spec("mf846+" + "mf777", "mf846"))
-        specs.append(build_spec("mf847+" + "mf798", "mf847"))
-        specs.append(build_spec("mf851+" + "(mf784/" + msAutOccSocR2Plus + ")", "mf851"))
-        specs.append(build_spec("mf852+" + "(mf805/" + msAutOccSocR2Plus + ")", "mf852"))
-        specs.append(build_spec("mf853+" + "mf819*mf996", "mf853"))
-        specs.append(build_spec("mf854+" + "mf826*mf992", "mf854"))
-        specs.append(build_spec("mf855+" + "mf833", "mf855"))
+        specs.append(util.matrix_spec("mf846", "mf846+" + "mf777"))
+        specs.append(util.matrix_spec("mf847", "mf847+" + "mf798"))
+        specs.append(util.matrix_spec("mf851", "mf851+" + "(mf784/" + msAutOccSocR2Plus + ")"))
+        specs.append(util.matrix_spec("mf852", "mf852+" + "(mf805/" + msAutOccSocR2Plus + ")"))
+        specs.append(util.matrix_spec("mf853", "mf853+" + "mf819*mf996"))
+        specs.append(util.matrix_spec("mf854", "mf854+" + "mf826*mf992"))
+        specs.append(util.matrix_spec("mf855", "mf855+" + "mf833"))
         #
         #    Midday
         #
-        specs.append(build_spec("mf859+" + "mf778", "mf859"))
-        specs.append(build_spec("mf860+" + "mf799", "mf860"))
-        specs.append(build_spec("mf864+" + "(mf785/" + msAutOccSocR2PlusM + ")", "mf864"))
-        specs.append(build_spec("mf865+" + "(mf806/" + msAutOccSocR2PlusM + ")", "mf865"))
-        specs.append(build_spec("mf866+" + "mf820", "mf866"))
-        specs.append(build_spec("mf867+" + "mf827", "mf867"))
-        specs.append(build_spec("mf868+" + "mf834", "mf868"))
+        specs.append(util.matrix_spec("mf859", "mf859+" + "mf778"))
+        specs.append(util.matrix_spec("mf860", "mf860+" + "mf799"))
+        specs.append(util.matrix_spec("mf864", "mf864+" + "(mf785/" + msAutOccSocR2PlusM + ")"))
+        specs.append(util.matrix_spec("mf865", "mf865+" + "(mf806/" + msAutOccSocR2PlusM + ")"))
+        specs.append(util.matrix_spec("mf866", "mf866+" + "mf820"))
+        specs.append(util.matrix_spec("mf867", "mf867+" + "mf827"))
+        specs.append(util.matrix_spec("mf868", "mf868+" + "mf834"))
         #
         #    PM peak hour
         #
-        specs.append(build_spec("mf872+" + "mf779", "mf872"))
-        specs.append(build_spec("mf873+" + "mf800", "mf873"))
-        specs.append(build_spec("mf877+" + "(mf786/" + msAutOccSocR2Plus + ")", "mf877"))
-        specs.append(build_spec("mf878+" + "(mf807/" + msAutOccSocR2Plus + ")", "mf878"))
-        specs.append(build_spec("mf879+" + "mf821", "mf879"))
-        specs.append(build_spec("mf880+" + "mf828", "mf880"))
-        specs.append(build_spec("mf881+" + "mf835", "mf881"))
+        specs.append(util.matrix_spec("mf872", "mf872+" + "mf779"))
+        specs.append(util.matrix_spec("mf873", "mf873+" + "mf800"))
+        specs.append(util.matrix_spec("mf877", "mf877+" + "(mf786/" + msAutOccSocR2Plus + ")"))
+        specs.append(util.matrix_spec("mf878", "mf878+" + "(mf807/" + msAutOccSocR2Plus + ")"))
+        specs.append(util.matrix_spec("mf879", "mf879+" + "mf821"))
+        specs.append(util.matrix_spec("mf880", "mf880+" + "mf828"))
+        specs.append(util.matrix_spec("mf881", "mf881+" + "mf835"))
 
         #
         #    Accumulated demand matrices of 4 time periods by modes (auto person, bus, rail, active)
@@ -680,24 +680,24 @@ class ModeChoiceHBSocial(_m.Tool()):
         #
         #    Auto person - 2 income levels & SOV & 2+person
         #
-        specs.append(build_spec("mf70+mf773+mf794+mf780+mf801", "mf70"))
-        specs.append(build_spec("mf71+mf815", "mf71"))
-        specs.append(build_spec("mf72+mf822", "mf72"))
-        specs.append(build_spec("mf73+mf829", "mf73"))
+        specs.append(util.matrix_spec("mf70", "mf70+mf773+mf794+mf780+mf801"))
+        specs.append(util.matrix_spec("mf71", "mf71+mf815"))
+        specs.append(util.matrix_spec("mf72", "mf72+mf822"))
+        specs.append(util.matrix_spec("mf73", "mf73+mf829"))
 
-        specs.append(build_spec("mf75+mf774+mf795+mf781+mf802", "mf75"))
-        specs.append(build_spec("mf76+mf816", "mf76"))
-        specs.append(build_spec("mf77+mf823", "mf77"))
-        specs.append(build_spec("mf78+mf830", "mf78"))
+        specs.append(util.matrix_spec("mf75", "mf75+mf774+mf795+mf781+mf802"))
+        specs.append(util.matrix_spec("mf76", "mf76+mf816"))
+        specs.append(util.matrix_spec("mf77", "mf77+mf823"))
+        specs.append(util.matrix_spec("mf78", "mf78+mf830"))
 
-        specs.append(build_spec("mf80+mf775+mf796+mf782+mf803", "mf80"))
-        specs.append(build_spec("mf81+mf817", "mf81"))
-        specs.append(build_spec("mf82+mf824", "mf82"))
-        specs.append(build_spec("mf83+mf831", "mf83"))
+        specs.append(util.matrix_spec("mf80", "mf80+mf775+mf796+mf782+mf803"))
+        specs.append(util.matrix_spec("mf81", "mf81+mf817"))
+        specs.append(util.matrix_spec("mf82", "mf82+mf824"))
+        specs.append(util.matrix_spec("mf83", "mf83+mf831"))
 
-        specs.append(build_spec("mf85+mf776+mf797+mf783+mf804", "mf85"))
-        specs.append(build_spec("mf86+mf818", "mf86"))
-        specs.append(build_spec("mf87+mf825", "mf87"))
-        specs.append(build_spec("mf88+mf832", "mf88"))
+        specs.append(util.matrix_spec("mf85", "mf85+mf776+mf797+mf783+mf804"))
+        specs.append(util.matrix_spec("mf86", "mf86+mf818"))
+        specs.append(util.matrix_spec("mf87", "mf87+mf825"))
+        specs.append(util.matrix_spec("mf88", "mf88+mf832"))
 
         compute_matrix(specs, scenario)
