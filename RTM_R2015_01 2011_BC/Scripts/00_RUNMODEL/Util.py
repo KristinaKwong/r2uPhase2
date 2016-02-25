@@ -68,7 +68,8 @@ class Util(_m.Tool()):
             "type": "MATRIX_CALCULATION",
             "result": result,
             "expression": expression,
-            "constraint": {}
+            "constraint": {},
+            "aggregation": {}
         }
         return spec
 

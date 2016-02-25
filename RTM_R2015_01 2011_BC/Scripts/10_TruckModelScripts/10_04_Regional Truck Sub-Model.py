@@ -17,19 +17,6 @@ RgL11=107040
 RgH11=45950
 
 class RegTruckModel(_m.Tool()):
-
-    spec_as_dict = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {"origins": None, "destinations": None}
-            },
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
-
-
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
@@ -68,22 +55,18 @@ class RegTruckModel(_m.Tool()):
             run_macro=_m.Modeller().tool("inro.emme.prompt.run_macro")
             run_macro(macro_name="../Scripts/10_TruckModelScripts/trkmodamregv1.mac")
 
-            MATCALC = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _m.Modeller().tool(MATCALC)
+            util = _m.Modeller().tool("translink.emme.util")
+            compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
+            spec = util.matrix_spec("ms151", "mf1031")
+            spec['aggregation']['origins'] = "+"
+            spec['aggregation']['destinations'] = "+"
+            compute_matrix(spec)
 
-            RegSpec=self.spec_as_dict
-            RegSpec['expression'] = "mf1031"
-            RegSpec['result']='ms151'
-            RegSpec['aggregation']['origins']="+"
-            RegSpec['aggregation']['destinations']="+"
-            compute_matrix(RegSpec)
-
-            RegSpec['expression'] = "mf1034"
-            RegSpec['result']='ms152'
-            compute_matrix(RegSpec)
-
-            self.ResetSpec(RegSpec)
+            spec = util.matrix_spec("ms152", "mf1034")
+            spec['aggregation']['origins'] = "+"
+            spec['aggregation']['destinations'] = "+"
+            compute_matrix(spec)
 
             RgLg = eb.matrix("ms151")
             RgHv=eb.matrix("ms152")
@@ -107,23 +90,9 @@ class RegTruckModel(_m.Tool()):
             MatrixList2=["mf1034","mf1037","mf1038"]
 
             for i in range(len(MatrixList1)):
-
-                RegSpec['expression'] = MatrixList1[i]+"*"+str(RatioL)
-                RegSpec['result']=MatrixList1[i]
-                compute_matrix(RegSpec)
+                spec = util.matrix_spec(MatrixList1[i], MatrixList1[i] + "*" + str(RatioL))
+                compute_matrix(spec)
 
             for i in range(len(MatrixList2)):
-
-                RegSpec['expression'] = MatrixList2[i]+"*"+str(RatioH)
-                RegSpec['result']=MatrixList2[i]
-                compute_matrix(RegSpec)
-
-
-
-
-    def ResetSpec (self, SpecItems):
-
-        SpecItems['constraint']['by_zone']['origins'] = None
-        SpecItems['constraint']['by_zone']['destinations'] = None
-        SpecItems['aggregation']['origins'] = None
-        SpecItems['aggregation']['destinations'] = None
+                spec = util.matrix_spec(MatrixList2[i], MatrixList2[i] + "*" + str(RatioH))
+                compute_matrix(spec)
