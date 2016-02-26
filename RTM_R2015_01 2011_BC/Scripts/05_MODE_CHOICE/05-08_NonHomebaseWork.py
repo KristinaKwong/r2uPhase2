@@ -252,7 +252,7 @@ class ModeChoiceNHBW(_m.Tool()):
                 expression_3 = tran_acc + "*(mo392.min.150)*(gy(p).ne.3)*(gy(q).ne.3)"
             else:
                 expression_3 = "0"
-            expression_3 = expression_3 + " + " + within_gy + "*(gy(p).eq.md29)*(gy(p).ne.3)*((gy(p).ne.4))"
+            expression_3 = expression_3 + " + " + within_gy + "*(gy(p).eq.gy(q))*(gy(p).ne.3)*((gy(p).ne.4))"
             expression_3 = expression_3 + " + " + intra_van + "*((gy(p).eq.4)*(gy(q).eq.4))"
             spec_list.append(build_spec(expression_3, "mf927", constraint))
 
@@ -290,7 +290,7 @@ class ModeChoiceNHBW(_m.Tool()):
         # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
         expression_2 = van + "*(((gy(p).eq.4).or.(gy(q).eq.4)))"
         # within gy (not rural):  1 if gyo=gyd and (iflt(gyo,12) and iflt(gyd,12))
-        #expression_2 = expression_2 + " + " + within_gy_not_van + "*(gy(p).eq.md29)*(gy(p).ne.3)*((gy(p).ne.4))"
+        #expression_2 = expression_2 + " + " + within_gy_not_van + "*(gy(p).eq.gy(q))*(gy(p).ne.3)*((gy(p).ne.4))"
         spec_list.append(build_spec(expression_2, "mf926", constraint))
 
         for i in range(1, 4):
@@ -319,7 +319,7 @@ class ModeChoiceNHBW(_m.Tool()):
             #expression_3 = expression_3 + " + " + emp_dens + "*((((md5+md6+md7+md8+md9+md10+md11)*10000/(md17)).min.200)*(gy(p).ne.3)*(gy(q).ne.3)*(gy(q).ne.4))"
             # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
             expression_3 = expression_3 + " + " + cbd + "*((gy(p).eq.3).or.(gy(q).eq.3))"
-            expression_3 = expression_3 + " + " + within_gy_not_van + "*(gy(p).eq.md29)*(gy(p).ne.3)*(gy(p).ne.4)"
+            expression_3 = expression_3 + " + " + within_gy_not_van + "*(gy(p).eq.gy(q))*(gy(p).ne.3)*(gy(p).ne.4)"
             spec_list.append(build_spec(expression_3, "mf927", constraint))
 
             result = "mf" + str(mode_mf + i)
@@ -350,7 +350,7 @@ class ModeChoiceNHBW(_m.Tool()):
         spec_list.append(build_spec(expression_2, "mf926"))
 
         # within gy   1 if gyo=gyd
-        #expression_3 = expression_3 + " + " + within_gy_not_rural + "*(gy(p).eq.md29)"
+        #expression_3 = expression_3 + " + " + within_gy_not_rural + "*(gy(p).eq.gy(q))"
         #expression_3 = expression_3 + " + " + ret_dens + "*(min((max((md8*10000)/mo17,0)),200))"
         # auto accessibilities: autoempt (i.e auto accessibilities)
         expression_3 = auto_acc + "*(mo47)"

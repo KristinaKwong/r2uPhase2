@@ -196,7 +196,7 @@ class ModeChoiceHBSchool(_m.Tool()):
         spec_list.append(build_spec(expression_2, "mf925", constraint))
 
         #relative accessibilities (auto-transit): (max(autoempt-transit2,0))
-        expression_3 = intra_gy + "*((gy(p).eq.md29))"
+        expression_3 = intra_gy + "*((gy(p).eq.gy(q)))"
         spec_list.append(build_spec(expression_3, "mf926", constraint))
 
         for i in range(1, 10):
@@ -291,7 +291,7 @@ class ModeChoiceHBSchool(_m.Tool()):
         expression_2 = rural + "*((((gy(p).gt.11)*(gy(p).lt.15))+((gy(q).gt.11)*(gy(q).lt.15))).ge.1)"
 
         # within gy (not rural):  1 if gyo=gyd and (iflt(gyo,12) and iflt(gyd,12))
-        expression_2 = expression_2 + " + " + within_gy_not_rur + "*((gy(p).eq.md29)*(gy(p).lt.12)*(gy(q).lt.12))"
+        expression_2 = expression_2 + " + " + within_gy_not_rur + "*((gy(p).eq.gy(q))*(gy(p).lt.12)*(gy(q).lt.12))"
 
         # dens: min((max((POP11o*10000)/area,0)),100)*(ifne(gyo,3)*ifne(gyo,4))
         expression_2 = expression_2 + " + " + dens + "*((((mo20*10000)/mo17).max.0).min.100)*((gy(p).ne.3)*(gy(p).ne.4))"
@@ -336,7 +336,7 @@ class ModeChoiceHBSchool(_m.Tool()):
         # rural : 1 if (ifgt(gyo,11) or ifgt(gyd,11))
         expression_2 = expression_2 + " + " + rural + "*((((gy(p).gt.11)*(gy(p).lt.15))+((gy(q).gt.11)*(gy(q).lt.15))).ge.1)"
         # within gy :  1 if gyo=gyd
-        expression_2 = expression_2 + " + " + within_gy + "*(gy(p).eq.md29)"
+        expression_2 = expression_2 + " + " + within_gy + "*(gy(p).eq.gy(q))"
         spec_list.append(build_spec(expression_2, "mf925"))
 
         for i in range(1, 10):

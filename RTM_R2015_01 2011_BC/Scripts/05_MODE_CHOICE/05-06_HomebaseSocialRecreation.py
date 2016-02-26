@@ -225,7 +225,7 @@ class ModeChoiceHBSocial(_m.Tool()):
 
         #relative accessibilities (auto-transit): (max(autoempt-transit2,0))
         expression_3 = tran_acc + "*(1*((((mo392).min.200)).max.0))*(gy(p).ne.3)*(gy(q).ne.3)"
-        expression_3 = expression_3 + " + " + within_gy + "*(gy(p).eq.md29)"
+        expression_3 = expression_3 + " + " + within_gy + "*(gy(p).eq.gy(q))"
         expression_3 = expression_3 + " + " + intra_van + "*((gy(p).eq.4)*(gy(q).eq.4))"
         spec_list.append(build_spec(expression_3, "mf927", constraint))
 
@@ -387,7 +387,7 @@ class ModeChoiceHBSocial(_m.Tool()):
         #expression_2 = expression_2 + " + " + rural + "*((((gy(p).gt.11)*(gy(p).lt.15))+((gy(q).gt.11)*(gy(q).lt.15))).ge.1)"
 
         # within gy   1 if gyo=gyd
-        #expression_3 = expression_3 + " + " + within_gy_not_rural + "*(gy(p).eq.md29)"
+        #expression_3 = expression_3 + " + " + within_gy_not_rural + "*(gy(p).eq.gy(q))"
         #expression_3 = expression_3 + " + " + ret_dens + "*(min((max((md8*10000)/mo17,0)),200))"
         # auto accessibilities: autoempt (i.e auto accessibilities)
         expression_3 = auto_acc + "*(mo47)"

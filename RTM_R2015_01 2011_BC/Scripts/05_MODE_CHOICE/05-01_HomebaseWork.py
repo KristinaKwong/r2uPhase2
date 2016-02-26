@@ -367,7 +367,7 @@ class ModeChoiceHBW(_m.Tool()):
         spec_list.append(build_spec(expression_2, "mf926"))
 
         # within gy (not rural):  1 if gyo=gyd and (iflt(gyo,12) and iflt(gyd,12))
-        expression_3 = within_gy_not_rural + "*((gy(p).eq.md29)*(gy(p).lt.12)*(gy(q).lt.12))"
+        expression_3 = within_gy_not_rural + "*((gy(p).eq.gy(q))*(gy(p).lt.12)*(gy(q).lt.12))"
         spec_list.append(build_spec(expression_3, "mf927"))
 
         for i in range(1, 10):
@@ -436,7 +436,7 @@ class ModeChoiceHBW(_m.Tool()):
         spec_list.append(build_spec(expression_2, "mf926"))
 
         # within gy (not rural):  1 if gyo=gyd and (iflt(gyo,12) and iflt(gyd,12))
-        expression_3 = within_gy_not_rural + "*((gy(p).eq.md29)*(gy(p).lt.12)*(gy(q).lt.12))"
+        expression_3 = within_gy_not_rural + "*((gy(p).eq.gy(q))*(gy(p).lt.12)*(gy(q).lt.12))"
         spec_list.append(build_spec(expression_3, "mf927"))
 
         for i in range(1, 10):

@@ -212,7 +212,7 @@ class ModeChoiceNHBO(_m.Tool()):
         expression_3 = van + "*((gy(p).eq.4).or.(gy(q).eq.4))"
         #relative accessibilities: ((min(transit2,100))*ifne(cbdod,1))
         expression_3 = expression_3 + " + " + tran_acc + "*(mo392.min.100)*(gy(p).ne.3)*(gy(q).ne.3)"
-        expression_3 = expression_3 + " + " + within_gy_not_van + "*(gy(p).eq.md29)*(gy(p).ne.3)*((gy(p).ne.4))"
+        expression_3 = expression_3 + " + " + within_gy_not_van + "*(gy(p).eq.gy(q))*(gy(p).ne.3)*((gy(p).ne.4))"
         expression_3 = expression_3 + " + " + intra_van + "*((gy(p).eq.4)*(gy(q).eq.4))"
         spec_list.append(build_spec(expression_3, "mf927", constraint))
 
@@ -268,7 +268,7 @@ class ModeChoiceNHBO(_m.Tool()):
         # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
         expression_2 = intra_van + "*((gy(p).eq.4)*(gy(q).eq.4))"
         # within gy (not rural):  1 if gyo=gyd and (iflt(gyo,12) and iflt(gyd,12))
-        #expression_2 = expression_2 + " + " + within_gy_not_van + "*(gy(p).eq.md29)*(gy(p).ne.3)*((gy(p).ne.4))"
+        #expression_2 = expression_2 + " + " + within_gy_not_van + "*(gy(p).eq.gy(q))*(gy(p).ne.3)*((gy(p).ne.4))"
         spec_list.append(build_spec(expression_2, "mf926", constraint))
 
         for i in range(1, 4):
@@ -296,7 +296,7 @@ class ModeChoiceNHBO(_m.Tool()):
             # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
             expression_3 = expression_3 + " + " + cbd + "*((gy(p).eq.3).or.(gy(q).eq.3))"
             expression_3 = expression_3 + " + " + van + "*((gy(p).eq.4).or.(gy(q).eq.4))"
-            expression_3 = expression_3 + " + " + within_gy_not_van + "*(gy(p).eq.md29)*(gy(p).ne.3)*(gy(p).ne.4)"
+            expression_3 = expression_3 + " + " + within_gy_not_van + "*(gy(p).eq.gy(q))*(gy(p).ne.3)*(gy(p).ne.4)"
             spec_list.append(build_spec(expression_3, "mf927", constraint))
 
             result = "mf" + str(mode_mf + i)

@@ -257,7 +257,7 @@ class ModeChoiceHBShopping(_m.Tool()):
 
             #relative accessibilities (auto-transit): (max(autoempt-transit2,0))
             expression_3 = tran_acc + "*((((mo955).min.100)).max.0)*(gy(p).ne.3)*(gy(q).ne.3)*(gy(p).lt.11)*(gy(q).lt.11)"
-            expression_3 = expression_3 + " + " + within_gy_not_van + "*((gy(p).eq.md29)*(gy(p).ne.4))"
+            expression_3 = expression_3 + " + " + within_gy_not_van + "*((gy(p).eq.gy(q))*(gy(p).ne.4))"
             #rur_locar  (ifgt(gyo,10) or ifgt(gyd,10))*iflt(useveh2,2)
             if i <> 3 and i <> 6 and i <> 9:
                 expression_3 = expression_3 + " + " + rur_locar + "*((((gy(p).ge.11)*(gy(p).lt.15))+((gy(q).ge.11)*(gy(q).lt.15))).ge.1)"
@@ -305,7 +305,7 @@ class ModeChoiceHBShopping(_m.Tool()):
         # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
         expression_2 = intra_van + "*((gy(p).eq.4)*(gy(q).eq.4))"
         # within gy (not rural):  1 if gyo=gyd and (iflt(gyo,12) and iflt(gyd,12))
-        expression_2 = expression_2 + " + " + within_gy_not_van + "*((gy(p).eq.md29)*(gy(p).ne.4)*(gy(q).ne.4))"
+        expression_2 = expression_2 + " + " + within_gy_not_van + "*((gy(p).eq.gy(q))*(gy(p).ne.4)*(gy(q).ne.4))"
         spec_list.append(build_spec(expression_2, "mf926", constraint))
 
         #relative accessibilities (auto-transit): (max(autoempt-transit2,0))
@@ -387,7 +387,7 @@ class ModeChoiceHBShopping(_m.Tool()):
         spec_list.append(build_spec(expression_2, "mf926"))
 
         # within gy   1 if gyo=gyd
-        expression_3 = within_gy + "*(gy(p).eq.md29)"
+        expression_3 = within_gy + "*(gy(p).eq.gy(q))"
         expression_3 = expression_3 + " + " + ret_dens + "*((((md8*10000)/md17).max.0).min.200)"
         # auto accessibilities: autoempt (i.e auto accessibilities)
         expression_3 = expression_3 + " + " + auto_acc + "*(mo954)"

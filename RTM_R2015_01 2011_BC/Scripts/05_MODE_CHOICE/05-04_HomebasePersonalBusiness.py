@@ -160,7 +160,7 @@ class ModeChoiceHBPB(_m.Tool()):
 
         #relative accessibilities (auto-transit): (max(autoempt-transit2,0))
         expression_3 = tran_acc + "*((((mo392).min.100)).max.0)*(gy(p).ne.3)*(gy(q).ne.3)"
-        expression_3 = expression_3 + " + " + within_gy + "*(gy(p).eq.md29)"
+        expression_3 = expression_3 + " + " + within_gy + "*(gy(p).eq.gy(q))"
         spec_list.append(build_spec(expression_3, "mf927", constraint))
 
         for i in range(1, 10):
@@ -253,7 +253,7 @@ class ModeChoiceHBPB(_m.Tool()):
 
         #relative accessibilities (auto-transit): (max(autoempt-transit2,0))
         #expression_3 = expression_3 + " + " + relative_acc + "*(((mo47-mo392.min.200)).max.0)"
-        expression_3 = within_gy + "*(gy(p).eq.md29)"
+        expression_3 = within_gy + "*(gy(p).eq.gy(q))"
         spec_list.append(build_spec(expression_3, "mf927", constraint))
 
         for i in range(1, 10):
@@ -330,7 +330,7 @@ class ModeChoiceHBPB(_m.Tool()):
         spec_list.append(build_spec(expression_2, "mf926"))
 
         # within gy (not rural):  1 if gyo=gyd and (iflt(gyo,12) and iflt(gyd,12))
-        #expression_3 = expression_3 + " + " + within_gy_not_rural + "*((gy(p).eq.md29)*(gy(p).lt.12)*(gy(q).lt.12))"
+        #expression_3 = expression_3 + " + " + within_gy_not_rural + "*((gy(p).eq.gy(q))*(gy(p).lt.12)*(gy(q).lt.12))"
         expression_3 = vanx + "*2.5*(((gy(p).eq.3)*(gy(q).eq.4) + (gy(p).eq.4)*(gy(q).eq.3)).ge.1)"
         spec_list.append(build_spec(expression_3, "mf927"))
 

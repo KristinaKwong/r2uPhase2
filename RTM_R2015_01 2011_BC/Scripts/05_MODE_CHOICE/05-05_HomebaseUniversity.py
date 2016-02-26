@@ -247,7 +247,7 @@ class ModeChoiceHBUni(_m.Tool()):
         # rural : 1 if (ifgt(gyo,11) or ifgt(gyd,11))
         expression_2 = rural + "*((((gy(p).gt.11)*(gy(p).lt.15))+((gy(q).gt.11)*(gy(q).lt.15))).ge.1)"
         # within gy (not rural):  1 if gyo=gyd and (iflt(gyo,12) and iflt(gyd,12))
-        expression_2 = expression_2 + " + " + within_gy + "*(gy(p).eq.md29)"
+        expression_2 = expression_2 + " + " + within_gy + "*(gy(p).eq.gy(q))"
         spec_list.append(build_spec(expression_2, "mf926"))
 
         # dens: min((max((POP11o*10000)/area,0)),100)*(ifne(gyo,3)*ifne(gyo,4))
@@ -303,7 +303,7 @@ class ModeChoiceHBUni(_m.Tool()):
         spec_list.append(build_spec(expression_2, "mf926"))
 
         # within gy :  1 if gyo=gyd
-        expression_3 = within_gy + "*(gy(p).eq.md29)"
+        expression_3 = within_gy + "*(gy(p).eq.gy(q))"
         # dens: min((max((POP11o*10000)/area,0)),100)*(ifne(gyo,3)*ifne(gyo,4))
         expression_3 = expression_3 + " + " + dens + "*(((mo20)*10000/(mo17)).min.100)*(gy(p).ne.3)*(gy(p).ne.4)"
         spec_list.append(build_spec(expression_3, "mf927"))
@@ -355,7 +355,7 @@ class ModeChoiceHBUni(_m.Tool()):
         spec_list.append(build_spec(expression_2, "mf926"))
 
         # within gy :  1 if gyo=gyd but not Burrard
-        expression_3 = intgy_sov + "*(gy(p).eq.md29)*(gy(p).ne.3)*(gy(p).ne.4)*(gy(p).ne.5)"
+        expression_3 = intgy_sov + "*(gy(p).eq.gy(q))*(gy(p).ne.3)*(gy(p).ne.4)*(gy(p).ne.5)"
         spec_list.append(build_spec(expression_3, "mf927"))
 
         for i in range(1, 10):
