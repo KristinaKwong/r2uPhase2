@@ -96,7 +96,7 @@ class ModeChoiceHBPB(_m.Tool()):
 
         # wlk_dens: min((emp11d*10000)/area),200)
         expression_2 = sen20_wk + "*((mo19/(mo20+0.00001)).gt.(0.19999))" \
-                                  "*(((mo29.lt.3).or.(mo29.gt.5))) * (((md29 .lt. 3).or.(md29 .gt. 5)))"
+                                  "*(((gy(p).lt.3).or.(gy(p).gt.5))) * (((md29 .lt. 3).or.(md29 .gt. 5)))"
         #expression_2 = expression_2 + " + " + wlk_dens + "*(((md5+md6+md7+md8+md9+md10+md11)*10000/(md17)).min.200)"
         #au_dst
         expression_2 = expression_2 + distance + "*mf144"
@@ -104,7 +104,7 @@ class ModeChoiceHBPB(_m.Tool()):
 
         expression_3 = cs_wlk_250 + "*(((mo395+mo396).gt.0))"
         # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
-        #expression_3 = expression_3 + " + " + intra_van + "*((mo29.eq.4)*(md29.eq.4))"
+        #expression_3 = expression_3 + " + " + intra_van + "*((gy(p).eq.4)*(gy(q).eq.4))"
         expression_3 = expression_3 + " + " + intrazonal + "*((q.eq.p))"
         spec_list.append(build_spec(expression_3, "mf927", constraint))
 
@@ -112,11 +112,11 @@ class ModeChoiceHBPB(_m.Tool()):
             expression_1 = alt_spec_cons
             if i in (1, 4, 7):
                 expression_1 = expression_1 + " + " + zero_cars_br + \
-                               "*(((mo29.eq.3)+(md29.eq.3)" \
-                               "+(mo29.eq.4)+(md29.eq.4)" \
-                               "+(mo29.eq.5)+(md29.eq.5)).ge.1)"
+                               "*(((gy(p).eq.3)+(gy(q).eq.3)" \
+                               "+(gy(p).eq.4)+(gy(q).eq.4)" \
+                               "+(gy(p).eq.5)+(gy(q).eq.5)).ge.1)"
                 expression_1 = expression_1 + " + " + zero_cars_rur + \
-                               "*((((mo29.gt.10)*(mo29.lt.15))+((md29.gt.10)*(md29.lt.15))).ge.1)"
+                               "*((((gy(p).gt.10)*(gy(p).lt.15))+((gy(q).gt.10)*(gy(q).lt.15))).ge.1)"
                 expression_1 = expression_1 + " + " + zero_cars
                 # rur - ifgt(gyo,10) or ifgt(gyd,10)
             spec_list.append(build_spec(expression_1, "mf925", constraint))
@@ -159,14 +159,14 @@ class ModeChoiceHBPB(_m.Tool()):
         #              "condition": "EXCLUDE"}
 
         #relative accessibilities (auto-transit): (max(autoempt-transit2,0))
-        expression_3 = tran_acc + "*((((mo392).min.100)).max.0)*(mo29.ne.3)*(md29.ne.3)"
-        expression_3 = expression_3 + " + " + within_gy + "*(mo29.eq.md29)"
+        expression_3 = tran_acc + "*((((mo392).min.100)).max.0)*(gy(p).ne.3)*(gy(q).ne.3)"
+        expression_3 = expression_3 + " + " + within_gy + "*(gy(p).eq.md29)"
         spec_list.append(build_spec(expression_3, "mf927", constraint))
 
         for i in range(1, 10):
-            #expression_1 = alt_spec_cons + "-0.25*(((mo29.eq.5)+(md29.eq.5)).ge.1)"
-            expression_1 = alt_spec_cons + "-0.2*(((mo29.eq.1).or.(md29.eq.1))) " \
-                                           "-0.1*(((mo29.eq.2).or.(md29.eq.2)))"
+            #expression_1 = alt_spec_cons + "-0.25*(((gy(p).eq.5)+(gy(q).eq.5)).ge.1)"
+            expression_1 = alt_spec_cons + "-0.2*(((gy(p).eq.1).or.(gy(q).eq.1))) " \
+                                           "-0.1*(((gy(p).eq.2).or.(gy(q).eq.2)))"
 
             if i == 9:
                 expression_1 = expression_1 + " + " + high_inc
@@ -193,15 +193,15 @@ class ModeChoiceHBPB(_m.Tool()):
             spec_list.append(build_spec(expression_1, "mf925", constraint))
 
             # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
-            expression_2 = rural + "*(((mo29.gt.10).or.(md29.gt.10)))"
+            expression_2 = rural + "*(((gy(p).gt.10).or.(gy(q).gt.10)))"
             #ifgt(gyo,10) or ifgt(gyd,10)
             expression_2 = expression_2 + " + " + emp_dens + "*(((((md5+md6+md7+md8+md9+md10+md11)*10000)/md17).max.0).min.200)" \
-                                                             "*(md29.ne.3)*(md29.ne.4)"
-            expression_2 = expression_2 + " + " + bnw + "*(((mo29.eq.5)+(md29.eq.5)).ge.1)"
+                                                             "*(gy(q).ne.3)*(gy(q).ne.4)"
+            expression_2 = expression_2 + " + " + bnw + "*(((gy(p).eq.5)+(gy(q).eq.5)).ge.1)"
 
             # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
             if 3 != i or i != 6 or i != 9:
-                expression_2 = expression_2 + " + " + intra_van + "*((mo29.eq.4)*(md29.eq.4))"
+                expression_2 = expression_2 + " + " + intra_van + "*((gy(p).eq.4)*(gy(q).eq.4))"
 
             spec_list.append(build_spec(expression_2, "mf926", constraint))
 
@@ -242,23 +242,23 @@ class ModeChoiceHBPB(_m.Tool()):
                       "condition": "EXCLUDE"}
 
         # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
-        #expression_2 = expression_2 + " + " + cbd + "*(((mo29.eq.3)+(md29.eq.3)).ge.1)"
+        #expression_2 = expression_2 + " + " + cbd + "*(((gy(p).eq.3)+(gy(q).eq.3)).ge.1)"
         # vancouver: 1 if (ifeq(gyo,4) or ifeq(gyd,4))
-        expression_2 = van + "*(((mo29.eq.4)+(md29.eq.4)).ge.1)*((mo395+mo396).gt.0)"
+        expression_2 = van + "*(((gy(p).eq.4)+(gy(q).eq.4)).ge.1)*((mo395+mo396).gt.0)"
 
         # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
-        expression_2 = expression_2 + " + " + intra_van + "*((mo29.eq.4)*(md29.eq.4))"
-        expression_2 = expression_2 + " + " + rural + "*(((mo29.gt.11)+(md29.gt.11)).ge.1)"
+        expression_2 = expression_2 + " + " + intra_van + "*((gy(p).eq.4)*(gy(q).eq.4))"
+        expression_2 = expression_2 + " + " + rural + "*(((gy(p).gt.11)+(gy(q).gt.11)).ge.1)"
         spec_list.append(build_spec(expression_2, "mf926", constraint))
 
         #relative accessibilities (auto-transit): (max(autoempt-transit2,0))
         #expression_3 = expression_3 + " + " + relative_acc + "*(((mo47-mo392.min.200)).max.0)"
-        expression_3 = within_gy + "*(mo29.eq.md29)"
+        expression_3 = within_gy + "*(gy(p).eq.md29)"
         spec_list.append(build_spec(expression_3, "mf927", constraint))
 
         for i in range(1, 10):
-            expression_1 = alt_spec_cons + "-0.3*(((mo29.eq.2)+(md29.eq.2)).ge.1)"
-            expression_1 = alt_spec_cons + "-0.2*(((mo29.eq.1)+(md29.eq.1)).ge.1) -0.1*(((mo29.eq.2)+(md29.eq.2)).ge.1)"
+            expression_1 = alt_spec_cons + "-0.3*(((gy(p).eq.2)+(gy(q).eq.2)).ge.1)"
+            expression_1 = alt_spec_cons + "-0.2*(((gy(p).eq.1)+(gy(q).eq.1)).ge.1) -0.1*(((gy(p).eq.2)+(gy(q).eq.2)).ge.1)"
             if i < 4:
                 expression_1 = expression_1 + " + " + low_inc
             if i > 6:
@@ -319,19 +319,19 @@ class ModeChoiceHBPB(_m.Tool()):
         spec_list = []
 
         # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
-        expression_2 = cbd + "*(((mo29.eq.3)+(md29.eq.3)).ge.1)"
+        expression_2 = cbd + "*(((gy(p).eq.3)+(gy(q).eq.3)).ge.1)"
         # vancouver: 1 if (ifeq(gyo,4) or ifeq(gyd,4))
-        #expression_2 = expression_2 + " + " + van + "*(((mo29.eq.4)+(md29.eq.4)).ge.1)"
+        #expression_2 = expression_2 + " + " + van + "*(((gy(p).eq.4)+(gy(q).eq.4)).ge.1)"
         # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
-        expression_2 = expression_2 + " + " + intra_van + "*((mo29.eq.4)*(md29.eq.4))"
+        expression_2 = expression_2 + " + " + intra_van + "*((gy(p).eq.4)*(gy(q).eq.4))"
         # rural : 1 if (ifgt(gyo,11) or ifgt(gyd,11))
-        #expression_2 = expression_2 + " + " + rural + "*((((mo29.gt.11)*(mo29.lt.15))+((md29.gt.11)*(md29.lt.15))).ge.1)"
+        #expression_2 = expression_2 + " + " + rural + "*((((gy(p).gt.11)*(gy(p).lt.15))+((gy(q).gt.11)*(gy(q).lt.15))).ge.1)"
         expression_2 = expression_2 + " + " + auto_acc + "*(mo47)"
         spec_list.append(build_spec(expression_2, "mf926"))
 
         # within gy (not rural):  1 if gyo=gyd and (iflt(gyo,12) and iflt(gyd,12))
-        #expression_3 = expression_3 + " + " + within_gy_not_rural + "*((mo29.eq.md29)*(mo29.lt.12)*(md29.lt.12))"
-        expression_3 = vanx + "*2.5*(((mo29.eq.3)*(md29.eq.4) + (mo29.eq.4)*(md29.eq.3)).ge.1)"
+        #expression_3 = expression_3 + " + " + within_gy_not_rural + "*((gy(p).eq.md29)*(gy(p).lt.12)*(gy(q).lt.12))"
+        expression_3 = vanx + "*2.5*(((gy(p).eq.3)*(gy(q).eq.4) + (gy(p).eq.4)*(gy(q).eq.3)).ge.1)"
         spec_list.append(build_spec(expression_3, "mf927"))
 
         for i in range(1, 10):
@@ -399,18 +399,18 @@ class ModeChoiceHBPB(_m.Tool()):
                 expression = expression + " + " + cost_high_inc + "*(mf145/6)"
 
             # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
-            expression = expression + " + " + cbd + "*(((mo29.eq.3)+(md29.eq.3)).ge.1)"
+            expression = expression + " + " + cbd + "*(((gy(p).eq.3)+(gy(q).eq.3)).ge.1)"
 
             # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
-            expression = expression + " + " + intra_van + "*((mo29.eq.4)*(md29.eq.4))"
+            expression = expression + " + " + intra_van + "*((gy(p).eq.4)*(gy(q).eq.4))"
 
             # auto accessibilities: autoempt (i.e auto accessibilities)
             expression = expression + " + " + auto_acc + "*(mo47)"
 
             # rural : 1 if (ifgt(gyo,11) or ifgt(gyd,11))
-            #expression = expression + " + " + rural + "*((((mo29.gt.11)*(mo29.lt.15))+((md29.gt.11)*(md29.lt.15))).ge.1)"
-            expression = expression + " + " + vanx + "*(((mo29.eq.3)*(md29.eq.4) + (mo29.eq.4)*(md29.eq.3)).ge.1)"
-            expression = expression + " + " + van + "*(((mo29.eq.4)+(md29.eq.4)).ge.1)"
+            #expression = expression + " + " + rural + "*((((gy(p).gt.11)*(gy(p).lt.15))+((gy(q).gt.11)*(gy(q).lt.15))).ge.1)"
+            expression = expression + " + " + vanx + "*(((gy(p).eq.3)*(gy(q).eq.4) + (gy(p).eq.4)*(gy(q).eq.3)).ge.1)"
+            expression = expression + " + " + van + "*(((gy(p).eq.4)+(gy(q).eq.4)).ge.1)"
 
             result = "mf" + str(mode_mf + i)
             spec_list.append(build_spec(expression, result))

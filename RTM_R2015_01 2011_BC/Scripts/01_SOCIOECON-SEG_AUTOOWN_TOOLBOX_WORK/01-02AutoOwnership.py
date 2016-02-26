@@ -215,7 +215,7 @@ class AutoOwnershipTool(_m.Tool()):
                 expression = expression + " + " + bias2[0]
             else:
                 for i in range(0, 14):
-                    expression = expression + " + " + bias2[i] + "*(mo29.eq." + str(1 + i) + ")"
+                    expression = expression + " + " + bias2[i] + "*(gy(p).eq." + str(1 + i) + ")"
 
             if (auto_own_one >= 27):
                 expression = expression + " + " + str(hiinc2)
@@ -234,7 +234,7 @@ class AutoOwnershipTool(_m.Tool()):
                     expression = expression + " + " + str(wrkr2_c23)
                 else:
                     for i in range(0, 14):
-                        expression = expression + " + " + wrkr2_c23[i] + "*(mo29.eq." + str(1 + i) + ")"
+                        expression = expression + " + " + wrkr2_c23[i] + "*(gy(p).eq." + str(1 + i) + ")"
 
 
             ##lrg_c2

@@ -245,7 +245,7 @@ class TripProd(_m.Tool()):
         for i in range(1, 432):
             expression = "0"
             for x in range(1, 15):
-                expression = expression + " + (mo29.eq." + str(x) + ")*" + Calibration_Factors[i][x + 5]
+                expression = expression + " + (gy(p).eq." + str(x) + ")*" + Calibration_Factors[i][x + 5]
             expression = "mo" + str(403 + i) + "*(" + expression + ")"
             result = "mo" + str(403 + i)
             specs.append(util.matrix_spec(result, expression))
