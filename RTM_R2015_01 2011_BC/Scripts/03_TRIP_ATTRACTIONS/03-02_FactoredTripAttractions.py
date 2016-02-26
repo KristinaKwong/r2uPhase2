@@ -115,85 +115,52 @@ class FactoredTripAttractions(_m.Tool()):
 
     @_m.logbook_trace("Apply_Factors")
     def Apply_Factors(self, purpose_list, purpose_factors):
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
-
-        spec_as_dict = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {"origins": None, "destinations": None}
-            },
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
 
         ## Scaling all the mds to match the 'mo' total, except for md46, HBU.
         for i in range(42, 46) + range(47, 53):
             expression = "md" + str(i - 11) + "*" + str(purpose_factors[purpose_list[i - 42]]["Factor"])
             result = "md" + str(i)
             # print result + " = " + expression
-            spec_as_dict["expression"] = expression
-            spec_as_dict["result"] = result
-            report = compute_matrix(spec_as_dict)
+            spec = util.matrix_spec(result, expression)
+            report = compute_matrix(spec)
 
-        spec_as_dict["expression"] = "md35"
-        spec_as_dict["result"] = "md46"
-        report = compute_matrix(spec_as_dict)
+        report = compute_matrix(util.matrix_spec("md46", "md35"))
 
         ## scaling the mo - HBU to match md for HBU
         for i in range(1, 13):
             expression = "mo" + str(i + 184) + "/" + str(purpose_factors['HBU']['Factor'])
             result = "mo" + str(i + 914)
-            spec_as_dict["expression"] = expression
-            spec_as_dict["result"] = result
-            report = compute_matrix(spec_as_dict)
+            report = compute_matrix(util.matrix_spec(result, expression))
 
     @_m.logbook_trace("Calculate_Factors")
     def Calculate_Factors(self, purpose_list, purpose_factors):
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
-
-        spec_as_dict = {
-            "expression": "EXPRESSION",
-            "result": None,
-            "constraint": {
-                "by_value": None,
-                "by_zone": {"origins": None, "destinations": None}
-            },
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
 
         for i in range(0, 3):
             x = i + 161
             # print purpose_list[i], x, x+3, x+6, x+9
-
-            spec_as_dict["expression"] = "mo" + str(x) + " + " + "mo" + str(x + 3) + " + " + "mo" + str(
-                x + 6) + " + " + "mo" + str(x + 9)
-            spec_as_dict["aggregation"]["origins"] = "+"
-            report = compute_matrix(spec_as_dict)
+            spec = util.matrix_spec(None, "mo%d + mo%d + mo%d + mo%d" % (x, x + 3, x + 6, x + 9))
+            spec["aggregation"]["origins"] = "+"
+            report = compute_matrix(spec)
             purpose_factors[purpose_list[i]]['moSum'] = report["sum"]
-
-        spec_as_dict["aggregation"]["origins"] = None
 
         for i in range(173, 269, 12):
             expression = "0"
             for j in range(0, 12):
                 expression = expression + " + mo" + str(i + j)
-            spec_as_dict["expression"] = expression
-            spec_as_dict["aggregation"]["origins"] = "+"
-            report = compute_matrix(spec_as_dict)
+            spec = util.matrix_spec(None, expression)
+            spec["aggregation"]["origins"] = "+"
+            report = compute_matrix(spec)
             purpose_factors[purpose_list[(i - 173) / 12 + 3]]['moSum'] = report["sum"]
 
-        spec_as_dict["aggregation"]["origins"] = None
-
         for i in range(31, 42):
-            spec_as_dict["expression"] = "md" + str(i)
-            spec_as_dict["aggregation"]["destinations"] = "+"
-            report = compute_matrix(spec_as_dict)
+            spec = util.matrix_spec(None, "md" + str(i))
+            spec["aggregation"]["destinations"] = "+"
+            report = compute_matrix(spec)
             purpose_factors[purpose_list[i - 31]]['mdSum'] = report["sum"]
-
-        spec_as_dict["aggregation"]["destinations"] = None
 
         for i in range(0, 11):
             purpose_factors[purpose_list[i]]['Factor'] = purpose_factors[purpose_list[i]]['moSum'] / \

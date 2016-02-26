@@ -262,6 +262,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Calculate Number of Households Per Worker Category Per Income Category")
     def Calculate_IncomeWorkersHousehold(self, IncomeData):
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         ##Two loops: Go through IncomeData and extract multipliers and multiplies by matrix for HHSize x WorkerNumber
@@ -269,25 +270,16 @@ class SocioEconomicSegmentation(_m.Tool()):
         specs = []
         for inc_cat in range(3, 6):
             for row in range(1, IncomeData.__len__()):
-                spec_as_dict = {
-                    "expression": "mo" + str(((row - 1) % 13) + 61) + "*" + str(IncomeData[row][inc_cat]),
-                    "result": "mo" + str(((row - 1) % 13) + 74 + (inc_cat - 3) * 13),
-                    "constraint": {
-                        "by_value": None,
-                        "by_zone": {
-                            "origins": "gu" + str(IncomeData[row][0]),
-                            "destinations": None
-                        }
-                    },
-                    "type": "MATRIX_CALCULATION"
-                }
-                specs.append(spec_as_dict)
+                spec = util.matrix_spec("mo" + str(((row - 1) % 13) + 74 + (inc_cat - 3) * 13), "mo" + str(((row - 1) % 13) + 61) + "*" + str(IncomeData[row][inc_cat]))
+                spec["constraint"]["by_zone"] = {"origins": "gu" + str(IncomeData[row][0]), "destinations": None}
+                specs.append(spec)
 
         ##Outputs Matrices: mo74-mo112, HHSize x NumWorkers x Income
         report = compute_matrix(specs)
 
     @_m.logbook_trace("Calculate Number of Workers Per Household Category")
     def Calculate_WorkersHousehold(self, HHData):
+        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         ##    Dictionary for senior proportion lookup
@@ -299,24 +291,11 @@ class SocioEconomicSegmentation(_m.Tool()):
             for hh in range(1, 5):
                 wkr = 0
                 while (hh >= wkr and wkr < 4):
-                    spec_as_dict = {
-                        "expression": "mo" + str(hh + 49) + "*" + HHData[count + hh - 1][wkr + 3],
-                        "result": "mo" + str(mo_num + 61),
-                        "constraint": {
-                            "by_value": {
-                                "od_values": "mo18",
-                                "interval_min": 0,
-                                "interval_max": 0.2,
-                                "condition": sr_prop_flag[HHData[count][1]]
-                            },
-                            "by_zone": {
-                                "destinations": None,
-                                "origins": "gu" + str(HHData[count][0])
-                            }
-                        },
-                        "type": "MATRIX_CALCULATION"
-                    }
-                    specs.append(spec_as_dict)
+                    spec = util.matrix_spec("mo" + str(mo_num + 61), "mo" + str(hh + 49) + "*" + HHData[count + hh - 1][wkr + 3])
+                    spec["constraint"]["by_value"] = {"od_values": "mo18", "interval_min": 0, "interval_max": 0.2, "condition": sr_prop_flag[HHData[count][1]]}
+                    spec["constraint"]["by_zone"] = {"origins": "gu" + str(HHData[count][0]), "destinations": None}
+
+                    specs.append(spec)
                     ## Output Matrices: mo61-73. Number of Households by workers
                     wkr = wkr + 1
                     mo_num = mo_num + 1
@@ -339,24 +318,11 @@ class SocioEconomicSegmentation(_m.Tool()):
                 exp = "mo50*" + str(HHData[count + 0][num_workers + 3]) + " + mo51*" + str(
                     HHData[count + 1][num_workers + 3]) + " + mo52*" + str(
                     HHData[count + 2][num_workers + 3]) + " + mo53*" + str(HHData[count + 3][num_workers + 3])
-                spec_as_dict = {
-                    "expression": exp,
-                    "result": "mo" + str(54 + num_workers),
-                    "constraint": {
-                        "by_value": {
-                            "od_values": "mo18",
-                            "interval_min": 0,
-                            "interval_max": 0.2,
-                            "condition": sr_prop_flag[HHData[count][1]]
-                        },
-                        "by_zone": {
-                            "destinations": None,
-                            "origins": "gu" + str(HHData[count][0])
-                        }
-                    },
-                    "type": "MATRIX_CALCULATION"
-                }
-                specs.append(spec_as_dict)
+                spec = util.matrix_spec("mo" + str(54 + num_workers), exp)
+                spec["constraint"]["by_value"] = {"od_values": "mo18", "interval_min": 0, "interval_max": 0.2, "condition": sr_prop_flag[HHData[count][1]]}
+                spec["constraint"]["by_zone"] = {"origins": "gu" + str(HHData[count][0]), "destinations": None}
+
+                specs.append(spec)
 
         ##Output Matrix: mo54-57. Number of households with X number of workers.  (Where X=1,2,3,4)
         report = compute_matrix(specs)
@@ -366,24 +332,11 @@ class SocioEconomicSegmentation(_m.Tool()):
         ## Create mo58 - 3+ worker adjustment factor
         num_workers = 4
         for count in range(1, HHData.__len__(), 4):
-            spec_as_dict = {
-                "expression": str(HHData[count + 0][num_workers + 3]),
-                "result": "mo" + str(54 + num_workers),
-                "constraint": {
-                    "by_value": {
-                        "od_values": "mo18",
-                        "interval_min": 0,
-                        "interval_max": 0.2,
-                        "condition": sr_prop_flag[HHData[count][1]]
-                    },
-                    "by_zone": {
-                        "destinations": None,
-                        "origins": "gu" + str(HHData[count][0])
-                    }
-                },
-                "type": "MATRIX_CALCULATION"
-            }
-            specs.append(spec_as_dict)
+            spec = util.matrix_spec("mo" + str(54 + num_workers), str(HHData[count + 0][num_workers + 3]))
+            spec["constraint"]["by_value"] = {"od_values": "mo18", "interval_min": 0, "interval_max": 0.2, "condition": sr_prop_flag[HHData[count][1]]}
+            spec["constraint"]["by_zone"] = {"origins": "gu" + str(HHData[count][0]), "destinations": None}
+
+            specs.append(spec)
 
         report = compute_matrix(specs)
 

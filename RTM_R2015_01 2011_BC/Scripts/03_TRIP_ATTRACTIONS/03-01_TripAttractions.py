@@ -140,16 +140,9 @@ class TripAttractions(_m.Tool()):
                 for x in Variable_Matrix:
                     expression = expression + " + " + purpose_gy_coeff[x[0]][0] + "*" + x[1]
 
-                spec_as_dict = {
-                    "expression": expression,
-                    "result": "md" + str(j + 31),
-                    "constraint": {
-                        "by_value": None,
-                        "by_zone": {"origins": None, "destinations": gy_value}
-                    },
-                    "type": "MATRIX_CALCULATION"
-                }
-                specs.append(spec_as_dict)
+                spec = util.matrix_spec("md" + str(j + 31), expression)
+                spec["constraint"]["by_zone"] = {"origins": None, "destinations": gy_value}
+                specs.append(spec)
 
         ## md31-md41 Remove negative values from Trip Rates
         for j in range(0, len(purposes)):
