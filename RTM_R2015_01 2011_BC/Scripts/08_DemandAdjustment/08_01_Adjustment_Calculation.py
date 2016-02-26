@@ -77,6 +77,7 @@ class DemandAdjustment(_m.Tool()):
 
     @_m.logbook_trace("Auto Traffic Assignment")
     def auto_assignment(self, am_adj_scenario, md_adj_scenario, stopping_criteria):
+        util = _m.Modeller().tool("translink.emme.util")
         create_extra = _m.Modeller().tool(
             "inro.emme.data.extra_attribute.create_extra_attribute")
         del_extra = _m.Modeller().tool(
@@ -173,40 +174,12 @@ class DemandAdjustment(_m.Tool()):
             network_calculator(spec, scenario=am_adj_scenario)
             network_calculator(spec, scenario=md_adj_scenario)
 
-        spec = {
-            "expression": "",
-            "result": "",
-            "constraint": {
-                "by_value": {
-                    "od_values": "mf970",
-                    "interval_min": 1,
-                    "interval_max": 1,
-                    "condition": "EXCLUDE"
-                },
-                "by_zone": None
-            },
-            "aggregation": {"origins": None, "destinations": None},
-            "type": "MATRIX_CALCULATION"
-        }
-        expressions_list = [
-            ['mf68-mf66*6*ms18-mf102*ms19*6', 'mf68'],
-            ['mf69-mf67*6*ms18-mf105*ms19*6', 'mf69']]
-        for expression, result in expressions_list:
-            spec['expression'] = expression
-            spec['result'] = result
-            compute_matrix(spec)
-
-        spec['constraint']['by_value']['condition'] = "INCLUDE"
-        expressions_list = [
-            ['mf66+mf100', 'mf66'],
-            ['mf67+mf103', 'mf67'],
-            ['mf68+mf101', 'mf68'],
-            ['mf69+mf104', 'mf69']
-        ]
-        for expression, result in expressions_list:
-            spec['expression'] = expression
-            spec['result'] = result
-            compute_matrix(spec)
+        specs = []
+        specs.append(util.matrix_spec("mf66", "mf66 + (p.eq.q)*mf100"))
+        specs.append(util.matrix_spec("mf67", "mf67 + (p.eq.q)*mf103"))
+        specs.append(util.matrix_spec("mf68", "mf68 - (p.ne.q)*(mf66*6*ms18+mf102*ms19*6) + (p.eq.q)*mf101"))
+        specs.append(util.matrix_spec("mf69", "mf69 - (p.ne.q)*(mf67*6*ms18+mf105*ms19*6) + (p.eq.q)*mf104"))
+        compute_matrix(specs)
 
     @_m.logbook_trace("Demand adjustment")
     def demand_adjustment(self, scenario):
