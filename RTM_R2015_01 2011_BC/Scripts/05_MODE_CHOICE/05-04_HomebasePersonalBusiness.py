@@ -96,7 +96,7 @@ class ModeChoiceHBPB(_m.Tool()):
 
         # wlk_dens: min((emp11d*10000)/area),200)
         expression_2 = sen20_wk + "*((mo19/(mo20+0.00001)).gt.(0.19999))" \
-                                  "*(((gy(p).lt.3).or.(gy(p).gt.5))) * (((md29 .lt. 3).or.(md29 .gt. 5)))"
+                                  "*(((gy(p).lt.3).or.(gy(p).gt.5))) * (((gy(q).lt.3).or.(gy(q).gt.5)))"
         #expression_2 = expression_2 + " + " + wlk_dens + "*(((md5+md6+md7+md8+md9+md10+md11)*10000/(md17)).min.200)"
         #au_dst
         expression_2 = expression_2 + distance + "*mf144"

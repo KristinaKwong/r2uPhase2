@@ -194,7 +194,6 @@ class TripAttractions(_m.Tool()):
         specs.append(util.matrix_spec("md28", "mo28'"))
         specs.append(util.matrix_spec("md13", "mo13'"))
         specs.append(util.matrix_spec("md17", "mo17'"))
-        specs.append(util.matrix_spec("md29", "mo29'"))
 
         report = compute_matrix(specs)
 
