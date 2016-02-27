@@ -47,14 +47,6 @@ class SocioEconomicSegmentation(_m.Tool()):
         ##Batchin File
         self.Matrix_Batchins(eb)
 
-        ## Calculate adjusted parking costs
-        #Check for flag to run parking cost or otherwise
-
-        parkcost = eb.matrix("ms144").data
-        if (parkcost == 1):
-            ParkingCost = _m.Modeller().tool("translink.emme.stage1.step1.parkingcost")
-            ParkingCost()
-
         ##Create mo16, mo18 from existing matrices
         self.InitialMatrixCalculations()
 
