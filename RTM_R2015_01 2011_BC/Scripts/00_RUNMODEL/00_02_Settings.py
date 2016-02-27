@@ -55,7 +55,8 @@ Whitespace is ignored.
     def run(self):
         self.tool_run_msg = ""
         try:
-            self(self.file_name)
+            eb = _m.Modeller().emmebank
+            self(eb, self.file_name)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, error:
             self.tool_run_msg = _m.PageBuilder.format_exception(
@@ -63,9 +64,19 @@ Whitespace is ignored.
             raise
 
     @_m.logbook_trace("Read settings from settings.csv", save_arguments=True)
-    def __call__(self, file_name):
+    def __call__(self, eb, file_name):
         util = _m.Modeller().tool("translink.emme.util")
-        eb = _m.Modeller().emmebank
+
+        ## Read the settings file
+        util.initmat(eb, "ms140", "AMScNo", "AM Scenario Number", 0)
+        util.initmat(eb, "ms141", "MDScNo", "MD Scenario Number", 0)
+        util.initmat(eb, "ms142", "ProNum", "Number of Processors", 0)
+        util.initmat(eb, "ms143", "ScCrMo", "Scenario Creation Module", 0)
+        util.initmat(eb, "ms144", "PrCal", "Parking Cost Adjustment", 0)
+        util.initmat(eb, "ms145", "DisSen", "Trip Dist Cost Sens", 0)
+        util.initmat(eb, "ms146", "MChSen", "Mode Choice Toll Sens", 0)
+        util.initmat(eb, "ms147", "AsgSen", "Assignment Toll Sens", 0)
+        util.initmat(eb, "ms148", "DsToSn", "Trip Dist Cost (Toll) Sens", 0)
         util.initmat(eb, "ms149", "year", "Model Horizon Year", 0)
 
         # Scalars to hold corresponding settings
