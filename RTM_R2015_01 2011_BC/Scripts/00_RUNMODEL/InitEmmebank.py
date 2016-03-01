@@ -126,6 +126,12 @@ class InitEmmebank(_m.Tool()):
         lines_trans(transaction_file = data_path,
                     revert_on_error = True,
                     scenario = scen)
+                    
+        data_path = os.path.join(proj_path, 'BaseNetworks', "gz_ensem_tz1741.in")
+        ensem_trans = _m.Modeller().tool("inro.emme.data.zone_partition.partition_transaction")
+        ensem_trans(transaction_file = data_path,
+                    throw_on_error = True,
+                    scenario = scen)
 
     def initfunctions(self, eb):
         eb.create_function('fd01', 'length * 60 / 40')
