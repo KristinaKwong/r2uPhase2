@@ -55,7 +55,7 @@ class Util(_m.Tool()):
         mat = eb.matrix(mat_id)
         if mat:
             mat.read_only = False
-        eb.delete_matrix(mat_id)
+            eb.delete_matrix(mat_id)
 
     def matrix_spec(self, result, expression):
         """Returns a matrix specification dictionary with a result and expression set.

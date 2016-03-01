@@ -32,8 +32,9 @@ class InitEmmebank(_m.Tool()):
     def __call__(self):
         new_path = self.initfolder(self.emme_folder)
 
-        eb = self.initbank(new_path, self.emme_title)
+        self.initbank(new_path, self.emme_title)
         _m.Modeller().desktop.data_explorer().add_database(new_path).open()
+        self.initseeds(_m.Modeller().emmebank)
 
     def initbank(self, path, title):
         dim = {'scalar_matrices': 9999,
@@ -126,12 +127,42 @@ class InitEmmebank(_m.Tool()):
         lines_trans(transaction_file = data_path,
                     revert_on_error = True,
                     scenario = scen)
-                    
+
         data_path = os.path.join(proj_path, 'BaseNetworks', "gz_ensem_tz1741.in")
         ensem_trans = _m.Modeller().tool("inro.emme.data.zone_partition.partition_transaction")
         ensem_trans(transaction_file = data_path,
                     throw_on_error = True,
                     scenario = scen)
+
+        data_path = os.path.join(proj_path, 'BaseNetworks', "all_ensem_tz1741.in")
+        ensem_trans(transaction_file = data_path,
+                    throw_on_error = True,
+                    scenario = scen)
+
+    def initseeds(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
+
+        mod = _m.Modeller()
+        project = mod.desktop.project
+        proj_path = os.path.dirname(project.path)
+
+        mat_transaction = mod.tool("inro.emme.data.matrix.matrix_transaction")
+
+        util.delmat(eb, "mf1060")
+        util.delmat(eb, "mf1061")
+        util.delmat(eb, "mf1062")
+        util.delmat(eb, "mf1063")
+        data_path = os.path.join(proj_path, 'BaseNetworks', '2011AMseeds_gz.in')
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mf1064")
+        util.delmat(eb, "mf1065")
+        util.delmat(eb, "mf1066")
+        util.delmat(eb, "mf1067")
+        data_path = os.path.join(proj_path, 'BaseNetworks', '2011MDseeds_gz.in')
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
 
     def initfunctions(self, eb):
         eb.create_function('fd01', 'length * 60 / 40')
