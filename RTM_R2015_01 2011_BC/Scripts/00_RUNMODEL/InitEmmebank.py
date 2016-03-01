@@ -62,7 +62,15 @@ class InitEmmebank(_m.Tool()):
             eb.node_number_digits = 6
 
             self.initfunctions(eb)
-            self.initscenario(eb, 1, "a brand new scenario")
+            self.initscenario(eb, 1000, "2011 AM Base Network")
+            self.initscenario(eb, 1100, "2011 MD Base Network")
+            self.initscenario(eb, 1200, "2011 PM Base Network")
+            self.initscenario(eb, 2000, "2015 AM Base Network")
+            self.initscenario(eb, 2100, "2015 MD Base Network")
+            self.initscenario(eb, 2200, "2015 PM Base Network")
+            self.initscenario(eb, 3000, "2030 AM Base Network")
+            self.initscenario(eb, 3100, "2030 MD Base Network")
+            self.initscenario(eb, 3200, "2030 PM Base Network")
 
     def initfolder(self, emme_folder):
         project = _m.Modeller().desktop.project
@@ -93,6 +101,31 @@ class InitEmmebank(_m.Tool()):
         veh_transaction(transaction_file = data_path,
                         revert_on_error = True,
                         scenario = scen)
+
+        data_path = os.path.join(proj_path, 'BaseNetworks', "base_network_%d.txt" % scen_id)
+        net_transaction = mod.tool("inro.emme.data.network.base.base_network_transaction")
+        net_transaction(transaction_file = data_path,
+                    revert_on_error = True,
+                    scenario = scen)
+
+        data_path = os.path.join(proj_path, 'BaseNetworks', "link_shape_%d.txt" % scen_id)
+        shape_trans = _m.Modeller().tool("inro.emme.data.network.base.link_shape_transaction")
+        shape_trans(transaction_file = data_path,
+                    revert_on_error = True,
+                    scenario = scen)
+
+        data_path = os.path.join(proj_path, 'BaseNetworks', "turns_%d.txt" % scen_id)
+        turns_trans = _m.Modeller().tool("inro.emme.data.network.turn.turn_transaction")
+        turns_trans(transaction_file = data_path,
+                    revert_on_error = True,
+                    scenario = scen)
+
+        if scen_id > 1100: return
+        data_path = os.path.join(proj_path, 'BaseNetworks', "transit_lines_%d.txt" % scen_id)
+        lines_trans = _m.Modeller().tool("inro.emme.data.network.transit.transit_line_transaction")
+        lines_trans(transaction_file = data_path,
+                    revert_on_error = True,
+                    scenario = scen)
 
     def initfunctions(self, eb):
         eb.create_function('fd01', 'length * 60 / 40')
