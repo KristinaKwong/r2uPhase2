@@ -1,7 +1,7 @@
 c Emme Modeller - Turn Transaction
-c Date: 2016-02-26 11:43:45
-c Project:        TL_RTM_Release_2015_01.00 [2011 Base Case]                  
-c Scenario 3200:  2030 PM Network Base
+c Date: 2016-03-02 14:50:37
+c Project:        March 1 Version - with seeds                                
+c Scenario 3200:  2030 PM Base Network
 t turns
 c     At   From     To   TPF  Data1  Data2  Data3
 a 110107 110108 110108     0      0      0      0
