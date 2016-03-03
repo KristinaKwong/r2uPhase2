@@ -25,14 +25,14 @@ class SkimsAccessibilities(_m.Tool()):
     def run(self):
         with _m.logbook_trace("07-04 - RUN - Weighted Skims and Accessibilities"):
 
-			self.tool_run_msg = ""
-			eb = _m.Modeller().emmebank
-			try:
-				self.__call__(eb, 1)
-				run_msg = "Tool completed"
-				self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
-			except Exception, e:
-				self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
+            self.tool_run_msg = ""
+            eb = _m.Modeller().emmebank
+            try:
+                self.__call__(eb, 1)
+                run_msg = "Tool completed"
+                self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
+            except Exception, e:
+                self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     def __call__(self, eb, IterationNumber):
     ##        Start logging this under a new 'nest'
@@ -115,86 +115,86 @@ class SkimsAccessibilities(_m.Tool()):
                 compute_matrix(spec_as_dict)
 
     def accessibilities(self):
-		with _m.logbook_trace("Accessibilities Calculation"):
-			NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-			compute_matrix = _m.Modeller().tool(NAMESPACE)
-			spec_as_dict = {
-					"expression": "EXPRESSION",
-					"result": "RESULT",
-					"constraint": {
-						"by_value": {
-							"od_values": "mf101",
-							"interval_min": 0,
-							"interval_max": 0,
-							"condition": "EXCLUDE"
-						},
-						"by_zone": None
-					},
-					"aggregation": {
-						"origins": None,
-						"destinations": "+"
-					},
-					"type": "MATRIX_CALCULATION"
-				}
-			expressions_list = [
-				['ln(md12+1*(md12.eq.0))/(mf101*mf101)', 'mf101', 'mo47'],
-				['ln(md12+1*(md12.eq.0))/((2*(mf954+mf106*(p.eq.q))+mf164)*(2*(mf954+mf106*(p.eq.q))+mf164))', 'mf164',
-				 'mo392'],
-				['ln(md8+1*(md8.eq.0))/(mf101*mf101)', 'mf101', 'mo954'],
-				['ln(md8+1*(md8.eq.0))/((2*(mf954+mf106*(p.eq.q))+mf164)*(2*(mf954+mf106*(p.eq.q))+mf164))', 'mf164',
-				 'mo955'],
-				['ln(md23+1*(md23.eq.0))/(mf101*mf101)', 'mf101', 'mo48'],
-				['ln(md23+1*(md23.eq.0))/((2*(mf954+mf106*(p.eq.q))+mf164)*(2*(mf954+mf106*(p.eq.q))+mf164))', 'mf164',
-				 'mo957'],
-				['ln(md8+md9+md10+md11+1*((md8+md9+md10+md11).eq.0))/(mf101*mf101)', 'mf101', 'mo960'],
-				[
-					'ln(md8+md9+md10+md11+1*((md8+md9+md10+md11).eq.0))/((2*(mf954+mf106*(p.eq.q))+mf164)*(2*(mf954+mf106*(p.eq.q))+mf164))',
-					'mf164', 'mo961']
-			]
+        with _m.logbook_trace("Accessibilities Calculation"):
+            NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
+            compute_matrix = _m.Modeller().tool(NAMESPACE)
+            spec_as_dict = {
+                    "expression": "EXPRESSION",
+                    "result": "RESULT",
+                    "constraint": {
+                        "by_value": {
+                            "od_values": "mf101",
+                            "interval_min": 0,
+                            "interval_max": 0,
+                            "condition": "EXCLUDE"
+                        },
+                        "by_zone": None
+                    },
+                    "aggregation": {
+                        "origins": None,
+                        "destinations": "+"
+                    },
+                    "type": "MATRIX_CALCULATION"
+                }
+            expressions_list = [
+                ['ln(md12+1*(md12.eq.0))/(mf101*mf101)', 'mf101', 'mo47'],
+                ['ln(md12+1*(md12.eq.0))/((2*(mf954+mf106*(p.eq.q))+mf164)*(2*(mf954+mf106*(p.eq.q))+mf164))', 'mf164',
+                 'mo392'],
+                ['ln(md8+1*(md8.eq.0))/(mf101*mf101)', 'mf101', 'mo954'],
+                ['ln(md8+1*(md8.eq.0))/((2*(mf954+mf106*(p.eq.q))+mf164)*(2*(mf954+mf106*(p.eq.q))+mf164))', 'mf164',
+                 'mo955'],
+                ['ln(md23+1*(md23.eq.0))/(mf101*mf101)', 'mf101', 'mo48'],
+                ['ln(md23+1*(md23.eq.0))/((2*(mf954+mf106*(p.eq.q))+mf164)*(2*(mf954+mf106*(p.eq.q))+mf164))', 'mf164',
+                 'mo957'],
+                ['ln(md8+md9+md10+md11+1*((md8+md9+md10+md11).eq.0))/(mf101*mf101)', 'mf101', 'mo960'],
+                [
+                    'ln(md8+md9+md10+md11+1*((md8+md9+md10+md11).eq.0))/((2*(mf954+mf106*(p.eq.q))+mf164)*(2*(mf954+mf106*(p.eq.q))+mf164))',
+                    'mf164', 'mo961']
+            ]
 
-			for i in range(0, len(expressions_list)):
-				spec_as_dict['expression'] = expressions_list[i][0]
-				spec_as_dict['constraint']['by_value']['od_values'] = expressions_list[i][1]
-				spec_as_dict['result'] = expressions_list[i][2]
-				compute_matrix(spec_as_dict)
+            for i in range(0, len(expressions_list)):
+                spec_as_dict['expression'] = expressions_list[i][0]
+                spec_as_dict['constraint']['by_value']['od_values'] = expressions_list[i][1]
+                spec_as_dict['result'] = expressions_list[i][2]
+                compute_matrix(spec_as_dict)
 
-			spec_as_dict = {
-			"expression": "EXPRESSION",
-			"result": "RESULT",
-			"constraint": {
-				"by_value": None,
-				"by_zone": {"origins": "1000-8999", "destinations": "1000-8999"}
-			},
-			"aggregation": {"origins": None,"destinations": "+"},
-			"type": "MATRIX_CALCULATION"
-		}
+            spec_as_dict = {
+            "expression": "EXPRESSION",
+            "result": "RESULT",
+            "constraint": {
+                "by_value": None,
+                "by_zone": {"origins": "1000-8999", "destinations": "1000-8999"}
+            },
+            "aggregation": {"origins": None,"destinations": "+"},
+            "type": "MATRIX_CALCULATION"
+        }
 
-		expressions_list = [
-			['(((1+2.60666873)/(1+2.60666873*exp(0.089779362*(mf66/4.8*60-10)))).min.1)*md12', 'mo980'],
-			['(((1+0.370394973)/(1+0.370394973*exp(0.08364252*(mf66/20*60-10)))).min.1)*md12', 'mo981'],
-			['(((1+0.078322901)/(1+0.078322901*exp(0.069553623*(mf163+mf164-10)))).min.1)*md12', 'mo982'],
-			['(((1+0.757971496)/(1+0.757971496*exp(0.062315134*(mf68-10)))).min.1)*md12', 'mo983'],
-			['(((1+25.08837939)/(1+25.08837939*exp(0.095638856*(mf66/4.8*60-10)))).min.1)*(md8+md9+md10+md11)',
-			 'mo984'],
-			['(((1+712.7262949)/(1+712.7262949*exp(0.078649899*(mf66/20*60-10)))).min.1)*(md8+md9+md10+md11)',
-			 'mo985'],
-			['(((1+0.64089269)/(1+0.64089269*exp(0.061917065*(mf167+mf168-10)))).min.1)*(md8+md9+md10+md11)',
-			 'mo986'],
-			['(((1+1021.763665)/(1+1021.763665*exp(0.086254525*(mf68-10)))).min.1)*(md8+md9+md10+md11)', 'mo987'],
-			[
-			'(((((1+0.078322901)/(1+0.078322901*exp(0.069553623*(mf163+mf164-10)))).min.1)*md12).max.((((1+0.757971496)/(1+0.757971496*exp(0.062315134*(mf68-10)))).min.1)*md12)).max.((((1+0.370394973)/(1+0.370394973*exp(0.08364252*(mf66/20*60-10)))).min.1)*md12)',
-			'mo988'],
-			[
-			'(((((1+0.078322901)/(1+0.078322901*exp(0.069553623*(mf163+mf164-10)))).min.1)*md12).max.((((1+0.370394973)/(1+0.370394973*exp(0.08364252*(mf66/20*60-10)))).min.1)*md12))',
-			'mo989'],
-			[
-			'(((((1+712.7262949)/(1+712.7262949*exp(0.078649899*(mf66/20*60-10)))).min.1)*(md8+md9+md10+md11)).max.((((1+0.64089269)/(1+0.64089269*exp(0.061917065*(mf167+mf168-10)))).min.1)*(md8+md9+md10+md11))).max.((((1+1021.763665)/(1+1021.763665*exp(0.086254525*(mf68-10)))).min.1)*(md8+md9+md10+md11))',
-			'mo990']
-		]
-		for n in range(0, len(expressions_list)):
-			spec_as_dict['expression'] = expressions_list[n][0]
-			spec_as_dict['result'] = expressions_list[n][1]
-			compute_matrix(spec_as_dict)
+        expressions_list = [
+            ['(((1+2.60666873)/(1+2.60666873*exp(0.089779362*(mf66/4.8*60-10)))).min.1)*md12', 'mo980'],
+            ['(((1+0.370394973)/(1+0.370394973*exp(0.08364252*(mf66/20*60-10)))).min.1)*md12', 'mo981'],
+            ['(((1+0.078322901)/(1+0.078322901*exp(0.069553623*(mf163+mf164-10)))).min.1)*md12', 'mo982'],
+            ['(((1+0.757971496)/(1+0.757971496*exp(0.062315134*(mf68-10)))).min.1)*md12', 'mo983'],
+            ['(((1+25.08837939)/(1+25.08837939*exp(0.095638856*(mf66/4.8*60-10)))).min.1)*(md8+md9+md10+md11)',
+             'mo984'],
+            ['(((1+712.7262949)/(1+712.7262949*exp(0.078649899*(mf66/20*60-10)))).min.1)*(md8+md9+md10+md11)',
+             'mo985'],
+            ['(((1+0.64089269)/(1+0.64089269*exp(0.061917065*(mf167+mf168-10)))).min.1)*(md8+md9+md10+md11)',
+             'mo986'],
+            ['(((1+1021.763665)/(1+1021.763665*exp(0.086254525*(mf68-10)))).min.1)*(md8+md9+md10+md11)', 'mo987'],
+            [
+            '(((((1+0.078322901)/(1+0.078322901*exp(0.069553623*(mf163+mf164-10)))).min.1)*md12).max.((((1+0.757971496)/(1+0.757971496*exp(0.062315134*(mf68-10)))).min.1)*md12)).max.((((1+0.370394973)/(1+0.370394973*exp(0.08364252*(mf66/20*60-10)))).min.1)*md12)',
+            'mo988'],
+            [
+            '(((((1+0.078322901)/(1+0.078322901*exp(0.069553623*(mf163+mf164-10)))).min.1)*md12).max.((((1+0.370394973)/(1+0.370394973*exp(0.08364252*(mf66/20*60-10)))).min.1)*md12))',
+            'mo989'],
+            [
+            '(((((1+712.7262949)/(1+712.7262949*exp(0.078649899*(mf66/20*60-10)))).min.1)*(md8+md9+md10+md11)).max.((((1+0.64089269)/(1+0.64089269*exp(0.061917065*(mf167+mf168-10)))).min.1)*(md8+md9+md10+md11))).max.((((1+1021.763665)/(1+1021.763665*exp(0.086254525*(mf68-10)))).min.1)*(md8+md9+md10+md11))',
+            'mo990']
+        ]
+        for n in range(0, len(expressions_list)):
+            spec_as_dict['expression'] = expressions_list[n][0]
+            spec_as_dict['result'] = expressions_list[n][1]
+            compute_matrix(spec_as_dict)
 
     @_m.logbook_trace("Matrix Batchin")
     def Matrix_Batchins(self, eb):
