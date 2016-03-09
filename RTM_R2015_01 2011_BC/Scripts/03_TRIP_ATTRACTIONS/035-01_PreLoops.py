@@ -259,12 +259,12 @@ class PreLoop(_m.Tool()):
         util.initmat(eb, "mf926", "Scr2", "Scratch2", 0)
         util.initmat(eb, "mf927", "Scr3", "Scratch3", 0)
         util.initmat(eb, "mf161", "RlFare", "Rail Fare", 0)
-        ### Initialize peak hour demand matrices here in order to run assignment to generate starter skims 
+        ### Initialize peak hour demand matrices here in order to run assignment to generate starter skims
         util.initmat(eb, "mf843", "f1115v", "f1115v", 0)
         util.initmat(eb, "mf844", "f1215v", "f1215v", 0)
         util.initmat(eb, "mf845", "f1315v", "f1315v", 0)
         util.initmat(eb, "mf846", "f2115v", "f2115v", 0)
-        util.initmat(eb, "mf847", "f2415v", "f2415v", 0)        
+        util.initmat(eb, "mf847", "f2415v", "f2415v", 0)
         util.initmat(eb, "mf848", "f1125v", "f1125v", 0)
         util.initmat(eb, "mf849", "f1225v", "f1225v", 0)
         util.initmat(eb, "mf850", "f1325v", "f1325v", 0)
@@ -273,39 +273,39 @@ class PreLoop(_m.Tool()):
         util.initmat(eb, "mf853", "f3545b", "f3545b", 0.0000001)
         util.initmat(eb, "mf854", "f3555r", "f3555r", 0.0000001)
         util.initmat(eb, "mf980", "LgAM", "Veh-AMPH-unadjusted-LGV", 0)
-        util.initmat(eb, "mf981", "HgAM", "Veh-AMPH-unadjusted-HGV", 0)        
+        util.initmat(eb, "mf981", "HgAM", "Veh-AMPH-unadjusted-HGV", 0)
         util.initmat(eb, "mf856", "f1116v", "f1116v", 0)
         util.initmat(eb, "mf857", "f1216v", "f1216v", 0)
         util.initmat(eb, "mf858", "f1316v", "f1316v", 0)
         util.initmat(eb, "mf859", "f2116v", "f2116v", 0)
-        util.initmat(eb, "mf860", "f2416v", "f2416v", 0)        
+        util.initmat(eb, "mf860", "f2416v", "f2416v", 0)
         util.initmat(eb, "mf861", "f1126v", "f1126v", 0)
         util.initmat(eb, "mf862", "f1226v", "f1226v", 0)
         util.initmat(eb, "mf863", "f1326v", "f1326v", 0)
         util.initmat(eb, "mf864", "f2126v", "f2126v", 0)
         util.initmat(eb, "mf865", "f2426v", "f2426v", 0)
         util.initmat(eb, "mf866", "f3546b", "f3546b", 0.0000001)
-        util.initmat(eb, "mf867", "f3556r", "f3556r", 0.0000001)        
+        util.initmat(eb, "mf867", "f3556r", "f3556r", 0.0000001)
         util.initmat(eb, "mf984", "LgMD", "Veh-MDPH-unadjusted-LGV", 0)
         util.initmat(eb, "mf985", "HgMD", "Veh-MDPH-unadjusted-HGV", 0)
-        
+
         util.initmat(eb, "ms160", "RlDeIn", "Initial Rail Demand for JLA", 0.0000001)
-        
-        # Batch in starter auto demand used for generating starter skims, demand is aggregated into 4 classes, SOV, HOV, Light Tr, Heavy Tr 
+
+        # Batch in starter auto demand used for generating starter skims, demand is aggregated into 4 classes, SOV, HOV, Light Tr, Heavy Tr
         matrix_txn = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
         demand_file_AM = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "AM_Starter_Demand.txt")
         demand_file_MD = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "MD_Starter_Demand.txt")
         matrix_txn(transaction_file=demand_file_AM, throw_on_error=True)
         matrix_txn(transaction_file=demand_file_MD, throw_on_error=True)
-        
+
     @_m.logbook_trace("Copy Starter Skims to appropriate locations")
     def Copy_Starter_Skims_Fares(self):
         util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        
+
         specs = []
-        
+
         # Starter Skims copying eliminated with new code, only calculation of rail fare matrix remains
         specs.append(util.matrix_spec("mf161", "mf160"))
 
