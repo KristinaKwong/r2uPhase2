@@ -94,10 +94,7 @@ Whitespace is ignored.
                       'congested_transit': 'ms138',
                       'park_and_ride': 'ms139',
                       'model_year': 'ms149'}
-        # TODO: these scalars could be created (overwritten) from this script
-        # NOTE: the setting implementation uses a mixture of old-style
-        #       EMME/2 convention of saving settings as booleans in
-        #       scalar matrices and new style use of Python dictionary
+
         truth_values = {"on": 1, "off": 0}
         # prepare report to logbook
         pb = _m.PageBuilder(title="Input settings")
