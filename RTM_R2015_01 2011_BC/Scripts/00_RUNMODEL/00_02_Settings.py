@@ -68,6 +68,8 @@ Whitespace is ignored.
         util = _m.Modeller().tool("translink.emme.util")
 
         ## Read the settings file
+        util.initmat(eb, "ms138", "ConTrn", "Run Congested Transit Assignment", 0)
+        util.initmat(eb, "ms139", "PnRMod", "Run Park and Ride Model", 0)
         util.initmat(eb, "ms140", "AMScNo", "AM Scenario Number", 0)
         util.initmat(eb, "ms141", "MDScNo", "MD Scenario Number", 0)
         util.initmat(eb, "ms142", "ProNum", "Number of Processors", 0)
@@ -89,8 +91,8 @@ Whitespace is ignored.
                       'mode_choice_sens': 'ms146',
                       'toll_assign_sens': 'ms147',
                       'toll_dist_sens': 'ms148',
-                      'congested_transit': 'not_a_matrix',
-                      'park_and_ride': 'not_a_matrix',
+                      'congested_transit': 'ms138',
+                      'park_and_ride': 'ms139',
                       'model_year': 'ms149'}
         # TODO: these scalars could be created (overwritten) from this script
         # NOTE: the setting implementation uses a mixture of old-style

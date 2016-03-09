@@ -156,30 +156,9 @@ class FullModelRun(_m.Tool()):
         land_use(land_use_file1, land_use_file2)
 
         ## Read the settings file
-        util.initmat(eb, "ms140", "AMScNo", "AM Scenario Number", 0)
-        util.initmat(eb, "ms141", "MDScNo", "MD Scenario Number", 0)
-        util.initmat(eb, "ms142", "ProNum", "Number of Processors", 0)
-        util.initmat(eb, "ms143", "ScCrMo", "Scenario Creation Module", 0)
-        util.initmat(eb, "ms144", "PrCal", "Parking Cost Adjustment", 0)
-        util.initmat(eb, "ms145", "DisSen", "Trip Dist Cost Sens", 0)
-        util.initmat(eb, "ms146", "MChSen", "Mode Choice Toll Sens", 0)
-        util.initmat(eb, "ms147", "AsgSen", "Assignment Toll Sens", 0)
-        util.initmat(eb, "ms148", "DsToSn", "Trip Dist Cost (Toll) Sens", 0)
-        util.initmat(eb, "md15", "CpBsDe", "Compound Base Density", 0)
-        util.initmat(eb, "md101", "CpHoDe", "Compound_Horizon_Density", 0)
-        util.initmat(eb, "md102", "BWrPrC", "Base_work_parkcost", 0)
-        util.initmat(eb, "md103", "BOtPrC", "Base_nonwork_parkcost", 0)
-        util.initmat(eb, "md104", "HWrPrC", "Horizon_work_parkcost", 0)
-        util.initmat(eb, "md105", "HOtPrC", "Horizon_nonwork_parkcost", 0)
-        util.initmat(eb, "md106", "PrInc1", "Calculated_work_park_cost_increment", 0)
-        util.initmat(eb, "md107", "PrInc2", "Calculated_nonwork_park_cost_increment", 0)
-        util.initmat(eb, "md108", "WrPrOr", "Work Parking Cost Override", 0)
-        util.initmat(eb, "md109", "OtPrOr", "Nonwork Park Cost Override", 0)
-
-        # Settings file
         read_settings = _m.Modeller().tool("translink.emme.stage1.step0.settings")
         settings_file = os.path.join(os.path.dirname(eb.path), "settings.csv")
-        settings = read_settings(settings_file)
+        settings = read_settings(eb, settings_file)
 
         create_scenario = _m.Modeller().tool("translink.emme.stage1.step0.create_scen")
         scenario_run = eb.matrix("ms143").data
