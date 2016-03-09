@@ -15,8 +15,6 @@ d md70
 d md71
 d md72
 d md73
-d ms37
-d ms38
 d mf192
 d mf193
 d mf194
@@ -573,8 +571,6 @@ a md73 PRlatt  0 Park-ride lot variable attractivity
   all 120 1
   all 121 1
   all 127 1
-a ms37 PRwvot 3.33 PR Work VOT (min/$)
-a ms38 PRnvot 8.57 PR Nonwork VOT (min/$)
 a mf200 PRbfil 0 PR Bus OD combinations
  gp2  102 1
  gp3  103 1
