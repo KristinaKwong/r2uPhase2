@@ -60,7 +60,7 @@ class ParkAndRide(_m.Tool()):
                 bank_dir, "05_MODE_CHOICE", "Inputs", "ParkAndRide")
             partition_txn(os.path.join(input_dir, "gpgr.txt"),
                           scenario=scenario)
-            for name in ["PR-setup.311", "prmodel-matrixadjustments.311"]:
+            for name in ["PR-setup.311"]:
                 matrix_txn(os.path.join(input_dir, name), scenario=scenario)
 
             spec = {
@@ -420,11 +420,11 @@ class ParkAndRide(_m.Tool()):
         #Calculate auto impedance
         if asg_type < 3:
             variables = {"VOT": "ms37",
-                         "parking_cost": "mf180",
+                         "parking_cost": "md27",
                          "lot_charge": "ms37*md62"}
         elif asg_type >= 3:
             variables = {"VOT": "ms38",
-                         "parking_cost": "mf181",
+                         "parking_cost": "md28",
                          "lot_charge": "ms38*md62"}
 
         spec["expression"] = ("(mf101+ms19*mf102* %(VOT)s +(ms18+ms17)*mf100* %(VOT)s )"
