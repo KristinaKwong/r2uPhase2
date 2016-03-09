@@ -95,28 +95,10 @@ class FullModelRun(_m.Tool()):
             "best_relative_gap": 0.01,
             "normalized_gap": 0.01
         }
-        # This is only used for generating starter skims
-        stopping_criteria_skim = {
-            "max_iterations": 30,
-            "relative_gap": 0.0,
-            "best_relative_gap": 0.01,
-            "normalized_gap": 0.01
-        }
 
         self.stage1(eb, land_use_file1, land_use_file2)
 
-        # This section (lines 113-119) generates initial skims instead of runn
-    #@_m.logbook_trace("Run Seed Assignment and Generate Initial Skims")
-        # Pre_Loops is now run before the initial assignment to initialize skim matrices
-
-        pre_loops = _m.Modeller().tool("translink.emme.stage2.step3.preloops")
-        pre_loops(eb)
-
-        assignment = _m.Modeller().tool("translink.emme.stage3.step6.assignment")
-        post_assignment = _m.Modeller().tool("translink.emme.stage3.step7.postassign")
-        assignment(eb, 0, stopping_criteria_skim)
-        post_assignment(eb, 0, stopping_criteria_skim)
-
+        self.calculate_costs(eb)
 
         self.stage2(eb)
 
@@ -164,6 +146,26 @@ class FullModelRun(_m.Tool()):
         if scenario_run == 1:
             create_scenario(eb, am_scen, md_scen)
 
+    @_m.logbook_trace("Run Seed Assignment and Generate Initial Skims")
+    def calculate_costs(self, eb):
+        # This is only used for generating starter skims
+        stopping_criteria_skim = {
+            "max_iterations": 30,
+            "relative_gap": 0.0,
+            "best_relative_gap": 0.01,
+            "normalized_gap": 0.01
+        }
+
+        # Pre_Loops is now run before the initial assignment to initialize skim matrices
+        pre_loops = _m.Modeller().tool("translink.emme.stage2.step3.preloops")
+        pre_loops(eb)
+
+        assignment = _m.Modeller().tool("translink.emme.stage3.step6.assignment")
+        assignment(eb, 0, stopping_criteria_skim)
+
+        post_assignment = _m.Modeller().tool("translink.emme.stage3.step7.postassign")
+        post_assignment(eb, 0, stopping_criteria_skim)
+
         # Segmentation (including auto ownership)
         segmentation = _m.Modeller().tool("translink.emme.stage1.step1.segmentation")
         segmentation(eb)
@@ -173,7 +175,6 @@ class FullModelRun(_m.Tool()):
         trip_productions = _m.Modeller().tool("translink.emme.stage2.step2.tripproduction")
         trip_attraction = _m.Modeller().tool("translink.emme.stage2.step2.tripattraction")
         factor_trip_attractions = _m.Modeller().tool("translink.emme.stage2.step3.factoredtripattraction")
-
 
         # Trip Generation (production, attraction, factors)
         trip_productions(eb)
