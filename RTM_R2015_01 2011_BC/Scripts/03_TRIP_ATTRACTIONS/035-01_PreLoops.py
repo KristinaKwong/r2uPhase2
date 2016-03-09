@@ -259,7 +259,7 @@ class PreLoop(_m.Tool()):
         util.initmat(eb, "mf926", "Scr2", "Scratch2", 0)
         util.initmat(eb, "mf927", "Scr3", "Scratch3", 0)
         util.initmat(eb, "mf161", "RlFare", "Rail Fare", 0)
-        
+        ### Initialize peak hour demand matrices here in order to run assignment to generate starter skims 
         util.initmat(eb, "mf843", "f1115v", "f1115v", 0)
         util.initmat(eb, "mf844", "f1215v", "f1215v", 0)
         util.initmat(eb, "mf845", "f1315v", "f1315v", 0)
@@ -273,8 +273,7 @@ class PreLoop(_m.Tool()):
         util.initmat(eb, "mf853", "f3545b", "f3545b", 0.0000001)
         util.initmat(eb, "mf854", "f3555r", "f3555r", 0.0000001)
         util.initmat(eb, "mf980", "LgAM", "Veh-AMPH-unadjusted-LGV", 0)
-        util.initmat(eb, "mf981", "HgAM", "Veh-AMPH-unadjusted-HGV", 0)
-        
+        util.initmat(eb, "mf981", "HgAM", "Veh-AMPH-unadjusted-HGV", 0)        
         util.initmat(eb, "mf856", "f1116v", "f1116v", 0)
         util.initmat(eb, "mf857", "f1216v", "f1216v", 0)
         util.initmat(eb, "mf858", "f1316v", "f1316v", 0)
@@ -290,7 +289,9 @@ class PreLoop(_m.Tool()):
         util.initmat(eb, "mf984", "LgMD", "Veh-MDPH-unadjusted-LGV", 0)
         util.initmat(eb, "mf985", "HgMD", "Veh-MDPH-unadjusted-HGV", 0)
         
-        # Batch in starter demand used for generating starter skims
+        util.initmat(eb, "ms160", "RlDeIn", "Initial Rail Demand for JLA", 0.0000001)
+        
+        # Batch in starter auto demand used for generating starter skims, demand is aggregated into 4 classes, SOV, HOV, Light Tr, Heavy Tr 
         matrix_txn = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
         demand_file_AM = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "AM_Starter_Demand.txt")
         demand_file_MD = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "MD_Starter_Demand.txt")
@@ -305,7 +306,7 @@ class PreLoop(_m.Tool()):
         
         specs = []
         
-        # Starter Skims copying eliminated with new code
+        # Starter Skims copying eliminated with new code, only calculation of rail fare matrix remains
         specs.append(util.matrix_spec("mf161", "mf160"))
 
         compute_matrix(specs)

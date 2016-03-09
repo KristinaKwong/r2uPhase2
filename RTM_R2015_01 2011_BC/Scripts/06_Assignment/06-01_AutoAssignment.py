@@ -346,3 +346,15 @@ class AutoAssignment(_m.Tool()):
         util.initmat(eb, "mf959", "eTrIvM", "Interim Skim TransitIVTTMD", 0)
         util.initmat(eb, "mf960", "eTrAxM", "Interim Skim TransitAuxMD", 0)
         util.initmat(eb, "mf961", "eTrBrM", "Interim Skim TransitBoardMD", 0)
+
+        ## Initialize new block used for journey-level assignment
+        util.initmat(eb, "mf1070", "nRBIvA", "Interm-JL Skim RailBusIVTTAM", 0)
+        util.initmat(eb, "mf1071", "nRRIvA", "Interm-JL Skim RailRailIVTTAM", 0)
+        util.initmat(eb, "mf1072", "nRlWtA", "Interm-JL Skim RailTotalWaitAM", 0)
+        util.initmat(eb, "mf1073", "nRlBrA", "Interm-JL Skim RailAvgBoardAM", 0)
+        util.initmat(eb, "mf1074", "nRlAxA", "Interm-JL Skim RailAuxAM", 0)
+        util.initmat(eb, "mf1075", "nRBIvM", "Interm-JL Skim RailBusIVTTMD", 0)
+        util.initmat(eb, "mf1076", "nRRIvM", "Interm-JL Skim RailRailIVTTMD", 0)
+        util.initmat(eb, "mf1077", "nRlWtM", "Interm-JL Skim RailTotalWaitMD", 0)
+        util.initmat(eb, "mf1078", "nRlBrM", "Interm-JL Skim RailAvgBoardMD", 0)
+        util.initmat(eb, "mf1079", "nRlAxM", "Interm-JL Skim RailAuxMD", 0)

@@ -95,7 +95,7 @@ class FullModelRun(_m.Tool()):
             "best_relative_gap": 0.01,
             "normalized_gap": 0.01
         }
-        # only used for generating starter skims
+        # This is only used for generating starter skims
         stopping_criteria_skim = {
             "max_iterations": 30,
             "relative_gap": 0.0,
@@ -105,7 +105,7 @@ class FullModelRun(_m.Tool()):
 
         self.stage1(eb, land_use_file1, land_use_file2)
 
-        # This section generates initial skims instead of runn
+        # This section (lines 113-119) generates initial skims instead of runn
     #@_m.logbook_trace("Run Seed Assignment and Generate Initial Skims")
         # Pre_Loops is now run before the initial assignment to initialize skim matrices
 

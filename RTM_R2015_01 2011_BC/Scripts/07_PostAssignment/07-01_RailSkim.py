@@ -33,7 +33,7 @@ class RailAssignment(_m.Tool()):
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("07-01 - Rail Skims")
-    def __call__(self, i, scenarionumber):
+    def __call__(self, i, scenarionumber, RaType):
         NAMESPACE = "inro.emme.transit_assignment.extended.matrix_results"
         railskim = _m.Modeller().tool(NAMESPACE)
         # Note: could remove the None items from the tmplt
@@ -66,8 +66,13 @@ class RailAssignment(_m.Tool()):
             "perceived_first_waiting_times": None,
             "perceived_total_waiting_times": None
         }
-        Travel_Time_List = [['mf940', 'mf941', 'mf939', 'mf937', 'mf938'],
-                            ['mf952', 'mf953', 'mf951', 'mf949', 'mf950']]
+        if RaType==0:
+            Travel_Time_List = [['mf940', 'mf941', 'mf939', 'mf937', 'mf938'],
+                                ['mf952', 'mf953', 'mf951', 'mf949', 'mf950']]
+        if RaType==1:
+            Travel_Time_List = [['mf1073', 'mf1074', 'mf1072', 'mf1070', 'mf1071'],
+                                ['mf1078', 'mf1079', 'mf1077', 'mf1075', 'mf1076']]
+
 
         spec_as_dict = _deepcopy(tmplt_spec)
         spec_as_dict["by_mode_subset"]["modes"] = ["b", "f", "g", "l", "r", "s", "a", "p", "h"]
