@@ -5,6 +5,7 @@
 ##--Purpose: Move starting skims where needed
 ##---------------------------------------------------------------------
 import inro.modeller as _m
+import os
 import traceback as _traceback
 
 class PreLoop(_m.Tool()):
@@ -258,7 +259,44 @@ class PreLoop(_m.Tool()):
         util.initmat(eb, "mf926", "Scr2", "Scratch2", 0)
         util.initmat(eb, "mf927", "Scr3", "Scratch3", 0)
         util.initmat(eb, "mf161", "RlFare", "Rail Fare", 0)
-
+        
+        util.initmat(eb, "mf843", "f1115v", "f1115v", 0)
+        util.initmat(eb, "mf844", "f1215v", "f1215v", 0)
+        util.initmat(eb, "mf845", "f1315v", "f1315v", 0)
+        util.initmat(eb, "mf846", "f2115v", "f2115v", 0)
+        util.initmat(eb, "mf847", "f2415v", "f2415v", 0)        
+        util.initmat(eb, "mf848", "f1125v", "f1125v", 0)
+        util.initmat(eb, "mf849", "f1225v", "f1225v", 0)
+        util.initmat(eb, "mf850", "f1325v", "f1325v", 0)
+        util.initmat(eb, "mf851", "f2125v", "f2125v", 0)
+        util.initmat(eb, "mf852", "f2425v", "f2425v", 0)
+        util.initmat(eb, "mf853", "f3545b", "f3545b", 0.0000001)
+        util.initmat(eb, "mf854", "f3555r", "f3555r", 0.0000001)
+        util.initmat(eb, "mf980", "LgAM", "Veh-AMPH-unadjusted-LGV", 0)
+        util.initmat(eb, "mf981", "HgAM", "Veh-AMPH-unadjusted-HGV", 0)
+        
+        util.initmat(eb, "mf856", "f1116v", "f1116v", 0)
+        util.initmat(eb, "mf857", "f1216v", "f1216v", 0)
+        util.initmat(eb, "mf858", "f1316v", "f1316v", 0)
+        util.initmat(eb, "mf859", "f2116v", "f2116v", 0)
+        util.initmat(eb, "mf860", "f2416v", "f2416v", 0)        
+        util.initmat(eb, "mf861", "f1126v", "f1126v", 0)
+        util.initmat(eb, "mf862", "f1226v", "f1226v", 0)
+        util.initmat(eb, "mf863", "f1326v", "f1326v", 0)
+        util.initmat(eb, "mf864", "f2126v", "f2126v", 0)
+        util.initmat(eb, "mf865", "f2426v", "f2426v", 0)
+        util.initmat(eb, "mf866", "f3546b", "f3546b", 0.0000001)
+        util.initmat(eb, "mf867", "f3556r", "f3556r", 0.0000001)        
+        util.initmat(eb, "mf984", "LgMD", "Veh-MDPH-unadjusted-LGV", 0)
+        util.initmat(eb, "mf985", "HgMD", "Veh-MDPH-unadjusted-HGV", 0)
+        
+        # Batch in starter demand used for generating starter skims
+        matrix_txn = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
+        demand_file_AM = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "AM_Starter_Demand.txt")
+        demand_file_MD = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "MD_Starter_Demand.txt")
+        matrix_txn(transaction_file=demand_file_AM, throw_on_error=True)
+        matrix_txn(transaction_file=demand_file_MD, throw_on_error=True)
+        
     @_m.logbook_trace("Copy Starter Skims to appropriate locations")
     def Copy_Starter_Skims_Fares(self):
         util = _m.Modeller().tool("translink.emme.util")
@@ -266,40 +304,8 @@ class PreLoop(_m.Tool()):
 
         
         specs = []
-        specs.append(util.matrix_spec("mf100", "mf893"))
-        specs.append(util.matrix_spec("mf101", "mf894"))
-        specs.append(util.matrix_spec("mf102", "mf895"))
-        specs.append(util.matrix_spec("mf103", "mf896"))
-        specs.append(util.matrix_spec("mf104", "mf897"))
-        specs.append(util.matrix_spec("mf105", "mf898"))
-        specs.append(util.matrix_spec("mf106", "mf899"))
-        specs.append(util.matrix_spec("mf107", "mf900"))
-        specs.append(util.matrix_spec("mf108", "mf901"))
-        specs.append(util.matrix_spec("mf109", "mf902"))
-
-        specs.append(util.matrix_spec("mf111", "mf903"))
-        specs.append(util.matrix_spec("mf112", "mf904"))
-        specs.append(util.matrix_spec("mf113", "mf905"))
-        specs.append(util.matrix_spec("mf114", "mf906"))
-
-        specs.append(util.matrix_spec("mf116", "mf907"))
-        specs.append(util.matrix_spec("mf117", "mf908"))
-        specs.append(util.matrix_spec("mf118", "mf909"))
-        specs.append(util.matrix_spec("mf119", "mf910"))
-        specs.append(util.matrix_spec("mf120", "mf911"))
-
-        specs.append(util.matrix_spec("mf124", "mf912"))
-        specs.append(util.matrix_spec("mf125", "mf913"))
-        specs.append(util.matrix_spec("mf126", "mf914"))
-        specs.append(util.matrix_spec("mf127", "mf915"))
-        specs.append(util.matrix_spec("mf128", "mf916"))
-
-        specs.append(util.matrix_spec("mf163", "mf917"))
-        specs.append(util.matrix_spec("mf164", "mf918"))
-
-        specs.append(util.matrix_spec("mf167", "mf919"))
-        specs.append(util.matrix_spec("mf168", "mf920"))
-
+        
+        # Starter Skims copying eliminated with new code
         specs.append(util.matrix_spec("mf161", "mf160"))
 
         compute_matrix(specs)

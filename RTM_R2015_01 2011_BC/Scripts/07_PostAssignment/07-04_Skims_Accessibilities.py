@@ -43,11 +43,12 @@ class SkimsAccessibilities(_m.Tool()):
 
     def weightedskims(self, IterationNumber):
         with _m.logbook_trace("Weighted Skims"):
-            NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _m.Modeller().tool(NAMESPACE)
+
+            util = _m.Modeller().tool("translink.emme.util")
+            compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
             if IterationNumber == 0:
-                j = 0.5
+                j = 1
                 k = 1
 
             if IterationNumber > 0:
@@ -106,6 +107,7 @@ class SkimsAccessibilities(_m.Tool()):
                 ['mf168*(1-' + str(k) + ')+mf959*' + str(k), 'mf168']
             ]
 
+
             for n in range(0, len(expressions_list_am)):
                 spec_as_dict['expression'] = expressions_list_am[n][0]
                 spec_as_dict['result'] = expressions_list_am[n][1]
@@ -113,6 +115,35 @@ class SkimsAccessibilities(_m.Tool()):
                 spec_as_dict['expression'] = expressions_list_md[n][0]
                 spec_as_dict['result'] = expressions_list_md[n][1]
                 compute_matrix(spec_as_dict)
+
+            # Calculate Intra-zonals
+            Counter_Auto=1
+            Counter_Transit=1
+
+            Auto_AM_Expression= "mf101+mf100*6*ms18+mf102*ms19*6"
+            # distance and time
+            Auto_AM_List=['mf100','mf101']
+            self.Calc_Intrazonals(Auto_AM_Expression, Auto_AM_List, Counter_Auto)
+
+            Auto_MD_Expression= "mf104+mf103*6*ms18+mf105*ms19*6"
+            Auto_MD_List=['mf103','mf104']
+            self.Calc_Intrazonals(Auto_MD_Expression, Auto_MD_List, Counter_Auto)
+
+            Transit_AM_Expression = "2*mf163+mf164"
+            Transit_AM_List=['mf163','mf164']
+            self.Calc_Intrazonals(Transit_AM_Expression, Transit_AM_List, Counter_Transit)
+
+            Transit_MD_Expression = "2*mf167+mf168"
+            Transit_MD_List=['mf167','mf168']
+            self.Calc_Intrazonals(Transit_MD_Expression, Transit_MD_List, Counter_Transit)
+
+            Bus_AM_Expression = "2.25*mf106+mf107+4*mf108+1.75*mf109"
+            Bus_AM_List = ['mf106','mf107','mf108','mf109']
+            self.Calc_Intrazonals(Bus_AM_Expression, Bus_AM_List, Counter_Transit)
+
+            Bus_MD_Expression = "2.25*mf111+mf112+4*mf113+1.75*mf114"
+            Bus_MD_List = ['mf111','mf112','mf113','mf114']
+            self.Calc_Intrazonals(Bus_MD_Expression, Bus_MD_List, Counter_Transit)
 
     def accessibilities(self):
         with _m.logbook_trace("Accessibilities Calculation"):
@@ -219,3 +250,48 @@ class SkimsAccessibilities(_m.Tool()):
         util.initmat(eb, "mo988", "MaEmAc", "Max Tot Emp Accessibility", 0)
         util.initmat(eb, "mo989", "SMEmAc", "Max Sus Tot Emp Accessibility", 0)
         util.initmat(eb, "mo990", "SMRtAc", "Max Sus Tot Emp Accessibility", 0)
+    # Added matrices for calculating intra-zonals
+        util.initmat(eb, "mo1025", "MiGCIZ", "Min Intra-zonal GC", 0)
+        util.initmat(eb, "mo1026", "MiGCIn", "Min Intra-zonal GC Zone Index", 0)
+        util.initmat(eb, "mo1027", "MiCoIn", "Min Intra-zonal GC Comp. ", 0)
+        util.initmat(eb, "mf1095", "TmpCal", "Temp Calc Min Intra-zonal GC", 0)
+
+    @_m.logbook_trace("Calc_Intrazonals")
+    def Calc_Intrazonals(self, expression, matrix_list, Counter):
+
+        util = _m.Modeller().tool("translink.emme.util")
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
+        specs=[]
+
+        # Define SPECS
+
+        specs.append(util.matrix_spec("mf1095", expression))
+
+        for count in range (0, Counter):
+
+            iz_spec= util.matrix_spec("mo1025", "mf1095")
+            iz_spec["constraint"]["by_value"] = {"od_values": "mf970", "interval_min": 1, "interval_max": 1, "condition": "EXCLUDE"}
+            iz_spec["constraint"]["by_zone"] = {"origins": "1000-9999", "destinations": "1000-9999"}
+            iz_spec["aggregation"] = {"origins": None, "destinations": ".min."}
+            specs.append(iz_spec)
+
+            ind_spec=util.matrix_spec("mo1026", "q*(mo1025.eq.mf1095)")
+            ind_spec["constraint"]["by_value"] = {"od_values": "mf970", "interval_min": 1, "interval_max": 1, "condition": "EXCLUDE"}
+            ind_spec["constraint"]["by_zone"] = {"origins": "1000-9999", "destinations": "1000-9999"}
+            ind_spec["aggregation"] = {"origins": None, "destinations": ".max."}
+            specs.append(ind_spec)
+
+            for matrix in range(0, len(matrix_list)):
+                ind_spec=util.matrix_spec("mo1027", matrix_list[matrix]+"*(q.eq.mo1026)")
+                ind_spec["constraint"]["by_value"] = {"od_values": "mf970", "interval_min": 1, "interval_max": 1, "condition": "EXCLUDE"}
+                ind_spec["constraint"]["by_zone"] = {"origins": "1000-9999", "destinations": "1000-9999"}
+                ind_spec["aggregation"] = {"origins": None, "destinations": ".max."}
+                specs.append(ind_spec)
+
+                izod_spec=util.matrix_spec(matrix_list[matrix],"mo1027/"+str(Counter)+"+"+ matrix_list[matrix])
+                izod_spec["constraint"]["by_value"] = {"od_values": "mf970", "interval_min": 1, "interval_max": 1, "condition": "INCLUDE"}
+                specs.append(izod_spec)
+
+            specs.append(util.matrix_spec("mf1095",'mf1095*(q.ne.mo1026) +99999*(q.eq.mo1026)'))
+
+        report = compute_matrix(specs)

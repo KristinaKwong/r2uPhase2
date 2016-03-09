@@ -88,24 +88,46 @@ class FullModelRun(_m.Tool()):
                  max_distribution_iterations=60,
                  max_assignment_iterations=100):
         eb = _m.Modeller().emmebank
-
-        settings = self.stage1(eb, land_use_file1, land_use_file2)
-
-        self.stage2(eb)
-
+        
         stopping_criteria = {
             "max_iterations": max_assignment_iterations,
             "relative_gap": 0.0,
             "best_relative_gap": 0.01,
             "normalized_gap": 0.01
         }
+        # only used for generating starter skims
+        stopping_criteria_skim = {
+            "max_iterations": 30,
+            "relative_gap": 0.0,
+            "best_relative_gap": 0.01,
+            "normalized_gap": 0.01
+        }
+        
+        
+        settings = self.stage1(eb, land_use_file1, land_use_file2)
+        
+        # This section generates initial skims instead of runn
+    #@_m.logbook_trace("Run Seed Assignment and Generate Initial Skims")
+        # Pre_Loops is now run before the initial assignment to initialize skim matrices
+        
+        pre_loops = _m.Modeller().tool("translink.emme.stage2.step3.preloops")
+        pre_loops(eb)
+        
+        assignment = _m.Modeller().tool("translink.emme.stage3.step6.assignment")
+        post_assignment = _m.Modeller().tool("translink.emme.stage3.step7.postassign")
+        assignment(eb, 0, stopping_criteria_skim)
+        post_assignment(eb, 0, stopping_criteria_skim)        
+        
+    
+        self.stage2(eb)
+
         run_park_ride = settings.get("park_and_ride")
 
         self.stage3(eb, global_iterations, max_distribution_iterations, run_park_ride, stopping_criteria)
 
         self.stage4(eb, settings, stopping_criteria)
 
-    @_m.logbook_trace("Stage 1 - Define Inputs")
+    @_m.logbook_trace("Stage 1 - Define Inputs and Run Intial Assignment")
     def stage1(self, eb, land_use_file1, land_use_file2):
         matrix_txn = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
         lu_file = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "LandUse", "Batchins.txt")
@@ -133,10 +155,31 @@ class FullModelRun(_m.Tool()):
         land_use = _m.Modeller().tool("translink.emme.stage1.step0.landuse")
         land_use(land_use_file1, land_use_file2)
 
+        ## Read the settings file
+        util.initmat(eb, "ms140", "AMScNo", "AM Scenario Number", 0)
+        util.initmat(eb, "ms141", "MDScNo", "MD Scenario Number", 0)
+        util.initmat(eb, "ms142", "ProNum", "Number of Processors", 0)
+        util.initmat(eb, "ms143", "ScCrMo", "Scenario Creation Module", 0)
+        util.initmat(eb, "ms144", "PrCal", "Parking Cost Adjustment", 0)
+        util.initmat(eb, "ms145", "DisSen", "Trip Dist Cost Sens", 0)
+        util.initmat(eb, "ms146", "MChSen", "Mode Choice Toll Sens", 0)
+        util.initmat(eb, "ms147", "AsgSen", "Assignment Toll Sens", 0)
+        util.initmat(eb, "ms148", "DsToSn", "Trip Dist Cost (Toll) Sens", 0)
+        util.initmat(eb, "md15", "CpBsDe", "Compound Base Density", 0)
+        util.initmat(eb, "md101", "CpHoDe", "Compound_Horizon_Density", 0)
+        util.initmat(eb, "md102", "BWrPrC", "Base_work_parkcost", 0)
+        util.initmat(eb, "md103", "BOtPrC", "Base_nonwork_parkcost", 0)
+        util.initmat(eb, "md104", "HWrPrC", "Horizon_work_parkcost", 0)
+        util.initmat(eb, "md105", "HOtPrC", "Horizon_nonwork_parkcost", 0)
+        util.initmat(eb, "md106", "PrInc1", "Calculated_work_park_cost_increment", 0)
+        util.initmat(eb, "md107", "PrInc2", "Calculated_nonwork_park_cost_increment", 0)
+        util.initmat(eb, "md108", "WrPrOr", "Work Parking Cost Override", 0)
+        util.initmat(eb, "md109", "OtPrOr", "Nonwork Park Cost Override", 0)
+
         # Settings file
         read_settings = _m.Modeller().tool("translink.emme.stage1.step0.settings")
         settings_file = os.path.join(os.path.dirname(eb.path), "settings.csv")
-        settings = read_settings(eb, settings_file)
+        settings = read_settings(settings_file)
 
         create_scenario = _m.Modeller().tool("translink.emme.stage1.step0.create_scen")
         scenario_run = eb.matrix("ms143").data
@@ -157,13 +200,13 @@ class FullModelRun(_m.Tool()):
         trip_productions = _m.Modeller().tool("translink.emme.stage2.step2.tripproduction")
         trip_attraction = _m.Modeller().tool("translink.emme.stage2.step2.tripattraction")
         factor_trip_attractions = _m.Modeller().tool("translink.emme.stage2.step3.factoredtripattraction")
-        pre_loops = _m.Modeller().tool("translink.emme.stage2.step3.preloops")
+        
 
         # Trip Generation (production, attraction, factors)
         trip_productions(eb)
         trip_attraction(eb)
         factor_trip_attractions(eb)
-        pre_loops(eb)
+        
 
     @_m.logbook_trace("Stage 3 - Model Iteration")
     def stage3(self, eb, global_iterations, max_distribution_iterations, run_park_ride, stopping_criteria):
