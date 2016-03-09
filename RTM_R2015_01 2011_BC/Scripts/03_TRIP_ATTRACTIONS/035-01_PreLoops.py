@@ -286,8 +286,8 @@ class PreLoop(_m.Tool()):
         util.initmat(eb, "mf865", "f2426v", "f2426v", 0)
         util.initmat(eb, "mf866", "f3546b", "f3546b", 0.0000001)
         util.initmat(eb, "mf867", "f3556r", "f3556r", 0.0000001)
-        util.initmat(eb, "mf984", "LgMD", "Veh-MDPH-unadjusted-LGV", 0)
-        util.initmat(eb, "mf985", "HgMD", "Veh-MDPH-unadjusted-HGV", 0)
+        util.initmat(eb, "mf982", "LgMD", "Veh-MDPH-unadjusted-LGV", 0)
+        util.initmat(eb, "mf983", "HgMD", "Veh-MDPH-unadjusted-HGV", 0)
 
         util.initmat(eb, "ms160", "RlDeIn", "Initial Rail Demand for JLA", 0.0000001)
 
