@@ -125,7 +125,7 @@ class FullModelRun(_m.Tool()):
 
         self.stage3(eb, global_iterations, max_distribution_iterations, run_park_ride, stopping_criteria)
 
-        self.stage4(eb, settings, stopping_criteria)
+        self.stage4(eb, stopping_criteria)
 
     @_m.logbook_trace("Stage 1 - Define Inputs and Run Intial Assignment")
     def stage1(self, eb, land_use_file1, land_use_file2):
@@ -206,7 +206,7 @@ class FullModelRun(_m.Tool()):
             post_assignment(eb, iteration_number, stopping_criteria)
 
     @_m.logbook_trace("Stage 4 - Post Processing")
-    def stage4(self, eb, settings, stopping_criteria):
+    def stage4(self, eb, stopping_criteria):
         demand_adjust = _m.Modeller().tool("translink.emme.stage4.step8.demandadjustment")
         congested_transit = _m.Modeller().tool("translink.emme.stage5.step11.congested_transit")
 
@@ -214,7 +214,8 @@ class FullModelRun(_m.Tool()):
         md_scen = eb.matrix("ms141").data
         demand_adjust(eb, am_scen, md_scen, stopping_criteria)
 
-        if settings.get("congested_transit") == 1:
+        run_congested = int(eb.matrix("ms138").data)
+        if run_congested == 1:
             am_scenario = eb.scenario(am_scen)
             copy_scenario = _m.Modeller().tool("inro.emme.data.scenario.copy_scenario")
             congested_transit_am = copy_scenario(
