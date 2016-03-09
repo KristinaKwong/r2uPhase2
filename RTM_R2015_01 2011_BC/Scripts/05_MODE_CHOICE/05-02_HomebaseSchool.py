@@ -562,8 +562,8 @@ class ModeChoiceHBSchool(_m.Tool()):
         specs.append(util.matrix_spec("mf846", "mf846+" + "mf798*md999"))
         specs.append(util.matrix_spec("mf851", "mf851+" + "mf784*md999/" + msAutOccGSch2Plus))
         specs.append(util.matrix_spec("mf851", "mf851+" + "mf805*md999/" + msAutOccGSch2Plus))
-        specs.append(util.matrix_spec("mf853", "mf853+" + "mf819*mf996"))
-        specs.append(util.matrix_spec("mf854", "mf854+" + "mf826*mf992"))
+        specs.append(util.matrix_spec("mf853", "mf853+" + "mf819"))
+        specs.append(util.matrix_spec("mf854", "mf854+" + "mf826"))
         specs.append(util.matrix_spec("mf855", "mf855+" + "mf833"))
         #
         #    Midday

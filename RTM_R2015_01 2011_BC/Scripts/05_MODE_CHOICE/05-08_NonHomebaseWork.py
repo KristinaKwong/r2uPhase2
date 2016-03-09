@@ -564,13 +564,13 @@ class ModeChoiceNHBW(_m.Tool()):
 
         specs.append(util.matrix_spec("mf844", "mf844+" + "mf798"))
         specs.append(util.matrix_spec("mf849", "mf849+" + "(mf805/" + msAutOccNhbW2Plus + ")"))
-        specs.append(util.matrix_spec("mf853", "mf853+" + "mf819*mf996"))
-        specs.append(util.matrix_spec("mf854", "mf854+" + "mf826*mf992"))
+        specs.append(util.matrix_spec("mf853", "mf853+" + "mf819"))
+        specs.append(util.matrix_spec("mf854", "mf854+" + "mf826"))
         specs.append(util.matrix_spec("mf855", "mf855+" + "mf833"))
 
         # Track work transit demand separately for park and ride model
-        specs.append(util.matrix_spec("mf998", "mf998 + mf819*mf996"))
-        specs.append(util.matrix_spec("mf997", "mf997 + mf826*mf992"))
+        specs.append(util.matrix_spec("mf998", "mf998 + mf819"))
+        specs.append(util.matrix_spec("mf997", "mf997 + mf826"))
         #
         #    Midday
         #

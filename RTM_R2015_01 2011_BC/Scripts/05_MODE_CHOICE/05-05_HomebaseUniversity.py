@@ -553,8 +553,8 @@ class ModeChoiceHBUni(_m.Tool()):
         specs.append(util.matrix_spec("mf846", "mf846+" + "mf798"))
         specs.append(util.matrix_spec("mf851", "mf851+" + "(mf784/2)+(mf791/" + msAutOccUniv3Plus + ")"))
         specs.append(util.matrix_spec("mf851", "mf851+" + "(mf805/2)+(mf812/" + msAutOccUniv3Plus + ")"))
-        specs.append(util.matrix_spec("mf853", "mf853+" + "mf819*mf996"))
-        specs.append(util.matrix_spec("mf854", "mf854+" + "mf826*mf992"))
+        specs.append(util.matrix_spec("mf853", "mf853+" + "mf819"))
+        specs.append(util.matrix_spec("mf854", "mf854+" + "mf826"))
         specs.append(util.matrix_spec("mf855", "mf855+" + "mf833"))
         #
         #    Midday
