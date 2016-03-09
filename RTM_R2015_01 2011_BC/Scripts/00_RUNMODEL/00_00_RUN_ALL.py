@@ -121,9 +121,7 @@ class FullModelRun(_m.Tool()):
     
         self.stage2(eb)
 
-        run_park_ride = settings.get("park_and_ride")
-
-        self.stage3(eb, global_iterations, max_distribution_iterations, run_park_ride, stopping_criteria)
+        self.stage3(eb, global_iterations, max_distribution_iterations, stopping_criteria)
 
         self.stage4(eb, stopping_criteria)
 
@@ -188,7 +186,7 @@ class FullModelRun(_m.Tool()):
         
 
     @_m.logbook_trace("Stage 3 - Model Iteration")
-    def stage3(self, eb, global_iterations, max_distribution_iterations, run_park_ride, stopping_criteria):
+    def stage3(self, eb, global_iterations, max_distribution_iterations, stopping_criteria):
                 # TODO: - could check and report on convergence
         #         at each iteration (distribution and auto assignment)
         #       - add global convergence measure
@@ -201,7 +199,7 @@ class FullModelRun(_m.Tool()):
         #Iterate distribution, mode choice and assignment steps to indicated number of iterations
         for iteration_number in range(global_iterations):
             trip_distribution(eb, max_distribution_iterations)
-            mode_choice(eb, iteration_number, global_iterations, run_park_ride)
+            mode_choice(eb, iteration_number, global_iterations)
             assignment(eb, iteration_number, stopping_criteria)
             post_assignment(eb, iteration_number, stopping_criteria)
 
