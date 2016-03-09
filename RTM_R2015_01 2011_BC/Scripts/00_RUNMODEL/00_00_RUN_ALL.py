@@ -88,7 +88,7 @@ class FullModelRun(_m.Tool()):
                  max_distribution_iterations=60,
                  max_assignment_iterations=100):
         eb = _m.Modeller().emmebank
-        
+
         stopping_criteria = {
             "max_iterations": max_assignment_iterations,
             "relative_gap": 0.0,
@@ -102,23 +102,22 @@ class FullModelRun(_m.Tool()):
             "best_relative_gap": 0.01,
             "normalized_gap": 0.01
         }
-        
-        
-        settings = self.stage1(eb, land_use_file1, land_use_file2)
-        
+
+        self.stage1(eb, land_use_file1, land_use_file2)
+
         # This section generates initial skims instead of runn
     #@_m.logbook_trace("Run Seed Assignment and Generate Initial Skims")
         # Pre_Loops is now run before the initial assignment to initialize skim matrices
-        
+
         pre_loops = _m.Modeller().tool("translink.emme.stage2.step3.preloops")
         pre_loops(eb)
-        
+
         assignment = _m.Modeller().tool("translink.emme.stage3.step6.assignment")
         post_assignment = _m.Modeller().tool("translink.emme.stage3.step7.postassign")
         assignment(eb, 0, stopping_criteria_skim)
-        post_assignment(eb, 0, stopping_criteria_skim)        
-        
-    
+        post_assignment(eb, 0, stopping_criteria_skim)
+
+
         self.stage2(eb)
 
         self.stage3(eb, global_iterations, max_distribution_iterations, stopping_criteria)
@@ -155,8 +154,7 @@ class FullModelRun(_m.Tool()):
 
         ## Read the settings file
         read_settings = _m.Modeller().tool("translink.emme.stage1.step0.settings")
-        settings_file = os.path.join(os.path.dirname(eb.path), "settings.csv")
-        settings = read_settings(eb, settings_file)
+        read_settings(eb, os.path.join(os.path.dirname(eb.path), "settings.csv"))
 
         create_scenario = _m.Modeller().tool("translink.emme.stage1.step0.create_scen")
         scenario_run = eb.matrix("ms143").data
@@ -170,20 +168,18 @@ class FullModelRun(_m.Tool()):
         segmentation = _m.Modeller().tool("translink.emme.stage1.step1.segmentation")
         segmentation(eb)
 
-        return settings
-
     @_m.logbook_trace("Stage 2 - Trip Generation")
     def stage2(self, eb):
         trip_productions = _m.Modeller().tool("translink.emme.stage2.step2.tripproduction")
         trip_attraction = _m.Modeller().tool("translink.emme.stage2.step2.tripattraction")
         factor_trip_attractions = _m.Modeller().tool("translink.emme.stage2.step3.factoredtripattraction")
-        
+
 
         # Trip Generation (production, attraction, factors)
         trip_productions(eb)
         trip_attraction(eb)
         factor_trip_attractions(eb)
-        
+
 
     @_m.logbook_trace("Stage 3 - Model Iteration")
     def stage3(self, eb, global_iterations, max_distribution_iterations, stopping_criteria):

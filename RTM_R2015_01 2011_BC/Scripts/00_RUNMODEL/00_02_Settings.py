@@ -105,7 +105,6 @@ Whitespace is ignored.
 
         # Read data from file
         # Header should be Label, Setting, Value
-        result = {}
         with open(file_name, 'r') as settings_file:
             reader = csv.DictReader(settings_file, skipinitialspace=True)
             for line in reader:
@@ -116,7 +115,6 @@ Whitespace is ignored.
                         raise Exception("Missing value for parameter %s in settings file" % line["Label"])
                     value = value.lower()
                     value = float(truth_values.get(value, value))
-                    result[line["Label"]] = value
                     scalar = eb.matrix(matrix)
                     if scalar:
                         scalar.data = value
@@ -126,4 +124,3 @@ Whitespace is ignored.
 
         pb.add_html("<div class=\"preformat\"\>%s</div>" % "\n".join(text))
         _m.logbook_write(name="Settings report", value=pb.render())
-        return result
