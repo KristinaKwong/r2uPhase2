@@ -49,8 +49,6 @@ class ParkAndRide(_m.Tool()):
     def __call__(self, scenario):
         matrix_txn = _m.Modeller().tool(
             "inro.emme.data.matrix.matrix_transaction")
-        partition_txn = _m.Modeller().tool(
-            "inro.emme.data.zone_partition.partition_transaction")
         compute_matrix = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_calculator")
 
@@ -58,8 +56,6 @@ class ParkAndRide(_m.Tool()):
             bank_dir = os.path.dirname(scenario.emmebank.path)
             input_dir = os.path.join(
                 bank_dir, "05_MODE_CHOICE", "Inputs", "ParkAndRide")
-            partition_txn(os.path.join(input_dir, "gpgr.txt"),
-                          scenario=scenario)
             for name in ["PR-setup.311"]:
                 matrix_txn(os.path.join(input_dir, name), scenario=scenario)
 
