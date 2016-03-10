@@ -216,6 +216,53 @@ class InitEmmebank(_m.Tool()):
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
+        util.delmat(eb, "md999")
+        data_path = os.path.join(proj_path, 'BaseNetworks', 'md_Grade_School_Adj.in')
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mf160")
+        data_path = os.path.join(proj_path, 'BaseNetworks', 'mf_Bus_Fare_Matrix.in')
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mf928")
+        util.delmat(eb, "mf929")
+        data_path = os.path.join(proj_path, 'BaseNetworks', 'mf_Pk_Prd_Bus_Adj.in')
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mf975")
+        util.delmat(eb, "mf976")
+        data_path = os.path.join(proj_path, 'BaseNetworks', 'mf_Pk_Prd_Rail_Adj.in')
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mf161")
+        data_path = os.path.join(proj_path, 'BaseNetworks', 'mf_Rail_Fare_Matrix.in')
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mf169")
+        util.delmat(eb, "mf170")
+        util.delmat(eb, "mf171")
+        util.delmat(eb, "mf172")
+        util.delmat(eb, "mf173")
+        util.delmat(eb, "mf174")
+        util.delmat(eb, "mf175")
+        util.delmat(eb, "mf176")
+        util.delmat(eb, "mf177")
+        util.delmat(eb, "mf178")
+        util.delmat(eb, "mf179")
+        data_path = os.path.join(proj_path, 'BaseNetworks', 'mf_TripDist_Rij.in')
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mo58")
+        data_path = os.path.join(proj_path, 'BaseNetworks', 'mo_No_Wrk_Adj.in')
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
     def initfunctions(self, eb):
         eb.create_function('fd01', 'length * 60 / 40')
         eb.create_function('fd02', '((volau + volad) / lanes - 1900) * .017 * ((volau + volad) / lanes .ge. 1900) + .01')
