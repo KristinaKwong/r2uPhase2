@@ -54,10 +54,8 @@ class ParkAndRide(_m.Tool()):
 
         with _m.logbook_trace("Initialization"):
             bank_dir = os.path.dirname(scenario.emmebank.path)
-            input_dir = os.path.join(
-                bank_dir, "05_MODE_CHOICE", "Inputs", "ParkAndRide")
-            for name in ["PR-setup.311"]:
-                matrix_txn(os.path.join(input_dir, name), scenario=scenario)
+            input_dir = os.path.join(bank_dir, "05_MODE_CHOICE", "Inputs", "ParkAndRide", "PR-setup.311")
+            matrix_txn(input_dir, scenario=scenario)
 
             spec = {
                 "expression": "default_expression",
