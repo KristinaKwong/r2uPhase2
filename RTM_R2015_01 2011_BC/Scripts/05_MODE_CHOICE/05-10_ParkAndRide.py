@@ -460,7 +460,7 @@ class ParkAndRide(_m.Tool()):
     def PRdemand(self, asg_type, scenario):
         util = _m.Modeller().tool("translink.emme.util")
         eb = scenario.emmebank
-        
+
         compute_matrix = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_calculator")
         triple_index_op = _m.Modeller().tool(
@@ -521,7 +521,7 @@ class ParkAndRide(_m.Tool()):
                 "origins": "gp2-gp20;gp25-gp29",
                 "intermediates": "102-107;109;111,114;121;127",
                 "destinations": "gr1-gr6"}
-        
+
         util.initmat(scenario.emmebank, "mf995", "cPNRdm", "constraint on PNR demand calcs", 0)
         triple_index_op(spec_triple_index, scenario=scenario)
 
@@ -543,21 +543,25 @@ class ParkAndRide(_m.Tool()):
             capacity_matrix = "mo931"
             mode2 = mode2b
 
-        # Calculate the Park-and-ride demand, given the constraint matrix
         util.initmat(scenario.emmebank, "mf204", "PRdemd", "Park and ride demand input", 0)
         util.initmat(scenario.emmebank, "mo963", "PRorcp", "PR lot demand by origin gp", 0)
-        spec["expression"] = "(%s)/(1+exp(%s*(mf205-mf203+mf%s)))" % (base_demand, mode1, mode2)
-        spec["result"] = "mf204"
-        report = compute_matrix(spec, scenario=scenario)
+        util.initmat(scenario.emmebank, "mo964", "pzones", "Number of zones in each gp", 0)
 
-        #aggregate mf204 to the mo level
-        aggr_matrix("mf204", "mo963", agg_op="+", scenario=scenario)
+        specs = []
+        specs.append(util.matrix_spec("mf204", "(%s)/(1+exp(%s*(mf205-mf203+mf%s)))" % (base_demand, mode1, mode2)))
+
+        spec = util.matrix_spec("mo963", "mf204")
+        spec["aggregation"] = {"origins": None, "destinations": "+"}
+        specs.append(spec)
+
+        spec = util.matrix_spec("mo964", "mo964'*0+(gp(p).eq.gp(q))*(gp(p).gt.0)")
+        spec["aggregation"] = {"origins": None, "destinations": "+"}
+        specs.append(spec)
 
         #multiply aggregated numbers by the number of zones in each partition
         #reduce mf204 by the ratio of origin demand to catchment area capacity
-        spec["expression"] = "mf204*((%s/((mo963*mo964)+0.001)).min.1)" % capacity_matrix
-        spec["result"] = "mf204"
-        report = compute_matrix(spec, scenario=scenario)
+        specs.append(util.matrix_spec("mf204", "mf204*((%s/((mo963*mo964)+0.001)).min.1)" % capacity_matrix))
+        report = compute_matrix(specs, scenario=scenario)
 
     @_m.logbook_trace("Calculating park and ride utility functions")
     def PRutility(self, asg_type, scenario):

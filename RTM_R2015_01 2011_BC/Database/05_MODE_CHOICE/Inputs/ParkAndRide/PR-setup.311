@@ -38,7 +38,6 @@ d mo959
 d mo931
 d mo932
 d mo962
-d mo964
 d mf988
 d mf989
 a mf196 PRrwtd 0 Park-ride rail-work auto demand
@@ -855,33 +854,3 @@ a mo962 PRgpnb 0 PR Nonwork capacity by gp (rail)
   gp27 all 142
   gp28 all 43
   gp29 all 69  
-a mo964    pzones   0.0 Number of zones in each gp                   
-   gp01    all         8
-   gp02    all         8
-   gp03    all         2
-   gp04    all         4
-   gp05    all        17
-   gp06    all         6
-   gp07    all         6
-   gp08    all        17
-   gp09    all        16
-   gp10    all        22
-   gp11    all        17
-   gp12    all        18
-   gp13    all         3
-   gp14    all        22
-   gp15    all        23
-   gp16    all        30
-   gp17    all        11
-   gp18    all        18
-   gp19    all         5
-   gp20    all         7
-   gp21    all         9
-   gp22    all         5
-   gp23    all        17
-   gp24    all        21
-   gp25    all        12
-   gp26    all        24
-   gp27    all         4
-   gp28    all        19
-   gp29    all        26
