@@ -108,10 +108,6 @@ class FullModelRun(_m.Tool()):
 
     @_m.logbook_trace("Stage 1 - Define Inputs and Run Intial Assignment")
     def stage1(self, eb, land_use_file1, land_use_file2):
-        matrix_txn = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
-        lu_file = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "LandUse", "Batchins.txt")
-        matrix_txn(transaction_file=lu_file, throw_on_error=True)
-
         util = _m.Modeller().tool("translink.emme.util")
 
         util.initmat(eb, "mo19", "", "", 0)
