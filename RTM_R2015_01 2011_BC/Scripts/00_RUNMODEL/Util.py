@@ -73,6 +73,17 @@ class Util(_m.Tool()):
         }
         return spec
 
+    def compute_matrix(self, specs, scenario=None):
+        comp = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
+
+        if scenario is None:
+            scenario = _m.Modeller().scenario
+
+        eb = scenario.emmebank
+        num_procs = int(eb.matrix("ms142").data)
+
+        return comp(specs, scenario, num_procs)
+
     def matrix_sum(self, matrices):
         """Returns a string representation of a summation expression containing all matrix names passed in.
 
