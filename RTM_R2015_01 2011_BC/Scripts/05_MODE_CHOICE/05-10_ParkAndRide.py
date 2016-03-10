@@ -458,16 +458,15 @@ class ParkAndRide(_m.Tool()):
 
     @_m.logbook_trace("Calculating park and ride demand by splitting transit into p/r")
     def PRdemand(self, asg_type, scenario):
+        util = _m.Modeller().tool("translink.emme.util")
+        eb = scenario.emmebank
+        
         compute_matrix = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_calculator")
         triple_index_op = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_triple_index_operation")
         create_matrix = _m.Modeller().tool(
             "inro.emme.data.matrix.create_matrix")
-        init_matrix = _m.Modeller().tool(
-            "inro.emme.data.matrix.init_matrix")
-        aggr_matrix = _m.Modeller().tool(
-            "inro.emme.matrix_calculation.matrix_aggregation")
 
         spec = {
             "expression": "",
@@ -522,11 +521,8 @@ class ParkAndRide(_m.Tool()):
                 "origins": "gp2-gp20;gp25-gp29",
                 "intermediates": "102-107;109;111,114;121;127",
                 "destinations": "gr1-gr6"}
-        if scenario.emmebank.matrix("mf995"):
-            init_matrix(matrix="mf995", init_value=0.0, scenario=scenario)
-        else:
-            create_matrix("mf995", "cPNRdm", "constraint on PNR demand calcs",
-                          0.0, scenario=scenario)
+        
+        util.initmat(scenario.emmebank, "mf995", "cPNRdm", "constraint on PNR demand calcs", 0)
         triple_index_op(spec_triple_index, scenario=scenario)
 
         #Calculate park-and-ride demand
@@ -548,8 +544,8 @@ class ParkAndRide(_m.Tool()):
             mode2 = mode2b
 
         # Calculate the Park-and-ride demand, given the constraint matrix
-        init_matrix(matrix="mf204", init_value=0.0, scenario=scenario)
-        init_matrix(matrix="mo963", init_value=0.0, scenario=scenario)
+        util.initmat(scenario.emmebank, "mf204", "PRdemd", "Park and ride demand input", 0)
+        util.initmat(scenario.emmebank, "mo963", "PRorcp", "PR lot demand by origin gp", 0)
         spec["expression"] = "(%s)/(1+exp(%s*(mf205-mf203+mf%s)))" % (base_demand, mode1, mode2)
         spec["result"] = "mf204"
         report = compute_matrix(spec, scenario=scenario)

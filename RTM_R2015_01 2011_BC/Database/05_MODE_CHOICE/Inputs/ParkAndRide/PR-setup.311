@@ -27,7 +27,6 @@ d mf200
 d mf201
 d mf202
 d mf203
-d mf204
 d mf205
 d mf206
 d mf207
@@ -39,7 +38,6 @@ d mo959
 d mo931
 d mo932
 d mo962
-d mo963
 d mo964
 d mf988
 d mf989
@@ -732,7 +730,6 @@ a mf201 PRrfil 0 PR Rail OD combinations
  127 gr06 2
 a mf202 PRaimp 0 Auto impedance (input to PR)
 a mf203 PRtimp 0 Transit impedance (input to PR)
-a mf204 PRdemd 0 Park and ride demand input
 a mf205 PRimp 0 Park and ride impedance
 a mf206 PRutau 0 PR Auto utility
 a mf207 PRuttr 0 PR Transit utility
@@ -858,7 +855,6 @@ a mo962 PRgpnb 0 PR Nonwork capacity by gp (rail)
   gp27 all 142
   gp28 all 43
   gp29 all 69  
-a mo963 PRorcp 0 PR lot demand by origin gp
 a mo964    pzones   0.0 Number of zones in each gp                   
    gp01    all         8
    gp02    all         8
