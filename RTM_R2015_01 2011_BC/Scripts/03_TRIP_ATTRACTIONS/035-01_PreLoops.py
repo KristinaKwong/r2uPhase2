@@ -34,13 +34,6 @@ class PreLoop(_m.Tool()):
 
     @_m.logbook_trace("035-01 - PRELOOPS")
     def __call__(self, eb):
-        ##      Batches in trip distribution ij factors, trip distribution related matrices and intrazonal identity matrices
-        self.Matrix_Batchins(eb)
-        ##        Copies starter skims mf893-mf920 to appropriate locations between mf100 and mf170
-        self.Copy_Starter_Skims_Fares()
-
-    @_m.logbook_trace("Initialize Matrices")
-    def Matrix_Batchins(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
 
         util.initmat(eb, "mf210", "iWkL", "Home-work Low Inc Impedance", 0)
@@ -258,7 +251,6 @@ class PreLoop(_m.Tool()):
         util.initmat(eb, "mf925", "Scr1", "Scratch1", 0)
         util.initmat(eb, "mf926", "Scr2", "Scratch2", 0)
         util.initmat(eb, "mf927", "Scr3", "Scratch3", 0)
-        util.initmat(eb, "mf161", "RlFare", "Rail Fare", 0)
         ### Initialize peak hour demand matrices here in order to run assignment to generate starter skims
         util.initmat(eb, "mf843", "f1115v", "f1115v", 0)
         util.initmat(eb, "mf844", "f1215v", "f1215v", 0)
@@ -298,15 +290,7 @@ class PreLoop(_m.Tool()):
         matrix_txn(transaction_file=demand_file_AM, throw_on_error=True)
         matrix_txn(transaction_file=demand_file_MD, throw_on_error=True)
 
-    @_m.logbook_trace("Copy Starter Skims to appropriate locations")
-    def Copy_Starter_Skims_Fares(self):
-        util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
-
-
-        specs = []
-
         # Starter Skims copying eliminated with new code, only calculation of rail fare matrix remains
-        specs.append(util.matrix_spec("mf161", "mf160"))
-
-        compute_matrix(specs)
+        util.initmat(eb, "mf161", "RlFare", "Rail Fare", 0)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
+        compute_matrix(util.matrix_spec("mf161", "mf160"))
