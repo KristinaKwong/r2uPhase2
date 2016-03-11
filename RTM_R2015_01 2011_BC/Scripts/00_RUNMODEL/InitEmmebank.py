@@ -200,6 +200,12 @@ class InitEmmebank(_m.Tool()):
 
         mat_transaction = mod.tool("inro.emme.data.matrix.matrix_transaction")
 
+        # Batch in zone area in metres square
+        util.delmat(eb, "mo17")
+        data_path = os.path.join(proj_path, 'BaseNetworks', 'mo_taz_area.in')
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
         # Batch in starter auto demand used for generating starter skims, demand is aggregated into 4 classes, SOV, HOV, Light Tr, Heavy Tr
         util.delmat(eb, "mf893")
         util.delmat(eb, "mf894")
