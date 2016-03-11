@@ -110,22 +110,6 @@ class FullModelRun(_m.Tool()):
     def stage1(self, eb, land_use_file1, land_use_file2):
         util = _m.Modeller().tool("translink.emme.util")
 
-        util.initmat(eb, "mo19", "", "", 0)
-        util.initmat(eb, "mo20", "", "", 0)
-        util.initmat(eb, "mo23", "", "", 0)
-        util.initmat(eb, "mo24", "", "", 0)
-        util.initmat(eb, "mo25", "", "", 0)
-        util.initmat(eb, "mo26", "", "", 0)
-        util.initmat(eb, "mo50", "", "", 0)
-        util.initmat(eb, "mo51", "", "", 0)
-        util.initmat(eb, "mo52", "", "", 0)
-        util.initmat(eb, "mo53", "", "", 0)
-        util.initmat(eb, "mo393", "", "", 0)
-        util.initmat(eb, "mo394", "", "", 0)
-        util.initmat(eb, "mo27", "", "", 0)
-        util.initmat(eb, "mo28", "", "", 0)
-        util.initmat(eb, "mo13", "", "", 0)
-
         ## Call Model Tools - Socioeconomic segmentation, trip generation, trip distribution, mode choice, assignment
         land_use = _m.Modeller().tool("translink.emme.stage1.step0.landuse")
         land_use(land_use_file1, land_use_file2)
