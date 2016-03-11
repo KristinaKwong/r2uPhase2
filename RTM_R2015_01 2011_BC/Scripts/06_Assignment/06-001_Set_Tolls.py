@@ -66,7 +66,7 @@ class SetTolls(_m.Tool()):
 
                 for x in xrange(1, tollsize):
                     activeline = getlines[x]
-                    inode, jnode, temptoll = activeline.split(",")
+                    bridgename, inode, jnode, temptoll = activeline.split(",")
                     tollvalue = temptoll.rstrip()   #remove the EOL character from each toll
 
                     spec["expression"] = str(tollvalue)

@@ -65,9 +65,7 @@ class AutoAssignment(_m.Tool()):
 
     @_m.logbook_trace("06-01 - Auto Assignment")
     def __call__(self, eb, scenarioam, scenariomd, stopping_criteria):
-        toll_file = os.path.join(os.path.dirname(eb.path), "06_Assignment", "Inputs", "tollinput.csv")
-        set_tools = _m.Modeller().tool("translink.emme.stage3.step6.tollset")
-        set_tools(toll_file, scenarioam, scenariomd)
+
         self.matrix_batchins(eb)
         self.calculate_auto_cost(scenarioam, scenariomd)
         self.auto_assignment(scenarioam, scenariomd, stopping_criteria)
@@ -89,41 +87,49 @@ class AutoAssignment(_m.Tool()):
         del_list = ['@s1cst', '@s2cst', '@s3cst', '@s1vol', '@s2vol',
                     '@s3vol', '@cpen', '@name', '@len', '@trncp',
                     '@hwycl', '@hcst', '@voltr', '@rail', '@ivtp2']
+
         cr_list = ["sov" + str(i) for i in range(1, 6)] + \
                   ["hov" + str(i) for i in range(1, 6)]
 
+        Attr_List=["@hovoc", "@sovoc", "@wsovl", "@whovl", "@tkpen", "@tolls"]
+        Attr_Desc=["HOV auto operating cost", "SOV auto operating cost", "Total SOV Volume", "Total HOV Volume", "Truck Penalty", "Tolls"]
+
         for scenario in [am_scenario, md_scenario]:
-            create_extra(extra_attribute_type="LINK",
-                         extra_attribute_name="@hovoc",
-                         extra_attribute_description="HOV auto operating cost",
-                         extra_attribute_default_value=0,
-                         overwrite=True, scenario=scenario)
-            create_extra(extra_attribute_type="LINK",
-                         extra_attribute_name="@sovoc",
-                         extra_attribute_description="SOV auto operating cost",
-                         extra_attribute_default_value=0,
-                         overwrite=True, scenario=scenario)
-            create_extra(extra_attribute_type="TRANSIT_LINE",
-                         extra_attribute_name="@ivttp",
-                         extra_attribute_description="Bus IVTT Penalty",
-                         extra_attribute_default_value=0,
-                         overwrite=True, scenario=scenario)
+
 
             for attr_name in del_list:
                 attr = scenario.extra_attribute(attr_name)
                 if attr:
                     delete_extra(attr_name, scenario=scenario)
+
             for attr_name in cr_list:
+
                 create_extra(extra_attribute_type="LINK",
                              extra_attribute_name="@" + attr_name,
                              extra_attribute_description=attr_name,
                              extra_attribute_default_value=0,
                              overwrite=True, scenario=scenario)
+
                 create_extra(extra_attribute_type="TURN",
                              extra_attribute_name="@t" + attr_name,
                              extra_attribute_description=attr_name,
                              extra_attribute_default_value=0,
                              overwrite=True, scenario=scenario)
+
+            for attribute in range (0, len(Attr_List)):
+
+                create_extra(extra_attribute_type="LINK",
+                             extra_attribute_name=Attr_List[attribute],
+                             extra_attribute_description=Attr_Desc[attribute],
+                             extra_attribute_default_value=0,
+                             overwrite=True, scenario=scenario)
+
+
+            create_extra(extra_attribute_type="TRANSIT_LINE",
+                         extra_attribute_name="@ivttp",
+                         extra_attribute_description="Bus IVTT Penalty",
+                         extra_attribute_default_value=0,
+                         overwrite=True, scenario=scenario)
 
         ## Calculate generalized costs for various classes;
         # @tkpen: truck penalty ;
@@ -131,6 +137,11 @@ class AutoAssignment(_m.Tool()):
         # @hovoc: HOV gc;
         # @lgvoc: light truck gc;
         # @hgvoc: heavy truck gc
+
+        # Input Tolls from toll file
+        toll_file = os.path.join(os.path.dirname(eb.path), "06_Assignment", "Inputs", "tollinput.csv")
+        set_tolls = _m.Modeller().tool("translink.emme.stage3.step6.tollset")
+        set_tolls(toll_file, am_scenario, md_scenario)
 
         calc_extra_attribute = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         spec = {
