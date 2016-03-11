@@ -201,44 +201,6 @@ class SkimsAccessibilities(_m.Tool()):
                 spec_as_dict['result'] = expressions_list[i][2]
                 compute_matrix(spec_as_dict)
 
-            spec_as_dict = {
-            "expression": "EXPRESSION",
-            "result": "RESULT",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {"origins": "gm1-gm24", "destinations": "gm1-gm24"}
-            },
-            "aggregation": {"origins": None,"destinations": "+"},
-            "type": "MATRIX_CALCULATION"
-        }
-
-        expressions_list = [
-            ['(((1+2.60666873)/(1+2.60666873*exp(0.089779362*(mf66/4.8*60-10)))).min.1)*md12', 'mo980'],
-            ['(((1+0.370394973)/(1+0.370394973*exp(0.08364252*(mf66/20*60-10)))).min.1)*md12', 'mo981'],
-            ['(((1+0.078322901)/(1+0.078322901*exp(0.069553623*(mf163+mf164-10)))).min.1)*md12', 'mo982'],
-            ['(((1+0.757971496)/(1+0.757971496*exp(0.062315134*(mf68-10)))).min.1)*md12', 'mo983'],
-            ['(((1+25.08837939)/(1+25.08837939*exp(0.095638856*(mf66/4.8*60-10)))).min.1)*(md8+md9+md10+md11)',
-             'mo984'],
-            ['(((1+712.7262949)/(1+712.7262949*exp(0.078649899*(mf66/20*60-10)))).min.1)*(md8+md9+md10+md11)',
-             'mo985'],
-            ['(((1+0.64089269)/(1+0.64089269*exp(0.061917065*(mf167+mf168-10)))).min.1)*(md8+md9+md10+md11)',
-             'mo986'],
-            ['(((1+1021.763665)/(1+1021.763665*exp(0.086254525*(mf68-10)))).min.1)*(md8+md9+md10+md11)', 'mo987'],
-            [
-            '(((((1+0.078322901)/(1+0.078322901*exp(0.069553623*(mf163+mf164-10)))).min.1)*md12).max.((((1+0.757971496)/(1+0.757971496*exp(0.062315134*(mf68-10)))).min.1)*md12)).max.((((1+0.370394973)/(1+0.370394973*exp(0.08364252*(mf66/20*60-10)))).min.1)*md12)',
-            'mo988'],
-            [
-            '(((((1+0.078322901)/(1+0.078322901*exp(0.069553623*(mf163+mf164-10)))).min.1)*md12).max.((((1+0.370394973)/(1+0.370394973*exp(0.08364252*(mf66/20*60-10)))).min.1)*md12))',
-            'mo989'],
-            [
-            '(((((1+712.7262949)/(1+712.7262949*exp(0.078649899*(mf66/20*60-10)))).min.1)*(md8+md9+md10+md11)).max.((((1+0.64089269)/(1+0.64089269*exp(0.061917065*(mf167+mf168-10)))).min.1)*(md8+md9+md10+md11))).max.((((1+1021.763665)/(1+1021.763665*exp(0.086254525*(mf68-10)))).min.1)*(md8+md9+md10+md11))',
-            'mo990']
-        ]
-        for n in range(0, len(expressions_list)):
-            spec_as_dict['expression'] = expressions_list[n][0]
-            spec_as_dict['result'] = expressions_list[n][1]
-            compute_matrix(spec_as_dict)
-
     @_m.logbook_trace("Matrix Batchin")
     def Matrix_Batchins(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
@@ -251,18 +213,8 @@ class SkimsAccessibilities(_m.Tool()):
         util.initmat(eb, "mo392", "TrAc", "Transit Accessibility", 0)
         util.initmat(eb, "mo960", "AuSrAc", "Serv Emp Ind Auto Accessibility", 0)
         util.initmat(eb, "mo961", "TrSrAc", "Serv Emp Ind Transit Accessibility", 0)
-        util.initmat(eb, "mo980", "WaEmAc", "Tot Emp Walk Accessibility", 0)
-        util.initmat(eb, "mo981", "BkEmAc", "Tot Emp Bike Accessibility", 0)
-        util.initmat(eb, "mo982", "TrEmAc", "Tot Emp Transit Accessibility", 0)
-        util.initmat(eb, "mo983", "AuEmAc", "Tot Emp Auto Accessibility", 0)
-        util.initmat(eb, "mo984", "WaRtAc", "Ret Emp Ind Walk Accessibility", 0)
-        util.initmat(eb, "mo985", "BkRtAc", "Ret Emp Ind Bike Accessibility", 0)
-        util.initmat(eb, "mo986", "TrRtAc", "Ret Emp Ind Transit Accessibility", 0)
-        util.initmat(eb, "mo987", "AuRtAc", "Ret Emp Ind Auto Accessibility", 0)
-        util.initmat(eb, "mo988", "MaEmAc", "Max Tot Emp Accessibility", 0)
-        util.initmat(eb, "mo989", "SMEmAc", "Max Sus Tot Emp Accessibility", 0)
-        util.initmat(eb, "mo990", "SMRtAc", "Max Sus Tot Emp Accessibility", 0)
-    # Added matrices for calculating intra-zonals
+
+        # Added matrices for calculating intra-zonals
         util.initmat(eb, "mo1025", "MiGCIZ", "Min Intra-zonal GC", 0)
         util.initmat(eb, "mo1026", "MiGCIn", "Min Intra-zonal GC Zone Index", 0)
         util.initmat(eb, "mo1027", "MiCoIn", "Min Intra-zonal GC Comp. ", 0)
