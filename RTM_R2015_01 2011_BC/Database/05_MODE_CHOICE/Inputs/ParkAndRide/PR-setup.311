@@ -1,55 +1,7 @@
 c Input and initialize matrices for use in park and ride module
 c September 22th 2014                                     
 t matrices
-d md60
-d md61
-d md62
-d md63
-d md64
-d md65
-d md66
-d md67
-d md68
-d md69
-d md70
-d md71
-d md72
-d md73
-d mf192
-d mf193
-d mf194
-d mf195
-d mf196
-d mf197
-d mf198
-d mf199
-d mf200
-d mf201
-d mf202
-d mf203
-d mf205
-d mf206
-d mf207
-d mf208
-d mf209
-d mf986
-d mf987
-d mo959
-d mo931
-d mo932
-d mo962
 d mf988
-d mf989
-a mf196 PRrwtd 0 Park-ride rail-work auto demand
-a mf197 PRbwtd 0 Park-ride bus-work auto demand
-a mf198 PRrntd 0 Park-ride rail-nonwork auto demand
-a mf199 PRbntd 0 Park-ride bus-nonwork auto demand
-a mf192 PRrail 0 Park-ride rail demand input
-a mf193 PRbus 0 Park-ride bus demand input
-a mf194 PRRail 0 Park-ride rail demand output
-a mf195 PRBus  0 Park-ride bus demand output
-a mf986 NwRail 0 T5 ultimate rail demand
-a mf987 NewBus 0 T5 ultimate bus demand
 a mf988 RlBias 0 T5 park and ride rail bias
     gy1     gy1       -5
     gy1     gy2       -5
@@ -247,6 +199,7 @@ a mf988 RlBias 0 T5 park and ride rail bias
    gy14    gy12       -5
    gy14    gy13       -5
    gy14    gy14       -5
+d mf989
 a mf989 BsBias 0 T5 park and ride bus bias
     gy1     gy1       -5
     gy1     gy2       -5
@@ -444,6 +397,7 @@ a mf989 BsBias 0 T5 park and ride bus bias
    gy14    gy12       -5
    gy14    gy13       -5
    gy14    gy14       -5
+d md60
 a md60 PRwcap 0 Park-ride Lot capacity (work)
   all 101 0
   all 102 26
@@ -467,6 +421,7 @@ a md60 PRwcap 0 Park-ride Lot capacity (work)
   all 120 122
   all 121 64
   all 127 77
+d md61
 a md61 PRncap 0 Park-ride Lot capacity (nonwork)
   all 101 0
   all 102 3
@@ -490,6 +445,7 @@ a md61 PRncap 0 Park-ride Lot capacity (nonwork)
   all 120 69
   all 121 36
   all 127 43
+d md62
 a md62 PRcost 0 Park-ride lot cost ($)
   all 101 0
   all 102 0
@@ -513,15 +469,7 @@ a md62 PRcost 0 Park-ride lot cost ($)
   all 120 3
   all 121 0
   all 127 8
-a md63 PRtemp 1 Lot Attractivity (temp)
-a md64 PRuse 0 Park-ride usage (temp)
-a md65 PRremc 0 Park-ride remaining capacity
-a md66 PRimpw 0 Park-ride lot impedance (work)  
-a md67 PRimpn 0 Park-ride lot impedance (nwork)  
-a md68 PRwrus 0 Park-ride usage (work rail)
-a md69 PRwbse 0 Park-ride usage (work bus)
-a md70 PRnrse 0 Park-ride usage (nonwork rail)
-a md71 PRnbse 0 Park-ride usage (nonwork bus)
+d md72
 a md72 PRrbf  0 Park-ride both rail and bus use
   all 101 0
   all 102 0
@@ -545,6 +493,7 @@ a md72 PRrbf  0 Park-ride both rail and bus use
   all 120 0
   all 121 0
   all 127 1
+d md73
 a md73 PRlatt  0 Park-ride lot variable attractivity
   all 101 1
   all 102 1
@@ -568,6 +517,7 @@ a md73 PRlatt  0 Park-ride lot variable attractivity
   all 120 1
   all 121 1
   all 127 1
+d mf200
 a mf200 PRbfil 0 PR Bus OD combinations
  gp2  102 1
  gp3  103 1
@@ -656,6 +606,7 @@ a mf200 PRbfil 0 PR Bus OD combinations
  121 gr04 2
  121 gr06 2
  127 gr03 2
+d mf201
 a mf201 PRrfil 0 PR Rail OD combinations
  gp26 105 1
  gp8  109 1
@@ -727,13 +678,7 @@ a mf201 PRrfil 0 PR Rail OD combinations
  127 gr01 2
  127 gr04 2
  127 gr06 2
-a mf202 PRaimp 0 Auto impedance (input to PR)
-a mf203 PRtimp 0 Transit impedance (input to PR)
-a mf205 PRimp 0 Park and ride impedance
-a mf206 PRutau 0 PR Auto utility
-a mf207 PRuttr 0 PR Transit utility
-a mf208 PRbusd 0 PR Bus output demand
-a mf209 PRraid 0 PR Rail output demand
+d mo959
 a mo959 PRgpwb 0 PR Work capacity by gp (bus)
   gp01 all 0 
   gp02 all 26 
@@ -764,6 +709,7 @@ a mo959 PRgpwb 0 PR Work capacity by gp (bus)
   gp27 all 455
   gp28 all 77
   gp29 all 101  
+d mo931
 a mo931 PRgpnb 0 PR Nonwork capacity by gp (bus)
   gp01 all 0 
   gp02 all 3 
@@ -794,6 +740,7 @@ a mo931 PRgpnb 0 PR Nonwork capacity by gp (bus)
   gp27 all 120
   gp28 all 43
   gp29 all 86  
+d mo932
 a mo932 PRgpwb 0 PR Work capacity by gp (rail)
   gp01 all 0 
   gp02 all 0 
@@ -824,6 +771,7 @@ a mo932 PRgpwb 0 PR Work capacity by gp (rail)
   gp27 all 619
   gp28 all 77
   gp29 all 536  
+d mo962
 a mo962 PRgpnb 0 PR Nonwork capacity by gp (rail)
   gp01 all 0 
   gp02 all 0 

@@ -54,6 +54,7 @@ class ParkAndRide(_m.Tool()):
 
         with _m.logbook_trace("Initialization"):
             bank_dir = os.path.dirname(scenario.emmebank.path)
+            self.Matrix_Batchins(scenario.emmebank)
             input_dir = os.path.join(bank_dir, "05_MODE_CHOICE", "Inputs", "ParkAndRide", "PR-setup.311")
             matrix_txn(input_dir, scenario=scenario)
 
@@ -661,3 +662,36 @@ class ParkAndRide(_m.Tool()):
             },
             max_iterations=max_iterations,
             scenario=scenario)
+
+    @_m.logbook_trace("Matrix Batchin")
+    def Matrix_Batchins(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
+
+        util.initmat(eb, "mf202", "PRaimp", "Auto impedance (input to PR)", 0)
+        util.initmat(eb, "mf203", "PRtimp", "Transit impedance (input to PR)", 0)
+        util.initmat(eb, "mf205", "PRimp", "Park and ride impedance", 0)
+        util.initmat(eb, "mf206", "PRutau", "PR Auto utility", 0)
+        util.initmat(eb, "mf207", "PRuttr", "PR Transit utility", 0)
+        util.initmat(eb, "mf208", "PRbusd", "PR Bus output demand", 0)
+        util.initmat(eb, "mf209", "PRraid", "PR Rail output demand", 0)
+
+        util.initmat(eb, "md63", "PRtemp", "Lot Attractivity (temp)", 1)
+        util.initmat(eb, "md64", "PRuse", "Park-ride usage (temp)", 0)
+        util.initmat(eb, "md65", "PRremc", "Park-ride remaining capacity", 0)
+        util.initmat(eb, "md66", "PRimpw", "Park-ride lot impedance (work)", 0)
+        util.initmat(eb, "md67", "PRimpn", "Park-ride lot impedance (nwork)", 0)
+        util.initmat(eb, "md68", "PRwrus", "Park-ride usage (work rail)", 0)
+        util.initmat(eb, "md69", "PRwbse", "Park-ride usage (work bus)", 0)
+        util.initmat(eb, "md70", "PRnrse", "Park-ride usage (nonwork rail)", 0)
+        util.initmat(eb, "md71", "PRnbse", "Park-ride usage (nonwork bus)", 0)
+
+        util.initmat(eb, "mf196", "PRrwtd", "Park-ride rail-work auto demand", 0)
+        util.initmat(eb, "mf197", "PRbwtd", "Park-ride bus-work auto demand", 0)
+        util.initmat(eb, "mf198", "PRrntd", "Park-ride rail-nonwork auto demand", 0)
+        util.initmat(eb, "mf199", "PRbntd", "Park-ride bus-nonwork auto demand", 0)
+        util.initmat(eb, "mf192", "PRrail", "Park-ride rail demand input", 0)
+        util.initmat(eb, "mf193", "PRbus", "Park-ride bus demand input", 0)
+        util.initmat(eb, "mf194", "PRRail", "Park-ride rail demand output", 0)
+        util.initmat(eb, "mf195", "PRBus", "Park-ride bus demand output", 0)
+        util.initmat(eb, "mf986", "NwRail", "T5 ultimate rail demand", 0)
+        util.initmat(eb, "mf987", "NewBus", "T5 ultimate bus demand", 0)
