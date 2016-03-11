@@ -91,8 +91,13 @@ class AutoAssignment(_m.Tool()):
         cr_list = ["sov" + str(i) for i in range(1, 6)] + \
                   ["hov" + str(i) for i in range(1, 6)]
 
-        Attr_List=["@hovoc", "@sovoc", "@wsovl", "@whovl", "@tkpen", "@tolls"]
-        Attr_Desc=["HOV auto operating cost", "SOV auto operating cost", "Total SOV Volume", "Total HOV Volume", "Truck Penalty", "Tolls"]
+        Link_Cost_List=["@hovoc", "@sovoc", "@lgvoc" , "@hgvoc" , "@tkpen", "@tolls"]
+        Link_Cost_Desc=["HOV auto op cost", "SOV auto op cost","Lg trk op cost", "Hv trk op cost", "Truck penalty", "Tolls"]
+        Link_Vol_List= ["@whovl", "@wsovl", "@lgvol" , "@hgvol"]
+        Link_Vol_Desc= ["HOV Vol","SOV Vol","Lg Vol", "Hv Vol"]
+        Link_Turn_List=["@whovt", "@wsovt", "@lgvtn" , "@hvgtn"]
+        Link_Turn_Desc=["HOV Trn","SOV Trn","Lg Trn", "Hv Trn"]
+
 
         for scenario in [am_scenario, md_scenario]:
 
@@ -116,15 +121,30 @@ class AutoAssignment(_m.Tool()):
                              extra_attribute_default_value=0,
                              overwrite=True, scenario=scenario)
 
-            for attribute in range (0, len(Attr_List)):
+            for attribute in range (0, len(Link_Cost_List)):
 
                 create_extra(extra_attribute_type="LINK",
-                             extra_attribute_name=Attr_List[attribute],
-                             extra_attribute_description=Attr_Desc[attribute],
+                             extra_attribute_name=Link_Cost_List[attribute],
+                             extra_attribute_description=Link_Cost_Desc[attribute],
                              extra_attribute_default_value=0,
                              overwrite=True, scenario=scenario)
+                             
+            for attribute in range (0, len(Link_Vol_List)):
 
+                create_extra(extra_attribute_type="LINK",
+                             extra_attribute_name=Link_Vol_List[attribute],
+                             extra_attribute_description=Link_Vol_Desc[attribute],
+                             extra_attribute_default_value=0,
+                             overwrite=True, scenario=scenario)  
 
+            for attribute in range (0, len(Link_Turn_List)):
+
+                create_extra(extra_attribute_type="TURN",
+                             extra_attribute_name=Link_Turn_List[attribute],
+                             extra_attribute_description=Link_Turn_Desc[attribute],
+                             extra_attribute_default_value=0,
+                             overwrite=True, scenario=scenario)  
+            # create bus in-vehicle penalty attribute                 
             create_extra(extra_attribute_type="TRANSIT_LINE",
                          extra_attribute_name="@ivttp",
                          extra_attribute_description="Bus IVTT Penalty",
