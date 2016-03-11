@@ -157,49 +157,49 @@ class SkimsAccessibilities(_m.Tool()):
             Av_List=["1","1/2", "1", "1"]
             self.Calc_Intrazonals(Bus_MD_Expression, Bus_MD_List, Counter_Transit, Av_List)
 
+    @_m.logbook_trace("Accessibilities Calculation")
     def accessibilities(self):
-        with _m.logbook_trace("Accessibilities Calculation"):
-            NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _m.Modeller().tool(NAMESPACE)
-            spec_as_dict = {
-                    "expression": "EXPRESSION",
-                    "result": "RESULT",
-                    "constraint": {
-                        "by_value": {
-                            "od_values": "mf101",
-                            "interval_min": 0,
-                            "interval_max": 0,
-                            "condition": "EXCLUDE"
-                        },
-                        "by_zone": None
+        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
+        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        spec_as_dict = {
+                "expression": "EXPRESSION",
+                "result": "RESULT",
+                "constraint": {
+                    "by_value": {
+                        "od_values": "mf101",
+                        "interval_min": 0,
+                        "interval_max": 0,
+                        "condition": "EXCLUDE"
                     },
-                    "aggregation": {
-                        "origins": None,
-                        "destinations": "+"
-                    },
-                    "type": "MATRIX_CALCULATION"
-                }
-            expressions_list = [
-                ['ln(md12+1*(md12.eq.0))/(mf101*mf101)', 'mf101', 'mo47'],
-                ['ln(md12+1*(md12.eq.0))/((2*(mf954+mf106*(p.eq.q))+mf164)*(2*(mf954+mf106*(p.eq.q))+mf164))', 'mf164',
-                 'mo392'],
-                ['ln(md8+1*(md8.eq.0))/(mf101*mf101)', 'mf101', 'mo954'],
-                ['ln(md8+1*(md8.eq.0))/((2*(mf954+mf106*(p.eq.q))+mf164)*(2*(mf954+mf106*(p.eq.q))+mf164))', 'mf164',
-                 'mo955'],
-                ['ln(md23+1*(md23.eq.0))/(mf101*mf101)', 'mf101', 'mo48'],
-                ['ln(md23+1*(md23.eq.0))/((2*(mf954+mf106*(p.eq.q))+mf164)*(2*(mf954+mf106*(p.eq.q))+mf164))', 'mf164',
-                 'mo957'],
-                ['ln(md8+md9+md10+md11+1*((md8+md9+md10+md11).eq.0))/(mf101*mf101)', 'mf101', 'mo960'],
-                [
-                    'ln(md8+md9+md10+md11+1*((md8+md9+md10+md11).eq.0))/((2*(mf954+mf106*(p.eq.q))+mf164)*(2*(mf954+mf106*(p.eq.q))+mf164))',
-                    'mf164', 'mo961']
-            ]
+                    "by_zone": None
+                },
+                "aggregation": {
+                    "origins": None,
+                    "destinations": "+"
+                },
+                "type": "MATRIX_CALCULATION"
+            }
+        expressions_list = [
+            ['ln(md12+1*(md12.eq.0))/(mf101*mf101)', 'mf101', 'mo47'],
+            ['ln(md12+1*(md12.eq.0))/((2*(mf954+mf106*(p.eq.q))+mf164)*(2*(mf954+mf106*(p.eq.q))+mf164))', 'mf164',
+             'mo392'],
+            ['ln(md8+1*(md8.eq.0))/(mf101*mf101)', 'mf101', 'mo954'],
+            ['ln(md8+1*(md8.eq.0))/((2*(mf954+mf106*(p.eq.q))+mf164)*(2*(mf954+mf106*(p.eq.q))+mf164))', 'mf164',
+             'mo955'],
+            ['ln(md23+1*(md23.eq.0))/(mf101*mf101)', 'mf101', 'mo48'],
+            ['ln(md23+1*(md23.eq.0))/((2*(mf954+mf106*(p.eq.q))+mf164)*(2*(mf954+mf106*(p.eq.q))+mf164))', 'mf164',
+             'mo957'],
+            ['ln(md8+md9+md10+md11+1*((md8+md9+md10+md11).eq.0))/(mf101*mf101)', 'mf101', 'mo960'],
+            [
+                'ln(md8+md9+md10+md11+1*((md8+md9+md10+md11).eq.0))/((2*(mf954+mf106*(p.eq.q))+mf164)*(2*(mf954+mf106*(p.eq.q))+mf164))',
+                'mf164', 'mo961']
+        ]
 
-            for i in range(0, len(expressions_list)):
-                spec_as_dict['expression'] = expressions_list[i][0]
-                spec_as_dict['constraint']['by_value']['od_values'] = expressions_list[i][1]
-                spec_as_dict['result'] = expressions_list[i][2]
-                compute_matrix(spec_as_dict)
+        for i in range(0, len(expressions_list)):
+            spec_as_dict['expression'] = expressions_list[i][0]
+            spec_as_dict['constraint']['by_value']['od_values'] = expressions_list[i][1]
+            spec_as_dict['result'] = expressions_list[i][2]
+            compute_matrix(spec_as_dict)
 
     @_m.logbook_trace("Matrix Batchin")
     def Matrix_Batchins(self, eb):
