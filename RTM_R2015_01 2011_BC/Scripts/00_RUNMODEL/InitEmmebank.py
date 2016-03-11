@@ -200,19 +200,42 @@ class InitEmmebank(_m.Tool()):
 
         mat_transaction = mod.tool("inro.emme.data.matrix.matrix_transaction")
 
-        util.delmat(eb, "mf1060")
-        util.delmat(eb, "mf1061")
-        util.delmat(eb, "mf1062")
-        util.delmat(eb, "mf1063")
-        data_path = os.path.join(proj_path, 'BaseNetworks', '2011AMseeds_gz.in')
+        # Batch in starter auto demand used for generating starter skims, demand is aggregated into 4 classes, SOV, HOV, Light Tr, Heavy Tr
+        util.delmat(eb, "mf893")
+        util.delmat(eb, "mf894")
+        data_path = os.path.join(proj_path, 'BaseNetworks', 'AM_Starter_Demand.in')
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
-        util.delmat(eb, "mf1064")
-        util.delmat(eb, "mf1065")
-        util.delmat(eb, "mf1066")
-        util.delmat(eb, "mf1067")
-        data_path = os.path.join(proj_path, 'BaseNetworks', '2011MDseeds_gz.in')
+        util.delmat(eb, "mf895")
+        util.delmat(eb, "mf896")
+        data_path = os.path.join(proj_path, 'BaseNetworks', 'MD_Starter_Demand.in')
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        # Batch in truck demand matrices
+        util.delmat(eb, "mf980")
+        util.delmat(eb, "mf981")
+        data_path = os.path.join(proj_path, 'BaseNetworks', 'AM_Truck_Demand.in')
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mf982")
+        util.delmat(eb, "mf983")
+        data_path = os.path.join(proj_path, 'BaseNetworks', 'MD_Truck_Demand.in')
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        # Batch in external demand matrices
+        util.delmat(eb, "mf978")
+        util.delmat(eb, "mf979")
+        data_path = os.path.join(proj_path, 'BaseNetworks', 'AM_External_Demand.in')
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mf984")
+        util.delmat(eb, "mf985")
+        data_path = os.path.join(proj_path, 'BaseNetworks', 'MD_External_Demand.in')
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
