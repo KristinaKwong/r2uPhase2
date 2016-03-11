@@ -206,7 +206,7 @@ class SkimsAccessibilities(_m.Tool()):
             "result": "RESULT",
             "constraint": {
                 "by_value": None,
-                "by_zone": {"origins": "gm1-gm21", "destinations": "gm1-gm21"}
+                "by_zone": {"origins": "gm1-gm24", "destinations": "gm1-gm24"}
             },
             "aggregation": {"origins": None,"destinations": "+"},
             "type": "MATRIX_CALCULATION"
