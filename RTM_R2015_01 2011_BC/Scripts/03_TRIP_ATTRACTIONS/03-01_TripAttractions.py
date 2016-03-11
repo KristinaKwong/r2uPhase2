@@ -197,6 +197,12 @@ class TripAttractions(_m.Tool()):
         year = util.get_year(eb)
         yr = year[2:]
 
+        # Initialize transposes of some land use variables, kill this eventually
+        util.initmat(eb, "md13", "BkSc", "Bike Score tpose", 0)
+        util.initmat(eb, "md17", "Area", "Area m2 tpose", 0)
+        util.initmat(eb, "md27", "WkPr", "Work Park tpose", 0)
+        util.initmat(eb, "md28", "OtPk", "Other Park tpose", 0)
+
         util.initmat(eb, "md20", "PpTt" + yr, year + "_total_population", 0)
         util.initmat(eb, "md24", "HhLwIn", "Household Low Income", 0)
         util.initmat(eb, "md25", "HhMdIn", "Household Medium Income", 0)
