@@ -103,7 +103,7 @@ class ParkAndRide(_m.Tool()):
             spec["result"] = "md65"
             report = compute_matrix(spec, scenario=scenario)
             # Copy pr model output for auto and transit legs
-            spec["expression"] = "mf209*(q.gt.999)"
+            spec["expression"] = "mf209*(gm(q).le.24)"
             spec["result"] = "mf194"
             report = compute_matrix(spec, scenario=scenario)
             spec["expression"] = "mf208"
@@ -133,7 +133,7 @@ class ParkAndRide(_m.Tool()):
             spec["result"] = "md65"
             report = compute_matrix(spec, scenario=scenario)
             #Copy pr model output for auto and transit legs
-            spec["expression"] = "mf209*(q.gt.999)"
+            spec["expression"] = "mf209*(gm(q).le.24)"
             spec["result"] = "mf195"
             report = compute_matrix(spec, scenario=scenario)
             spec["expression"] = "mf208"
@@ -160,7 +160,7 @@ class ParkAndRide(_m.Tool()):
             spec["result"] = "md65"
             report = compute_matrix(spec, scenario=scenario)
             #Copy pr model output for auto and transit legs
-            spec["expression"] = "mf194+(mf209*(q.gt.999))"
+            spec["expression"] = "mf194+(mf209*(gm(q).le.24))"
             spec["result"] = "mf194"
             report = compute_matrix(spec, scenario=scenario)
             spec["expression"] = "mf208"
@@ -184,7 +184,7 @@ class ParkAndRide(_m.Tool()):
             spec["result"] = "md71"
             report = compute_matrix(spec, scenario=scenario)
             #Copy pr model output for auto and transit legs
-            spec["expression"] = "mf195+(mf209*(q.gt.999))"
+            spec["expression"] = "mf195+(mf209*(gm(q).le.24))"
             spec["result"] = "mf195"
             report = compute_matrix(spec, scenario=scenario)
             spec["expression"] = "mf208"
@@ -655,9 +655,9 @@ class ParkAndRide(_m.Tool()):
             stop_capacity="md65",
             constraint={
                 "by_zone": {
-                    "origins": "1000-9999",
+                    "origins": "gm1-gm24",
                     "intermediates": "101-127",
-                    "destinations": "1000-9999"
+                    "destinations": "gm1-gm24"
                 }
             },
             max_iterations=max_iterations,

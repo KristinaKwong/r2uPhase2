@@ -206,7 +206,7 @@ class SkimsAccessibilities(_m.Tool()):
             "result": "RESULT",
             "constraint": {
                 "by_value": None,
-                "by_zone": {"origins": "1000-8999", "destinations": "1000-8999"}
+                "by_zone": {"origins": "gm1-gm21", "destinations": "gm1-gm21"}
             },
             "aggregation": {"origins": None,"destinations": "+"},
             "type": "MATRIX_CALCULATION"
@@ -288,13 +288,13 @@ class SkimsAccessibilities(_m.Tool()):
 
             iz_spec= util.matrix_spec("mo1025", "mf1095")
             iz_spec["constraint"]["by_value"] = {"od_values": "mf970", "interval_min": 1, "interval_max": 1, "condition": "EXCLUDE"}
-            iz_spec["constraint"]["by_zone"] = {"origins": "1000-9999", "destinations": "1000-9999"}
+            iz_spec["constraint"]["by_zone"] = {"origins": "gm1-gm24", "destinations": "gm1-gm24"}
             iz_spec["aggregation"] = {"origins": None, "destinations": ".min."}
             specs.append(iz_spec)
 
             ind_spec=util.matrix_spec("mo1026", "q*(mo1025.eq.mf1095)")
             ind_spec["constraint"]["by_value"] = {"od_values": "mf970", "interval_min": 1, "interval_max": 1, "condition": "EXCLUDE"}
-            ind_spec["constraint"]["by_zone"] = {"origins": "1000-9999", "destinations": "1000-9999"}
+            ind_spec["constraint"]["by_zone"] = {"origins": "gm1-gm24", "destinations": "gm1-gm24"}
             ind_spec["aggregation"] = {"origins": None, "destinations": ".max."}
             specs.append(ind_spec)
 
@@ -302,7 +302,7 @@ class SkimsAccessibilities(_m.Tool()):
 
                 ind_spec=util.matrix_spec("mo1027", matrix_list[matrix]+"*(q.eq.mo1026)")
                 ind_spec["constraint"]["by_value"] = {"od_values": "mf970", "interval_min": 1, "interval_max": 1, "condition": "EXCLUDE"}
-                ind_spec["constraint"]["by_zone"] = {"origins": "1000-9999", "destinations": "1000-9999"}
+                ind_spec["constraint"]["by_zone"] = {"origins": "gm1-gm24", "destinations": "gm1-gm24"}
                 ind_spec["aggregation"] = {"origins": None, "destinations": ".max."}
                 specs.append(ind_spec)
 
