@@ -98,8 +98,7 @@ class ExternalTruckModel(_m.Tool()):
 
         with _m.logbook_trace("Import Cascade Cross-Border Matrices"):
 
-            NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _m.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
             process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
             root_directory = os.path.dirname(_m.Modeller().emmebank.path) + "\\"
             matrix_file1 = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"CrossBorderv1.txt")
@@ -158,9 +157,7 @@ class ExternalTruckModel(_m.Tool()):
 
         with _m.logbook_trace("Trip Generation"):
 
-            NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-
-            compute_matrix = _m.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
             TripGenSpec=self.spec_as_dict
 
@@ -288,8 +285,7 @@ class ExternalTruckModel(_m.Tool()):
     #   Adjusts Inter-regional mo and md totals by subtracting Cross-border mo/mds with inter-regional zone end
 
         with _m.logbook_trace("Adjust Inter Regional mos and mds with Cross-Border mos and mds"):
-            NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _m.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
             AdjustSpec=self.spec_as_dict
             ResultList=["mo1003","md203"]
 
@@ -330,8 +326,7 @@ class ExternalTruckModel(_m.Tool()):
 
         with _m.logbook_trace("Trip Distribution"):
 
-            NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _m.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
             TripDistSpec=self.spec_as_dict
 
             ResultList=['mf1010','mf1011']
@@ -349,8 +344,7 @@ class ExternalTruckModel(_m.Tool()):
     # Outputs: Light AM, Light MD, Heavy AM, Heavy MD - mf186, mf188, mf187, mf189
 
         with _m.logbook_trace("Time Slicing"):
-            NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-            compute_matrix = _m.Modeller().tool(NAMESPACE)
+            compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
             TimeSliceSpec=self.spec_as_dict
 
     # IB                 Light Trucks AM            Light Trucks MD               Heavy Trucks AM         Heavy Trucks MD

@@ -39,8 +39,7 @@ class TwoClassTransitAssignment(_m.Tool()):
 
     @_m.logbook_trace("10-11 - Two Class Transit Assignment")
     def __call__(self, scenarioam, scenariomd):
-        NAMESPACE = "inro.emme.transit_assignment.extended_transit_assignment"
-        transit_assign = _m.Modeller().tool(NAMESPACE)
+        transit_assign = _m.Modeller().tool("inro.emme.transit_assignment.extended_transit_assignment")
 
         bus_spec = {
             "modes": ["b", "g", "a", "p"],

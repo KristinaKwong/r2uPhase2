@@ -159,8 +159,7 @@ class SkimsAccessibilities(_m.Tool()):
 
     @_m.logbook_trace("Accessibilities Calculation")
     def accessibilities(self):
-        NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
-        compute_matrix = _m.Modeller().tool(NAMESPACE)
+        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
         spec_as_dict = {
                 "expression": "EXPRESSION",
                 "result": "RESULT",

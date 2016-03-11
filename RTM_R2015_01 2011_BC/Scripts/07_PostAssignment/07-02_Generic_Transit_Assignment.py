@@ -37,8 +37,7 @@ class Transit_Assignment(_m.Tool()):
 
     @_m.logbook_trace("07-02 - Generic Transit Skim")
     def __call__(self, scenarioam, scenariomd):
-        NAMESPACE = "inro.emme.transit_assignment.standard_transit_assignment"
-        genskim = _m.Modeller().tool(NAMESPACE)
+        genskim = _m.Modeller().tool("inro.emme.transit_assignment.standard_transit_assignment")
         spec_as_dict = {
             "modes": ["b", "f", "g", "l", "r", "s", "a", "p", "h"],
             "demand": "mf853",

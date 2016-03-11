@@ -34,8 +34,7 @@ class RailAssignment(_m.Tool()):
 
     @_m.logbook_trace("07-01 - Rail Skims")
     def __call__(self, i, scenarionumber, RaType):
-        NAMESPACE = "inro.emme.transit_assignment.extended.matrix_results"
-        railskim = _m.Modeller().tool(NAMESPACE)
+        railskim = _m.Modeller().tool("inro.emme.transit_assignment.extended.matrix_results")
         # Note: could remove the None items from the tmplt
         tmplt_spec = {
             "by_mode_subset": {

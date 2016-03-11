@@ -45,9 +45,8 @@ class AsiaPacificTruckModel(_m.Tool()):
                 matrix_file = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"AsiaPacificv1.txt")
                 process(transaction_file=matrix_file, throw_on_error=True)
 
-                NAMESPACE = "inro.emme.matrix_calculation.matrix_calculator"
             #Distribute Asia Pacific matrix for 'Other locations' based on non-retail employment
-                compute_matrix = _m.Modeller().tool(NAMESPACE)
+                compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
 
                 Spec1={
