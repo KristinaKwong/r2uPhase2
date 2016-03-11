@@ -289,8 +289,3 @@ class PreLoop(_m.Tool()):
         demand_file_MD = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "MD_Starter_Demand.txt")
         matrix_txn(transaction_file=demand_file_AM, throw_on_error=True)
         matrix_txn(transaction_file=demand_file_MD, throw_on_error=True)
-
-        # Starter Skims copying eliminated with new code, only calculation of rail fare matrix remains
-        util.initmat(eb, "mf161", "RlFare", "Rail Fare", 0)
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
-        compute_matrix(util.matrix_spec("mf161", "mf160"))
