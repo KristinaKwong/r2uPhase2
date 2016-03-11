@@ -1,6 +1,6 @@
 c Emme Modeller - Transit Line Transaction
-c Date: 2016-03-02 14:50:20
-c Project:        March 1 Version - with seeds                                
+c Date: 2016-03-11 13:53:02
+c Project:        testinit                                                    
 c Scenario 1100:  2011 MD Base Network
 t lines
 c Transit Lines
