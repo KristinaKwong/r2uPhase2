@@ -126,34 +126,13 @@ class Rail_Assignment(_m.Tool()):
                     "description": "One",
                     "destinations_reachable": False,
                     "transition_rules": [
-                        {
-                        "mode": "b",
-                        "next_journey_level": 0
-                        },
-                        {
-                            "mode": "f",
-                            "next_journey_level": 1
-                        },
-                        {
-                            "mode": "g",
-                            "next_journey_level": 1
-                        },
-                        {
-                            "mode": "h",
-                            "next_journey_level": 1
-                        },
-                        {
-                            "mode": "l",
-                            "next_journey_level": 1
-                        },
-                        {
-                            "mode": "r",
-                            "next_journey_level": 1
-                        },
-                        {
-                            "mode": "s",
-                            "next_journey_level": 1
-                        }
+                        { "mode": "b", "next_journey_level": 0 },
+                        { "mode": "f", "next_journey_level": 1 },
+                        { "mode": "g", "next_journey_level": 1 },
+                        { "mode": "h", "next_journey_level": 1 },
+                        { "mode": "l", "next_journey_level": 1 },
+                        { "mode": "r", "next_journey_level": 1 },
+                        { "mode": "s", "next_journey_level": 1 }
                     ],
                     "boarding_time": {
                         "at_nodes": {
@@ -174,34 +153,13 @@ class Rail_Assignment(_m.Tool()):
                     "description": "Two",
                     "destinations_reachable": True,
                     "transition_rules": [
-                        {
-                            "mode": "b",
-                            "next_journey_level": 1
-                        },
-                        {
-                            "mode": "f",
-                            "next_journey_level": 1
-                        },
-                        {
-                            "mode": "g",
-                            "next_journey_level": 1
-                        },
-                        {
-                            "mode": "h",
-                            "next_journey_level": 1
-                        },
-                        {
-                            "mode": "l",
-                            "next_journey_level": 1
-                        },
-                        {
-                            "mode": "r",
-                            "next_journey_level": 1
-                        },
-                        {
-                            "mode": "s",
-                            "next_journey_level": 1
-                        }
+                        { "mode": "b", "next_journey_level": 1 },
+                        { "mode": "f", "next_journey_level": 1 },
+                        { "mode": "g", "next_journey_level": 1 },
+                        { "mode": "h", "next_journey_level": 1 },
+                        { "mode": "l", "next_journey_level": 1 },
+                        { "mode": "r", "next_journey_level": 1 },
+                        { "mode": "s", "next_journey_level": 1 }
                     ],
                     "boarding_time": {
                         "at_nodes": {
