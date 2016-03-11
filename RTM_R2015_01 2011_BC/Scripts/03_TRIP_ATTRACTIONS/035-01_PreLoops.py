@@ -264,6 +264,8 @@ class PreLoop(_m.Tool()):
         util.initmat(eb, "mf852", "f2425v", "f2425v", 0)
         util.initmat(eb, "mf853", "f3545b", "f3545b", 0.0000001)
         util.initmat(eb, "mf854", "f3555r", "f3555r", 0.0000001)
+        util.initmat(eb, "mf978", "XSvAM", "Veh-AMPH-nonworkext-unadjusted-SOV", 0)
+        util.initmat(eb, "mf979", "XHvAM", "Veh-AMPH-nonworkext-unadjusted-HOV", 0)
         util.initmat(eb, "mf980", "LgAM", "Veh-AMPH-unadjusted-LGV", 0)
         util.initmat(eb, "mf981", "HgAM", "Veh-AMPH-unadjusted-HGV", 0)
         util.initmat(eb, "mf856", "f1116v", "f1116v", 0)
@@ -280,12 +282,24 @@ class PreLoop(_m.Tool()):
         util.initmat(eb, "mf867", "f3556r", "f3556r", 0.0000001)
         util.initmat(eb, "mf982", "LgMD", "Veh-MDPH-unadjusted-LGV", 0)
         util.initmat(eb, "mf983", "HgMD", "Veh-MDPH-unadjusted-HGV", 0)
+        util.initmat(eb, "mf984", "XSvMD", "Veh-MDPH-nonworkext-unadjusted-SOV", 0)
+        util.initmat(eb, "mf985", "XHvMD", "Veh-MDPH-nonworkext-unadjusted-HOV", 0)
 
         util.initmat(eb, "ms160", "RlDeIn", "Initial Rail Demand for JLA", 0.0000001)
 
         # Batch in starter auto demand used for generating starter skims, demand is aggregated into 4 classes, SOV, HOV, Light Tr, Heavy Tr
         matrix_txn = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
-        demand_file_AM = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "AM_Starter_Demand.txt")
-        demand_file_MD = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "MD_Starter_Demand.txt")
-        matrix_txn(transaction_file=demand_file_AM, throw_on_error=True)
-        matrix_txn(transaction_file=demand_file_MD, throw_on_error=True)
+        auto_demand_AM = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "Starter_Demand" , "AM_Auto_Demand.in")
+        auto_demand_MD = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "Starter_Demand" , "MD_Auto_Demand.in")
+        matrix_txn(transaction_file=auto_demand_AM, throw_on_error=True)
+        matrix_txn(transaction_file=auto_demand_MD, throw_on_error=True)
+        # Batch in truck demand matrices
+        truck_demand_AM = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "Starter_Demand" , "AM_Truck_Demand.in")
+        truck_demand_MD = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "Starter_Demand" , "MD_Truck_Demand.in")
+        matrix_txn(transaction_file=truck_demand_AM, throw_on_error=True)
+        matrix_txn(transaction_file=truck_demand_MD, throw_on_error=True)
+        # Batch in external demand matrices
+        external_demand_AM = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "Starter_Demand" , "AM_External_Demand.in")
+        external_demand_MD = os.path.join(os.path.dirname(eb.path), "00_RUNMODEL", "Starter_Demand" , "MD_External_Demand.in")
+        matrix_txn(transaction_file=external_demand_AM, throw_on_error=True)
+        matrix_txn(transaction_file=external_demand_MD, throw_on_error=True)
