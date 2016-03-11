@@ -64,7 +64,7 @@ class InputLandUse(_m.Tool()):
         #Define matrices for tothhs, hh1, hh2, hh3, hh4, Construction-Mfg, FIRE, TCU-Wholesale, Retail
         inputmats.extend(['mo01', 'mo50', 'mo51', 'mo52', 'mo53', 'md05', 'md06', 'md07', 'md08'])
         #Define matrices for Business-OtherServices, AccomFood-InfoCult, Health-Educat-PubAdmin, totemp
-        inputmats.extend(['md09', 'md10', 'md11', 'md12'])
+        inputmats.extend(['md09', 'md10', 'md11', 'md12', 'md23'])
         #Define matrices for 250CS, 500CS, WPRK45, NWPRK45, bike_score
         inputmats.extend(['mo393', 'mo394', 'mo27', 'mo28', 'mo13'])
 
