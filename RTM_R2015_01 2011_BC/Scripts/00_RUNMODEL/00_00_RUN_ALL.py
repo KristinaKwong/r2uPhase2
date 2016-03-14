@@ -195,7 +195,9 @@ class FullModelRun(_m.Tool()):
 
         am_scen = eb.matrix("ms140").data
         md_scen = eb.matrix("ms141").data
-        demand_adjust(eb, am_scen, md_scen, stopping_criteria)
+        #FIXME: Restore demand adjust call if desired once factors have been developed for the
+        # new zone system.
+        #demand_adjust(eb, am_scen, md_scen, stopping_criteria)
 
         run_congested = int(eb.matrix("ms138").data)
         if run_congested == 1:
