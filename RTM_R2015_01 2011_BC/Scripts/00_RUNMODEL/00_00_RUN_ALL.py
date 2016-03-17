@@ -149,10 +149,10 @@ class FullModelRun(_m.Tool()):
         pre_loops(eb)
 
         assignment = _m.Modeller().tool("translink.emme.stage3.step6.assignment")
-        assignment(eb, 0, stopping_criteria_skim)
+        assignment(eb, stopping_criteria_skim)
 
         post_assignment = _m.Modeller().tool("translink.emme.stage3.step7.postassign")
-        post_assignment(eb, 0, stopping_criteria_skim)
+        post_assignment(eb, stopping_criteria_skim)
 
         # Segmentation (including auto ownership)
         segmentation = _m.Modeller().tool("translink.emme.stage1.step1.segmentation")
