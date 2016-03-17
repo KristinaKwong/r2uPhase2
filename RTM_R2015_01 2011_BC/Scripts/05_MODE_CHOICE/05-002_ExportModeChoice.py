@@ -61,7 +61,7 @@ class ModeChoiceHBSchool(_m.Tool()):
         auto = ['_zero_auto', '_one_auto', '_twoplus_auto']
 
         output_folder = util.get_output_path(eb)
-        purpose_folder = os.path.join(output_folder, purp_list[purp - 1])
+        purpose_folder = output_folder
         with _m.logbook_trace("Aggregate Demand " + purp_list[purp - 1]):
             matagg = 882
             if purp == 1:
@@ -141,7 +141,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                                 specs.append(util.matrix_spec(result, expression1))
                         report = compute_matrix(specs)
 
-                        exportfile = output_folder + '/Nonwork/Overall_Results_' + income[i] + file_suffix
+                        exportfile = output_folder + '/Overall_Results_NonWork_' + income[i] + file_suffix
                         self.Export_Demand(eb, exportfile)
 
     @_m.logbook_trace("Clear Calculation Matrices")
