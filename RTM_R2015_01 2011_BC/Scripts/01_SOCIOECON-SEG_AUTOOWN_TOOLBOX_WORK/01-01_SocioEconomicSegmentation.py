@@ -89,13 +89,13 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Output Results")
     def Output_Results(self, eb, HHWorkerRate, IncomeData, AutoOwnershipCoefficients):
-        output_path = os.path.join(os.path.dirname(eb.path), "01_SOCIOECON-SEG_AUTOOWN_TOOLBOX_WORK", "Outputs")
+        util = _m.Modeller().tool("translink.emme.util")
+        output_path = util.get_output_path(eb)
         output_file =    os.path.join(output_path, "01-01_OUTPUT_RESULTS.txt")
         output_file_gy = os.path.join(output_path, "01-01_OUTPUT_RESULTS_GY.txt")
         output_file_gu = os.path.join(output_path, "01-01_OUTPUT_RESULTS_GU.txt")
         output_file_csv = os.path.join(output_path, "01-01_OUTPUT_RESULTS_matrices.csv")
 
-        util = _m.Modeller().tool("translink.emme.util")
         list_of_matrices = ["mo" + str(i) for i in [1] + range(16, 21) + range(50, 60) + range(61, 398) + range(404, 716)]
         util.export_csv(eb, list_of_matrices, output_file_csv)
 

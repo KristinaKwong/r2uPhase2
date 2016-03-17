@@ -53,7 +53,6 @@ class ModeChoiceHBSchool(_m.Tool()):
     def Agg_Exp_Demand(self, eb, purp):
         util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
-        output_folder = os.path.join(os.path.dirname(eb.path), "05_MODE_CHOICE", "Outputs", "")
         cur_cycle = util.get_cycle(eb)
         file_suffix = "_" + str(cur_cycle) + ".txt"
 
@@ -61,7 +60,8 @@ class ModeChoiceHBSchool(_m.Tool()):
         income = ['lowinc', 'medinc', 'highinc']
         auto = ['_zero_auto', '_one_auto', '_twoplus_auto']
 
-        purpose_folder = os.path.join(os.path.dirname(eb.path), "05_MODE_CHOICE", "Outputs", purp_list[purp - 1])
+        output_folder = util.get_output_path(eb)
+        purpose_folder = os.path.join(output_folder, purp_list[purp - 1])
         with _m.logbook_trace("Aggregate Demand " + purp_list[purp - 1]):
             matagg = 882
             if purp == 1:
@@ -141,7 +141,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                                 specs.append(util.matrix_spec(result, expression1))
                         report = compute_matrix(specs)
 
-                        exportfile = output_folder + 'Nonwork/Overall_Results_' + income[i] + file_suffix
+                        exportfile = output_folder + '/Nonwork/Overall_Results_' + income[i] + file_suffix
                         self.Export_Demand(eb, exportfile)
 
     @_m.logbook_trace("Clear Calculation Matrices")

@@ -70,13 +70,13 @@ class TripProd(_m.Tool()):
     ##    Outputs results matrix to a file
     @_m.logbook_trace("Output Results")
     def Output_Results(self, eb, FirstResultMoNum, TripRateFile, CalibrationFactors):
-        output_path = os.path.join(os.path.dirname(eb.path), "02_TRIP_PROD_TOOLBOX_WORK", "Outputs")
+        util = _m.Modeller().tool("translink.emme.util")
+        output_path = util.get_output_path(eb)
         output_file =    os.path.join(output_path, "02-01_OUTPUT_FILE.txt")
         output_file_gy = os.path.join(output_path, "02-01_OUTPUT_FILE_GY.txt")
         output_file_gu = os.path.join(output_path, "02-01_OUTPUT_FILE_GU.txt")
         output_file_csv = os.path.join(output_path, "02-01_OUTPUT_FILE_matrices.csv")
 
-        util = _m.Modeller().tool("translink.emme.util")
         list_of_matrices = ["mo" + str(i) for i in range(161, 365) + range(404, 915)]
         util.export_csv(eb, list_of_matrices, output_file_csv)
 

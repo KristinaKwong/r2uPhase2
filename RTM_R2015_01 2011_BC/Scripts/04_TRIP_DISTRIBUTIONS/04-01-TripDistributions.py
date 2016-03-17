@@ -142,13 +142,13 @@ class TripDistributions(_m.Tool()):
 
     @_m.logbook_trace("Output Results")
     def output_results(self, eb):
-        output_path = os.path.join(os.path.dirname(eb.path), "04_TRIP_DISTRIBUTIONS", "Outputs")
+        util = _m.Modeller().tool("translink.emme.util")
+        output_path = util.get_output_path(eb)
         output_file =    os.path.join(output_path, "04-01_OUTPUT_RESULTS.txt")
         output_file_gy = os.path.join(output_path, "04-01_OUTPUT_RESULTS_GY.txt")
         output_file_gu = os.path.join(output_path, "04-01_OUTPUT_RESULTS_GU.txt")
         output_file_csv = os.path.join(output_path, "04-01_OUTPUT_RESULTS_matrices.csv")
 
-        util = _m.Modeller().tool("translink.emme.util")
         list_of_matrices = ["md" + str(i) for i in range(5, 12) + range(20, 26) + range(31, 53)]
         list_of_matrices = list_of_matrices  + ["mo" + str(i) for i in range(915, 927)]
         util.export_csv(eb, list_of_matrices, output_file_csv)
