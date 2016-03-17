@@ -81,6 +81,10 @@ class InitEmmebank(_m.Tool()):
         new_folder = os.path.join(proj_path, emme_folder)
         os.mkdir(new_folder)
 
+        # Create an Inputs and Outputs folder structure
+        os.mkdir(os.path.join(new_folder, "Inputs"))
+        os.mkdir(os.path.join(new_folder, "Outputs"))
+
         return os.path.join(new_folder, 'emmebank')
 
     def initscenario(self, eb, scen_id, scen_title):
