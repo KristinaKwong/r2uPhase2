@@ -119,7 +119,7 @@ class Util(_m.Tool()):
         Arguments:
         eb -- The emmebank to be queried
         """
-        return int(eb.matrix("ms01").data))
+        return int(eb.matrix("ms01").data)
 
     @_m.logbook_trace("Export Matrices to CSV file", save_arguments=True)
     def export_csv(self, eb, list_of_matrices, output_file):
