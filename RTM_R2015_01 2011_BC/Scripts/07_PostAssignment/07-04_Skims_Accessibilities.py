@@ -44,11 +44,10 @@ class SkimsAccessibilities(_m.Tool()):
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         cycle_number = util.get_cycle(eb)
-        if cycle_number == 0:
+        if cycle_number <= 1:
             j = 1
             k = 1
-
-        if cycle_number > 0:
+        else:
             j = 0.5
             k = 1
 

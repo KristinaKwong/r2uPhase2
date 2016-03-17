@@ -43,9 +43,8 @@ class PostAssignment(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
         am_scenario_id = int(eb.matrix("ms140").data)
         md_scenario_id = int(eb.matrix("ms141").data)
-        cycle_number = util.get_cycle(eb)
 
-        am_temp_scenario, md_temp_scenario = self.copy_scenario(eb, am_scenario_id, md_scenario_id, cycle_number)
+        am_temp_scenario, md_temp_scenario = self.copy_scenario(eb, am_scenario_id, md_scenario_id)
 
         gen_transit = _m.Modeller().tool("translink.emme.stage3.step7.gentranskim")
         toll_skim = _m.Modeller().tool("translink.emme.stage3.step7.tollskim")
@@ -58,12 +57,13 @@ class PostAssignment(_m.Tool()):
         util.del_scen(md_temp_scenario)
 
     @_m.logbook_trace("Copy Scenario")
-    def copy_scenario(self, eb, am_scenario_id, md_scenario_id, cycle_number):
-
+    def copy_scenario(self, eb, am_scenario_id, md_scenario_id):
+        util = _m.Modeller().tool("translink.emme.util")
+        cycle_number = util.get_cycle(eb)
         # TODO: would be easier to always run on the same scenario
         #       and at the beginning of each iteration
         #       make a backup copy of each scenario
-        if (cycle_number % 2 == 0 ):
+        if (cycle_number % 2 == 1):
             am_scenario = eb.scenario(am_scenario_id)
             md_scenario = eb.scenario(md_scenario_id)
         else:

@@ -47,7 +47,7 @@ class Assignment(_m.Tool()):
         amscen2 = amscen1 + 30
         mdscen2 = mdscen1 + 30
 
-        if util.get_cycle(eb) % 2 == 0:
+        if util.get_cycle(eb) % 2 == 1:
             scenarioam = eb.scenario(amscen1)
             scenariomd = eb.scenario(mdscen1)
         else:

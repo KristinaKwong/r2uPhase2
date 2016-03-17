@@ -118,6 +118,8 @@ class FullModelRun(_m.Tool()):
         read_settings = _m.Modeller().tool("translink.emme.stage1.step0.settings")
         read_settings(eb, os.path.join(os.path.dirname(eb.path), "settings.csv"))
 
+        util.initmat(eb, "ms01", "cycle", "Current Model Cycle", 0)
+
         create_scenario = _m.Modeller().tool("translink.emme.stage1.step0.create_scen")
         scenario_run = eb.matrix("ms143").data
         am_scen = eb.matrix("ms140").data
@@ -175,6 +177,7 @@ class FullModelRun(_m.Tool()):
                 # TODO: - could check and report on convergence
         #         at each iteration (distribution and auto assignment)
         #       - add global convergence measure
+        util = _m.Modeller().tool("translink.emme.util")
         trip_distribution = _m.Modeller().tool("translink.emme.stage3.step4.tripdistribution")
         mode_choice = _m.Modeller().tool("translink.emme.stage3.step5.modechoice")
         assignment = _m.Modeller().tool("translink.emme.stage3.step6.assignment")
@@ -182,9 +185,9 @@ class FullModelRun(_m.Tool()):
 
         #Distribution, mode choice and assignment
         #Iterate distribution, mode choice and assignment steps to indicated number of iterations
-        for iteration_number in range(global_iterations):
+        for iteration_number in range(1, global_iterations + 1):
             util.initmat(eb, "ms01", "cycle", "Current Model Cycle", iteration_number)
-            is_last_iteration = (iteration_number == (global_iterations - 1))
+            is_last_iteration = (iteration_number == global_iterations)
 
             trip_distribution(eb, max_distribution_iterations)
             mode_choice(eb, is_last_iteration)
