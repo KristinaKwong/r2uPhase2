@@ -35,8 +35,10 @@ class TripAttractions(_m.Tool()):
 
     @_m.logbook_trace("03-01 - Trip Attractions")
     def __call__(self, eb):
-        PathHeader = os.path.dirname(eb.path) + "\\"
-        CoefficientsPerGrouping = PathHeader + "03_TRIP_ATTRACTIONS/Inputs/32_COEFFICIENTS.csv"
+        util = _m.Modeller().tool("translink.emme.util")
+        input_path = util.get_input_path(eb)
+
+        CoefficientsPerGrouping = os.path.join(input_path, "32_COEFFICIENTS.csv")
 
         ##Batchin File
         self.Matrix_Batchins(eb)

@@ -34,9 +34,11 @@ class TripProd(_m.Tool()):
 
     @_m.logbook_trace("02-01 - Trip Production")
     def __call__(self, eb):
-        PathHeader = os.path.dirname(eb.path) + "\\"
-        TripRateFile = PathHeader + "02_TRIP_PROD_TOOLBOX_WORK/Inputs/21_TripRates_ALLPURPOSES.csv"
-        CalibrationFactors = PathHeader + "02_TRIP_PROD_TOOLBOX_WORK/Inputs/22_CalibFactors.csv"
+        util = _m.Modeller().tool("translink.emme.util")
+        input_path = util.get_input_path(eb)
+
+        TripRateFile = os.path.join(input_path, "21_TripRates_ALLPURPOSES.csv")
+        CalibrationFactors = os.path.join(input_path, "22_CalibFactors.csv")
         FirstResultMoNum = "404"
 
         self.Matrix_Batchins(eb)

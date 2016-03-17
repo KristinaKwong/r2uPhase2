@@ -159,7 +159,9 @@ class AutoAssignment(_m.Tool()):
         # @hgvoc: heavy truck gc
 
         # Input Tolls from toll file
-        toll_file = os.path.join(os.path.dirname(eb.path), "06_Assignment", "Inputs", "tollinput.csv")
+        util = _m.Modeller().tool("translink.emme.util")
+        input_path = util.get_input_path(eb)
+        toll_file = os.path.join(input_path, "tollinput.csv")
         set_tolls = _m.Modeller().tool("translink.emme.stage3.step6.tollset")
         set_tolls(toll_file, am_scenario, md_scenario)
 

@@ -40,10 +40,11 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("01-01 - Socio Economic Segmentation")
     def __call__(self, eb):
-        PathHeader = os.path.dirname(eb.path) + "\\"
-        HHWorkerRate = PathHeader + "01_SOCIOECON-SEG_AUTOOWN_TOOLBOX_WORK/Inputs/12_HH_Worker_Rates.csv"
-        IncomeData = PathHeader + "01_SOCIOECON-SEG_AUTOOWN_TOOLBOX_WORK/Inputs/13_HHWrkrIncome.csv"
-        AutoOwnershipCoefficients = PathHeader + "01_SOCIOECON-SEG_AUTOOWN_TOOLBOX_WORK/Inputs/14_AutoOwnershipCoefficients.csv"
+        util = _m.Modeller().tool("translink.emme.util")
+        input_path = util.get_input_path(eb)
+        HHWorkerRate = os.path.join(input_path, "12_HH_Worker_Rates.csv")
+        IncomeData = os.path.join(input_path, "13_HHWrkrIncome.csv")
+        AutoOwnershipCoefficients = os.path.join(input_path, "14_AutoOwnershipCoefficients.csv")
         ##Batchin File
         self.Matrix_Batchins(eb)
 

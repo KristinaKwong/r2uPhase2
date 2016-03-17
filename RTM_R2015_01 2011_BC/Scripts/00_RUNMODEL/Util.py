@@ -128,6 +128,14 @@ class Util(_m.Tool()):
         eb -- The emmebank to be queried
         """
         return os.path.join(os.path.dirname(eb.path), "Outputs")
+        
+    def get_input_path(self, eb):
+        """Returns the inputs directory for the given databank
+
+        Arguments:
+        eb -- The emmebank to be queried
+        """
+        return os.path.join(os.path.dirname(eb.path), "Inputs")
 
     @_m.logbook_trace("Export Matrices to CSV file", save_arguments=True)
     def export_csv(self, eb, list_of_matrices, output_file):

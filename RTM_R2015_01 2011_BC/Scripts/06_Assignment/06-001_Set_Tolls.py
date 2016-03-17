@@ -39,10 +39,6 @@ class SetTolls(_m.Tool()):
     @_m.logbook_trace("Setting toll values", save_arguments=True)
     def __call__(self, toll_file, scenarioam, scenariomd):
         network_calc = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
-        init_attribute = _m.Modeller().tool("inro.emme.data.extra_attribute.init_extra_attribute")
-        with _m.logbook_trace("Initializing toll attribute (@tolls) to 0"):
-            a = _m.Modeller().scenario.extra_attribute("@tolls")
-            init_attribute(a, 0)
         with _m.logbook_trace("Read new tolls in from file"):
             # TODO: see if this can be replaced by input attribute values tool
             with open(toll_file, 'r') as f:

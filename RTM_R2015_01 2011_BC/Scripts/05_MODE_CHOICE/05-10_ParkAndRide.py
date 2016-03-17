@@ -53,9 +53,11 @@ class ParkAndRide(_m.Tool()):
             "inro.emme.matrix_calculation.matrix_calculator")
 
         with _m.logbook_trace("Initialization"):
-            bank_dir = os.path.dirname(scenario.emmebank.path)
+            util = _m.Modeller().tool("translink.emme.util")
+            input_path = util.get_input_path(scenario.emmebank)
+
             self.Matrix_Batchins(scenario.emmebank)
-            input_dir = os.path.join(bank_dir, "05_MODE_CHOICE", "Inputs", "ParkAndRide", "PR-setup.311")
+            input_dir = os.path.join(input_path, "PR-setup.311")
             matrix_txn(input_dir, scenario=scenario)
 
             spec = {

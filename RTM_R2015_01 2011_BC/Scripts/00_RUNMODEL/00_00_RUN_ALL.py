@@ -41,14 +41,14 @@ class FullModelRun(_m.Tool()):
         pb.add_select_file(tool_attribute_name="land_use_file1",
                            window_type="file",
                            file_filter='*.csv',
-                           start_path=loc + '/00_RUNMODEL/LandUse',
+                           start_path=loc + '/Inputs',
                            title="LandUse file 1: ",
                            note="File must be csv file.")
 
         pb.add_select_file(tool_attribute_name="land_use_file2",
                            window_type="file",
                            file_filter='*.csv',
-                           start_path=loc + '/00_RUNMODEL/LandUse',
+                           start_path=loc + '/Inputs',
                            title="LandUse file 2: ",
                            note="File must be csv file.")
 
@@ -116,7 +116,7 @@ class FullModelRun(_m.Tool()):
 
         ## Read the settings file
         read_settings = _m.Modeller().tool("translink.emme.stage1.step0.settings")
-        read_settings(eb, os.path.join(os.path.dirname(eb.path), "settings.csv"))
+        read_settings(eb, os.path.join(util.get_input_path(eb), "settings.csv"))
 
         util.initmat(eb, "ms01", "cycle", "Current Model Cycle", 0)
 
