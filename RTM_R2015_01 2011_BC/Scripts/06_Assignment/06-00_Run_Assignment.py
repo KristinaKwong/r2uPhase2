@@ -33,20 +33,21 @@ class Assignment(_m.Tool()):
         }
         try:
             eb =_m.Modeller().emmebank
-            self.__call__(eb, 0, stopping_criteria)
+            self.__call__(eb, stopping_criteria)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("06-00 - Assignment")
-    def __call__(self, eb, IterationNumber, max_iterations):
+    def __call__(self, eb, max_iterations):
+        util = _m.Modeller().tool("translink.emme.util")
         amscen1 = int(eb.matrix("ms140").data)
         mdscen1 = int(eb.matrix("ms141").data)
         amscen2 = amscen1 + 30
         mdscen2 = mdscen1 + 30
 
-        if IterationNumber % 2 == 0:
+        if util.get_cycle(eb) % 2 == 0:
             scenarioam = eb.scenario(amscen1)
             scenariomd = eb.scenario(mdscen1)
         else:

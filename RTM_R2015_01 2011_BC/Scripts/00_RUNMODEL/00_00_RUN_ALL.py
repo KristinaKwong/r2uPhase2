@@ -188,8 +188,8 @@ class FullModelRun(_m.Tool()):
 
             trip_distribution(eb, max_distribution_iterations)
             mode_choice(eb, is_last_iteration)
-            assignment(eb, iteration_number, stopping_criteria)
-            post_assignment(eb, iteration_number, stopping_criteria)
+            assignment(eb, stopping_criteria)
+            post_assignment(eb, stopping_criteria)
 
     @_m.logbook_trace("Stage 4 - Post Processing")
     def stage4(self, eb, stopping_criteria):

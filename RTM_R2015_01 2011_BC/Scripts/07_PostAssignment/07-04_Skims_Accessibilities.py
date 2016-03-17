@@ -28,30 +28,31 @@ class SkimsAccessibilities(_m.Tool()):
             self.tool_run_msg = ""
             eb = _m.Modeller().emmebank
             try:
-                self.__call__(eb, 1)
+                self.__call__(eb)
                 run_msg = "Tool completed"
                 self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
             except Exception, e:
                 self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    def __call__(self, eb, IterationNumber):
+    def __call__(self, eb):
     ##        Start logging this under a new 'nest'
         with _m.logbook_trace("07-04 - Weighted Skims and New Accessibilities"):
             self.Matrix_Batchins(eb)
-            self.weightedskims(IterationNumber)
+            self.weightedskims(eb)
             self.accessibilities()
 
-    def weightedskims(self, IterationNumber):
+    def weightedskims(self, eb):
         with _m.logbook_trace("Weighted Skims"):
 
             util = _m.Modeller().tool("translink.emme.util")
             compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-            if IterationNumber == 0:
+            cycle_number = util.get_cycle(eb)
+            if cycle_number == 0:
                 j = 1
                 k = 1
 
-            if IterationNumber > 0:
+            if cycle_number > 0:
                 j = 0.5
                 k = 1
 
