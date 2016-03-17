@@ -23,7 +23,7 @@ class ModeChoiceHBSocial(_m.Tool()):
         return pb.render()
 
     @_m.logbook_trace("Home-base social recreation")
-    def __call__(self, eb, scenario, iteration_number, is_last_iteration):
+    def __call__(self, eb, scenario, is_last_iteration):
         utilities.dmMatInit_NonWork(eb)
 
         self.calculate_blends(scenario)
@@ -41,7 +41,7 @@ class ModeChoiceHBSocial(_m.Tool()):
         ExportModeChoice = _m.Modeller().tool("translink.emme.stage3.step5.exportmodechoice")
         if is_last_iteration:
             purp = 6
-            ExportModeChoice.Agg_Exp_Demand(eb, purp, iteration_number)
+            ExportModeChoice.Agg_Exp_Demand(eb, purp)
 
         self.aggregate_non_work_demand(scenario)
         #********

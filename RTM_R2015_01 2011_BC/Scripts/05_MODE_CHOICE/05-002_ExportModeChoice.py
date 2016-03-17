@@ -50,11 +50,12 @@ class ModeChoiceHBSchool(_m.Tool()):
 
     ## Aggregate purpose-level results by mode into matrices mf882 - mf890
     @_m.logbook_trace("Aggregate purpose-level results by mode into matrices mf882 - mf890")
-    def Agg_Exp_Demand(self, eb, purp, n):
+    def Agg_Exp_Demand(self, eb, purp):
         util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
         output_folder = os.path.join(os.path.dirname(eb.path), "05_MODE_CHOICE", "Outputs", "")
-        file_suffix = "_" + str(n) + ".txt"
+        cur_cycle = util.get_cycle(eb)
+        file_suffix = "_" + str(cur_cycle) + ".txt"
 
         purp_list = ['Hbw', 'HbSc', 'HbSh', 'HbPb', 'HbU', 'HbSoc', 'HbEsc', 'NHBO', 'NHBW']
         income = ['lowinc', 'medinc', 'highinc']

@@ -42,14 +42,14 @@ class ModeChoice(_m.Tool()):
         self.tool_run_msg = ""
         try:
             eb = _m.Modeller().emmebank
-            self.__call__(eb, 0, 1, self.preserve_matrices)
+            self.__call__(eb, 1, self.preserve_matrices)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("05-00 - Call Mode Choice Modules")
-    def __call__(self, eb, iteration_number, max_iterations, preserve_matrices=False):
+    def __call__(self, eb, is_last_iteration, preserve_matrices=False):
         ## Matrices used for mode choice are from mf374-mf702,
         ## these store utilities, probabilities and various demands (work vs non work)
 
@@ -65,20 +65,18 @@ class ModeChoice(_m.Tool()):
         non_home_base_work = _m.Modeller().tool("translink.emme.stage3.step5.modechoicenhbw")
         park_and_ride = _m.Modeller().tool("translink.emme.stage3.step5.parkandride")
 
-        is_last_iteration = (iteration_number == (max_iterations - 1))
-
         self.calculate_flag_matrices()
 
         scenario = _m.Modeller().scenario
-        home_base_work(eb, scenario, iteration_number, is_last_iteration)
-        home_base_school(eb, scenario, iteration_number, is_last_iteration)
-        home_base_shopping(eb, scenario, iteration_number, is_last_iteration)
-        home_base_personal_business(eb, scenario, iteration_number, is_last_iteration)
-        home_base_university(eb, scenario, iteration_number, is_last_iteration)
-        home_base_social(eb, scenario, iteration_number, is_last_iteration)
-        home_base_escort(eb, scenario, iteration_number, is_last_iteration)
-        non_home_base_other(eb, scenario, iteration_number, is_last_iteration)
-        non_home_base_work(eb, scenario, iteration_number, is_last_iteration)
+        home_base_work(eb, scenario, is_last_iteration)
+        home_base_school(eb, scenario, is_last_iteration)
+        home_base_shopping(eb, scenario, is_last_iteration)
+        home_base_personal_business(eb, scenario, is_last_iteration)
+        home_base_university(eb, scenario, is_last_iteration)
+        home_base_social(eb, scenario, is_last_iteration)
+        home_base_escort(eb, scenario, is_last_iteration)
+        non_home_base_other(eb, scenario, is_last_iteration)
+        non_home_base_work(eb, scenario, is_last_iteration)
 
         run_park_and_ride = int(eb.matrix("ms139").data)
         if run_park_and_ride == 1:

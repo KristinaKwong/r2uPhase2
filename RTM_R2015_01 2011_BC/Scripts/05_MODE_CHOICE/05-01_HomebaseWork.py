@@ -26,7 +26,7 @@ class ModeChoiceHBW(_m.Tool()):
         return pb.render()
 
     @_m.logbook_trace("Home-base work")
-    def __call__(self, eb, scenario, iteration_number, is_last_iteration):
+    def __call__(self, eb, scenario, is_last_iteration):
         utilities.dmMatInit_Work(eb)
 
         self.calculate_blends(scenario)
@@ -47,7 +47,7 @@ class ModeChoiceHBW(_m.Tool()):
         if is_last_iteration:
             ExportModeChoice = _m.Modeller().tool("translink.emme.stage3.step5.exportmodechoice")
             purp = 1
-            ExportModeChoice.Agg_Exp_Demand(eb, purp, iteration_number)
+            ExportModeChoice.Agg_Exp_Demand(eb, purp)
 
         #********
         #    Initialize matrices for resulted matrices

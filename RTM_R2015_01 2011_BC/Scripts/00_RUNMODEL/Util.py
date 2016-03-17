@@ -113,6 +113,14 @@ class Util(_m.Tool()):
         year = str(int(eb.matrix("ms149").data))
         return year
 
+    def get_cycle(self, eb):
+        """Returns the current model cycle number
+
+        Arguments:
+        eb -- The emmebank to be queried
+        """
+        return int(eb.matrix("ms01").data))
+
     @_m.logbook_trace("Export Matrices to CSV file", save_arguments=True)
     def export_csv(self, eb, list_of_matrices, output_file):
         """Write individual mo/md matrices including a descriptive header in csv format.

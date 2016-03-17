@@ -183,8 +183,11 @@ class FullModelRun(_m.Tool()):
         #Distribution, mode choice and assignment
         #Iterate distribution, mode choice and assignment steps to indicated number of iterations
         for iteration_number in range(global_iterations):
+            util.initmat(eb, "ms01", "cycle", "Current Model Cycle", iteration_number)
+            is_last_iteration = (iteration_number == (global_iterations - 1))
+
             trip_distribution(eb, max_distribution_iterations)
-            mode_choice(eb, iteration_number, global_iterations)
+            mode_choice(eb, is_last_iteration)
             assignment(eb, iteration_number, stopping_criteria)
             post_assignment(eb, iteration_number, stopping_criteria)
 
