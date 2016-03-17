@@ -24,7 +24,7 @@ class Assignment(_m.Tool()):
 
     def run(self):
         self.tool_run_msg = ""
-        
+
         stopping_criteria = {
             "max_iterations": 250,
             "relative_gap": 0.0,
@@ -33,14 +33,14 @@ class Assignment(_m.Tool()):
         }
         try:
             eb =_m.Modeller().emmebank
-            self.__call__(eb, stopping_criteria)
+            self.__call__(eb, True, stopping_criteria)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("06-00 - Assignment")
-    def __call__(self, eb, max_iterations):
+    def __call__(self, eb, run_detailed_classes, max_iterations):
         util = _m.Modeller().tool("translink.emme.util")
         amscen1 = int(eb.matrix("ms140").data)
         mdscen1 = int(eb.matrix("ms141").data)
@@ -53,6 +53,33 @@ class Assignment(_m.Tool()):
         else:
             scenarioam = eb.scenario(amscen2)
             scenariomd = eb.scenario(mdscen2)
+
+        # Aggregate demand with same VOT if not running the fully detailed class assignment
+        if not run_detailed_classes:
+            compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
+
+            specs = []
+            # AM Demand
+            specs.append(util.matrix_spec("mf847", "mf843+mf847"))
+            specs.append(util.matrix_spec("mf845", "mf844+mf845"))
+            specs.append(util.matrix_spec("mf852", "mf848+mf852"))
+            specs.append(util.matrix_spec("mf850", "mf849+mf850"))
+            specs.append(util.matrix_spec("mf843", "0"))
+            specs.append(util.matrix_spec("mf844", "0"))
+            specs.append(util.matrix_spec("mf848", "0"))
+            specs.append(util.matrix_spec("mf849", "0"))
+
+            # MD Demand
+            specs.append(util.matrix_spec("mf860", "mf856+mf860"))
+            specs.append(util.matrix_spec("mf858", "mf857+mf858"))
+            specs.append(util.matrix_spec("mf865", "mf861+mf865"))
+            specs.append(util.matrix_spec("mf863", "mf862+mf863"))
+            specs.append(util.matrix_spec("mf856", "0"))
+            specs.append(util.matrix_spec("mf857", "0"))
+            specs.append(util.matrix_spec("mf861", "0"))
+            specs.append(util.matrix_spec("mf862", "0"))
+
+            report = compute_matrix(specs)
 
         AutoAssignment = _m.Modeller().tool("translink.emme.stage3.step6.autoassignment")
         BusAssignment = _m.Modeller().tool("translink.emme.stage3.step6.busassignment")

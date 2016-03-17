@@ -151,7 +151,7 @@ class FullModelRun(_m.Tool()):
         pre_loops(eb)
 
         assignment = _m.Modeller().tool("translink.emme.stage3.step6.assignment")
-        assignment(eb, stopping_criteria_skim)
+        assignment(eb, False, stopping_criteria_skim)
 
         post_assignment = _m.Modeller().tool("translink.emme.stage3.step7.postassign")
         post_assignment(eb, stopping_criteria_skim)
@@ -173,7 +173,7 @@ class FullModelRun(_m.Tool()):
 
 
     @_m.logbook_trace("Stage 3 - Model Iteration")
-    def stage3(self, eb, global_iterations, max_distribution_iterations, stopping_criteria):
+    def stage3(self, eb, max_cycles, max_distribution_iterations, stopping_criteria):
                 # TODO: - could check and report on convergence
         #         at each iteration (distribution and auto assignment)
         #       - add global convergence measure
@@ -185,13 +185,13 @@ class FullModelRun(_m.Tool()):
 
         #Distribution, mode choice and assignment
         #Iterate distribution, mode choice and assignment steps to indicated number of iterations
-        for iteration_number in range(1, global_iterations + 1):
-            util.initmat(eb, "ms01", "cycle", "Current Model Cycle", iteration_number)
-            is_last_iteration = (iteration_number == global_iterations)
+        for cycle_number in range(1, max_cycles + 1):
+            util.initmat(eb, "ms01", "cycle", "Current Model Cycle", cycle_number)
+            is_last_cycle = (cycle_number == max_cycles)
 
             trip_distribution(eb, max_distribution_iterations)
-            mode_choice(eb, is_last_iteration)
-            assignment(eb, stopping_criteria)
+            mode_choice(eb, is_last_cycle)
+            assignment(eb, is_last_cycle, stopping_criteria)
             post_assignment(eb, stopping_criteria)
 
     @_m.logbook_trace("Stage 4 - Post Processing")
