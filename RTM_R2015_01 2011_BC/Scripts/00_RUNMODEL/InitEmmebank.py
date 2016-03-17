@@ -375,6 +375,7 @@ class InitEmmebank(_m.Tool()):
         eb.create_function('ft05', 'timau * 1.5')
         eb.create_function('ft06', 'length * 1')
         eb.create_function('ft07', '(60 * length / speed)')
+        eb.create_function('ft10', '60 * length / 85')
         eb.create_function('fp01', '(.1 + pvolau / 100) ^ 4')
         eb.create_function('fp02', '(.1 + pvolau / 200) ^ 4')
         eb.create_function('fp03', '(.1 + pvolau / 300) ^ 4')
