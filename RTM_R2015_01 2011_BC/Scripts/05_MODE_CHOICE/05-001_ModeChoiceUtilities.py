@@ -67,7 +67,8 @@ def process_timeslicing_list(eb, scenario, file_names):
 
 
 def export_matrices_report(eb, purpose, full_report_matrices):
-    rep_folder = os.path.join(os.path.dirname(eb.path), "reporting")
+    util = _m.Modeller().tool("translink.emme.util")
+    rep_folder = util.get_output_path(eb)
     file_name = os.path.join(rep_folder, purpose + "_fullRep.311")
     matrix_list = []
     for nCnt in full_report_matrices:
