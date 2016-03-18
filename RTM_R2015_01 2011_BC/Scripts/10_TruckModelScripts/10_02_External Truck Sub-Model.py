@@ -95,12 +95,13 @@ class ExternalTruckModel(_m.Tool()):
             self.TimeSlicing()
 
     def CrossBorder(self, Year, Sensitivity, CascadeGrowth1, CascadeGrowth2):
+        util = _m.Modeller().tool("translink.emme.util")
 
         with _m.logbook_trace("Import Cascade Cross-Border Matrices"):
 
             compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
             process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
-            root_directory = os.path.dirname(_m.Modeller().emmebank.path) + "\\"
+            root_directory = util.get_input_path(_m.Modeller().emmebank)
             matrix_file1 = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"CrossBorderv1.txt")
             matrix_file2 = os.path.join(root_directory, "TruckBatchFiles", "IRBatchIn.txt")
             process(transaction_file=matrix_file1, throw_on_error=True)

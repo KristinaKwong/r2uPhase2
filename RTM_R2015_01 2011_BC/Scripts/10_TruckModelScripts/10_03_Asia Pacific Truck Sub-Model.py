@@ -37,11 +37,11 @@ class AsiaPacificTruckModel(_m.Tool()):
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     def __call__(self,Year):
-
+        util = _m.Modeller().tool("translink.emme.util")
         with _m.logbook_trace("Asia Pacific Truck Model"):
             #Batch input Asia Pacific matrix from TruckBatchFiles (gg ensemble format)
                 process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
-                root_directory = os.path.dirname(_m.Modeller().emmebank.path) + "\\"
+                root_directory = util.get_input_path(_m.Modeller().emmebank)
                 matrix_file = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"AsiaPacificv1.txt")
                 process(transaction_file=matrix_file, throw_on_error=True)
 

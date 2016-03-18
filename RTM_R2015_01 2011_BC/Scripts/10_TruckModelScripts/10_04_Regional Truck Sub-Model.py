@@ -44,8 +44,9 @@ class RegTruckModel(_m.Tool()):
 
     @_m.logbook_trace("Regional Truck Model"):
     def __call__(self, Year, Sensitivity, RegionalGrowth1, RegionalGrowth2):
+        util = _m.Modeller().tool("translink.emme.util")
         process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
-        root_directory = os.path.dirname(_m.Modeller().emmebank.path) + "\\"
+        root_directory = util.get_input_path(_m.Modeller().emmebank)
         matrix_file1 = os.path.join(root_directory, "TruckBatchFiles", "RGBatchIn.txt")
         process(transaction_file=matrix_file1, throw_on_error=True)
 
@@ -53,7 +54,6 @@ class RegTruckModel(_m.Tool()):
         run_macro=_m.Modeller().tool("inro.emme.prompt.run_macro")
         run_macro(macro_name="../Scripts/10_TruckModelScripts/trkmodamregv1.mac")
 
-        util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec = util.matrix_spec("ms151", "mf1031")

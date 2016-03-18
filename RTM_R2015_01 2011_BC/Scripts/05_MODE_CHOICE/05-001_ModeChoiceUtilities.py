@@ -59,7 +59,8 @@ def calculate_demand(scenario, demand_start, probability_start, result_start, nu
 
 
 def process_timeslicing_list(eb, scenario, file_names):
-    base_folder = os.path.join(os.path.dirname(eb.path), "TimeSlicingFactors")
+    util = _m.Modeller().tool("translink.emme.util")
+    base_folder = os.path.join(util.get_input_path(eb), "TimeSlicingFactors")
     for name in file_names:
         process_matrix_trans(transaction_file=os.path.join(base_folder, name + '.311'),
                              scenario=scenario)
