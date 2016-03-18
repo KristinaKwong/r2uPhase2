@@ -190,32 +190,31 @@ class ModeChoiceHBSchool(_m.Tool()):
                       "interval_min": 0,
                       "interval_max": 0,
                       "condition": "EXCLUDE"}
+       
+        expression_area= dens + "*((((mo20*10000)/mo17).max.0).min.100)*((gy(p).ne.3)*(gy(p).ne.4))"
+        expression_area=expression_area + " + " + intra_gy + "*((gy(p).eq.gy(q)))"
+        spec_list.append(build_spec(expression_area, "mf1089"))
+        
+        expression_LowMed = alt_spec_cons + "+" +"mf1089" + " + " + cost_low_high + "*((mf154/6) + (mf156/6) + (mf152/12) + (mf153/12) + (mf155*5/6)+mf161*0.65)"          
+        spec_list.append(build_spec(expression_LowMed, "mf1090"))
 
-        # dens: min((max((POP11o*10000)/area,0)),100)*(ifne(gyo,3)*ifne(gyo,4))
-        expression_2 = dens + "*((((mo20*10000)/mo17).max.0).min.100)*((gy(p).ne.3)*(gy(p).ne.4))"
-        spec_list.append(build_spec(expression_2, "mf925", constraint))
-
-        #relative accessibilities (auto-transit): (max(autoempt-transit2,0))
-        expression_3 = intra_gy + "*((gy(p).eq.gy(q)))"
-        spec_list.append(build_spec(expression_3, "mf926", constraint))
+        expression_High = alt_spec_cons + "+" +"mf1089" + " + " + cost_low_high + "*((mf154/6) + (mf156/6) + (mf152/12) + (mf153/12) + (mf155*5/6)+mf161*0.65)"          
+        spec_list.append(build_spec(expression_High, "mf1091")) 
+        expression_High = expression_High + " + " + high_inc + "*((gy(p).ne.3)*(gy(q).ne.3))"        
+        spec_list.append(build_spec(expression_High, "mf1091"))               
 
         for i in range(1, 10):
-            expression_1 = alt_spec_cons
+
             if i > 6:
-                expression_1 = expression_1 + " + " + high_inc + "*((gy(p).ne.3)*(gy(q).ne.3))"
+                expression = "mf1091"
+            else:
+                expression = "mf1090"                
             if i in (3, 6, 9):
-                expression_1 = expression_1 + " + " + twoplus_cars
-
-            # cost (all incomes) : rail fares for students set at 65% of adult fare
-            expression_1 = expression_1 + " + " + cost_all_inc + "*(mf161*0.65)"
-
-            # all incomes: (rt_wait/6) + (rt_aux/6) + (rt_ivtb/12) +  (rt_ivtr/12) +(rt_brd*(5/6))
-            expression_1 = (expression_1 + " + " + cost_low_high +
-                            "*((mf154/6) + (mf156/6) + (mf152/12) + (mf153/12) + (mf155*5/6))")
+                expression = expression + " + " + twoplus_cars
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            spec_list.append(build_spec(expression_1 + " + mf925 + mf926", result, constraint))
+            spec_list.append(build_spec(expression, result, constraint))
 
         compute_matrix(spec_list, scenario)
 
@@ -241,32 +240,33 @@ class ModeChoiceHBSchool(_m.Tool()):
                       "interval_min": 0,
                       "interval_max": 0,
                       "condition": "EXCLUDE"}
-
-        # dens: min((max((POP11o*10000)/area,0)),100)*(ifne(gyo,3)*ifne(gyo,4))
-        expression_2 = dens + "*((((mo20*10000)/mo17).max.0).min.100)*((gy(p).ne.3)*(gy(p).ne.4))"
-        # intra-vancouver
-        expression_2 = expression_2 + " + " + intra_van + "*((gy(p).eq.4)*(gy(q).eq.4))"
-        spec_list.append(build_spec(expression_2, "mf925", constraint))
+        
+        expression_area= dens + "*((((mo20*10000)/mo17).max.0).min.100)*((gy(p).ne.3)*(gy(p).ne.4))"
+        expression_area=expression_area + " + " + intra_van + "*((gy(p).eq.4)*(gy(q).eq.4))"
+        spec_list.append(build_spec(expression_area, "mf1089"))
+        
+        expression_Low = alt_spec_cons + "+" +"mf1089" + " + " + cost_low_high + "*((mf147/6) + (mf150/6) + (mf148/12) + (" + bs_brd + "*1.25)+mf160*0.65)"           
+        spec_list.append(build_spec(expression_Low, "mf1090"))
+        expression_Low = expression_Low + " + " + low_inc + "*((gy(p).lt.11)*(gy(q).lt.11))"        
+        spec_list.append(build_spec(expression_Low, "mf1090"))
+        
+        expression_MedHigh = alt_spec_cons + "+" +"mf1089" + " + " + cost_low_high + "*((mf147/6) + (mf150/6) + (mf148/12) + (" + bs_brd + "*1.25)+mf160*0.65)"            
+        spec_list.append(build_spec(expression_MedHigh, "mf1091"))        
 
         for i in range(1, 10):
             expression_1 = alt_spec_cons
 
             # low income if low income and (iflt(gyo,11) and ifne(gyd,11)
             if i < 4:
-                expression_1 = expression_1 + " + " + low_inc + "*((gy(p).lt.11)*(gy(q).lt.11))"
+                expression="mf1090"
+            else:
+                expression="mf1091"
             if i in (3, 6, 9):
-                expression_1 = expression_1 + " + " + twoplus_cars
-
-            # cost (all incomes) : bus fares for students set at 65% of adult fare
-            expression_1 = expression_1 + " + " + cost_all_inc + "*(mf160*0.65)"
-
-            # all incomes:  (bs_wait/6) + (bs_aux/6) + (bs_ivtb/12) + (bs_brd*1.25)
-            expression_1 =(expression_1 + " + " +
-                           cost_low_high + "*((mf147/6) + (mf150/6) + (mf148/12) + (" + bs_brd + "*1.25))")
+                expression = expression + " + " + twoplus_cars
 
             result = "mf" + str(mode_mf + i)
             emmebank.matrix(result).initialize(-9999)
-            spec_list.append(build_spec(expression_1 + " + mf925", result, constraint))
+            spec_list.append(build_spec(expression, result, constraint))
 
         compute_matrix(spec_list, scenario)
 
@@ -286,31 +286,25 @@ class ModeChoiceHBSchool(_m.Tool()):
 
         mode_mf = 391
         spec_list = []
-
-        # rural : 1 if (ifgt(gyo,11) or ifgt(gyd,11))
-        expression_2 = rural + "*((((gy(p).gt.11)*(gy(p).lt.15))+((gy(q).gt.11)*(gy(q).lt.15))).ge.1)"
-
-        # within gy (not rural):  1 if gyo=gyd and (iflt(gyo,12) and iflt(gyd,12))
-        expression_2 = expression_2 + " + " + within_gy_not_rur + "*((gy(p).eq.gy(q))*(gy(p).lt.12)*(gy(q).lt.12))"
-
-        # dens: min((max((POP11o*10000)/area,0)),100)*(ifne(gyo,3)*ifne(gyo,4))
-        expression_2 = expression_2 + " + " + dens + "*((((mo20*10000)/mo17).max.0).min.100)*((gy(p).ne.3)*(gy(p).ne.4))"
-        spec_list.append(build_spec(expression_2, "mf925"))
+        
+        expression_area= rural + "*((((gy(p).gt.11)*(gy(p).lt.15))+((gy(q).gt.11)*(gy(q).lt.15))).ge.1)"
+        expression_area=expression_area+ " + " + within_gy_not_rur + "*((gy(p).eq.gy(q))*(gy(p).lt.12)*(gy(q).lt.12))"
+        expression_area=expression_area+ " + " + dens + "*((((mo20*10000)/mo17).max.0).min.100)*((gy(p).ne.3)*(gy(p).ne.4))"
+        spec_list.append(build_spec(expression_area, "mf1089"))
+        
+        expression_AllInc = alt_spec_cons + "+" +"mf1089" + " + " + cost_low_high + "*((mf162/12)+2*1.5385)"      
+                
+        spec_list.append(build_spec(expression_AllInc, "mf1090"))        
+ 
 
         for i in range(1, 10):
-            expression_1 = alt_spec_cons
+            expression = "mf1090"
 
             if i in (2, 5, 8):
-                expression_1 = expression_1 + " + " + one_car
-
-            #COST ALL INCOMES: (schbs_ivt_wait/12)
-            expression_1 = expression_1 + " + " + cost_low_high + "*((mf162/12)+2*1.5385)"
-
-            # all incomes:     no cost associated with school bus ride        (rt_wait/3) + (rt_aux/3) + (rt_ivtb/6) +  (rt_ivtr/6) +(rt_brd*10/6)
-            # expression_1 = expression_1 + " + " + cost_low_high * 0
+                expression = expression + " + " + one_car           
 
             result = "mf" + str(mode_mf + i)
-            spec_list.append(build_spec(expression_1 + " + mf925", result))
+            spec_list.append(build_spec(expression , result))
 
         compute_matrix(spec_list, scenario)
 
@@ -331,31 +325,28 @@ class ModeChoiceHBSchool(_m.Tool()):
         mode_mf = 382
         spec_list = []
 
-        # vancouver: 1 if (ifeq(gyo,4) or ifeq(gyd,4))
-        expression_2 = van + "*(((gy(p).eq.4)+(gy(q).eq.4)).ge.1)"
-        # rural : 1 if (ifgt(gyo,11) or ifgt(gyd,11))
-        expression_2 = expression_2 + " + " + rural + "*((((gy(p).gt.11)*(gy(p).lt.15))+((gy(q).gt.11)*(gy(q).lt.15))).ge.1)"
-        # within gy :  1 if gyo=gyd
-        expression_2 = expression_2 + " + " + within_gy + "*(gy(p).eq.gy(q))"
-        spec_list.append(build_spec(expression_2, "mf925"))
-
-        for i in range(1, 10):
-            expression_1 = alt_spec_cons
-            if i in (1, 4, 7):
-                expression_1 = expression_1 + " + " + zero_cars
-
-            #COST ALL INCOMES: (0.0606*au_dst) + (0.841*au_toll) with calibration factors
-            expression_1 = (expression_1 + " + " +
-                            cost_all_inc + "*(((ms18/ms62)*mf144) + ((ms19/ms62)*(ms146*mf146))) "
+        expression_area= van + "*(((gy(p).eq.4)+(gy(q).eq.4)).ge.1)"
+        expression_area=expression_area+ " + " + rural + "*((((gy(p).gt.11)*(gy(p).lt.15))+((gy(q).gt.11)*(gy(q).lt.15))).ge.1)"
+        expression_area=expression_area+ " + " + within_gy + "*(gy(p).eq.gy(q))"
+        spec_list.append(build_spec(expression_area, "mf1089"))
+        
+        expression_AllInc = (alt_spec_cons + "+" + "mf1089" + " + " +
+                            cost_all_inc + "*(((ms18/ms62)*mf144) + ((ms19/ms62)*(ms146*mf146))+mf145/12) "
                             " - 0.15*(((gy(p).gt.2)*(gy(p).lt.6).or.(gy(q).gt.2)*(gy(q).lt.6)))"
                             " - 0.15*(((gy(p).gt.6)*(gy(p).lt.11).or.(gy(q).gt.6)*(gy(q).lt.11)))"
-                            " - 0.15*(((gy(p).eq.12).or.(gy(q).eq.12)))")
+                            " - 0.15*(((gy(p).eq.12).or.(gy(q).eq.12)))")       
+                
+        spec_list.append(build_spec(expression_AllInc, "mf1090"))
+        
 
-            # all incomes:
-            expression_1 = expression_1 + " + " + cost_low_high + "*(mf145/12)"
+        for i in range(1, 10):
+            expression="mf1090"
+            
+            if i in (1, 4, 7):
+                expression = expression + " + " + zero_cars
 
             result = "mf" + str(mode_mf + i)
-            spec_list.append(build_spec(expression_1 + " + mf925", result))
+            spec_list.append(build_spec(expression, result))
 
         compute_matrix(spec_list, scenario)
 
@@ -375,33 +366,27 @@ class ModeChoiceHBSchool(_m.Tool()):
 
         mode_mf = 373
         spec_list = []
+        
 
-        # vancouver: 1 if (ifeq(gyo,4) or ifeq(gyd,4))
-        expression_2 = vanburn + "*(((gy(p).eq.4)+(gy(q).eq.4)+(gy(p).eq.5)+(gy(q).eq.5)).ge.1)"
-        spec_list.append(build_spec(expression_2, "mf926"))
-        # rural : 1 if (ifgt(gyo,11) or ifgt(gyd,11))
-        expression_3 = rural + "*((((gy(p).ge.12)*(gy(p).lt.15))+((gy(q).ge.12)*(gy(q).lt.15))).ge.1)"
-        spec_list.append(build_spec(expression_3, "mf927"))
+        expression_area=vanburn + "*(((gy(p).eq.4)+(gy(q).eq.4)+(gy(p).eq.5)+(gy(q).eq.5)).ge.1)"
+        expression_area=expression_area + " + " + rural + "*((((gy(p).ge.12)*(gy(p).lt.15))+((gy(q).ge.12)*(gy(q).lt.15))).ge.1)"
+        spec_list.append(build_spec(expression_area, "mf1089"))
+       
+        expression_AllInc = "mf1089+"+cost_all_inc + "*((ms18*mf144) + (ms19*(ms146*mf146)) + mo28/2 + md28/2+mf145/12)"
+        spec_list.append(build_spec(expression_AllInc, "mf1090"))
 
         for i in range(1, 10):
-            expression_1 = "0"
-
+            if i<6:
+                expression = "mf1090"
             if i > 6:
-                expression_1 = expression_1 + " + " + high_inc
+                expression = "mf1090" + " + " + high_inc
             if i in (1, 4, 7):
-                expression_1 = expression_1 + " + " + zero_cars
+                expression = expression + " + " + zero_cars
             if i in (3, 6, 9):
-                expression_1 = expression_1 + " + " + twoplus_cars
-
-            #cost all incomes: (0.18*au_dst) + (2.5*au_toll) + au_prk
-            expression_1 = expression_1 + " + " + cost_all_inc + "*((ms18*mf144) + (ms19*(ms146*mf146)) + mo28/2 + md28/2)"
-
-            # all incomes:
-            expression_1 = expression_1 + " + " + cost_low_high + "*(mf145/12)"
-            spec_list.append(build_spec(expression_1, "mf925"))
+                expression = expression + " + " + twoplus_cars 
 
             result = "mf" + str(mode_mf + i)
-            spec_list.append(build_spec("mf925 + mf926 + mf927", result))
+            spec_list.append(build_spec(expression, result))
 
         compute_matrix(spec_list, scenario)
 
