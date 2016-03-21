@@ -1,5 +1,5 @@
 c Emme Modeller - Base Network Transaction
-c Date: 2016-03-18 12:01:22
+c Date: 2016-03-21 11:04:37
 c Project:        Primary Auto Mode v2                                        
 c Scenario 2000:  2015 AM Base Network
 t nodes
@@ -16536,7 +16536,7 @@ a 276613 281506 .340525 vcdxtnbp     305 1.0  35       0       0       0
 a 276614 281407 3.35536 vcdxtbp      300 3.0  89       0       0       0
 a 276614 282301 .004878 vcbp         201 1.0  89       0       0       0
 a 276615 275512 .149278 vcdxtbp      300 3.0  89       0       0       0
-a 276616 275508 .522659 vcdxtbp      302 1.0  35       0       0       0
+a 276616 275508 .522659 vcdxtbp      302 2.0  35       0       0       0
 a 276616 276617 .005043 vcdxtbp      302 2.0  85       0       0       0
 a 276617 276616 .005043 vcdxtbp      302 2.0  35       0       0       0
 a 276617 281414 .231020 vcdxtbp      302 2.0  85       0       0       0

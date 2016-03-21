@@ -1,7 +1,7 @@
 c Emme Modeller - Transit Line Transaction
-c Date: 2016-03-17 13:05:47
-c Project:        Test import                                                 
-c Scenario 1002:  2011 AM Network with HOV 0
+c Date: 2016-03-21 11:04:30
+c Project:        Primary Auto Mode v2                                        
+c Scenario 1000:  2011 AM Base Network
 t lines
 c Transit Lines
 c Line  Mod Veh Headwy Speed Description             Data1  Data2  Data3

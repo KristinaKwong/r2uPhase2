@@ -1,6 +1,6 @@
 c Emme Modeller - Turn Transaction
-c Date: 2016-03-02 14:50:32
-c Project:        March 1 Version - with seeds                                
+c Date: 2016-03-21 11:04:48
+c Project:        Primary Auto Mode v2                                        
 c Scenario 3000:  2030 AM Base Network
 t turns
 c     At   From     To   TPF  Data1  Data2  Data3
