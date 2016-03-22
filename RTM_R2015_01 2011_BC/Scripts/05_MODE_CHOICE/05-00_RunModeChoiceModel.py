@@ -65,7 +65,7 @@ class ModeChoice(_m.Tool()):
         non_home_base_work = _m.Modeller().tool("translink.emme.stage3.step5.modechoicenhbw")
         park_and_ride = _m.Modeller().tool("translink.emme.stage3.step5.parkandride")
 
-        self.calculate_flag_matrices()
+        self.calculate_flag_matrices(eb)
 
         scenario = _m.Modeller().scenario
         home_base_work(eb, scenario, is_last_iteration)
@@ -88,9 +88,15 @@ class ModeChoice(_m.Tool()):
             self.clean_matrices(eb)
 
     @_m.logbook_trace("Calculate flag matrices")
-    def calculate_flag_matrices(self):
+    def calculate_flag_matrices(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
+
+        # Initialize temporary calculation matrices
+        util.initmat(eb, "mf1089", "mctemp", "Temporary matrix used in Mode Choice", 0)
+        util.initmat(eb, "mf1090", "mctemp", "Temporary matrix used in Mode Choice", 0)
+        util.initmat(eb, "mf1091", "mctemp", "Temporary matrix used in Mode Choice", 0)
+        util.initmat(eb, "mf1092", "mctemp", "Temporary matrix used in Mode Choice", 0)
 
         specs = []
         specs.append(util.matrix_spec("mf110", "(mf107.gt.0)"))
