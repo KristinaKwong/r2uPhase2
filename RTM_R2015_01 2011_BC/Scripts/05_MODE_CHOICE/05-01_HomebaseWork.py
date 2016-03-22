@@ -83,10 +83,10 @@ class ModeChoiceHBW(_m.Tool()):
         expression_area= (expression_area + "+" + bk_invan + "*(((gy(p).eq.4)*(gy(q).eq.4))+((gy(p).eq.3)*(gy(q).eq.3))) + "
                         + cs_bk_500 + "*((mo397.gt.0))" + " + " + intrazonal + "*((q.eq.p))")
         spec_list.append(build_spec(expression_area, "mf1089"))
-        
+
         expression_Low_High = alt_spec_cons+"+"+"mf1089"
         spec_list.append(build_spec(expression_Low_High, "mf1090"))
-        
+
         expression_Med = alt_spec_cons+"+"+med_inc+"+" + "mf1089"
         spec_list.append(build_spec(expression_Med, "mf1091"))
 
@@ -95,14 +95,14 @@ class ModeChoiceHBW(_m.Tool()):
 
         for i in range(1, 10):
 
-            
-            if (i > 3 and i < 7): 
+
+            if (i > 3 and i < 7):
                 expression = "mf1091"
             else:
-                expression = "mf1090"               
-            
+                expression = "mf1090"
+
             if i == 1 or i == 4 or i == 7:
-   
+
                 expression = "("+expression + " + " + zero_cars+")"
 
             result = "mf" + str(mode_mf + i)
@@ -197,7 +197,7 @@ class ModeChoiceHBW(_m.Tool()):
                       "interval_min": 0,
                       "interval_max": 0,
                       "condition": "EXCLUDE"}
-                      
+
         expression_area="0.2*(gy(q).eq.13)+" + cbd + "*(((gy(p).eq.3)+(gy(q).eq.3)).ge.1)"
         expression_area=expression_area + " + " + intra_van + "*((gy(p).eq.4)*(gy(q).eq.4))"
         expression_area=expression_area + " + " + delt + "*(((gy(p).eq.8)+(gy(q).eq.8)).ge.1)"
@@ -207,34 +207,34 @@ class ModeChoiceHBW(_m.Tool()):
         spec_list.append(build_spec(expression_area2, "mf927"))
         expression_area="mf926+mf927"
         spec_list.append(build_spec(expression_area, "mf1089"))
-        
-        
+
+
         expression_acc= tran_acc + "*((((mo392).min.100)).max.0)"
         spec_list.append(build_spec(expression_acc, "mo925"))
-        
+
         expression_Low = (alt_spec_cons+"+mo925*(gy(p).ne.3)*(gy(q).ne.3)+mf1089+"+cost_all_inc +"*((mf154/3)+((mf156+7*(gy(p).lt.3)+7*(gy(p).eq.7))/3)"
                                                     "+ ((mf152+7*(gy(p).eq.7)*(gy(q).ne.7))/6)"
-                                                    "+ ((mf153+7*(gy(p).lt.3)+7*(gy(p).eq.7)*(gy(q).lt.6))/6) + (mf155*10/6) +mf161)")        
+                                                    "+ ((mf153+7*(gy(p).lt.3)+7*(gy(p).eq.7)*(gy(q).lt.6))/6) + (mf155*10/6) +mf161)")
         spec_list.append(build_spec(expression_Low, "mf1090"))
 
         expression_Low = "mf1090+"+ low_inc + "*((gy(p).ne.4)*(gy(p).ne.5)*(gy(q).ne.4)*(gy(q).ne.5))"
         spec_list.append(build_spec(expression_Low, "mf1090"))
 
-        
+
         expression_Med = (alt_spec_cons+"+mo925*(gy(p).ne.3)*(gy(q).ne.3)+mf1089+"+cost_all_inc +"*((mf154*2/3) +((mf156+7*(gy(p).lt.3))*2/3) "
                                                         "+ (mf152/3) + ((mf153+7*(gy(p).lt.3))/3) + (mf155*10/3)+mf161)")
         spec_list.append(build_spec(expression_Med, "mf1091"))
 
         expression_High= (alt_spec_cons+"+"+high_inc+"+mo925*(gy(p).ne.3)*(gy(q).ne.3)+mf1089+"+cost_all_inc +"*((mf154*2/3) +((mf156+7*(gy(p).lt.3))*2/3) "
-                                                        "+ (mf152/3) + ((mf153+7*(gy(p).lt.3))/3) + (mf155*10/3)+mf161)") 
+                                                        "+ (mf152/3) + ((mf153+7*(gy(p).lt.3))/3) + (mf155*10/3)+mf161)")
         spec_list.append(build_spec(expression_High, "mf1092"))
-                      
- 
+
+
         for i in range(1, 10):
 
             if i < 4: expression = "mf1090"
             if (i > 3 and i < 7): expression = "mf1091"
-            if i > 6: expression = "mf1092" 
+            if i > 6: expression = "mf1092"
 
             if i in (1, 4, 7):
                 expression = expression + " + " + zero_cars
@@ -275,30 +275,30 @@ class ModeChoiceHBW(_m.Tool()):
                       "interval_min": 0,
                       "interval_max": 0,
                       "condition": "EXCLUDE"}
-                      
+
         expression_area=cbd + "*(((gy(p).eq.3)+(gy(q).eq.3)).ge.1)"
         expression_area=expression_area + " + " + van + "*(((gy(p).eq.4)+(gy(q).eq.4)).ge.1)"
         expression_area=expression_area + " + " + intra_van + "*((gy(p).eq.4)*(gy(q).eq.4))"
-        spec_list.append(build_spec(expression_area, "mf1089"))           
-        
+        spec_list.append(build_spec(expression_area, "mf1089"))
+
         expression_Low = (alt_spec_cons+"+mf1089+"+cost_all_inc +"*((mf147/3) + ((mf150+7*(gy(p).eq.7))/3) " +
                                                       "+ ((mf148+7*(gy(p).eq.7)*(gy(q).lt.6))/6) + (" + bs_brd + "*10/6) + mf160)")
         spec_list.append(build_spec(expression_Low, "mf1090"))
-        
+
         expression_Low = "mf1090+"+ low_inc + "*((gy(p).ne.4)*(gy(p).ne.3)*(gy(q).ne.4)*(gy(q).ne.3))"
         spec_list.append(build_spec(expression_Low, "mf1090"))
-        
+
         expression_Med = alt_spec_cons+"+mf1089+"+cost_all_inc +"*((mf147*2/3) + (mf150*2/3) + (mf148/3) + (" + bs_brd + "*5)+mf160)"
         spec_list.append(build_spec(expression_Med, "mf1091"))
 
-        expression_High= alt_spec_cons+"+"+high_inc+"+mf1089+"+cost_all_inc +"*((mf147*2/3) + (mf150*2/3) + (mf148/3) + (" + bs_brd + "*5)+mf160)" 
+        expression_High= alt_spec_cons+"+"+high_inc+"+mf1089+"+cost_all_inc +"*((mf147*2/3) + (mf150*2/3) + (mf148/3) + (" + bs_brd + "*5)+mf160)"
         spec_list.append(build_spec(expression_High, "mf1092"))
- 
+
 
         for i in range(1, 10):
             if i < 4: expression = "mf1090"
             if (i > 3 and i < 7): expression = "mf1091"
-            if i > 6: expression = "mf1092" 
+            if i > 6: expression = "mf1092"
 
             if i in (1, 4, 7):
                 expression = expression + " + " + zero_cars
@@ -335,40 +335,40 @@ class ModeChoiceHBW(_m.Tool()):
         mode_mf = 391
 
         spec_list = []
-        
+
         expression_area=cbd + "*(((gy(p).eq.3)+(gy(q).eq.3)).ge.1)"
         expression_area=expression_area + " + " + van + "*(((gy(p).eq.4)+(gy(q).eq.4)).ge.1)"
         expression_area=expression_area + " + " + intra_van + "*((gy(p).eq.4)*(gy(q).eq.4))"
         expression_area=expression_area + " + " + rural + "*((((gy(p).gt.11)*(gy(p).lt.15))+((gy(q).gt.11)*(gy(q).lt.15))).ge.1)"
         spec_list.append(build_spec(expression_area, "mf926"))
-        
+
         expression_area2=within_gy_not_rural + "*((gy(p).eq.gy(q))*(gy(p).lt.12)*(gy(q).lt.12))"
         spec_list.append(build_spec(expression_area2, "mf927"))
         expression_area="mf926+mf927"
         spec_list.append(build_spec(expression_area, "mf1089"))
-        
+
         expression_Low = alt_spec_cons+"+"+low_inc+"+mf1089+"+cost_all_inc +"*(((ms18/ms60)*mf144) + ((ms19/ms60)*(ms146*mf146)) + (1/ms60*(md27/2+mo27/2))+mf145/6)"
         spec_list.append(build_spec(expression_Low, "mf1090"))
-        
+
         expression_Med = alt_spec_cons+"+mf1089+"+cost_all_inc +"*(((ms18/ms60)*mf144) + ((ms19/ms60)*(ms146*mf146)) + (1/ms60*(md27/2+mo27/2))+mf145/3)"
         spec_list.append(build_spec(expression_Med, "mf1091"))
 
-        expression_High= alt_spec_cons+"+"+high_inc+"+mf1089+"+cost_all_inc +"*(((ms18/ms60)*mf144) + ((ms19/ms60)*(ms146*mf146)) + (1/ms60*(md27/2+mo27/2))+mf145/3)" 
+        expression_High= alt_spec_cons+"+"+high_inc+"+mf1089+"+cost_all_inc +"*(((ms18/ms60)*mf144) + ((ms19/ms60)*(ms146*mf146)) + (1/ms60*(md27/2+mo27/2))+mf145/3)"
         spec_list.append(build_spec(expression_High, "mf1092"))
 
         for i in range(1, 10):
-            
+
            if i < 4: expression = "mf1090"
            if (i > 3 and i < 7): expression = "mf1091"
-           if i > 6: expression = "mf1092" 
-            
+           if i > 6: expression = "mf1092"
+
            if i in (1, 4, 7):
                 expression = expression + " + " + zero_cars
-            
+
            if i in (3, 6, 9):
                 expression = expression + " + " + twoplus_cars
 
-           result = "mf" + str(mode_mf + i)            
+           result = "mf" + str(mode_mf + i)
 
            spec_list.append(build_spec(expression, result))
 
@@ -398,7 +398,7 @@ class ModeChoiceHBW(_m.Tool()):
         mode_mf = 382
 
         spec_list = []
-        
+
         expression_area=cbd + "*(((gy(p).eq.3)+(gy(q).eq.3)).ge.1)"
         expression_area=expression_area+ " + " + van + "*(((gy(p).eq.4)+(gy(q).eq.4)).ge.1)"
         expression_area=expression_area+ " + " + intra_van + "*((gy(p).eq.4)*(gy(q).eq.4))"
@@ -408,29 +408,29 @@ class ModeChoiceHBW(_m.Tool()):
         spec_list.append(build_spec(expression_area2, "mf927"))
         expression_area="mf926+mf927"
         spec_list.append(build_spec(expression_area, "mf1089"))
-        
+
         expression_Low = alt_spec_cons+"+"+low_inc+"+mf1089+"+cost_all_inc +"*((ms18*mf144/2) + (ms19*(ms146*mf146)/2) + (0.5*(md27/2+mo27/2))+mf145/6)"
         spec_list.append(build_spec(expression_Low, "mf1090"))
-        
+
         expression_Med = alt_spec_cons+"+mf1089+"+cost_all_inc +"*((ms18*mf144/2) + (ms19*(ms146*mf146)/2) + (0.5*(md27/2+mo27/2))+mf145/3)"
         spec_list.append(build_spec(expression_Med, "mf1091"))
 
-        expression_High= alt_spec_cons+"+"+high_inc+"+mf1089+"+cost_all_inc +"*((ms18*mf144/2) + (ms19*(ms146*mf146)/2) + (0.5*(md27/2+mo27/2))+mf145/3)" 
-        spec_list.append(build_spec(expression_High, "mf1092"))         
-        
-        for i in range(1, 10):            
-            
+        expression_High= alt_spec_cons+"+"+high_inc+"+mf1089+"+cost_all_inc +"*((ms18*mf144/2) + (ms19*(ms146*mf146)/2) + (0.5*(md27/2+mo27/2))+mf145/3)"
+        spec_list.append(build_spec(expression_High, "mf1092"))
+
+        for i in range(1, 10):
+
             if i < 4: expression = "mf1090"
             if (i > 3 and i < 7): expression = "mf1091"
-            if i > 6: expression = "mf1092"          
-            
+            if i > 6: expression = "mf1092"
+
             if i in (1, 4, 7):
                 expression = expression + " + " + zero_cars
             if i in (3, 6, 9):
-                expression = expression + " + " + twoplus_cars           
+                expression = expression + " + " + twoplus_cars
 
             result = "mf" + str(mode_mf + i)
-            
+
             spec_list.append(build_spec(expression, result))
 
         compute_matrix(spec_list, scenario)
@@ -458,25 +458,25 @@ class ModeChoiceHBW(_m.Tool()):
         expression_area=cbd + "*(((gy(p).eq.3)+(gy(q).eq.3)).ge.1)" + " + " + intra_van + "*((gy(p).eq.4)*(gy(q).eq.4))"
         expression_area=expression_area + " + " + rural + "*((((gy(p).ge.12)*(gy(p).lt.15))+((gy(q).ge.12)*(gy(q).lt.15))).ge.1)"
         spec_list.append(build_spec(expression_area, "mf1089"))
-        
+
         expression_acc= auto_acc + "*(mo47)"
         spec_list.append(build_spec(expression_acc, "mo925"))
-        
+
         expression_Low = "mf1089+mo925+"+cost_all_inc +"*((ms18*mf144) + (ms19*(ms146*mf146)) + mo27/2 + md27/2 + mf145/6)"
         spec_list.append(build_spec(expression_Low, "mf1090"))
-        
+
         expression_Med = "mf1089+mo925+"+cost_all_inc +"*((ms18*mf144) + (ms19*(ms146*mf146)) + mo27/2 + md27/2 + mf145/3)"
         spec_list.append(build_spec(expression_Med, "mf1091"))
 
-        expression_High = high_inc+"+mf1089+mo925+"+cost_all_inc +"*((ms18*mf144) + (ms19*(ms146*mf146)) + mo27/2 + md27/2 + mf145/3)+0.2*(gy(p).eq.9)" 
-        spec_list.append(build_spec(expression_High, "mf1092"))        
-        
+        expression_High = high_inc+"+mf1089+mo925+"+cost_all_inc +"*((ms18*mf144) + (ms19*(ms146*mf146)) + mo27/2 + md27/2 + mf145/3)+0.2*(gy(p).eq.9)"
+        spec_list.append(build_spec(expression_High, "mf1092"))
+
         for i in range(1, 10):
             if i < 4: expression = "mf1090"
             if (i > 3 and i < 7): expression = "mf1091"
             if i > 6: expression = "mf1092"
 
-            if (i == 3 or i == 6 or i == 9): expression = expression + " + " + twoplus_cars                           
+            if (i == 3 or i == 6 or i == 9): expression = expression + " + " + twoplus_cars
 
             result = "mf" + str(mode_mf + i)
             spec_list.append(build_spec(expression, result))
