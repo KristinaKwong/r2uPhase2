@@ -393,36 +393,29 @@ class ModeChoiceHBSchool(_m.Tool()):
 
     @_m.logbook_trace("Calculate_Home-base_School_blends")
     def calculate_blends(self, scenario):
+        util = _m.Modeller().tool("translink.emme.util")
 
-        expressions_list = [
-            ['(mf110.eq.1)*(ms52+((mf115.eq.0)*(1-ms52)))', 'mf140'],
-            ['1-mf140', 'mf141'],
-            ['(mf121.eq.1)*(ms52+(((mf129.eq.0)+(mf130.eq.0)).ge.1)*(1-ms52))', 'mf142'],
-            ['1-mf142', 'mf143'],
-            ['mf100*1', 'mf144'],
-            ['mf101*1', 'mf145'],
-            ['mf102*1', 'mf146'],
-            ['mf106*1', 'mf147'],
-            ['mf107*1', 'mf148'],
-            ['mf136*1', 'mf149'],
-            ['mf109*1', 'mf150'],
-            ['mf116*1', 'mf152'],
-            ['mf117*1', 'mf153'],
-            ['mf118*1', 'mf154'],
-            ['mf138*1', 'mf155'],
-            ['(mf145*(mf148.le.0)*1.25) + (mf148*(mf148.gt.0)*0.5) + (mf145*(mf148.gt.0)*0.625)', 'mf162'],
-            ['mf120*1', 'mf156'],
-            ['(mf100.lt.10)', 'mf158'],
-            ['(mf100.lt.20)', 'mf159']
-        ]
-
-        spec_list = []
-        # check if mf149 and mf155 are actually needed and some of the other pre-calculations can probably be skipped
-        for expression, result in expressions_list:
-            spec_list.append(build_spec(expression, result))
-
-        compute_matrix(spec_list, scenario)
-
+        specs = []
+        specs.append(util.matrix_spec("mf140", "(mf110.eq.1)*(ms52+((mf115.eq.0)*(1-ms52)))"))
+        specs.append(util.matrix_spec("mf141", "1-mf140"))
+        specs.append(util.matrix_spec("mf142", "(mf121.eq.1)*(ms52+(((mf129.eq.0)+(mf130.eq.0)).ge.1)*(1-ms52))"))
+        specs.append(util.matrix_spec("mf143", "1-mf142"))
+        specs.append(util.matrix_spec("mf144", "mf100*1"))
+        specs.append(util.matrix_spec("mf145", "mf101*1"))
+        specs.append(util.matrix_spec("mf146", "mf102*1"))
+        specs.append(util.matrix_spec("mf147", "mf106*1"))
+        specs.append(util.matrix_spec("mf148", "mf107*1"))
+        specs.append(util.matrix_spec("mf149", "mf136*1"))
+        specs.append(util.matrix_spec("mf150", "mf109*1"))
+        specs.append(util.matrix_spec("mf152", "mf116*1"))
+        specs.append(util.matrix_spec("mf153", "mf117*1"))
+        specs.append(util.matrix_spec("mf154", "mf118*1"))
+        specs.append(util.matrix_spec("mf155", "mf138*1"))
+        specs.append(util.matrix_spec("mf162", "(mf145*(mf148.le.0)*1.25) + (mf148*(mf148.gt.0)*0.5) + (mf145*(mf148.gt.0)*0.625)"))
+        specs.append(util.matrix_spec("mf156", "mf120*1"))
+        specs.append(util.matrix_spec("mf158", "(mf100.lt.10)"))
+        specs.append(util.matrix_spec("mf159", "(mf100.lt.20)"))
+        compute_matrix(specs, scenario)
 
     #********
     #    ADD ON (rs)
