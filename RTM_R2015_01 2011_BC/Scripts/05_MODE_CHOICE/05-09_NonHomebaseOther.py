@@ -63,6 +63,7 @@ class ModeChoiceNHBO(_m.Tool()):
     @_m.logbook_trace("continue aggregating non work demand, non-homebase other")
     def aggregate_non_work_demand(self, scenario):
         # KB: why is this function different from every other "aggregate_non_work_demand"?
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         matrixnum = 643
         resultmat = 571
@@ -75,7 +76,7 @@ class ModeChoiceNHBO(_m.Tool()):
                     #if k == 7:
                     #    expression = "mf" + str(resultmat + i + 9 * k) + "+0"
                     #    spec_list.append(build_spec(expression, result))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Bike_Utility")
@@ -94,6 +95,7 @@ class ModeChoiceNHBO(_m.Tool()):
         #rurl = str(-0.971214188807))
 
         mode_mf = 430
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf159",
                       "interval_min": 0,
@@ -122,7 +124,7 @@ class ModeChoiceNHBO(_m.Tool()):
             emmebank.matrix(result).initialize(-9999)
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @ _m.logbook_trace("Calculate_Walk_utlity")
@@ -138,6 +140,7 @@ class ModeChoiceNHBO(_m.Tool()):
         intrazonal = str(0.379715780481)
 
         mode_mf = 421
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf158",
                       "interval_min": 0,
@@ -168,7 +171,7 @@ class ModeChoiceNHBO(_m.Tool()):
             emmebank.matrix(result).initialize(-9999)
             expression = "(mf925 + mf926 + mf927)"
             spec_list.append(build_spec(expression, result, constraint))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Rail_utlity")
@@ -191,6 +194,7 @@ class ModeChoiceNHBO(_m.Tool()):
         within_gy_not_van = str(-1.11817184871)
 
         mode_mf = 412
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf157",
                       "interval_min": 0,
@@ -237,7 +241,7 @@ class ModeChoiceNHBO(_m.Tool()):
             emmebank.matrix(result).initialize(-9999)
             expression = "(mf925 + mf926 + mf927)"
             spec_list.append(build_spec(expression, result, constraint))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Bus_utility")
@@ -258,6 +262,7 @@ class ModeChoiceNHBO(_m.Tool()):
         within_gy_not_van = str(-1.0324943983)
 
         mode_mf = 403
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf151",
                       "interval_min": 0,
@@ -302,7 +307,7 @@ class ModeChoiceNHBO(_m.Tool()):
             emmebank.matrix(result).initialize(-9999)
             expression = "(mf925 + mf926 + mf927)"
             spec_list.append(build_spec(expression, result, constraint))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_HOV2_utility")
@@ -325,6 +330,7 @@ class ModeChoiceNHBO(_m.Tool()):
 
 
         mode_mf = 385
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
 
         # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
@@ -353,7 +359,7 @@ class ModeChoiceNHBO(_m.Tool()):
             result = "mf" + str(mode_mf + i)
             expression = "(mf925 + mf926 + mf927)"
             spec_list.append(build_spec(expression, result))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_SOV_utility")
@@ -371,6 +377,7 @@ class ModeChoiceNHBO(_m.Tool()):
         rural = str(0.580684626715)
 
         mode_mf = 376
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
 
         for i in range(1, 4):
@@ -398,7 +405,7 @@ class ModeChoiceNHBO(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             spec_list.append(build_spec(expression, result))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_non_home_base_other")

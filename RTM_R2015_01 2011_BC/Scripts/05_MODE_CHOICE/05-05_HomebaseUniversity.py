@@ -60,6 +60,7 @@ class ModeChoiceHBUni(_m.Tool()):
     @_m.logbook_trace("continue aggregating non work demand, university")
     def aggregate_non_work_demand(self, scenario):
         ## Aggregate nonwork demand in matrices mf568-mf639
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         matrixnum = 640
         resultmat = 568
@@ -70,7 +71,7 @@ class ModeChoiceHBUni(_m.Tool()):
         #for i in range(63, 72):
         #    expression = "mf" + str(resultmat + i) + "+" + "0"
         #    spec_list.append(build_spec(expression, result))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Walk_Utility")
@@ -88,6 +89,7 @@ class ModeChoiceHBUni(_m.Tool()):
         intrazonal = str(2.01722182977)
 
         mode_mf = 418
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf158",
                       "interval_min": 0,
@@ -119,7 +121,7 @@ class ModeChoiceHBUni(_m.Tool()):
             emmebank.matrix(result).initialize(-9999)
             expression = "(mf925 + mf926 + mf927)"
             spec_list.append(build_spec(expression, result, constraint))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Rail_Utility")
@@ -137,6 +139,7 @@ class ModeChoiceHBUni(_m.Tool()):
         rt_brd = "mf155"
 
         mode_mf = 409
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf157",
                       "interval_min": 0,
@@ -177,7 +180,7 @@ class ModeChoiceHBUni(_m.Tool()):
             emmebank.matrix(result).initialize(-9999)
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Bus_Utility")
@@ -193,6 +196,7 @@ class ModeChoiceHBUni(_m.Tool()):
         intra_van = str(0.789325239640)
 
         mode_mf = 400
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf151",
                       "interval_min": 0,
@@ -221,7 +225,7 @@ class ModeChoiceHBUni(_m.Tool()):
             emmebank.matrix(result).initialize(-9999)
             expression = "mf925 + mf926"
             spec_list.append(build_spec(expression, result, constraint))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_HOV3_Utility")
@@ -241,6 +245,7 @@ class ModeChoiceHBUni(_m.Tool()):
         within_gy = str(1.45211355925)
 
         mode_mf = 391
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
 
         # rural : 1 if (ifgt(gyo,11) or ifgt(gyd,11))
@@ -273,7 +278,7 @@ class ModeChoiceHBUni(_m.Tool()):
             result = "mf" + str(mode_mf + i)
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_HOV2_Utility")
@@ -293,6 +298,7 @@ class ModeChoiceHBUni(_m.Tool()):
         within_gy = str(0.962512613133)
 
         mode_mf = 382
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
 
         # auto accessibilities: autoempt (i.e auto accessibilities - PS-based)
@@ -323,7 +329,7 @@ class ModeChoiceHBUni(_m.Tool()):
             result = "mf" + str(mode_mf + i)
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_SOV_utility")
@@ -343,6 +349,7 @@ class ModeChoiceHBUni(_m.Tool()):
         intgy_sov = str(0.442423590074)
 
         mode_mf = 373
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
 
         # cbd: 1 if (ifeq(gyo,4) or ifeq(gyd,4))
@@ -376,7 +383,7 @@ class ModeChoiceHBUni(_m.Tool()):
             result = "mf" + str(mode_mf + i)
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_MFs_Additional_Attributes")

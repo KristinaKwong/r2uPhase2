@@ -49,13 +49,14 @@ def build_spec(expression=None, result=None, by_value=None, origins=None, destin
 
 @_m.logbook_trace("Calculate demand")
 def calculate_demand(scenario, demand_start, probability_start, result_start, num_segments=9):
+    util = _m.Modeller().tool("translink.emme.util")
     spec_list = []
     for i in range(num_segments):
         for k in range(7):
             expression1 = "mf" + str(demand_start + i) + "*" + "mf" + str(probability_start + i + k * 9)
             result = "mf" + str(result_start + i + k * 9)
             spec_list.append(build_spec(expression1, result))
-    compute_matrix(spec_list, scenario)
+    util.compute_matrix(spec_list, scenario)
 
 
 def process_timeslicing_list(eb, scenario, file_names):
@@ -113,6 +114,7 @@ def calculate_probabilities(scenario, nests, theta, utility_start_id=374, result
     tiny = 0.000001
     # determine the number of temporary matrices required
     num_temps = 2 * len(nests) + 1
+    util = _m.Modeller().tool("translink.emme.util")
 
     with temp_matrices(emmebank, "FULL", num_temps) as temp_mats:
         spec_list = []
@@ -155,7 +157,7 @@ def calculate_probabilities(scenario, nests, theta, utility_start_id=374, result
                     result = "mf%s" % (result_start_id + segment + item * 9)
                     spec_list.append(build_spec(expression, result))
 
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
 @_context.contextmanager

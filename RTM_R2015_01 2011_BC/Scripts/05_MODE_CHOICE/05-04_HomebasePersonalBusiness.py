@@ -57,6 +57,8 @@ class ModeChoiceHBPB(_m.Tool()):
 
     @_m.logbook_trace("continue aggregating non work demand, personal business")
     def aggregate_non_work_demand(self, scenario):
+
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         matrixnum = 640
         resultmat = 568
@@ -68,7 +70,7 @@ class ModeChoiceHBPB(_m.Tool()):
         #    expression1 = "mf" + str(resultmat + i) + "+" + "0"
         #    result = "mf" + str(resultmat + i)
         #    spec_list.append(build_spec(expression1, result))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Walk_Utility")
@@ -87,6 +89,7 @@ class ModeChoiceHBPB(_m.Tool()):
         intrazonal = str(0.654142414865)
 
         mode_mf = 418
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf158",
                       "interval_min": 0,
@@ -124,7 +127,7 @@ class ModeChoiceHBPB(_m.Tool()):
             emmebank.matrix(result).initialize(-9999)
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Rail_Utility")
@@ -150,6 +153,7 @@ class ModeChoiceHBPB(_m.Tool()):
         within_gy = str(-1.83226913261)
 
         mode_mf = 409
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = None
         #constraint = {"od_values": "mf157",
@@ -208,7 +212,7 @@ class ModeChoiceHBPB(_m.Tool()):
             #emmebank.matrix(result).initialize(-9999)
             expression = "(mf925 + mf926 + mf927) * mf157 - 9999 * (mf157.eq.0)"
             spec_list.append(build_spec(expression, result, constraint))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Bus_Utility")
@@ -234,6 +238,7 @@ class ModeChoiceHBPB(_m.Tool()):
         #relative_acc = str(-0.0101711111056)
 
         mode_mf = 400
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf151",
                       "interval_min": 0,
@@ -288,7 +293,7 @@ class ModeChoiceHBPB(_m.Tool()):
             emmebank.matrix(result).initialize(-9999)
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_HOV2_Utility")
@@ -315,6 +320,7 @@ class ModeChoiceHBPB(_m.Tool()):
         vanx = str(0.487912882498)
 
         mode_mf = 382
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
 
         # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
@@ -357,7 +363,7 @@ class ModeChoiceHBPB(_m.Tool()):
             result = "mf" + str(mode_mf + i)
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_SOV_Utility")
@@ -379,6 +385,7 @@ class ModeChoiceHBPB(_m.Tool()):
         vanx = str(0.487912882498)
 
         mode_mf = 373
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
 
         for i in range(1, 10):
@@ -413,7 +420,7 @@ class ModeChoiceHBPB(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             spec_list.append(build_spec(expression, result))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
     @_m.logbook_trace("Calculate Blended Skims, personal business")
     def calculate_blends(self, scenario):

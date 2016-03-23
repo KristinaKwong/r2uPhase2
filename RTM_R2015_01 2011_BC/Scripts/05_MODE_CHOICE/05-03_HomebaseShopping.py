@@ -59,6 +59,7 @@ class ModeChoiceHBShopping(_m.Tool()):
     @_m.logbook_trace("continue aggregating non work demand, shopping")
     def aggregate_non_work_demand(self, scenario):
         ## Aggregate nonwork demand in matrices mf568-mf639
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         matrixnum = 640
         resultmat = 568
@@ -69,7 +70,7 @@ class ModeChoiceHBShopping(_m.Tool()):
         #for i in range(63, 72):
         #    expression = "mf" + str(resultmat + i) + "+" + "0"
         #    spec_list.append(build_spec(expression, result))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Bike_Utility")
@@ -87,6 +88,7 @@ class ModeChoiceHBShopping(_m.Tool()):
         intrazonal = str(0.248136493447)
 
         mode_mf = 427
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf159",
                       "interval_min": 0,
@@ -117,7 +119,7 @@ class ModeChoiceHBShopping(_m.Tool()):
             emmebank.matrix(result).initialize(-9999)
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Walk_Utility")
@@ -137,6 +139,7 @@ class ModeChoiceHBShopping(_m.Tool()):
         intrazonal = str(0.248136493447)
 
         mode_mf = 418
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf158",
                       "interval_min": 0,
@@ -175,7 +178,7 @@ class ModeChoiceHBShopping(_m.Tool()):
             emmebank.matrix(result).initialize(-9999)
             expression = "(mf925 + mf926 + mf927)"
             spec_list.append(build_spec(expression, result, constraint))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Rail_Utility")
@@ -202,6 +205,7 @@ class ModeChoiceHBShopping(_m.Tool()):
         delta = str(-0.955000470751)
 
         mode_mf = 409
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf157",
                       "interval_min": 0,
@@ -270,7 +274,7 @@ class ModeChoiceHBShopping(_m.Tool()):
             emmebank.matrix(result).initialize(-9999)
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Bus_Utility")
@@ -295,6 +299,7 @@ class ModeChoiceHBShopping(_m.Tool()):
         delta = str(-0.955000470751)
 
         mode_mf = 400
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf151",
                       "interval_min": 0,
@@ -351,7 +356,7 @@ class ModeChoiceHBShopping(_m.Tool()):
             emmebank.matrix(result).initialize(-9999)
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_HOV2_Utility")
@@ -376,6 +381,7 @@ class ModeChoiceHBShopping(_m.Tool()):
         within_gy = str(-0.219305935017)
 
         mode_mf = 382
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
         expression_2 = cbd + "*(((gy(p).eq.3)+(gy(q).eq.3)).ge.1)"
@@ -418,7 +424,7 @@ class ModeChoiceHBShopping(_m.Tool()):
             result = "mf" + str(mode_mf + i)
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_SOV_Utility")
@@ -437,6 +443,7 @@ class ModeChoiceHBShopping(_m.Tool()):
         rural = str(0.242561421966)
 
         mode_mf = 373
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
 
         for i in range(1, 10):
@@ -469,7 +476,7 @@ class ModeChoiceHBShopping(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             spec_list.append(build_spec(expression, result))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Home-base_Shopping_blends")

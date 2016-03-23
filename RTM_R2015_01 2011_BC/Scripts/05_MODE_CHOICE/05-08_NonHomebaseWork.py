@@ -69,6 +69,7 @@ class ModeChoiceNHBW(_m.Tool()):
     def aggregate_non_work_demand(self, scenario):
         # KB: why is this function different from every other "aggregate_non_work_demand"?
         #     and this should be part of work demand?
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         matrixnum = 643
         resultmat = 508
@@ -81,7 +82,7 @@ class ModeChoiceNHBW(_m.Tool()):
                 #if k == 7:
                 #    expression = "mf" + str(resultmat + i + 9 * k) + "+0"
                 #    spec_list.append(build_spec(expression, result))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Bike_utlity")
@@ -102,6 +103,7 @@ class ModeChoiceNHBW(_m.Tool()):
         vanx = str(-1.89263746393)
 
         mode_mf = 430
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf159",
                       "interval_min": 0,
@@ -137,7 +139,7 @@ class ModeChoiceNHBW(_m.Tool()):
             emmebank.matrix(result).initialize(-9999)
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Walk_utlity")
@@ -159,6 +161,7 @@ class ModeChoiceNHBW(_m.Tool()):
         #intrazonal = str(0.391849811299)
 
         mode_mf = 421
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf158",
                       "interval_min": 0,
@@ -193,7 +196,7 @@ class ModeChoiceNHBW(_m.Tool()):
             emmebank.matrix(result).initialize(-9999)
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Rail_utlity")
@@ -214,6 +217,7 @@ class ModeChoiceNHBW(_m.Tool()):
         within_gy = str(-0.826515173137)
 
         mode_mf = 412
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf157",
                       "interval_min": 0,
@@ -259,7 +263,7 @@ class ModeChoiceNHBW(_m.Tool()):
             emmebank.matrix(result).initialize(-9999)
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_Bus_utility")
@@ -280,6 +284,7 @@ class ModeChoiceNHBW(_m.Tool()):
         within_gy_not_van = str(-0.74828445222)
 
         mode_mf = 403
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf151",
                       "interval_min": 0,
@@ -325,7 +330,7 @@ class ModeChoiceNHBW(_m.Tool()):
             emmebank.matrix(result).initialize(-9999)
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_HOV2_utility")
@@ -342,6 +347,7 @@ class ModeChoiceNHBW(_m.Tool()):
         auto_acc = str(0.00294127099292)
 
         mode_mf = 385
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
 
         # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
@@ -371,7 +377,7 @@ class ModeChoiceNHBW(_m.Tool()):
             result = "mf" + str(mode_mf + i)
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_SOV_utility")
@@ -387,6 +393,7 @@ class ModeChoiceNHBW(_m.Tool()):
         van = str(0.119704408492)
 
         mode_mf = 376
+        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
 
         for i in range(1, 4):
@@ -414,7 +421,7 @@ class ModeChoiceNHBW(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             spec_list.append(build_spec(expression, result))
-        compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list, scenario)
 
 
     @_m.logbook_trace("Calculate_non_home_base_work_blends")
