@@ -57,9 +57,9 @@ class ModeChoiceHBW(_m.Tool()):
         self.time_slice_home_base_work(eb, scenario)
         self.calculate_final_period_demand(scenario)
 
-        # only export matrix data on the final iteration
-        if is_last_iteration:
-            utilities.export_matrices_report(eb, "work", range(710, 843))
+        # only export matrix data on the final iteration, comment out temporarily, TODO: Add button for user to decide
+#        if is_last_iteration:
+#            utilities.export_matrices_report(eb, "work", range(710, 843))
 
 
     @_m.logbook_trace("Calculate_Bike_utility")

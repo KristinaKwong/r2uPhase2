@@ -52,8 +52,8 @@ class ModeChoiceHBUni(_m.Tool()):
         utilities.dmMatInitParts(eb)
         self.time_slice_home_base_university(eb, scenario)
         self.calculate_final_period_demand(scenario)
-        if is_last_iteration:
-            utilities.export_matrices_report(eb, "Univ", range(773, 843))
+#        if is_last_iteration:
+#            utilities.export_matrices_report(eb, "Univ", range(773, 843))
 
 
     ## Aggregate nonwork demand in matrices mf568-mf639

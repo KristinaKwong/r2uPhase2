@@ -50,8 +50,8 @@ class ModeChoiceHBSocial(_m.Tool()):
         self.time_slice_social_recreation(eb, scenario)
         self.calculate_final_period_demand(scenario)
 
-        if is_last_iteration:
-            utilities.export_matrices_report(eb, "soc", range(773, 843))
+#        if is_last_iteration:
+#            utilities.export_matrices_report(eb, "soc", range(773, 843))
 
 
     @_m.logbook_trace("continue aggregating non work demand, social_recreation")

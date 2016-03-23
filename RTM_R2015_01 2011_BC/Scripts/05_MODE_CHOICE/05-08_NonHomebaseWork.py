@@ -60,8 +60,8 @@ class ModeChoiceNHBW(_m.Tool()):
         self.time_slice_non_home_base_work(eb, scenario)
         self.calculate_final_period_demand(scenario)
 
-        if is_last_iteration:
-            utilities.export_matrices_report(eb, "nhbw", range(773, 843))
+#        if is_last_iteration:
+#            utilities.export_matrices_report(eb, "nhbw", range(773, 843))
 
 
     ## Aggregate nonwork demand in matrices mf 505-567 with home-base-work matrices

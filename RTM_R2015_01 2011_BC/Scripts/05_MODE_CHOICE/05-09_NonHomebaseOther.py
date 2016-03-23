@@ -55,8 +55,8 @@ class ModeChoiceNHBO(_m.Tool()):
         utilities.dmMatInitParts(eb)
         self.time_slice_non_home_base_others(eb, scenario)
         self.calculate_final_period_demand(scenario)
-        if is_last_iteration:
-            utilities.export_matrices_report(eb, "nhbo", range(773, 843))
+#        if is_last_iteration:
+#            utilities.export_matrices_report(eb, "nhbo", range(773, 843))
 
 
     ## Aggregate nonwork demand in matrices mf568-mf639

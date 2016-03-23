@@ -51,8 +51,8 @@ class ModeChoiceHBSchool(_m.Tool()):
         utilities.dmMatInitParts(eb)
         self.time_slice_grade_school(eb, scenario)
         self.calculate_final_period_demand(scenario)
-        if is_last_iteration:
-            utilities.export_matrices_report(eb, "gSch", range(773, 843))
+#        if is_last_iteration:
+#            utilities.export_matrices_report(eb, "gSch", range(773, 843))
 
 
     @_m.logbook_trace("Start Aggregating Nonwork demand")
