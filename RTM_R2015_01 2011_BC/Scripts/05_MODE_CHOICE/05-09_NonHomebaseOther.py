@@ -209,7 +209,7 @@ class ModeChoiceNHBO(_m.Tool()):
         # dens: min((max((POP11o*10000)/area,0)),100)*(ifne(gyo,3)*ifne(gyo,4))
         #expression_2 = expression_2 + " + " + pop_dens + "*(((md20*10000/(md17)).min.100)*(gy(p).ne.3)*(gy(p).ne.4))"
 
-        expression_2 = emp_dens + "*((((md5+md6+md7+md8+md9+md10+md11)*10000/(md17)).min.200)*(gy(q).ne.3)*(gy(q).ne.4))"
+        expression_2 = emp_dens + "*((((md5+md6+md7+md8+md9+md10+md11)*10000/(md17+0.000001*(q.le.130))).min.200)*(gy(q).ne.3)*(gy(q).ne.4))"
         spec_list.append(build_spec(expression_2, "mf926", constraint))
 
         expression_3 = van + "*((gy(p).eq.4).or.(gy(q).eq.4))"

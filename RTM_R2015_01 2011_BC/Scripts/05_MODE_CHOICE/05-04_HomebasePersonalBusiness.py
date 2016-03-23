@@ -198,7 +198,7 @@ class ModeChoiceHBPB(_m.Tool()):
             # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
             expression_2 = rural + "*(((gy(p).gt.10).or.(gy(q).gt.10)))"
             #ifgt(gyo,10) or ifgt(gyd,10)
-            expression_2 = expression_2 + " + " + emp_dens + "*(((((md5+md6+md7+md8+md9+md10+md11)*10000)/md17).max.0).min.200)" \
+            expression_2 = expression_2 + " + " + emp_dens + "*(((((md5+md6+md7+md8+md9+md10+md11)*10000)/(md17+0.000001*(q.le.130))).max.0).min.200)" \
                                                              "*(gy(q).ne.3)*(gy(q).ne.4)"
             expression_2 = expression_2 + " + " + bnw + "*(((gy(p).eq.5)+(gy(q).eq.5)).ge.1)"
 

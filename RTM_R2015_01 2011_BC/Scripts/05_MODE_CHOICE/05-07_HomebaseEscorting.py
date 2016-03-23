@@ -251,7 +251,7 @@ class ModeChoiceHBEsc(_m.Tool()):
 
         # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
         expression_2 = intra_van + "*((gy(p).eq.4)*(gy(q).eq.4))"
-        expression_2 = expression_2 + " + " + pop_dens + "*(((mo20*10000/(mo17)).min.100)*(gy(p).ne.3)*(gy(p).ne.4))"
+        expression_2 = expression_2 + " + " + pop_dens + "*(((mo20*10000/(mo17+0.000001*(p.le.130))).min.100)*(gy(p).ne.3)*(gy(p).ne.4))"
         spec_list.append(build_spec(expression_2, "mf926", constraint))
 
         #relative accessibilities (auto-transit): (max(autoempt-transit2,0))

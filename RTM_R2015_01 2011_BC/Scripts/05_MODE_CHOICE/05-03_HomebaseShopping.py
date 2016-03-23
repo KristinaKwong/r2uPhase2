@@ -150,7 +150,7 @@ class ModeChoiceHBShopping(_m.Tool()):
         #au_dst
         expression_2 = expression_2 + distance + "*mf144"
         # auto accessibilities: autoempt (i.e auto accessibilities)
-        expression_2 = expression_2 + " + " + ret_dens + "*((((md8*10000)/md17).max.0).min.200)"
+        expression_2 = expression_2 + " + " + ret_dens + "*((((md8*10000)/(md17+0.000001*(q.le.130))).max.0).min.200)"
         # p725*(vanod*iflt(veh2,2))
         spec_list.append(build_spec(expression_2, "mf926", constraint))
 
@@ -256,7 +256,7 @@ class ModeChoiceHBShopping(_m.Tool()):
             # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
             expression_2 = expression_2 + " + " + van + "*(((gy(p).eq.4)+(gy(q).eq.4)).ge.1)"
             # dens: min((max((POP11o*10000)/area,0)),100)*(ifne(gyo,3)*ifne(gyo,4))
-            expression_2 = expression_2 + " + " + ret_dens + "*((((md8*10000)/md17).max.0).min.200)"
+            expression_2 = expression_2 + " + " + ret_dens + "*((((md8*10000)/(md17+0.000001*(q.le.130))).max.0).min.200)"
 
             #relative accessibilities (auto-transit): (max(autoempt-transit2,0))
             expression_3 = tran_acc + "*((((mo955).min.100)).max.0)*(gy(p).ne.3)*(gy(q).ne.3)*(gy(p).lt.11)*(gy(q).lt.11)"
@@ -314,7 +314,7 @@ class ModeChoiceHBShopping(_m.Tool()):
 
         #relative accessibilities (auto-transit): (max(autoempt-transit2,0))
         expression_3 =tran_acc + "*((((mo955).min.100)).max.0)*(gy(p).ne.3)*(gy(q).ne.3)"
-        expression_3 = expression_3 + " + " + ret_dens + "*((((md8*10000)/md17).max.0).min.200)"
+        expression_3 = expression_3 + " + " + ret_dens + "*((((md8*10000)/(md17+0.000001*(q.le.130))).max.0).min.200)"
         # rural : 1 if (ifgt(gyo,10) or ifgt(gyd,10))
         expression_3 = expression_3 + " + " + rural + "*((((gy(p).ge.11)*(gy(p).lt.15))+((gy(q).ge.11)*(gy(q).lt.15))).ge.1)"
         expression_3 = expression_3 + " + " + delta + "*(((gy(p).eq.8)+(gy(q).eq.8)).ge.1)"
@@ -393,7 +393,7 @@ class ModeChoiceHBShopping(_m.Tool()):
 
         # within gy   1 if gyo=gyd
         expression_3 = within_gy + "*(gy(p).eq.gy(q))"
-        expression_3 = expression_3 + " + " + ret_dens + "*((((md8*10000)/md17).max.0).min.200)"
+        expression_3 = expression_3 + " + " + ret_dens + "*((((md8*10000)/(md17+0.000001*(q.le.130))).max.0).min.200)"
         # auto accessibilities: autoempt (i.e auto accessibilities)
         expression_3 = expression_3 + " + " + auto_acc + "*(mo954)"
         spec_list.append(build_spec(expression_3, "mf927"))

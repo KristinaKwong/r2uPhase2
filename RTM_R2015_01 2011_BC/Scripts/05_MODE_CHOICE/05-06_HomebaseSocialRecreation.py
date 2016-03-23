@@ -151,7 +151,7 @@ class ModeChoiceHBSocial(_m.Tool()):
         #au_dst
         expression_2 = distance + "*mf144"
         # auto accessibilities: autoempt (i.e auto accessibilities)
-        expression_2 = expression_2 + " + " + dens + "*(((md5+md6+md7+md8+md9+md10+md11)*10000/(md17)).min.200)"
+        expression_2 = expression_2 + " + " + dens + "*(((md5+md6+md7+md8+md9+md10+md11)*10000/(md17+0.000001*(q.le.130))).min.200)"
         # p725*(vanod*iflt(veh2,2))
         #if (i<>3 and i<>6 and i<>9): expression_2 = expression_2 + " + " + van_locar + "*(((gy(p).eq.4)+(gy(q).eq.4)).ge.1)"
         expression_2 = expression_2 + "+" + auto_acc + "*(mo47)"
@@ -221,9 +221,9 @@ class ModeChoiceHBSocial(_m.Tool()):
 
         # intra-vancouver: 1 if (ifeq(gyo,4) and ifeq(gyd,4))
         # dens: min((max((POP11o*10000)/area,0)),100)*(ifne(gyo,3)*ifne(gyo,4))
-        expression_2 = expression_2 + " + " + pop_dens + "*(((mo20*10000/(mo17)).min.100)*(gy(p).ne.3)*(gy(p).ne.4))"
+        expression_2 = expression_2 + " + " + pop_dens + "*(((mo20*10000/(mo17+0.000001*(p.le.130))).min.100)*(gy(p).ne.3)*(gy(p).ne.4))"
 
-        expression_2 = expression_2 + " + " + emp_dens + "*((((md5+md6+md7+md8+md9+md10+md11)*10000/(md17)).min.200)*(gy(q).ne.3)*(gy(q).ne.4))"
+        expression_2 = expression_2 + " + " + emp_dens + "*((((md5+md6+md7+md8+md9+md10+md11)*10000/(md17+0.000001*(q.le.130))).min.200)*(gy(q).ne.3)*(gy(q).ne.4))"
         spec_list.append(build_spec(expression_2, "mf926", constraint))
 
         #relative accessibilities (auto-transit): (max(autoempt-transit2,0))
@@ -316,7 +316,7 @@ class ModeChoiceHBSocial(_m.Tool()):
 
         #relative accessibilities (auto-transit): (max(autoempt-transit2,0))
         #expression_3 = expression_3 + " + " + tran_acc + "*((((mo392).min.200)).max.0)*(gy(p).ne.3)*(gy(q).ne.3)*(gy(p).lt.12)*(gy(q).lt.12)"
-        expression_3 = emp_dens + "*((((md5+md6+md7+md8+md9+md10+md11)*10000/(md17)).min.200)*(gy(p).ne.3)*(gy(q).ne.3)*(gy(q).ne.4))"
+        expression_3 = emp_dens + "*((((md5+md6+md7+md8+md9+md10+md11)*10000/(md17+0.000001*(q.le.130))).min.200)*(gy(p).ne.3)*(gy(q).ne.3)*(gy(q).ne.4))"
         spec_list.append(build_spec(expression_3, "mf927", constraint))
 
         for i in range(1, 10):

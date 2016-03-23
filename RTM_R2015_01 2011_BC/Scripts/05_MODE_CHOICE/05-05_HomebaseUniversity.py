@@ -255,7 +255,7 @@ class ModeChoiceHBUni(_m.Tool()):
         spec_list.append(build_spec(expression_2, "mf926"))
 
         # dens: min((max((POP11o*10000)/area,0)),100)*(ifne(gyo,3)*ifne(gyo,4))
-        expression_3 = dens + "*(((mo20)*10000/(md17)).min.200)*(gy(p).ne.3)*(gy(p).ne.4)"
+        expression_3 = dens + "*(((mo20)*10000/(md17+0.000001*(q.le.130))).min.200)*(gy(p).ne.3)*(gy(p).ne.4)"
         # auto accessibilities: autoempt (i.e auto accessibilities - PS-based)
         expression_3 = expression_3 + " + " + auto_acc + "*(mo48)"
         spec_list.append(build_spec(expression_3, "mf927"))
@@ -310,7 +310,7 @@ class ModeChoiceHBUni(_m.Tool()):
         # within gy :  1 if gyo=gyd
         expression_3 = within_gy + "*(gy(p).eq.gy(q))"
         # dens: min((max((POP11o*10000)/area,0)),100)*(ifne(gyo,3)*ifne(gyo,4))
-        expression_3 = expression_3 + " + " + dens + "*(((mo20)*10000/(mo17)).min.100)*(gy(p).ne.3)*(gy(p).ne.4)"
+        expression_3 = expression_3 + " + " + dens + "*(((mo20)*10000/(mo17+0.000001*(p.le.130))).min.100)*(gy(p).ne.3)*(gy(p).ne.4)"
         spec_list.append(build_spec(expression_3, "mf927"))
 
         for i in range(1, 10):
