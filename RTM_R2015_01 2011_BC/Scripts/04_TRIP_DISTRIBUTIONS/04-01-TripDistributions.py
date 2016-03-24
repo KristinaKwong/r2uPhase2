@@ -1,5 +1,5 @@
 ##---------------------------------------------------------------------
-##--TransLink Phase 3 Regional Transportation Model
+##--TransLink Phase 2.2 Regional Transportation Model
 ##--
 ##--Path: translink.emme.stage3.step4.tripdistribution
 ##--Purpose: Run distribution component of RTM

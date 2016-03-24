@@ -1,5 +1,5 @@
 ##---------------------------------------------------------------------
-##--TransLink Phase 3 Regional Transportation Model
+##--TransLink Phase 2.2 Regional Transportation Model
 ##--
 ##--Path: translink.emme.example (this path should match the namespace in the RTM toolbox)
 ##--Purpose: Provide Python Style Examples (a short description of the tools purpose)

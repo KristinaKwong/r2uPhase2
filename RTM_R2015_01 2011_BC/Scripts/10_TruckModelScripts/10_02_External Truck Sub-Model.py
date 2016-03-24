@@ -1,5 +1,5 @@
 ##---------------------------------------------------------------------
-##--TransLink Phase 3 Regional Transportation Model
+##--TransLink Phase 2.2 Regional Transportation Model
 ##--
 ##--Path: translink.emme.stage5.step10.externaltruck
 ##--Purpose: This module generates external light and heavy truck matrices

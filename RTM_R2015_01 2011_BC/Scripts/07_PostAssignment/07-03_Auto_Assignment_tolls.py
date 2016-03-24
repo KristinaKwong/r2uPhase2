@@ -1,5 +1,5 @@
 ##---------------------------------------------------------------------
-##--TransLink Phase 3 Regional Transportation Model
+##--TransLink Phase 2.2 Regional Transportation Model
 ##--
 ##--Path: translink.emme.stage3.step7.tollskim
 ##--Purpose: Generates skims for tolls

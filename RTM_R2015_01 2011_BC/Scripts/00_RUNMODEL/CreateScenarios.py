@@ -1,5 +1,5 @@
 ##---------------------------------------------------------------------
-##--TransLink Phase 3 Regional Transportation Model
+##--TransLink Phase 2.2 Regional Transportation Model
 ##--
 ##--Path: translink.emme.stage1.step0.create_scen
 ##--Purpose: create scenarios

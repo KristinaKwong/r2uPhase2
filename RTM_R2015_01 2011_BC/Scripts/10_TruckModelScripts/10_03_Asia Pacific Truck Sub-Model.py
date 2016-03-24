@@ -1,5 +1,5 @@
 ##---------------------------------------------------------------------
-##--TransLink Phase 3 Regional Transportation Model
+##--TransLink Phase 2.2 Regional Transportation Model
 ##--
 ##--Path: translink.emme.stage5.step10.asiapacifictruck
 ##--Purpose: This module generates Asia Pacific Trucks (heavy trucks)
