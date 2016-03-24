@@ -55,7 +55,7 @@ def calculate_demand(scenario, demand_start, probability_start, result_start, nu
         for k in range(7):
             expression1 = "mf" + str(demand_start + i) + "*" + "mf" + str(probability_start + i + k * 9)
             result = "mf" + str(result_start + i + k * 9)
-            spec_list.append(build_spec(expression1, result))
+            spec_list.append(util.matrix_spec(result, expression1))
     util.compute_matrix(spec_list, scenario)
 
 
@@ -134,12 +134,12 @@ def calculate_probabilities(scenario, nests, theta, utility_start_id=374, result
                 denom_result = scratch_mat_ids.pop()
                 denom_result.name = "Ndem%d" % i
                 denom_result.description = "Denominator for nest %d (temp)" % i
-                spec_list.append(build_spec(expression, denom_result))
+                spec_list.append(util.matrix_spec(denom_result, expression))
 
                 util_result = scratch_mat_ids.pop()
                 util_result.name = "Nutil%d" % i
                 util_result.description = "Utility for nest %d (temp)" % i
-                spec_list.append(build_spec("(%s) ^ %s" % (denom_result.id, theta), util_result))
+                spec_list.append(util.matrix_spec(util_result, "(%s) ^ %s" % (denom_result.id, theta)))
                 nest_utility.append(util_result.id)
 
                 nest_expression.append([nest_items, exponent_items, util_result.id, denom_result.id])
@@ -148,14 +148,14 @@ def calculate_probabilities(scenario, nests, theta, utility_start_id=374, result
             full_denominator = scratch_mat_ids.pop()
             full_denominator.name = "denom"
             full_denominator.description = "Denominator for total nest"
-            spec_list.append(build_spec(denominator_expr, full_denominator))
+            spec_list.append(util.matrix_spec(full_denominator, denominator_expr))
 
             for nest_items, exponent_items, utility, nest_denominator in nest_expression:
                 for item, item_exp in zip(nest_items, exponent_items):
                     expression = "((%s) / (%s)) * ((%s) / (%s))" % (
                         utility, full_denominator, item_exp, nest_denominator)
                     result = "mf%s" % (result_start_id + segment + item * 9)
-                    spec_list.append(build_spec(expression, result))
+                    spec_list.append(util.matrix_spec(result, expression))
 
         util.compute_matrix(spec_list, scenario)
 
