@@ -358,7 +358,7 @@ class ModeChoiceHBPB(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             expression = "mf925 + mf926 + mf927"
-            spec_list.append(build_spec(expression, result))
+            spec_list.append(util.matrix_spec(result, expression))
         util.compute_matrix(spec_list, scenario)
 
 
@@ -414,7 +414,7 @@ class ModeChoiceHBPB(_m.Tool()):
             expression = expression + " + " + van + "*(((gy(p).eq.4)+(gy(q).eq.4)).ge.1)"
 
             result = "mf" + str(mode_mf + i)
-            spec_list.append(build_spec(expression, result))
+            spec_list.append(util.matrix_spec(result, expression))
         util.compute_matrix(spec_list, scenario)
 
     @_m.logbook_trace("Calculate Blended Skims, personal business")

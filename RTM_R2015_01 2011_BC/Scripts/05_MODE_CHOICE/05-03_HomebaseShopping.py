@@ -65,10 +65,10 @@ class ModeChoiceHBShopping(_m.Tool()):
         for i in range(0, 63):
             expression = "mf" + str(resultmat + i) + "+" + "mf" + str(matrixnum + i)
             result = "mf" + str(resultmat + i)
-            spec_list.append(build_spec(expression, result))
+            spec_list.append(util.matrix_spec(result, expression))
         #for i in range(63, 72):
         #    expression = "mf" + str(resultmat + i) + "+" + "0"
-        #    spec_list.append(build_spec(expression, result))
+        #    spec_list.append(util.matrix_spec(result, expression))
         util.compute_matrix(spec_list, scenario)
 
 
@@ -417,7 +417,7 @@ class ModeChoiceHBShopping(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             expression = "mf925 + mf926 + mf927"
-            spec_list.append(build_spec(expression, result))
+            spec_list.append(util.matrix_spec(result, expression))
         util.compute_matrix(spec_list, scenario)
 
 
@@ -469,7 +469,7 @@ class ModeChoiceHBShopping(_m.Tool()):
             expression = expression + " + " + rural + "*((((gy(p).gt.11)*(gy(p).lt.15))+((gy(q).gt.11)*(gy(q).lt.15))).ge.1)"
 
             result = "mf" + str(mode_mf + i)
-            spec_list.append(build_spec(expression, result))
+            spec_list.append(util.matrix_spec(result, expression))
         util.compute_matrix(spec_list, scenario)
 
 

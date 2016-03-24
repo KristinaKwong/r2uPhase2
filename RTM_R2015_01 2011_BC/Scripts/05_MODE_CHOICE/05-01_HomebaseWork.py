@@ -101,7 +101,7 @@ class ModeChoiceHBW(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             expression = "(mf925 + mf926 + mf927)" + "*" + "mf159" + "-" + "(9999*(mf159.eq.0))"
-            spec_list.append(build_spec(expression, result))
+            spec_list.append(util.matrix_spec(result, expression))
 
         util.compute_matrix(spec_list, scenario)
 
@@ -392,7 +392,7 @@ class ModeChoiceHBW(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             expression = "mf925 + mf926 + mf927"
-            spec_list.append(build_spec(expression, result))
+            spec_list.append(util.matrix_spec(result, expression))
 
         util.compute_matrix(spec_list, scenario)
 
@@ -460,7 +460,7 @@ class ModeChoiceHBW(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             expression = "mf925 + mf926 + mf927"
-            spec_list.append(build_spec(expression, result))
+            spec_list.append(util.matrix_spec(result, expression))
 
         util.compute_matrix(spec_list, scenario)
 
@@ -510,7 +510,7 @@ class ModeChoiceHBW(_m.Tool()):
             expression = expression + " + " + rural + "*((((gy(p).ge.12)*(gy(p).lt.15))+((gy(q).ge.12)*(gy(q).lt.15))).ge.1)"
 
             result = "mf" + str(mode_mf + i)
-            spec_list.append(build_spec(expression, result))
+            spec_list.append(util.matrix_spec(result, expression))
 
         util.compute_matrix(spec_list, scenario)
 

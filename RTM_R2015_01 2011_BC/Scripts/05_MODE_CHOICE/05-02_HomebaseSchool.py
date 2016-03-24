@@ -64,19 +64,19 @@ class ModeChoiceHBSchool(_m.Tool()):
         for i in range(0, 18):
             result = "mf%s" % (resultmat + i)
             expression = "mf%s + %s" % ((matrixnum + i), result)
-            spec_list.append(build_spec(expression, result))
+            spec_list.append(util.matrix_spec(result, expression))
         #for i in range(18, 27):
         #    result = "mf%s" % (resultmat + i)
         #    expression = "0 + %s" % (result)
-        #    spec_list.append(build_spec(expression, result))
+        #    spec_list.append(util.matrix_spec(result, expression))
         for i in range(27, 63):
             result = "mf%s" % (resultmat + i)
             expression = "mf%s + mf%s" % ((matrixnum + i), (resultmat + i))
-            spec_list.append(build_spec(expression, result))
+            spec_list.append(util.matrix_spec(result, expression))
         for i in range(63, 72):
             result = "mf%s" % (resultmat + i)
             expression = "mf%s + mf%s" % ((matrixnum + i - 45), (resultmat + i))
-            spec_list.append(build_spec(expression, result))
+            spec_list.append(util.matrix_spec(result, expression))
         util.compute_matrix(spec_list, scenario)
 
 

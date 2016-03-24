@@ -77,10 +77,10 @@ class ModeChoiceNHBW(_m.Tool()):
                 result = "mf" + str(resultmat + i + 9 * k)
                 if k < 7:
                     expression = "mf" + str(resultmat + i + k * 9) + "+" + "mf" + str(matrixnum + i + 9 * k)
-                    spec_list.append(build_spec(expression, result))
+                    spec_list.append(util.matrix_spec(result, expression))
                 #if k == 7:
                 #    expression = "mf" + str(resultmat + i + 9 * k) + "+0"
-                #    spec_list.append(build_spec(expression, result))
+                #    spec_list.append(util.matrix_spec(result, expression))
         util.compute_matrix(spec_list, scenario)
 
 
@@ -370,7 +370,7 @@ class ModeChoiceNHBW(_m.Tool()):
 
             result = "mf" + str(mode_mf + i)
             expression = "mf925 + mf926 + mf927"
-            spec_list.append(build_spec(expression, result))
+            spec_list.append(util.matrix_spec(result, expression))
         util.compute_matrix(spec_list, scenario)
 
 
@@ -413,7 +413,7 @@ class ModeChoiceNHBW(_m.Tool()):
             #expression = expression + " + " + rural + "*((((gy(p).gt.10)*(gy(p).lt.15))+((gy(q).gt.10)*(gy(q).lt.15))).ge.1)"
 
             result = "mf" + str(mode_mf + i)
-            spec_list.append(build_spec(expression, result))
+            spec_list.append(util.matrix_spec(result, expression))
         util.compute_matrix(spec_list, scenario)
 
 
