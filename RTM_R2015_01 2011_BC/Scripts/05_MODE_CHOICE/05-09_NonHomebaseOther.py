@@ -80,6 +80,7 @@ class ModeChoiceNHBO(_m.Tool()):
 
     @_m.logbook_trace("Calculate_Bike_Utility")
     def calculate_bike(self, scenario):
+        util = _m.Modeller().tool("translink.emme.util")
         # Bike utility stored in matrices mf428-mf436
         emmebank = scenario.emmebank
 
@@ -94,7 +95,6 @@ class ModeChoiceNHBO(_m.Tool()):
         #rurl = str(-0.971214188807))
 
         mode_mf = 430
-        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf159",
                       "interval_min": 0,
@@ -128,6 +128,7 @@ class ModeChoiceNHBO(_m.Tool()):
 
     @ _m.logbook_trace("Calculate_Walk_utlity")
     def calculate_walk(self, scenario):
+        util = _m.Modeller().tool("translink.emme.util")
         # Walk utility stored in matrices mf419-mf427
         emmebank = scenario.emmebank
 
@@ -139,7 +140,6 @@ class ModeChoiceNHBO(_m.Tool()):
         intrazonal = str(0.379715780481)
 
         mode_mf = 421
-        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf158",
                       "interval_min": 0,
@@ -175,6 +175,7 @@ class ModeChoiceNHBO(_m.Tool()):
 
     @_m.logbook_trace("Calculate_Rail_utlity")
     def calculate_rail(self, scenario):
+        util = _m.Modeller().tool("translink.emme.util")
         # Rail utility stored between matrices mf410-mf418
         emmebank = scenario.emmebank
 
@@ -193,7 +194,6 @@ class ModeChoiceNHBO(_m.Tool()):
         within_gy_not_van = str(-1.11817184871)
 
         mode_mf = 412
-        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf157",
                       "interval_min": 0,
@@ -245,6 +245,7 @@ class ModeChoiceNHBO(_m.Tool()):
 
     @_m.logbook_trace("Calculate_Bus_utility")
     def calculate_bus(self, scenario):
+        util = _m.Modeller().tool("translink.emme.util")
         # Bus utility stored between matrices mf401-mf409
         emmebank = scenario.emmebank
 
@@ -261,7 +262,6 @@ class ModeChoiceNHBO(_m.Tool()):
         within_gy_not_van = str(-1.0324943983)
 
         mode_mf = 403
-        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf151",
                       "interval_min": 0,
@@ -311,6 +311,7 @@ class ModeChoiceNHBO(_m.Tool()):
 
     @_m.logbook_trace("Calculate_HOV2_utility")
     def calculate_hov2(self, scenario):
+        util = _m.Modeller().tool("translink.emme.util")
         # HOV2 utility stored between matrices mf383-mf391
         emmebank = scenario.emmebank
 
@@ -329,7 +330,6 @@ class ModeChoiceNHBO(_m.Tool()):
 
 
         mode_mf = 385
-        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
 
         # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
@@ -363,6 +363,7 @@ class ModeChoiceNHBO(_m.Tool()):
 
     @_m.logbook_trace("Calculate_SOV_utility")
     def calculate_sov(self, scenario):
+        util = _m.Modeller().tool("translink.emme.util")
         # SOV utility stored between matrices mf374-mf382
         emmebank = scenario.emmebank
 
@@ -376,7 +377,6 @@ class ModeChoiceNHBO(_m.Tool()):
         rural = str(0.580684626715)
 
         mode_mf = 376
-        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
 
         for i in range(1, 4):

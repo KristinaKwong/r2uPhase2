@@ -63,8 +63,9 @@ class ModeChoiceHBW(_m.Tool()):
 
     @_m.logbook_trace("Calculate_Bike_utility")
     def calculate_bike(self, scenario):
-    # Bike utility stored in matrices mf428-mf436
+        util = _m.Modeller().tool("translink.emme.util")
 
+        # Bike utility stored in matrices mf428-mf436
         alt_spec_cons = str(-3.12234881162)
         med_inc = str(0.290849423975)
         zero_cars = str(2.37255548291)
@@ -75,7 +76,6 @@ class ModeChoiceHBW(_m.Tool()):
         intrazonal = str(0.816434712579)
 
         mode_mf = 427
-        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
 
         #ifgt((BKSCRo+bkscrd),5)*(iflt(gyo,11) and iflt(gyd,11))
@@ -108,9 +108,8 @@ class ModeChoiceHBW(_m.Tool()):
 
     @_m.logbook_trace("Calculate_Walk_utility")
     def calculate_walk(self, scenario):
-    # Walk utility stored in matrices mf419-mf427
-        emmebank = scenario.emmebank
-
+        util = _m.Modeller().tool("translink.emme.util")
+        # Walk utility stored in matrices mf419-mf427
         alt_spec_cons = str(1.40212378940)
         low_inc = str(0.385297511895)
         high_inc = str(-0.593371230302)
@@ -123,7 +122,6 @@ class ModeChoiceHBW(_m.Tool()):
         intrazonal = str(0.539985366897)
 
         mode_mf = 418
-        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf158",
                       "interval_min": 0,
@@ -157,7 +155,7 @@ class ModeChoiceHBW(_m.Tool()):
             spec_list.append(build_spec(expression_1, "mf925", constraint))
 
             result = "mf" + str(mode_mf + i)
-            emmebank.matrix(result).initialize(-9999)
+            spec_list.append(util.matrix_spec(result, "-9999"))
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
 
@@ -166,8 +164,9 @@ class ModeChoiceHBW(_m.Tool()):
 
     @_m.logbook_trace("Calculate_Rail_utility")
     def calculate_rail(self, scenario):
-    # Rail utility stored between matrices mf410-mf418
-        emmebank = scenario.emmebank
+        util = _m.Modeller().tool("translink.emme.util")
+
+        # Rail utility stored between matrices mf410-mf418
         alt_spec_cons = str(0.312309200971)
         low_inc = str(-0.256035812912)
         high_inc = str(-0.819321180333)
@@ -185,7 +184,6 @@ class ModeChoiceHBW(_m.Tool()):
         nfvrd = str(1.24641214674)
 
         mode_mf = 409
-        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf157",
                       "interval_min": 0,
@@ -243,7 +241,7 @@ class ModeChoiceHBW(_m.Tool()):
             spec_list.append(build_spec(expression_1, "mf925", constraint))
 
             result = "mf" + str(mode_mf + i)
-            emmebank.matrix(result).initialize(-9999)
+            spec_list.append(util.matrix_spec(result, "-9999"))
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
 
@@ -252,8 +250,8 @@ class ModeChoiceHBW(_m.Tool()):
 
     @_m.logbook_trace("Calculate_Bus_utility")
     def calculate_bus(self, scenario):
-    # Bus utility stored between matrices mf401-mf409
-        emmebank = scenario.emmebank
+        util = _m.Modeller().tool("translink.emme.util")
+        # Bus utility stored between matrices mf401-mf409
 
         alt_spec_cons = str(-1.05896691913)
         low_inc = str(0.345931413405)
@@ -271,7 +269,6 @@ class ModeChoiceHBW(_m.Tool()):
         #relative_acc = str(-0.0154768780244)
 
         mode_mf = 400
-        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         constraint = {"od_values": "mf151",
                       "interval_min": 0,
@@ -323,7 +320,7 @@ class ModeChoiceHBW(_m.Tool()):
             spec_list.append(build_spec(expression_1, "mf925", constraint))
 
             result = "mf" + str(mode_mf + i)
-            emmebank.matrix(result).initialize(-9999)
+            spec_list.append(util.matrix_spec(result, "-9999"))
             expression = "mf925 + mf926"    #+  "+ mf927 "
             spec_list.append(build_spec(expression, result, constraint))
 
@@ -332,9 +329,9 @@ class ModeChoiceHBW(_m.Tool()):
 
     @_m.logbook_trace("Calculate_HOV3_utility")
     def calculate_hov3(self, scenario):
-    # HOV3 utility stored between matrices mf392-mf400
-        emmebank = scenario.emmebank
+        util = _m.Modeller().tool("translink.emme.util")
 
+        # HOV3 utility stored between matrices mf392-mf400
         alt_spec_cons = str(-3.49821743739)
         low_inc = str(0.356656133368)
         high_inc = str(-0.946021806284)
@@ -352,7 +349,6 @@ class ModeChoiceHBW(_m.Tool()):
         within_gy_not_rural = str(0.414261997087)
 
         mode_mf = 391
-        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
 
         # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
@@ -403,8 +399,8 @@ class ModeChoiceHBW(_m.Tool()):
 
     @_m.logbook_trace("Calculate_HOV2_utlity")
     def calculate_hov2(self, scenario):
-    # HOV2 utility stored between matrices mf383-mf391
-
+        util = _m.Modeller().tool("translink.emme.util")
+        # HOV2 utility stored between matrices mf383-mf391
         alt_spec_cons = str(-1.93452982905)
         low_inc = str(0.356656133368)
         high_inc = str(-0.651530442559)
@@ -422,7 +418,6 @@ class ModeChoiceHBW(_m.Tool()):
         within_gy_not_rural = str(0.594288895855)
 
         mode_mf = 382
-        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         # cbd: 1 if (ifeq(gyo,3) or ifeq(gyd,3))
         expression_2 = cbd + "*(((gy(p).eq.3)+(gy(q).eq.3)).ge.1)"
@@ -472,8 +467,9 @@ class ModeChoiceHBW(_m.Tool()):
 
     @_m.logbook_trace("Calculate_SOV_utility")
     def calculate_sov(self, scenario):
-    # SOV utility stored between matrices mf374-mf382
+        util = _m.Modeller().tool("translink.emme.util")
 
+        # SOV utility stored between matrices mf374-mf382
         high_inc = str(-0.613941251950)
         twoplus_cars = str(1.55180600932)
         cost_all_inc = str(-0.0643808590499)
@@ -487,7 +483,6 @@ class ModeChoiceHBW(_m.Tool()):
         rural = str(0.554132781574)
 
         mode_mf = 373
-        util = _m.Modeller().tool("translink.emme.util")
         spec_list = []
         for i in range(1, 10):
             expression = "0"
