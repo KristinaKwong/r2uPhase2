@@ -6,7 +6,6 @@
 ##---------------------------------------------------------------------
 import inro.modeller as _m
 
-compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 utilities = _m.Modeller().module("translink.emme.stage3.step5.utilities")
 build_spec = utilities.build_spec
 
@@ -408,7 +407,7 @@ class ModeChoiceHBUni(_m.Tool()):
         specs.append(util.matrix_spec("mf155", "mf138*mf142+mf139*mf143"))
         specs.append(util.matrix_spec("mf156", "mf120*mf142+mf128*mf143"))
         specs.append(util.matrix_spec("mf158", "(mf100.lt.15)"))
-        compute_matrix(specs, scenario)
+        util.compute_matrix(specs, scenario)
 
     #********
     #    ADD ON (rs)
@@ -416,6 +415,7 @@ class ModeChoiceHBUni(_m.Tool()):
     #********
     @_m.logbook_trace("Time slice home-base university")
     def time_slice_home_base_university(self, eb, scenario):
+        util = _m.Modeller().tool("translink.emme.util")
         #
         #    Preparing expressions for calculation
         #
@@ -518,7 +518,7 @@ class ModeChoiceHBUni(_m.Tool()):
                 result_name = "mf" + str(result + time_period)
                 expression = result_name + "+" + demand + "*mf" + str(703 + time_period)
                 spec_list.append(build_spec(expression, result_name))
-            compute_matrix(spec_list, scenario)
+            util.compute_matrix(spec_list, scenario)
 
 
     #********
@@ -608,4 +608,4 @@ class ModeChoiceHBUni(_m.Tool()):
         specs.append(util.matrix_spec("mf87", "mf87+mf825"))
         specs.append(util.matrix_spec("mf88", "mf88+mf832"))
 
-        compute_matrix(specs, scenario)
+        util.compute_matrix(specs, scenario)
