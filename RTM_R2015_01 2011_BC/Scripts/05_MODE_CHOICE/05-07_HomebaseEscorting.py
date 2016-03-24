@@ -75,7 +75,6 @@ class ModeChoiceHBEsc(_m.Tool()):
     def calculate_walk(self, scenario):
         util = _m.Modeller().tool("translink.emme.util")
         # Walk utility stored in matrices mf419-mf427
-        emmebank = scenario.emmebank
 
         alt_spec_cons = str(0.0868032781316)
         #low_inc = str(0.257877368791)
@@ -129,7 +128,7 @@ class ModeChoiceHBEsc(_m.Tool()):
             spec_list.append(build_spec(expression_1, "mf925", constraint))
 
             result = "mf" + str(mode_mf + i)
-            emmebank.matrix(result).initialize(-9999)
+            spec_list.append(util.matrix_spec(result, "-9999"))
             expression = "(mf925 + mf926 + mf927)"
             spec_list.append(build_spec(expression, result, constraint))
         util.compute_matrix(spec_list, scenario)
@@ -139,7 +138,6 @@ class ModeChoiceHBEsc(_m.Tool()):
     def calculate_rail(self, scenario):
         util = _m.Modeller().tool("translink.emme.util")
         # Rail utility stored between matrices mf410-mf418
-        emmebank = scenario.emmebank
 
         alt_spec_cons = str(-4.67171026411)
         #high_inc = str(-0.893515916582)
@@ -207,7 +205,7 @@ class ModeChoiceHBEsc(_m.Tool()):
             spec_list.append(build_spec(expression_1, "mf925", constraint))
 
             result = "mf" + str(mode_mf + i)
-            emmebank.matrix(result).initialize(-9999)
+            spec_list.append(util.matrix_spec(result, "-9999"))
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
         util.compute_matrix(spec_list, scenario)
@@ -217,7 +215,6 @@ class ModeChoiceHBEsc(_m.Tool()):
     def calculate_bus(self, scenario):
         util = _m.Modeller().tool("translink.emme.util")
         # Bus utility stored between matrices mf401-mf409
-        emmebank = scenario.emmebank
 
         alt_spec_cons = str(-6.58474918593)
 
@@ -286,7 +283,7 @@ class ModeChoiceHBEsc(_m.Tool()):
             spec_list.append(build_spec(expression_1, "mf925", constraint))
 
             result = "mf" + str(mode_mf + i)
-            emmebank.matrix(result).initialize(-9999)
+            spec_list.append(util.matrix_spec(result, "-9999"))
             expression = "mf925 + mf926 + mf927"
             spec_list.append(build_spec(expression, result, constraint))
         util.compute_matrix(spec_list, scenario)
@@ -296,7 +293,6 @@ class ModeChoiceHBEsc(_m.Tool()):
     def calculate_hov2(self, scenario):
         util = _m.Modeller().tool("translink.emme.util")
     # HOV2 utility stored between matrices mf383-mf391
-        emmebank = scenario.emmebank
 
         alt_spec_cons = str(0.915606740026)
         low_inc = str(0.375495689886)
@@ -374,7 +370,6 @@ class ModeChoiceHBEsc(_m.Tool()):
     def calculate_sov(self, scenario):
         util = _m.Modeller().tool("translink.emme.util")
     # SOV utility stored between matrices mf374-mf382
-        emmebank = scenario.emmebank
 
         low_inc = str(0.415284584773)
         twoplus_cars = str(0.657877160143)
