@@ -9,8 +9,6 @@ import inro.modeller as _m
 import os
 import contextlib as _context
 
-compute_matrix = _m.Modeller().tool(
-    "inro.emme.matrix_calculation.matrix_calculator")
 process_matrix_trans = _m.Modeller().tool(
     "inro.emme.data.matrix.matrix_transaction")
 export_matrices = _m.Modeller().tool(
@@ -134,12 +132,12 @@ def calculate_probabilities(scenario, nests, theta, utility_start_id=374, result
                 denom_result = scratch_mat_ids.pop()
                 denom_result.name = "Ndem%d" % i
                 denom_result.description = "Denominator for nest %d (temp)" % i
-                spec_list.append(util.matrix_spec(denom_result, expression))
+                spec_list.append(util.matrix_spec(denom_result.id, expression))
 
                 util_result = scratch_mat_ids.pop()
                 util_result.name = "Nutil%d" % i
                 util_result.description = "Utility for nest %d (temp)" % i
-                spec_list.append(util.matrix_spec(util_result, "(%s) ^ %s" % (denom_result.id, theta)))
+                spec_list.append(util.matrix_spec(util_result.id, "(%s) ^ %s" % (denom_result.id, theta)))
                 nest_utility.append(util_result.id)
 
                 nest_expression.append([nest_items, exponent_items, util_result.id, denom_result.id])
@@ -148,7 +146,7 @@ def calculate_probabilities(scenario, nests, theta, utility_start_id=374, result
             full_denominator = scratch_mat_ids.pop()
             full_denominator.name = "denom"
             full_denominator.description = "Denominator for total nest"
-            spec_list.append(util.matrix_spec(full_denominator, denominator_expr))
+            spec_list.append(util.matrix_spec(full_denominator.id, denominator_expr))
 
             for nest_items, exponent_items, utility, nest_denominator in nest_expression:
                 for item, item_exp in zip(nest_items, exponent_items):
@@ -157,7 +155,7 @@ def calculate_probabilities(scenario, nests, theta, utility_start_id=374, result
                     result = "mf%s" % (result_start_id + segment + item * 9)
                     spec_list.append(util.matrix_spec(result, expression))
 
-        util.compute_matrix(spec_list, scenario)
+        util.compute_matrix(spec_list)
 
 
 @_context.contextmanager
