@@ -69,15 +69,15 @@ class BusAssignment(_m.Tool()):
             "type": "STANDARD_TRANSIT_ASSIGNMENT"
         }
 
-        demand_list = ['mf853', 'mf866']
-        travel_times_list = [['mf933', 'mf934', 'mf936', 'mf935'], ['mf945', 'mf946', 'mf948', 'mf947']]
+        demand_list = ["mf853", "mf866"]
+        travel_times_list = [["mf933", "mf934", "mf936", "mf935"], ["mf945", "mf946", "mf948", "mf947"]]
         # TODO: fix "for case" paradigm
         for i in range(2):
-            spec_as_dict['demand'] = demand_list[i]
-            spec_as_dict['od_results']['total_waiting_times'] = travel_times_list[i][0]
-            spec_as_dict['od_results']['by_mode_subset']['in_vehicle_times'] = travel_times_list[i][1]
-            spec_as_dict['od_results']['by_mode_subset']['aux_transit_times'] = travel_times_list[i][2]
-            spec_as_dict['od_results']['by_mode_subset']['avg_boardings'] = travel_times_list[i][3]
+            spec_as_dict["demand"] = demand_list[i]
+            spec_as_dict["od_results"]["total_waiting_times"] = travel_times_list[i][0]
+            spec_as_dict["od_results"]["by_mode_subset"]["in_vehicle_times"] = travel_times_list[i][1]
+            spec_as_dict["od_results"]["by_mode_subset"]["aux_transit_times"] = travel_times_list[i][2]
+            spec_as_dict["od_results"]["by_mode_subset"]["avg_boardings"] = travel_times_list[i][3]
             if i == 0:
                 busassign(spec_as_dict, scenario=scenarioam)
             if i == 1:

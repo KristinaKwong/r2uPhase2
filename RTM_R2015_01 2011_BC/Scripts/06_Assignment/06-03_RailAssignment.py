@@ -187,15 +187,15 @@ class Rail_Assignment(_m.Tool()):
                     "type": "EXTENDED_TRANSIT_ASSIGNMENT"
                 }
 
-        small_demand_list = ['ms160', 'ms160']
-        demand_list = ['mf854', 'mf867']
+        small_demand_list = ["ms160", "ms160"]
+        demand_list = ["mf854", "mf867"]
 
-        ## added a third parameter to distinguish between Rail Assignments, RaType0 skims with '3.5' factor, RaType1 skims with JLA
+        ## added a third parameter to distinguish between Rail Assignments, RaType0 skims with "3.5" factor, RaType1 skims with JLA
         RaType0=0
         RaType1=1
         for i in range(2):
-            spec_as_dict['demand'] = small_demand_list[i]
-            spec_as_dict_JL['demand'] = demand_list[i]
+            spec_as_dict["demand"] = small_demand_list[i]
+            spec_as_dict_JL["demand"] = demand_list[i]
             if i == 0:
                 railassign(spec_as_dict, add_volumes="True", scenario=scenarioam)
                 RailSkim(i, scenarioam, RaType0)
