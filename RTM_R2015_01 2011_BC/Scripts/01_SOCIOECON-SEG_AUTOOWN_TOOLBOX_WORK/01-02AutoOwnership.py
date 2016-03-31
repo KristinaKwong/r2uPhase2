@@ -40,22 +40,22 @@ class AutoOwnershipTool(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        lowinc0 = AutoOwnCoeff.get('lowinc0', [0])[0]
-        hiinc0 = AutoOwnCoeff.get('hiinc0', [0])[0]
-        traccc0 = AutoOwnCoeff.get('traccc0', [0])[0]
-        dens_c0 = AutoOwnCoeff.get('dens_c0', [0])[0]
-        wrkr0_c0 = AutoOwnCoeff.get('wrkr0_c0', [0])[0]
-        Beta00199 = AutoOwnCoeff.get('Beta00199', [0])[0]
+        lowinc0 = AutoOwnCoeff.get("lowinc0", [0])[0]
+        hiinc0 = AutoOwnCoeff.get("hiinc0", [0])[0]
+        traccc0 = AutoOwnCoeff.get("traccc0", [0])[0]
+        dens_c0 = AutoOwnCoeff.get("dens_c0", [0])[0]
+        wrkr0_c0 = AutoOwnCoeff.get("wrkr0_c0", [0])[0]
+        Beta00199 = AutoOwnCoeff.get("Beta00199", [0])[0]
 
         ##scratch work MO coefficients
-        crsh2500l = AutoOwnCoeff.get('crsh2500l', [0])[0]
-        crsh2500h = AutoOwnCoeff.get('crsh2500h', [0])[0]
-        crsh500p0 = AutoOwnCoeff.get('crsh500p0', [0])[0]
-        sen20c0 = AutoOwnCoeff.get('sen20c0', [0])[0]
-        sen25c0 = AutoOwnCoeff.get('sen25c0', [0])[0]
-        van_c0 = AutoOwnCoeff.get('van_c0', [0])[0]
-        cbd_c0l = AutoOwnCoeff.get('cbd_c0l', [0])[0]
-        burn_c0 = AutoOwnCoeff.get('burn_c0', [0])[0]
+        crsh2500l = AutoOwnCoeff.get("crsh2500l", [0])[0]
+        crsh2500h = AutoOwnCoeff.get("crsh2500h", [0])[0]
+        crsh500p0 = AutoOwnCoeff.get("crsh500p0", [0])[0]
+        sen20c0 = AutoOwnCoeff.get("sen20c0", [0])[0]
+        sen25c0 = AutoOwnCoeff.get("sen25c0", [0])[0]
+        van_c0 = AutoOwnCoeff.get("van_c0", [0])[0]
+        cbd_c0l = AutoOwnCoeff.get("cbd_c0l", [0])[0]
+        burn_c0 = AutoOwnCoeff.get("burn_c0", [0])[0]
 
         specs = []
 
@@ -125,19 +125,19 @@ class AutoOwnershipTool(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        bias1 = AutoOwnCoeff.get('1bias', [0])[0]
-        lowinc1 = AutoOwnCoeff.get('lowinc1', [0])[0]
-        hiinc1 = AutoOwnCoeff.get('hiinc1', [0])[0]
-        traccc1 = AutoOwnCoeff.get('traccc1', [0])[0]
-        dens_c1 = AutoOwnCoeff.get('dens_c1', [0])[0]
-        crsh2501 = AutoOwnCoeff.get('crsh2501', [0])[0]
-        crsh500p1 = AutoOwnCoeff.get('crsh500p1', [0])[0]
-        sen20c1 = AutoOwnCoeff.get('sen20c1', [0])[0]
-        sen25c1 = AutoOwnCoeff.get('sen25c1', [0])[0]
-        cbd_c1h = AutoOwnCoeff.get('cbd_c1h', [0])[0]
-        burn_c1 = AutoOwnCoeff.get('burn_c1', [0])[0]
-        wrkr3_c1 = AutoOwnCoeff.get('wrkr3_c1', [0])[0]
-        lrg_c1 = AutoOwnCoeff.get('lrg_c1', [0])[0]
+        bias1 = AutoOwnCoeff.get("1bias", [0])[0]
+        lowinc1 = AutoOwnCoeff.get("lowinc1", [0])[0]
+        hiinc1 = AutoOwnCoeff.get("hiinc1", [0])[0]
+        traccc1 = AutoOwnCoeff.get("traccc1", [0])[0]
+        dens_c1 = AutoOwnCoeff.get("dens_c1", [0])[0]
+        crsh2501 = AutoOwnCoeff.get("crsh2501", [0])[0]
+        crsh500p1 = AutoOwnCoeff.get("crsh500p1", [0])[0]
+        sen20c1 = AutoOwnCoeff.get("sen20c1", [0])[0]
+        sen25c1 = AutoOwnCoeff.get("sen25c1", [0])[0]
+        cbd_c1h = AutoOwnCoeff.get("cbd_c1h", [0])[0]
+        burn_c1 = AutoOwnCoeff.get("burn_c1", [0])[0]
+        wrkr3_c1 = AutoOwnCoeff.get("wrkr3_c1", [0])[0]
+        lrg_c1 = AutoOwnCoeff.get("lrg_c1", [0])[0]
 
         specs = []
         for auto_own_one in range(1, 40):
@@ -194,18 +194,18 @@ class AutoOwnershipTool(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        bias2 = AutoOwnCoeff.get('2bias', [0])
-        wrkr2_c23 = AutoOwnCoeff.get('wrkr2_c23', [0])
-        hiinc2 = AutoOwnCoeff.get('hiinc2', [0])[0]
-        wrkr0_c2 = AutoOwnCoeff.get('wrkr0_c2', [0])[0]
-        wrkr3_c2 = AutoOwnCoeff.get('wrkr3_c2', [0])[0]
+        bias2 = AutoOwnCoeff.get("2bias", [0])
+        wrkr2_c23 = AutoOwnCoeff.get("wrkr2_c23", [0])
+        hiinc2 = AutoOwnCoeff.get("hiinc2", [0])[0]
+        wrkr0_c2 = AutoOwnCoeff.get("wrkr0_c2", [0])[0]
+        wrkr3_c2 = AutoOwnCoeff.get("wrkr3_c2", [0])[0]
 
-        lrg_c2 = AutoOwnCoeff.get('lrg_c2', [0])[0]
+        lrg_c2 = AutoOwnCoeff.get("lrg_c2", [0])[0]
 
-        dens_c2 = AutoOwnCoeff.get('dens_c2', [0])[0]
-        burn_c2 = AutoOwnCoeff.get('burn_c2', [0])[0]
+        dens_c2 = AutoOwnCoeff.get("dens_c2", [0])[0]
+        burn_c2 = AutoOwnCoeff.get("burn_c2", [0])[0]
 
-        van_c3 = AutoOwnCoeff.get('van_c3', [0])[0]
+        van_c3 = AutoOwnCoeff.get("van_c3", [0])[0]
 
         specs = []
         for auto_own_one in range(1, 40):
@@ -259,14 +259,14 @@ class AutoOwnershipTool(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        bias3 = AutoOwnCoeff.get('3bias', [0])
-        wrkrs_c3 = AutoOwnCoeff.get('wrkrs_c3', [0])
+        bias3 = AutoOwnCoeff.get("3bias", [0])
+        wrkrs_c3 = AutoOwnCoeff.get("wrkrs_c3", [0])
 
-        dens_c3 = AutoOwnCoeff.get('dens_c3', [0])[0]
-        van_c3 = AutoOwnCoeff.get('van_c3', [0])[0]
-        rur_c3 = AutoOwnCoeff.get('rur_c3', [0])[0]
-        lrg_c3 = AutoOwnCoeff.get('lrg_c3', [0])[0]
-        crsh500p3 = AutoOwnCoeff.get('crsh500p3', [0])[0]
+        dens_c3 = AutoOwnCoeff.get("dens_c3", [0])[0]
+        van_c3 = AutoOwnCoeff.get("van_c3", [0])[0]
+        rur_c3 = AutoOwnCoeff.get("rur_c3", [0])[0]
+        lrg_c3 = AutoOwnCoeff.get("lrg_c3", [0])[0]
+        crsh500p3 = AutoOwnCoeff.get("crsh500p3", [0])[0]
 
         specs = []
         for auto_own_one in range(1, 40):
@@ -331,7 +331,7 @@ class AutoOwnershipTool(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        theta = AutoOwnCoeff.get('theta1', [0])[0]
+        theta = AutoOwnCoeff.get("theta1", [0])[0]
         utility_mo_num = 404
         result_mo_num = 560
         tiny = str(0.0000001)
