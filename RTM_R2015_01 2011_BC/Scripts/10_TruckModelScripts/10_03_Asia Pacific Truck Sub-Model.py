@@ -45,7 +45,7 @@ class AsiaPacificTruckModel(_m.Tool()):
                 matrix_file = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"AsiaPacificv1.txt")
                 process(transaction_file=matrix_file, throw_on_error=True)
 
-            #Distribute Asia Pacific matrix for 'Other locations' based on non-retail employment
+            #Distribute Asia Pacific matrix for "Other locations" based on non-retail employment
                 compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
 
@@ -115,11 +115,11 @@ class AsiaPacificTruckModel(_m.Tool()):
                     },
                     "type": "MATRIX_CALCULATION"
                 }
-                CalcList=['mf1017','mf1018','mf1019']
-                ResultList=['mf1020','mf1021','mf1022']
+                CalcList=["mf1017","mf1018","mf1019"]
+                ResultList=["mf1020","mf1021","mf1022"]
 
                 for i in range (len(CalcList)):
 
-                    Spec4['expression']=CalcList[i]+"*mo1005*md205"
-                    Spec4['result']=ResultList[i]
+                    Spec4["expression"]=CalcList[i]+"*mo1005*md205"
+                    Spec4["result"]=ResultList[i]
                     compute_matrix(Spec4)
