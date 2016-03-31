@@ -147,8 +147,8 @@ class DemandAdjustment(_m.Tool()):
             spec = translink_auto_assignment.generate_specification(
                 demands, stopping_criteria, num_processors)
             spec["path_analysis"] = path_analysis
-            spec['classes'][4]['results']['od_travel_times'] = {'shortest_paths': travel_time}
-            spec['classes'][4]['analysis'] = {'results': {'od_values': distance}}
+            spec["classes"][4]["results"]["od_travel_times"] = {"shortest_paths": travel_time}
+            spec["classes"][4]["analysis"] = {"results": {"od_values": distance}}
             assign_traffic(spec, scenario=scenario)
 
         ###########################################################################
@@ -168,9 +168,9 @@ class DemandAdjustment(_m.Tool()):
                             ["turn", "@tsov1+@tsov2+@tsov3+@tsov4+@tsov5", "@wsovt"],
                             ["turn", "@thov1+@thov2+@thov3+@thov4+@thov5", "@whovt"]]
         for kind, expression, result in expressions_list:
-            spec['expression'] = expression
-            spec['selections'] = selection_type[kind]
-            spec['result'] = result
+            spec["expression"] = expression
+            spec["selections"] = selection_type[kind]
+            spec["result"] = result
             network_calculator(spec, scenario=am_adj_scenario)
             network_calculator(spec, scenario=md_adj_scenario)
 
@@ -217,18 +217,18 @@ class DemandAdjustment(_m.Tool()):
             ["mf983", "mf64"]]
 
         for expression, result in expressions_list_am:
-            spec['expression'] = expression
-            spec['result'] = result
+            spec["expression"] = expression
+            spec["result"] = result
             compute_matrix(spec, scenario=scenario)
 
         for expression, result in expressions_list_md:
-            spec['expression'] = expression
-            spec['result'] = result
+            spec["expression"] = expression
+            spec["result"] = result
             compute_matrix(spec, scenario=scenario)
 
         ## Internal Matrix Adjustments using hybrid mix of difference and ratio factors
-        spec['constraint']['by_zone']['origins'] = "gy1-gy14"
-        spec['constraint']['by_zone']['destinations'] = "gy1-gy14"
+        spec["constraint"]["by_zone"]["origins"] = "gy1-gy14"
+        spec["constraint"]["by_zone"]["destinations"] = "gy1-gy14"
         expressions_list_am = [
             ["(mf843+mf2+mf843*mf15)/2", "mf20"],
             ["(mf844+mf3+mf844*mf15)/2", "mf21"],
@@ -254,21 +254,21 @@ class DemandAdjustment(_m.Tool()):
             ["(mf865+mf44*mf993*mf994+mf865*mf48)/2", "mf62"]]
 
         for expression, result in expressions_list_am:
-            spec['expression'] = expression
-            spec['result'] = result
+            spec["expression"] = expression
+            spec["result"] = result
             compute_matrix(spec, scenario=scenario)
 
         for expression, result in expressions_list_md:
-            spec['expression'] = expression
-            spec['result'] = result
+            spec["expression"] = expression
+            spec["result"] = result
             compute_matrix(spec, scenario=scenario)
 
         ## Use ratio method only for internal matrices if hybrid results in negatives
-        spec['constraint']['by_zone']['origins'] = "gy1-gy14"
-        spec['constraint']['by_zone']['destinations'] = "gy1-gy14"
-        spec['constraint']['by_value']['interval_min'] = 0
-        spec['constraint']['by_value']['interval_max'] = 99999
-        spec['constraint']['by_value']['condition'] = "EXCLUDE"
+        spec["constraint"]["by_zone"]["origins"] = "gy1-gy14"
+        spec["constraint"]["by_zone"]["destinations"] = "gy1-gy14"
+        spec["constraint"]["by_value"]["interval_min"] = 0
+        spec["constraint"]["by_value"]["interval_max"] = 99999
+        spec["constraint"]["by_value"]["condition"] = "EXCLUDE"
         expressions_list_am = [
             ["mf843*mf15", "mf20", "mf20"],
             ["mf844*mf15", "mf21", "mf21"],
@@ -294,22 +294,22 @@ class DemandAdjustment(_m.Tool()):
             ["mf865*mf48", "mf62", "mf62"]]
 
         for expression, by_value_mat, result in expressions_list_am:
-            spec['expression'] = expression
-            spec['result'] = result
-            spec['constraint']['by_value']['od_values'] = by_value_mat
+            spec["expression"] = expression
+            spec["result"] = result
+            spec["constraint"]["by_value"]["od_values"] = by_value_mat
             compute_matrix(spec, scenario=scenario)
 
         for expression, by_value_mat, result in expressions_list_md:
-            spec['expression'] = expression
-            spec['result'] = result
-            spec['constraint']['by_value']['od_values'] = by_value_mat
+            spec["expression"] = expression
+            spec["result"] = result
+            spec["constraint"]["by_value"]["od_values"] = by_value_mat
             compute_matrix(spec, scenario=scenario)
             ## Use ratio method for externals if hybrid results in negatives
-        spec['constraint']['by_zone']['origins'] = "gy1-gy15"
-        spec['constraint']['by_zone']['destinations'] = "gy1-gy15"
-        spec['constraint']['by_value']['interval_min'] = 0
-        spec['constraint']['by_value']['interval_max'] = 99999
-        spec['constraint']['by_value']['condition'] = "EXCLUDE"
+        spec["constraint"]["by_zone"]["origins"] = "gy1-gy15"
+        spec["constraint"]["by_zone"]["destinations"] = "gy1-gy15"
+        spec["constraint"]["by_value"]["interval_min"] = 0
+        spec["constraint"]["by_value"]["interval_max"] = 99999
+        spec["constraint"]["by_value"]["condition"] = "EXCLUDE"
         expressions_list_am = [
             ["mf978*mf15", "mf19", "mf19"],
             ["mf979*mf16", "mf25", "mf25"],
@@ -324,20 +324,20 @@ class DemandAdjustment(_m.Tool()):
         ]
 
         for expression, by_value_mat, result in expressions_list_am:
-            spec['expression'] = expression
-            spec['result'] = result
-            spec['constraint']['by_value']['od_values'] = by_value_mat
+            spec["expression"] = expression
+            spec["result"] = result
+            spec["constraint"]["by_value"]["od_values"] = by_value_mat
             compute_matrix(spec, scenario=scenario)
         for expression, by_value_mat, result in expressions_list_md:
-            spec['expression'] = expression
-            spec['result'] = result
-            spec['constraint']['by_value']['od_values'] = by_value_mat
+            spec["expression"] = expression
+            spec["result"] = result
+            spec["constraint"]["by_value"]["od_values"] = by_value_mat
             compute_matrix(spec, scenario=scenario)
             ### Aggregate external SOV and HOV with nonwork_med/high SOV (mf24) and nonwork_med/high HOV (mf30)
 
-        spec['constraint']['by_value']['interval_min'] = -99999
-        spec['constraint']['by_value']['interval_max'] = 99999
-        spec['constraint']['by_value']['condition'] = "INCLUDE"
+        spec["constraint"]["by_value"]["interval_min"] = -99999
+        spec["constraint"]["by_value"]["interval_max"] = 99999
+        spec["constraint"]["by_value"]["condition"] = "INCLUDE"
         expressions_list_am = [
             ["mf19+mf24", "mf24", "mf24"],
             ["mf25+mf30", "mf30", "mf30"]
@@ -348,15 +348,15 @@ class DemandAdjustment(_m.Tool()):
         ]
 
         for expression, by_value_mat, result in expressions_list_am:
-            spec['expression'] = expression
-            spec['result'] = result
-            spec['constraint']['by_value']['od_values'] = by_value_mat
+            spec["expression"] = expression
+            spec["result"] = result
+            spec["constraint"]["by_value"]["od_values"] = by_value_mat
             compute_matrix(spec, scenario=scenario)
 
         for expression, by_value_mat, result in expressions_list_md:
-            spec['expression'] = expression
-            spec['result'] = result
-            spec['constraint']['by_value']['od_values'] = by_value_mat
+            spec["expression"] = expression
+            spec["result"] = result
+            spec["constraint"]["by_value"]["od_values"] = by_value_mat
             compute_matrix(spec, scenario=scenario)
 
     @_m.logbook_trace("Matrix Batchin")
