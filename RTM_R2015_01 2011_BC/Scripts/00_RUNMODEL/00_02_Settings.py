@@ -45,7 +45,7 @@ Whitespace is ignored.
 
         pb.add_select_file(tool_attribute_name="file_name",
                            window_type="file",
-                           file_filter='*.csv',
+                           file_filter="*.csv",
                            start_path=emmebank_dir,
                            title="Select settings.csv file: ",
                            note="File must be csv file.")
@@ -82,18 +82,18 @@ Whitespace is ignored.
         util.initmat(eb, "ms149", "year", "Model Horizon Year", 0)
 
         # Scalars to hold corresponding settings
-        input_mats = {'am_scenario': 'ms140',
-                      'md_scenario': 'ms141',
-                      'num_processors': 'ms142',
-                      'create_scenarios': 'ms143',
-                      'park_cost_adjust': 'ms144',
-                      'cost_sens': 'ms145',
-                      'mode_choice_sens': 'ms146',
-                      'toll_assign_sens': 'ms147',
-                      'toll_dist_sens': 'ms148',
-                      'congested_transit': 'ms138',
-                      'park_and_ride': 'ms139',
-                      'model_year': 'ms149'}
+        input_mats = {"am_scenario": "ms140",
+                      "md_scenario": "ms141",
+                      "num_processors": "ms142",
+                      "create_scenarios": "ms143",
+                      "park_cost_adjust": "ms144",
+                      "cost_sens": "ms145",
+                      "mode_choice_sens": "ms146",
+                      "toll_assign_sens": "ms147",
+                      "toll_dist_sens": "ms148",
+                      "congested_transit": "ms138",
+                      "park_and_ride": "ms139",
+                      "model_year": "ms149"}
 
         truth_values = {"on": 1, "off": 0}
         # prepare report to logbook
@@ -102,7 +102,7 @@ Whitespace is ignored.
 
         # Read data from file
         # Header should be Label, Setting, Value
-        with open(file_name, 'r') as settings_file:
+        with open(file_name, "r") as settings_file:
             reader = csv.DictReader(settings_file, skipinitialspace=True)
             for line in reader:
                 matrix = input_mats[line["Label"]]
