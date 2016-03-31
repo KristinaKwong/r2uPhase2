@@ -103,7 +103,7 @@ class SocioEconomicSegmentation(_m.Tool()):
         ##    List to hold matrix objects
         mo_value = []
 
-        ##    Loop to append all result matrices onto the variable 'mo_value'
+        ##    Loop to append all result matrices onto the variable "mo_value"
         for mo_num in range(54, 59) + range(61, 74) + range(74, 113) + range(113, 269) + range(269, 389) + range(389, 392) + range(392, 398) + range(404, 560) + range(560, 716) + range(716, 719):
             mo_value.append(eb.matrix("mo%d" % mo_num))
 
@@ -112,7 +112,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
         ## Export all matrix data
         export_matrices(export_file=output_file,
-                        field_separator=' ',
+                        field_separator=" ",
                         matrices=mo_value,
                         export_format="PROMPT_DATA_FORMAT",
                         skip_default_values=True,
@@ -120,24 +120,24 @@ class SocioEconomicSegmentation(_m.Tool()):
 
         ## Export matrix data aggregated to the gy ensemble
         export_matrices(export_file=output_file_gy,
-                        field_separator=' ',
+                        field_separator=" ",
                         matrices=mo_value,
-                        partition_aggregation={'origins': 'gy', 'operator': 'sum'},
+                        partition_aggregation={"origins": "gy", "operator": "sum"},
                         export_format="PROMPT_DATA_FORMAT",
                         skip_default_values=True,
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         ## Export matrix data aggregated to the gu ensemble
         export_matrices(export_file=output_file_gu,
-                        field_separator=' ',
+                        field_separator=" ",
                         matrices=mo_value,
-                        partition_aggregation={'origins': 'gu', 'operator': 'sum'},
+                        partition_aggregation={"origins": "gu", "operator": "sum"},
                         export_format="PROMPT_DATA_FORMAT",
                         skip_default_values=True,
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         for Output in [output_file, output_file_gy, output_file_gu]:
-            f = open(Output, 'a')
+            f = open(Output, "a")
             f.write("c ------Data Sources:\n")
             f.write("c " + HHWorkerRate + "\n")
             f.write("c " + IncomeData + "\n")
@@ -276,7 +276,7 @@ class SocioEconomicSegmentation(_m.Tool()):
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         ##    Dictionary for senior proportion lookup
-        sr_prop_flag = {'0': "INCLUDE", '1': "EXCLUDE"}
+        sr_prop_flag = {"0": "INCLUDE", "1": "EXCLUDE"}
 
         specs = []
         for count in range(1, HHData.__len__(), 4):
@@ -303,7 +303,7 @@ class SocioEconomicSegmentation(_m.Tool()):
         ##    Dictionary for senior proprtion lookup - set senior proportion constraint
         ## 0 - less than 20% Sr. Proportion
         ## 1 - more than 20% Sr. Proportion
-        sr_prop_flag = {'0': "INCLUDE", '1': "EXCLUDE"}
+        sr_prop_flag = {"0": "INCLUDE", "1": "EXCLUDE"}
 
         specs = []
         for num_workers in range(0, 4):
@@ -339,8 +339,8 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Store AutoOwnCoefficients")
     def Store_AutoOwnCoeff(self, AutoOwnCoefficients):
-        with open(AutoOwnCoefficients, 'rb') as f:
-            reader = csv.reader(f, dialect='excel')
+        with open(AutoOwnCoefficients, "rb") as f:
+            reader = csv.reader(f, dialect="excel")
             header = reader.next()
             data = [header]
             #dict_data = dict((rows[0]:rows[1]) for rows in reader)
@@ -351,8 +351,8 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Store IncomeData")
     def Store_IncomeData(self, IncomeData):
-        with open(IncomeData, 'rb') as f:
-            reader = csv.reader(f, dialect='excel')
+        with open(IncomeData, "rb") as f:
+            reader = csv.reader(f, dialect="excel")
             header = reader.next()
             data = [header]
             for row in reader:
@@ -361,8 +361,8 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Store HHWorkerRates")
     def Store_TripRates(self, HHWorkerRate):
-        with open(HHWorkerRate, 'rb') as f:
-            reader = csv.reader(f, dialect='excel')
+        with open(HHWorkerRate, "rb") as f:
+            reader = csv.reader(f, dialect="excel")
             header = reader.next()
             data = [header]
             for row in reader:
