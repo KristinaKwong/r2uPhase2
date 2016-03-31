@@ -480,7 +480,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                       dmBus, dmRail, dmActive]
         #
         #    Since grade school trips are lack of observations for time period T1,T3 and T6, TSF of those time period are borrowed from university/ecorting purpose
-        #    PM peak hour -  auto's TSF are provided by Delcan, transit and active modes are from TL
+        #    PM peak hour -  auto TSF are provided by Delcan, transit and active modes are from TL
         #
         aTSFactor = [
             ["GSchAutoT1", "GSchAutoT2", "GSchAutoT3", "GSchAutoT4", "GSchAutoT5", "GSchAutoT6", "GSchAutoT8"],

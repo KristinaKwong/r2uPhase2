@@ -636,7 +636,7 @@ class ModeChoiceHBShopping(_m.Tool()):
         msAutOccNhbO2PlusM = "ms98"
 
         #
-        #    For shopping's TSF was blended with social and recreation, it over-estimates the shopping trip during amph.
+        #    For shopping TSF was blended with social and recreation, it over-estimates the shopping trip during amph.
         #    An adjustment factor,35%, is used to factor down the demand.
         #
         specs = []

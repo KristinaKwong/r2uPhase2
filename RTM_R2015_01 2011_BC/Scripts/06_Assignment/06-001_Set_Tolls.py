@@ -41,7 +41,7 @@ class SetTolls(_m.Tool()):
         network_calc = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         with _m.logbook_trace("Read new tolls in from file"):
             # TODO: see if this can be replaced by input attribute values tool
-            with open(toll_file, 'r') as f:
+            with open(toll_file, "r") as f:
                 #read toll csv file and check number of toll links to set
                 getlines = f.readlines()
                 tollsize = len(getlines)
