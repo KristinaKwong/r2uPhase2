@@ -43,7 +43,7 @@ class TripProd(_m.Tool()):
 
         self.Matrix_Batchins(eb)
 
-        ##            All the trip rates are read in and stored inthis 'TripRate_Data'
+        ##            All the trip rates are read in and stored inthis "TripRate_Data"
         TripRate_Data = self.Store_TripRates(TripRateFile)
 
         Calibration_Factors = self.Store_CalibrationFactors(CalibrationFactors)
@@ -88,7 +88,7 @@ class TripProd(_m.Tool()):
         for i in range(161, 269):
             mo_value.append(eb.matrix("mo" + str(i)))
 
-        ##    Two loops to append all result matrices onto the variable 'mo_value'
+        ##    Two loops to append all result matrices onto the variable "mo_value"
         for purpose_index in range(1, 10):
             mo_result_num = int(FirstResultMoNum) + (purpose_index - 1) * (96 / 2)
             for mo_num in range(0, 96 / 2):
@@ -103,7 +103,7 @@ class TripProd(_m.Tool()):
         export_matrices_gy = _m.Modeller().tool("inro.emme.data.matrix.export_matrices")
 
         export_matrices(export_file=output_file,
-                        field_separator=' ',
+                        field_separator=" ",
                         matrices=mo_value,
                         export_format="PROMPT_DATA_FORMAT",
                         skip_default_values=True,
@@ -111,24 +111,24 @@ class TripProd(_m.Tool()):
 
         ## Export matrix data aggregated to the gy ensemble
         export_matrices_gy(export_file=output_file_gy,
-                           field_separator=' ',
+                           field_separator=" ",
                            matrices=mo_value,
-                           partition_aggregation={'origins': 'gy', 'operator': 'sum'},
+                           partition_aggregation={"origins": "gy", "operator": "sum"},
                            export_format="PROMPT_DATA_FORMAT",
                            skip_default_values=True,
                            full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         ## Export matrix data aggregated to the gu ensemble
         export_matrices_gy(export_file=output_file_gu,
-                           field_separator=' ',
+                           field_separator=" ",
                            matrices=mo_value,
-                           partition_aggregation={'origins': 'gu', 'operator': 'sum'},
+                           partition_aggregation={"origins": "gu", "operator": "sum"},
                            export_format="PROMPT_DATA_FORMAT",
                            skip_default_values=True,
                            full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         for Output in [output_file, output_file_gy, output_file_gu]:
-            f = open(Output, 'a')
+            f = open(Output, "a")
             f.write("c ------Data Sources:\n")
             f.write("c " + TripRateFile + "\n")
             f.write("c " + CalibrationFactors + "\n")
@@ -254,7 +254,7 @@ class TripProd(_m.Tool()):
 
         report = compute_matrix(specs)
 
-    ##  mo404-mo835 Performs the actual matrix calculation from the LandUse 'mo's with the TripRates for the various trip purposes
+    ##  mo404-mo835 Performs the actual matrix calculation from the LandUse "mo"s with the TripRates for the various trip purposes
     @_m.logbook_trace("Perform Matrix calculations")
     def TripProduction(self, TripRate_Data, FirstResultMoNum):
         util = _m.Modeller().tool("translink.emme.util")
@@ -282,8 +282,8 @@ class TripProd(_m.Tool()):
 
     @_m.logbook_trace("Store_CalibrationFactors")
     def Store_CalibrationFactors(self, CalibrationFactors):
-        with open(CalibrationFactors, 'rb') as f:
-            reader = csv.reader(f, dialect='excel')
+        with open(CalibrationFactors, "rb") as f:
+            reader = csv.reader(f, dialect="excel")
             header = reader.next()
             data = [header]
             for row in reader:
@@ -293,8 +293,8 @@ class TripProd(_m.Tool()):
     ##    Stores the triprates into a data structure and return it
     @_m.logbook_trace("Store_TripRates")
     def Store_TripRates(self, TripRateFile):
-        with open(TripRateFile, 'rb') as f:
-            reader = csv.reader(f, dialect='excel')
+        with open(TripRateFile, "rb") as f:
+            reader = csv.reader(f, dialect="excel")
             header = reader.next()
             data = [header]
             for row in reader:
