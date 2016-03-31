@@ -627,7 +627,7 @@ class ModeChoiceHBW(_m.Tool()):
             utilities.process_timeslicing_list(eb, scenario, files)
             #    Range was increased to 7 from 6 time period
             spec_list = []
-            for time_period in range(0, 7):
+            for time_period in range(4, 6):
                 result_name = "mf" + str(result + time_period)
                 expression = result_name + "+" + demand + "*mf" + str(703 + time_period)
                 spec_list.append(build_spec(expression, result_name))
