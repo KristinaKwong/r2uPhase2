@@ -602,18 +602,18 @@ class ModeChoiceHBW(_m.Tool()):
         #    SOV and 2-per by income range,
         #
         arFileName = [
-            ['wkSOV1T1', 'wkSOV1T2', 'wkSOV1T3', 'wkSOV1T4', 'wkSOV1T5', 'wkAutoT6', 'wkSOV1T8'],
-            ['wkSOV2T1', 'wkSOV2T2', 'wkSOV2T3', 'wkSOV2T4', 'wkSOV2T5', 'wkAutoT6', 'wkSOV2T8'],
-            ['wkSOV3T1', 'wkSOV3T2', 'wkSOV3T3', 'wkSOV3T4', 'wkSOV3T5', 'wkAutoT6', 'wkSOV3T8'],
-            ['wk2perT1', 'wk2perT2', 'wk2perT3', 'wk2perT4', 'wk2perT5', 'wkAutoT6', 'wk2perT8'],
-            ['wk2perT1', 'wk2perT2', 'wk2perT3', 'wk2perT4', 'wk2perT5', 'wkAutoT6', 'wk2perT8'],
-            ['wk2perT1', 'wk2perT2', 'wk2perT3', 'wk2perT4', 'wk2perT5', 'wkAutoT6', 'wk2perT8'],
-            ['wk2perT1', 'wk2perT2', 'wk2perT3', 'wk2perT4', 'wk2perT5', 'wkAutoT6', 'wk2perT8'],
-            ['wk2perT1', 'wk2perT2', 'wk2perT3', 'wk2perT4', 'wk2perT5', 'wkAutoT6', 'wk2perT8'],
-            ['wk2perT1', 'wk2perT2', 'wk2perT3', 'wk2perT4', 'wk2perT5', 'wkAutoT6', 'wk2perT8'],
-            ['wkTransitT1', 'wkTrnBusT2', 'wkTransitT3', 'wkTrnBusT4', 'wkTrnBusT5', 'wkTransitT6', 'wkTrnBusT8'],
-            ['wkTransitT1', 'wkRailT2', 'wkTransitT3', 'wkRailT4', 'wkRailT5', 'wkTransitT6', 'wkRailT8'],
-            ['wkActiveT1', 'wkActiveT2', 'wkActiveT3', 'wkActiveT4', 'wkActiveT5', 'wkActiveT6', 'wkActiveT7'],
+            ["wkSOV1T1", "wkSOV1T2", "wkSOV1T3", "wkSOV1T4", "wkSOV1T5", "wkAutoT6", "wkSOV1T8"],
+            ["wkSOV2T1", "wkSOV2T2", "wkSOV2T3", "wkSOV2T4", "wkSOV2T5", "wkAutoT6", "wkSOV2T8"],
+            ["wkSOV3T1", "wkSOV3T2", "wkSOV3T3", "wkSOV3T4", "wkSOV3T5", "wkAutoT6", "wkSOV3T8"],
+            ["wk2perT1", "wk2perT2", "wk2perT3", "wk2perT4", "wk2perT5", "wkAutoT6", "wk2perT8"],
+            ["wk2perT1", "wk2perT2", "wk2perT3", "wk2perT4", "wk2perT5", "wkAutoT6", "wk2perT8"],
+            ["wk2perT1", "wk2perT2", "wk2perT3", "wk2perT4", "wk2perT5", "wkAutoT6", "wk2perT8"],
+            ["wk2perT1", "wk2perT2", "wk2perT3", "wk2perT4", "wk2perT5", "wkAutoT6", "wk2perT8"],
+            ["wk2perT1", "wk2perT2", "wk2perT3", "wk2perT4", "wk2perT5", "wkAutoT6", "wk2perT8"],
+            ["wk2perT1", "wk2perT2", "wk2perT3", "wk2perT4", "wk2perT5", "wkAutoT6", "wk2perT8"],
+            ["wkTransitT1", "wkTrnBusT2", "wkTransitT3", "wkTrnBusT4", "wkTrnBusT5", "wkTransitT6", "wkTrnBusT8"],
+            ["wkTransitT1", "wkRailT2", "wkTransitT3", "wkRailT4", "wkRailT5", "wkTransitT6", "wkRailT8"],
+            ["wkActiveT1", "wkActiveT2", "wkActiveT3", "wkActiveT4", "wkActiveT5", "wkActiveT6", "wkActiveT7"],
         ]
         #********
         #    Start matrix number to store the demand by TOD

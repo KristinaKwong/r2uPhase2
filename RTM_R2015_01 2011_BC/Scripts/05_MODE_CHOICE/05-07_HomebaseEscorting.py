@@ -527,20 +527,20 @@ class ModeChoiceHBEsc(_m.Tool()):
                       dmBus, dmRail, dmActive]
 
         aTSFactor = [
-            ['UniEscoSOVT1', 'UniEscoSOVT2', 'UniEscoSOVT3', 'UniEscoSOVT4', 'UniEscoSOVT5', 'UniEscoAutoT6',
-             'UniEscoSOVT8'],
-            ['UniEscoSOVT1', 'UniEscoSOVT2', 'UniEscoSOVT3', 'UniEscoSOVT4', 'UniEscoSOVT5', 'UniEscoAutoT6',
-             'UniEscoSOVT8'],
-            ['UniEsco2perT1', 'UniEsco2perT2', 'UniEsco2perT3', 'UniEsco2perT4', 'UniEsco2perT5', 'UniEscoAutoT6',
-             'UniEsco2perT8'],
-            ['UniEsco2perT1', 'UniEsco2perT2', 'UniEsco2perT3', 'UniEsco2perT4', 'UniEsco2perT5', 'UniEscoAutoT6',
-             'UniEsco2perT8'],
-            ['UniEscoTransitT1', 'UniEscoTransitT2', 'UniEscoTransitT3', 'UniEscoTransitT4', 'UniEscoTransitT5',
-             'UniEscoTransitT6', 'UniEscoTransitT7'],
-            ['UniEscoTransitT1', 'UniEscoTransitT2', 'UniEscoTransitT3', 'UniEscoTransitT4', 'UniEscoTransitT5',
-             'UniEscoTransitT6', 'UniEscoTransitT7'],
-            ['UniEscoActiveT1', 'UniEscoActiveT2', 'UniEscoActiveT3', 'UniEscoActiveT4', 'UniEscoActiveT5',
-             'UniEscoActiveT6', 'UniEscoActiveT7']]
+            ["UniEscoSOVT1", "UniEscoSOVT2", "UniEscoSOVT3", "UniEscoSOVT4", "UniEscoSOVT5", "UniEscoAutoT6",
+             "UniEscoSOVT8"],
+            ["UniEscoSOVT1", "UniEscoSOVT2", "UniEscoSOVT3", "UniEscoSOVT4", "UniEscoSOVT5", "UniEscoAutoT6",
+             "UniEscoSOVT8"],
+            ["UniEsco2perT1", "UniEsco2perT2", "UniEsco2perT3", "UniEsco2perT4", "UniEsco2perT5", "UniEscoAutoT6",
+             "UniEsco2perT8"],
+            ["UniEsco2perT1", "UniEsco2perT2", "UniEsco2perT3", "UniEsco2perT4", "UniEsco2perT5", "UniEscoAutoT6",
+             "UniEsco2perT8"],
+            ["UniEscoTransitT1", "UniEscoTransitT2", "UniEscoTransitT3", "UniEscoTransitT4", "UniEscoTransitT5",
+             "UniEscoTransitT6", "UniEscoTransitT7"],
+            ["UniEscoTransitT1", "UniEscoTransitT2", "UniEscoTransitT3", "UniEscoTransitT4", "UniEscoTransitT5",
+             "UniEscoTransitT6", "UniEscoTransitT7"],
+            ["UniEscoActiveT1", "UniEscoActiveT2", "UniEscoActiveT3", "UniEscoActiveT4", "UniEscoActiveT5",
+             "UniEscoActiveT6", "UniEscoActiveT7"]]
 
         #********
         #    Start matrix number to store the demand by TOD

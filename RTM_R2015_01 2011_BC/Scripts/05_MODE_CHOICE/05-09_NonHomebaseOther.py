@@ -488,11 +488,11 @@ class ModeChoiceNHBO(_m.Tool()):
         arDmMatrix = [dmSOV, dmHOV, dmTrnBus, dmRail, dmActive]
 
         aTSFactor = [
-            ['NHBSOVT1', 'NHBSOVT2', 'NHBSOVT3', 'NHBSOVT4', 'NHBSOVT5', 'NHBSOVT6', 'NHBSOVT8'],
-            ['NHB2PerT1', 'NHB2PerT2', 'NHB2PerT3', 'NHB2PerT4', 'NHB2PerT5', 'NHB2PerT6', 'NHB2PerT8'],
-            ['NHBTransitT1', 'NHBTransitT2', 'NHBTrnBusT3', 'NHBTrnBusT4', 'NHBTransitT5', 'NHBTransitT6', 'NHBTransitT7'],
-            ['NHBTransitT1', 'NHBTransitT2', 'NHBRailT3', 'NHBRailT4', 'NHBTransitT5', 'NHBTransitT6', 'NHBTransitT7'],
-            ['NHBActiveT1', 'NHBActiveT2', 'NHBActiveT3', 'NHBActiveT4', 'NHBActiveT5', 'NHBActiveT6', 'NHBActiveT7']]
+            ["NHBSOVT1", "NHBSOVT2", "NHBSOVT3", "NHBSOVT4", "NHBSOVT5", "NHBSOVT6", "NHBSOVT8"],
+            ["NHB2PerT1", "NHB2PerT2", "NHB2PerT3", "NHB2PerT4", "NHB2PerT5", "NHB2PerT6", "NHB2PerT8"],
+            ["NHBTransitT1", "NHBTransitT2", "NHBTrnBusT3", "NHBTrnBusT4", "NHBTransitT5", "NHBTransitT6", "NHBTransitT7"],
+            ["NHBTransitT1", "NHBTransitT2", "NHBRailT3", "NHBRailT4", "NHBTransitT5", "NHBTransitT6", "NHBTransitT7"],
+            ["NHBActiveT1", "NHBActiveT2", "NHBActiveT3", "NHBActiveT4", "NHBActiveT5", "NHBActiveT6", "NHBActiveT7"]]
 
         #********
         #    Start matrix number to store the demand by TOD

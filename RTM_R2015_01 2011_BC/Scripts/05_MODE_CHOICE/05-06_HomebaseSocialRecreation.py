@@ -580,20 +580,20 @@ class ModeChoiceHBSocial(_m.Tool()):
         #    Correction - rail applies to time period
         #
         aTSFactor = [
-            ['ShpPBSocSOVT1', 'ShpPBSocSOVT2', 'ShpPBSocSOVT3', 'ShpPBSocSOVT4', 'ShpPBSocSOVT5', 'ShpPBSocAutoT6',
-             'ShpPBSocSOVT8'],
-            ['ShpPBSocSOVT1', 'ShpPBSocSOVT2', 'ShpPBSocSOVT3', 'ShpPBSocSOVT4', 'ShpPBSocSOVT5', 'ShpPBSocAutoT6',
-             'ShpPBSocSOVT8'],
-            ['ShpPBSoc2perT1', 'ShpPBSoc2perT2', 'ShpPBSoc2perT3', 'ShpPBSoc2perT4', 'ShpPBSoc2perT5', 'ShpPBSocAutoT6',
-             'ShpPBSoc2perT8'],
-            ['ShpPBSoc2perT1', 'ShpPBSoc2perT2', 'ShpPBSoc2perT3', 'ShpPBSoc2perT4', 'ShpPBSoc2perT5', 'ShpPBSocAutoT6',
-             'ShpPBSoc2perT8'],
-            ['ShpPBSocTrnBusT1', 'ShpPBSocTrnBusT2', 'ShpPBSocTrnBusT3', 'ShpPBSocTrnBusT4', 'ShpPBSocTransitT5',
-             'ShpPBSocTransitT6', 'ShpPBSocTransitT7', ],
-            ['ShpPBSocRailT1', 'ShpPBSocRailT2', 'ShpPBSocRailT3', 'ShpPBSocRailT4', 'ShpPBSocTransitT5',
-             'ShpPBSocTransitT6', 'ShpPBSocTransitT7', ],
-            ['ShpPBSocActiveT1', 'ShpPBSocActiveT2', 'ShpPBSocActiveT3', 'ShpPBSocActiveT4', 'ShpPBSocActiveT5',
-             'ShpPBSocActiveT6', 'ShpPBSocActiveT7']]
+            ["ShpPBSocSOVT1", "ShpPBSocSOVT2", "ShpPBSocSOVT3", "ShpPBSocSOVT4", "ShpPBSocSOVT5", "ShpPBSocAutoT6",
+             "ShpPBSocSOVT8"],
+            ["ShpPBSocSOVT1", "ShpPBSocSOVT2", "ShpPBSocSOVT3", "ShpPBSocSOVT4", "ShpPBSocSOVT5", "ShpPBSocAutoT6",
+             "ShpPBSocSOVT8"],
+            ["ShpPBSoc2perT1", "ShpPBSoc2perT2", "ShpPBSoc2perT3", "ShpPBSoc2perT4", "ShpPBSoc2perT5", "ShpPBSocAutoT6",
+             "ShpPBSoc2perT8"],
+            ["ShpPBSoc2perT1", "ShpPBSoc2perT2", "ShpPBSoc2perT3", "ShpPBSoc2perT4", "ShpPBSoc2perT5", "ShpPBSocAutoT6",
+             "ShpPBSoc2perT8"],
+            ["ShpPBSocTrnBusT1", "ShpPBSocTrnBusT2", "ShpPBSocTrnBusT3", "ShpPBSocTrnBusT4", "ShpPBSocTransitT5",
+             "ShpPBSocTransitT6", "ShpPBSocTransitT7", ],
+            ["ShpPBSocRailT1", "ShpPBSocRailT2", "ShpPBSocRailT3", "ShpPBSocRailT4", "ShpPBSocTransitT5",
+             "ShpPBSocTransitT6", "ShpPBSocTransitT7", ],
+            ["ShpPBSocActiveT1", "ShpPBSocActiveT2", "ShpPBSocActiveT3", "ShpPBSocActiveT4", "ShpPBSocActiveT5",
+             "ShpPBSocActiveT6", "ShpPBSocActiveT7"]]
 
         #********
         #    Start matrix number to store the demand by TOD
