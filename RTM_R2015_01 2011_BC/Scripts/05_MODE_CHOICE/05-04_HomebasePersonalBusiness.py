@@ -527,6 +527,7 @@ class ModeChoiceHBPB(_m.Tool()):
             ["ShpPBSocActiveT1", "ShpPBSocActiveT2", "ShpPBSocActiveT3", "ShpPBSocActiveT4", "ShpPBSocActiveT5",
              "ShpPBSocActiveT6", "ShpPBSocActiveT7"]]
 
+        aTSFactor=[aTSFactor[i][4:6] for i in range (len(arDmMatrix))]
         #********
         #    Start matrix number to store the demand by TOD
         #********

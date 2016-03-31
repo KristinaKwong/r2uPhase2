@@ -615,6 +615,9 @@ class ModeChoiceHBW(_m.Tool()):
             ["wkTransitT1", "wkRailT2", "wkTransitT3", "wkRailT4", "wkRailT5", "wkTransitT6", "wkRailT8"],
             ["wkActiveT1", "wkActiveT2", "wkActiveT3", "wkActiveT4", "wkActiveT5", "wkActiveT6", "wkActiveT7"],
         ]
+
+        arFileName=[arFileName[i][4:6] for i in range (len(arDmMatrix))]
+
         #********
         #    Start matrix number to store the demand by TOD
         #********

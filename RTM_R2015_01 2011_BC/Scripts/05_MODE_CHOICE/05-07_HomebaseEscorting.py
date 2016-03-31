@@ -541,7 +541,7 @@ class ModeChoiceHBEsc(_m.Tool()):
              "UniEscoTransitT6", "UniEscoTransitT7"],
             ["UniEscoActiveT1", "UniEscoActiveT2", "UniEscoActiveT3", "UniEscoActiveT4", "UniEscoActiveT5",
              "UniEscoActiveT6", "UniEscoActiveT7"]]
-
+        aTSFactor=[aTSFactor[i][4:6] for i in range (len(arDmMatrix))]
         #********
         #    Start matrix number to store the demand by TOD
         #********

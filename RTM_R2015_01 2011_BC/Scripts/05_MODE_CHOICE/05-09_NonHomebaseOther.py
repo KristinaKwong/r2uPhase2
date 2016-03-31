@@ -493,7 +493,7 @@ class ModeChoiceNHBO(_m.Tool()):
             ["NHBTransitT1", "NHBTransitT2", "NHBTrnBusT3", "NHBTrnBusT4", "NHBTransitT5", "NHBTransitT6", "NHBTransitT7"],
             ["NHBTransitT1", "NHBTransitT2", "NHBRailT3", "NHBRailT4", "NHBTransitT5", "NHBTransitT6", "NHBTransitT7"],
             ["NHBActiveT1", "NHBActiveT2", "NHBActiveT3", "NHBActiveT4", "NHBActiveT5", "NHBActiveT6", "NHBActiveT7"]]
-
+        aTSFactor=[aTSFactor[i][4:6] for i in range (len(arDmMatrix))]
         #********
         #    Start matrix number to store the demand by TOD
         #********

@@ -493,6 +493,9 @@ class ModeChoiceHBSchool(_m.Tool()):
              "GSchTransitT7"],
             ["GSchActiveT1", "GSchActiveT2", "GSchActiveT3", "GSchActiveT4", "GSchActiveT5", "GSchActiveT6",
              "GSchActiveT7"]]
+
+        aTSFactor=[aTSFactor[i][4:6] for i in range (len(arDmMatrix))]
+
         # aTSFactor=[
         # ["UniEscoAutoT1","GSchAutoT2","UniEscoAutoT3","GSchAutoT4","GSchAutoT5","UniEscoAutoT6"],
         # ["UniEscoAutoT1","GSchAutoT2","UniEscoAutoT3","GSchAutoT4","GSchAutoT5","UniEscoAutoT6"],
