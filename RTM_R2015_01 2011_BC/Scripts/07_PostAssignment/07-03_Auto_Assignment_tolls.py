@@ -44,17 +44,17 @@ class TollSkim(_m.Tool()):
 
         demands_list = [
             {
-                "sov": ['mf843', 'mf844', 'mf845', 'mf846', 'mf847'],
-                "hov": ['mf848', 'mf849', 'mf850', 'mf851', 'mf852'],
-                "truck": ['mf980', 'mf981']
+                "sov": ["mf843", "mf844", "mf845", "mf846", "mf847"],
+                "hov": ["mf848", "mf849", "mf850", "mf851", "mf852"],
+                "truck": ["mf980", "mf981"]
             },
             {
-                "sov": ['mf856', 'mf857', 'mf858', 'mf859', 'mf860'],
-                "hov": ['mf861', 'mf862', 'mf863', 'mf864', 'mf865'],
-                "truck": ['mf982', 'mf983']
+                "sov": ["mf856", "mf857", "mf858", "mf859", "mf860"],
+                "hov": ["mf861", "mf862", "mf863", "mf864", "mf865"],
+                "truck": ["mf982", "mf983"]
             }
         ]
-        toll_list = ['mf932', 'mf944']
+        toll_list = ["mf932", "mf944"]
         path_analysis = {
             "link_component": "@tolls",
             "turn_component": None,
@@ -74,5 +74,5 @@ class TollSkim(_m.Tool()):
             spec = translink_auto_assignment.generate_specification(
                 demands, stopping_criteria, num_processors, results=False)
             spec["path_analysis"] = path_analysis
-            spec['classes'][4]['analysis'] = {'results': {'od_values': tolls}}
+            spec["classes"][4]["analysis"] = {"results": {"od_values": tolls}}
             assign_traffic(spec, scenario=scenario)
