@@ -1,6 +1,7 @@
 import inro.modeller as _m
 import inro.emme as _emme
 import os
+import shutil
 
 class InitEmmebank(_m.Tool()):
     emme_title = _m.Attribute(_m.InstanceType)
@@ -81,8 +82,10 @@ class InitEmmebank(_m.Tool()):
         new_folder = os.path.join(proj_path, emme_folder)
         os.mkdir(new_folder)
 
-        # Create an Inputs and Outputs folder structure
-        os.mkdir(os.path.join(new_folder, "Inputs"))
+        # Populate Inputs folder with required base inputs
+        baseInputs = os.path.join(proj_path, "BaseNetworks", "Inputs")
+        shutil.copytree(baseInputs, os.path.join(new_folder, "Inputs"))
+        # Create an Outputs folder for model results
         os.mkdir(os.path.join(new_folder, "Outputs"))
 
         return os.path.join(new_folder, "emmebank")
