@@ -76,11 +76,11 @@ class SkimsAccessibilities(_m.Tool()):
             ["mf107*(1-" + str(k) + ")+mf934*" + str(k), "mf107"],
             ["mf108*(1-" + str(k) + ")+mf935*" + str(k), "mf108"],
             ["mf109*(1-" + str(k) + ")+mf936*" + str(k), "mf109"],
-            ["mf116*(1-" + str(k) + ")+mf937*" + str(k), "mf116"],
-            ["mf117*(1-" + str(k) + ")+mf938*" + str(k), "mf117"],
-            ["mf118*(1-" + str(k) + ")+mf939*" + str(k), "mf118"],
-            ["mf119*(1-" + str(k) + ")+mf940*" + str(k), "mf119"],
-            ["mf120*(1-" + str(k) + ")+mf941*" + str(k), "mf120"],
+            ["mf116*(1-" + str(k) + ")+mf937*(mf938.eq.0)+mf1070*(mf938.gt.0)*" + str(k), "mf116"],
+            ["mf117*(1-" + str(k) + ")+mf938*(mf938.eq.0)+mf1071*(mf938.gt.0)*" + str(k), "mf117"],
+            ["mf118*(1-" + str(k) + ")+mf939*(mf938.eq.0)+mf1072*(mf938.gt.0)*" + str(k), "mf118"],
+            ["mf119*(1-" + str(k) + ")+mf940*(mf938.eq.0)+mf1073*(mf938.gt.0)*" + str(k), "mf119"],
+            ["mf120*(1-" + str(k) + ")+mf941*(mf938.eq.0)+mf1074*(mf938.gt.0)*" + str(k), "mf120"],
             ["mf163*(1-" + str(k) + ")+(mf954+mf956+mf957)*" + str(k), "mf163"],
             ["mf164*(1-" + str(k) + ")+mf955*" + str(k), "mf164"]
         ]
@@ -94,11 +94,11 @@ class SkimsAccessibilities(_m.Tool()):
             ["mf112*(1-" + str(k) + ")+mf946*" + str(k), "mf112"],
             ["mf113*(1-" + str(k) + ")+mf947*" + str(k), "mf113"],
             ["mf114*(1-" + str(k) + ")+mf948*" + str(k), "mf114"],
-            ["mf124*(1-" + str(k) + ")+mf949*" + str(k), "mf124"],
-            ["mf125*(1-" + str(k) + ")+mf950*" + str(k), "mf125"],
-            ["mf126*(1-" + str(k) + ")+mf951*" + str(k), "mf126"],
-            ["mf127*(1-" + str(k) + ")+mf952*" + str(k), "mf127"],
-            ["mf128*(1-" + str(k) + ")+mf953*" + str(k), "mf128"],
+            ["mf124*(1-" + str(k) + ")+mf949*(mf950.eq.0)+mf1075*(mf950.gt.0)*" + str(k), "mf124"],
+            ["mf125*(1-" + str(k) + ")+mf950*(mf950.eq.0)+mf1076*(mf950.gt.0)*" + str(k), "mf125"],
+            ["mf126*(1-" + str(k) + ")+mf951*(mf950.eq.0)+mf1077*(mf950.gt.0)*" + str(k), "mf126"],
+            ["mf127*(1-" + str(k) + ")+mf952*(mf950.eq.0)+mf1078*(mf950.gt.0)*" + str(k), "mf127"],
+            ["mf128*(1-" + str(k) + ")+mf953*(mf950.eq.0)+mf1079*(mf950.gt.0)*" + str(k), "mf128"],
             ["mf167*(1-" + str(k) + ")+(mf958+mf960+mf961)*" + str(k), "mf167"],
             ["mf168*(1-" + str(k) + ")+mf959*" + str(k), "mf168"]
         ]
