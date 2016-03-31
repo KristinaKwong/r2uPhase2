@@ -93,8 +93,8 @@ class DemandAdjustment(_m.Tool()):
 
         emmebank = _m.Modeller().emmebank
         num_processors = int(emmebank.matrix("ms142").data)
-        del_list = ['@s1cst', '@s2cst', '@s3cst', '@s1vol', '@s2vol', '@s3vol', '@cpen', '@name', '@len', '@trncp',
-                    '@hwycl', '@hcst']
+        del_list = ["@s1cst", "@s2cst", "@s3cst", "@s1vol", "@s2vol", "@s3vol", "@cpen", "@name", "@len", "@trncp",
+                    "@hwycl", "@hcst"]
         cr_list = ["sov" + str(i) for i in range(1, 6)] + \
                   ["hov" + str(i) for i in range(1, 6)]
         for scenario in [am_adj_scenario, md_adj_scenario]:
@@ -116,18 +116,18 @@ class DemandAdjustment(_m.Tool()):
 
         demands_list = [
             {
-                "sov": ['mf20', 'mf21', 'mf22', 'mf23', 'mf24'],
-                "hov": ['mf26', 'mf27', 'mf28', 'mf29', 'mf30'],
-                "truck": ['mf31', 'mf32']
+                "sov": ["mf20", "mf21", "mf22", "mf23", "mf24"],
+                "hov": ["mf26", "mf27", "mf28", "mf29", "mf30"],
+                "truck": ["mf31", "mf32"]
             },
             {
-                "sov": ['mf52', 'mf53', 'mf54', 'mf55', 'mf56'],
-                "hov": ['mf58', 'mf59', 'mf60', 'mf61', 'mf62'],
-                "truck": ['mf63', 'mf64']
+                "sov": ["mf52", "mf53", "mf54", "mf55", "mf56"],
+                "hov": ["mf58", "mf59", "mf60", "mf61", "mf62"],
+                "truck": ["mf63", "mf64"]
             }
         ]
-        travel_time_list = ['mf68', 'mf69']
-        distance_list = ['mf66', 'mf67']
+        travel_time_list = ["mf68", "mf69"]
+        distance_list = ["mf66", "mf67"]
 
         path_analysis = {
             "link_component": "length",
@@ -163,10 +163,10 @@ class DemandAdjustment(_m.Tool()):
         selection_type = {
             "link": {"link": "all"},
             "turn": {"incoming_link": "all", "outgoing_link": "all"}}
-        expressions_list = [['link', '@sov1+@sov2+@sov3+@sov4+@sov5', '@wsovl'],
-                            ['link', '@hov1+@hov2+@hov3+@hov4+@hov5', '@whovl'],
-                            ['turn', '@tsov1+@tsov2+@tsov3+@tsov4+@tsov5', '@wsovt'],
-                            ['turn', '@thov1+@thov2+@thov3+@thov4+@thov5', '@whovt']]
+        expressions_list = [["link", "@sov1+@sov2+@sov3+@sov4+@sov5", "@wsovl"],
+                            ["link", "@hov1+@hov2+@hov3+@hov4+@hov5", "@whovl"],
+                            ["turn", "@tsov1+@tsov2+@tsov3+@tsov4+@tsov5", "@wsovt"],
+                            ["turn", "@thov1+@thov2+@thov3+@thov4+@thov5", "@whovt"]]
         for kind, expression, result in expressions_list:
             spec['expression'] = expression
             spec['selections'] = selection_type[kind]
@@ -206,15 +206,15 @@ class DemandAdjustment(_m.Tool()):
         ## External and truck matrix adjustments: hybrid of difference and ratio;
         ## mf993 and mf994 are used to adjust MD trips for 2 screenlines
         expressions_list_am = [
-            ['(mf978+mf1+mf978*mf15)/2', 'mf19'],
-            ['(mf979+mf7+mf979*mf16)/2', 'mf25'],
-            ['mf980', 'mf31'],
-            ['mf981', 'mf32']]
+            ["(mf978+mf1+mf978*mf15)/2", "mf19"],
+            ["(mf979+mf7+mf979*mf16)/2", "mf25"],
+            ["mf980", "mf31"],
+            ["mf981", "mf32"]]
         expressions_list_md = [
-            ['(mf984+mf33*mf993*mf994+mf984*mf47)/2', 'mf51'],
-            ['(mf985+mf39*mf993*mf994+mf985*mf48)/2', 'mf57'],
-            ['mf982', 'mf63'],
-            ['mf983', 'mf64']]
+            ["(mf984+mf33*mf993*mf994+mf984*mf47)/2", "mf51"],
+            ["(mf985+mf39*mf993*mf994+mf985*mf48)/2", "mf57"],
+            ["mf982", "mf63"],
+            ["mf983", "mf64"]]
 
         for expression, result in expressions_list_am:
             spec['expression'] = expression
@@ -230,28 +230,28 @@ class DemandAdjustment(_m.Tool()):
         spec['constraint']['by_zone']['origins'] = "gy1-gy14"
         spec['constraint']['by_zone']['destinations'] = "gy1-gy14"
         expressions_list_am = [
-            ['(mf843+mf2+mf843*mf15)/2', 'mf20'],
-            ['(mf844+mf3+mf844*mf15)/2', 'mf21'],
-            ['(mf845+mf4+mf845*mf15)/2', 'mf22'],
-            ['(mf846+mf5+mf846*mf15)/2', 'mf23'],
-            ['(mf847+mf6+mf847*mf15)/2', 'mf24'],
-            ['(mf848+mf8+mf848*mf16)/2', 'mf26'],
-            ['(mf849+mf9+mf849*mf16)/2', 'mf27'],
-            ['(mf850+mf10+mf850*mf16)/2', 'mf28'],
-            ['(mf851+mf11+mf851*mf16)/2', 'mf29'],
-            ['(mf852+mf12+mf852*mf16)/2', 'mf30']]
+            ["(mf843+mf2+mf843*mf15)/2", "mf20"],
+            ["(mf844+mf3+mf844*mf15)/2", "mf21"],
+            ["(mf845+mf4+mf845*mf15)/2", "mf22"],
+            ["(mf846+mf5+mf846*mf15)/2", "mf23"],
+            ["(mf847+mf6+mf847*mf15)/2", "mf24"],
+            ["(mf848+mf8+mf848*mf16)/2", "mf26"],
+            ["(mf849+mf9+mf849*mf16)/2", "mf27"],
+            ["(mf850+mf10+mf850*mf16)/2", "mf28"],
+            ["(mf851+mf11+mf851*mf16)/2", "mf29"],
+            ["(mf852+mf12+mf852*mf16)/2", "mf30"]]
 
         expressions_list_md = [
-            ['(mf856+mf34*mf993*mf994+mf856*mf47)/2', 'mf52'],
-            ['(mf857+mf35*mf993*mf994+mf857*mf47)/2', 'mf53'],
-            ['(mf858+mf36*mf993*mf994+mf858*mf47)/2', 'mf54'],
-            ['(mf859+mf37*mf993*mf994+mf859*mf47)/2', 'mf55'],
-            ['(mf860+mf38*mf993*mf994+mf860*mf47)/2', 'mf56'],
-            ['(mf861+mf40*mf993*mf994+mf861*mf48)/2', 'mf58'],
-            ['(mf862+mf41*mf993*mf994+mf862*mf48)/2', 'mf59'],
-            ['(mf863+mf42*mf993*mf994+mf863*mf48)/2', 'mf60'],
-            ['(mf864+mf43*mf993*mf994+mf864*mf48)/2', 'mf61'],
-            ['(mf865+mf44*mf993*mf994+mf865*mf48)/2', 'mf62']]
+            ["(mf856+mf34*mf993*mf994+mf856*mf47)/2", "mf52"],
+            ["(mf857+mf35*mf993*mf994+mf857*mf47)/2", "mf53"],
+            ["(mf858+mf36*mf993*mf994+mf858*mf47)/2", "mf54"],
+            ["(mf859+mf37*mf993*mf994+mf859*mf47)/2", "mf55"],
+            ["(mf860+mf38*mf993*mf994+mf860*mf47)/2", "mf56"],
+            ["(mf861+mf40*mf993*mf994+mf861*mf48)/2", "mf58"],
+            ["(mf862+mf41*mf993*mf994+mf862*mf48)/2", "mf59"],
+            ["(mf863+mf42*mf993*mf994+mf863*mf48)/2", "mf60"],
+            ["(mf864+mf43*mf993*mf994+mf864*mf48)/2", "mf61"],
+            ["(mf865+mf44*mf993*mf994+mf865*mf48)/2", "mf62"]]
 
         for expression, result in expressions_list_am:
             spec['expression'] = expression
@@ -270,28 +270,28 @@ class DemandAdjustment(_m.Tool()):
         spec['constraint']['by_value']['interval_max'] = 99999
         spec['constraint']['by_value']['condition'] = "EXCLUDE"
         expressions_list_am = [
-            ['mf843*mf15', 'mf20', 'mf20'],
-            ['mf844*mf15', 'mf21', 'mf21'],
-            ['mf845*mf15', 'mf22', 'mf22'],
-            ['mf846*mf15', 'mf23', 'mf23'],
-            ['mf847*mf15', 'mf24', 'mf24'],
-            ['mf848*mf16', 'mf26', 'mf26'],
-            ['mf849*mf16', 'mf27', 'mf27'],
-            ['mf850*mf16', 'mf28', 'mf28'],
-            ['mf851*mf16', 'mf29', 'mf29'],
-            ['mf852*mf16', 'mf30', 'mf30']]
+            ["mf843*mf15", "mf20", "mf20"],
+            ["mf844*mf15", "mf21", "mf21"],
+            ["mf845*mf15", "mf22", "mf22"],
+            ["mf846*mf15", "mf23", "mf23"],
+            ["mf847*mf15", "mf24", "mf24"],
+            ["mf848*mf16", "mf26", "mf26"],
+            ["mf849*mf16", "mf27", "mf27"],
+            ["mf850*mf16", "mf28", "mf28"],
+            ["mf851*mf16", "mf29", "mf29"],
+            ["mf852*mf16", "mf30", "mf30"]]
 
         expressions_list_md = [
-            ['mf856*mf47', 'mf52', 'mf52'],
-            ['mf857*mf47', 'mf53', 'mf53'],
-            ['mf858*mf47', 'mf54', 'mf54'],
-            ['mf859*mf47', 'mf55', 'mf55'],
-            ['mf860*mf47', 'mf56', 'mf56'],
-            ['mf861*mf48', 'mf58', 'mf58'],
-            ['mf862*mf48', 'mf59', 'mf59'],
-            ['mf863*mf48', 'mf60', 'mf60'],
-            ['mf864*mf48', 'mf61', 'mf61'],
-            ['mf865*mf48', 'mf62', 'mf62']]
+            ["mf856*mf47", "mf52", "mf52"],
+            ["mf857*mf47", "mf53", "mf53"],
+            ["mf858*mf47", "mf54", "mf54"],
+            ["mf859*mf47", "mf55", "mf55"],
+            ["mf860*mf47", "mf56", "mf56"],
+            ["mf861*mf48", "mf58", "mf58"],
+            ["mf862*mf48", "mf59", "mf59"],
+            ["mf863*mf48", "mf60", "mf60"],
+            ["mf864*mf48", "mf61", "mf61"],
+            ["mf865*mf48", "mf62", "mf62"]]
 
         for expression, by_value_mat, result in expressions_list_am:
             spec['expression'] = expression
@@ -311,16 +311,16 @@ class DemandAdjustment(_m.Tool()):
         spec['constraint']['by_value']['interval_max'] = 99999
         spec['constraint']['by_value']['condition'] = "EXCLUDE"
         expressions_list_am = [
-            ['mf978*mf15', 'mf19', 'mf19'],
-            ['mf979*mf16', 'mf25', 'mf25'],
-            ['mf980', 'mf31', 'mf31'],
-            ['mf981', 'mf32', 'mf32']
+            ["mf978*mf15", "mf19", "mf19"],
+            ["mf979*mf16", "mf25", "mf25"],
+            ["mf980", "mf31", "mf31"],
+            ["mf981", "mf32", "mf32"]
         ]
         expressions_list_md = [
-            ['mf984*mf47', 'mf51', 'mf51'],
-            ['mf985*mf48', 'mf57', 'mf57'],
-            ['mf982', 'mf63', 'mf63'],
-            ['mf983', 'mf64', 'mf64']
+            ["mf984*mf47", "mf51", "mf51"],
+            ["mf985*mf48", "mf57", "mf57"],
+            ["mf982", "mf63", "mf63"],
+            ["mf983", "mf64", "mf64"]
         ]
 
         for expression, by_value_mat, result in expressions_list_am:
@@ -339,12 +339,12 @@ class DemandAdjustment(_m.Tool()):
         spec['constraint']['by_value']['interval_max'] = 99999
         spec['constraint']['by_value']['condition'] = "INCLUDE"
         expressions_list_am = [
-            ['mf19+mf24', 'mf24', 'mf24'],
-            ['mf25+mf30', 'mf30', 'mf30']
+            ["mf19+mf24", "mf24", "mf24"],
+            ["mf25+mf30", "mf30", "mf30"]
         ]
         expressions_list_md = [
-            ['mf51+mf56', 'mf56', 'mf56'],
-            ['mf57+mf62', 'mf62', 'mf62']
+            ["mf51+mf56", "mf56", "mf56"],
+            ["mf57+mf62", "mf62", "mf62"]
         ]
 
         for expression, by_value_mat, result in expressions_list_am:
