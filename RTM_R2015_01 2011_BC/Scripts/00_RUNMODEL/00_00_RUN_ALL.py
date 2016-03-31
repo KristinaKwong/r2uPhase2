@@ -40,15 +40,15 @@ class FullModelRun(_m.Tool()):
 
         pb.add_select_file(tool_attribute_name="land_use_file1",
                            window_type="file",
-                           file_filter='*.csv',
-                           start_path=loc + '/Inputs',
+                           file_filter="*.csv",
+                           start_path=loc + "/Inputs",
                            title="LandUse file 1: ",
                            note="File must be csv file.")
 
         pb.add_select_file(tool_attribute_name="land_use_file2",
                            window_type="file",
-                           file_filter='*.csv',
-                           start_path=loc + '/Inputs',
+                           file_filter="*.csv",
+                           start_path=loc + "/Inputs",
                            title="LandUse file 2: ",
                            note="File must be csv file.")
 

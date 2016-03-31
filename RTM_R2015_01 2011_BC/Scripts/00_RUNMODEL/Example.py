@@ -24,7 +24,7 @@ class Example(_m.Tool()):
         pb.description = "Collection of Utility Methods for Model Execution"
         pb.branding_text = "TransLink"
         # If the tool is not intended to be run interactively, set runnable = False to suppress
-        # the rendering of the 'RUN' button in the Modeller UI. You do not need to define a run()
+        # the rendering of the "RUN" button in the Modeller UI. You do not need to define a run()
         # method if runnable = False.
         # pb.runnable = False
 
@@ -78,7 +78,7 @@ class Example(_m.Tool()):
         compute_matrix(spec)
 
         # Multiple calculations
-        # Use the variable name 'specs' to denote a list of matrix specifications and initialize it
+        # Use the variable name "specs" to denote a list of matrix specifications and initialize it
         # to define a block of calculation
         specs = []
         for i in range(1, 500):
@@ -86,7 +86,7 @@ class Example(_m.Tool()):
             specs.append(util.matrix_spec("mo%d" % i, "mo500"))
         # Pass the list of matrix specs to the computation module, notice how the specs variable
         # is initialized at the same indentation level as the call to compute_matrix, this forms
-        # a rough 'paragraph' of code - a comment at the beginning will help the reader greatly
+        # a rough "paragraph" of code - a comment at the beginning will help the reader greatly
         compute_matrix(specs)
 
         # Start a new calculation - using matrix constraints

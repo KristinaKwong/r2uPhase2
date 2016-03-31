@@ -21,12 +21,12 @@ class InputSettings(_m.Tool()):
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
-        pb.add_text_box(tool_attribute_name='am_scenario',
+        pb.add_text_box(tool_attribute_name="am_scenario",
                         size=50,
-                        title='Enter the Original AM Scenario Number')
-        pb.add_text_box(tool_attribute_name='md_scenario',
+                        title="Enter the Original AM Scenario Number")
+        pb.add_text_box(tool_attribute_name="md_scenario",
                         size=50,
-                        title='Enter the Original Mid-Day Scenario Number')
+                        title="Enter the Original Mid-Day Scenario Number")
         return pb.render()
 
     def run(self):

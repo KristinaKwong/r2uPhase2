@@ -158,8 +158,8 @@ class Util(_m.Tool()):
             matrix_name.append(matrix.name)
             matrix_desc.append(matrix.description)
 
-        with open(output_file, 'wb') as f:
-            writer = csv.writer(f, dialect='excel')
+        with open(output_file, "wb") as f:
+            writer = csv.writer(f, dialect="excel")
             writer.writerow(["matrices:"] + list_of_matrices)
             writer.writerow(["name:"] + matrix_name)
             writer.writerow(["description"] + matrix_desc)
