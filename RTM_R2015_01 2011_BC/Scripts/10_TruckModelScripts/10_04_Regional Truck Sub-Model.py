@@ -57,13 +57,13 @@ class RegTruckModel(_m.Tool()):
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         spec = util.matrix_spec("ms151", "mf1031")
-        spec['aggregation']['origins'] = "+"
-        spec['aggregation']['destinations'] = "+"
+        spec["aggregation"]["origins"] = "+"
+        spec["aggregation"]["destinations"] = "+"
         compute_matrix(spec)
 
         spec = util.matrix_spec("ms152", "mf1034")
-        spec['aggregation']['origins'] = "+"
-        spec['aggregation']['destinations'] = "+"
+        spec["aggregation"]["origins"] = "+"
+        spec["aggregation"]["destinations"] = "+"
         compute_matrix(spec)
 
         RgLg = eb.matrix("ms151")

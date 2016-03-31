@@ -795,16 +795,16 @@ class TruckAssign(_m.Tool()):
             }
 
         expressions_list = [
-        ['0', 'all', '@tkpen'],
-        ['length*100', 'mode=n', '@tkpen'],
-        ['length*0.56+@tolls*3+@tkpen', 'all', '@hgvoc'],
-        ['@wsovl+@whovl','all','ul3']
+        ["0", "all", "@tkpen"],
+        ["length*100", "mode=n", "@tkpen"],
+        ["length*0.56+@tolls*3+@tkpen", "all", "@hgvoc"],
+        ["@wsovl+@whovl","all","ul3"]
         ]
 
         for expression, selection, result in expressions_list:
-            spec_dict['expression'] = expression
-            spec_dict['selections']['link'] = selection
-            spec_dict['result'] = result
+            spec_dict["expression"] = expression
+            spec_dict["selections"]["link"] = selection
+            spec_dict["result"] = result
             calc_att(spec_dict, scenario=ScenAM)
             calc_att(spec_dict, scenario=ScenMD)
 
@@ -812,8 +812,8 @@ class TruckAssign(_m.Tool()):
 
         for i in range (10, 17):
 
-            AMTruckSpec1['classes'][i]['demand']=AMList1[i-10]
-            MDTruckSpec1['classes'][i]['demand']=MDList1[i-10]
+            AMTruckSpec1["classes"][i]["demand"]=AMList1[i-10]
+            MDTruckSpec1["classes"][i]["demand"]=MDList1[i-10]
 
         truckcassignment(AMTruckSpec1, scenario=ScenAM)
         truckcassignment(MDTruckSpec1, scenario=ScenMD)
