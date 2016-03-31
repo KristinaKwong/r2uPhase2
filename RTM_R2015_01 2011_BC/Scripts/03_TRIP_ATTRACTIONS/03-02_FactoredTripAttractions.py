@@ -34,24 +34,24 @@ class FactoredTripAttractions(_m.Tool()):
     @_m.logbook_trace("03-02 - Factored Trip Attractions")
     def __call__(self, eb):
         ## Define variables to store/locate values.
-        purpose_list = ['HBWL', 'HBWM', 'HBWH', 'NHBW', 'HBU', 'HBSCHO', 'HBSHOP', 'HBPB', 'HBSOC', 'HBESC', 'NHBO']
-        purpose_factors = {'HBWL': {'moSum': 0, 'mdSum': 0, 'Factor': 0},
-                           'HBWM': {'moSum': 0, 'mdSum': 0, 'Factor': 0},
-                           'HBWH': {'moSum': 0, 'mdSum': 0, 'Factor': 0},
-                           'NHBW': {'moSum': 0, 'mdSum': 0, 'Factor': 0},
-                           'HBU': {'moSum': 0, 'mdSum': 0, 'Factor': 0},
-                           'HBSCHO': {'moSum': 0, 'mdSum': 0, 'Factor': 0},
-                           'HBSHOP': {'moSum': 0, 'mdSum': 0, 'Factor': 0},
-                           'HBPB': {'moSum': 0, 'mdSum': 0, 'Factor': 0},
-                           'HBSOC': {'moSum': 0, 'mdSum': 0, 'Factor': 0},
-                           'HBESC': {'moSum': 0, 'mdSum': 0, 'Factor': 0},
-                           'NHBO': {'moSum': 0, 'mdSum': 0, 'Factor': 0}
+        purpose_list = ["HBWL", "HBWM", "HBWH", "NHBW", "HBU", "HBSCHO", "HBSHOP", "HBPB", "HBSOC", "HBESC", "NHBO"]
+        purpose_factors = {"HBWL": {"moSum": 0, "mdSum": 0, "Factor": 0},
+                           "HBWM": {"moSum": 0, "mdSum": 0, "Factor": 0},
+                           "HBWH": {"moSum": 0, "mdSum": 0, "Factor": 0},
+                           "NHBW": {"moSum": 0, "mdSum": 0, "Factor": 0},
+                           "HBU": {"moSum": 0, "mdSum": 0, "Factor": 0},
+                           "HBSCHO": {"moSum": 0, "mdSum": 0, "Factor": 0},
+                           "HBSHOP": {"moSum": 0, "mdSum": 0, "Factor": 0},
+                           "HBPB": {"moSum": 0, "mdSum": 0, "Factor": 0},
+                           "HBSOC": {"moSum": 0, "mdSum": 0, "Factor": 0},
+                           "HBESC": {"moSum": 0, "mdSum": 0, "Factor": 0},
+                           "NHBO": {"moSum": 0, "mdSum": 0, "Factor": 0}
         }
 
-        ## Calculates factors from 'md' to 'mo' segmentation
+        ## Calculates factors from "md" to "mo" segmentation
         purpose_factors = self.Calculate_Factors(purpose_list, purpose_factors)
 
-        ## Apply Factors for the md to scale them to equal to the sum of the respective 'mo' segments
+        ## Apply Factors for the md to scale them to equal to the sum of the respective "mo" segments
         self.Apply_Factors(purpose_list, purpose_factors)
 
         ## Output results
@@ -73,7 +73,7 @@ class FactoredTripAttractions(_m.Tool()):
         ##    List to hold matrix objects
         md_value = []
 
-        ##    Loop to append all result matrices onto the variable 'md_value'
+        ##    Loop to append all result matrices onto the variable "md_value"
         for mo_num in [24, 25] + range(31, 53):
             md_value.append(eb.matrix("md" + str(mo_num)))
 
@@ -83,7 +83,7 @@ class FactoredTripAttractions(_m.Tool()):
 
         ## Export all matrix data
         export_matrices(export_file=output_file,
-                        field_separator=' ',
+                        field_separator=" ",
                         matrices=md_value,
                         export_format="PROMPT_DATA_FORMAT",
                         skip_default_values=True,
@@ -91,24 +91,24 @@ class FactoredTripAttractions(_m.Tool()):
 
         ## Export matrix data aggregated to the gy ensemble
         export_matrices(export_file=output_file_gy,
-                        field_separator=' ',
+                        field_separator=" ",
                         matrices=md_value,
-                        partition_aggregation={'destinations': 'gy', 'operator': 'sum'},
+                        partition_aggregation={"destinations": "gy", "operator": "sum"},
                         export_format="PROMPT_DATA_FORMAT",
                         skip_default_values=True,
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         ## Export matrix data aggregated to the gu ensemble
         export_matrices(export_file=output_file_gu,
-                        field_separator=' ',
+                        field_separator=" ",
                         matrices=md_value,
-                        partition_aggregation={'destinations': 'gu', 'operator': 'sum'},
+                        partition_aggregation={"destinations": "gu", "operator": "sum"},
                         export_format="PROMPT_DATA_FORMAT",
                         skip_default_values=True,
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         for Output in [output_file, output_file_gy, output_file_gu]:
-            f = open(Output, 'a')
+            f = open(Output, "a")
             f.write("c ------Data Sources:\n")
             f.write("c " + output_file + "\n")
             f.close()
@@ -118,7 +118,7 @@ class FactoredTripAttractions(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        ## Scaling all the mds to match the 'mo' total, except for md46, HBU.
+        ## Scaling all the mds to match the "mo" total, except for md46, HBU.
         for i in range(42, 46) + range(47, 53):
             expression = "md" + str(i - 11) + "*" + str(purpose_factors[purpose_list[i - 42]]["Factor"])
             result = "md" + str(i)
@@ -130,7 +130,7 @@ class FactoredTripAttractions(_m.Tool()):
 
         ## scaling the mo - HBU to match md for HBU
         for i in range(1, 13):
-            expression = "mo" + str(i + 184) + "/" + str(purpose_factors['HBU']['Factor'])
+            expression = "mo" + str(i + 184) + "/" + str(purpose_factors["HBU"]["Factor"])
             result = "mo" + str(i + 914)
             report = compute_matrix(util.matrix_spec(result, expression))
 
@@ -145,7 +145,7 @@ class FactoredTripAttractions(_m.Tool()):
             spec = util.matrix_spec(None, "mo%d + mo%d + mo%d + mo%d" % (x, x + 3, x + 6, x + 9))
             spec["aggregation"]["origins"] = "+"
             report = compute_matrix(spec)
-            purpose_factors[purpose_list[i]]['moSum'] = report["sum"]
+            purpose_factors[purpose_list[i]]["moSum"] = report["sum"]
 
         for i in range(173, 269, 12):
             expression = "0"
@@ -154,17 +154,17 @@ class FactoredTripAttractions(_m.Tool()):
             spec = util.matrix_spec(None, expression)
             spec["aggregation"]["origins"] = "+"
             report = compute_matrix(spec)
-            purpose_factors[purpose_list[(i - 173) / 12 + 3]]['moSum'] = report["sum"]
+            purpose_factors[purpose_list[(i - 173) / 12 + 3]]["moSum"] = report["sum"]
 
         for i in range(31, 42):
             spec = util.matrix_spec(None, "md" + str(i))
             spec["aggregation"]["destinations"] = "+"
             report = compute_matrix(spec)
-            purpose_factors[purpose_list[i - 31]]['mdSum'] = report["sum"]
+            purpose_factors[purpose_list[i - 31]]["mdSum"] = report["sum"]
 
         for i in range(0, 11):
-            purpose_factors[purpose_list[i]]['Factor'] = purpose_factors[purpose_list[i]]['moSum'] / \
-                                                         purpose_factors[purpose_list[i]]['mdSum']
+            purpose_factors[purpose_list[i]]["Factor"] = purpose_factors[purpose_list[i]]["moSum"] / \
+                                                         purpose_factors[purpose_list[i]]["mdSum"]
 
                 # print "purpose_factors: ", purpose_factors
         return purpose_factors
