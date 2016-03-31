@@ -156,7 +156,7 @@ class TripDistributions(_m.Tool()):
         ##    List to hold matrix objects
         md_value = []
 
-        ##    Loop to append all result matrices onto the variable 'md_value'
+        ##    Loop to append all result matrices onto the variable "md_value"
         for mo_num in [24, 25] + range(31, 53):
             md_value.append(eb.matrix("md" + str(mo_num)))
 
@@ -166,7 +166,7 @@ class TripDistributions(_m.Tool()):
 
         ## Export all matrix data
         export_matrices(export_file=output_file,
-                        field_separator=' ',
+                        field_separator=" ",
                         matrices=md_value,
                         export_format="PROMPT_DATA_FORMAT",
                         skip_default_values=True,
@@ -174,25 +174,25 @@ class TripDistributions(_m.Tool()):
 
         ## Export matrix data aggregated to the gy ensemble
         export_matrices(export_file=output_file_gy,
-                        field_separator=' ',
+                        field_separator=" ",
                         matrices=md_value,
-                        partition_aggregation={'destinations': 'gy', 'operator': 'sum'},
+                        partition_aggregation={"destinations": "gy", "operator": "sum"},
                         export_format="PROMPT_DATA_FORMAT",
                         skip_default_values=True,
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         ## Export matrix data aggregated to the gu ensemble
         export_matrices(export_file=output_file_gu,
-                        field_separator=' ',
+                        field_separator=" ",
                         matrices=md_value,
-                        partition_aggregation={'destinations': 'gu', 'operator': 'sum'},
+                        partition_aggregation={"destinations": "gu", "operator": "sum"},
                         export_format="PROMPT_DATA_FORMAT",
                         skip_default_values=True,
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         ## Append the inputted data sources to each of the Output Files
         for Output in [output_file, output_file_gy, output_file_gu]:
-            f = open(Output, 'a')
+            f = open(Output, "a")
             f.write("c ------Data Sources:\n")
             f.write("c " + output_file + "\n")
             f.close()
@@ -219,12 +219,12 @@ class TripDistributions(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
-        # Used to allocate results to  the 'scratch' matrices
+        # Used to allocate results to  the "scratch" matrices
         num_scratch = 0
         results = ["mo927", "mo928", "mo929", "mo931"]
 
         # loops through mo_list for any list items that are expressions
-        #  (contains '+') adding mo matrices up for aggregation.
+        #  (contains "+") adding mo matrices up for aggregation.
         # Performs calulation and saves result in a scratch matrix.
         # then inserts scratch matrix instead of the initial expresssion
         specs = []
