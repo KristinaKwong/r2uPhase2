@@ -43,7 +43,7 @@ class TripAttractions(_m.Tool()):
         ##Batchin File
         self.Matrix_Batchins(eb)
 
-        ## Creates Low and High Income Households from the 'mo' matrices
+        ## Creates Low and High Income Households from the "mo" matrices
         self.CreateHouseholds_LowHighIncome_TotalPop()
 
         ##Store Coefficients
@@ -70,7 +70,7 @@ class TripAttractions(_m.Tool()):
         ##    List to hold matrix objects
         md_value = []
 
-        ##    Loop to append all result matrices onto the variable 'md_value'
+        ##    Loop to append all result matrices onto the variable "md_value"
         for mo_num in [24, 25, 26] + range(31, 42):
             md_value.append(eb.matrix("md" + str(mo_num)))
 
@@ -79,7 +79,7 @@ class TripAttractions(_m.Tool()):
 
         ## Export all matrix data
         export_matrices(export_file=output_file,
-                        field_separator=' ',
+                        field_separator=" ",
                         matrices=md_value,
                         export_format="PROMPT_DATA_FORMAT",
                         skip_default_values=True,
@@ -87,24 +87,24 @@ class TripAttractions(_m.Tool()):
 
         ## Export matrix data aggregated to the gy ensemble
         export_matrices(export_file=output_file_gy,
-                        field_separator=' ',
+                        field_separator=" ",
                         matrices=md_value,
-                        partition_aggregation={'destinations': 'gy', 'operator': 'sum'},
+                        partition_aggregation={"destinations": "gy", "operator": "sum"},
                         export_format="PROMPT_DATA_FORMAT",
                         skip_default_values=True,
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         ## Export matrix data aggregated to the gu ensemble
         export_matrices(export_file=output_file_gu,
-                        field_separator=' ',
+                        field_separator=" ",
                         matrices=md_value,
-                        partition_aggregation={'destinations': 'gu', 'operator': 'sum'},
+                        partition_aggregation={"destinations": "gu", "operator": "sum"},
                         export_format="PROMPT_DATA_FORMAT",
                         skip_default_values=True,
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
 
         for Output in [output_file, output_file_gy, output_file_gu]:
-            f = open(Output, 'a')
+            f = open(Output, "a")
             f.write("c ------Data Sources:\n")
             f.write("c " + CoefficientsPerGrouping + "\n")
             f.close()
@@ -115,19 +115,19 @@ class TripAttractions(_m.Tool()):
         compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         #Define Attraction attributes
-        Variable_Matrix = [['Contruction/Mfg', 'md5'],
-                           ['FIRE', 'md6'],
-                           ['TCU/Wholesale', 'md7'],
-                           ['Retail', 'md8'],
-                           ['AccomFood/InfoCult', 'md10'],
-                           ['Health/Educat/PubAdmin', 'md11'],
-                           ['POP 5 to 17', '(md21+md22)'],
-                           ['Total_Population', 'md20'],
-                           ['Households_Low', 'md24'],
-                           ['Household_Medium', 'md25'],
-                           ['Households_high', 'md26'],
-                           ['PS2011', 'md23'],
-                           ['Business/OtherServices', 'md9']]
+        Variable_Matrix = [["Contruction/Mfg", "md5"],
+                           ["FIRE", "md6"],
+                           ["TCU/Wholesale", "md7"],
+                           ["Retail", "md8"],
+                           ["AccomFood/InfoCult", "md10"],
+                           ["Health/Educat/PubAdmin", "md11"],
+                           ["POP 5 to 17", "(md21+md22)"],
+                           ["Total_Population", "md20"],
+                           ["Households_Low", "md24"],
+                           ["Household_Medium", "md25"],
+                           ["Households_high", "md26"],
+                           ["PS2011", "md23"],
+                           ["Business/OtherServices", "md9"]]
 
         # print "coefficients_data",coefficients_data
         # print "groupings_per_purpose", groupings_per_purpose
@@ -155,8 +155,8 @@ class TripAttractions(_m.Tool()):
 
     @_m.logbook_trace("Store_Coefficients")
     def Store_Coefficients(self, CoefficientsPerGrouping):
-        with open(CoefficientsPerGrouping, 'rb') as f:
-            reader = csv.reader(f, dialect='excel')
+        with open(CoefficientsPerGrouping, "rb") as f:
+            reader = csv.reader(f, dialect="excel")
             header = reader.next()
             data = [header]
             for row in reader:
