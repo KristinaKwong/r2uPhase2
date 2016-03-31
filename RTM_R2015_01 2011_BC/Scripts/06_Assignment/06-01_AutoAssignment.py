@@ -84,9 +84,9 @@ class AutoAssignment(_m.Tool()):
         delete_extra = _m.Modeller().tool("inro.emme.data.extra_attribute.delete_extra_attribute")
         create_extra = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
 
-        del_list = ['@s1cst', '@s2cst', '@s3cst', '@s1vol', '@s2vol',
-                    '@s3vol', '@cpen', '@name', '@len', '@trncp',
-                    '@hwycl', '@hcst', '@voltr', '@rail', '@ivtp2']
+        del_list = ["@s1cst", "@s2cst", "@s3cst", "@s1vol", "@s2vol",
+                    "@s3vol", "@cpen", "@name", "@len", "@trncp",
+                    "@hwycl", "@hcst", "@voltr", "@rail", "@ivtp2"]
 
         cr_list = ["sov" + str(i) for i in range(1, 6)] + \
                   ["hov" + str(i) for i in range(1, 6)]
@@ -174,17 +174,17 @@ class AutoAssignment(_m.Tool()):
         }
 
         expressions_list = [
-            ['0', 'all', '@tkpen'],
-            ['length*100', 'mode=n', '@tkpen'],
-            ['length*' + voc + '+@tolls*' + toll_sens, 'all', '@sovoc'],
-            ['length*' + voc + '+@tolls*' + toll_sens + "/" + occ, 'all', '@hovoc'],
-            ['length*0.24+@tolls*2*' + toll_sens, 'all', '@lgvoc'],
-            ['length*0.56+@tolls*3*' + toll_sens + '+@tkpen', 'all', '@hgvoc']
+            ["0", "all", "@tkpen"],
+            ["length*100", "mode=n", "@tkpen"],
+            ["length*" + voc + "+@tolls*" + toll_sens, "all", "@sovoc"],
+            ["length*" + voc + "+@tolls*" + toll_sens + "/" + occ, "all", "@hovoc"],
+            ["length*0.24+@tolls*2*" + toll_sens, "all", "@lgvoc"],
+            ["length*0.56+@tolls*3*" + toll_sens + "+@tkpen", "all", "@hgvoc"]
         ]
         for expression, selection, result in expressions_list:
-            spec['expression'] = expression
-            spec['selections']['link'] = selection
-            spec['result'] = result
+            spec["expression"] = expression
+            spec["selections"]["link"] = selection
+            spec["result"] = result
             calc_extra_attribute(spec, scenario=am_scenario)
             calc_extra_attribute(spec, scenario=md_scenario)
 
@@ -200,28 +200,28 @@ class AutoAssignment(_m.Tool()):
 
         # KB: why are the transit heady calculations in the traffic assignment tool ??????
         ## Calculate effective headways based on following factors:
-        ##        'l' rail=0.8,
-        ##        'b' bus=1.2,
-        ##        's' seabus=0.67,
-        ##        'g' BRT=1.1,
-        ##        'f' LRT=1.1,
-        ##        'h' Gondola=0.8,
-        ##        'r' WCE=0.8
-        expressions_list = [['hdw*1.2', 'mode=b', 'ut1'],
-                            ['hdw*0.8', 'mode=l', 'ut1'],
-                            ['hdw*0.67', 'mode=s', 'ut1'],
-                            ['hdw*1.1', 'mode=f', 'ut1'],
-                            ['hdw*1.1', 'mode=g', 'ut1'],
-                            ['hdw*0.8', 'mode=h', 'ut1'],
-                            ['hdw*0.8', 'mode=r', 'ut1'],
-                            ['1', 'all', '@ivttp'],
-                            ['3.5', 'mode=b', '@ivttp'],
-                            ['3.5', 'mode=g', '@ivttp']]
+        ##        "l" rail=0.8,
+        ##        "b" bus=1.2,
+        ##        "s" seabus=0.67,
+        ##        "g" BRT=1.1,
+        ##        "f" LRT=1.1,
+        ##        "h" Gondola=0.8,
+        ##        "r" WCE=0.8
+        expressions_list = [["hdw*1.2", "mode=b", "ut1"],
+                            ["hdw*0.8", "mode=l", "ut1"],
+                            ["hdw*0.67", "mode=s", "ut1"],
+                            ["hdw*1.1", "mode=f", "ut1"],
+                            ["hdw*1.1", "mode=g", "ut1"],
+                            ["hdw*0.8", "mode=h", "ut1"],
+                            ["hdw*0.8", "mode=r", "ut1"],
+                            ["1", "all", "@ivttp"],
+                            ["3.5", "mode=b", "@ivttp"],
+                            ["3.5", "mode=g", "@ivttp"]]
 
         for expression, selection, result in expressions_list:
-            spec['expression'] = expression
-            spec['selections']['transit_line'] = selection
-            spec['result'] = result
+            spec["expression"] = expression
+            spec["selections"]["transit_line"] = selection
+            spec["result"] = result
             calc_extra_attribute(spec, scenario=am_scenario)
             calc_extra_attribute(spec, scenario=md_scenario)
 
@@ -238,19 +238,19 @@ class AutoAssignment(_m.Tool()):
 
         demands_list = [
             {
-                "sov": ['mf843', 'mf844', 'mf845', 'mf846', 'mf847'],
-                "hov": ['mf848', 'mf849', 'mf850', 'mf851', 'mf852'],
-                "truck": ['mf980', 'mf981']
+                "sov": ["mf843", "mf844", "mf845", "mf846", "mf847"],
+                "hov": ["mf848", "mf849", "mf850", "mf851", "mf852"],
+                "truck": ["mf980", "mf981"]
             },
             {
-                "sov": ['mf856', 'mf857', 'mf858', 'mf859', 'mf860'],
-                "hov": ['mf861', 'mf862', 'mf863', 'mf864', 'mf865'],
-                "truck": ['mf982', 'mf983']
+                "sov": ["mf856", "mf857", "mf858", "mf859", "mf860"],
+                "hov": ["mf861", "mf862", "mf863", "mf864", "mf865"],
+                "truck": ["mf982", "mf983"]
             }
         ]
 
-        travel_time_list = ['mf931', 'mf943']
-        distance_list = ['mf930', 'mf942']
+        travel_time_list = ["mf931", "mf943"]
+        distance_list = ["mf930", "mf942"]
 
         path_analysis = {
             "link_component": "length",
@@ -270,8 +270,8 @@ class AutoAssignment(_m.Tool()):
             spec = self.generate_specification(
                 demands, stopping_criteria, num_processors)
             spec["path_analysis"] = path_analysis
-            spec['classes'][4]['results']['od_travel_times'] = {'shortest_paths': travel_time}
-            spec['classes'][4]['analysis'] = {'results': {'od_values': distance}}
+            spec["classes"][4]["results"]["od_travel_times"] = {"shortest_paths": travel_time}
+            spec["classes"][4]["analysis"] = {"results": {"od_values": distance}}
             assign_traffic(spec, scenario=scenario)
 
         spec = {
@@ -284,14 +284,14 @@ class AutoAssignment(_m.Tool()):
         selection_type = {
             "link": {"link": "all"},
             "turn": {"incoming_link": "all", "outgoing_link": "all"}}
-        expressions_list = [['link', '@sov1+@sov2+@sov3+@sov4+@sov5', '@wsovl'],
-                            ['link', '@hov1+@hov2+@hov3+@hov4+@hov5', '@whovl'],
-                            ['turn', '@tsov1+@tsov2+@tsov3+@tsov4+@tsov5', '@wsovt'],
-                            ['turn', '@thov1+@thov2+@thov3+@thov4+@thov5', '@whovt']]
+        expressions_list = [["link", "@sov1+@sov2+@sov3+@sov4+@sov5", "@wsovl"],
+                            ["link", "@hov1+@hov2+@hov3+@hov4+@hov5", "@whovl"],
+                            ["turn", "@tsov1+@tsov2+@tsov3+@tsov4+@tsov5", "@wsovt"],
+                            ["turn", "@thov1+@thov2+@thov3+@thov4+@thov5", "@whovt"]]
         for kind, expression, result in expressions_list:
-            spec['expression'] = expression
-            spec['selections'] = selection_type[kind]
-            spec['result'] = result
+            spec["expression"] = expression
+            spec["selections"] = selection_type[kind]
+            spec["result"] = result
             network_calculator(spec, scenario=am_scenario)
             network_calculator(spec, scenario=md_scenario)
 
