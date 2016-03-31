@@ -109,14 +109,14 @@ class ExternalTruckModel(_m.Tool()):
 
 
             CrossBorderSpec=self.spec_as_dict
-            CrossBorderSpec['expression'] = "mf1001"
-            CrossBorderSpec['result']='ms151'
-            CrossBorderSpec['aggregation']['origins']="+"
-            CrossBorderSpec['aggregation']['destinations']="+"
+            CrossBorderSpec["expression"] = "mf1001"
+            CrossBorderSpec["result"]="ms151"
+            CrossBorderSpec["aggregation"]["origins"]="+"
+            CrossBorderSpec["aggregation"]["destinations"]="+"
             compute_matrix(CrossBorderSpec)
 
-            CrossBorderSpec['expression'] = "mf1004"
-            CrossBorderSpec['result']='ms152'
+            CrossBorderSpec["expression"] = "mf1004"
+            CrossBorderSpec["result"]="ms152"
             compute_matrix(CrossBorderSpec)
 
             self.ResetSpec(CrossBorderSpec)
@@ -143,10 +143,10 @@ class ExternalTruckModel(_m.Tool()):
 
             for i in range(len(MatrixList)):
                 if i<3:
-                    CrossBorderSpec['expression'] = MatrixList[i]+"*"+str(RatioL)
+                    CrossBorderSpec["expression"] = MatrixList[i]+"*"+str(RatioL)
                 else:
-                    CrossBorderSpec['expression'] = MatrixList[i]+"*"+str(RatioH)
-                CrossBorderSpec['result']=MatrixList[i]
+                    CrossBorderSpec["expression"] = MatrixList[i]+"*"+str(RatioH)
+                CrossBorderSpec["result"]=MatrixList[i]
                 compute_matrix(CrossBorderSpec)
 
 
@@ -257,7 +257,7 @@ class ExternalTruckModel(_m.Tool()):
 
 
 
-            matrixlist=['mo1001','mo1002','md201','md202']
+            matrixlist=["mo1001","mo1002","md201","md202"]
 
             TruckList=[LightTrucksFrom,HeavyTrucksFrom, LightTrucksTo ,HeavyTrucksTo]
 
@@ -266,14 +266,14 @@ class ExternalTruckModel(_m.Tool()):
 
             for i in range (0, len(matrixlist)) :
                 for j in range(0, len(ExtZoneList)):
-                    TripGenSpec['expression'] = str(TruckList[i][j])
+                    TripGenSpec["expression"] = str(TruckList[i][j])
                     if i<2:
-                        TripGenSpec['constraint']['by_zone']['origins'] = str(ExtZoneList[j])
-                        TripGenSpec['constraint']['by_zone']['destinations'] = None
+                        TripGenSpec["constraint"]["by_zone"]["origins"] = str(ExtZoneList[j])
+                        TripGenSpec["constraint"]["by_zone"]["destinations"] = None
                     else:
-                        TripGenSpec['constraint']['by_zone']['origins'] = None
-                        TripGenSpec['constraint']['by_zone']['destinations'] = str(ExtZoneList[j])
-                    TripGenSpec['result'] = matrixlist[i]
+                        TripGenSpec["constraint"]["by_zone"]["origins"] = None
+                        TripGenSpec["constraint"]["by_zone"]["destinations"] = str(ExtZoneList[j])
+                    TripGenSpec["result"] = matrixlist[i]
                     compute_matrix(TripGenSpec)
             self.ResetSpec(TripGenSpec)
 
@@ -290,32 +290,32 @@ class ExternalTruckModel(_m.Tool()):
             AdjustSpec=self.spec_as_dict
             ResultList=["mo1003","md203"]
 
-            AdjustSpec['expression']= matrix1
+            AdjustSpec["expression"]= matrix1
 
             for i in range (2):
                 if i==0:
-                    AdjustSpec['constraint']['by_zone']['origins'] = "1 2 8 10 11"
-                    AdjustSpec['constraint']['by_zone']['destinations'] = "*"
-                    AdjustSpec['aggregation']['origins'] = None
-                    AdjustSpec['aggregation']['destinations'] = "+"
+                    AdjustSpec["constraint"]["by_zone"]["origins"] = "1 2 8 10 11"
+                    AdjustSpec["constraint"]["by_zone"]["destinations"] = "*"
+                    AdjustSpec["aggregation"]["origins"] = None
+                    AdjustSpec["aggregation"]["destinations"] = "+"
                 if i==1:
-                    AdjustSpec['constraint']['by_zone']['origins'] = "*"
-                    AdjustSpec['constraint']['by_zone']['destinations'] = "1 2 8 10 11"
-                    AdjustSpec['aggregation']['origins'] = "+"
-                    AdjustSpec['aggregation']['destinations'] = None
+                    AdjustSpec["constraint"]["by_zone"]["origins"] = "*"
+                    AdjustSpec["constraint"]["by_zone"]["destinations"] = "1 2 8 10 11"
+                    AdjustSpec["aggregation"]["origins"] = "+"
+                    AdjustSpec["aggregation"]["destinations"] = None
 
 
-                AdjustSpec['result']=ResultList[i]
+                AdjustSpec["result"]=ResultList[i]
                 compute_matrix(AdjustSpec)
 
             self.ResetSpec(AdjustSpec)
 
-            AdjustSpec['expression']= "(("+matrix2+"-"+ResultList[0]+").max.0)"
-            AdjustSpec['result']=matrix2
+            AdjustSpec["expression"]= "(("+matrix2+"-"+ResultList[0]+").max.0)"
+            AdjustSpec["result"]=matrix2
             compute_matrix(AdjustSpec)
 
-            AdjustSpec['expression']= "(("+matrix3+"-"+ResultList[1]+").max.0)"
-            AdjustSpec['result']=matrix3
+            AdjustSpec["expression"]= "(("+matrix3+"-"+ResultList[1]+").max.0)"
+            AdjustSpec["result"]=matrix3
             compute_matrix(AdjustSpec)
 
 
@@ -330,12 +330,12 @@ class ExternalTruckModel(_m.Tool()):
             compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
             TripDistSpec=self.spec_as_dict
 
-            ResultList=['mf1010','mf1011']
-            ExpressionList=['mo1001*mf1008+md201*mf1008','mo1002*mf1009+md202*mf1009']
+            ResultList=["mf1010","mf1011"]
+            ExpressionList=["mo1001*mf1008+md201*mf1008","mo1002*mf1009+md202*mf1009"]
 
             for i in range (2):
-                TripDistSpec['expression'] = ExpressionList[i]
-                TripDistSpec['result'] = ResultList[i]
+                TripDistSpec["expression"] = ExpressionList[i]
+                TripDistSpec["result"] = ResultList[i]
                 compute_matrix (TripDistSpec)
 
     def TimeSlicing(self):
@@ -358,34 +358,34 @@ class ExternalTruckModel(_m.Tool()):
             ConstraintList=[[1,2],[8,10],[11]]
 
                         ## LightAM, LightMD,HeavyAM, HeavyMD
-            Matrix_List = ['mf1012','mf1014','mf1013','mf1015']
-            TripDistList= ['mf1010', 'mf1011']
+            Matrix_List = ["mf1012","mf1014","mf1013","mf1015"]
+            TripDistList= ["mf1010", "mf1011"]
 
 
             for i in range (len(TripDistList)) :
                 for j in range (int((len(FactorIB)/2))):
                     for k in range (len(FactorIB[j])):
-                        TimeSliceSpec['expression'] = TripDistList[i]+"*"+str(FactorIB[2*i+j][k])
+                        TimeSliceSpec["expression"] = TripDistList[i]+"*"+str(FactorIB[2*i+j][k])
                         for l in range (0, len(ConstraintList[k])):
-                            TimeSliceSpec['constraint']['by_zone']['origins'] = str(ConstraintList[k][l])
-                            TimeSliceSpec['constraint']['by_zone']['destinations'] = "*"
-                            TimeSliceSpec['result'] = Matrix_List[2*i+j]
+                            TimeSliceSpec["constraint"]["by_zone"]["origins"] = str(ConstraintList[k][l])
+                            TimeSliceSpec["constraint"]["by_zone"]["destinations"] = "*"
+                            TimeSliceSpec["result"] = Matrix_List[2*i+j]
                             compute_matrix (TimeSliceSpec)
 
-            TimeSliceSpec['constraint']['by_zone']['origins'] = "*"
+            TimeSliceSpec["constraint"]["by_zone"]["origins"] = "*"
 
             for i in range (len(TripDistList)) :
                 for j in range (int((len(FactorIB)/2))):
                     for k in range (len(FactorOB[j])):
-                        TimeSliceSpec['expression'] = str(TripDistList[i])+"*"+str(FactorOB[2*i+j][k])
+                        TimeSliceSpec["expression"] = str(TripDistList[i])+"*"+str(FactorOB[2*i+j][k])
                         for l in range (0, len(ConstraintList[k])):
-                            TimeSliceSpec['constraint']['by_zone']['destinations'] = str(ConstraintList[k][l])
-                            TimeSliceSpec['result'] = Matrix_List[2*i+j]
+                            TimeSliceSpec["constraint"]["by_zone"]["destinations"] = str(ConstraintList[k][l])
+                            TimeSliceSpec["result"] = Matrix_List[2*i+j]
                             compute_matrix (TimeSliceSpec)
 
     def ResetSpec (self, SpecItems):
 
-        SpecItems['constraint']['by_zone']['origins'] = None
-        SpecItems['constraint']['by_zone']['destinations'] = None
-        SpecItems['aggregation']['origins'] = None
-        SpecItems['aggregation']['destinations'] = None
+        SpecItems["constraint"]["by_zone"]["origins"] = None
+        SpecItems["constraint"]["by_zone"]["destinations"] = None
+        SpecItems["aggregation"]["origins"] = None
+        SpecItems["aggregation"]["destinations"] = None
