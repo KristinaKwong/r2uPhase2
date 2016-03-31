@@ -28,15 +28,15 @@ class InputLandUse(_m.Tool()):
 
         pb.add_select_file(tool_attribute_name="LandUse1",
                            window_type="file",
-                           file_filter='*.csv',
-                           start_path=loc + '/00_RUNMODEL/LandUse',
+                           file_filter="*.csv",
+                           start_path=loc + "/00_RUNMODEL/LandUse",
                            title="Select Input LandUse file 1: ",
                            note="File must be csv file.")
 
         pb.add_select_file(tool_attribute_name="LandUse2",
                            window_type="file",
-                           file_filter='*.csv',
-                           start_path=loc + '/00_RUNMODEL/LandUse',
+                           file_filter="*.csv",
+                           start_path=loc + "/00_RUNMODEL/LandUse",
                            title="Select Input LandUse file 2: ",
                            note="File must be csv file.")
         return pb.render()
@@ -60,13 +60,13 @@ class InputLandUse(_m.Tool()):
         # Define matrices for storage (must pre-exist)
         inputmats = []
         #Define matrices for POP04, POP512, POP1317, POP1824, POP2444, POP4564, POP65p, totpop
-        inputmats.extend(['mo23', 'md21', 'md22', 'mo24', 'mo25', 'mo26', 'mo19', 'mo20'])
+        inputmats.extend(["mo23", "md21", "md22", "mo24", "mo25", "mo26", "mo19", "mo20"])
         #Define matrices for tothhs, hh1, hh2, hh3, hh4, Construction-Mfg, FIRE, TCU-Wholesale, Retail
-        inputmats.extend(['mo01', 'mo50', 'mo51', 'mo52', 'mo53', 'md05', 'md06', 'md07', 'md08'])
+        inputmats.extend(["mo01", "mo50", "mo51", "mo52", "mo53", "md05", "md06", "md07", "md08"])
         #Define matrices for Business-OtherServices, AccomFood-InfoCult, Health-Educat-PubAdmin, totemp
-        inputmats.extend(['md09', 'md10', 'md11', 'md12', 'md23'])
+        inputmats.extend(["md09", "md10", "md11", "md12", "md23"])
         #Define matrices for 250CS, 500CS, WPRK45, NWPRK45, bike_score
-        inputmats.extend(['mo393', 'mo394', 'mo27', 'mo28', 'mo13'])
+        inputmats.extend(["mo393", "mo394", "mo27", "mo28", "mo13"])
 
         with _m.logbook_trace("Initializing matrices to zero"):
             for mat_id in inputmats:
@@ -75,19 +75,19 @@ class InputLandUse(_m.Tool()):
         # TODO: change the file reading to use the normal design pattern
         with _m.logbook_trace("Read new matrices from csv file1 and file2"):
             #Read data from file and check number of lines
-            with open(file1, 'rb') as mainpop:
+            with open(file1, "rb") as mainpop:
                 data1 = list(csv.reader(mainpop, skipinitialspace=True))
                 data1 = [i for i in data1 if i]
 
-            file = open(file1, 'r')
+            file = open(file1, "r")
             getlines = file.readlines()
             file1size = len(getlines)
             file.close()
             #Repeat process for second land use file
-            with open(file2, 'rb') as secondpop:
+            with open(file2, "rb") as secondpop:
                 data2 = list(csv.reader(secondpop, skipinitialspace=True))
                 data2 = [j for j in data2 if j]
-            file = open(file2, 'r')
+            file = open(file2, "r")
             getlines = file.readlines()
             file2size = len(getlines)
             file.close()
