@@ -37,10 +37,10 @@ class FullTruckModel(_m.Tool()):
 
         pb.add_select_scenario(tool_attribute_name="MDScenario",title="Select MD Scenario")
 
-        pb.add_select(tool_attribute_name="Year",keyvalues=[['1','2011'],['2','2030'],['3','2045']],
+        pb.add_select(tool_attribute_name="Year",keyvalues=[["1","2011"],["2","2030"],["3","2045"]],
                         title="Choose Analysis Year (2011, 2030 or 2045)")
 
-        pb.add_select(tool_attribute_name="Sensitivity",keyvalues=[['N','No'],['Y','Yes']],
+        pb.add_select(tool_attribute_name="Sensitivity",keyvalues=[["N","No"],["Y","Yes"]],
                         title="Choose whether to modify truck growth rates ")
 
         with pb.section("Sensitivity options-Future Runs:"):
@@ -69,7 +69,7 @@ class FullTruckModel(_m.Tool()):
                             title="Enter Regional Sector Growth % Assumption 2030-2045")
 
             pb.add_select(tool_attribute_name="AsiaPacificGrowth",
-                            keyvalues=[['B','Base'],['L','Low'],['M','Med'],['H','High']],
+                            keyvalues=[["B","Base"],["L","Low"],["M","Med"],["H","High"]],
                             title="Enter Asia Pacific Growth Assumption")
         pb.add_html("""
             <script>
@@ -77,24 +77,24 @@ class FullTruckModel(_m.Tool()):
                 {
                     // indent tool section items
                     $(".t_tool_section")
-                        .children('.t_element')
-                        .css('padding-left', '70px');
+                        .children(".t_element")
+                        .css("padding-left", "70px");
 
-                    $('#Sensitivity').bind('change', function ()
+                    $("#Sensitivity").bind("change", function ()
                     {
                         $(this).commit();
-                        if ($(this).val() == 'N')
+                        if ($(this).val() == "N")
                             var disable = true;
                         else
                             var disable = false;
-                        $('#ExtGrowth1').prop('disabled', disable);
-                        $('#ExtGrowth2').prop('disabled', disable);
-                        $('#CascadeGrowth1').prop('disabled', disable);
-                        $('#CascadeGrowth2').prop('disabled', disable);
-                        $('#RegionalGrowth1').prop('disabled', disable);
-                        $('#RegionalGrowth2').prop('disabled', disable);
-                        $('#AsiaPacificGrowth').prop('disabled', disable);
-                    }).trigger('change') ;
+                        $("#ExtGrowth1").prop("disabled", disable);
+                        $("#ExtGrowth2").prop("disabled", disable);
+                        $("#CascadeGrowth1").prop("disabled", disable);
+                        $("#CascadeGrowth2").prop("disabled", disable);
+                        $("#RegionalGrowth1").prop("disabled", disable);
+                        $("#RegionalGrowth2").prop("disabled", disable);
+                        $("#AsiaPacificGrowth").prop("disabled", disable);
+                    }).trigger("change") ;
                 });
             </script>""")
 
