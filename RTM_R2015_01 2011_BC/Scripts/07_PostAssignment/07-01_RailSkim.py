@@ -66,11 +66,11 @@ class RailAssignment(_m.Tool()):
             "perceived_total_waiting_times": None
         }
         if RaType==0:
-            Travel_Time_List = [['mf940', 'mf941', 'mf939', 'mf937', 'mf938'],
-                                ['mf952', 'mf953', 'mf951', 'mf949', 'mf950']]
+            Travel_Time_List = [["mf940", "mf941", "mf939", "mf937", "mf938"],
+                                ["mf952", "mf953", "mf951", "mf949", "mf950"]]
         if RaType==1:
-            Travel_Time_List = [['mf1073', 'mf1074', 'mf1072', 'mf1070', 'mf1071'],
-                                ['mf1078', 'mf1079', 'mf1077', 'mf1075', 'mf1076']]
+            Travel_Time_List = [["mf1073", "mf1074", "mf1072", "mf1070", "mf1071"],
+                                ["mf1078", "mf1079", "mf1077", "mf1075", "mf1076"]]
 
 
         spec_as_dict = _deepcopy(tmplt_spec)

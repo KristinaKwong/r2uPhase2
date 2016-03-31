@@ -69,14 +69,14 @@ class Transit_Assignment(_m.Tool()):
             "strategy_analysis": None,
             "type": "STANDARD_TRANSIT_ASSIGNMENT"
         }
-        demand_list = ['mf853', 'mf866']
-        travel_times_list = [['mf954', 'mf955', 'mf956', 'mf957'], ['mf958', 'mf959', 'mf960', 'mf961']]
+        demand_list = ["mf853", "mf866"]
+        travel_times_list = [["mf954", "mf955", "mf956", "mf957"], ["mf958", "mf959", "mf960", "mf961"]]
         for j in range(2):
-            spec_as_dict['demand'] = demand_list[j]
-            spec_as_dict['od_results']['total_waiting_times'] = travel_times_list[j][0]
-            spec_as_dict['od_results']['by_mode_subset']['in_vehicle_times'] = travel_times_list[j][1]
-            spec_as_dict['od_results']['by_mode_subset']['aux_transit_times'] = travel_times_list[j][2]
-            spec_as_dict['od_results']['by_mode_subset']['avg_boardings'] = travel_times_list[j][3]
+            spec_as_dict["demand"] = demand_list[j]
+            spec_as_dict["od_results"]["total_waiting_times"] = travel_times_list[j][0]
+            spec_as_dict["od_results"]["by_mode_subset"]["in_vehicle_times"] = travel_times_list[j][1]
+            spec_as_dict["od_results"]["by_mode_subset"]["aux_transit_times"] = travel_times_list[j][2]
+            spec_as_dict["od_results"]["by_mode_subset"]["avg_boardings"] = travel_times_list[j][3]
             if j == 0:
                 genskim(spec_as_dict, scenario=scenarioam)
             if j == 1:
