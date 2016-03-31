@@ -25,7 +25,7 @@ class ModeChoiceHBSchool(_m.Tool()):
         ##    List to hold matrix objects
         mf_value = []
 
-        ##    Loop to append all result matrices onto the variable 'mf_value'
+        ##    Loop to append all result matrices onto the variable "mf_value"
         # for mf_num in range(870,878):
         for mf_num in range(882, 890):
             # print "mf"+str(mf_num)
@@ -37,13 +37,13 @@ class ModeChoiceHBSchool(_m.Tool()):
 
         ## Export matrix data aggregated to the gy ensemble
         export_matrices(export_file=filename,
-                        field_separator=' ',
+                        field_separator=" ",
                         matrices=mf_value,
                         constraint={
-                            'by_value': {},
-                            'by_zone': {'origins': 'gy1-gy14', 'destinations': 'gy1-gy14'}
+                            "by_value": {},
+                            "by_zone": {"origins": "gy1-gy14", "destinations": "gy1-gy14"}
                         },
-                        partition_aggregation={'origins': 'gy', 'destinations': 'gy', 'operator': 'sum'},
+                        partition_aggregation={"origins": "gy", "destinations": "gy", "operator": "sum"},
                         export_format="PROMPT_DATA_FORMAT",
                         skip_default_values=False,
                         full_matrix_line_format="ONE_ENTRY_PER_LINE")
@@ -56,9 +56,9 @@ class ModeChoiceHBSchool(_m.Tool()):
         cur_cycle = util.get_cycle(eb)
         file_suffix = "_" + str(cur_cycle) + ".txt"
 
-        purp_list = ['Hbw', 'HbSc', 'HbSh', 'HbPb', 'HbU', 'HbSoc', 'HbEsc', 'NHBO', 'NHBW']
-        income = ['lowinc', 'medinc', 'highinc']
-        auto = ['_zero_auto', '_one_auto', '_twoplus_auto']
+        purp_list = ["Hbw", "HbSc", "HbSh", "HbPb", "HbU", "HbSoc", "HbEsc", "NHBO", "NHBW"]
+        income = ["lowinc", "medinc", "highinc"]
+        auto = ["_zero_auto", "_one_auto", "_twoplus_auto"]
 
         output_folder = util.get_output_path(eb)
         purpose_folder = output_folder
@@ -85,11 +85,11 @@ class ModeChoiceHBSchool(_m.Tool()):
                                 specs.append(util.matrix_spec(result, expression1))
                         report = compute_matrix(specs)
                         if p == 0:
-                            exportfile = purpose_folder + '/Overall_Results_' + purp_list[purp - 1] + "_" + income[i] + file_suffix
+                            exportfile = purpose_folder + "/Overall_Results_" + purp_list[purp - 1] + "_" + income[i] + file_suffix
                         if p == 1:
-                            exportfile = purpose_folder + '/Overall_Results_' + purp_list[purp - 1] + "_" + auto[i] + file_suffix
+                            exportfile = purpose_folder + "/Overall_Results_" + purp_list[purp - 1] + "_" + auto[i] + file_suffix
                         if p == 2:
-                            exportfile = purpose_folder + '/Overall_Results_' + purp_list[purp - 1] + file_suffix
+                            exportfile = purpose_folder + "/Overall_Results_" + purp_list[purp - 1] + file_suffix
                         self.Export_Demand(eb, exportfile)
 
             if purp > 1 and purp < 8:
@@ -114,7 +114,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                             specs.append(util.matrix_spec(result, expression1))
                 report = compute_matrix(specs)
 
-                exportfile = purpose_folder + '/Overall_Results_' + purp_list[purp - 1] + file_suffix
+                exportfile = purpose_folder + "/Overall_Results_" + purp_list[purp - 1] + file_suffix
                 self.Export_Demand(eb, exportfile)
 
             if purp > 7:
@@ -127,7 +127,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                         result = "mf" + str(matagg + j)
                         specs.append(util.matrix_spec(result, expression1))
                 report = compute_matrix(specs)
-                exportfile = purpose_folder + '/Overall_Results_' + purp_list[purp - 1] + file_suffix
+                exportfile = purpose_folder + "/Overall_Results_" + purp_list[purp - 1] + file_suffix
                 self.Export_Demand(eb, exportfile)
                 if purp == 8:
                     nwmat = 568
@@ -141,7 +141,7 @@ class ModeChoiceHBSchool(_m.Tool()):
                                 specs.append(util.matrix_spec(result, expression1))
                         report = compute_matrix(specs)
 
-                        exportfile = output_folder + '/Overall_Results_NonWork_' + income[i] + file_suffix
+                        exportfile = output_folder + "/Overall_Results_NonWork_" + income[i] + file_suffix
                         self.Export_Demand(eb, exportfile)
 
     @_m.logbook_trace("Clear Calculation Matrices")
