@@ -135,15 +135,15 @@ class TwoClassTransitAssignment(_m.Tool()):
             "type": "EXTENDED_TRANSIT_ASSIGNMENT"
         }
 
-        demand_list_bus = ['mf853', 'mf866']
-        demand_list_rail = ['mf854', 'mf867']
+        demand_list_bus = ["mf853", "mf866"]
+        demand_list_rail = ["mf854", "mf867"]
         scenario_list = [scenarioam, scenariomd]
         for bus, rail, scen in zip(demand_list_bus, demand_list_rail, scenario_list):
-            bus_spec['demand'] = bus
+            bus_spec["demand"] = bus
             transit_assign(
                 bus_spec, scenario=scen, add_volumes=False,
                 save_strategies=True, class_name="Bus")
-            rail_spec['demand'] = rail
+            rail_spec["demand"] = rail
             transit_assign(
                 rail_spec, scenario=scenarioam, add_volumes=True,
                 save_strategies=True, class_name="Rail")
