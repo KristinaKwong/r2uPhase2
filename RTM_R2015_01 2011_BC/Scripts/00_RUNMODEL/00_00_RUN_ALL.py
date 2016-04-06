@@ -131,12 +131,11 @@ class FullModelRun(_m.Tool()):
     @_m.logbook_trace("Run Seed Assignment and Generate Initial Skims")
     def calculate_costs(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         util.initmat(eb, "mf970", "IntZon", "Intrazonal Matrix", 0)
         specs=[]
         specs.append(util.matrix_spec("mf970", "1*(p.eq.q)"))
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
         # These stopping critiria only used for generating starter skims
         stopping_criteria_skim = {

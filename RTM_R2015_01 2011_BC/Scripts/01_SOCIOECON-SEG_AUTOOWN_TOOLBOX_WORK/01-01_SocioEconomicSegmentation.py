@@ -148,7 +148,6 @@ class SocioEconomicSegmentation(_m.Tool()):
     @_m.logbook_trace("Aggregate Number of Worker Income Categories")
     def Aggregate_NumWorkerIncomeCategories(self):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         result_mo_num = 389
         specs = []
@@ -160,12 +159,11 @@ class SocioEconomicSegmentation(_m.Tool()):
             specs.append(util.matrix_spec(result, expression))
 
         ##Outputs Matrices: mo389-mo391. Income Cat x Num Workers
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Aggregate Income Categories")
     def Aggregate_IncomeCategories(self):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         start_mo_num = 73
         result_mo_num = 365
@@ -186,7 +184,7 @@ class SocioEconomicSegmentation(_m.Tool()):
                 result_mo_num = result_mo_num + 1
 
         ##Outputs Matrices: mo365-mo376. HHSize x Income
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
         ## create additional columns to add worker number and income categories
         wk_expression = []
@@ -205,12 +203,11 @@ class SocioEconomicSegmentation(_m.Tool()):
                 result_mo_num = result_mo_num + 1
 
         ##Outputs Matrices: mo377-mo388. NumWorkers x Income
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Aggregate NonWorkers and Workers")
     def Aggregate_NonWorkers_and_Workers(self):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         start_mo_num = 112
         result_mo_num = 269
@@ -231,7 +228,7 @@ class SocioEconomicSegmentation(_m.Tool()):
                 result_mo_num = result_mo_num + 1
 
                 ##Outputs Matrices: mo269-mo316. NonWorkers: HHSize x Income x AutoOwnership
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
         ## create additional columns to aggregate to Workers
         wk_expression = []
@@ -249,14 +246,13 @@ class SocioEconomicSegmentation(_m.Tool()):
                 specs.append(util.matrix_spec("mo" + str(result_mo_num), wk_ex))
                 result_mo_num = result_mo_num + 1
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
             ##     mo74-mo112 - Calculated Number of Households Per Worker Category and Per Income Category
 
     @_m.logbook_trace("Calculate Number of Households Per Worker Category Per Income Category")
     def Calculate_IncomeWorkersHousehold(self, IncomeData):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         ##Two loops: Go through IncomeData and extract multipliers and multiplies by matrix for HHSize x WorkerNumber
 
@@ -268,12 +264,11 @@ class SocioEconomicSegmentation(_m.Tool()):
                 specs.append(spec)
 
         ##Outputs Matrices: mo74-mo112, HHSize x NumWorkers x Income
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Calculate Number of Workers Per Household Category")
     def Calculate_WorkersHousehold(self, HHData):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         ##    Dictionary for senior proportion lookup
         sr_prop_flag = {"0": "INCLUDE", "1": "EXCLUDE"}
@@ -293,12 +288,11 @@ class SocioEconomicSegmentation(_m.Tool()):
                     wkr = wkr + 1
                     mo_num = mo_num + 1
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Calculate Number of Workers")
     def Calculate_Workers(self, HHData):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         ##    Dictionary for senior proprtion lookup - set senior proportion constraint
         ## 0 - less than 20% Sr. Proportion
@@ -318,7 +312,7 @@ class SocioEconomicSegmentation(_m.Tool()):
                 specs.append(spec)
 
         ##Output Matrix: mo54-57. Number of households with X number of workers.  (Where X=1,2,3,4)
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
 
         specs = []
@@ -331,11 +325,11 @@ class SocioEconomicSegmentation(_m.Tool()):
 
             specs.append(spec)
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
         ## Calculate the total number of workers by adding the recently calculated columns of number of HH with X workers
         spec2 = util.matrix_spec("mo59", "mo55+mo56*2+mo57*mo58")
-        report = compute_matrix(spec2)
+        util.compute_matrix(spec2)
 
     @_m.logbook_trace("Store AutoOwnCoefficients")
     def Store_AutoOwnCoeff(self, AutoOwnCoefficients):
@@ -373,7 +367,6 @@ class SocioEconomicSegmentation(_m.Tool()):
     @_m.logbook_trace("Autos_PerHHSize")
     def Autos_PerHHSize(self):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         ## Loop each set of Auto Ownership classification and perform summation.
         specs = []
@@ -385,20 +378,19 @@ class SocioEconomicSegmentation(_m.Tool()):
 
             specs.append(util.matrix_spec("mo" + str(x + 716), expression))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
     ##Create mo16, mo18 from existing matrices
     @_m.logbook_trace("InitialMatrixCalculations")
     def InitialMatrixCalculations(self):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         specs = []
 
         specs.append(util.matrix_spec("mo18", "mo19/(mo20+0.00000000001)"))
         specs.append(util.matrix_spec("mo16", "10000*mo20/(mo17+0.00000000001)"))
  
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Matrix Batchin")
     def Matrix_Batchins(self, eb):

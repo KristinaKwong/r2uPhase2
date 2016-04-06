@@ -90,7 +90,6 @@ class ModeChoice(_m.Tool()):
     @_m.logbook_trace("Calculate flag matrices")
     def calculate_flag_matrices(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         # Initialize temporary calculation matrices
         util.initmat(eb, "mf1089", "mctemp", "Temporary matrix used in Mode Choice", 0)
@@ -115,12 +114,11 @@ class ModeChoice(_m.Tool()):
         specs.append(util.matrix_spec("mf139", "mf127-(mf129.eq.1)"))
         specs.append(util.matrix_spec("mf151", "(mf132+mf133).gt.0"))
 
-        compute_matrix(specs)
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Add external demand to non-work SOV / HOV")
     def add_external_demand(self):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         specs = []
         specs.append(util.matrix_spec("mf847", "mf847+mf978"))
@@ -128,7 +126,7 @@ class ModeChoice(_m.Tool()):
         specs.append(util.matrix_spec("mf860", "mf860+mf984"))
         specs.append(util.matrix_spec("mf865", "mf865+mf985"))
 
-        compute_matrix(specs)
+        util.compute_matrix(specs)
 
     def clean_matrices(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
