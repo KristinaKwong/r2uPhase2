@@ -38,7 +38,6 @@ class AutoOwnershipTool(_m.Tool()):
     @_m.logbook_trace("Calculate AutoOwnership 0 Cars - Utilities")
     def Calculate_AutoOwnership_0Cars(self, AutoOwnCoeff):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         lowinc0 = AutoOwnCoeff.get("lowinc0", [0])[0]
         hiinc0 = AutoOwnCoeff.get("hiinc0", [0])[0]
@@ -116,14 +115,13 @@ class AutoOwnershipTool(_m.Tool()):
             #            print str(auto_own_one) + " = " + expression
             specs.append(util.matrix_spec("mo" + str(auto_own_one + 403), expression))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
 
     ## mo443-mo481 - Store utility value while for AutoOwn=1 for various HHSize, NumWorkers, IncomeCat
     @_m.logbook_trace("Calculate AutoOwnership 1 Cars - Utilities")
     def Calculate_AutoOwnership_1Cars(self, AutoOwnCoeff):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         bias1 = AutoOwnCoeff.get("1bias", [0])[0]
         lowinc1 = AutoOwnCoeff.get("lowinc1", [0])[0]
@@ -185,14 +183,13 @@ class AutoOwnershipTool(_m.Tool()):
 
             specs.append(util.matrix_spec("mo" + str(auto_own_one + 442), expression))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
 
     ## mo482-mo520 - Store utility value while for AutoOwn=2 for various HHSize, NumWorkers, IncomeCat
     @_m.logbook_trace("Calculate AutoOwnership 2 Cars - Utilities")
     def Calculate_AutoOwnership_2Cars(self, AutoOwnCoeff):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         bias2 = AutoOwnCoeff.get("2bias", [0])
         wrkr2_c23 = AutoOwnCoeff.get("wrkr2_c23", [0])
@@ -251,13 +248,12 @@ class AutoOwnershipTool(_m.Tool()):
             specs.append(util.matrix_spec("mo46", expression_3))
             specs.append(util.matrix_spec("mo" + str(auto_own_one + 481), "mo44 + mo45 + mo46"))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
     ## mo521-mo559 - Store utility value while for AutoOwn=3 for various HHSize, NumWorkers, IncomeCat
     @_m.logbook_trace("Calculate AutoOwnership 3 Cars - Utilities")
     def Calculate_AutoOwnership_3Cars(self, AutoOwnCoeff):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         bias3 = AutoOwnCoeff.get("3bias", [0])
         wrkrs_c3 = AutoOwnCoeff.get("wrkrs_c3", [0])
@@ -323,13 +319,12 @@ class AutoOwnershipTool(_m.Tool()):
             specs.append(util.matrix_spec("mo46", expression_3))
             specs.append(util.matrix_spec("mo" + str(auto_own_one + 520), "mo44 + mo45 + mo46"))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
     ## mo560-mo715 - Calculated probabilities of having a AutoOwnership 0-3 for HHSize, NumWorkers, IncomeCat
     @_m.logbook_trace("Calculate_Probabilities")
     def Calculate_Probabilities(self, AutoOwnCoeff):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         theta = AutoOwnCoeff.get("theta1", [0])[0]
         utility_mo_num = 404
@@ -351,7 +346,7 @@ class AutoOwnershipTool(_m.Tool()):
                 specs.append(util.matrix_spec("mo" + str(result_mo_num), expression[x]))
                 result_mo_num = result_mo_num + 1
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
 
 
@@ -359,7 +354,6 @@ class AutoOwnershipTool(_m.Tool()):
     @_m.logbook_trace("Calculate AutoOwnership Categories")
     def Calculate_AutoOwnership_PerHH(self):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         specs = []
         count = 0
@@ -368,4 +362,4 @@ class AutoOwnershipTool(_m.Tool()):
                 specs.append(util.matrix_spec("mo" + str(113 + i + 39 * j), "mo" + str(74 + i) + "* mo" + str(560 + count)))
                 count = count + 1
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)

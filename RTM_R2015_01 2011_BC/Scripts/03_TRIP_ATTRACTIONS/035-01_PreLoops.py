@@ -280,11 +280,9 @@ class PreLoop(_m.Tool()):
         util.initmat(eb, "ms160", "RlDeIn", "Initial Rail Demand for JLA", 0.0000001)
 
         # Copy initial auto demand to starting locations
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
-
         specs=[]
         specs.append(util.matrix_spec("mf847", "mf893"))
         specs.append(util.matrix_spec("mf852", "mf894"))
         specs.append(util.matrix_spec("mf860", "mf895"))
         specs.append(util.matrix_spec("mf865", "mf896"))
-        compute_matrix(specs)
+        util.compute_matrix(specs)

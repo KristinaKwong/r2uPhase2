@@ -138,7 +138,6 @@ class TripProd(_m.Tool()):
     @_m.logbook_trace("Aggregate_Purposes")
     def Aggregate_Purposes(self):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         mo_result_num = 904
         specs = []
@@ -148,7 +147,7 @@ class TripProd(_m.Tool()):
             specs.append(util.matrix_spec("mo" + str(mo_result_num), expression))
             mo_result_num = mo_result_num + 1
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
         specs = []
         for i in range(173, 268, 12):
@@ -156,13 +155,12 @@ class TripProd(_m.Tool()):
             specs.append(util.matrix_spec("mo" + str(mo_result_num), exp))
             mo_result_num = mo_result_num + 1
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
     ##mo899-mo903 - Calculate total number of auto
     @_m.logbook_trace("CalculateNumAutos")
     def CalculateNumAutos(self):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         specs = []
 
@@ -180,13 +178,12 @@ class TripProd(_m.Tool()):
 
         specs.append(util.matrix_spec("mo903", "mo900 + 2*mo901 + 3.35*mo902"))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
     ##mo161-268 - Aggregate Income Auto Ownership
     @_m.logbook_trace("Aggregation_IncomeOwnership")
     def Aggregation_IncomeOwnership(self):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         mo_result_num = 161
         specs = []
@@ -195,13 +192,12 @@ class TripProd(_m.Tool()):
             specs.append(util.matrix_spec("mo" + str(mo_result_num), expression))
             mo_result_num = mo_result_num + 1
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
     ## mo836-mo898 - Aggregation of production to income-ownership splits for each purpose
     @_m.logbook_trace("Aggregation")
     def Aggregation(self):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         ## mo836-mo871 - Purpose x AutoOwnership
         specs = []
@@ -212,7 +208,7 @@ class TripProd(_m.Tool()):
                 expression = expression + "+ mo" + str(mo_num + x)
             specs.append(util.matrix_spec("mo" + str(mo_result_num), expression))
             mo_result_num = mo_result_num + 1
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
         ## mo872-mo898 - Purpose x IncomeCategory
         specs = []
@@ -236,12 +232,11 @@ class TripProd(_m.Tool()):
                              " + mo" + str(mo_num + i + 39)
                 specs.append(util.matrix_spec("mo" + str(mo_result_num), expression))
                 mo_result_num = mo_result_num + 1
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Calibration")
     def Calibration(self, Calibration_Factors):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         specs = []
         for i in range(1, 432):
@@ -252,13 +247,12 @@ class TripProd(_m.Tool()):
             result = "mo" + str(403 + i)
             specs.append(util.matrix_spec(result, expression))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
     ##  mo404-mo835 Performs the actual matrix calculation from the LandUse "mo"s with the TripRates for the various trip purposes
     @_m.logbook_trace("Perform Matrix calculations")
     def TripProduction(self, TripRate_Data, FirstResultMoNum):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         ## Loop to do the expression calculations
         specs = []
@@ -278,7 +272,7 @@ class TripProd(_m.Tool()):
                 specs.append(util.matrix_spec(result, expression))
                 mo_result_num = mo_result_num + 1
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Store_CalibrationFactors")
     def Store_CalibrationFactors(self, CalibrationFactors):

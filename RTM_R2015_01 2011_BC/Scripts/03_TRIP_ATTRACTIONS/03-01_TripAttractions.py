@@ -112,7 +112,6 @@ class TripAttractions(_m.Tool()):
     @_m.logbook_trace("Calculate_TripRates")
     def Calculate_TripRates(self, coefficients_data):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         #Define Attraction attributes
         Variable_Matrix = [["Contruction/Mfg", "md5"],
@@ -151,7 +150,7 @@ class TripAttractions(_m.Tool()):
             mat = "md" + str(j + 31)
             specs.append(util.matrix_spec(mat, mat +".max.0"))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Store_Coefficients")
     def Store_Coefficients(self, CoefficientsPerGrouping):
@@ -177,7 +176,6 @@ class TripAttractions(_m.Tool()):
     @_m.logbook_trace("CreateHouseholds_LowHighIncome_TotalPop")
     def CreateHouseholds_LowHighIncome_TotalPop(self):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         specs = []
 
@@ -190,7 +188,7 @@ class TripAttractions(_m.Tool()):
         specs.append(util.matrix_spec("md13", "mo13'"))
         specs.append(util.matrix_spec("md17", "mo17'"))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Matrix Batchin")
     def Matrix_Batchins(self, eb):
