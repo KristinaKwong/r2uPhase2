@@ -129,7 +129,7 @@ class InitEmmebank(_m.Tool()):
                     revert_on_error = True,
                     scenario = scen)
 
-        if scen_id > 1100: return
+        if scen_id > 1200: return
         data_path = os.path.join(proj_path, "BaseNetworks", "transit_lines_%d.txt" % scen_id)
         lines_trans = _m.Modeller().tool("inro.emme.data.network.transit.transit_line_transaction")
         lines_trans(transaction_file = data_path,
