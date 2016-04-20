@@ -56,8 +56,6 @@ class Assignment(_m.Tool()):
 
         # Aggregate demand with same VOT if not running the fully detailed class assignment
         if not run_detailed_classes:
-            compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
-
             specs = []
             # AM Demand
             specs.append(util.matrix_spec("mf847", "mf843+mf847"))
@@ -79,7 +77,7 @@ class Assignment(_m.Tool()):
             specs.append(util.matrix_spec("mf861", "0"))
             specs.append(util.matrix_spec("mf862", "0"))
 
-            report = compute_matrix(specs)
+            util.compute_matrix(specs)
 
         AutoAssignment = _m.Modeller().tool("translink.emme.stage3.step6.autoassignment")
         BusAssignment = _m.Modeller().tool("translink.emme.stage3.step6.busassignment")
