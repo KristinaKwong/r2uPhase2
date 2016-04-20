@@ -202,7 +202,6 @@ class TripDistributions(_m.Tool()):
     @_m.logbook_trace("transposemfs")
     def transpose_full_matrices(self):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         matrixnum = 241
         newmatnum = 310
@@ -212,12 +211,11 @@ class TripDistributions(_m.Tool()):
             expression = "0.5 * mf%d + 0.5 * mf%d'" % (matrixnum + i, matrixnum + i)
             specs.append(util.matrix_spec(result, expression))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Run matrix balancing to multiple productions")
     def matrix_balancing(self, mo_list, md_list, impedance_list, output_list, max_iterations):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         # Used to allocate results to  the "scratch" matrices
         num_scratch = 0
@@ -233,7 +231,7 @@ class TripDistributions(_m.Tool()):
                 specs.append(util.matrix_spec(results[num_scratch], mo_list[i]))
                 mo_list[i] = results[num_scratch]
                 num_scratch = num_scratch + 1
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
         #Begin balmprod
         balancing_multiple_productions = _m.Modeller().tool("inro.emme.matrix_calculation.balancing_multiple_productions")
@@ -264,7 +262,6 @@ class TripDistributions(_m.Tool()):
     @_m.logbook_trace("Calculate impedances")
     def impedance_calcs(self):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         # FIXME: this was likely intended to constrain the max impedence to 200 minutes, but instead
         # caps all impedences above 120 minutes to 200 minutes. This has been preserved for compatibility
@@ -272,7 +269,8 @@ class TripDistributions(_m.Tool()):
         # It is likely what was intended was util.matrix_spec("mf925", "mf925.min.200") with no value constraints
         transit_constraint_spec = util.matrix_spec("mf925", "mf925.max.200")
         transit_constraint_spec["constraint"]["by_value"] = {"od_values": "mf925", "interval_min": 0.01, "interval_max": 120, "condition": "EXCLUDE"}
-
+        transit_constraint_spec["constraint"]["by_zone"] = None
+        
         _m.logbook_trace("HBWL-Purpose Distribution")
         specs = []
 
@@ -292,7 +290,7 @@ class TripDistributions(_m.Tool()):
         #Multiply by purpose and OD-specific Rij factors
         specs.append(util.matrix_spec("mf210", "(mf210+exp(" + str(hwld) + "*(mf925+ms104*mf160)))*mf169"))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
         _m.logbook_trace("HBWM-Purpose Distribution")
         specs = []
@@ -312,7 +310,7 @@ class TripDistributions(_m.Tool()):
         #Multiply by purpose and OD-specific Rij factors
         specs.append(util.matrix_spec("mf211", "(mf211+exp(" + str(hwmd) + "*(mf925+ms105*mf160)))*mf170"))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
         _m.logbook_trace("HBWH-Purpose Distribution")
         specs = []
@@ -332,7 +330,7 @@ class TripDistributions(_m.Tool()):
         #Multiply by purpose and OD-specific Rij factors
         specs.append(util.matrix_spec("mf212", "(mf212+exp(" + str(hwhd) + "*(mf925+ms106*mf160)))*mf171"))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
         _m.logbook_trace("hbu_-Purpose Distribution")
         specs = []
@@ -352,7 +350,7 @@ class TripDistributions(_m.Tool()):
         #Multiply by purpose and OD-specific Rij factors
         specs.append(util.matrix_spec("mf213", "(mf213+exp(" + str(hund) + "*(mf925+ms107*mf160*0.25)))*mf172"))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
         _m.logbook_trace("hbsc-Purpose Distribution")
         specs = []
@@ -372,7 +370,7 @@ class TripDistributions(_m.Tool()):
         #Multiply by purpose and OD-specific Rij factors
         specs.append(util.matrix_spec("mf214", "(mf214+exp(" + str(hscd) + "*(mf925+ms108*mf160*0.65)))*mf173"))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
         _m.logbook_trace("hbsh-Purpose Distribution")
         specs = []
@@ -392,7 +390,7 @@ class TripDistributions(_m.Tool()):
         #Multiply by purpose and OD-specific Rij factors
         specs.append(util.matrix_spec("mf215", "(mf215+exp(" + str(hshd) + "*(mf925+ms109*mf160)))*mf174"))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
         _m.logbook_trace("hbe_-Purpose Distribution")
         specs = []
@@ -412,7 +410,7 @@ class TripDistributions(_m.Tool()):
         #Multiply by purpose and OD-specific Rij factors
         specs.append(util.matrix_spec("mf218", "(mf218+exp(" + str(hesd) + "*(mf925+ms112*mf160)))*mf177"))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
         _m.logbook_trace("hbso-Purpose Distribution")
         specs = []
@@ -432,7 +430,7 @@ class TripDistributions(_m.Tool()):
         #Multiply by purpose and OD-specific Rij factors
         specs.append(util.matrix_spec("mf217", "(mf217+exp(" + str(hsod) + "*(mf925+ms111*mf160)))*mf176"))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
         _m.logbook_trace("hbpb-Purpose Distribution")
         specs = []
@@ -452,7 +450,7 @@ class TripDistributions(_m.Tool()):
         #Multiply by purpose and OD-specific Rij factors
         specs.append(util.matrix_spec("mf216", "(mf216+exp(" + str(hpbd) + "*(mf925+ms110*mf160)))*mf175"))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
         _m.logbook_trace("nhbo-Purpose Distribution")
         specs = []
@@ -472,7 +470,7 @@ class TripDistributions(_m.Tool()):
         #Multiply by purpose and OD-specific Rij factors
         specs.append(util.matrix_spec("mf220", "(mf220+exp(" + str(nhod) + "*(mf925+ms114*mf160)))*mf179"))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
 
         _m.logbook_trace("nhbw-Purpose Distribution")
         specs = []
@@ -492,4 +490,4 @@ class TripDistributions(_m.Tool()):
         #Multiply by purpose and OD-specific Rij factors
         specs.append(util.matrix_spec("mf219", "(mf219+exp(" + str(nhwd) + "*(mf925+ms113*mf160)))*mf178"))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
