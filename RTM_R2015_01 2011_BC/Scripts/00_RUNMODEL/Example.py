@@ -14,7 +14,6 @@ class Example(_m.Tool()):
     # Reserved Variable Names:
     # util - an instance of the translink.emme.util tool
     # specs - a list of matrix specifications
-    # compute_matrix - an instance of the inro.emme.matrix_calculation.matrix_calculator tool
     # eb - an emmebank object, usually produced from the current project: _m.Modeller().emmebank
     def page(self):
         # Prefer to initialize the PageBuilder attributes one-per line rather than
@@ -68,14 +67,12 @@ class Example(_m.Tool()):
     def calculation_example(self):
         # CodingStyle: always use the variable util for this tool at the beginning of the method
         util = _m.Modeller().tool("translink.emme.util")
-        # CodingStyle: always use the variable compute_matrix for this tool at the beginning of the method
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         # Single calculation
         # The order of the matrix_spec method is meant to follow the assignemtn operator
         # the below is effectively mo01 = mo99
         spec = util.matrix_spec("mo01", "mo99")
-        compute_matrix(spec)
+        util.compute_matrix(spec)
 
         # Multiple calculations
         # Use the variable name "specs" to denote a list of matrix specifications and initialize it
@@ -87,7 +84,7 @@ class Example(_m.Tool()):
         # Pass the list of matrix specs to the computation module, notice how the specs variable
         # is initialized at the same indentation level as the call to compute_matrix, this forms
         # a rough "paragraph" of code - a comment at the beginning will help the reader greatly
-        compute_matrix(specs)
+        util.compute_matrix(specs)
 
         # Start a new calculation - using matrix constraints
         specs = []
@@ -101,4 +98,4 @@ class Example(_m.Tool()):
             spec["aggregation"] = {"origins": "+", "destinations": ".max."}
 
             specs.append(spec)
-        compute_matrix(specs)
+        util.compute_matrix(specs)
