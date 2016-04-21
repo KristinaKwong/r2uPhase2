@@ -47,13 +47,11 @@ class ParkAndRide(_m.Tool()):
 
     @_m.logbook_trace("Calculate P/R impedance and demand for bus and rail", save_arguments=True)
     def __call__(self, scenario):
+        util = _m.Modeller().tool("translink.emme.util")
         matrix_txn = _m.Modeller().tool(
             "inro.emme.data.matrix.matrix_transaction")
-        compute_matrix = _m.Modeller().tool(
-            "inro.emme.matrix_calculation.matrix_calculator")
 
         with _m.logbook_trace("Initialization"):
-            util = _m.Modeller().tool("translink.emme.util")
             input_path = util.get_input_path(scenario.emmebank)
 
             self.Matrix_Batchins(scenario.emmebank)
@@ -79,13 +77,13 @@ class ParkAndRide(_m.Tool()):
             #Define number of work spaces
             spec["expression"] = "md60"
             spec["result"] = "md65"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
 
             #Allow for additional lot overcapacity congestion impedance (set to zero for now)
             #Note that lot charges are included in auto impedance component
             spec["expression"] = "0"
             spec["result"] = "md63"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
 
         #Run park and ride for rail-access work trips
         with _m.logbook_trace("For rail-access work trips"):
@@ -99,21 +97,21 @@ class ParkAndRide(_m.Tool()):
 
             spec["expression"] = "md64"
             spec["result"] = "md68"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
 
             spec["expression"] = "(md60-(md64*md72)).max.1"
             spec["result"] = "md65"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
             # Copy pr model output for auto and transit legs
             spec["expression"] = "mf209*(gm(q).le.24)"
             spec["result"] = "mf194"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
             spec["expression"] = "mf208"
             spec["result"] = "mf196"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
             spec["expression"] = "mf204"
             spec["result"] = "mf192"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
 
         #Run park and ride for bus-access work trips
         with _m.logbook_trace("For bus-access work trips"):
@@ -128,22 +126,22 @@ class ParkAndRide(_m.Tool()):
             #Store work lot usage
             spec["expression"] = "md64"
             spec["result"] = "md69"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
 
             #Define number of non-work spaces
             spec["expression"] = "md61"
             spec["result"] = "md65"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
             #Copy pr model output for auto and transit legs
             spec["expression"] = "mf209*(gm(q).le.24)"
             spec["result"] = "mf195"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
             spec["expression"] = "mf208"
             spec["result"] = "mf197"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
             spec["expression"] = "mf204"
             spec["result"] = "mf193"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
 
         #Run park and ride for rail-access non-work trips
         with _m.logbook_trace("For rail-access non-work trips"):
@@ -157,20 +155,20 @@ class ParkAndRide(_m.Tool()):
 
             spec["expression"] = "md64"
             spec["result"] = "md70"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
             spec["expression"] = "(md61-(md64*md72)).max.1"
             spec["result"] = "md65"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
             #Copy pr model output for auto and transit legs
             spec["expression"] = "mf194+(mf209*(gm(q).le.24))"
             spec["result"] = "mf194"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
             spec["expression"] = "mf208"
             spec["result"] = "mf198"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
             spec["expression"] = "mf204+mf192"
             spec["result"] = "mf192"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
 
         # Run park and ride for bus-access non-work trips
         with _m.logbook_trace("For bus-access non-work trips"):
@@ -184,44 +182,44 @@ class ParkAndRide(_m.Tool()):
 
             spec["expression"] = "md64"
             spec["result"] = "md71"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
             #Copy pr model output for auto and transit legs
             spec["expression"] = "mf195+(mf209*(gm(q).le.24))"
             spec["result"] = "mf195"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
             spec["expression"] = "mf208"
             spec["result"] = "mf199"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
             spec["expression"] = "mf204+mf193"
             spec["result"] = "mf193"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
 
         #at the end, the demand components should be used to modify original matrices
         #or to create new rail bus and auto matrices
         with _m.logbook_trace("Final rail and bus demand"):
             spec["expression"] = "mf854"
             spec["result"] = "mf986"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
             spec["expression"] = "mf853"
             spec["result"] = "mf987"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
 
             spec["expression"] = "(mf854-mf192+mf194).max.0"
             spec["result"] = "mf854"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
             spec["expression"] = "(mf853-mf193+mf195).max.0"
             spec["result"] = "mf853"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
 
         # Add the leg one park and ride demand to the auto demand
         # adding work demand to SOV, med income (mf844), and non-work to med-high income (mf847)
         with _m.logbook_trace("Final auto demand"):
             spec["expression"] = "mf844+mf196+mf197"
             spec["result"] = "mf844"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
             spec["expression"] = "mf847+mf198+mf199"
             spec["result"] = "mf847"
-            report = compute_matrix(spec, scenario=scenario)
+            util.compute_matrix(spec, scenario=scenario)
 
     @_m.logbook_trace("Calculating park and ride rail impedance")
     def PR_RailImpedance(self, asg_type, scenario):
@@ -397,8 +395,7 @@ class ParkAndRide(_m.Tool()):
 
     @_m.logbook_trace("Calculating auto impedance")
     def AutoImpedance(self, asg_type, scenario):
-        compute_matrix = _m.Modeller().tool(
-            "inro.emme.matrix_calculation.matrix_calculator")
+        util = _m.Modeller().tool("translink.emme.util")
 
         spec = {
             "expression": None,
@@ -428,12 +425,11 @@ class ParkAndRide(_m.Tool()):
                               "+ %(parking_cost)s * %(VOT)s "
                               "+ %(lot_charge)s" % variables)
         spec["result"] = "mf202"
-        report = compute_matrix(spec, scenario=scenario)
+        util.compute_matrix(spec, scenario=scenario)
 
     @_m.logbook_trace("Calculating transit impedance")
     def TransitImpedance(self, asg_type, scenario):
-        compute_matrix = _m.Modeller().tool(
-            "inro.emme.matrix_calculation.matrix_calculator")
+        util = _m.Modeller().tool("translink.emme.util")
 
         spec = {
             "expression": "default_expression",
@@ -457,15 +453,13 @@ class ParkAndRide(_m.Tool()):
         expression = "(mf164+(mf163*2))+mf160*" + value_time
         spec["expression"] = expression
         spec["result"] = "mf203"
-        report = compute_matrix(spec, scenario=scenario)
+        util.compute_matrix(spec, scenario=scenario)
 
     @_m.logbook_trace("Calculating park and ride demand by splitting transit into p/r")
     def PRdemand(self, asg_type, scenario):
         util = _m.Modeller().tool("translink.emme.util")
         eb = scenario.emmebank
 
-        compute_matrix = _m.Modeller().tool(
-            "inro.emme.matrix_calculation.matrix_calculator")
         triple_index_op = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_triple_index_operation")
         create_matrix = _m.Modeller().tool(
@@ -564,12 +558,11 @@ class ParkAndRide(_m.Tool()):
         #multiply aggregated numbers by the number of zones in each partition
         #reduce mf204 by the ratio of origin demand to catchment area capacity
         specs.append(util.matrix_spec("mf204", "mf204*((%s/((mo963*mo964)+0.001)).min.1)" % capacity_matrix))
-        report = compute_matrix(specs, scenario=scenario)
+        util.compute_matrix(specs, scenario=scenario)
 
     @_m.logbook_trace("Calculating park and ride utility functions")
     def PRutility(self, asg_type, scenario):
-        compute_matrix = _m.Modeller().tool(
-            "inro.emme.matrix_calculation.matrix_calculator")
+        util = _m.Modeller().tool("translink.emme.util")
         init_matrix = _m.Modeller().tool("inro.emme.data.matrix.init_matrix")
         spec = {
             "expression": "default_expression",
@@ -613,12 +606,12 @@ class ParkAndRide(_m.Tool()):
         expression = "exp(-" + mode3 + "*mf202)"
         spec["expression"] = expression
         spec["result"] = "mf206"
-        report = compute_matrix(spec, scenario=scenario)
+        util.compute_matrix(spec, scenario=scenario)
 
         spec["constraint"]["by_value"]["condition"] = "EXCLUDE"
         expression = "0"
         spec["expression"] = expression
-        report = compute_matrix(spec, scenario=scenario)
+        util.compute_matrix(spec, scenario=scenario)
 
         #Compute leg 2 utilities (transit leg)
         spec["constraint"]["by_value"]["od_values"] = filter_matrix
@@ -629,12 +622,12 @@ class ParkAndRide(_m.Tool()):
         expression = "exp(-" + mode4 + "*mf203)"
         spec["expression"] = expression
         spec["result"] = "mf207"
-        report = compute_matrix(spec, scenario=scenario)
+        util.compute_matrix(spec, scenario=scenario)
 
         spec["constraint"]["by_value"]["condition"] = "EXCLUDE"
         expression = "0"
         spec["expression"] = expression
-        report = compute_matrix(spec, scenario=scenario)
+        util.compute_matrix(spec, scenario=scenario)
 
     @_m.logbook_trace("Run park and ride model")
     def PRmodel(self, asg_type, scenario):
