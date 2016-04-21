@@ -41,7 +41,6 @@ class SkimsAccessibilities(_m.Tool()):
     @_m.logbook_trace("Weighted Skims")
     def weightedskims(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         cycle_number = util.get_cycle(eb)
         if cycle_number <= 1:
@@ -107,10 +106,10 @@ class SkimsAccessibilities(_m.Tool()):
         for n in range(0, len(expressions_list_am)):
             spec_as_dict["expression"] = expressions_list_am[n][0]
             spec_as_dict["result"] = expressions_list_am[n][1]
-            compute_matrix(spec_as_dict)
+            util.compute_matrix(spec_as_dict)
             spec_as_dict["expression"] = expressions_list_md[n][0]
             spec_as_dict["result"] = expressions_list_md[n][1]
-            compute_matrix(spec_as_dict)
+            util.compute_matrix(spec_as_dict)
 
         # Calculate Intra-zonals, based on generalized cost-minutes of closest neighbour
         # for auto take 1/2 the distance and time, for transit only x1/2 of IVTT and x1 OVTT
@@ -155,7 +154,8 @@ class SkimsAccessibilities(_m.Tool()):
 
     @_m.logbook_trace("Accessibilities Calculation")
     def accessibilities(self):
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
+        util = _m.Modeller().tool("translink.emme.util")
+
         spec_as_dict = {
                 "expression": "EXPRESSION",
                 "result": "RESULT",
@@ -194,7 +194,7 @@ class SkimsAccessibilities(_m.Tool()):
             spec_as_dict["expression"] = expressions_list[i][0]
             spec_as_dict["constraint"]["by_value"]["od_values"] = expressions_list[i][1]
             spec_as_dict["result"] = expressions_list[i][2]
-            compute_matrix(spec_as_dict)
+            util.compute_matrix(spec_as_dict)
 
     @_m.logbook_trace("Matrix Batchin")
     def Matrix_Batchins(self, eb):
@@ -219,7 +219,7 @@ class SkimsAccessibilities(_m.Tool()):
     def Calc_Intrazonals(self, expression, matrix_list, Counter, Av_List):
         # find nearest neighbour (NN) based on generalized cost (GC), store components of the NN GC in corresponding intrazonals
         util = _m.Modeller().tool("translink.emme.util")
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
+
         specs=[]
 
         # Initialize inta-zonals to 0
@@ -260,4 +260,4 @@ class SkimsAccessibilities(_m.Tool()):
 
             specs.append(util.matrix_spec("mf1095","mf1095*(q.ne.mo1026) +99999*(q.eq.mo1026)"))
 
-        report = compute_matrix(specs)
+        util.compute_matrix(specs)
