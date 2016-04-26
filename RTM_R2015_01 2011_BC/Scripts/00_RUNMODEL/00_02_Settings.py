@@ -80,6 +80,7 @@ Whitespace is ignored.
         util.initmat(eb, "ms147", "AsgSen", "Assignment Toll Sens", 0)
         util.initmat(eb, "ms148", "DsToSn", "Trip Dist Cost (Toll) Sens", 0)
         util.initmat(eb, "ms149", "year", "Model Horizon Year", 0)
+        util.initmat(eb, "ms150", "PMScNo", "PM Scenario Number", 0)
 
         # Scalars to hold corresponding settings
         input_mats = {"am_scenario": "ms140",
@@ -93,7 +94,8 @@ Whitespace is ignored.
                       "toll_dist_sens": "ms148",
                       "congested_transit": "ms138",
                       "park_and_ride": "ms139",
-                      "model_year": "ms149"}
+                      "model_year": "ms149",
+                      "pm_scenario": "ms150"}
 
         truth_values = {"on": 1, "off": 0}
         # prepare report to logbook

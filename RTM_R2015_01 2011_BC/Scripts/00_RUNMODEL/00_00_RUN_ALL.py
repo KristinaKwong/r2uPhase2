@@ -20,7 +20,7 @@ class FullModelRun(_m.Tool()):
     def __init__(self):
         self.global_iterations = 6
         self.max_distribution_iterations = 60
-        self.max_assignment_iterations = 100
+        self.max_assignment_iterations = 200
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
@@ -86,7 +86,7 @@ class FullModelRun(_m.Tool()):
     @_m.logbook_trace("Full Model Run")
     def __call__(self, global_iterations, land_use_file1, land_use_file2,
                  max_distribution_iterations=60,
-                 max_assignment_iterations=100):
+                 max_assignment_iterations=200):
         eb = _m.Modeller().emmebank
 
         stopping_criteria = {
@@ -124,9 +124,10 @@ class FullModelRun(_m.Tool()):
         scenario_run = eb.matrix("ms143").data
         am_scen = eb.matrix("ms140").data
         md_scen = eb.matrix("ms141").data
+        pm_scen = eb.matrix("ms150").data
 
         if scenario_run == 1:
-            create_scenario(eb, am_scen, md_scen)
+            create_scenario(eb, am_scen, md_scen, pm_scen)
 
     @_m.logbook_trace("Run Seed Assignment and Generate Initial Skims")
     def calculate_costs(self, eb):
@@ -200,9 +201,10 @@ class FullModelRun(_m.Tool()):
 
         am_scen = eb.matrix("ms140").data
         md_scen = eb.matrix("ms141").data
+        pm_scen = eb.matrix("ms150").data
         #FIXME: Restore demand adjust call if desired once factors have been developed for the
         # new zone system.
-        #demand_adjust(eb, am_scen, md_scen, stopping_criteria)
+        #demand_adjust(eb, am_scen, md_scen, pm_scen, stopping_criteria)
 
         run_congested = int(eb.matrix("ms138").data)
         if run_congested == 1:

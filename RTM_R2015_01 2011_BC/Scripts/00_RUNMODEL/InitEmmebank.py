@@ -225,6 +225,12 @@ class InitEmmebank(_m.Tool()):
         data_path = os.path.join(proj_path, "BaseNetworks", "MD_Starter_Demand.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
+        
+        util.delmat(eb, "mf897")
+        util.delmat(eb, "mf898")
+        data_path = os.path.join(proj_path, "BaseNetworks", "PM_Starter_Demand.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
 
         # Batch in truck demand matrices
         util.delmat(eb, "mf980")
@@ -238,6 +244,16 @@ class InitEmmebank(_m.Tool()):
         data_path = os.path.join(proj_path, "BaseNetworks", "MD_Truck_Demand.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
+		
+		# TODO PM truck demand is currently transpose AM truck demand multiplied by a factor
+		# Factor was created by Parsons
+		# Should be updated with actual truck demand
+        util.delmat(eb, "mf990")
+        util.delmat(eb, "mf991")
+        data_path = os.path.join(proj_path, "BaseNetworks", "PM_Truck_Demand.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
 
         # Batch in external demand matrices
         util.delmat(eb, "mf978")
@@ -252,6 +268,14 @@ class InitEmmebank(_m.Tool()):
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
+		# TODO update extnernal demand
+		# Note PM external demand is AM transposed multiplied by a factor
+        util.delmat(eb, "mf992")
+        util.delmat(eb, "mf993")
+        data_path = os.path.join(proj_path, "BaseNetworks", "PM_External_Demand.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+						
         util.delmat(eb, "md999")
         data_path = os.path.join(proj_path, "BaseNetworks", "md_Grade_School_Adj.in")
         mat_transaction(transaction_file = data_path,

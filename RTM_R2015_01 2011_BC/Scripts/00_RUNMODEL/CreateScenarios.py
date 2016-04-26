@@ -10,6 +10,7 @@ import traceback as _traceback
 class InputSettings(_m.Tool()):
     am_scenario = _m.Attribute(_m.InstanceType)
     md_scenario = _m.Attribute(_m.InstanceType)
+    pm_scenario = _m.Attribute(_m.InstanceType)
 
     tool_run_msg = ""
 
@@ -27,12 +28,15 @@ class InputSettings(_m.Tool()):
         pb.add_text_box(tool_attribute_name="md_scenario",
                         size=50,
                         title="Enter the Original Mid-Day Scenario Number")
+        pb.add_text_box(tool_attribute_name="pm_scenario",
+                        size=50,
+                        title="Enter the Original PM Scenario Number")
         return pb.render()
 
     def run(self):
         self.tool_run_msg = ""
         try:
-            self(self.am_scenario, self.md_scenario)
+            self(self.am_scenario, self.md_scenario, self.pm_scenario)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, error:
             self.tool_run_msg = _m.PageBuilder.format_exception(
@@ -40,11 +44,12 @@ class InputSettings(_m.Tool()):
             raise
 
     @_m.logbook_trace("00_00 Create Scenarios")
-    def __call__(self, eb, am_scenario, md_scenario):
+    def __call__(self, eb, am_scenario, md_scenario, pm_scenario):
         copy_scenario = _m.Modeller().tool("inro.emme.data.scenario.copy_scenario")
 
         am_scenario = eb.scenario(am_scenario)
         md_scenario = eb.scenario(md_scenario)
+        pm_scenario = eb.scenario(pm_scenario)
 
         # Copy to new am scenarios
         copy_scenario(from_scenario=am_scenario,
@@ -56,4 +61,10 @@ class InputSettings(_m.Tool()):
         copy_scenario(from_scenario=md_scenario,
                       scenario_id=md_scenario.number + 30,
                       scenario_title=md_scenario.title + ": Final Iteration ",
+                      overwrite=True)
+
+        # Copy to new pm Scenarios
+        copy_scenario(from_scenario=pm_scenario,
+                      scenario_id=pm_scenario.number + 30,
+                      scenario_title=pm_scenario.title + ": Final Iteration ",
                       overwrite=True)
