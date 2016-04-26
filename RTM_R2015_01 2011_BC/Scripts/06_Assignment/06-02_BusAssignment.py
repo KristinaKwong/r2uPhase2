@@ -22,18 +22,19 @@ class BusAssignment(_m.Tool()):
         return pb.render()
 
     def run(self):
-        scenarioam = _m.Modeller().emmebank.scenario(21060)
+        scenarioam = _m.Modeller().emmebank.scenario(21000)
         scenariomd = _m.Modeller().emmebank.scenario(22000)
+        scenariopm = _m.Modeller().emmebank.scenario(23000)
         self.tool_run_msg = ""
         try:
-            self.__call__(scenarioam, scenariomd)
+            self.__call__(scenarioam, scenariomd, scenariopm)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Bus Assignment")
-    def __call__(self, scenarioam, scenariomd):
+    def __call__(self, scenarioam, scenariomd, scenariopm):
         busassign = _m.Modeller().tool("inro.emme.transit_assignment.standard_transit_assignment")
         ## Rail Excluded from the network
         ## auxiliary weight: 1.75, waiting time factor: 0.5, wait time weight: 2.25, boarding weight: 4
@@ -69,10 +70,12 @@ class BusAssignment(_m.Tool()):
             "type": "STANDARD_TRANSIT_ASSIGNMENT"
         }
 
-        demand_list = ["mf853", "mf866"]
-        travel_times_list = [["mf933", "mf934", "mf936", "mf935"], ["mf945", "mf946", "mf948", "mf947"]]
+        demand_list = ["mf853", "mf866", "mf879"]
+        travel_times_list = [["mf933", "mf934", "mf936", "mf935"],
+                             ["mf945", "mf946", "mf948", "mf947"],
+                             ["mf2003", "mf2004", "mf2006", "mf2005"]]
         # TODO: fix "for case" paradigm
-        for i in range(2):
+        for i in range(3):
             spec_as_dict["demand"] = demand_list[i]
             spec_as_dict["od_results"]["total_waiting_times"] = travel_times_list[i][0]
             spec_as_dict["od_results"]["by_mode_subset"]["in_vehicle_times"] = travel_times_list[i][1]
@@ -82,3 +85,5 @@ class BusAssignment(_m.Tool()):
                 busassign(spec_as_dict, scenario=scenarioam)
             if i == 1:
                 busassign(spec_as_dict, scenario=scenariomd)
+            if i == 2:
+                busassign(spec_as_dict, scenario=scenariopm)

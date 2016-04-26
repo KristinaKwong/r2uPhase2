@@ -44,15 +44,19 @@ class Assignment(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
         amscen1 = int(eb.matrix("ms140").data)
         mdscen1 = int(eb.matrix("ms141").data)
+        pmscen1 = int(eb.matrix("ms150").data)
         amscen2 = amscen1 + 30
         mdscen2 = mdscen1 + 30
+        pmscen2 = pmscen1 + 30
 
         if util.get_cycle(eb) % 2 == 1:
             scenarioam = eb.scenario(amscen1)
             scenariomd = eb.scenario(mdscen1)
+            scenariopm = eb.scenario(pmscen1)
         else:
             scenarioam = eb.scenario(amscen2)
             scenariomd = eb.scenario(mdscen2)
+            scenariopm = eb.scenario(pmscen2)
 
         # Aggregate demand with same VOT if not running the fully detailed class assignment
         if not run_detailed_classes:
@@ -77,12 +81,24 @@ class Assignment(_m.Tool()):
             specs.append(util.matrix_spec("mf861", "0"))
             specs.append(util.matrix_spec("mf862", "0"))
 
+            # PM Demand
+            specs.append(util.matrix_spec("mf873", "mf869+mf873"))
+            specs.append(util.matrix_spec("mf871", "mf870+mf871"))
+            specs.append(util.matrix_spec("mf878", "mf874+mf878"))
+            specs.append(util.matrix_spec("mf876", "mf875+mf876"))
+            specs.append(util.matrix_spec("mf869", "0"))
+            specs.append(util.matrix_spec("mf870", "0"))
+            specs.append(util.matrix_spec("mf874", "0"))
+            specs.append(util.matrix_spec("mf875", "0"))
+            # specs.append(util.matrix_spec("mf990", "0.79*mf980'")) superceded by intergration into initemmebank
+            # specs.append(util.matrix_spec("mf991", "0.55*mf981'"))
+
             util.compute_matrix(specs)
 
         AutoAssignment = _m.Modeller().tool("translink.emme.stage3.step6.autoassignment")
         BusAssignment = _m.Modeller().tool("translink.emme.stage3.step6.busassignment")
         RailAssignment = _m.Modeller().tool("translink.emme.stage3.step6.railassignment")
 
-        AutoAssignment(eb, scenarioam, scenariomd, max_iterations)
-        BusAssignment(scenarioam, scenariomd)
-        RailAssignment(scenarioam, scenariomd)
+        AutoAssignment(eb, scenarioam, scenariomd, scenariopm, max_iterations)
+        BusAssignment(scenarioam, scenariomd, scenariopm)
+        RailAssignment(scenarioam, scenariomd, scenariopm)

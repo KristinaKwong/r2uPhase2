@@ -30,7 +30,8 @@ class Rail_Assignment(_m.Tool()):
                 eb = _m.Modeller().emmebank
                 am_scenario = eb.scenario(21000)
                 md_scenario = eb.scenario(22000)
-                self(am_scenario, md_scenario)
+                pm_scenario = eb.scenario(23000)
+                self(am_scenario, md_scenario, pm_scenario)
                 run_msg = "Tool completed"
                 self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
             except Exception, e:
@@ -38,14 +39,14 @@ class Rail_Assignment(_m.Tool()):
         pass
 
     @_m.logbook_trace("06-03 - Rail Assignment")
-    def __call__(self, scenarioam, scenariomd):
+    def __call__(self, scenarioam, scenariomd, scenariopm):
         RailSkim = _m.Modeller().tool("translink.emme.stage3.step7.railskim")
         railassign = _m.Modeller().tool("inro.emme.transit_assignment.extended_transit_assignment")
         # TODO: what does the "skim" do and why is it a separate script?
 
         spec_as_dict = {
             "modes": ["b", "f", "g", "l", "r", "s", "h", "a", "p"],
-            "demand": None,                 # demand specified for AM and MD below
+            "demand": None,                 # demand specified for AM, MD, PM below
             "waiting_time": {
                 "headway_fraction": 0.5,
                 "effective_headways": "ut1",
@@ -88,7 +89,7 @@ class Rail_Assignment(_m.Tool()):
         ## Journey Level SPEC
         spec_as_dict_JL = {
                 "modes": ["b", "f", "g", "l", "r", "s", "h", "a", "p"],
-                "demand": None,                 # demand specified for AM and MD below
+                "demand": None,                 # demand specified for AM, MD, PM below
                 "waiting_time": {
                     "headway_fraction": 0.5,
                     "effective_headways": "ut1",
@@ -187,13 +188,13 @@ class Rail_Assignment(_m.Tool()):
                     "type": "EXTENDED_TRANSIT_ASSIGNMENT"
                 }
 
-        small_demand_list = ["ms160", "ms160"]
-        demand_list = ["mf854", "mf867"]
+        small_demand_list = ["ms160", "ms160", "ms160"]
+        demand_list = ["mf854", "mf867", "mf880"]
 
         ## added a third parameter to distinguish between Rail Assignments, RaType0 skims with "3.5" factor, RaType1 skims with JLA
         RaType0=0
         RaType1=1
-        for i in range(2):
+        for i in range(3):
             spec_as_dict["demand"] = small_demand_list[i]
             spec_as_dict_JL["demand"] = demand_list[i]
             if i == 0:
@@ -206,3 +207,8 @@ class Rail_Assignment(_m.Tool()):
                 RailSkim(i, scenariomd,  RaType0)
                 railassign(spec_as_dict_JL, add_volumes="True", scenario=scenariomd)
                 RailSkim(i, scenariomd,  RaType1)
+            if i == 2:
+                railassign(spec_as_dict, add_volumes="True", scenario=scenariopm)
+                RailSkim(i, scenariopm,  RaType0)
+                railassign(spec_as_dict_JL, add_volumes="True", scenario=scenariopm)
+                RailSkim(i, scenariopm,  RaType1)
