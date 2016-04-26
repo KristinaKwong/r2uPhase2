@@ -397,20 +397,6 @@ class ParkAndRide(_m.Tool()):
     def AutoImpedance(self, asg_type, scenario):
         util = _m.Modeller().tool("translink.emme.util")
 
-        spec = {
-            "expression": None,
-            "result": None,
-            "constraint": {
-                "by_value": None,
-                "by_zone": None
-            },
-            "aggregation": {
-                "origins": None,
-                "destinations": None
-            },
-            "type": "MATRIX_CALCULATION"
-        }
-
         #Calculate auto impedance
         if asg_type < 3:
             variables = {"VOT": "ms37",
@@ -421,29 +407,15 @@ class ParkAndRide(_m.Tool()):
                          "parking_cost": "md28",
                          "lot_charge": "ms38*md62"}
 
-        spec["expression"] = ("(mf101+ms19*mf102* %(VOT)s +(ms18+ms17)*mf100* %(VOT)s )"
-                              "+ %(parking_cost)s * %(VOT)s "
-                              "+ %(lot_charge)s" % variables)
-        spec["result"] = "mf202"
+        expression = ("(mf101+ms19*mf102* %(VOT)s +(ms18+ms17)*mf100* %(VOT)s )"
+                      "+ %(parking_cost)s * %(VOT)s "
+                      "+ %(lot_charge)s" % variables)
+        spec = util.matrix_spec("mf202", expression)
         util.compute_matrix(spec, scenario=scenario)
 
     @_m.logbook_trace("Calculating transit impedance")
     def TransitImpedance(self, asg_type, scenario):
         util = _m.Modeller().tool("translink.emme.util")
-
-        spec = {
-            "expression": "default_expression",
-            "result": "defaul_result",
-            "constraint": {
-                "by_value": None,
-                "by_zone": None
-            },
-            "aggregation": {
-                "origins": None,
-                "destinations": None
-            },
-            "type": "MATRIX_CALCULATION"
-        }
 
         #Calculate transit impedance
         if asg_type < 3:
@@ -451,8 +423,7 @@ class ParkAndRide(_m.Tool()):
         elif asg_type >= 3:
             value_time = "ms38*0.5"
         expression = "(mf164+(mf163*2))+mf160*" + value_time
-        spec["expression"] = expression
-        spec["result"] = "mf203"
+        spec = util.matrix_spec("mf203", expression)
         util.compute_matrix(spec, scenario=scenario)
 
     @_m.logbook_trace("Calculating park and ride demand by splitting transit into p/r")
