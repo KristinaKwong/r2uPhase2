@@ -211,6 +211,13 @@ class ParkAndRide(_m.Tool()):
             spec["result"] = "mf853"
             util.compute_matrix(spec, scenario=scenario)
 
+            spec["expression"] = "(mf880-mf192'+mf194').max.0"
+            spec["result"] = "mf880"
+            util.compute_matrix(spec, scenario=scenario)
+            spec["expression"] = "(mf879-mf193'+mf195').max.0"
+            spec["result"] = "mf879"
+            util.compute_matrix(spec, scenario=scenario)
+
         # Add the leg one park and ride demand to the auto demand
         # adding work demand to SOV, med income (mf844), and non-work to med-high income (mf847)
         with _m.logbook_trace("Final auto demand"):
@@ -219,6 +226,13 @@ class ParkAndRide(_m.Tool()):
             util.compute_matrix(spec, scenario=scenario)
             spec["expression"] = "mf847+mf198+mf199"
             spec["result"] = "mf847"
+            util.compute_matrix(spec, scenario=scenario)
+
+            spec["expression"] = "mf870+mf196'+mf197'"
+            spec["result"] = "mf870"
+            util.compute_matrix(spec, scenario=scenario)
+            spec["expression"] = "mf873+mf198'+mf199'"
+            spec["result"] = "mf873"
             util.compute_matrix(spec, scenario=scenario)
 
     @_m.logbook_trace("Calculating park and ride rail impedance")

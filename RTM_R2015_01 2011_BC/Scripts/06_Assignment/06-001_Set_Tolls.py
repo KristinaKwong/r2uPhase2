@@ -37,7 +37,7 @@ class SetTolls(_m.Tool()):
             raise
 
     @_m.logbook_trace("Setting toll values", save_arguments=True)
-    def __call__(self, toll_file, scenarioam, scenariomd):
+    def __call__(self, toll_file, scenarioam, scenariomd, scenariopm):
         network_calc = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         with _m.logbook_trace("Read new tolls in from file"):
             # TODO: see if this can be replaced by input attribute values tool
@@ -59,6 +59,7 @@ class SetTolls(_m.Tool()):
                 }
                 network_calc(spec, scenario=scenarioam)
                 network_calc(spec, scenario=scenariomd)
+                network_calc(spec, scenario=scenariopm)
 
                 for x in xrange(1, tollsize):
                     activeline = getlines[x]
@@ -70,3 +71,4 @@ class SetTolls(_m.Tool()):
 
                     network_calc(spec, scenario=scenarioam)
                     network_calc(spec, scenario=scenariomd)
+                    network_calc(spec, scenario=scenariopm)
