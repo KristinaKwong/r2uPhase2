@@ -33,7 +33,7 @@ class TollSkim(_m.Tool()):
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("07-03 - Auto Toll Skim")
-    def __call__(self, am_scenario, md_scenario, stopping_criteria):
+    def __call__(self, am_scenario, md_scenario, pm_scenario, stopping_criteria):
         eb = am_scenario.emmebank
         assign_traffic = _m.Modeller().tool(
             "inro.emme.traffic_assignment.sola_traffic_assignment")
@@ -52,9 +52,14 @@ class TollSkim(_m.Tool()):
                 "sov": ["mf856", "mf857", "mf858", "mf859", "mf860"],
                 "hov": ["mf861", "mf862", "mf863", "mf864", "mf865"],
                 "truck": ["mf982", "mf983"]
+            },
+            {
+                "sov": ["mf869", "mf870", "mf871", "mf872", "mf873"],
+                "hov": ["mf874", "mf875", "mf876", "mf877", "mf878"],
+                "truck": ["mf990", "mf991"]
             }
         ]
-        toll_list = ["mf932", "mf944"]
+        toll_list = ["mf932", "mf944", "mf2002"]
         path_analysis = {
             "link_component": "@tolls",
             "turn_component": None,
@@ -69,7 +74,7 @@ class TollSkim(_m.Tool()):
             }
         }
 
-        input_items = zip([am_scenario, md_scenario], demands_list, toll_list)
+        input_items = zip([am_scenario, md_scenario, pm_scenario], demands_list, toll_list)
         for scenario, demands, tolls in input_items:
             spec = translink_auto_assignment.generate_specification(
                 demands, stopping_criteria, num_processors, results=False)

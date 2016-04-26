@@ -67,10 +67,12 @@ class RailAssignment(_m.Tool()):
         }
         if RaType==0:
             Travel_Time_List = [["mf940", "mf941", "mf939", "mf937", "mf938"],
-                                ["mf952", "mf953", "mf951", "mf949", "mf950"]]
+                                ["mf952", "mf953", "mf951", "mf949", "mf950"],
+                                ["mf2010", "mf2011", "mf2009", "mf2007", "mf2008"]]
         if RaType==1:
             Travel_Time_List = [["mf1073", "mf1074", "mf1072", "mf1070", "mf1071"],
-                                ["mf1078", "mf1079", "mf1077", "mf1075", "mf1076"]]
+                                ["mf1078", "mf1079", "mf1077", "mf1075", "mf1076"],
+                                ["mf2019", "mf2020", "mf2018", "mf2016", "mf2017"]]
 
 
         spec_as_dict = _deepcopy(tmplt_spec)

@@ -43,21 +43,21 @@ class PostAssignment(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
         am_scenario_id = int(eb.matrix("ms140").data)
         md_scenario_id = int(eb.matrix("ms141").data)
+        pm_scenario_id = int(eb.matrix("ms150").data)
 
-        am_temp_scenario, md_temp_scenario = self.copy_scenario(eb, am_scenario_id, md_scenario_id)
-
+        am_temp_scenario, md_temp_scenario, pm_temp_scenario = self.copy_scenario(eb, am_scenario_id, md_scenario_id, pm_scenario_id)
         gen_transit = _m.Modeller().tool("translink.emme.stage3.step7.gentranskim")
         toll_skim = _m.Modeller().tool("translink.emme.stage3.step7.tollskim")
         access_skim = _m.Modeller().tool("translink.emme.stage3.step7.skimaccess")
-
-        gen_transit(am_temp_scenario, md_temp_scenario)
-        toll_skim(am_temp_scenario, md_temp_scenario, stopping_criteria)
+        gen_transit(am_temp_scenario, md_temp_scenario, pm_temp_scenario)
+        toll_skim(am_temp_scenario, md_temp_scenario, pm_temp_scenario, stopping_criteria)
         access_skim(eb)
         util.del_scen(am_temp_scenario)
         util.del_scen(md_temp_scenario)
+        util.del_scen(pm_temp_scenario)
 
     @_m.logbook_trace("Copy Scenario")
-    def copy_scenario(self, eb, am_scenario_id, md_scenario_id):
+    def copy_scenario(self, eb, am_scenario_id, md_scenario_id, pm_scenario_id):
         util = _m.Modeller().tool("translink.emme.util")
         cycle_number = util.get_cycle(eb)
         # TODO: would be easier to always run on the same scenario
@@ -66,9 +66,11 @@ class PostAssignment(_m.Tool()):
         if (cycle_number % 2 == 1):
             am_scenario = eb.scenario(am_scenario_id)
             md_scenario = eb.scenario(md_scenario_id)
+            pm_scenario = eb.scenario(pm_scenario_id)
         else:
             am_scenario = eb.scenario(am_scenario_id + 30)
             md_scenario = eb.scenario(md_scenario_id + 30)
+            pm_scenario = eb.scenario(pm_scenario_id + 30)
 
         copy_scenario = _m.Modeller().tool("inro.emme.data.scenario.copy_scenario")
         newscenam = copy_scenario(from_scenario=am_scenario,
@@ -79,5 +81,9 @@ class PostAssignment(_m.Tool()):
                                   scenario_id=md_scenario_id + 50000 + cycle_number,
                                   scenario_title="MD scenario copy for various skims",
                                   overwrite=True)
+        newscenpm = copy_scenario(from_scenario=pm_scenario,
+                                  scenario_id=pm_scenario_id + 50000 + cycle_number,
+                                  scenario_title="PM scenario copy for various skims",
+                                  overwrite=True)
 
-        return (newscenam, newscenmd)
+        return (newscenam, newscenmd, newscenpm)

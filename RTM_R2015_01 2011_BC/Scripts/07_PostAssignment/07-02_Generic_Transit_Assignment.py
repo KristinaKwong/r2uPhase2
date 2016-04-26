@@ -36,7 +36,7 @@ class Transit_Assignment(_m.Tool()):
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("07-02 - Generic Transit Skim")
-    def __call__(self, scenarioam, scenariomd):
+    def __call__(self, scenarioam, scenariomd, scenariopm):
         genskim = _m.Modeller().tool("inro.emme.transit_assignment.standard_transit_assignment")
         spec_as_dict = {
             "modes": ["b", "f", "g", "l", "r", "s", "a", "p", "h"],
@@ -69,9 +69,12 @@ class Transit_Assignment(_m.Tool()):
             "strategy_analysis": None,
             "type": "STANDARD_TRANSIT_ASSIGNMENT"
         }
-        demand_list = ["mf853", "mf866"]
-        travel_times_list = [["mf954", "mf955", "mf956", "mf957"], ["mf958", "mf959", "mf960", "mf961"]]
-        for j in range(2):
+        demand_list = ["mf853", "mf866", "mf879"]
+        travel_times_list = [["mf954", "mf955", "mf956", "mf957"],
+                             ["mf958", "mf959", "mf960", "mf961"],
+                             ["mf2012", "mf2013", "mf2014", "mf2015"]]
+
+        for j in range(3):
             spec_as_dict["demand"] = demand_list[j]
             spec_as_dict["od_results"]["total_waiting_times"] = travel_times_list[j][0]
             spec_as_dict["od_results"]["by_mode_subset"]["in_vehicle_times"] = travel_times_list[j][1]
@@ -81,3 +84,5 @@ class Transit_Assignment(_m.Tool()):
                 genskim(spec_as_dict, scenario=scenarioam)
             if j == 1:
                 genskim(spec_as_dict, scenario=scenariomd)
+            if j == 2:
+                genskim(spec_as_dict, scenario=scenariopm)

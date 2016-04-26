@@ -102,6 +102,23 @@ class SkimsAccessibilities(_m.Tool()):
             ["mf168*(1-" + str(k) + ")+mf959*" + str(k), "mf168"]
         ]
 
+        expressions_list_pm = [
+            ["mf2001-mf2000*6*ms18-mf2002*ms19*6", "mf2001"],
+            ["mf2100*(1-" + str(j) + ")+mf2000*" + str(j), "mf2100"],
+            ["mf2101*(1-" + str(j) + ")+mf2001*" + str(j), "mf2101"],
+            ["mf2102*(1-" + str(j) + ")+mf2002*" + str(j), "mf2102"],
+            ["mf2106*(1-" + str(k) + ")+mf2003*" + str(k), "mf2106"],
+            ["mf2107*(1-" + str(k) + ")+mf2004*" + str(k), "mf2107"],
+            ["mf2108*(1-" + str(k) + ")+mf2005*" + str(k), "mf2108"],
+            ["mf2109*(1-" + str(k) + ")+mf2006*" + str(k), "mf2109"],
+            ["mf2116*(1-" + str(k) + ")+mf2007*(mf2008.eq.0)+mf2016*(mf2008.gt.0)*" + str(k), "mf2116"],
+            ["mf2117*(1-" + str(k) + ")+mf2008*(mf2008.eq.0)+mf2017*(mf2008.gt.0)*" + str(k), "mf2117"],
+            ["mf2118*(1-" + str(k) + ")+mf2009*(mf2008.eq.0)+mf2018*(mf2008.gt.0)*" + str(k), "mf2118"],
+            ["mf2119*(1-" + str(k) + ")+mf2010*(mf2008.eq.0)+mf2019*(mf2008.gt.0)*" + str(k), "mf2119"],
+            ["mf2120*(1-" + str(k) + ")+mf2011*(mf2008.eq.0)+mf2020*(mf2008.gt.0)*" + str(k), "mf2120"],
+            ["mf2163*(1-" + str(k) + ")+(mf2012+mf2014+mf2015)*" + str(k), "mf2163"],
+            ["mf2164*(1-" + str(k) + ")+mf2013*" + str(k), "mf2164"]
+        ]
 
         for n in range(0, len(expressions_list_am)):
             spec_as_dict["expression"] = expressions_list_am[n][0]
@@ -109,6 +126,9 @@ class SkimsAccessibilities(_m.Tool()):
             util.compute_matrix(spec_as_dict)
             spec_as_dict["expression"] = expressions_list_md[n][0]
             spec_as_dict["result"] = expressions_list_md[n][1]
+            util.compute_matrix(spec_as_dict)
+            spec_as_dict["expression"] = expressions_list_pm[n][0]
+            spec_as_dict["result"] = expressions_list_pm[n][1]
             util.compute_matrix(spec_as_dict)
 
         # Calculate Intra-zonals, based on generalized cost-minutes of closest neighbour
@@ -122,11 +142,17 @@ class SkimsAccessibilities(_m.Tool()):
         Av_List=["1/2","1/2"]
         self.Calc_Intrazonals(Auto_AM_Expression, Auto_AM_List, Counter_Auto, Av_List)
 
-        # AM Auto distance and time
+        # MD Auto distance and time
         Auto_MD_Expression= "mf104+mf103*6*ms18+mf105*ms19*6"
         Auto_MD_List=["mf103","mf104"]
         Av_List=["1/2","1/2"]
         self.Calc_Intrazonals(Auto_MD_Expression, Auto_MD_List, Counter_Auto, Av_List)
+
+        # PM Auto distance and time
+        Auto_PM_Expression= "mf2101+mf2100*6*ms18+mf2102*ms19*6"
+        Auto_PM_List=["mf2100","mf2101"]
+        Av_List=["1/2","1/2"]
+        self.Calc_Intrazonals(Auto_PM_Expression, Auto_PM_List, Counter_Auto, Av_List)
 
         # Transit AM OVTT, IVTT
         Transit_AM_Expression = "2*mf163+mf164"
@@ -140,6 +166,12 @@ class SkimsAccessibilities(_m.Tool()):
         Av_List=["1","1/2"]
         self.Calc_Intrazonals(Transit_MD_Expression, Transit_MD_List, Counter_Transit, Av_List)
 
+        # Transit PM OVTT, IVTT
+        Transit_PM_Expression = "2*mf2163+mf2164"
+        Transit_PM_List=["mf2163","mf2164"]
+        Av_List=["1","1/2"]
+        self.Calc_Intrazonals(Transit_PM_Expression, Transit_PM_List, Counter_Transit, Av_List)
+
         # Bus AM Wait, IVTT, Board, Walk
         Bus_AM_Expression = "2.25*mf106+mf107+4*mf108+1.75*mf109"
         Bus_AM_List = ["mf106","mf107","mf108","mf109"]
@@ -151,6 +183,12 @@ class SkimsAccessibilities(_m.Tool()):
         Bus_MD_List = ["mf111","mf112","mf113","mf114"]
         Av_List=["1","1/2", "1", "1"]
         self.Calc_Intrazonals(Bus_MD_Expression, Bus_MD_List, Counter_Transit, Av_List)
+
+        # Bus PM Wait, IVTT, Board, Walk
+        Bus_PM_Expression = "2.25*mf2106+mf2107+4*mf2108+1.75*mf2109"
+        Bus_PM_List = ["mf2106","mf2107","mf2108","mf2109"]
+        Av_List=["1","1/2", "1", "1"]
+        self.Calc_Intrazonals(Bus_PM_Expression, Bus_PM_List, Counter_Transit, Av_List)
 
     @_m.logbook_trace("Accessibilities Calculation")
     def accessibilities(self):
