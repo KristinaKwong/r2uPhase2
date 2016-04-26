@@ -493,7 +493,7 @@ class ModeChoiceNHBO(_m.Tool()):
             ["NHBTransitT1", "NHBTransitT2", "NHBTrnBusT3", "NHBTrnBusT4", "NHBTransitT5", "NHBTransitT6", "NHBTransitT7"],
             ["NHBTransitT1", "NHBTransitT2", "NHBRailT3", "NHBRailT4", "NHBTransitT5", "NHBTransitT6", "NHBTransitT7"],
             ["NHBActiveT1", "NHBActiveT2", "NHBActiveT3", "NHBActiveT4", "NHBActiveT5", "NHBActiveT6", "NHBActiveT7"]]
-        aTSFactor=[aTSFactor[i][4:6] for i in range (len(arDmMatrix))]
+        aTSFactor=[aTSFactor[i][4:7] for i in range (len(arDmMatrix))]
         #********
         #    Start matrix number to store the demand by TOD
         #********
@@ -502,7 +502,7 @@ class ModeChoiceNHBO(_m.Tool()):
         for files, demand, result in zip(aTSFactor, arDmMatrix, aResultMatrix):
             utilities.process_timeslicing_list(eb, scenario, files)
             spec_list = []
-            for time_period in range(4, 6):
+            for time_period in range(4, 7):
                 result_name = "mf" + str(result + time_period)
                 expression = result_name + "+" + demand + "*mf" + str(703 + time_period)
                 spec_list.append(build_spec(expression, result_name))

@@ -616,7 +616,7 @@ class ModeChoiceHBW(_m.Tool()):
             ["wkActiveT1", "wkActiveT2", "wkActiveT3", "wkActiveT4", "wkActiveT5", "wkActiveT6", "wkActiveT7"],
         ]
 
-        arFileName=[arFileName[i][4:6] for i in range (len(arDmMatrix))]
+        arFileName=[arFileName[i][4:7] for i in range (len(arDmMatrix))]
 
         #********
         #    Start matrix number to store the demand by TOD
@@ -627,7 +627,7 @@ class ModeChoiceHBW(_m.Tool()):
             utilities.process_timeslicing_list(eb, scenario, files)
             #    Range was increased to 7 from 6 time period
             spec_list = []
-            for time_period in range(4, 6):
+            for time_period in range(4, 7):
                 result_name = "mf" + str(result + time_period)
                 expression = result_name + "+" + demand + "*mf" + str(703 + time_period)
                 spec_list.append(build_spec(expression, result_name))

@@ -125,6 +125,8 @@ class ModeChoice(_m.Tool()):
         specs.append(util.matrix_spec("mf852", "mf852+mf979"))
         specs.append(util.matrix_spec("mf860", "mf860+mf984"))
         specs.append(util.matrix_spec("mf865", "mf865+mf985"))
+        specs.append(util.matrix_spec("mf873", "mf873+mf992'"))
+        specs.append(util.matrix_spec("mf878", "mf878+mf993'"))
 
         util.compute_matrix(specs)
 

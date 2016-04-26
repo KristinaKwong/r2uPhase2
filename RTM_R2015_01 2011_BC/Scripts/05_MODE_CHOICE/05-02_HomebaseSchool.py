@@ -494,7 +494,7 @@ class ModeChoiceHBSchool(_m.Tool()):
             ["GSchActiveT1", "GSchActiveT2", "GSchActiveT3", "GSchActiveT4", "GSchActiveT5", "GSchActiveT6",
              "GSchActiveT7"]]
 
-        aTSFactor=[aTSFactor[i][4:6] for i in range (len(arDmMatrix))]
+        aTSFactor=[aTSFactor[i][4:7] for i in range (len(arDmMatrix))]
 
         # aTSFactor=[
         # ["UniEscoAutoT1","GSchAutoT2","UniEscoAutoT3","GSchAutoT4","GSchAutoT5","UniEscoAutoT6"],
@@ -516,7 +516,7 @@ class ModeChoiceHBSchool(_m.Tool()):
             utilities.process_timeslicing_list(eb, scenario, files)
             #    Range was increased to 7 from 6 time period
             spec_list = []
-            for time_period in range(4, 6):
+            for time_period in range(4, 7):
                 result_name = "mf" + str(result + time_period)
                 expression = result_name + "+" + demand + "*mf" + str(703 + time_period)
                 spec_list.append(build_spec(expression, result_name))

@@ -499,7 +499,7 @@ class ModeChoiceHBUni(_m.Tool()):
              "UniEscoTransitT6", "UniEscoTransitT7"],
             ["UniEscoActiveT1", "UniEscoActiveT2", "UniEscoActiveT3", "UniEscoActiveT4", "UniEscoActiveT5",
              "UniEscoActiveT6", "UniEscoActiveT7"]]
-        aTSFactor=[aTSFactor[i][4:6] for i in range (len(arDmMatrix))]
+        aTSFactor=[aTSFactor[i][4:7] for i in range (len(arDmMatrix))]
         #********
         #    Start matrix number to store the demand by TOD
         #********
@@ -508,7 +508,7 @@ class ModeChoiceHBUni(_m.Tool()):
         for files, demand, result in zip(aTSFactor, arDmMatrix, aResultMatrix):
             utilities.process_timeslicing_list(eb, scenario, files)
             spec_list = []
-            for time_period in range(4, 6):
+            for time_period in range(4, 7):
                 result_name = "mf" + str(result + time_period)
                 expression = result_name + "+" + demand + "*mf" + str(703 + time_period)
                 spec_list.append(build_spec(expression, result_name))
