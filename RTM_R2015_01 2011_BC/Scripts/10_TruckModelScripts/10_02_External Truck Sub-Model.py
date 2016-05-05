@@ -294,13 +294,13 @@ class ExternalTruckModel(_m.Tool()):
 
             for i in range (2):
                 if i==0:
-                    AdjustSpec["constraint"]["by_zone"]["origins"] = "1 2 8 10 11"
+                    AdjustSpec["constraint"]["by_zone"]["origins"] = "1;2;8;10;11"
                     AdjustSpec["constraint"]["by_zone"]["destinations"] = "*"
                     AdjustSpec["aggregation"]["origins"] = None
                     AdjustSpec["aggregation"]["destinations"] = "+"
                 if i==1:
                     AdjustSpec["constraint"]["by_zone"]["origins"] = "*"
-                    AdjustSpec["constraint"]["by_zone"]["destinations"] = "1 2 8 10 11"
+                    AdjustSpec["constraint"]["by_zone"]["destinations"] = "1;2;8;10;11"
                     AdjustSpec["aggregation"]["origins"] = "+"
                     AdjustSpec["aggregation"]["destinations"] = None
 

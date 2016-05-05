@@ -42,7 +42,7 @@ class RegTruckModel(_m.Tool()):
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    @_m.logbook_trace("Regional Truck Model"):
+    @_m.logbook_trace("Regional Truck Model")
     def __call__(self, Year, Sensitivity, RegionalGrowth1, RegionalGrowth2):
         util = _m.Modeller().tool("translink.emme.util")
         process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
