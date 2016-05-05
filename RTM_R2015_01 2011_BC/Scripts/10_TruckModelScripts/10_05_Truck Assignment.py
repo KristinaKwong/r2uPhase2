@@ -56,8 +56,6 @@ class TruckAssign(_m.Tool()):
         util.initmat(eb, "mf1051", "APHvMp", "AP HvTruck MD PCE", 0)
         util.initmat(eb, "mf1052", "RGLgMp", "RG LgTruck MD PCE", 0)
         util.initmat(eb, "mf1053", "RGHvMp", "RG HvTruck MD PCE", 0)
-        
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         AMList1=["mf1002","mf1012","mf1035","mf1005","mf1013","mf1021","mf1037"]
 
@@ -74,14 +72,14 @@ class TruckAssign(_m.Tool()):
             specs.append(util.matrix_spec(AMList2[i], AMList1[i] + "*" + str(Ratios[i])))
             specs.append(util.matrix_spec(MDList2[i], MDList1[i] + "*" + str(Ratios[i])))
 
-        compute_matrix(specs)
+        util.compute_matrix(specs)
 
         specs = []
         specs.append(util.matrix_spec("mf980", "mf1002 + mf1012 + mf1035"))
         specs.append(util.matrix_spec("mf981", "mf1005 + mf1013 + mf1021 + mf1037"))
         specs.append(util.matrix_spec("mf982", "mf1003 + mf1014 + mf1036"))
         specs.append(util.matrix_spec("mf983", "mf1006 + mf1015 + mf1022 + mf1038"))
-        compute_matrix(specs)
+        util.compute_matrix(specs)
 
 #### Truck Assignment (for now based on stand-alone assumption)
 

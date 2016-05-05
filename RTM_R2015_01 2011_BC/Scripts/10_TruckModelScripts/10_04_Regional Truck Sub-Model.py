@@ -54,17 +54,15 @@ class RegTruckModel(_m.Tool()):
         run_macro=_m.Modeller().tool("inro.emme.prompt.run_macro")
         run_macro(macro_name="../Scripts/10_TruckModelScripts/trkmodamregv1.mac")
 
-        compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
-
         spec = util.matrix_spec("ms151", "mf1031")
         spec["aggregation"]["origins"] = "+"
         spec["aggregation"]["destinations"] = "+"
-        compute_matrix(spec)
+        util.compute_matrix(spec)
 
         spec = util.matrix_spec("ms152", "mf1034")
         spec["aggregation"]["origins"] = "+"
         spec["aggregation"]["destinations"] = "+"
-        compute_matrix(spec)
+        util.compute_matrix(spec)
 
         RgLg = eb.matrix("ms151")
         RgHv=eb.matrix("ms152")
@@ -89,8 +87,8 @@ class RegTruckModel(_m.Tool()):
 
         for i in range(len(MatrixList1)):
             spec = util.matrix_spec(MatrixList1[i], MatrixList1[i] + "*" + str(RatioL))
-            compute_matrix(spec)
+            util.compute_matrix(spec)
 
         for i in range(len(MatrixList2)):
             spec = util.matrix_spec(MatrixList2[i], MatrixList2[i] + "*" + str(RatioH))
-            compute_matrix(spec)
+            util.compute_matrix(spec)

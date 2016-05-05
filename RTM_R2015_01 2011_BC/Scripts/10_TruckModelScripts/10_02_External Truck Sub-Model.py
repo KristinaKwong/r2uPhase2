@@ -98,8 +98,6 @@ class ExternalTruckModel(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
 
         with _m.logbook_trace("Import Cascade Cross-Border Matrices"):
-
-            compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
             process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
             root_directory = util.get_input_path(_m.Modeller().emmebank)
             matrix_file1 = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"CrossBorderv1.txt")
@@ -113,11 +111,11 @@ class ExternalTruckModel(_m.Tool()):
             CrossBorderSpec["result"]="ms151"
             CrossBorderSpec["aggregation"]["origins"]="+"
             CrossBorderSpec["aggregation"]["destinations"]="+"
-            compute_matrix(CrossBorderSpec)
+            util.compute_matrix(CrossBorderSpec)
 
             CrossBorderSpec["expression"] = "mf1004"
             CrossBorderSpec["result"]="ms152"
-            compute_matrix(CrossBorderSpec)
+            util.compute_matrix(CrossBorderSpec)
 
             self.ResetSpec(CrossBorderSpec)
 
@@ -147,19 +145,16 @@ class ExternalTruckModel(_m.Tool()):
                 else:
                     CrossBorderSpec["expression"] = MatrixList[i]+"*"+str(RatioH)
                 CrossBorderSpec["result"]=MatrixList[i]
-                compute_matrix(CrossBorderSpec)
+                util.compute_matrix(CrossBorderSpec)
 
 
 
     def TripGeneration(self,Year, Sensitivity, ExtGrowth1, ExtGrowth2):
-
+        util = _m.Modeller().tool("translink.emme.util")
     # Inputs: Regression Functions and directional factors
     # Outputs: 24 hours trip generation - mo4,mo6,md404,md406 (Light From, Heavy From, Light To, Heavy To)
 
         with _m.logbook_trace("Trip Generation"):
-
-            compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
-
             TripGenSpec=self.spec_as_dict
 
             ## Adjustments
@@ -274,7 +269,7 @@ class ExternalTruckModel(_m.Tool()):
                         TripGenSpec["constraint"]["by_zone"]["origins"] = None
                         TripGenSpec["constraint"]["by_zone"]["destinations"] = str(ExtZoneList[j])
                     TripGenSpec["result"] = matrixlist[i]
-                    compute_matrix(TripGenSpec)
+                    util.compute_matrix(TripGenSpec)
             self.ResetSpec(TripGenSpec)
 
 
@@ -282,11 +277,10 @@ class ExternalTruckModel(_m.Tool()):
             self.AdjustInterCrossBorder("mf1004","mo1002", "md202")
 
     def AdjustInterCrossBorder(self, matrix1, matrix2, matrix3):
-
+        util = _m.Modeller().tool("translink.emme.util")
     #   Adjusts Inter-regional mo and md totals by subtracting Cross-border mo/mds with inter-regional zone end
 
         with _m.logbook_trace("Adjust Inter Regional mos and mds with Cross-Border mos and mds"):
-            compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
             AdjustSpec=self.spec_as_dict
             ResultList=["mo1003","md203"]
 
@@ -306,28 +300,26 @@ class ExternalTruckModel(_m.Tool()):
 
 
                 AdjustSpec["result"]=ResultList[i]
-                compute_matrix(AdjustSpec)
+                util.compute_matrix(AdjustSpec)
 
             self.ResetSpec(AdjustSpec)
 
             AdjustSpec["expression"]= "(("+matrix2+"-"+ResultList[0]+").max.0)"
             AdjustSpec["result"]=matrix2
-            compute_matrix(AdjustSpec)
+            util.compute_matrix(AdjustSpec)
 
             AdjustSpec["expression"]= "(("+matrix3+"-"+ResultList[1]+").max.0)"
             AdjustSpec["result"]=matrix3
-            compute_matrix(AdjustSpec)
+            util.compute_matrix(AdjustSpec)
 
 
     def TripDistribution(self):
-
+        util = _m.Modeller().tool("translink.emme.util")
     ## Distribute External mo and md trips based on 1999 O-D Survey
     # Inputs: mo4, mo6, md404, md406, mf182 (O-D Survey Light Trucks Distribution), mf183 (O-D Survey Heavy Truck Distribution)
     # Outputs: mf184, mf185 (24 hour Light Truck O-D, 24 hour Heavy Truck O-D)
 
         with _m.logbook_trace("Trip Distribution"):
-
-            compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
             TripDistSpec=self.spec_as_dict
 
             ResultList=["mf1010","mf1011"]
@@ -336,16 +328,15 @@ class ExternalTruckModel(_m.Tool()):
             for i in range (2):
                 TripDistSpec["expression"] = ExpressionList[i]
                 TripDistSpec["result"] = ResultList[i]
-                compute_matrix (TripDistSpec)
+                util.compute_matrix(TripDistSpec)
 
     def TimeSlicing(self):
-
+        util = _m.Modeller().tool("translink.emme.util")
     ## Time Slice 24 hour demands to AM and MD peak hour volumes
     # Inputs: mf184, mf185, Time Slice Factors from Screenline volumes
     # Outputs: Light AM, Light MD, Heavy AM, Heavy MD - mf186, mf188, mf187, mf189
 
         with _m.logbook_trace("Time Slicing"):
-            compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
             TimeSliceSpec=self.spec_as_dict
 
     # IB                 Light Trucks AM            Light Trucks MD               Heavy Trucks AM         Heavy Trucks MD
@@ -370,7 +361,7 @@ class ExternalTruckModel(_m.Tool()):
                             TimeSliceSpec["constraint"]["by_zone"]["origins"] = str(ConstraintList[k][l])
                             TimeSliceSpec["constraint"]["by_zone"]["destinations"] = "*"
                             TimeSliceSpec["result"] = Matrix_List[2*i+j]
-                            compute_matrix (TimeSliceSpec)
+                            util.compute_matrix(TimeSliceSpec)
 
             TimeSliceSpec["constraint"]["by_zone"]["origins"] = "*"
 
@@ -381,7 +372,7 @@ class ExternalTruckModel(_m.Tool()):
                         for l in range (0, len(ConstraintList[k])):
                             TimeSliceSpec["constraint"]["by_zone"]["destinations"] = str(ConstraintList[k][l])
                             TimeSliceSpec["result"] = Matrix_List[2*i+j]
-                            compute_matrix (TimeSliceSpec)
+                            util.compute_matrix(TimeSliceSpec)
 
     def ResetSpec (self, SpecItems):
 

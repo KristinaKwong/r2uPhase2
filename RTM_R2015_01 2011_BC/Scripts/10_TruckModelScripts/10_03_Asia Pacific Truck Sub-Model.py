@@ -46,9 +46,6 @@ class AsiaPacificTruckModel(_m.Tool()):
                 process(transaction_file=matrix_file, throw_on_error=True)
 
             #Distribute Asia Pacific matrix for "Other locations" based on non-retail employment
-                compute_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
-
-
                 Spec1={
                     "expression": "(md12-md8)*(gy(q).lt.13)",
                     "result": "ms153",
@@ -98,9 +95,9 @@ class AsiaPacificTruckModel(_m.Tool()):
                     "type": "MATRIX_CALCULATION"
                 }
 
-                compute_matrix(Spec1)
-                compute_matrix(Spec2)
-                compute_matrix(Spec3)
+                util.compute_matrix(Spec1)
+                util.compute_matrix(Spec2)
+                util.compute_matrix(Spec3)
 
                 Spec4={
                     "expression": "mf1017*mo1005*md205",
@@ -122,4 +119,4 @@ class AsiaPacificTruckModel(_m.Tool()):
 
                     Spec4["expression"]=CalcList[i]+"*mo1005*md205"
                     Spec4["result"]=ResultList[i]
-                    compute_matrix(Spec4)
+                    util.compute_matrix(Spec4)
