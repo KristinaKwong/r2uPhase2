@@ -36,87 +36,87 @@ class AsiaPacificTruckModel(_m.Tool()):
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
+    @_m.logbook_trace("Asia Pacific Truck Model")
     def __call__(self,Year):
         util = _m.Modeller().tool("translink.emme.util")
-        with _m.logbook_trace("Asia Pacific Truck Model"):
-            #Batch input Asia Pacific matrix from TruckBatchFiles (gg ensemble format)
-                process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
-                root_directory = util.get_input_path(_m.Modeller().emmebank)
-                matrix_file = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"AsiaPacificv1.txt")
-                process(transaction_file=matrix_file, throw_on_error=True)
+        #Batch input Asia Pacific matrix from TruckBatchFiles (gg ensemble format)
+        process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
+        root_directory = util.get_input_path(_m.Modeller().emmebank)
+        matrix_file = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"AsiaPacificv1.txt")
+        process(transaction_file=matrix_file, throw_on_error=True)
 
-            #Distribute Asia Pacific matrix for "Other locations" based on non-retail employment
-                Spec1={
-                    "expression": "(md12-md8)*(gy(q).lt.13)",
-                    "result": "ms153",
-                    "constraint": {
-                        "by_value": None,
-                        "by_zone": {
-                            "origins": None,
-                            "destinations": "gg27"
-                        }
-                    },
-                    "aggregation": {
-                        "origins": None,
-                        "destinations": "+"
-                    },
-                    "type": "MATRIX_CALCULATION"
+        #Distribute Asia Pacific matrix for "Other locations" based on non-retail employment
+        Spec1={
+            "expression": "(md12-md8)*(gy(q).lt.13)",
+            "result": "ms153",
+            "constraint": {
+                "by_value": None,
+                "by_zone": {
+                    "origins": None,
+                    "destinations": "gg27"
                 }
+            },
+            "aggregation": {
+                "origins": None,
+                "destinations": "+"
+            },
+            "type": "MATRIX_CALCULATION"
+        }
 
 
-                Spec2={
-                    "expression": "(md12-md8)/ms153*(gy(q).lt.13)",
-                    "result": "md205",
-                    "constraint": {
-                        "by_value": None,
-                        "by_zone": {
-                            "origins": None,
-                            "destinations": "gg27"
-                        }
-                    },
-                    "aggregation": {
-                        "origins": None,
-                        "destinations": None
-                    },
-                    "type": "MATRIX_CALCULATION"
+        Spec2={
+            "expression": "(md12-md8)/ms153*(gy(q).lt.13)",
+            "result": "md205",
+            "constraint": {
+                "by_value": None,
+                "by_zone": {
+                    "origins": None,
+                    "destinations": "gg27"
                 }
+            },
+            "aggregation": {
+                "origins": None,
+                "destinations": None
+            },
+            "type": "MATRIX_CALCULATION"
+        }
 
-                Spec3={
-                    "expression": "md205'",
-                    "result": "mo1005",
-                    "constraint": {
-                        "by_value": None,
-                        "by_zone": None
-                    },
-                    "aggregation": {
-                        "origins": None,
-                        "destinations": None
-                    },
-                    "type": "MATRIX_CALCULATION"
-                }
+        Spec3={
+            "expression": "md205'",
+            "result": "mo1005",
+            "constraint": {
+                "by_value": None,
+                "by_zone": None
+            },
+            "aggregation": {
+                "origins": None,
+                "destinations": None
+            },
+            "type": "MATRIX_CALCULATION"
+        }
 
-                util.compute_matrix(Spec1)
-                util.compute_matrix(Spec2)
-                util.compute_matrix(Spec3)
+        util.compute_matrix(Spec1)
+        util.compute_matrix(Spec2)
+        util.compute_matrix(Spec3)
 
-                Spec4={
-                    "expression": "mf1017*mo1005*md205",
-                    "result": "mf1053",
-                    "constraint": {
-                        "by_value": None,
-                        "by_zone": None
-                    },
-                    "aggregation": {
-                        "origins": None,
-                        "destinations": None
-                    },
-                    "type": "MATRIX_CALCULATION"
-                }
-                CalcList=["mf1017","mf1018","mf1019"]
-                ResultList=["mf1020","mf1021","mf1022"]
+        Spec4={
+            "expression": "mf1017*mo1005*md205",
+            "result": "mf1053",
+            "constraint": {
+                "by_value": None,
+                "by_zone": None
+            },
+            "aggregation": {
+                "origins": None,
+                "destinations": None
+            },
+            "type": "MATRIX_CALCULATION"
+        }
+        CalcList=["mf1017","mf1018","mf1019"]
+        ResultList=["mf1020","mf1021","mf1022"]
 
-                for i in range (len(CalcList)):
+        for i in range (len(CalcList)):
 
-                    Spec4["expression"]=CalcList[i]+"*mo1005*md205"
-                    Spec4["result"]=ResultList[i]
-                    util.compute_matrix(Spec4)
+            Spec4["expression"]=CalcList[i]+"*mo1005*md205"
+            Spec4["result"]=ResultList[i]
+            util.compute_matrix(Spec4)
