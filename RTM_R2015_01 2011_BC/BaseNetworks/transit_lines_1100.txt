@@ -1,6 +1,6 @@
 c Emme Modeller - Transit Line Transaction
-c Date: 2016-05-10 14:40:29
-c Project:        import of moved centroids                                   
+c Date: 2016-05-10 14:58:56
+c Project:        Import of Final Network Fixes                               
 c Scenario 1100:  2011 MD Base Network
 t lines
 c Transit Lines
@@ -3268,8 +3268,8 @@ a'104S1 ' b   1  30.00  23.00 '104-SB1PR           '      0      0      1
    292708          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    292709          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    293702          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   293707          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   293901          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   293708          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   293904          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    293903          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    293902          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    293907          dwt=#0   ttf=5   us1=1   us2=0   us3=0
@@ -8785,8 +8785,8 @@ a'340E1 ' b   1  20.00  23.00 '340-EB1             '      0      0      1
    292708          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    292709          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    293702          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   293707          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   293901          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   293708          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   293904          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    293903          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    293902          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    293907          dwt=#0   ttf=5   us1=1   us2=0   us3=0
@@ -10275,8 +10275,8 @@ a'410W1 ' b   1  15.00  23.00 '410-WB1A1           '      0      0      1
    292708          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    292709          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    293702          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   293707          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   293901          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   293708          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   293904          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    293903          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    293902          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    293907          dwt=#0   ttf=5   us1=1   us2=0   us3=0
@@ -10346,8 +10346,8 @@ a'410W2 ' b   1  60.00  23.00 '410-WB1AL1          '      0      0      1
    292708          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    292709          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    293702          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   293707          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   293901          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   293708          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   293904          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    293903          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    293902          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    293907          dwt=#0   ttf=5   us1=1   us2=0   us3=0
