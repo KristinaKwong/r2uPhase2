@@ -1,6 +1,6 @@
 c Emme Modeller - Transit Line Transaction
-c Date: 2016-04-20 10:25:15
-c Project:        PM transit itin                                             
+c Date: 2016-05-10 14:40:25
+c Project:        import of moved centroids                                   
 c Scenario 1000:  2011 AM Base Network
 t lines
 c Transit Lines

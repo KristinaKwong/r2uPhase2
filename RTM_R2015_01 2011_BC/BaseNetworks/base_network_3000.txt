@@ -1,6 +1,6 @@
 c Emme Modeller - Base Network Transaction
-c Date: 2016-04-20 10:25:29
-c Project:        PM transit itin                                             
+c Date: 2016-05-10 14:40:41
+c Project:        import of moved centroids                                   
 c Scenario 3000:  2030 AM Base Network
 t nodes
 c   Node          X-coord          Y-coord   Data1   Data2   Data3 Label
@@ -18183,12 +18183,11 @@ a 293901 293707 .130961 vcdxtbp      302 2.0  85       0       0       0
 a 293901 293903 .030946 vcdxtbp      302 1.0  85       0       0       0
 a 293902 287305 .637537 vcdxtbp      302 1.0  85       0       0       0
 a 293902 293907 .538099 vcdxtnbp     305 1.0  85       0       0       0
-a 293903 293901 .030946 vcdxtbp      302 1.0  85       0       0       0
 a 293903 293902 .020745 vcdxtbp      302 2.0  85       0       0       0
 a 293904 293903 .058927 vcdxtbp      302 2.0  85       0       0       0
 a 293905 293402 .549932 vcdxtbp      302 2.0  85       0       0       0
 a 293906 287305 .303147 vcdxtnbp     305 1.0  85       0       0       0
-a 293906 293709 .055668 vcdxtbp      303 1.0  25       0       0       0
+a 293906 293709 .055668 vbp          303 1.0  25       0       0       0
 a 293907 294209 1.13716 vcdxtbp      302 2.0  86       0       0       0
 a 293908 293706 .151738 vcdxtnbp     305 2.0  85       0       0       0
 a 293908 293906 .255646 vcdxtnbp     305 1.0  85       0       0       0
