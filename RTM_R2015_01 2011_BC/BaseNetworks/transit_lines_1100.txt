@@ -1,6 +1,6 @@
 c Emme Modeller - Transit Line Transaction
-c Date: 2016-05-20 16:50:23
-c Project:        Import of Final Network Fixes                               
+c Date: 2016-05-25 15:18:41
+c Project:        test extra attr 2                                           
 c Scenario 1100:  2011 MD Base Network
 t lines
 c Transit Lines
