@@ -60,7 +60,11 @@ class InitEmmebank(_m.Tool()):
 
         data_path = os.path.join(proj_path, "BaseNetworks")
         att_trans = mod.tool("inro.emme.data.extra_attribute.export_extra_attributes")
-        attribute_list = ["@lanesam", "@vdfam", "@lanesmd", "@vdfmd", "@lanespm", "@vdfpm", "@tpfam", "@tpfmd", "@tpfpm"]
+        attribute_list = ["@lanesam", "@vdfam",
+                          "@lanesmd", "@vdfmd",
+                          "@lanespm", "@vdfpm",
+                          "@tpfam", "@tpfmd", "@tpfpm",
+                          "@hdwyam", "@hdwymd", "@hdwypm"]
         att_trans(extra_attributes = attribute_list,
                   export_path = data_path,
                   append_to_file = False,

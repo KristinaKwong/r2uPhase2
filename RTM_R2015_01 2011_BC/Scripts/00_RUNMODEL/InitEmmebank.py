@@ -139,6 +139,9 @@ class InitEmmebank(_m.Tool()):
         create_attr("TURN", "@tpfam", "AM Turn Penalty Function", 0, False, scen)
         create_attr("TURN", "@tpfmd", "MD Turn Penalty Function", 0, False, scen)
         create_attr("TURN", "@tpfpm", "PM Turn Penalty Function", 0, False, scen)
+        create_attr("TRANSIT_LINE", "@hdwyam", "AM Transit Headway", 0, False, scen)
+        create_attr("TRANSIT_LINE", "@hdwymd", "MD Transit Headway", 0, False, scen)
+        create_attr("TRANSIT_LINE", "@hdwypm", "PM Transit Headway", 0, False, scen)
 
         data_path = os.path.join(proj_path, "BaseNetworks", "extra_links_%d.txt" % scen_id)
         link_attr = _m.Modeller().tool("inro.emme.data.network.import_attribute_values")
