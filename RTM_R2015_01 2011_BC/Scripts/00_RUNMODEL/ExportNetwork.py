@@ -58,6 +58,16 @@ class InitEmmebank(_m.Tool()):
                   export_format = "PROMPT_DATA_FORMAT",
                   scenario = scen)
 
+        data_path = os.path.join(proj_path, "BaseNetworks")
+        att_trans = mod.tool("inro.emme.data.extra_attribute.export_extra_attributes")
+        attribute_list = ["@lanesam", "@vdfam", "@lanesmd", "@vdfmd", "@lanespm", "@vdfpm", "@tpfam", "@tpfmd", "@tpfpm"]
+        att_trans(extra_attributes = attribute_list,
+                  export_path = data_path,
+                  append_to_file = False,
+                  field_separator = ' ',
+                  export_format = "PROMPT_DATA_FORMAT",
+                  scenario = scen)
+
         if scen_id > 1200: return
         data_path = os.path.join(proj_path, "BaseNetworks", "transit_lines_%d.txt" % scen_id)
         lin_trans = mod.tool("inro.emme.data.network.transit.export_transit_lines")

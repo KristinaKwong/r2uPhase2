@@ -129,6 +129,35 @@ class InitEmmebank(_m.Tool()):
                     revert_on_error = True,
                     scenario = scen)
 
+        create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
+        create_attr("LINK", "@lanesam", "AM Number of Lanes", 0, False, scen)
+        create_attr("LINK", "@lanesmd", "MD Number of Lanes", 0, False, scen)
+        create_attr("LINK", "@lanespm", "PM Number of Lanes", 0, False, scen)
+        create_attr("LINK", "@vdfam", "AM Volume Delay Function", 0, False, scen)
+        create_attr("LINK", "@vdfmd", "MD Volume Delay Function", 0, False, scen)
+        create_attr("LINK", "@vdfpm", "PM Volume Delay Function", 0, False, scen)
+        create_attr("TURN", "@tpfam", "AM Turn Penalty Function", 0, False, scen)
+        create_attr("TURN", "@tpfmd", "MD Turn Penalty Function", 0, False, scen)
+        create_attr("TURN", "@tpfpm", "PM Turn Penalty Function", 0, False, scen)
+
+        data_path = os.path.join(proj_path, "BaseNetworks", "extra_links_%d.txt" % scen_id)
+        link_attr = _m.Modeller().tool("inro.emme.data.network.import_attribute_values")
+        link_attr(file_path = data_path,
+                  field_separator = ' ',
+                  column_labels = "FROM_HEADER",
+                  revert_on_error = True,
+                  scenario = scen,
+                  merge_consecutive_separators = True)
+
+        data_path = os.path.join(proj_path, "BaseNetworks", "extra_turns_%d.txt" % scen_id)
+        turn_attr = _m.Modeller().tool("inro.emme.data.network.import_attribute_values")
+        turn_attr(file_path = data_path,
+                  field_separator = ' ',
+                  column_labels = "FROM_HEADER",
+                  revert_on_error = True,
+                  scenario = scen,
+                  merge_consecutive_separators = True)
+
         if scen_id > 1200: return
         data_path = os.path.join(proj_path, "BaseNetworks", "transit_lines_%d.txt" % scen_id)
         lines_trans = _m.Modeller().tool("inro.emme.data.network.transit.transit_line_transaction")
@@ -225,7 +254,7 @@ class InitEmmebank(_m.Tool()):
         data_path = os.path.join(proj_path, "BaseNetworks", "MD_Starter_Demand.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
-        
+
         util.delmat(eb, "mf897")
         util.delmat(eb, "mf898")
         data_path = os.path.join(proj_path, "BaseNetworks", "PM_Starter_Demand.in")
@@ -244,7 +273,7 @@ class InitEmmebank(_m.Tool()):
         data_path = os.path.join(proj_path, "BaseNetworks", "MD_Truck_Demand.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
-		
+
 		# TODO PM truck demand is currently transpose AM truck demand multiplied by a factor
 		# Factor was created by Parsons
 		# Should be updated with actual truck demand
@@ -275,7 +304,7 @@ class InitEmmebank(_m.Tool()):
         data_path = os.path.join(proj_path, "BaseNetworks", "PM_External_Demand.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
-						
+
         util.delmat(eb, "md999")
         data_path = os.path.join(proj_path, "BaseNetworks", "md_Grade_School_Adj.in")
         mat_transaction(transaction_file = data_path,
