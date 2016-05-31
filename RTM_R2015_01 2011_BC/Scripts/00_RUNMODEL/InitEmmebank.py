@@ -51,8 +51,8 @@ class InitEmmebank(_m.Tool()):
                "links": 22000,
                "turn_entries": 15000,
                "extra_attribute_values": 2000000,
-               "transit_lines": 600,
-               "transit_segments": 36000,
+               "transit_lines": 2000,
+               "transit_segments": 60000,
                "transit_vehicles": 600}
 
         with _emme.database.emmebank.create(path, dim) as eb:
