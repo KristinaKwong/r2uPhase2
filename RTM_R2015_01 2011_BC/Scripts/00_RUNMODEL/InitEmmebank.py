@@ -168,6 +168,15 @@ class InitEmmebank(_m.Tool()):
                     revert_on_error = True,
                     scenario = scen)
 
+        data_path = os.path.join(proj_path, "BaseNetworks", "extra_transit_lines_%d.txt" % scen_id)
+        line_attr = _m.Modeller().tool("inro.emme.data.network.import_attribute_values")
+        line_attr(file_path = data_path,
+                  field_separator = ' ',
+                  column_labels = "FROM_HEADER",
+                  revert_on_error = True,
+                  scenario = scen,
+                  merge_consecutive_separators = True)
+
         data_path = os.path.join(proj_path, "BaseNetworks", "gz_ensem_tz1741.in")
         ensem_trans = _m.Modeller().tool("inro.emme.data.zone_partition.partition_transaction")
         ensem_trans(transaction_file = data_path,

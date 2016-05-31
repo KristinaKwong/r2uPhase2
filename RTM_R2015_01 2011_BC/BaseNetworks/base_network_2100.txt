@@ -1,6 +1,6 @@
 c Emme Modeller - Base Network Transaction
-c Date: 2016-05-31 15:30:28
-c Project:        Combined Itineraries                                        
+c Date: 2016-05-31 15:53:38
+c Project:        inityy                                                      
 c Scenario 2100:  2015 MD Base Network
 t nodes
 c   Node          X-coord          Y-coord   Data1   Data2   Data3 Label

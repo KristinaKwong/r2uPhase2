@@ -1,6 +1,6 @@
 c Emme Modeller - Turn Transaction
-c Date: 2016-05-31 15:30:27
-c Project:        Combined Itineraries                                        
+c Date: 2016-05-31 15:53:37
+c Project:        inityy                                                      
 c Scenario 2000:  2015 AM Base Network
 t turns
 c     At   From     To   TPF  Data1  Data2  Data3
