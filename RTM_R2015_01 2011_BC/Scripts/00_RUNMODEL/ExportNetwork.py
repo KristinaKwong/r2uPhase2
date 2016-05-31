@@ -21,14 +21,8 @@ class InitEmmebank(_m.Tool()):
 
     def __call__(self):
         self.export(1000)
-        self.export(1100)
-        self.export(1200)
         self.export(2000)
-        self.export(2100)
-        self.export(2200)
         self.export(3000)
-        self.export(3100)
-        self.export(3200)
 
     def export(self, scen_id):
         mod = _m.Modeller()

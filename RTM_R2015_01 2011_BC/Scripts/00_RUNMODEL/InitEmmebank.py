@@ -65,15 +65,9 @@ class InitEmmebank(_m.Tool()):
             eb.node_number_digits = 6
 
             self.initfunctions(eb)
-            self.initscenario(eb, 1000, "2011 AM Base Network")
-            self.initscenario(eb, 1100, "2011 MD Base Network")
-            self.initscenario(eb, 1200, "2011 PM Base Network")
-            self.initscenario(eb, 2000, "2015 AM Base Network")
-            self.initscenario(eb, 2100, "2015 MD Base Network")
-            self.initscenario(eb, 2200, "2015 PM Base Network")
-            self.initscenario(eb, 3000, "2030 AM Base Network")
-            self.initscenario(eb, 3100, "2030 MD Base Network")
-            self.initscenario(eb, 3200, "2030 PM Base Network")
+            self.initscenario(eb, 1000, "2011 Base Network")
+            self.initscenario(eb, 2000, "2015 Base Network")
+            self.initscenario(eb, 3000, "2030 Base Network")
 
     def initfolder(self, emme_folder):
         project = _m.Modeller().desktop.project
