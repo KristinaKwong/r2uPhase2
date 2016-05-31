@@ -1,6 +1,6 @@
 c Emme Modeller - Base Network Transaction
-c Date: 2016-05-25 15:18:42
-c Project:        test extra attr 2                                           
+c Date: 2016-05-31 11:44:04
+c Project:        TransitDwell                                                
 c Scenario 1200:  2011 PM Base Network
 t nodes
 c   Node          X-coord          Y-coord   Data1   Data2   Data3 Label
