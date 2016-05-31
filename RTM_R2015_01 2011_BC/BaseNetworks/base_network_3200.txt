@@ -1,6 +1,6 @@
 c Emme Modeller - Base Network Transaction
-c Date: 2016-05-31 11:44:24
-c Project:        TransitDwell                                                
+c Date: 2016-05-31 15:30:41
+c Project:        Combined Itineraries                                        
 c Scenario 3200:  2030 PM Base Network
 t nodes
 c   Node          X-coord          Y-coord   Data1   Data2   Data3 Label

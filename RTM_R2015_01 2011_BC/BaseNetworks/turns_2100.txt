@@ -1,6 +1,6 @@
 c Emme Modeller - Turn Transaction
-c Date: 2016-05-31 11:44:13
-c Project:        TransitDwell                                                
+c Date: 2016-05-31 15:30:30
+c Project:        Combined Itineraries                                        
 c Scenario 2100:  2015 MD Base Network
 t turns
 c     At   From     To   TPF  Data1  Data2  Data3

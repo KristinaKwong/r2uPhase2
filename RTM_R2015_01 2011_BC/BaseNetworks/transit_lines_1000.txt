@@ -1,6 +1,6 @@
 c Emme Modeller - Transit Line Transaction
-c Date: 2016-05-31 11:44:00
-c Project:        TransitDwell                                                
+c Date: 2016-05-31 15:30:16
+c Project:        Combined Itineraries                                        
 c Scenario 1000:  2011 AM Base Network
 t lines
 c Transit Lines

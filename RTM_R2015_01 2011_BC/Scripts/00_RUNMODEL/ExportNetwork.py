@@ -20,6 +20,8 @@ class InitEmmebank(_m.Tool()):
         self.__call__()
 
     def __call__(self):
+        self.calcAttrs(1000, 1100, 1200)
+
         self.export(1000)
         self.export(1100)
         self.export(1200)
@@ -29,6 +31,52 @@ class InitEmmebank(_m.Tool()):
         self.export(3000)
         self.export(3100)
         self.export(3200)
+
+    def calcAttrs(self, am_scenid, md_scenid, pm_scenid):
+        mod = _m.Modeller()
+        eb = mod.emmebank
+        project = mod.desktop.project
+        proj_path = os.path.dirname(project.path)
+
+        scenam = eb.scenario(am_scenid)
+        scenmd = eb.scenario(md_scenid)
+        scenpm = eb.scenario(pm_scenid)
+
+        net_calc = mod.tool("inro.emme.network_calculation.network_calculator")
+
+        hdwyam_spec = {
+            "type": "NETWORK_CALCULATION",
+            "result": "@hdwyam",
+            "expression": "hdw",
+            "aggregation": None,
+            "selections": {
+                "transit_line": "all"
+            }
+        }
+
+        hdwymd_spec = {
+            "type": "NETWORK_CALCULATION",
+            "result": "@hdwymd",
+            "expression": "hdw",
+            "aggregation": None,
+            "selections": {
+                "transit_line": "all"
+            }
+        }
+
+        hdwypm_spec = {
+            "type": "NETWORK_CALCULATION",
+            "result": "@hdwypm",
+            "expression": "hdw",
+            "aggregation": None,
+            "selections": {
+                "transit_line": "all"
+            }
+        }
+
+        net_calc(hdwyam_spec, scenam, False)
+        net_calc(hdwymd_spec, scenmd, False)
+        net_calc(hdwypm_spec, scenpm, False)
 
     def export(self, scen_id):
         mod = _m.Modeller()
