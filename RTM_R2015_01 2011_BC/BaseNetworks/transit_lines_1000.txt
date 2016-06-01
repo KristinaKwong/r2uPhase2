@@ -44497,8 +44497,8 @@ a'9910iA' l   5   6.70  60.00 'CL-Richmond Ctr/Vanc'      0      0      0
   path=no
    515704       dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
    513601       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
-   512401       dwt=#1.41  ttf=10   us1=0   us2=0   us3=0
-   510504       dwt=+1.04  ttf=10   us1=0   us2=0   us3=0
+   512401          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   510504       dwt=+2.45  ttf=10   us1=0   us2=0   us3=0
    510505       dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
    244605       dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
    242402       dwt=+1.66  ttf=10   us1=0   us2=0   us3=0
@@ -44513,8 +44513,8 @@ a'9910iM' l   5   6.70  60.00 'CL-Richmond Ctr/Vanc'      0      0      0
   path=no
    515704       dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
    513601       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
-   512401       dwt=#1.41  ttf=10   us1=0   us2=0   us3=0
-   510504       dwt=+1.04  ttf=10   us1=0   us2=0   us3=0
+   512401          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   510504       dwt=+2.45  ttf=10   us1=0   us2=0   us3=0
    510505       dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
    244605       dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
    242402       dwt=+1.66  ttf=10   us1=0   us2=0   us3=0
@@ -44529,8 +44529,8 @@ a'9910iP' l   5   6.70  60.00 'CL-Richmond Ctr/Vanc'      0      0      0
   path=no
    515704       dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
    513601       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
-   512401       dwt=#1.41  ttf=10   us1=0   us2=0   us3=0
-   510504       dwt=+1.04  ttf=10   us1=0   us2=0   us3=0
+   512401          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   510504       dwt=+2.45  ttf=10   us1=0   us2=0   us3=0
    510505       dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
    244605       dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
    242402       dwt=+1.66  ttf=10   us1=0   us2=0   us3=0
@@ -44552,8 +44552,8 @@ a'9910oA' l   5   6.70  60.00 'CL-VancCBD/Richmond '      0      0      0
    242202       dwt=+1.66  ttf=10   us1=0   us2=0   us3=0
    242402       dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
    244605       dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
-   510505       dwt=#0.15  ttf=10   us1=0   us2=0   us3=0
-   510504        dwt=+2.3  ttf=10   us1=0   us2=0   us3=0
+   510505          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   510504       dwt=+2.45  ttf=10   us1=0   us2=0   us3=0
    512401       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
    513601       dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
    515704        lay=0.75
@@ -44568,8 +44568,8 @@ a'9910oM' l   5   6.70  60.00 'CL-VancCBD/Richmond '      0      0      0
    242202       dwt=+1.66  ttf=10   us1=0   us2=0   us3=0
    242402       dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
    244605       dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
-   510505       dwt=#0.15  ttf=10   us1=0   us2=0   us3=0
-   510504        dwt=+2.3  ttf=10   us1=0   us2=0   us3=0
+   510505          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   510504       dwt=+2.45  ttf=10   us1=0   us2=0   us3=0
    512401       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
    513601       dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
    515704        lay=0.75
@@ -44584,8 +44584,8 @@ a'9910oP' l   5   6.70  60.00 'CL-VancCBD/Richmond '      0      0      0
    242202       dwt=+1.66  ttf=10   us1=0   us2=0   us3=0
    242402       dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
    244605       dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
-   510505       dwt=#0.15  ttf=10   us1=0   us2=0   us3=0
-   510504        dwt=+2.3  ttf=10   us1=0   us2=0   us3=0
+   510505          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   510504       dwt=+2.45  ttf=10   us1=0   us2=0   us3=0
    512401       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
    513601       dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
    515704        lay=0.75
@@ -44593,8 +44593,8 @@ a'9911iA' l   5   6.70  60.00 'CL-YVR/VancCBD      '      0      0      0
   path=no
    510201       dwt=+2.42  ttf=10   us1=0   us2=0   us3=0
    510308       dwt=+1.87  ttf=10   us1=0   us2=0   us3=0
-   510402       dwt=#1.41  ttf=10   us1=0   us2=0   us3=0
-   510504       dwt=+1.06  ttf=10   us1=0   us2=0   us3=0
+   510402          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   510504       dwt=+2.47  ttf=10   us1=0   us2=0   us3=0
    510505       dwt=+2.76  ttf=10   us1=0   us2=0   us3=0
    244605       dwt=+2.76  ttf=10   us1=0   us2=0   us3=0
    242402       dwt=+1.68  ttf=10   us1=0   us2=0   us3=0
@@ -44609,8 +44609,8 @@ a'9911iM' l   5   6.70  60.00 'CL-YVR/VancCBD      '      0      0      0
   path=no
    510201       dwt=+2.42  ttf=10   us1=0   us2=0   us3=0
    510308       dwt=+1.87  ttf=10   us1=0   us2=0   us3=0
-   510402       dwt=#1.41  ttf=10   us1=0   us2=0   us3=0
-   510504       dwt=+1.06  ttf=10   us1=0   us2=0   us3=0
+   510402          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   510504       dwt=+2.47  ttf=10   us1=0   us2=0   us3=0
    510505       dwt=+2.76  ttf=10   us1=0   us2=0   us3=0
    244605       dwt=+2.76  ttf=10   us1=0   us2=0   us3=0
    242402       dwt=+1.68  ttf=10   us1=0   us2=0   us3=0
@@ -44625,8 +44625,8 @@ a'9911iP' l   5   6.70  60.00 'CL-YVR/VancCBD      '      0      0      0
   path=no
    510201       dwt=+2.42  ttf=10   us1=0   us2=0   us3=0
    510308       dwt=+1.87  ttf=10   us1=0   us2=0   us3=0
-   510402       dwt=#1.41  ttf=10   us1=0   us2=0   us3=0
-   510504       dwt=+1.06  ttf=10   us1=0   us2=0   us3=0
+   510402          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   510504       dwt=+2.47  ttf=10   us1=0   us2=0   us3=0
    510505       dwt=+2.76  ttf=10   us1=0   us2=0   us3=0
    244605       dwt=+2.76  ttf=10   us1=0   us2=0   us3=0
    242402       dwt=+1.68  ttf=10   us1=0   us2=0   us3=0
@@ -44648,8 +44648,8 @@ a'9911oA' l   5   6.70  60.00 'CL-VancCBD/YVR      '      0      0      0
    242202       dwt=+1.68  ttf=10   us1=0   us2=0   us3=0
    242402       dwt=+2.76  ttf=10   us1=0   us2=0   us3=0
    244605       dwt=+2.76  ttf=10   us1=0   us2=0   us3=0
-   510505       dwt=#0.15  ttf=10   us1=0   us2=0   us3=0
-   510504       dwt=+2.32  ttf=10   us1=0   us2=0   us3=0
+   510505          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   510504       dwt=+2.47  ttf=10   us1=0   us2=0   us3=0
    510402       dwt=+1.87  ttf=10   us1=0   us2=0   us3=0
    510308       dwt=+2.42  ttf=10   us1=0   us2=0   us3=0
    510201        lay=0.50
@@ -44664,8 +44664,8 @@ a'9911oM' l   5   6.70  60.00 'CL-VancCBD/YVR      '      0      0      0
    242202       dwt=+1.68  ttf=10   us1=0   us2=0   us3=0
    242402       dwt=+2.76  ttf=10   us1=0   us2=0   us3=0
    244605       dwt=+2.76  ttf=10   us1=0   us2=0   us3=0
-   510505       dwt=#0.15  ttf=10   us1=0   us2=0   us3=0
-   510504       dwt=+2.32  ttf=10   us1=0   us2=0   us3=0
+   510505          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   510504       dwt=+2.47  ttf=10   us1=0   us2=0   us3=0
    510402       dwt=+1.87  ttf=10   us1=0   us2=0   us3=0
    510308       dwt=+2.42  ttf=10   us1=0   us2=0   us3=0
    510201        lay=0.50
@@ -44680,8 +44680,8 @@ a'9911oP' l   5   6.70  60.00 'CL-VancCBD/YVR      '      0      0      0
    242202       dwt=+1.68  ttf=10   us1=0   us2=0   us3=0
    242402       dwt=+2.76  ttf=10   us1=0   us2=0   us3=0
    244605       dwt=+2.76  ttf=10   us1=0   us2=0   us3=0
-   510505       dwt=#0.15  ttf=10   us1=0   us2=0   us3=0
-   510504       dwt=+2.32  ttf=10   us1=0   us2=0   us3=0
+   510505          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   510504       dwt=+2.47  ttf=10   us1=0   us2=0   us3=0
    510402       dwt=+1.87  ttf=10   us1=0   us2=0   us3=0
    510308       dwt=+2.42  ttf=10   us1=0   us2=0   us3=0
    510201        lay=0.50
@@ -44690,8 +44690,8 @@ a'996eiA' l  15   3.00  65.00 'EXPO-KG Blvd/Waterfr'      0      0      0
    617301       dwt=+0.88  ttf=10   us1=0   us2=0   us3=0
    614404       dwt=+2.19  ttf=10   us1=0   us2=0   us3=0
    611606       dwt=+3.18  ttf=10   us1=0   us2=0   us3=0
-   611407          dwt=#2  ttf=10   us1=0   us2=0   us3=0
-   292613       dwt=+0.29  ttf=10   us1=0   us2=0   us3=0
+   611407          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   292613       dwt=+2.29  ttf=10   us1=0   us2=0   us3=0
    293201       dwt=+1.46  ttf=10   us1=0   us2=0   us3=0
    293505       dwt=+2.97  ttf=10   us1=0   us2=0   us3=0
    293705       dwt=+2.34  ttf=10   us1=0   us2=0   us3=0
@@ -44713,8 +44713,8 @@ a'996eiM' l  15   6.00  65.00 'EXPO-KG Blvd/Waterfr'      0      0      0
    617301       dwt=+0.88  ttf=10   us1=0   us2=0   us3=0
    614404       dwt=+2.19  ttf=10   us1=0   us2=0   us3=0
    611606       dwt=+3.18  ttf=10   us1=0   us2=0   us3=0
-   611407          dwt=#2  ttf=10   us1=0   us2=0   us3=0
-   292613       dwt=+0.29  ttf=10   us1=0   us2=0   us3=0
+   611407          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   292613       dwt=+2.29  ttf=10   us1=0   us2=0   us3=0
    293201       dwt=+1.46  ttf=10   us1=0   us2=0   us3=0
    293505       dwt=+2.97  ttf=10   us1=0   us2=0   us3=0
    293705       dwt=+2.34  ttf=10   us1=0   us2=0   us3=0
@@ -44736,8 +44736,8 @@ a'996eiP' l  15   3.00  65.00 'EXPO-KG Blvd/Waterfr'      0      0      0
    617301       dwt=+0.88  ttf=10   us1=0   us2=0   us3=0
    614404       dwt=+2.19  ttf=10   us1=0   us2=0   us3=0
    611606       dwt=+3.18  ttf=10   us1=0   us2=0   us3=0
-   611407          dwt=#2  ttf=10   us1=0   us2=0   us3=0
-   292613       dwt=+0.29  ttf=10   us1=0   us2=0   us3=0
+   611407          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   292613       dwt=+2.29  ttf=10   us1=0   us2=0   us3=0
    293201       dwt=+1.46  ttf=10   us1=0   us2=0   us3=0
    293505       dwt=+2.97  ttf=10   us1=0   us2=0   us3=0
    293705       dwt=+2.34  ttf=10   us1=0   us2=0   us3=0
@@ -44771,8 +44771,8 @@ a'996eoA' l  15   3.00  65.00 'EXPO-Waterfront/KG B'      0      0      0
    286604       dwt=+2.34  ttf=10   us1=0   us2=0   us3=0
    293705       dwt=+2.97  ttf=10   us1=0   us2=0   us3=0
    293505       dwt=+1.46  ttf=10   us1=0   us2=0   us3=0
-   293201       dwt=#0.28  ttf=10   us1=0   us2=0   us3=0
-   292613       dwt=+2.01  ttf=10   us1=0   us2=0   us3=0
+   293201          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   292613       dwt=+2.29  ttf=10   us1=0   us2=0   us3=0
    611407       dwt=+3.21  ttf=10   us1=0   us2=0   us3=0
    611606       dwt=+2.19  ttf=10   us1=0   us2=0   us3=0
    614404        dwt=+0.9  ttf=10   us1=0   us2=0   us3=0
@@ -44794,8 +44794,8 @@ a'996eoM' l  15   6.00  65.00 'EXPO-Waterfront/KG B'      0      0      0
    286604       dwt=+2.34  ttf=10   us1=0   us2=0   us3=0
    293705       dwt=+2.97  ttf=10   us1=0   us2=0   us3=0
    293505       dwt=+1.46  ttf=10   us1=0   us2=0   us3=0
-   293201       dwt=#0.28  ttf=10   us1=0   us2=0   us3=0
-   292613       dwt=+2.01  ttf=10   us1=0   us2=0   us3=0
+   293201          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   292613       dwt=+2.29  ttf=10   us1=0   us2=0   us3=0
    611407       dwt=+3.21  ttf=10   us1=0   us2=0   us3=0
    611606       dwt=+2.19  ttf=10   us1=0   us2=0   us3=0
    614404        dwt=+0.9  ttf=10   us1=0   us2=0   us3=0
@@ -44817,8 +44817,8 @@ a'996eoP' l  15   3.00  65.00 'EXPO-Waterfront/KG B'      0      0      0
    286604       dwt=+2.34  ttf=10   us1=0   us2=0   us3=0
    293705       dwt=+2.97  ttf=10   us1=0   us2=0   us3=0
    293505       dwt=+1.46  ttf=10   us1=0   us2=0   us3=0
-   293201       dwt=#0.28  ttf=10   us1=0   us2=0   us3=0
-   292613       dwt=+2.01  ttf=10   us1=0   us2=0   us3=0
+   293201          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   292613       dwt=+2.29  ttf=10   us1=0   us2=0   us3=0
    611407       dwt=+3.21  ttf=10   us1=0   us2=0   us3=0
    611606       dwt=+2.19  ttf=10   us1=0   us2=0   us3=0
    614404        dwt=+0.9  ttf=10   us1=0   us2=0   us3=0
@@ -44834,12 +44834,12 @@ a'996miA' l  14   5.50  65.00 'ML-VCC/Waterfront   '      0      0      0
    273601       dwt=+2.07  ttf=10   us1=0   us2=0   us3=0
    275003       dwt=+2.25  ttf=10   us1=0   us2=0   us3=0
    275104       dwt=+2.06  ttf=10   us1=0   us2=0   us3=0
-   275210       dwt=#1.37  ttf=10   us1=0   us2=0   us3=0
-   276103       dwt=+0.76  ttf=10   us1=0   us2=0   us3=0
+   275210          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   276103       dwt=+2.13  ttf=10   us1=0   us2=0   us3=0
    276206       dwt=+2.44  ttf=10   us1=0   us2=0   us3=0
    290201       dwt=+1.67  ttf=10   us1=0   us2=0   us3=0
-   291007       dwt=#2.15  ttf=10   us1=0   us2=0   us3=0
-   292613       dwt=+0.83  ttf=10   us1=0   us2=0   us3=0
+   291007          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   292613       dwt=+2.98  ttf=10   us1=0   us2=0   us3=0
    293201       dwt=+1.41  ttf=10   us1=0   us2=0   us3=0
    293505       dwt=+2.98  ttf=10   us1=0   us2=0   us3=0
    293705       dwt=+2.34  ttf=10   us1=0   us2=0   us3=0
@@ -44867,12 +44867,12 @@ a'996miM' l  14   6.00  65.00 'ML-VCC/Waterfront   '      0      0      0
    273601       dwt=+2.07  ttf=10   us1=0   us2=0   us3=0
    275003       dwt=+2.25  ttf=10   us1=0   us2=0   us3=0
    275104       dwt=+2.06  ttf=10   us1=0   us2=0   us3=0
-   275210       dwt=#1.37  ttf=10   us1=0   us2=0   us3=0
-   276103       dwt=+0.76  ttf=10   us1=0   us2=0   us3=0
+   275210          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   276103       dwt=+2.13  ttf=10   us1=0   us2=0   us3=0
    276206       dwt=+2.44  ttf=10   us1=0   us2=0   us3=0
    290201       dwt=+1.67  ttf=10   us1=0   us2=0   us3=0
-   291007       dwt=#2.15  ttf=10   us1=0   us2=0   us3=0
-   292613       dwt=+0.83  ttf=10   us1=0   us2=0   us3=0
+   291007          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   292613       dwt=+2.98  ttf=10   us1=0   us2=0   us3=0
    293201       dwt=+1.41  ttf=10   us1=0   us2=0   us3=0
    293505       dwt=+2.98  ttf=10   us1=0   us2=0   us3=0
    293705       dwt=+2.34  ttf=10   us1=0   us2=0   us3=0
@@ -44900,12 +44900,12 @@ a'996miP' l  14   5.50  65.00 'ML-VCC/Waterfront   '      0      0      0
    273601       dwt=+2.07  ttf=10   us1=0   us2=0   us3=0
    275003       dwt=+2.25  ttf=10   us1=0   us2=0   us3=0
    275104       dwt=+2.06  ttf=10   us1=0   us2=0   us3=0
-   275210       dwt=#1.37  ttf=10   us1=0   us2=0   us3=0
-   276103       dwt=+0.76  ttf=10   us1=0   us2=0   us3=0
+   275210          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   276103       dwt=+2.13  ttf=10   us1=0   us2=0   us3=0
    276206       dwt=+2.44  ttf=10   us1=0   us2=0   us3=0
    290201       dwt=+1.67  ttf=10   us1=0   us2=0   us3=0
-   291007       dwt=#2.15  ttf=10   us1=0   us2=0   us3=0
-   292613       dwt=+0.83  ttf=10   us1=0   us2=0   us3=0
+   291007          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   292613       dwt=+2.98  ttf=10   us1=0   us2=0   us3=0
    293201       dwt=+1.41  ttf=10   us1=0   us2=0   us3=0
    293505       dwt=+2.98  ttf=10   us1=0   us2=0   us3=0
    293705       dwt=+2.34  ttf=10   us1=0   us2=0   us3=0
@@ -44939,12 +44939,12 @@ a'996moA' l  20   5.50  65.00 'ML-Waterfront/VCC   '      0      0      0
    286604       dwt=+2.34  ttf=10   us1=0   us2=0   us3=0
    293705       dwt=+2.98  ttf=10   us1=0   us2=0   us3=0
    293505       dwt=+1.41  ttf=10   us1=0   us2=0   us3=0
-   293201       dwt=#0.28  ttf=10   us1=0   us2=0   us3=0
-   292613        dwt=+2.7  ttf=10   us1=0   us2=0   us3=0
+   293201          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   292613       dwt=+2.98  ttf=10   us1=0   us2=0   us3=0
    291007       dwt=+1.67  ttf=10   us1=0   us2=0   us3=0
    290201       dwt=+2.44  ttf=10   us1=0   us2=0   us3=0
-   276206       dwt=#0.16  ttf=10   us1=0   us2=0   us3=0
-   276103       dwt=+1.97  ttf=10   us1=0   us2=0   us3=0
+   276206          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   276103       dwt=+2.13  ttf=10   us1=0   us2=0   us3=0
    275210       dwt=+2.06  ttf=10   us1=0   us2=0   us3=0
    275104       dwt=+2.25  ttf=10   us1=0   us2=0   us3=0
    275003       dwt=+2.07  ttf=10   us1=0   us2=0   us3=0
@@ -44972,12 +44972,12 @@ a'996moM' l  20   6.00  65.00 'ML-Waterfront/VCC   '      0      0      0
    286604       dwt=+2.34  ttf=10   us1=0   us2=0   us3=0
    293705       dwt=+2.98  ttf=10   us1=0   us2=0   us3=0
    293505       dwt=+1.41  ttf=10   us1=0   us2=0   us3=0
-   293201       dwt=#0.28  ttf=10   us1=0   us2=0   us3=0
-   292613        dwt=+2.7  ttf=10   us1=0   us2=0   us3=0
+   293201          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   292613       dwt=+2.98  ttf=10   us1=0   us2=0   us3=0
    291007       dwt=+1.67  ttf=10   us1=0   us2=0   us3=0
    290201       dwt=+2.44  ttf=10   us1=0   us2=0   us3=0
-   276206       dwt=#0.16  ttf=10   us1=0   us2=0   us3=0
-   276103       dwt=+1.97  ttf=10   us1=0   us2=0   us3=0
+   276206          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   276103       dwt=+2.13  ttf=10   us1=0   us2=0   us3=0
    275210       dwt=+2.06  ttf=10   us1=0   us2=0   us3=0
    275104       dwt=+2.25  ttf=10   us1=0   us2=0   us3=0
    275003       dwt=+2.07  ttf=10   us1=0   us2=0   us3=0
@@ -45005,12 +45005,12 @@ a'996moP' l  20   5.50  65.00 'ML-Waterfront/VCC   '      0      0      0
    286604       dwt=+2.34  ttf=10   us1=0   us2=0   us3=0
    293705       dwt=+2.98  ttf=10   us1=0   us2=0   us3=0
    293505       dwt=+1.41  ttf=10   us1=0   us2=0   us3=0
-   293201       dwt=#0.28  ttf=10   us1=0   us2=0   us3=0
-   292613        dwt=+2.7  ttf=10   us1=0   us2=0   us3=0
+   293201          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   292613       dwt=+2.98  ttf=10   us1=0   us2=0   us3=0
    291007       dwt=+1.67  ttf=10   us1=0   us2=0   us3=0
    290201       dwt=+2.44  ttf=10   us1=0   us2=0   us3=0
-   276206       dwt=#0.16  ttf=10   us1=0   us2=0   us3=0
-   276103       dwt=+1.97  ttf=10   us1=0   us2=0   us3=0
+   276206          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   276103       dwt=+2.13  ttf=10   us1=0   us2=0   us3=0
    275210       dwt=+2.06  ttf=10   us1=0   us2=0   us3=0
    275104       dwt=+2.25  ttf=10   us1=0   us2=0   us3=0
    275003       dwt=+2.07  ttf=10   us1=0   us2=0   us3=0
