@@ -121,13 +121,7 @@ class FullModelRun(_m.Tool()):
         util.initmat(eb, "ms01", "cycle", "Current Model Cycle", 0)
 
         create_scenario = _m.Modeller().tool("translink.emme.stage1.step0.create_scen")
-        scenario_run = eb.matrix("ms143").data
-        am_scen = eb.matrix("ms140").data
-        md_scen = eb.matrix("ms141").data
-        pm_scen = eb.matrix("ms150").data
-
-        if scenario_run == 1:
-            create_scenario(eb, am_scen, md_scen, pm_scen)
+        create_scenario(eb, 1000)
 
     @_m.logbook_trace("Run Seed Assignment and Generate Initial Skims")
     def calculate_costs(self, eb):

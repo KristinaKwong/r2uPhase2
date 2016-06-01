@@ -8,35 +8,27 @@ import inro.modeller as _m
 import traceback as _traceback
 
 class InputSettings(_m.Tool()):
-    am_scenario = _m.Attribute(_m.InstanceType)
-    md_scenario = _m.Attribute(_m.InstanceType)
-    pm_scenario = _m.Attribute(_m.InstanceType)
-
+    base_scenario = _m.Attribute(_m.InstanceType)
     tool_run_msg = ""
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
         pb.title = "Create Scenarios"
-        pb.description = "Create AM and Mid-Day Scenarios."
+        pb.description = "Create Scenarios for Model Run."
         pb.branding_text = "TransLink"
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
-        pb.add_text_box(tool_attribute_name="am_scenario",
+        pb.add_text_box(tool_attribute_name="base_scenario",
                         size=50,
-                        title="Enter the Original AM Scenario Number")
-        pb.add_text_box(tool_attribute_name="md_scenario",
-                        size=50,
-                        title="Enter the Original Mid-Day Scenario Number")
-        pb.add_text_box(tool_attribute_name="pm_scenario",
-                        size=50,
-                        title="Enter the Original PM Scenario Number")
+                        title="Enter the Base Scenario Number")
         return pb.render()
 
     def run(self):
         self.tool_run_msg = ""
         try:
-            self(self.am_scenario, self.md_scenario, self.pm_scenario)
+            eb = _m.Modeller().emmebank
+            self(eb, self.base_scenario)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, error:
             self.tool_run_msg = _m.PageBuilder.format_exception(
@@ -44,27 +36,107 @@ class InputSettings(_m.Tool()):
             raise
 
     @_m.logbook_trace("00_00 Create Scenarios")
-    def __call__(self, eb, am_scenario, md_scenario, pm_scenario):
+    def __call__(self, eb, base_scenario):
         copy_scenario = _m.Modeller().tool("inro.emme.data.scenario.copy_scenario")
 
-        am_scenario = eb.scenario(am_scenario)
-        md_scenario = eb.scenario(md_scenario)
-        pm_scenario = eb.scenario(pm_scenario)
+        base_scenario = eb.scenario(base_scenario)
 
-        # Copy to new am scenarios
-        copy_scenario(from_scenario=am_scenario,
-                      scenario_id=am_scenario.number + 30,
-                      scenario_title=am_scenario.title + ": Final Iteration ",
+        # Copy to new AM scenarios
+        am_scenid = int(eb.matrix("ms140").data)
+        copy_scenario(from_scenario=base_scenario,
+                      scenario_id=am_scenid,
+                      scenario_title=base_scenario.title,
+                      overwrite=True)
+        amscen = eb.scenario(am_scenid)
+
+        self.attribute_code(amscen, "@lanesam", "@vdfam", "@tpfam", "@hdwyam")
+        copy_scenario(from_scenario=amscen,
+                      scenario_id=am_scenid + 30,
+                      scenario_title=amscen.title + ": Final Iteration ",
                       overwrite=True)
 
-        # Copy to new md Scenarios
-        copy_scenario(from_scenario=md_scenario,
-                      scenario_id=md_scenario.number + 30,
-                      scenario_title=md_scenario.title + ": Final Iteration ",
+        # Copy to new MD Scenarios
+        md_scenid = int(eb.matrix("ms141").data)
+        copy_scenario(from_scenario=base_scenario,
+                      scenario_id=md_scenid,
+                      scenario_title=base_scenario.title,
+                      overwrite=True)
+        mdscen = eb.scenario(md_scenid)
+
+        self.attribute_code(mdscen, "@lanesmd", "@vdfmd", "@tpfmd", "@hdwymd")
+        copy_scenario(from_scenario=mdscen,
+                      scenario_id=md_scenid + 30,
+                      scenario_title=mdscen.title + ": Final Iteration ",
                       overwrite=True)
 
         # Copy to new pm Scenarios
-        copy_scenario(from_scenario=pm_scenario,
-                      scenario_id=pm_scenario.number + 30,
-                      scenario_title=pm_scenario.title + ": Final Iteration ",
+        pm_scenid = int(eb.matrix("ms150").data)
+        copy_scenario(from_scenario=base_scenario,
+                      scenario_id=pm_scenid,
+                      scenario_title=base_scenario.title,
                       overwrite=True)
+        pmscen = eb.scenario(pm_scenid)
+
+        self.attribute_code(pmscen, "@lanespm", "@vdfpm", "@tpfpm", "@hdwypm")
+        copy_scenario(from_scenario=pmscen,
+                      scenario_id=pm_scenid + 30,
+                      scenario_title=pmscen.title + ": Final Iteration ",
+                      overwrite=True)
+
+    def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr):
+        net_calc = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
+
+        lane_spec = {
+            "type": "NETWORK_CALCULATION",
+            "result": "lanes",
+            "expression": lane_attr,
+            "aggregation": None,
+            "selections": {
+                "link": "all"
+            }
+        }
+        net_calc(lane_spec, scen, False)
+
+        vdf_spec = {
+            "type": "NETWORK_CALCULATION",
+            "result": "vdf",
+            "expression": vdf_attr,
+            "aggregation": None,
+            "selections": {
+                "link": "all"
+            }
+        }
+        net_calc(vdf_spec, scen, False)
+
+        tpf_spec = {
+            "type": "NETWORK_CALCULATION",
+            "result": "tpf",
+            "expression": tpf_attr,
+            "aggregation": None,
+            "selections": {
+                "incoming_link": "all",
+                "outgoing_link": "all"
+            }
+        }
+        net_calc(tpf_spec, scen, False)
+
+        hdw_spec = {
+            "type": "NETWORK_CALCULATION",
+            "result": "hdw",
+            "expression": hdw_attr,
+            "aggregation": None,
+            "selections": {
+                "transit_line": "all"
+            }
+        }
+        net_calc(hdw_spec, scen, False)
+
+        mod_calc = _m.Modeller().tool("inro.emme.data.network.base.change_link_modes")
+        mod_calc(modes="v",
+                 action="DELETE",
+                 selection="lanes=0",
+                 scenario=scen)
+
+        del_transit = _m.Modeller().tool("inro.emme.data.network.transit.delete_transit_lines")
+        del_transit(selection=hdw_attr+"=0",
+                    scenario=scen)
