@@ -44457,7 +44457,7 @@ a'9900o ' s   4  15.00  20.30 'SeaBus-Waterfront/LQ'      0      0      0
   path=no
    223401      dwt=+10.06  ttf=10   us1=0   us2=0   us3=0
    132105        lay=5.00
-a'9903iA' r   8  30.00  55.00 'WCE-Mission/Waterfro'      0      0      0
+a'9903i ' r   8  30.00  55.00 'WCE-Mission/Waterfro'      0      0      0
   path=no
    711705      dwt=+19.02  ttf=10   us1=0   us2=0   us3=0
    423005       dwt=+6.14  ttf=10   us1=0   us2=0   us3=0
@@ -44467,7 +44467,7 @@ a'9903iA' r   8  30.00  55.00 'WCE-Mission/Waterfro'      0      0      0
    321001       dwt=+5.15  ttf=10   us1=0   us2=0   us3=0
    311806      dwt=+25.04  ttf=10   us1=0   us2=0   us3=0
    223403        lay=5.00
-a'9903oP' r   8  30.00  55.00 'WCE-WF/Mission      '      0      0      0
+a'9903o ' r   8  30.00  55.00 'WCE-WF/Mission      '      0      0      0
   path=no
    223403      dwt=+25.24  ttf=10   us1=0   us2=0   us3=0
    311806       dwt=+6.75  ttf=10   us1=0   us2=0   us3=0
