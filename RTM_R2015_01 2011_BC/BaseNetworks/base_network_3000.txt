@@ -1,7 +1,7 @@
 c Emme Modeller - Base Network Transaction
-c Date: 2016-05-31 15:53:45
-c Project:        inityy                                                      
-c Scenario 3000:  2030 AM Base Network
+c Date: 2016-05-31 22:04:30
+c Project:        Combined Networks                                           
+c Scenario 3000:  2030 Base Network
 t nodes
 c   Node          X-coord          Y-coord   Data1   Data2   Data3 Label
 a*     1     612.99646844    5474.40799367       0       0       0 0001

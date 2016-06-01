@@ -1,7 +1,7 @@
 c Emme Modeller - Turn Transaction
-c Date: 2016-05-31 15:53:47
-c Project:        inityy                                                      
-c Scenario 3000:  2030 AM Base Network
+c Date: 2016-05-31 22:04:32
+c Project:        Combined Networks                                           
+c Scenario 3000:  2030 Base Network
 t turns
 c     At   From     To   TPF  Data1  Data2  Data3
 a 110107 110108 110108     0      0      0      0
