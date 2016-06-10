@@ -38,12 +38,14 @@ class InitEmmebank(_m.Tool()):
                   append_to_file = False,
                   export_format = "PROMPT_DATA_FORMAT",
                   scenario = scen)
+        self.remove_file_header(data_path)
 
         data_path = os.path.join(proj_path, "BaseNetworks", "link_shape_%d.txt" % scen_id)
         shp_trans = mod.tool("inro.emme.data.network.base.export_link_shape")
         shp_trans(export_file = data_path,
                   append_to_file = False,
                   scenario = scen)
+        self.remove_file_header(data_path)
 
         data_path = os.path.join(proj_path, "BaseNetworks", "turns_%d.txt" % scen_id)
         trn_trans = mod.tool("inro.emme.data.network.turn.export_turns")
@@ -51,6 +53,7 @@ class InitEmmebank(_m.Tool()):
                   append_to_file = False,
                   export_format = "PROMPT_DATA_FORMAT",
                   scenario = scen)
+        self.remove_file_header(data_path)
 
         data_path = os.path.join(proj_path, "BaseNetworks")
         att_trans = mod.tool("inro.emme.data.extra_attribute.export_extra_attributes")
@@ -73,3 +76,11 @@ class InitEmmebank(_m.Tool()):
                   append_to_file = False,
                   export_format = "PROMPT_DATA_FORMAT",
                   scenario = scen)
+        self.remove_file_header(data_path)
+
+    # Remove the Date and Project comments from the output files
+    # These headers can change even if no network elements have changed, increasing the
+    # size of the changes requiring review.
+    def remove_file_header(self, file):
+        lines = [ line for line in open(file) if not line.startswith(('c Date:', 'c Project:'))]
+        open(file,'w').writelines(lines)
