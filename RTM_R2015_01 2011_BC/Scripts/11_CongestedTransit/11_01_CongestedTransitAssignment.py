@@ -11,7 +11,6 @@ import traceback as _traceback
 class CongestedTransitAssignment(_m.Tool()):
 
     tool_run_msg = _m.Attribute(unicode)
-    setup_ttfs = _m.Attribute(bool)
     am_scenario = _m.Attribute(_m.InstanceType)
     alpha = _m.Attribute(float)
     beta = _m.Attribute(float)
@@ -21,7 +20,6 @@ class CongestedTransitAssignment(_m.Tool()):
         self.am_scenario = emmebank.scenario(21060)
         self.alpha = 5
         self.beta = 4
-        self.setup_ttfs = True
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
@@ -38,12 +36,6 @@ class CongestedTransitAssignment(_m.Tool()):
 
         pb.add_select_scenario("am_scenario", title="AM scenario:")
 
-        pb.add_checkbox("setup_ttfs", title=" ",
-            label="Replace ft0 with ft7",
-            note="""Function ft7 will be created as
-                "60 * length / speed" in order to account for congestion
-                on those segments.""")
-
         pb.add_text_box("alpha",
             title="Alpha parameter for BPR-style congestion function")
         pb.add_text_box("beta",
@@ -54,7 +46,7 @@ class CongestedTransitAssignment(_m.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            self(self.am_scenario, self.setup_ttfs, self.alpha, self.beta)
+            self(self.am_scenario, self.alpha, self.beta)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
@@ -62,10 +54,7 @@ class CongestedTransitAssignment(_m.Tool()):
                 e, _traceback.format_exc(e))
 
     @_m.logbook_trace("10-10 - Congested Transit Assignment")
-    def __call__(self, scenarioam,  setup_ttfs, alpha=7, beta=3):
-        if setup_ttfs:
-            self.setup_congestion_ttfs(scenarioam)
-
+    def __call__(self, scenarioam, alpha=7, beta=3):
         congested_transit_assign = _m.Modeller().tool(
             "inro.emme.transit_assignment.congested_transit_assignment")
 
@@ -152,29 +141,3 @@ class CongestedTransitAssignment(_m.Tool()):
         congested_transit_assign(
             spec, scenario=scenarioam, congestion_function=func,
             stopping_criteria=stop, class_names=["bus", "rail"])
-
-    def setup_congestion_ttfs(self, scenario):
-        with _m.logbook_trace("Creating congestion function ft7"):
-            emmebank = scenario.emmebank
-            ft7 = emmebank.function("ft7")
-            if not ft7:
-                ft7 = emmebank.create_function("ft7", "length")
-            ft7.expression = "(60 * length / speed)"
-
-        with _m.logbook_trace("Setting transit mode segments to use ft7"):
-            network = scenario.get_partial_network(
-                ["TRANSIT_SEGMENT"], include_attributes=False)
-            values = scenario.get_attribute_values(
-                "TRANSIT_SEGMENT", ["transit_time_func"])
-            network.set_attribute_values(
-                "TRANSIT_SEGMENT", ["transit_time_func"], values)
-
-            for line in network.transit_lines():
-                for seg in line.segments():
-                    if seg.transit_time_func==0:
-                        seg.transit_time_func = 7
-
-            values = network.get_attribute_values(
-                "TRANSIT_SEGMENT", ["transit_time_func"])
-            scenario.set_attribute_values(
-                "TRANSIT_SEGMENT", ["transit_time_func"], values)

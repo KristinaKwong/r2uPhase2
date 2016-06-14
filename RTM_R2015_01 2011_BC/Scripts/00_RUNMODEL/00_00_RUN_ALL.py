@@ -209,4 +209,4 @@ class FullModelRun(_m.Tool()):
                 scenario_id=am_scenario.number + 70,
                 scenario_title=am_scenario.title + ": cong transit "[:40],
                 overwrite=True)
-            congested_transit(congested_transit_am, setup_ttfs=True)
+            congested_transit(congested_transit_am)
