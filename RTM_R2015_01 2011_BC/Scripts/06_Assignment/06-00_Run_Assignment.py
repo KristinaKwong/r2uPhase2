@@ -26,7 +26,7 @@ class Assignment(_m.Tool()):
         self.tool_run_msg = ""
 
         stopping_criteria = {
-            "max_iterations": 250,
+            "max_iterations": 500,
             "relative_gap": 0.0,
             "best_relative_gap": 0.01,
             "normalized_gap": 0.01

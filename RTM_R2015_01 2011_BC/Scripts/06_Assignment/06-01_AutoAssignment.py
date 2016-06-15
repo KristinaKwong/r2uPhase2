@@ -24,7 +24,7 @@ class AutoAssignment(_m.Tool()):
         self.relative_gap = 0.0001
         self.best_relative_gap = 0.01
         self.normalized_gap = 0.005
-        self.max_iterations = 60
+        self.max_iterations = 250
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
@@ -73,8 +73,6 @@ class AutoAssignment(_m.Tool()):
         self.calculate_auto_cost(scenarioam, scenariomd, scenariopm)
         self.auto_assignment(scenarioam, scenariomd, scenariopm, stopping_criteria)
 
-    # create attributes for various vehicle classes,
-    # calculate generalized costs on links and transit effective headways
     @_m.logbook_trace("Calculate Truck PCE")
     def calculate_truck_pce(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
