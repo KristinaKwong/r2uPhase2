@@ -40,23 +40,24 @@ class TollSkim(_m.Tool()):
         translink_auto_assignment = _m.Modeller().tool(
             "translink.emme.stage3.step6.autoassignment")
 
+        util = _m.Modeller().tool("translink.emme.util")
         num_processors = int(eb.matrix("ms142").data)
 
         demands_list = [
             {
                 "sov": ["mf843", "mf844", "mf845", "mf846", "mf847"],
                 "hov": ["mf848", "mf849", "mf850", "mf851", "mf852"],
-                "truck": ["mf980", "mf981"]
+                "truck": ["mf1980", "mf1981"]
             },
             {
                 "sov": ["mf856", "mf857", "mf858", "mf859", "mf860"],
                 "hov": ["mf861", "mf862", "mf863", "mf864", "mf865"],
-                "truck": ["mf982", "mf983"]
+                "truck": ["mf1982", "mf1983"]
             },
             {
                 "sov": ["mf869", "mf870", "mf871", "mf872", "mf873"],
                 "hov": ["mf874", "mf875", "mf876", "mf877", "mf878"],
-                "truck": ["mf990", "mf991"]
+                "truck": ["mf1990", "mf1991"]
             }
         ]
         toll_list = ["mf932", "mf944", "mf2002"]

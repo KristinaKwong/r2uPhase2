@@ -69,11 +69,27 @@ class AutoAssignment(_m.Tool()):
     def __call__(self, eb, scenarioam, scenariomd, scenariopm, stopping_criteria):
 
         self.matrix_batchins(eb)
+        self.calculate_truck_pce(eb)
         self.calculate_auto_cost(scenarioam, scenariomd, scenariopm)
         self.auto_assignment(scenarioam, scenariomd, scenariopm, stopping_criteria)
 
     # create attributes for various vehicle classes,
     # calculate generalized costs on links and transit effective headways
+    @_m.logbook_trace("Calculate Truck PCE")
+    def calculate_truck_pce(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
+        specs = []
+
+        specs.append(util.matrix_spec("mf1980", "mf980 * 1.5"))
+        specs.append(util.matrix_spec("mf1981", "mf981 * 2.5"))
+        specs.append(util.matrix_spec("mf1982", "mf982 * 1.5"))
+        specs.append(util.matrix_spec("mf1983", "mf983 * 2.5"))
+        specs.append(util.matrix_spec("mf1990", "mf990 * 1.5"))
+        specs.append(util.matrix_spec("mf1991", "mf991 * 2.5"))
+
+        util.compute_matrix(specs)
+
+
     @_m.logbook_trace("Calculate Auto Cost")
     def calculate_auto_cost(self, am_scenario, md_scenario, pm_scenario):
         eb = am_scenario.emmebank
@@ -241,17 +257,17 @@ class AutoAssignment(_m.Tool()):
             {
                 "sov": ["mf843", "mf844", "mf845", "mf846", "mf847"],
                 "hov": ["mf848", "mf849", "mf850", "mf851", "mf852"],
-                "truck": ["mf980", "mf981"]
+                "truck": ["mf1980", "mf1981"]
             },
             {
                 "sov": ["mf856", "mf857", "mf858", "mf859", "mf860"],
                 "hov": ["mf861", "mf862", "mf863", "mf864", "mf865"],
-                "truck": ["mf982", "mf983"]
+                "truck": ["mf1982", "mf1983"]
             },
             {
                 "sov": ["mf869", "mf870", "mf871", "mf872", "mf873"],
                 "hov": ["mf874", "mf875", "mf876", "mf877", "mf878"],
-                "truck": ["mf990", "mf991"]
+                "truck": ["mf1990", "mf1991"]
             }
         ]
 
@@ -419,3 +435,11 @@ class AutoAssignment(_m.Tool()):
         util.initmat(eb, "mf2018", "nRlWtP", "Interim-JL Skim RailTotalWaitPM", 0)
         util.initmat(eb, "mf2019", "nRlBrP", "Interim-JL Skim RailAvgBoardPM", 0)
         util.initmat(eb, "mf2020", "nRlAxP", "Interim-JL Skim RailAuxPM", 0)
+
+        ## add matrices for truck PCE
+        util.initmat(eb, "mf1980", "lgAMpce", "Veh-AMPH-PCE-LGV", 0)
+        util.initmat(eb, "mf1981", "hgAMpce", "Veh-AMPH-PCE-HGV", 0)
+        util.initmat(eb, "mf1982", "lgMDpce", "Veh-MDPH-PCE-LGV", 0)
+        util.initmat(eb, "mf1983", "hgMDpce", "Veh-MDPH-PCE-HGV", 0)
+        util.initmat(eb, "mf1990", "lgPMpce", "Veh-PMPH-PCE-LGV", 0)
+        util.initmat(eb, "mf1991", "hgPMpce", "Veh-PMPH-PCE-HGV", 0)
