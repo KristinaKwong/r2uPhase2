@@ -44480,6 +44480,7 @@ a'9910i ' l   5   6.70  60.00 'CL-Richmond Ctr/Vanc'      0      0      0
    515704       dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
    513601       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
    512401          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   511406          dwt=#0  ttf=10   us1=0   us2=0   us3=0
    510504       dwt=+2.45  ttf=10   us1=0   us2=0   us3=0
    510505       dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
    244605       dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
@@ -44503,7 +44504,8 @@ a'9910o ' l   5   6.70  60.00 'CL-VancCBD/Richmond '      0      0      0
    242402       dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
    244605       dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
    510505          dwt=#0  ttf=10   us1=0   us2=0   us3=0
-   510504       dwt=+2.45  ttf=10   us1=0   us2=0   us3=0
+   510504          dwt=#0  ttf=10   us1=0   us2=0   us3=0
+   511406       dwt=+2.45  ttf=10   us1=0   us2=0   us3=0
    512401       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
    513601       dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
    515704        lay=0.75
