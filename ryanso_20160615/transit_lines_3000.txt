@@ -12132,6 +12132,7 @@ a'9910NA' l   5   5.00  60.00 'CL RichCtr-VancCBD  '      0      0      5
    515704       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    513601       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    512401       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
+   511406          dwt=#0   ttf=0   us1=1   us2=0   us3=0
    510504       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    510505       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    244605       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
@@ -12154,8 +12155,9 @@ a'9910SA' l   5   5.00  60.00 'CL VancCBD-RichCtr  '      0      0      5
    242202       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    242402       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    244605       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
-   510505       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
+   510505          dwt=#0   ttf=0   us1=1   us2=0   us3=0
    510504       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
+   511406       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    512401       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    513601       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    515704        lay=1.00
@@ -12163,7 +12165,8 @@ a'9911NA' l   5   5.00  60.00 'CL YVR-VancCBD      '      0      0      5
   path=no
    510201       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    510308       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
-   510402       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
+   510402          dwt=#0   ttf=0   us1=1   us2=0   us3=0
+   510504       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    510505       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    244605       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    242402       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
@@ -12185,7 +12188,8 @@ a'9911SA' l   5   5.00  60.00 'CL VancCBD-YVR      '      0      0      5
    242202       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    242402       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    244605       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
-   510505       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
+   510505          dwt=#0   ttf=0   us1=1   us2=0   us3=0
+   510504       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    510402       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    510308       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    510201        lay=1.00
@@ -27375,6 +27379,7 @@ a'9910NM' l   5   7.00  60.00 'CL RichCtr-VancCBD  '      0      0      5
    515704       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    513601       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    512401       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
+   511406          dwt=#0   ttf=0   us1=1   us2=0   us3=0
    510504       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    510505       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    244605       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
@@ -27397,8 +27402,9 @@ a'9910SM' l   5   7.00  60.00 'CL VancCBD-RichCtr  '      0      0      5
    242202       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    242402       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    244605       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
-   510505       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
+   510505          dwt=#0   ttf=0   us1=1   us2=0   us3=0
    510504       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
+   511406       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    512401       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    513601       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    515704        lay=1.00
@@ -27406,7 +27412,8 @@ a'9911NM' l   5   7.00  60.00 'CL YVR-VancCBD      '      0      0      5
   path=no
    510201       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    510308       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
-   510402       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
+   510402          dwt=#0   ttf=0   us1=1   us2=0   us3=0
+   510504       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    510505       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    244605       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    242402       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
@@ -27428,7 +27435,8 @@ a'9911SM' l   5   7.00  60.00 'CL VancCBD-YVR      '      0      0      5
    242202       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    242402       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    244605       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
-   510505       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
+   510505          dwt=#0   ttf=0   us1=1   us2=0   us3=0
+   510504       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    510402       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    510308       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    510201        lay=1.00
@@ -44772,6 +44780,7 @@ a'9910NP' l   5   5.00  60.00 'CL RichCtr-VancCBD  '      0      0      5
    515704       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    513601       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    512401       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
+   511406          dwt=#0   ttf=0   us1=1   us2=0   us3=0
    510504       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    510505       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    244605       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
@@ -44794,8 +44803,9 @@ a'9910SP' l   5   5.00  60.00 'CL VancCBD-RichCtr  '      0      0      5
    242202       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    242402       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    244605       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
-   510505       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
+   510505          dwt=#0   ttf=0   us1=1   us2=0   us3=0
    510504       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
+   511406       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    512401       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    513601       dwt=+0.89   ttf=0   us1=1   us2=0   us3=0
    515704        lay=1.00
@@ -44803,7 +44813,8 @@ a'9911NP' l   5   5.00  60.00 'CL YVR-VancCBD      '      0      0      5
   path=no
    510201       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    510308       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
-   510402       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
+   510402          dwt=#0   ttf=0   us1=1   us2=0   us3=0
+   510504       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    510505       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    244605       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    242402       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
@@ -44825,7 +44836,8 @@ a'9911SP' l   5   5.00  60.00 'CL VancCBD-YVR      '      0      0      5
    242202       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    242402       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    244605       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
-   510505       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
+   510505          dwt=#0   ttf=0   us1=1   us2=0   us3=0
+   510504       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    510402       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    510308       dwt=+0.91   ttf=0   us1=1   us2=0   us3=0
    510201        lay=1.00
