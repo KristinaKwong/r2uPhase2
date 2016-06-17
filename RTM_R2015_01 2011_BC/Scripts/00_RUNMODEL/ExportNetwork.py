@@ -70,7 +70,6 @@ class InitEmmebank(_m.Tool()):
                   export_format = "PROMPT_DATA_FORMAT",
                   scenario = scen)
 
-        if scen_id == 2000: return
         data_path = os.path.join(proj_path, "BaseNetworks", "transit_lines_%d.txt" % scen_id)
         lin_trans = mod.tool("inro.emme.data.network.transit.export_transit_lines")
         lin_trans(export_file = data_path,
