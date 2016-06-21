@@ -6,6 +6,7 @@ import shutil
 class InitEmmebank(_m.Tool()):
     emme_title = _m.Attribute(_m.InstanceType)
     emme_folder = _m.Attribute(_m.InstanceType)
+    horizon_year = _m.Attribute(_m.InstanceType)
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
@@ -21,6 +22,10 @@ class InitEmmebank(_m.Tool()):
         pb.add_text_box(tool_attribute_name="emme_title",
                         size=30,
                         title="Enter the Title for the new emmebank")
+                        
+        pb.add_text_box(tool_attribute_name="horizon_year",
+                        size=4,
+                        title="Enter the year to initialize matrices for")
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
@@ -270,13 +275,13 @@ class InitEmmebank(_m.Tool()):
         # Batch in truck demand matrices
         util.delmat(eb, "mf980")
         util.delmat(eb, "mf981")
-        data_path = os.path.join(proj_path, "BaseNetworks", "AM_Truck_Demand.in")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Matrices", self.horizon_year, "AM_Truck_Demand.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
         util.delmat(eb, "mf982")
         util.delmat(eb, "mf983")
-        data_path = os.path.join(proj_path, "BaseNetworks", "MD_Truck_Demand.in")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Matrices", self.horizon_year, "MD_Truck_Demand.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
@@ -285,7 +290,7 @@ class InitEmmebank(_m.Tool()):
 		# Should be updated with actual truck demand
         util.delmat(eb, "mf990")
         util.delmat(eb, "mf991")
-        data_path = os.path.join(proj_path, "BaseNetworks", "PM_Truck_Demand.in")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Matrices", self.horizon_year, "PM_Truck_Demand.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
@@ -293,13 +298,13 @@ class InitEmmebank(_m.Tool()):
         # Batch in external demand matrices
         util.delmat(eb, "mf978")
         util.delmat(eb, "mf979")
-        data_path = os.path.join(proj_path, "BaseNetworks", "AM_External_Demand.in")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Matrices", self.horizon_year, "AM_External_Demand.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
         util.delmat(eb, "mf984")
         util.delmat(eb, "mf985")
-        data_path = os.path.join(proj_path, "BaseNetworks", "MD_External_Demand.in")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Matrices", self.horizon_year, "MD_External_Demand.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
@@ -307,7 +312,7 @@ class InitEmmebank(_m.Tool()):
 		# Note PM external demand is AM transposed multiplied by a factor
         util.delmat(eb, "mf992")
         util.delmat(eb, "mf993")
-        data_path = os.path.join(proj_path, "BaseNetworks", "PM_External_Demand.in")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Matrices", self.horizon_year, "PM_External_Demand.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
