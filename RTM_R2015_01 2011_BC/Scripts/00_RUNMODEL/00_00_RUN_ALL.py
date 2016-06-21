@@ -10,6 +10,7 @@ import traceback as _traceback
 
 class FullModelRun(_m.Tool()):
     global_iterations = _m.Attribute(int)
+    master_scen = _m.Attribute(_m.InstanceType)
     land_use_file1 = _m.Attribute(_m.InstanceType)
     land_use_file2 = _m.Attribute(_m.InstanceType)
     max_distribution_iterations = _m.Attribute(int)
@@ -30,6 +31,11 @@ class FullModelRun(_m.Tool()):
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
+
+        pb.add_text_box(tool_attribute_name="master_scen",
+                        size="6",
+                        title="Scenario containing network information:",
+                        note="This scenario will be copied into individual time of day scenarios.")
 
         pb.add_text_box(tool_attribute_name="global_iterations",
                         size="3",
@@ -74,7 +80,7 @@ class FullModelRun(_m.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            self(self.global_iterations, self.land_use_file1,
+            self(self.global_iterations, self.master_scen, self.land_use_file1,
                  self.land_use_file2, self.max_distribution_iterations,
                  self.max_assignment_iterations)
             run_msg = "Tool completed"
@@ -84,7 +90,7 @@ class FullModelRun(_m.Tool()):
                 error, _traceback.format_exc(error))
 
     @_m.logbook_trace("Full Model Run")
-    def __call__(self, global_iterations, land_use_file1, land_use_file2,
+    def __call__(self, global_iterations, master_scen, land_use_file1, land_use_file2,
                  max_distribution_iterations=60,
                  max_assignment_iterations=200):
         eb = _m.Modeller().emmebank
@@ -96,7 +102,7 @@ class FullModelRun(_m.Tool()):
             "normalized_gap": 0.01
         }
 
-        self.stage1(eb, land_use_file1, land_use_file2)
+        self.stage1(eb, int(master_scen), land_use_file1, land_use_file2)
 
         self.calculate_costs(eb)
 
@@ -107,7 +113,7 @@ class FullModelRun(_m.Tool()):
         self.stage4(eb, stopping_criteria)
 
     @_m.logbook_trace("Stage 1 - Define Inputs and Run Intial Assignment")
-    def stage1(self, eb, land_use_file1, land_use_file2):
+    def stage1(self, eb, master_scen, land_use_file1, land_use_file2):
         util = _m.Modeller().tool("translink.emme.util")
 
         ## Call Model Tools - Socioeconomic segmentation, trip generation, trip distribution, mode choice, assignment
@@ -121,7 +127,7 @@ class FullModelRun(_m.Tool()):
         util.initmat(eb, "ms01", "cycle", "Current Model Cycle", 0)
 
         create_scenario = _m.Modeller().tool("translink.emme.stage1.step0.create_scen")
-        create_scenario(eb, 1000)
+        create_scenario(eb, master_scen)
 
     @_m.logbook_trace("Run Seed Assignment and Generate Initial Skims")
     def calculate_costs(self, eb):
