@@ -1,5 +1,6 @@
-Zone, 250C11, 500C11, WrPr11, OtPk11, BkSc11
-Zone, 2011_250m_car_share, 2011_500m_car_share, 2011_work_parking, 2011_nonwork_parking, 2011_bike_score
+mat_id, mo393, mo394, mo27, mo28, mo13
+mat_name, 250C11, 500C11, WrPr11, OtPk11, BkSc11
+mat_desc, 2011_250m_car_share, 2011_500m_car_share, 2011_work_parking, 2011_nonwork_parking, 2011_bike_score
 11010, 0, 0, 0, 0, 1
 11020, 0, 0, 0, 0, 1
 11030, 0, 0, 0, 0.2, 3

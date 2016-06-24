@@ -1,5 +1,6 @@
-Zone, 250C45, 500C45, WrPr45, OtPk45, BkSc45
-Zone, 2045_250m_car_share, 2045_500m_car_share, 2045_work_parking, 2045_nonwork_parking, 2045_bike_score
+mat_id, mo393, mo394, mo27, mo28, mo13
+mat_name, 250C45, 500C45, WrPr45, OtPk45, BkSc45
+mat_desc, 2045_250m_car_share, 2045_500m_car_share, 2045_work_parking, 2045_nonwork_parking, 2045_bike_score
 11010, 0, 0, 0, 0, 1
 11020, 0, 0, 0, 0, 1
 11030, 0, 0, 0, 0.2, 4

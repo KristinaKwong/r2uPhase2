@@ -1,5 +1,6 @@
-Zone, 250C30, 500C30, WrPr30, OtPk30, BkSc30
-Zone, 2030_250m_car_share, 2030_500m_car_share, 2030_work_parking, 2030_nonwork_parking, 2030_bike_score
+mat_id, mo393, mo394, mo27, mo28, mo13
+mat_name, 250C30, 500C30, WrPr30, OtPk30, BkSc30
+mat_desc, 2030_250m_car_share, 2030_500m_car_share, 2030_work_parking, 2030_nonwork_parking, 2030_bike_score
 11010, 0, 0, 0, 0, 1
 11020, 0, 0, 0, 0, 1
 11030, 0, 0, 0, 0.2, 4

@@ -53,88 +53,34 @@ class InputLandUse(_m.Tool()):
 
     @_m.logbook_trace("Import land use data", save_arguments=True)
     def __call__(self, file1, file2):
-        util = _m.Modeller().tool("translink.emme.util")
-
         eb = _m.Modeller().emmebank
+        self.read_file(eb, file1)
+        self.read_file(eb, file2)
 
-        # Define matrices for storage (must pre-exist)
-        inputmats = []
-        #Define matrices for POP04, POP512, POP1317, POP1824, POP2444, POP4564, POP65p, totpop
-        inputmats.extend(["mo23", "md21", "md22", "mo24", "mo25", "mo26", "mo19", "mo20"])
-        #Define matrices for tothhs, hh1, hh2, hh3, hh4, Construction-Mfg, FIRE, TCU-Wholesale, Retail
-        inputmats.extend(["mo01", "mo50", "mo51", "mo52", "mo53", "md05", "md06", "md07", "md08"])
-        #Define matrices for Business-OtherServices, AccomFood-InfoCult, Health-Educat-PubAdmin, totemp
-        inputmats.extend(["md09", "md10", "md11", "md12", "md23"])
-        #Define matrices for 250CS, 500CS, WPRK45, NWPRK45, bike_score
-        inputmats.extend(["mo393", "mo394", "mo27", "mo28", "mo13"])
+    @_m.logbook_trace("Reading File", save_arguments=True)
+    def read_file(self, eb, file):
+        util = _m.Modeller().tool("translink.emme.util")
+        #Read data from file and check number of lines
+        with open(file, "rb") as sourcefile:
+            lines = list(csv.reader(sourcefile, skipinitialspace=True))
 
-        with _m.logbook_trace("Initializing matrices to zero"):
-            for mat_id in inputmats:
-                util.initmat(eb, mat_id, "", "", 0)
+        #TODO - validate each line has the same number of entries
 
-        # TODO: change the file reading to use the normal design pattern
-        with _m.logbook_trace("Read new matrices from csv file1 and file2"):
-            #Read data from file and check number of lines
-            with open(file1, "rb") as mainpop:
-                data1 = list(csv.reader(mainpop, skipinitialspace=True))
-                data1 = [i for i in data1 if i]
+        matrices = []
+        mat_data = []
+        # Initialize all matrices with 0-values and store a data reference
+        for i in range(1, len(lines[0])):
+            mat = util.initmat(eb, lines[0][i], lines[1][i], lines[2][i], 0)
+            matrices.append(mat)
+            mat_data.append(mat.get_data())
 
-            file = open(file1, "r")
-            getlines = file.readlines()
-            file1size = len(getlines)
-            file.close()
-            #Repeat process for second land use file
-            with open(file2, "rb") as secondpop:
-                data2 = list(csv.reader(secondpop, skipinitialspace=True))
-                data2 = [j for j in data2 if j]
-            file = open(file2, "r")
-            getlines = file.readlines()
-            file2size = len(getlines)
-            file.close()
-            #Get number of matrices in each input file
-            file1_matnum = len(data1[0]) - 1
+        # loop over each data-containing line in the csv
+        for i in range(3, len(lines)):
+            line = lines[i]
+            # within each line set the data in each matrix
+            for j in range(1, len(line)):
+                mat_data[j-1].set(int(line[0]), float(line[j]))
 
-            file2_matnum = len(data2[0]) - 1
-            # TODO: create report with number of matrices imported
-            #_m.logbook_write(file1_matnum)
-            #_m.logbook_write(file2_matnum)
-
-        with _m.logbook_trace("Copy numbers from first list into corresponding matrices"):
-            #Assuming first column holds zone numbers, other columns hold matrix values in order above
-            #Input values from first file
-            for x in xrange(0, file1_matnum):
-                y = x + 1   #first column in matrix list corresponds to second column in data list, and so on
-                active_mat = eb.matrix(inputmats[x])
-                #change_matrix(matrix = active_mat,matrix_name=data1[0][y],matrix_description=data1[1][y])
-                active_mat.name = data1[0][y]
-                active_mat.description = data1[1][y]
-                active_mat_data = active_mat.get_data()
-                # TODO: create report on mactices imported
-                #_m.logbook_write(inputmats[x])
-
-                for z in xrange(2, file1size):
-                    index = int(data1[z][0])
-                    value = float(data1[z][y])
-                    active_mat_data.set(index, value)
-                    active_mat.set_data(active_mat_data)
-                q = x     #preserve counter of matrix input list
-
-        with _m.logbook_trace("Copy numbers from second list into corresponding matrices"):
-            for x in xrange(0, file2_matnum):
-                q = q + 1   #increment matrix input list counter
-                y = x + 1   #first column in matrix list corresponds to second column in data list, and so on
-                active_mat = eb.matrix(inputmats[q])
-                #change_matrix(matrix = active_mat,matrix_name=data2[0][y],matrix_description=data2[1][y])
-                active_mat.name = data2[0][y]
-                active_mat.description = data2[1][y]
-                active_mat_data = active_mat.get_data()
-                # TODO: create report on mactices imported
-                #_m.logbook_write(inputmats[q])
-                for z in xrange(2, file2size):
-                    index = int(data2[z][0])
-                    if data2[z][y] == " -   " or data2[z][y] == "":
-                        value = 0
-                    else:
-                        value = float(data2[z][y])
-                    active_mat_data.set(index, value)
-                    active_mat.set_data(active_mat_data)
+        # store the data back into the matrix on disk
+        for i in range(len(matrices)):
+            matrices[i].set_data(mat_data[i])
