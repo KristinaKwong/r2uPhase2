@@ -368,6 +368,7 @@ class AutoAssignment(_m.Tool()):
     @_m.logbook_trace("Matrix Batchin")
     def matrix_batchins(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
+        #TODO initialize matrices for bus and rail skims inside those tools rather then here in auto assignment
         util.initmat(eb, "mf930", "eAuDsA", "Interim Skim AutoDistanceAM", 0)
         util.initmat(eb, "mf931", "eAuTmA", "Interim Skim AutoTimeAM", 0)
         util.initmat(eb, "mf932", "eAuTlA", "Interim Skim AutoTollAM", 0)

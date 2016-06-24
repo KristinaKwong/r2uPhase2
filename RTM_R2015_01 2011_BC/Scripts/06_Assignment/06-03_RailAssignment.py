@@ -86,6 +86,7 @@ class Rail_Assignment(_m.Tool()):
             "save_strategies": True,
             "type": "EXTENDED_TRANSIT_ASSIGNMENT"
         }
+        #TODO treat mode 'g' as a bus service and not a rail service causing a transition in journey levels
         ## Journey Level SPEC
         spec_as_dict_JL = {
                 "modes": ["b", "f", "g", "l", "r", "s", "h", "a", "p"],
