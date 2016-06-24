@@ -32,8 +32,7 @@ class FullModelRun(_m.Tool()):
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
 
-        pb.add_text_box(tool_attribute_name="master_scen",
-                        size="6",
+        pb.add_select_scenario(tool_attribute_name="master_scen",
                         title="Scenario containing network information:",
                         note="This scenario will be copied into individual time of day scenarios.")
 
@@ -93,7 +92,7 @@ class FullModelRun(_m.Tool()):
     def __call__(self, global_iterations, master_scen, land_use_file1, land_use_file2,
                  max_distribution_iterations=60,
                  max_assignment_iterations=200):
-        eb = _m.Modeller().emmebank
+        eb = master_scen.emmebank
 
         stopping_criteria = {
             "max_iterations": max_assignment_iterations,
@@ -102,7 +101,7 @@ class FullModelRun(_m.Tool()):
             "normalized_gap": 0.01
         }
 
-        self.stage1(eb, int(master_scen), land_use_file1, land_use_file2)
+        self.stage1(eb, master_scen, land_use_file1, land_use_file2)
 
         self.calculate_costs(eb)
 
@@ -127,7 +126,7 @@ class FullModelRun(_m.Tool()):
         util.initmat(eb, "ms01", "cycle", "Current Model Cycle", 0)
 
         create_scenario = _m.Modeller().tool("translink.emme.stage1.step0.create_scen")
-        create_scenario(eb, master_scen)
+        create_scenario(master_scen)
 
     @_m.logbook_trace("Run Seed Assignment and Generate Initial Skims")
     def calculate_costs(self, eb):

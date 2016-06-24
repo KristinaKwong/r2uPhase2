@@ -19,16 +19,14 @@ class InputSettings(_m.Tool()):
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
-        pb.add_text_box(tool_attribute_name="base_scenario",
-                        size=50,
+        pb.add_select_scenario(tool_attribute_name="base_scenario",
                         title="Enter the Base Scenario Number")
         return pb.render()
 
     def run(self):
         self.tool_run_msg = ""
         try:
-            eb = _m.Modeller().emmebank
-            self(eb, self.base_scenario)
+            self(self.base_scenario)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, error:
             self.tool_run_msg = _m.PageBuilder.format_exception(
@@ -36,10 +34,10 @@ class InputSettings(_m.Tool()):
             raise
 
     @_m.logbook_trace("00_00 Create Scenarios")
-    def __call__(self, eb, base_scenario):
+    def __call__(self, base_scenario):
         copy_scenario = _m.Modeller().tool("inro.emme.data.scenario.copy_scenario")
 
-        base_scenario = eb.scenario(base_scenario)
+        eb = base_scenario.emmebank
 
         # Copy to new AM scenarios
         am_scenid = int(eb.matrix("ms140").data)
