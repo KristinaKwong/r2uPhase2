@@ -64,7 +64,11 @@ class InputLandUse(_m.Tool()):
         with open(file, "rb") as sourcefile:
             lines = list(csv.reader(sourcefile, skipinitialspace=True))
 
-        #TODO - validate each line has the same number of entries
+        # Validate that each line has the same number of caolumns as the first line
+        valid_cols = len(lines[0])
+        for num in range(len(lines)):
+            if len(lines[num]) != valid_cols:
+                raise Exception("File: %s Line: %d - expected %d columns, found %d" % (file, num + 1, valid_cols, len(lines[num])))
 
         matrices = []
         mat_data = []
