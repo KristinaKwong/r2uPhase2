@@ -1056,7 +1056,3 @@ class SocioEconomicSegmentation(_m.Tool()):
         util.initmat(eb, "mo44", "TEMP1", "Temp Mo 1", 0)
         util.initmat(eb, "mo45", "TEMP2", "Temp Mo 2", 0)
         util.initmat(eb, "mo46", "TEMP3", "Temp Mo 3", 0)
-        util.initmat(eb, "mo927", "Scr1", "Scratch_MO_1", 0)
-        util.initmat(eb, "mo928", "Scr2", "Scratch_MO_2", 0)
-        util.initmat(eb, "mo929", "Scr3", "Scratch_MO_3", 0)
-        util.initmat(eb, "mo930", "Scr4", "Scratch_MO_4", 0)

@@ -130,7 +130,7 @@ class TripDistributions(_m.Tool()):
         ]
 
         for i in range(0, 11):
-            self.matrix_balancing(mo_list[i], md_list[i], impedance_list[i], output_list[i], max_iterations)
+            self.matrix_balancing(eb, mo_list[i], md_list[i], impedance_list[i], output_list[i], max_iterations)
 
         # Transpose Matrices mfs 241 thru 303 and store in mfs 310 thru 372
 
@@ -214,12 +214,17 @@ class TripDistributions(_m.Tool()):
         util.compute_matrix(specs)
 
     @_m.logbook_trace("Run matrix balancing to multiple productions")
-    def matrix_balancing(self, mo_list, md_list, impedance_list, output_list, max_iterations):
+    def matrix_balancing(self, eb, mo_list, md_list, impedance_list, output_list, max_iterations):
         util = _m.Modeller().tool("translink.emme.util")
 
         # Used to allocate results to  the "scratch" matrices
         num_scratch = 0
-        results = ["mo927", "mo928", "mo929", "mo931"]
+        util.initmat(eb, "mo927", "Scr1", "Scratch_MO_1", 0)
+        util.initmat(eb, "mo928", "Scr2", "Scratch_MO_2", 0)
+        util.initmat(eb, "mo929", "Scr3", "Scratch_MO_3", 0)
+        util.initmat(eb, "mo930", "Scr4", "Scratch_MO_4", 0)
+
+        results = ["mo927", "mo928", "mo929", "mo930"]
 
         # loops through mo_list for any list items that are expressions
         #  (contains "+") adding mo matrices up for aggregation.
@@ -257,6 +262,10 @@ class TripDistributions(_m.Tool()):
             }
             spec_dict_matbal["classes"].append(class_spec)
         balancing_multiple_productions(spec_dict_matbal)
+        util.delmat(eb, "mo927")
+        util.delmat(eb, "mo928")
+        util.delmat(eb, "mo929")
+        util.delmat(eb, "mo930")
 
     #Calculate impedances for each purpose based on the original distribution macro distestall.mac
     @_m.logbook_trace("Calculate impedances")
