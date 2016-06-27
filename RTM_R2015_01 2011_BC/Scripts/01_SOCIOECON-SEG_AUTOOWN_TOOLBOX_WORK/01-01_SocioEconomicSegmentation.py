@@ -2,7 +2,7 @@
 ##--TransLink Phase 2.2 Regional Transportation Model
 ##--
 ##--Path: translink.emme.stage1.step1.segmentation
-##--Purpose: 
+##--Purpose:
 ##---------------------------------------------------------------------
 import inro.modeller as _m
 import csv
@@ -389,7 +389,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
         specs.append(util.matrix_spec("mo18", "mo19/(mo20+0.00000000001)"))
         specs.append(util.matrix_spec("mo16", "10000*mo20/(mo17+0.00000000001)"))
- 
+
         util.compute_matrix(specs)
 
     @_m.logbook_trace("Matrix Batchin")

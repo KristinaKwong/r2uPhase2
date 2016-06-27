@@ -2,7 +2,7 @@
 ##--TransLink Phase 2.2 Regional Transportation Model
 ##--
 ##--Path: translink.emme.stage1.step1.autoownership
-##--Purpose: 
+##--Purpose:
 ##---------------------------------------------------------------------
 import inro.modeller as _m
 
@@ -33,7 +33,7 @@ class AutoOwnershipTool(_m.Tool()):
 
         ## mo113-mo268 - Calculated Number of Households Per Worker, Per Income and Per Auto Ownership Category
         self.Calculate_AutoOwnership_PerHH()
-        
+
     ## mo404-mo442 - Store utility value while for AutoOwn=0 for various HHSize, NumWorkers, IncomeCat
     @_m.logbook_trace("Calculate AutoOwnership 0 Cars - Utilities")
     def Calculate_AutoOwnership_0Cars(self, AutoOwnCoeff):

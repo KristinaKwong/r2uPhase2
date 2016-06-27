@@ -279,7 +279,7 @@ class TripDistributions(_m.Tool()):
         transit_constraint_spec = util.matrix_spec("mf925", "mf925.max.200")
         transit_constraint_spec["constraint"]["by_value"] = {"od_values": "mf925", "interval_min": 0.01, "interval_max": 120, "condition": "EXCLUDE"}
         transit_constraint_spec["constraint"]["by_zone"] = None
-        
+
         _m.logbook_trace("HBWL-Purpose Distribution")
         specs = []
 
