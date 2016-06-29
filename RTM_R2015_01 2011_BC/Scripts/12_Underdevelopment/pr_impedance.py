@@ -6,6 +6,7 @@
 ##---------------------------------------------------------------------
 import inro.modeller as _m
 import os
+import csv
 import traceback as _traceback
 
 class PrImpedance(_m.Tool()):
@@ -40,20 +41,26 @@ class PrImpedance(_m.Tool()):
 
     @_m.logbook_trace("UNDER DEV - PNR Impedance")
     def __call__(self, scenarioam, scenariomd, scenariopm):
+        eb = _m.Modeller().emmebank
         util = _m.Modeller().tool("translink.emme.util")
+        input_path = util.get_input_path(eb)
+        pnr_costs = os.path.join(input_path, "pnr_inputs.csv")
 
         RailSkim = _m.Modeller().tool("translink.emme.under_dev.wceskim")
         railassign = _m.Modeller().tool("inro.emme.transit_assignment.extended_transit_assignment")
-        eb = _m.Modeller().emmebank
+
         self.matrix_batchins(eb)
+        self.read_file(eb, pnr_costs)
+
+
 
 
 
     def matrix_batchins(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
 
-        # Lot choice using AM impedances, but lot choice fixed for all time periods
         util.initmat(eb, "mf6000", "buspr-lotChoiceAM", "Bus Best PnR Lot - Bus",0)
+        # Lot choice using AM impedances, but lot choice fixed for all time periods
         util.initmat(eb, "mf6001", "railpr-lotChoiceAM", "Rail Best PnR Lot - Rail",0)
         util.initmat(eb, "mf6002", "wcepr-lotChoiceAM", "Rail Best PnR Lot -WCE",0)
 
@@ -175,3 +182,31 @@ class PrImpedance(_m.Tool()):
         util.initmat(eb, "mf6104", "wcepr-busIVTPM", "Bus IVT - WCE",0)
         util.initmat(eb, "mf6105", "wcepr-busWaitPM", "Bus Wait Time - WCE",0)
         util.initmat(eb, "mf6106", "wcepr-boardingsPM", "Boardings - WCE",0)
+
+
+        def read_file(self, eb, file):
+            util = _m.Modeller().tool("translink.emme.util")
+            #Read data from file and check number of lines
+            with open(file, "rb") as sourcefile:
+                lines = list(csv.reader(sourcefile, skipinitialspace=True))
+
+            #TODO - validate each line has the same number of entries
+
+            matrices = []
+            mat_data = []
+            # Initialize all matrices with 0-values and store a data reference
+            for i in range(1, len(lines[0])):
+                mat = util.initmat(eb, lines[0][i], lines[1][i], lines[2][i], 0)
+                matrices.append(mat)
+                mat_data.append(mat.get_data())
+
+            # loop over each data-containing line in the csv
+            for i in range(3, len(lines)):
+                line = lines[i]
+                # within each line set the data in each matrix
+                for j in range(1, len(line)):
+                    mat_data[j-1].set(int(line[0]), float(line[j]))
+
+            # store the data back into the matrix on disk
+            for i in range(len(matrices)):
+                matrices[i].set_data(mat_data[i])
