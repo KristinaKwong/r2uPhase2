@@ -55,158 +55,185 @@ class PrImpedance(_m.Tool()):
 
 
 
-
+    @_m.logbook_trace("UNDER DEV - PNR Impedance")
     def matrix_batchins(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
 
-        util.initmat(eb, "mf6000", "buspr-lotChoiceAM", "Bus Best PnR Lot - Bus",0)
+        #TODO move the VOT to actual file Batchin -
+
+        util.initmat(eb,"ms120","votWklow", "work VOT low income in min/$", 6)
+        util.initmat(eb,"ms121","votWkmed", "work VOT med income in min/$", 4)
+        util.initmat(eb,"ms122","votWkhigh", "work VOT high income in min/$", 3)
+        util.initmat(eb,"ms123","votNWklow", "non-work VOT low income in min/$", 12)
+        util.initmat(eb,"ms124","votNWkmed", "non-work VOT med income in min/$", 8)
+        util.initmat(eb,"ms125","votNWkhigh", "non-work VOT high income in min/$", 6)
+
+        util.initmat(eb,"ms130", "VOC", "Vehicle Operating Variable Cost (/km)", 0.1646) # CAA includes fuel, tires, maintence
+
         # Lot choice using AM impedances, but lot choice fixed for all time periods
-        util.initmat(eb, "mf6001", "railpr-lotChoiceAM", "Rail Best PnR Lot - Rail",0)
-        util.initmat(eb, "mf6002", "wcepr-lotChoiceAM", "Rail Best PnR Lot -WCE",0)
+        util.initmat(eb, "mf6000", "buspr-lotChceWkAM", "Bus Best PnR Lot - Bus",0)
+        util.initmat(eb, "mf6001", "railpr-lotChceWkAM", "Rail Best PnR Lot - Rail",0)
+        util.initmat(eb, "mf6002", "wcepr-lotChceWkAM", "Rail Best PnR Lot -WCE",0)
+
 
         # AM Auto generalized Cost same for all modes
         util.initmat(eb, "mf6003", "buspr-gcAutoAM", "PnR Generalized Cost Auto Leg",0)
 
+
         # AM bus impedance matrices
-        util.initmat(eb, "mf6005", "buspr-GctransitAM", "PnR Generalized Cost Transit Leg - Bus",0)
-        util.initmat(eb, "mf6006", "buspr-minGCAM", "PnR Combined Skim Result - Bus",0)
-        util.initmat(eb, "mf6007", "buspr-termtimeAM", "PnR Lot Terminal Time - Bus",0)
-        util.initmat(eb, "mf6008", "buspr-parkCostAM", "PR parking cost - Bus",0)
-        util.initmat(eb, "mf6009", "buspr-auaccessAM", "Auto access time  - Bus",0)
-        util.initmat(eb, "mf6010", "buspr-busIVTAM", "Bus IVTT - Bus",0)
-        util.initmat(eb, "mf6011", "buspr-busWaitAM", "Bus Wait Time - Bus",0)
-        util.initmat(eb, "mf6012", "buspr-boardingsAM", "Boardings - Bus",0)
+        util.initmat(eb, "mf6005", "buspr-GctranWkAM", "PnR Generalized Cost Transit Leg - Bus",0)
+        util.initmat(eb, "mf6006", "buspr-minGCWkAM", "PnR Combined Skim Result - Bus",0)
+        util.initmat(eb, "mf6007", "buspr-trmtimWkAM", "PnR Lot Terminal Time - Bus",0)
+        util.initmat(eb, "mf6008", "buspr-prkostWkAM", "PR parking cost - Bus",0)
+        util.initmat(eb, "mf6009", "buspr-autAcsWkAM", "Auto access time  - Bus",0)
+        util.initmat(eb, "mf6010", "buspr-busIVTWkAM", "Bus IVTT - Bus",0)
+        util.initmat(eb, "mf6011", "buspr-busWtWkAM", "Bus Wait Time - Bus",0)
+        util.initmat(eb, "mf6012", "buspr-bordsWkAM", "Boardings - Bus",0)
+
 
         # AM rail impedance matrices
-        util.initmat(eb, "mf6020", "railpr-GctransitAM", "Rail PnR Generalized Cost Transit Leg - Rail",0)
-        util.initmat(eb, "mf6021", "railpr-minGCAM", "Rail PnR Combined Skim Result - Rail",0)
-        util.initmat(eb, "mf6022", "railpr-termtimeAM", "PnR Lot Terminal Time - Rail",0)
-        util.initmat(eb, "mf6023", "railpr-parkCostAM", "PR parking cost - Rail",0)
-        util.initmat(eb, "mf6024", "railpr-auaccessAM", "Auto access time  - Rail",0)
-        util.initmat(eb, "mf6025", "railpr-railIVTAM", "Rail IVT - Rail",0)
-        util.initmat(eb, "mf6026", "railpr-railWaitAM", "Rail Wait Time - Rail",0)
-        util.initmat(eb, "mf6027", "railpr-busIVTAM", "Bus IVT - Rail",0)
-        util.initmat(eb, "mf6028", "railpr-busWaitAM", "Bus Wait Time - Rai",0)
-        util.initmat(eb, "mf6029", "railpr-boardingsAM", "Rail Boardings",0)
+        util.initmat(eb, "mf6020", "railpr-GctranWkAM", "Rail PnR Generalized Cost Transit Leg - Rail",0)
+        util.initmat(eb, "mf6021", "railpr-minGCWkAM", "Rail PnR Combined Skim Result - Rail",0)
+        util.initmat(eb, "mf6022", "railpr-trmtimWkAM", "PnR Lot Terminal Time - Rail",0)
+        util.initmat(eb, "mf6023", "railpr-prkostWkAM", "PR parking cost - Rail",0)
+        util.initmat(eb, "mf6024", "railpr-autAcsWkAM", "Auto access time  - Rail",0)
+        util.initmat(eb, "mf6025", "railpr-railIVTWkAM", "Rail IVT - Rail",0)
+        util.initmat(eb, "mf6026", "railpr-railWtWkAM", "Rail Wait Time - Rail",0)
+        util.initmat(eb, "mf6027", "railpr-busIVTWkAM", "Bus IVT - Rail",0)
+        util.initmat(eb, "mf6028", "railpr-busWtWkAM", "Bus Wait Time - Rai",0)
+        util.initmat(eb, "mf6029", "railpr-bordsWkAM", "Rail Boardings",0)
+
 
         # AM WCE impedance matrices
-        util.initmat(eb, "mf6040", "wcepr-GctransitAM", "WCE PnR Generalized Cost Transit Leg",0)
-        util.initmat(eb, "mf6041", "wcepr-minGCAM", "WCE PnR Combined Skim Result",0)
-        util.initmat(eb, "mf6042", "wcepr-termtimeAM", "PnR Lot Terminal Time - WCE",0)
-        util.initmat(eb, "mf6043", "wcepr-parkCostAM", "PR parking cost - WCE",0)
-        util.initmat(eb, "mf6044", "wcepr-auaccessAM", "Auto access time - WCE",0)
-        util.initmat(eb, "mf6045", "wcepr-wceIVTAM", "WCE IVT - WCE",0)
-        util.initmat(eb, "mf6046", "wcepr-wceWaitAM", "WCE Wait Time - WCE",0)
-        util.initmat(eb, "mf6047", "wcepr-railIVTAM", "Rail IVT - WCE",0)
-        util.initmat(eb, "mf6048", "wcepr-railWaitAM", "Rail Wait Time - WCE",0)
-        util.initmat(eb, "mf6049", "wcepr-busIVTAM", "Bus IVT - WCE",0)
-        util.initmat(eb, "mf6050", "wcepr-busWaitAM", "Bus Wait Time - WCE",0)
-        util.initmat(eb, "mf6051", "wcepr-boardingsAM", "Boardings - WCE",0)
+        util.initmat(eb, "mf6040", "wcepr-GctranWkAM", "WCE PnR Generalized Cost Transit Leg",0)
+        util.initmat(eb, "mf6041", "wcepr-minGCWkAM", "WCE PnR Combined Skim Result",0)
+        util.initmat(eb, "mf6042", "wcepr-trmtimWkAM", "PnR Lot Terminal Time - WCE",0)
+        util.initmat(eb, "mf6043", "wcepr-prkostWkAM", "PR parking cost - WCE",0)
+        util.initmat(eb, "mf6044", "wcepr-autAcsWkAM", "Auto access time - WCE",0)
+        util.initmat(eb, "mf6045", "wcepr-wceIVTWkAM", "WCE IVT - WCE",0)
+        util.initmat(eb, "mf6046", "wcepr-wceWtWkAM", "WCE Wait Time - WCE",0)
+        util.initmat(eb, "mf6047", "wcepr-railIVTWkAM", "Rail IVT - WCE",0)
+        util.initmat(eb, "mf6048", "wcepr-railWtWkAM", "Rail Wait Time - WCE",0)
+        util.initmat(eb, "mf6049", "wcepr-busIVTWkAM", "Bus IVT - WCE",0)
+        util.initmat(eb, "mf6050", "wcepr-busWtWkAM", "Bus Wait Time - WCE",0)
+        util.initmat(eb, "mf6051", "wcepr-bordsWkAM", "Boardings - WCE",0)
 
 
         # MD Auto generalized Cost same for all modes
-        util.initmat(eb, "mf6058", "buspr-gcAutoMD", "PnR Generalized Cost Auto Leg",0)
+        util.initmat(eb, "mf6058", "buspr-gcAutoWkMD", "PnR Generalized Cost Auto Leg",0)
+
 
         # MD bus impedance matrices
-        util.initmat(eb, "mf6060", "buspr-GctransitMD", "PnR Generalized Cost Transit Leg - Bus",0)
-        util.initmat(eb, "mf6061", "buspr-minGCMD", "PnR Combined Skim Result - Bus",0)
-        util.initmat(eb, "mf6062", "buspr-termtimeMD", "PnR Lot Terminal Time - Bus",0)
-        util.initmat(eb, "mf6063", "buspr-parkCostMD", "PR parking cost - Bus",0)
-        util.initmat(eb, "mf6064", "buspr-auaccessMD", "Auto access time  - Bus",0)
-        util.initmat(eb, "mf6065", "buspr-busIVTMD", "Bus IVTT - Bus",0)
-        util.initmat(eb, "mf6066", "buspr-busWaitMD", "Bus Wait Time - Bus",0)
-        util.initmat(eb, "mf6067", "buspr-boardingsMD", "Boardings - Bus",0)
+        util.initmat(eb, "mf6060", "buspr-GctranWkMD", "PnR Generalized Cost Transit Leg - Bus",0)
+        util.initmat(eb, "mf6061", "buspr-minGCWkMD", "PnR Combined Skim Result - Bus",0)
+        util.initmat(eb, "mf6062", "buspr-trmtimWkMD", "PnR Lot Terminal Time - Bus",0)
+        util.initmat(eb, "mf6063", "buspr-prkostWkMD", "PR parking cost - Bus",0)
+        util.initmat(eb, "mf6064", "buspr-autAcsWkMD", "Auto access time  - Bus",0)
+        util.initmat(eb, "mf6065", "buspr-busIVTWkMD", "Bus IVTT - Bus",0)
+        util.initmat(eb, "mf6066", "buspr-busWtWkMD", "Bus Wait Time - Bus",0)
+        util.initmat(eb, "mf6067", "buspr-bordsWkMD", "Boardings - Bus",0)
+
 
         # MD rail impedance matrices
-        util.initmat(eb, "mf6075", "railpr-GctransitMD", "Rail PnR Generalized Cost Transit Leg - Rail",0)
-        util.initmat(eb, "mf6076", "railpr-minGCMD", "Rail PnR Combined Skim Result - Rail",0)
-        util.initmat(eb, "mf6077", "railpr-termtimeMD", "PnR Lot Terminal Time - Rail",0)
-        util.initmat(eb, "mf6078", "railpr-parkCostMD", "PR parking cost - Rail",0)
-        util.initmat(eb, "mf6079", "railpr-auaccessMD", "Auto access time  - Rail",0)
-        util.initmat(eb, "mf6080", "railpr-railIVTMD", "Rail IVT - Rail",0)
-        util.initmat(eb, "mf6081", "railpr-railWaitMD", "Rail Wait Time - Rail",0)
-        util.initmat(eb, "mf6082", "railpr-busIVTMD", "Bus IVT - Rail",0)
-        util.initmat(eb, "mf6083", "railpr-busWaitMD", "Bus Wait Time - Rai",0)
-        util.initmat(eb, "mf6084", "railpr-boardingsMD", "Rail Boardings",0)
+        util.initmat(eb, "mf6075", "railpr-GctranWkMD", "Rail PnR Generalized Cost Transit Leg - Rail",0)
+        util.initmat(eb, "mf6076", "railpr-minGCWkMD", "Rail PnR Combined Skim Result - Rail",0)
+        util.initmat(eb, "mf6077", "railpr-trmtimWkMD", "PnR Lot Terminal Time - Rail",0)
+        util.initmat(eb, "mf6078", "railpr-prkostWkMD", "PR parking cost - Rail",0)
+        util.initmat(eb, "mf6079", "railpr-autAcsWkMD", "Auto access time  - Rail",0)
+        util.initmat(eb, "mf6080", "railpr-railIVTWkMD", "Rail IVT - Rail",0)
+        util.initmat(eb, "mf6081", "railpr-railWtWkMD", "Rail Wait Time - Rail",0)
+        util.initmat(eb, "mf6082", "railpr-busIVTWkMD", "Bus IVT - Rail",0)
+        util.initmat(eb, "mf6083", "railpr-busWtWkMD", "Bus Wait Time - Rai",0)
+        util.initmat(eb, "mf6084", "railpr-bordsWkMD", "Rail Boardings",0)
+
 
         # MD WCE impedance matrices
-        util.initmat(eb, "mf6095", "wcepr-GctransitMD", "WCE PnR Generalized Cost Transit Leg",0)
-        util.initmat(eb, "mf6096", "wcepr-minGCMD", "WCE PnR Combined Skim Result",0)
-        util.initmat(eb, "mf6097", "wcepr-termtimeMD", "PnR Lot Terminal Time - WCE",0)
-        util.initmat(eb, "mf6098", "wcepr-parkCostMD", "PR parking cost - WCE",0)
-        util.initmat(eb, "mf6099", "wcepr-auaccessMD", "Auto access time - WCE",0)
-        util.initmat(eb, "mf6100", "wcepr-wceIVTMD", "WCE IVT - WCE",0)
-        util.initmat(eb, "mf6101", "wcepr-wceWaitMD", "WCE Wait Time - WCE",0)
-        util.initmat(eb, "mf6102", "wcepr-railIVTMD", "Rail IVT - WCE",0)
-        util.initmat(eb, "mf6103", "wcepr-railWaitMD", "Rail Wait Time - WCE",0)
-        util.initmat(eb, "mf6104", "wcepr-busIVTMD", "Bus IVT - WCE",0)
-        util.initmat(eb, "mf6105", "wcepr-busWaitMD", "Bus Wait Time - WCE",0)
-        util.initmat(eb, "mf6106", "wcepr-boardingsMD", "Boardings - WCE",0)
+        util.initmat(eb, "mf6095", "wcepr-GctranWkMD", "WCE PnR Generalized Cost Transit Leg",0)
+        util.initmat(eb, "mf6096", "wcepr-minGCWkMD", "WCE PnR Combined Skim Result",0)
+        util.initmat(eb, "mf6097", "wcepr-trmtimWkMD", "PnR Lot Terminal Time - WCE",0)
+        util.initmat(eb, "mf6098", "wcepr-prkostWkMD", "PR parking cost - WCE",0)
+        util.initmat(eb, "mf6099", "wcepr-autAcsWkMD", "Auto access time - WCE",0)
+        util.initmat(eb, "mf6100", "wcepr-wceIVTWkMD", "WCE IVT - WCE",0)
+        util.initmat(eb, "mf6101", "wcepr-wceWtWkMD", "WCE Wait Time - WCE",0)
+        util.initmat(eb, "mf6102", "wcepr-railIVTWkMD", "Rail IVT - WCE",0)
+        util.initmat(eb, "mf6103", "wcepr-railWtWkMD", "Rail Wait Time - WCE",0)
+        util.initmat(eb, "mf6104", "wcepr-busIVTWkMD", "Bus IVT - WCE",0)
+        util.initmat(eb, "mf6105", "wcepr-busWtWkMD", "Bus Wait Time - WCE",0)
+        util.initmat(eb, "mf6106", "wcepr-bordsWkMD", "Boardings - WCE",0)
 
 
         # PM Auto generalized Cost same for all modes
-        util.initmat(eb, "mf6058", "buspr-gcAutoPM", "PnR Generalized Cost Auto Leg",0)
+        util.initmat(eb, "mf6058", "buspr-gcAutoWkPM", "PnR Generalized Cost Auto Leg",0)
+
 
         # PM bus impedance matrices
-        util.initmat(eb, "mf6060", "buspr-GctransitPM", "PnR Generalized Cost Transit Leg - Bus",0)
-        util.initmat(eb, "mf6061", "buspr-minGCPM", "PnR Combined Skim Result - Bus",0)
-        util.initmat(eb, "mf6062", "buspr-termtimePM", "PnR Lot Terminal Time - Bus",0)
-        util.initmat(eb, "mf6063", "buspr-parkCostPM", "PR parking cost - Bus",0)
-        util.initmat(eb, "mf6064", "buspr-auaccessPM", "Auto access time  - Bus",0)
-        util.initmat(eb, "mf6065", "buspr-busIVTPM", "Bus IVTT - Bus",0)
-        util.initmat(eb, "mf6066", "buspr-busWaitPM", "Bus Wait Time - Bus",0)
-        util.initmat(eb, "mf6067", "buspr-boardingsPM", "Boardings - Bus",0)
+        util.initmat(eb, "mf6060", "buspr-GctranWkPM", "PnR Generalized Cost Transit Leg - Bus",0)
+        util.initmat(eb, "mf6061", "buspr-minGCWkPM", "PnR Combined Skim Result - Bus",0)
+        util.initmat(eb, "mf6062", "buspr-trmtimWkPM", "PnR Lot Terminal Time - Bus",0)
+        util.initmat(eb, "mf6063", "buspr-prkostWkPM", "PR parking cost - Bus",0)
+        util.initmat(eb, "mf6064", "buspr-autAcsWkPM", "Auto access time  - Bus",0)
+        util.initmat(eb, "mf6065", "buspr-busIVTWkPM", "Bus IVTT - Bus",0)
+        util.initmat(eb, "mf6066", "buspr-busWtWkPM", "Bus Wait Time - Bus",0)
+        util.initmat(eb, "mf6067", "buspr-bordsWkPM", "Boardings - Bus",0)
+
 
         # PM rail impedance matrices
-        util.initmat(eb, "mf6075", "railpr-GctransitPM", "Rail PnR Generalized Cost Transit Leg - Rail",0)
-        util.initmat(eb, "mf6076", "railpr-minGCPM", "Rail PnR Combined Skim Result - Rail",0)
-        util.initmat(eb, "mf6077", "railpr-termtimePM", "PnR Lot Terminal Time - Rail",0)
-        util.initmat(eb, "mf6078", "railpr-parkCostPM", "PR parking cost - Rail",0)
-        util.initmat(eb, "mf6079", "railpr-auaccessPM", "Auto access time  - Rail",0)
-        util.initmat(eb, "mf6080", "railpr-railIVTPM", "Rail IVT - Rail",0)
-        util.initmat(eb, "mf6081", "railpr-railWaitPM", "Rail Wait Time - Rail",0)
-        util.initmat(eb, "mf6082", "railpr-busIVTPM", "Bus IVT - Rail",0)
-        util.initmat(eb, "mf6083", "railpr-busWaitPM", "Bus Wait Time - Rai",0)
-        util.initmat(eb, "mf6084", "railpr-boardingsPM", "Rail Boardings",0)
+        util.initmat(eb, "mf6075", "railpr-GctranWkPM", "Rail PnR Generalized Cost Transit Leg - Rail",0)
+        util.initmat(eb, "mf6076", "railpr-minGCWkPM", "Rail PnR Combined Skim Result - Rail",0)
+        util.initmat(eb, "mf6077", "railpr-trmtimWkPM", "PnR Lot Terminal Time - Rail",0)
+        util.initmat(eb, "mf6078", "railpr-prkostWkPM", "PR parking cost - Rail",0)
+        util.initmat(eb, "mf6079", "railpr-autAcsWkPM", "Auto access time  - Rail",0)
+        util.initmat(eb, "mf6080", "railpr-railIVTWkPM", "Rail IVT - Rail",0)
+        util.initmat(eb, "mf6081", "railpr-railWtWkPM", "Rail Wait Time - Rail",0)
+        util.initmat(eb, "mf6082", "railpr-busIVTWkPM", "Bus IVT - Rail",0)
+        util.initmat(eb, "mf6083", "railpr-busWtWkPM", "Bus Wait Time - Rai",0)
+        util.initmat(eb, "mf6084", "railpr-bordsWkPM", "Rail Boardings",0)
+
 
         # PM WCE impedance matrices
-        util.initmat(eb, "mf6095", "wcepr-GctransitPM", "WCE PnR Generalized Cost Transit Leg",0)
-        util.initmat(eb, "mf6096", "wcepr-minGCPM", "WCE PnR Combined Skim Result",0)
-        util.initmat(eb, "mf6097", "wcepr-termtimePM", "PnR Lot Terminal Time - WCE",0)
-        util.initmat(eb, "mf6098", "wcepr-parkCostPM", "PR parking cost - WCE",0)
-        util.initmat(eb, "mf6099", "wcepr-auaccessPM", "Auto access time - WCE",0)
-        util.initmat(eb, "mf6100", "wcepr-wceIVTPM", "WCE IVT - WCE",0)
-        util.initmat(eb, "mf6101", "wcepr-wceWaitPM", "WCE Wait Time - WCE",0)
-        util.initmat(eb, "mf6102", "wcepr-railIVTPM", "Rail IVT - WCE",0)
-        util.initmat(eb, "mf6103", "wcepr-railWaitPM", "Rail Wait Time - WCE",0)
-        util.initmat(eb, "mf6104", "wcepr-busIVTPM", "Bus IVT - WCE",0)
-        util.initmat(eb, "mf6105", "wcepr-busWaitPM", "Bus Wait Time - WCE",0)
-        util.initmat(eb, "mf6106", "wcepr-boardingsPM", "Boardings - WCE",0)
+        util.initmat(eb, "mf6095", "wcepr-GctranWkPM", "WCE PnR Generalized Cost Transit Leg",0)
+        util.initmat(eb, "mf6096", "wcepr-minGCWkPM", "WCE PnR Combined Skim Result",0)
+        util.initmat(eb, "mf6097", "wcepr-trmtimWkPM", "PnR Lot Terminal Time - WCE",0)
+        util.initmat(eb, "mf6098", "wcepr-prkostWkPM", "PR parking cost - WCE",0)
+        util.initmat(eb, "mf6099", "wcepr-autAcsWkPM", "Auto access time - WCE",0)
+        util.initmat(eb, "mf6100", "wcepr-wceIVTWkPM", "WCE IVT - WCE",0)
+        util.initmat(eb, "mf6101", "wcepr-wceWtWkPM", "WCE Wait Time - WCE",0)
+        util.initmat(eb, "mf6102", "wcepr-railIVTWkPM", "Rail IVT - WCE",0)
+        util.initmat(eb, "mf6103", "wcepr-railWtWkPM", "Rail Wait Time - WCE",0)
+        util.initmat(eb, "mf6104", "wcepr-busIVTWkPM", "Bus IVT - WCE",0)
+        util.initmat(eb, "mf6105", "wcepr-busWtWkPM", "Bus Wait Time - WCE",0)
+        util.initmat(eb, "mf6106", "wcepr-bordsWkPM", "Boardings - WCE",0)
 
 
-        def read_file(self, eb, file):
-            util = _m.Modeller().tool("translink.emme.util")
-            #Read data from file and check number of lines
-            with open(file, "rb") as sourcefile:
-                lines = list(csv.reader(sourcefile, skipinitialspace=True))
+    @_m.logbook_trace("UNDER DEV - PNR Impedance")
+    def read_file(self, eb, file):
+        util = _m.Modeller().tool("translink.emme.util")
+        #Read data from file and check number of lines
+        with open(file, "rb") as sourcefile:
+            lines = list(csv.reader(sourcefile, skipinitialspace=True))
 
-            #TODO - validate each line has the same number of entries
+        #TODO - validate each line has the same number of entries
 
-            matrices = []
-            mat_data = []
-            # Initialize all matrices with 0-values and store a data reference
-            for i in range(1, len(lines[0])):
-                mat = util.initmat(eb, lines[0][i], lines[1][i], lines[2][i], 0)
-                matrices.append(mat)
-                mat_data.append(mat.get_data())
+        matrices = []
+        mat_data = []
+        # Initialize all matrices with 0-values and store a data reference
+        for i in range(1, len(lines[0])):
+            mat = util.initmat(eb, lines[0][i], lines[1][i], lines[2][i], 0)
+            matrices.append(mat)
+            mat_data.append(mat.get_data())
 
-            # loop over each data-containing line in the csv
-            for i in range(3, len(lines)):
-                line = lines[i]
-                # within each line set the data in each matrix
-                for j in range(1, len(line)):
-                    mat_data[j-1].set(int(line[0]), float(line[j]))
+        # loop over each data-containing line in the csv
+        for i in range(3, len(lines)):
+            line = lines[i]
+            # within each line set the data in each matrix
+            for j in range(1, len(line)):
+                mat_data[j-1].set(int(line[0]), float(line[j]))
 
-            # store the data back into the matrix on disk
-            for i in range(len(matrices)):
-                matrices[i].set_data(mat_data[i])
+        # store the data back into the matrix on disk
+        for i in range(len(matrices)):
+            matrices[i].set_data(mat_data[i])
+
+
+
+    def AutoImpedance(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
