@@ -66,7 +66,7 @@ class PrImpedance(_m.Tool()):
                         "wceFare" : ["mf161",  "mf161", "mf161"]}
 
         # [Work, non-work]
-        vot_mats = ['msvotWkmed', 'msvotNKkmed']
+        vot_mats = ['msvotWkmed', 'msvotNWkmed']
 
         # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
         result_mats = [["mf6030",  "mf6075", "mf6115"],["mf6160",  "mf6200", "mf6240"]]
@@ -114,7 +114,7 @@ class PrImpedance(_m.Tool()):
                         "railFare" : ["mf161",  "mf161", "mf161"]}
 
         # [Work, non-work]
-        vot_mats = ['msvotWkmed', 'msvotNKkmed']
+        vot_mats = ['msvotWkmed', 'msvotNWkmed']
 
         # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
         result_mats = [["mf6015", "mf6060", "mf6100"],['mf6145','mf6185','mf6225']]
@@ -158,7 +158,7 @@ class PrImpedance(_m.Tool()):
                         "busFare" : ["mf160",  "mf160", "mf160"]}
 
         # [Work, non-work]
-        vot_mats = ['msvotWkmed', 'msvotNKkmed']
+        vot_mats = ['msvotWkmed', 'msvotNWkmed']
 
         # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
         result_mats = [["mf6005", "mf6050", "mf6090"],['mf6135','mf6175','mf6215']]
@@ -197,7 +197,7 @@ class PrImpedance(_m.Tool()):
                     "autodist" : ["mf100", "mf103", "mf2100"] }
 
         # [Work, non-work]
-        vot_mats = ['msvotWkmed', 'msvotNKkmed']
+        vot_mats = ['msvotWkmed', 'msvotNWkmed']
 
         # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
         result_mats = [["mf6003", "mf6048", "mf6088"],['mf6133','mf6173','mf6213']]
