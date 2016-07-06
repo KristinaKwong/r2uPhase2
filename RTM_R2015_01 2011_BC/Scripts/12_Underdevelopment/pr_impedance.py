@@ -73,11 +73,14 @@ class PrImpedance(_m.Tool()):
         for i in range(0,3):
             for j in range(0,2):
                 expression = ("{autotime} + {vot} * {autotoll}"
-                              " + (msVOC * {autodist} * {vot})"
-                              " + mdPRcost * {vot} + mdPRtermtime").format(autotime=auto_mats["autotime"][i],
+                              " + ({VOC} * {autodist} * {vot})"
+                              " + {lotcost} * {vot} + {termtime}").format(autotime=auto_mats["autotime"][i],
                                                                              vot=vot_mats[j],
                                                                              autotoll=auto_mats["autotoll"][i],
-                                                                             autodist=auto_mats["autodist"][i])
+                                                                             autodist=auto_mats["autodist"][i],
+                                                                             VOC="msVOC",
+                                                                             lotcost = "mdPRcost",
+                                                                             termtime = "mdPRtermtime")
                 result = ("{autoGT}").format(autoGT=result_mats[j][i])
                 specs.append(util.matrix_spec(result, expression))
         util.compute_matrix(specs)
