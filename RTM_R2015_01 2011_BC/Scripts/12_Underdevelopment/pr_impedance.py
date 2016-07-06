@@ -50,6 +50,51 @@ class PrImpedance(_m.Tool()):
         self.read_file(eb, pnr_costs)
 
 
+    def RailGT(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
+        # [AM,MD,PM]
+        transit_mats = {"railIVT" : ["mf5001",  "mf5006", "mf5011"],
+                        "railWait" : ["mf5002",  "mf5007", "mf5012"],
+                        "busIVT" : ["mf5000",  "mf5005", "mf5010"],
+                        "auxTransit" : ["mf5004", "mf5009", "mf5014"],
+                        "boardings" : ["mf5003", "mf5008", "mf5014"],
+                        "railFare" : ["mf161",  "mf161", "mf161"]}
+
+        # [Work, non-work]
+        vot_mats = ['msvotWkmed', 'msvotNKkmed']
+
+        # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
+        result_mats = [["mf6015", "mf6060", "mf6100"],['mf6145','mf6185','mf6225']]
+
+        #calculate generalized time for bus leg
+        specs = []
+        for i in range(0,3):
+            for j in range(0,2):
+                expression = ("{railIVT} * {railIVTprcp}"
+                              " + {railWait} * {railOVTprcp}"
+                              " + {busIVT} * {busIVTprcp}"
+                              " + {auxTrans} * {walkprcp}"
+                              " + {boardings} * {transferprcp} "
+                              " + {fare} * {VOT}"
+                              ).format(railIVT=transit_mats["railIVT"][i],
+                                       railWait=transit_mats["railWait"][i],
+                                       busIVT=transit_mats["busIVT"][i],
+                                       auxTrans=transit_mats["auxTransit"][i],
+                                       boardings=transit_mats["boardings"][i],
+                                       fare=transit_mats["railFare"][i],
+                                       railIVTprcp="msrailIVTprcp",
+                                       railOVTprcp="msrailOVTprcp",
+                                       busIVTprcp="msbusIVTprcp",
+                                       walkprcp="mswalkprcp",
+                                       transferprcp="msrailTRANSprcp",
+                                       VOT=vot_mats[j])
+
+                result = ("{railGT}").format(railGT=result_mats[j][i])
+                specs.append(util.matrix_spec(result, expression))
+        util.compute_matrix(specs)
+
+
+
     def BusGT(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
         # [AM,MD,PM]
