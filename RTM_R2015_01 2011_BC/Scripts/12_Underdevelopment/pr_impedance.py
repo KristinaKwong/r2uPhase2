@@ -49,6 +49,11 @@ class PrImpedance(_m.Tool()):
         self.matrix_batchins(eb)
         self.read_file(eb, pnr_costs)
 
+        self.AutoGT(eb)
+        self.BusGT(eb)
+        self.RailGT(eb)
+        self.WceGT(eb)
+
 
     def WceGT(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
