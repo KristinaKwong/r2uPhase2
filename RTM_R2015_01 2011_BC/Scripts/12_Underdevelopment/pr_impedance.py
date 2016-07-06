@@ -55,6 +55,67 @@ class PrImpedance(_m.Tool()):
 
 
 
+
+    def AutoGT(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
+        # [AM,MD,PM]
+        auto_mats = {"autotime" : ["mf101",  "mf104", "mf2101"],
+                    "autotoll" : ["mf102", "mf105", "mf2102"],
+                    "autodist" : ["mf100", "mf103", "mf2100"] }
+
+        # [Work, non-work]
+        vot_mats = ['msvotWkmed', 'msvotNKkmed']
+
+        # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
+        result_mats = [["mf6003", "mf6048", "mf6088"],['mf6133','mf6173','mf6213']]
+
+        specs = []
+        for i in range(0,3):
+            for j in range(0,2):
+                expression = ("{autotime} + {vot} * {autotoll}"
+                              " + (msVOC * {autodist} * {vot})"
+                              " + mdPRcost * {vot} + mdPRtermtime").format(autotime=auto_mats["autotime"][i],
+                                                                             vot=vot_mats[j],
+                                                                             autotoll=auto_mats["autotoll"][i],
+                                                                             autodist=auto_mats["autodist"][i])
+                result = ("{autoGT}").format(autoGT=result_mats[j][i])
+                specs.append(util.matrix_spec(result, expression))
+        util.compute_matrix(specs)
+
+        # result_mats = [["mf6003", "mf6048", "mf6088"],[]]
+
+
+
+
+    @_m.logbook_trace("UNDER DEV - PNR Impedance")
+    def read_file(self, eb, file):
+        util = _m.Modeller().tool("translink.emme.util")
+        #Read data from file and check number of lines
+        with open(file, "rb") as sourcefile:
+            lines = list(csv.reader(sourcefile, skipinitialspace=True))
+
+        #TODO - validate each line has the same number of entries
+
+        matrices = []
+        mat_data = []
+        # Initialize all matrices with 0-values and store a data reference
+        for i in range(1, len(lines[0])):
+            mat = util.initmat(eb, lines[0][i], lines[1][i], lines[2][i], 0)
+            matrices.append(mat)
+            mat_data.append(mat.get_data())
+
+        # loop over each data-containing line in the csv
+        for i in range(3, len(lines)):
+            line = lines[i]
+            # within each line set the data in each matrix
+            for j in range(1, len(line)):
+                mat_data[j-1].set(int(line[0]), float(line[j]))
+
+        # store the data back into the matrix on disk
+        for i in range(len(matrices)):
+            matrices[i].set_data(mat_data[i])
+
+
     @_m.logbook_trace("UNDER DEV - PNR Impedance")
     def matrix_batchins(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
@@ -69,7 +130,6 @@ class PrImpedance(_m.Tool()):
 
         util.initmat(eb,"ms130", "VOC", "Vehicle Operating Variable Cost (/km)", 0.1646) # CAA includes fuel, tires, maintence
 
-
         # Lot choice using AM impedances, but lot choice fixed for all time periods
         util.initmat(eb, "mf6000", "buspr-lotChceWkAM", "Bus Best PnR Lot - Bus",0)
         util.initmat(eb, "mf6001", "railpr-lotChceWkAM", "Rail Best PnR Lot - Rail",0)
@@ -77,7 +137,7 @@ class PrImpedance(_m.Tool()):
 
 
         # AM Auto generalized Cost same for all modes
-        util.initmat(eb, "mf6003", "buspr-gcAutoAM", "PnR Generalized Cost Auto Leg",0)
+        util.initmat(eb, "mf6003", "pr-gtAutoWkAM", "PnR Generalized Cost Auto Leg",0)
 
 
         # AM bus impedance matrices
@@ -120,7 +180,7 @@ class PrImpedance(_m.Tool()):
 
 
         # MD Auto generalized Cost same for all modes
-        util.initmat(eb, "mf6048", "buspr-gcAutoWkMD", "PnR Generalized Cost Auto Leg",0)
+        util.initmat(eb, "mf6048", "pr-gtAutoWkMD", "PnR Generalized Cost Auto Leg",0)
 
 
         # MD bus impedance matrices
@@ -163,7 +223,7 @@ class PrImpedance(_m.Tool()):
 
 
         # PM Auto generalized Cost same for all modes
-        util.initmat(eb, "mf6088", "buspr-gcAutoWkPM", "PnR Generalized Cost Auto Leg",0)
+        util.initmat(eb, "mf6088", "pr-gtAutoWkPM", "PnR Generalized Cost Auto Leg",0)
 
 
         # PM bus impedance matrices
@@ -213,7 +273,7 @@ class PrImpedance(_m.Tool()):
 
 
         # AM Auto generalized Cost same for all modes
-        util.initmat(eb, "mf6133", "buspr-gcAutoAM", "PnR Generalized Cost Auto Leg",0)
+        util.initmat(eb, "mf6133", "pr-gtAutoNWkAM", "PnR Generalized Cost Auto Leg",0)
 
 
         # AM bus impedance matrices
@@ -256,7 +316,7 @@ class PrImpedance(_m.Tool()):
 
 
         # MD Auto generalized Cost same for all modes
-        util.initmat(eb, "mf6173", "buspr-gcAutoNWkMD", "PnR Generalized Cost Auto Leg",0)
+        util.initmat(eb, "mf6173", "pr-gtAutoNWkMD", "PnR Generalized Cost Auto Leg",0)
 
 
         # MD bus impedance matrices
@@ -299,7 +359,7 @@ class PrImpedance(_m.Tool()):
 
 
         # PM Auto generalized Cost same for all modes
-        util.initmat(eb, "mf6213", "buspr-gcAutoNWkPM", "PnR Generalized Cost Auto Leg",0)
+        util.initmat(eb, "mf6213", "pr-gtAutoNWkPM", "PnR Generalized Cost Auto Leg",0)
 
 
         # PM bus impedance matrices
@@ -311,68 +371,3 @@ class PrImpedance(_m.Tool()):
         util.initmat(eb, "mf6220", "buspr-busIVTNWkPM", "Bus IVTT - Bus",0)
         util.initmat(eb, "mf6221", "buspr-busWtNWkPM", "Bus Wait Time - Bus",0)
         util.initmat(eb, "mf6222", "buspr-bordsNWkPM", "Boardings - Bus",0)
-
-
-        # PM rail impedance matrices
-        util.initmat(eb, "mf6225", "railpr-GctranNWkPM", "Rail PnR Generalized Cost Transit Leg - Rail",0)
-        util.initmat(eb, "mf6226", "railpr-minGCNWkPM", "Rail PnR Combined Skim Result - Rail",0)
-        util.initmat(eb, "mf6227", "railpr-trmtimNWkPM", "PnR Lot Terminal Time - Rail",0)
-        util.initmat(eb, "mf6228", "railpr-prkostNWkPM", "PR parking cost - Rail",0)
-        util.initmat(eb, "mf6229", "railpr-autAcsNWkPM", "Auto access time  - Rail",0)
-        util.initmat(eb, "mf6230", "railpr-railIVTNWkPM", "Rail IVT - Rail",0)
-        util.initmat(eb, "mf6231", "railpr-railWtNWkPM", "Rail Wait Time - Rail",0)
-        util.initmat(eb, "mf6232", "railpr-busIVTNWkPM", "Bus IVT - Rail",0)
-        util.initmat(eb, "mf6233", "railpr-busWtNWkPM", "Bus Wait Time - Rai",0)
-        util.initmat(eb, "mf6234", "railpr-bordsNWkPM", "Rail Boardings",0)
-
-
-        # PM WCE impedance matrices
-        util.initmat(eb, "mf6240", "wcepr-GctranNWkPM", "WCE PnR Generalized Cost Transit Leg",0)
-        util.initmat(eb, "mf6241", "wcepr-minGCNWkPM", "WCE PnR Combined Skim Result",0)
-        util.initmat(eb, "mf6242", "wcepr-trmtimNWkPM", "PnR Lot Terminal Time - WCE",0)
-        util.initmat(eb, "mf6243", "wcepr-prkostNWkPM", "PR parking cost - WCE",0)
-        util.initmat(eb, "mf6244", "wcepr-autAcsNWkPM", "Auto access time - WCE",0)
-        util.initmat(eb, "mf6245", "wcepr-wceIVTNWkPM", "WCE IVT - WCE",0)
-        util.initmat(eb, "mf6246", "wcepr-wceWtNWkPM", "WCE Wait Time - WCE",0)
-        util.initmat(eb, "mf6247", "wcepr-railIVTNWkPM", "Rail IVT - WCE",0)
-        util.initmat(eb, "mf6248", "wcepr-railWtNWkPM", "Rail Wait Time - WCE",0)
-        util.initmat(eb, "mf6249", "wcepr-busIVTNWkPM", "Bus IVT - WCE",0)
-        util.initmat(eb, "mf6250", "wcepr-busWtNWkPM", "Bus Wait Time - WCE",0)
-        util.initmat(eb, "mf6251", "wcepr-bordsNWkPM", "Boardings - WCE",0)
-
-
-
-
-
-    @_m.logbook_trace("UNDER DEV - PNR Impedance")
-    def read_file(self, eb, file):
-        util = _m.Modeller().tool("translink.emme.util")
-        #Read data from file and check number of lines
-        with open(file, "rb") as sourcefile:
-            lines = list(csv.reader(sourcefile, skipinitialspace=True))
-
-        #TODO - validate each line has the same number of entries
-
-        matrices = []
-        mat_data = []
-        # Initialize all matrices with 0-values and store a data reference
-        for i in range(1, len(lines[0])):
-            mat = util.initmat(eb, lines[0][i], lines[1][i], lines[2][i], 0)
-            matrices.append(mat)
-            mat_data.append(mat.get_data())
-
-        # loop over each data-containing line in the csv
-        for i in range(3, len(lines)):
-            line = lines[i]
-            # within each line set the data in each matrix
-            for j in range(1, len(line)):
-                mat_data[j-1].set(int(line[0]), float(line[j]))
-
-        # store the data back into the matrix on disk
-        for i in range(len(matrices)):
-            matrices[i].set_data(mat_data[i])
-
-
-
-    def AutoImpedance(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
