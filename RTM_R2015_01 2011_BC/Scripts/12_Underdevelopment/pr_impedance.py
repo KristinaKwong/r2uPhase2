@@ -27,18 +27,17 @@ class PrImpedance(_m.Tool()):
         with _m.logbook_trace("UNDER DEV - PR Impedance"):
             self.tool_run_msg = ""
             try:
-                # TODO: scenario selectors to page and run method
                 eb = _m.Modeller().emmebank
-                self(self.scenario)
+                self.__call__(eb)
                 self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
             except Exception, e:
                 self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
-                raise
+
 
 
     @_m.logbook_trace("UNDER DEV - PNR Impedance")
-    def __call__(self, scenario):
-        eb = _m.Modeller().emmebank
+    def __call__(self, eb):
+
         util = _m.Modeller().tool("translink.emme.util")
         input_path = util.get_input_path(eb)
         pnr_costs = os.path.join(input_path, "pnr_inputs.csv")
