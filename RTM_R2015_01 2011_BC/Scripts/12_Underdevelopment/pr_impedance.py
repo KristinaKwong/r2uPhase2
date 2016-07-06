@@ -50,6 +50,44 @@ class PrImpedance(_m.Tool()):
         self.read_file(eb, pnr_costs)
 
 
+    def BusGT(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
+        # [AM,MD,PM]
+        transit_mats = {"busIVT" : ["mf107",  "mf112", "mf2107"],
+                        "busWait" : ["mf106",  "mf111", "mf2106"],
+                        "auxTransit" : ["mf109", "mf114", "mf2109"],
+                        "boardings" : ["mf108", "mf113", "mf2108"],
+                        "busFare" : ["mf160",  "mf160", "mf160"]}
+
+        # [Work, non-work]
+        vot_mats = ['msvotWkmed', 'msvotNKkmed']
+
+        # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
+        result_mats = [["mf6005", "mf6050", "mf6090"],['mf6135','mf6175','mf6215']]
+
+        #calculate generalized time for bus leg
+        specs = []
+        for i in range(0,3):
+            for j in range(0,2):
+                expression = ("{busIVT} * {busIVTprcp}"
+                              " + {busWait} * {busOVTprcp}"
+                              " + {auxTrans} * {walkprcp}"
+                              " + {boardings} * {transferprcp} "
+                              " + {fare} * {VOT}"
+                              ).format(busIVT=transit_mats["busIVT"][i],
+                                       busWait=transit_mats["busWait"][i],
+                                       auxTrans=transit_mats["auxTransit"][i],
+                                       boardings=transit_mats["boardings"][i],
+                                       busFare=transit_mats["busFare"][i],
+                                       busIVTprcp="msbusIVTprcp",
+                                       busOVTprcp="msbusOVTprcp",
+                                       walkprcp="mswalkprcp",
+                                       transferprcp="msbusTRANSprcp",
+                                       VOT=vot_mats[j])
+
+                result = ("{busGT}").format(busGT=result_mats[j][i])
+                specs.append(util.matrix_spec(result, expression))
+        util.compute_matrix(specs)
 
 
 
@@ -69,15 +107,16 @@ class PrImpedance(_m.Tool()):
         specs = []
         for i in range(0,3):
             for j in range(0,2):
-                expression = ("{autotime} + {vot} * {autotoll}"
-                              " + ({VOC} * {autodist} * {vot})"
-                              " + {lotcost} * {vot} + {termtime}").format(autotime=auto_mats["autotime"][i],
-                                                                             vot=vot_mats[j],
-                                                                             autotoll=auto_mats["autotoll"][i],
-                                                                             autodist=auto_mats["autodist"][i],
-                                                                             VOC="msVOC",
-                                                                             lotcost = "mdPRcost",
-                                                                             termtime = "mdPRtermtime")
+                expression = ("{autotime} + {termtime}"
+                              " + (({VOC} * {autodist}) + {autotoll} + {lotcost}) * {VOT}"
+                              ).format(autotime=auto_mats["autotime"][i],
+                                       autotoll=auto_mats["autotoll"][i],
+                                       autodist=auto_mats["autodist"][i],
+                                       VOT=vot_mats[j],
+                                       VOC="msVOC",
+                                       lotcost = "mdPRcost",
+                                       termtime = "mdPRtermtime")
+
                 result = ("{autoGT}").format(autoGT=result_mats[j][i])
                 specs.append(util.matrix_spec(result, expression))
         util.compute_matrix(specs)
@@ -125,7 +164,23 @@ class PrImpedance(_m.Tool()):
         util.initmat(eb,"ms124","votNWkmed", "non-work VOT med income in min/$", 8)
         util.initmat(eb,"ms125","votNWkhigh", "non-work VOT high income in min/$", 6)
 
-        util.initmat(eb,"ms130", "VOC", "Vehicle Operating Variable Cost (/km)", 0.1646) # CAA includes fuel, tires, maintence
+        util.initmat(eb,"ms130", "VOC", "Vehicle Operating Variable Cost (/km)", 0.18) # CAA includes fuel, tires, maintence
+
+        # transit scalars
+        #TODO update these factors to actual values
+        util.initmat(eb, "ms199", "walkprcp", "walk time perception factor", 1)
+
+        util.initmat(eb, "ms200", "busIVTprcp", "bus IVT perception factor", 1)
+        util.initmat(eb, "ms201", "busOVTprcp", "bus OVT perception factor", 1.5)
+        util.initmat(eb, "ms202", "busTRANSprcp", "bus transfer perception factor", 5)
+
+        util.initmat(eb, "ms205", "railIVTprcp", "rail IVT perception factor", 1)
+        util.initmat(eb, "ms206", "railOVTprcp", "rail OVT perception factor", 1.5)
+        util.initmat(eb, "ms207", "railTRANSprcp", "rail transfer perception factor", 5)
+
+        util.initmat(eb, "ms210", "wceIVTprcp", "wce IVT perception factor", 1)
+        util.initmat(eb, "ms211", "wceOVTprcp", "wce OVT perception factor", 1.5)
+        util.initmat(eb, "ms212", "wceTRANSprcp", "wce transfer perception factor", 5)
 
         # Lot choice using AM impedances, but lot choice fixed for all time periods
         util.initmat(eb, "mf6000", "buspr-lotChceWkAM", "Bus Best PnR Lot - Bus",0)
