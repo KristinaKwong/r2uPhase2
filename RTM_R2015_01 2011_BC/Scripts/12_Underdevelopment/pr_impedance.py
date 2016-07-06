@@ -29,18 +29,15 @@ class PrImpedance(_m.Tool()):
             try:
                 # TODO: scenario selectors to page and run method
                 eb = _m.Modeller().emmebank
-                am_scenario = eb.scenario(21000)
-                md_scenario = eb.scenario(22000)
-                pm_scenario = eb.scenario(23000)
-                self(am_scenario, md_scenario, pm_scenario)
-                run_msg = "Tool completed"
-                self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
+                self(self.scenario)
+                self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
             except Exception, e:
                 self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
-        pass
+                raise
+
 
     @_m.logbook_trace("UNDER DEV - PNR Impedance")
-    def __call__(self, scenarioam, scenariomd, scenariopm):
+    def __call__(self, scenario):
         eb = _m.Modeller().emmebank
         util = _m.Modeller().tool("translink.emme.util")
         input_path = util.get_input_path(eb)
@@ -84,9 +81,6 @@ class PrImpedance(_m.Tool()):
                 result = ("{autoGT}").format(autoGT=result_mats[j][i])
                 specs.append(util.matrix_spec(result, expression))
         util.compute_matrix(specs)
-
-        # result_mats = [["mf6003", "mf6048", "mf6088"],[]]
-
 
 
 
