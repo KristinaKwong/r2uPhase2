@@ -15,7 +15,7 @@ class PrImpedance(_m.Tool()):
     def page(self):
         pb = _m.ToolPageBuilder(self)
         pb.title = "Calculate Impedance for Park and Ride Access Mode"
-        pb.description = "Calculates Impedance for PnR based on best lot"
+        pb.description = "Calculates Impedance for PnR based on Best Lot"
         pb.branding_text = "TransLink"
 
         if self.tool_run_msg:
@@ -43,11 +43,60 @@ class PrImpedance(_m.Tool()):
         input_path = util.get_input_path(eb)
         pnr_costs = os.path.join(input_path, "pnr_inputs.csv")
 
-        RailSkim = _m.Modeller().tool("translink.emme.under_dev.wceskim")
-        railassign = _m.Modeller().tool("inro.emme.transit_assignment.extended_transit_assignment")
+        #RailSkim = _m.Modeller().tool("translink.emme.under_dev.wceskim")
+        # railassign = _m.Modeller().tool("inro.emme.transit_assignment.extended_transit_assignment")
 
         self.matrix_batchins(eb)
         self.read_file(eb, pnr_costs)
+
+
+    def WceGT(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
+        # [AM,MD,PM]
+        transit_mats = {"wceIVT" : ["mf5052",  "mf5058", "mf5064"],
+                        "wceWait" : ["mf5053",  "mf5059", "mf5065"],
+                        "railIVT" : ["mf5051",  "mf5057", "mf5063"],
+                        "busIVT" : ["mf5050",  "mf5056", "mf5062"],
+                        "auxTransit" : ["mf5055",  "mf5061", "mf5067"],
+                        "boardings" : ["mf5054",  "mf5060", "mf5066"],
+                        "wceFare" : ["mf161",  "mf161", "mf161"]}
+
+        # [Work, non-work]
+        vot_mats = ['msvotWkmed', 'msvotNKkmed']
+
+        # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
+        result_mats = [["mf6030",  "mf6075", "mf6115"],["mf6160",  "mf6200", "mf6240"]]
+
+        #calculate generalized time for bus leg
+        specs = []
+        for i in range(0,3):
+            for j in range(0,2):
+                expression = ("{wceIVT} * {wceIVTprcp}"
+                              " + {wceWait} * {wceOVTprcp}"
+                              " + {railIVT} * {railIVTprcp}"
+                              " + {busIVT} * {busIVTprcp}"
+                              " + {auxTrans} * {walkprcp}"
+                              " + {boardings} * {transferprcp} "
+                              " + {fare} * {VOT}"
+                              ).format(wceIVT=transit_mats["wceIVT"][i],
+                                       wceWait=transit_mats["wceWait"][i],
+                                       railIVT=transit_mats["railIVT"][i],
+                                       busIVT=transit_mats["busIVT"][i],
+                                       auxTrans=transit_mats["auxTransit"][i],
+                                       boardings=transit_mats["boardings"][i],
+                                       fare=transit_mats["wceFare"][i],
+                                       wceIVTprcp="mswceIVTprcp",
+                                       wceOVTprcp="mswceOVTprcp",
+                                       railIVTprcp="msrailIVTprcp",
+                                       busIVTprcp="msbusIVTprcp",
+                                       walkprcp="mswalkprcp",
+                                       transferprcp="mswceTRANSprcp",
+                                       VOT=vot_mats[j])
+
+                result = ("{wceGT}").format(wceGT=result_mats[j][i])
+                specs.append(util.matrix_spec(result, expression))
+        util.compute_matrix(specs)
+
 
 
     def RailGT(self, eb):
