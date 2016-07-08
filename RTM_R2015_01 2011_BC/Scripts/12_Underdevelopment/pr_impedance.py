@@ -52,6 +52,115 @@ class PrImpedance(_m.Tool()):
         self.BusGT(eb)
         self.RailGT(eb)
         self.WceGT(eb)
+        self.bestlot(eb)
+
+
+    def bestlot(self, eb):
+        compute_lot = _m.Modeller().tool(
+            "inro.emme.matrix_calculation.matrix_triple_index_operation")
+
+        # defining dictionaries to keep matrix references explicit
+        # matrices needed for calulcation
+        # generalized time for auto and transit legs
+        legs = {
+                "work" : {"auto" : "mf6003",
+                         "bus" : "mf6005",
+                         "rail" : "mf6015",
+                         "wce" : "mf6030"},
+                "nonwork" : {"auto" : "mf6173",
+                             "bus" : "mf6175",
+                             "rail" : "mf6185",
+                             "wce" : "mf6200"}
+                }
+
+        # generalized time of minimum auto-lot-transit route
+        # not used, but required by triple index operation
+        min_gt = {
+                "work" : {"bus" : "mf6006",
+                         "rail" : "mf6016",
+                         "wce" : "mf6031"},
+                "nonwork" : {"bus" : "mf6176",
+                             "rail" : "mf6186",
+                             "wce" : "mf6201"}
+                }
+        # lot choice dictionary
+        lot_choice = {
+                "work" : {"bus" : "mf6000",
+                         "rail" : "mf6001",
+                         "wce" : "mf6002"},
+                "nonwork" : {"bus" : "mf6130",
+                             "rail" : "mf6131",
+                             "wce" : "mf6132"}
+                }
+
+        spec  = {
+            "pk_operand": "AutoLeg",
+            "kq_operand": "TransitLeg",
+            "qk_operand": None,
+            "combination_operator": "+",
+            "masks": [],
+            "contraction_operator": ".min.",
+            "result": 'MinGT',
+            "index_result": "BestLot",
+            "constraint": {
+                "by_zone": {
+                    "intermediates": "gn1",
+                    "origins": "all",
+                    "destinations": "all"
+                },
+                "by_value": None
+            },
+            "type": "MATRIX_TRIPLE_INDEX_OPERATION"
+        }
+
+        # explictly set lot ensemble - will have different lots in 2011 and future
+        # gn1 exist in 2011 and future
+        # gn2 exist only in 2011
+        # gn3 exist only in future
+        spec["constraint"]["by_zone"]["intermediates"] = "gn1;gn2"
+
+        # work uses AM
+        # note, auto skim is same for all transit modes
+
+        # calculate bus best lot work
+        spec["pk_operand"] = legs['work']['auto']
+        spec["kq_operand"] = legs['work']['bus']
+        spec["result"] = min_gt['work']['bus']
+        spec["index_result"] = lot_choice['work']['bus']
+        compute_lot(spec)
+
+        # calculate rail best lot work
+        spec["kq_operand"] = legs['work']['rail']
+        spec["result"] = min_gt['work']['rail']
+        spec["index_result"] = lot_choice['work']['rail']
+        compute_lot(spec)
+
+        # calculate west coast express best lot work
+        spec["kq_operand"] = legs['work']['wce']
+        spec["result"] = min_gt['work']['wce']
+        spec["index_result"] = lot_choice['work']['wce']
+        compute_lot(spec)
+
+
+        # calculate bus best lot nonwork
+        spec["pk_operand"] = legs['nonwork']['auto']
+        spec["kq_operand"] = legs['nonwork']['bus']
+        spec["result"] = min_gt['nonwork']['bus']
+        spec["index_result"] = lot_choice['nonwork']['bus']
+        compute_lot(spec)
+
+        # calculate rail best lot nonwork
+        spec["kq_operand"] = legs['nonwork']['rail']
+        spec["result"] = min_gt['nonwork']['rail']
+        spec["index_result"] = lot_choice['nonwork']['rail']
+        compute_lot(spec)
+
+        # calculate west coast express best lot nonwork
+        spec["kq_operand"] = legs['nonwork']['wce']
+        spec["result"] = min_gt['nonwork']['wce']
+        spec["index_result"] = lot_choice['nonwork']['wce']
+        compute_lot(spec)
+
 
 
     def WceGT(self, eb):
