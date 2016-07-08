@@ -62,6 +62,9 @@ class PrImpedance(_m.Tool()):
         # defining dictionaries to keep matrix references explicit
         # matrices needed for calulcation
         # generalized time for auto and transit legs
+        # work uses am for all modes
+        # non-work uses md for bus and rail and am for WCE (there is no md WCE)
+
         legs = {
                 "work" : {"auto" : "mf6003",
                          "bus" : "mf6005",
@@ -70,7 +73,7 @@ class PrImpedance(_m.Tool()):
                 "nonwork" : {"auto" : "mf6173",
                              "bus" : "mf6175",
                              "rail" : "mf6185",
-                             "wce" : "mf6200"}
+                             "wce" : "mf6030"}
                 }
 
         # generalized time of minimum auto-lot-transit route
@@ -156,6 +159,8 @@ class PrImpedance(_m.Tool()):
         compute_lot(spec)
 
         # calculate west coast express best lot nonwork
+        # west coast express no midday, uses am and needs AM auto skim brought back
+        spec["pk_operand"] = legs['work']['auto']
         spec["kq_operand"] = legs['nonwork']['wce']
         spec["result"] = min_gt['nonwork']['wce']
         spec["index_result"] = lot_choice['nonwork']['wce']
