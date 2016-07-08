@@ -67,15 +67,17 @@ class RailAssignment(_m.Tool()):
             "perceived_first_waiting_times": None,
             "perceived_total_waiting_times": None
         }
-        if RaType==0:
+        ## if RaType==0:
+
+        if RaType==1:
             Travel_Time_List = [["mf5003", "mf5004", "mf5002", "mf5000", "mf5001"],
                                 ["mf5008", "mf5009", "mf5007", "mf5005", "mf5006"],
                                 ["mf5013", "mf5014", "mf5012", "mf5010", "mf5011"]]
-        if RaType==1:
+        """
             Travel_Time_List = [["mf5023", "mf5024", "mf5022", "mf5020", "mf5021"],
                                 ["mf5028", "mf5029", "mf5027", "mf5025", "mf5026"],
                                 ["mf5033", "mf5034", "mf5032", "mf5030", "mf5031"]]
-
+        """
         spec_as_dict = _deepcopy(tmplt_spec)
         spec_as_dict["by_mode_subset"]["modes"] = ["b", "f", "g", "l", "s", "a", "p", "h"]
         spec_as_dict["by_mode_subset"]["actual_total_boarding_times"] = Travel_Time_List[i][0]
