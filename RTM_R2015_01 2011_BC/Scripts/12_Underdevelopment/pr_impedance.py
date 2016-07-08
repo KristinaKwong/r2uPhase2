@@ -53,7 +53,7 @@ class PrImpedance(_m.Tool()):
         self.BusGT(eb)
         self.RailGT(eb)
         self.WceGT(eb)
-        self.bestlot(eb)
+        self.bestlot(eb, model_year)
 
         # BUS WORK
         # in the form {skim : [actual skim, output pnr leg skim, best lot]}
@@ -111,7 +111,11 @@ class PrImpedance(_m.Tool()):
         leg_impedances= _m.Modeller().tool(
             "inro.emme.choice_model.pr.best_lot_step.leg_impedances")
 
-        # explicitly define intermediates (different for base and future)
+
+        # explictly set lot ensemble - will have different lots in 2011 and future
+        # gn1 exist in 2011 and future
+        # gn2 exist only in 2011
+        # gn3 exist only in future
         if year == 2011:
             intermediates = 'gn1;gn2'
         else:
@@ -143,9 +147,20 @@ class PrImpedance(_m.Tool()):
 
 
 
-    def bestlot(self, eb):
+    def bestlot(self, eb, year):
         compute_lot = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_triple_index_operation")
+
+        # explictly set lot ensemble - will have different lots in 2011 and future
+        # gn1 exist in 2011 and future
+        # gn2 exist only in 2011
+        # gn3 exist only in future
+
+
+        if year == 2011:
+            intermediates = 'gn1;gn2'
+        else:
+            intermediates = 'gn1;gn3'
 
         # defining dictionaries to keep matrix references explicit
         # matrices needed for calulcation
@@ -195,7 +210,7 @@ class PrImpedance(_m.Tool()):
             "index_result": "BestLot",
             "constraint": {
                 "by_zone": {
-                    "intermediates": "gn1",
+                    "intermediates": intermediates,
                     "origins": "all",
                     "destinations": "all"
                 },
@@ -208,7 +223,7 @@ class PrImpedance(_m.Tool()):
         # gn1 exist in 2011 and future
         # gn2 exist only in 2011
         # gn3 exist only in future
-        spec["constraint"]["by_zone"]["intermediates"] = "gn1;gn2"
+
 
         # work uses AM
         # note, auto skim is same for all transit modes
