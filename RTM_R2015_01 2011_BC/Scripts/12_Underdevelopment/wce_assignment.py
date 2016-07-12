@@ -186,7 +186,7 @@ class Rail_Assignment(_m.Tool()):
         util.initmat(eb, "mf5050", "nWBIvA", "Interim-JL Skim WCEBusIVTTAM", 0)
         util.initmat(eb, "mf5051", "nWRIvA", "Interim-JL Skim WCERailIVTTAM", 0)
         util.initmat(eb, "mf5052", "nWWIvA", "Interim-JL Skim WCEWCEIVTTAM", 0)
-        util.initmat(eb, "mf5053", "nWlWtA", "Interim-JL Skim WCETotalWaitAM", 0)
+        util.initmat(eb, "mf5053", "bunWlWtA", "Interim-JL Skim WCETotalWaitAM", 0)
         util.initmat(eb, "mf5054", "nWlBrA", "Interim-JL Skim WCEAvgBoardAM", 0)
         util.initmat(eb, "mf5055", "nWlAxA", "Interim-JL Skim WCEAuxAM", 0)
 

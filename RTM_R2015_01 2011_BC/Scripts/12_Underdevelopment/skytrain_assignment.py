@@ -200,9 +200,9 @@ class Rail_Assignment(_m.Tool()):
         util.initmat(eb, "mf5014", "eRlAxP", "Interim Skim RailAuxPM", 0)
 
 
-        #Initialize Block for Skytrain
+        #Not needed
 
-
+"""
 
         util.initmat(eb, "mf5020", "nRBIvA", "Interim-JL Skim RailBusIVTTAM", 0)
         util.initmat(eb, "mf5021", "nRRIvA", "Interim-JL Skim RailRailIVTTAM", 0)
@@ -221,3 +221,4 @@ class Rail_Assignment(_m.Tool()):
         util.initmat(eb, "mf5032", "nRlWtP", "Interim-JL Skim RailTotalWaitPM", 0)
         util.initmat(eb, "mf5033", "nRlBrP", "Interim-JL Skim RailAvgBoardPM", 0)
         util.initmat(eb, "mf5034", "nRlAxP", "Interim-JL Skim RailAuxPM", 0)
+"""
