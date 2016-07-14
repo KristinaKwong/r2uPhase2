@@ -263,25 +263,20 @@ class TripDistributions(_m.Tool()):
     def two_dim_matrix_balancing(self, eb, mo_list, md_list, impedance_list, output_list, max_iterations):
         util = _m.Modeller().tool("translink.emme.util")
 
-        # Used to allocate results to  the "scratch" matrices
-        num_scratch = 0
-        util.initmat(eb, "mo927", "Scr1", "Scratch_MO_1", 0)
-        util.initmat(eb, "mo928", "Scr2", "Scratch_MO_2", 0)
-        util.initmat(eb, "mo929", "Scr3", "Scratch_MO_3", 0)
-        util.initmat(eb, "mo930", "Scr4", "Scratch_MO_4", 0)
-
-        results = ["mo927", "mo928", "mo929", "mo930"]
-
         # loops through mo_list for any list items that are expressions
         #  (contains "+") adding mo matrices up for aggregation.
         # Performs calulation and saves result in a scratch matrix.
         # then inserts scratch matrix instead of the initial expresssion
         specs = []
+        temp_matrices = []
         for i in range(0, len(mo_list)):
             if "+" in mo_list[i]:
-                specs.append(util.matrix_spec(results[num_scratch], mo_list[i]))
-                mo_list[i] = results[num_scratch]
-                num_scratch = num_scratch + 1
+                temp_id = eb.available_matrix_identifier("ORIGIN")
+                util.initmat(eb, temp_id, "scratch", "scratch matrix for two-dim balance", 0)
+                temp_matrices.append(temp_id)
+
+                specs.append(util.matrix_spec(temp_id, mo_list[i]))
+                mo_list[i] = temp_id
         util.compute_matrix(specs)
 
         #Begin balmprod
@@ -308,10 +303,10 @@ class TripDistributions(_m.Tool()):
             }
             spec_dict_matbal["classes"].append(class_spec)
         balancing_multiple_productions(spec_dict_matbal)
-        util.delmat(eb, "mo927")
-        util.delmat(eb, "mo928")
-        util.delmat(eb, "mo929")
-        util.delmat(eb, "mo930")
+
+        # Delete the temporary mo-matrices
+        for mat_id in temp_matrices:
+            util.delmat(eb, mat_id)
 
     #Calculate impedances for each purpose based on the original distribution macro distestall.mac
     @_m.logbook_trace("Calculate impedances")
