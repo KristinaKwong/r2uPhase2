@@ -130,7 +130,7 @@ class TripDistributions(_m.Tool()):
         ]
 
         for i in range(0, 11):
-            self.matrix_balancing(eb, mo_list[i], md_list[i], impedance_list[i], output_list[i], max_iterations)
+            self.two_dim_matrix_balancing(eb, mo_list[i], md_list[i], impedance_list[i], output_list[i], max_iterations)
 
         # Transpose Matrices mfs 241 thru 303 and store in mfs 310 thru 372
 
@@ -214,7 +214,7 @@ class TripDistributions(_m.Tool()):
         util.compute_matrix(specs)
 
     @_m.logbook_trace("Run matrix balancing to multiple productions")
-    def matrix_balancing(self, eb, mo_list, md_list, impedance_list, output_list, max_iterations):
+    def two_dim_matrix_balancing(self, eb, mo_list, md_list, impedance_list, output_list, max_iterations):
         util = _m.Modeller().tool("translink.emme.util")
 
         # Used to allocate results to  the "scratch" matrices
