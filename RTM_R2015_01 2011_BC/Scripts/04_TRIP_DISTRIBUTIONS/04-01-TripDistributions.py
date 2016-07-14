@@ -213,6 +213,39 @@ class TripDistributions(_m.Tool()):
 
         util.compute_matrix(specs)
 
+    @_m.logbook_trace("Run origin constrained matrix balancing")
+    def one_dim_matrix_balancing(self, eb, productions_list, impedance_list, output_demands):
+        util = _m.Modeller().tool("translink.emme.util")
+
+        temp_matrices = []
+
+        specs = []
+        for i in range(0, len(productions_list)):
+            # Initialize a temporary mo to calculate origin totals
+            temp_id = eb.available_matrix_identifier("ORIGIN")
+            temp_matrices.append(temp_id)
+            util.initmat(eb, temp_id, "scratch", "scratch matrix in one-dimensional balancing", 0)
+
+            # Calculate the sum of the impedence list to calculate an alpha factor
+            spec = util.matrix_spec(temp_id, impedance_list[i])
+            spec["aggregation"] = {"origins": None, "destinations": "+"}
+            specs.append(spec)
+
+            # Divide the total impedence into the productions to produce an alpha value
+            # Avoid dividing by zero by adding one to origins with utility sum of zero
+            spec = util.matrix_spec(temp_id, "%s/(%s+(%s.eq.0))" % (productions_list[i], temp_id, temp_id))
+            specs.append(spec)
+
+            # Multiply the alpha value times the impedence to produce an output demand
+            spec = util.matrix_spec(output_demands[i], "%s * %s" % (temp_id, impedance_list[i]))
+            specs.append(spec)
+
+        util.compute_matrix(specs)
+
+        # Delete the temporary mo-matrices
+        for i in range(0, len(temp_matrices)):
+            util.delmat(eb, temp_matrices[i])
+
     @_m.logbook_trace("Run matrix balancing to multiple productions")
     def two_dim_matrix_balancing(self, eb, mo_list, md_list, impedance_list, output_list, max_iterations):
         util = _m.Modeller().tool("translink.emme.util")
