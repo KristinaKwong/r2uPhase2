@@ -215,6 +215,19 @@ class TripDistributions(_m.Tool()):
 
     @_m.logbook_trace("Run origin constrained matrix balancing")
     def one_dim_matrix_balancing(self, eb, productions_list, impedance_list, output_demands):
+        """Perform a singly-constrained matrix balancing to production totals.
+
+        Calculate an output demand from an input production total and a utility matrix respecting
+        the production totals only. Zones with zero productions will have zero origin demand in the
+        final matrix. Zones with zero utility to all destinations will have zero demand in the final
+        matrix.
+
+        Arguments:
+        eb -- the emmebank to calculate in
+        productions_list -- a list of production totals (moXX)
+        impedance_list -- a list of impendences/utilities to use for balancing (mfXX)
+        output_demands -- the list of matrices to hold the output demands (mfXX)
+        """
         util = _m.Modeller().tool("translink.emme.util")
 
         temp_matrices = []
@@ -243,8 +256,8 @@ class TripDistributions(_m.Tool()):
         util.compute_matrix(specs)
 
         # Delete the temporary mo-matrices
-        for i in range(0, len(temp_matrices)):
-            util.delmat(eb, temp_matrices[i])
+        for mat_id in temp_matrices:
+            util.delmat(eb, mat_id)
 
     @_m.logbook_trace("Run matrix balancing to multiple productions")
     def two_dim_matrix_balancing(self, eb, mo_list, md_list, impedance_list, output_list, max_iterations):
