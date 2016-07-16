@@ -485,7 +485,7 @@ class PrImpedance(_m.Tool()):
                 "work" : {"bus" : "mf6000",
                          "rail" : "mf6001",
                          "wce" : "mf6002"},
-                "nonwork" : {"bus" : "mf6132",
+                "nonwork" : {"bus" : "mf6130",
                              "rail" : "mf6131",
                              "wce" : "mf6132"}
                 }
