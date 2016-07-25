@@ -19,8 +19,7 @@ a'002E1A' b   1   7.00  23.00 'Macdon/16th/Dtn     '      0      0      0
    230102          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230103          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230901          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -62,8 +61,7 @@ a'002E1M' b   1  15.00  23.00 'Macdon/16th/Dtn     '      0      0      0
    230102          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230103          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230901          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227703          dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -96,8 +94,7 @@ a'002E1P' b   1  15.00  23.00 'Macdon/16th/Dtn     '      0      0      0
    230102          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230103          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230901          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227702          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    227703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -132,6 +129,7 @@ a'002W1A' b   1  15.00  23.00 'Dtn/16th/Macdon     '      0      0      0
    227703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230104          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230103          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230102          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -164,6 +162,7 @@ a'002W1M' b   1  15.00  23.00 'Dtn/16th/Macdon     '      0      0      0
    227703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230104          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230103          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230102          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -206,6 +205,7 @@ a'002W1P' b   1   8.00  23.00 'Dtn/16th/Macdon     '      0      0      0
    227703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230104          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230103          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230102          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -4158,8 +4158,7 @@ a'022E2A' b   1   5.00  23.00 'Knight/Macdonald    '      0      0      0
    230102          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230103          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230901          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227703          dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -4259,8 +4258,7 @@ a'022E2M' b   1  10.00  23.00 'Knight/Macdonald    '      0      0      0
    230102          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230103          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230901          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227703          dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -4350,8 +4348,7 @@ a'022E2P' b   1   6.00  23.00 'Knight/Macdonald    '      0      0      0
    230102          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230103          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230901          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227702          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    227703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -4483,6 +4480,7 @@ a'022W1A' b   1   6.00  23.00 'Knight/Macdonald    '      0      0      0
    227703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230104          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230103          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230102          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -4573,6 +4571,7 @@ a'022W1M' b   1  10.00  23.00 'Knight/Macdonald    '      0      0      0
    227703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230104          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230103          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230102          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -4673,6 +4672,7 @@ a'022W1P' b   1   6.00  23.00 'Knight/Macdonald    '      0      0      0
    227703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230104          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230103          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230102          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -5390,8 +5390,7 @@ a'032N1A' b   1  20.00  23.00 'DunbarX/Downtown    '      0      0      0
    230102          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230103          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230901          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227703          dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -5440,6 +5439,7 @@ a'032S1P' b   1  20.00  23.00 'Downtown/Dunbar     '      0      0      0
    227703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230103          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    230102          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -5773,6 +5773,7 @@ a'044E1A' b  10  10.00  35.00 'UBC/Downtown        '      0      0      0
    230803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230802          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230901          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227703          dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -5823,6 +5824,7 @@ a'044E1M' b  10  20.00  35.00 'UBC/Downtown        '      0      0      0
    230803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230802          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230901          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227703          dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -5863,6 +5865,7 @@ a'044E1P' b  10   9.00  35.00 'UBC/Downtown        '      0      0      0
    230803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230802          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230901          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227702          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    227703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -5902,8 +5905,7 @@ a'044W1A' b  10   9.00  35.00 'UBC/Downtown        '      0      0      0
    227703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230106          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230802          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230803          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -5941,8 +5943,7 @@ a'044W1M' b  10  15.00  35.00 'UBC/Downtown        '      0      0      0
    227703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230106          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230802          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230803          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -5990,8 +5991,7 @@ a'044W1P' b  10  15.00  35.00 'UBC/Downtown        '      0      0      0
    227703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230106          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230802          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230803          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -14095,8 +14095,7 @@ a'258N1P' b   3  60.00  35.00 'UBC/WestVan         '      0      0      0
    230102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230103          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   230107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230901          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -14178,6 +14177,7 @@ a'258S1A' b   3  20.00  35.00 'UBC/WestVan         '      0      0      0
    227703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    227701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   230108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230103          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    230102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
