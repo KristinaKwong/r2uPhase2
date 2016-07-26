@@ -41,7 +41,7 @@ class PrImpedance(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
         input_path = util.get_input_path(eb)
         pnr_costs = os.path.join(input_path, "pnr_inputs.csv")
-        model_year = int(eb.matrix("ms141").data)
+        model_year = int(eb.matrix("ms149").data)
 
         #RailSkim = _m.Modeller().tool("translink.emme.under_dev.wceskim")
         # railassign = _m.Modeller().tool("inro.emme.transit_assignment.extended_transit_assignment")
