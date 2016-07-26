@@ -130,8 +130,8 @@ class PrImpedance(_m.Tool()):
         rail_imp_pm_wk = {"railIVT" : ["mf5011", "mf6105", "mf6001"],
                           "railWait" : ["mf5012", "mf6106", "mf6001"],
                           "busIVT" : ["mf5010", "mf6107", "mf6001"],
-                          "auxTransit" : ["mf5013", "mf6110", "mf6001"],
-                          "boardings" : ["mf5014", "mf6109", "mf6001"],
+                          "auxTransit" : ["mf5014", "mf6110", "mf6001"],
+                          "boardings" : ["mf5013", "mf6109", "mf6001"],
                           "railFare" : ["mf161", "mf6111", "mf6001"]}
 
         # work purposes
