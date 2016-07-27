@@ -253,17 +253,17 @@ class PrImpedance(_m.Tool()):
 
         #spliting auto matrices non work - bus mode
         # in the form {skim : [actual skim, output pnr leg skim, best lot]}
-        bus_auto_am_nw = {"autotime" : ["mf101", "mf6137", "mf6132"],
-                          "autotoll" : ["mf102", "mf6138", "mf6132"],
-                          "autodist" : ["mf100", "mf6139", "mf6132"] }
+        bus_auto_am_nw = {"autotime" : ["mf101", "mf6137", "mf6130"],
+                          "autotoll" : ["mf102", "mf6138", "mf6130"],
+                          "autodist" : ["mf100", "mf6139", "mf6130"] }
 
-        bus_auto_md_nw = {"autotime" : ["mf104", "mf6177", "mf6132"],
-                          "autotoll" : ["mf105", "mf6178", "mf6132"],
-                          "autodist" : ["mf103", "mf6179", "mf6132"] }
+        bus_auto_md_nw = {"autotime" : ["mf104", "mf6177", "mf6130"],
+                          "autotoll" : ["mf105", "mf6178", "mf6130"],
+                          "autodist" : ["mf103", "mf6179", "mf6130"] }
 
-        bus_auto_pm_nw = {"autotime" : ["mf2101", "mf6217", "mf6132"],
-                          "autotoll" : ["mf2102", "mf6218", "mf6132"],
-                          "autodist" : ["mf2100", "mf6219", "mf6132"] }
+        bus_auto_pm_nw = {"autotime" : ["mf2101", "mf6217", "mf6130"],
+                          "autotoll" : ["mf2102", "mf6218", "mf6130"],
+                          "autodist" : ["mf2100", "mf6219", "mf6130"] }
 
 
         self.SplitAutoImpedance(eb, imp_dict = bus_auto_am_wk, year = model_year)
