@@ -80,25 +80,25 @@ class PrImpedance(_m.Tool()):
 
         # Bus nonWork
         # in the form {skim : [actual skim, output pnr leg skim, best lot]}
-        ral_imp_am_nw  =  {"busIVT" : ["mf107", "mf6140", "mf6132"],
-                           "busWait" : ["mf106", "mf6141", "mf6132"],
-                           "auxTransit" : ["mf109", "mf6143", "mf6132"],
-                           "boardings" : ["mf108", "mf6142", "mf6132"],
-                           "busFare" : ["mf160", "mf6144", "mf6132"]}
+        ral_imp_am_nw  =  {"busIVT" : ["mf107", "mf6140", "mf6130"],
+                           "busWait" : ["mf106", "mf6141", "mf6130"],
+                           "auxTransit" : ["mf109", "mf6143", "mf6130"],
+                           "boardings" : ["mf108", "mf6142", "mf6130"],
+                           "busFare" : ["mf160", "mf6144", "mf6130"]}
 
         # in the form {skim : [actual skim, output pnr leg skim, best lot]}
-        ral_imp_md_nw  =  {"busIVT" : ["mf112", "mf6180", "mf6132"],
-                           "busWait" : ["mf111", "mf6181", "mf6132"],
-                           "auxTransit" : ["mf114", "mf6183", "mf6132"],
-                           "boardings" : ["mf113", "mf6182", "mf6132"],
-                           "busFare" : ["mf160", "mf6184", "mf6132"]}
+        ral_imp_md_nw  =  {"busIVT" : ["mf112", "mf6180", "mf6130"],
+                           "busWait" : ["mf111", "mf6181", "mf6130"],
+                           "auxTransit" : ["mf114", "mf6183", "mf6130"],
+                           "boardings" : ["mf113", "mf6182", "mf6130"],
+                           "busFare" : ["mf160", "mf6184", "mf6130"]}
 
         # in the form {skim : [actual skim, output pnr leg skim, best lot]}
-        ral_imp_pm_nw  =  {"busIVT" : ["mf2107", "mf6220", "mf6132"],
-                           "busWait" : ["mf2106", "mf6221", "mf6132"],
-                           "auxTransit" : ["mf2109", "mf6223", "mf6132"],
-                           "boardings" : ["mf2108", "mf6222", "mf6132"],
-                           "busFare" : ["mf160", "mf6224", "mf6132"]}
+        ral_imp_pm_nw  =  {"busIVT" : ["mf2107", "mf6220", "mf6130"],
+                           "busWait" : ["mf2106", "mf6221", "mf6130"],
+                           "auxTransit" : ["mf2109", "mf6223", "mf6130"],
+                           "boardings" : ["mf2108", "mf6222", "mf6130"],
+                           "busFare" : ["mf160", "mf6224", "mf6130"]}
 
         self.SplitTransitImpedance(eb, imp_dict = ral_imp_am_wk, year = model_year)
         self.SplitTransitImpedance(eb, imp_dict = ral_imp_md_wk, year = model_year)
@@ -200,7 +200,7 @@ class PrImpedance(_m.Tool()):
 
         # nonwork
         # in the form {skim : [actual skim, output pnr leg skim, best lot]}
-        wce_imp_am_nw = {"wceIVT" : ["mf5052", "mf6165", "mf6132"],
+            wce_imp_am_nw = {"wceIVT" : ["mf5052", "mf6165", "mf6132"],
                         "wceWait" : ["mf5053", "mf6166", "mf6132"],
                         "railIVT" : ["mf5051", "mf6167", "mf6132"],
                         "busIVT" : ["mf5050", "mf6169", "mf6132"],
