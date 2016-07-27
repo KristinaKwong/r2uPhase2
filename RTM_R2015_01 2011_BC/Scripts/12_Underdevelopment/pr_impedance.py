@@ -104,8 +104,8 @@ class PrImpedance(_m.Tool()):
         self.SplitTransitImpedance(eb, imp_dict = ral_imp_md_wk, year = model_year)
         self.SplitTransitImpedance(eb, imp_dict = ral_imp_pm_wk, year = model_year)
         self.SplitTransitImpedance(eb, imp_dict = ral_imp_am_nw, year = model_year)
-        self.SplitTransitImpedance(eb, imp_dict = ral_imp_am_nw, year = model_year)
-        self.SplitTransitImpedance(eb, imp_dict = ral_imp_am_nw, year = model_year)
+        self.SplitTransitImpedance(eb, imp_dict = ral_imp_md_nw, year = model_year)
+        self.SplitTransitImpedance(eb, imp_dict = ral_imp_pm_nw, year = model_year)
 
 
         # Rail impedances to Split
@@ -165,8 +165,8 @@ class PrImpedance(_m.Tool()):
         self.SplitTransitImpedance(eb, imp_dict = rail_imp_md_wk, year = model_year)
         self.SplitTransitImpedance(eb, imp_dict = rail_imp_pm_wk, year = model_year)
         self.SplitTransitImpedance(eb, imp_dict = rail_imp_am_nw, year = model_year)
-        self.SplitTransitImpedance(eb, imp_dict = rail_imp_am_nw, year = model_year)
-        self.SplitTransitImpedance(eb, imp_dict = rail_imp_am_nw, year = model_year)
+        self.SplitTransitImpedance(eb, imp_dict = rail_imp_md_nw, year = model_year)
+        self.SplitTransitImpedance(eb, imp_dict = rail_imp_pm_nw, year = model_year)
 
 
         # West Coast Express impedances to split
@@ -230,8 +230,8 @@ class PrImpedance(_m.Tool()):
         self.SplitTransitImpedance(eb, imp_dict = wce_imp_md_wk, year = model_year)
         self.SplitTransitImpedance(eb, imp_dict = wce_imp_pm_wk, year = model_year)
         self.SplitTransitImpedance(eb, imp_dict = wce_imp_am_nw, year = model_year)
-        self.SplitTransitImpedance(eb, imp_dict = wce_imp_am_nw, year = model_year)
-        self.SplitTransitImpedance(eb, imp_dict = wce_imp_am_nw, year = model_year)
+        self.SplitTransitImpedance(eb, imp_dict = wce_imp_md_nw, year = model_year)
+        self.SplitTransitImpedance(eb, imp_dict = wce_imp_pm_nw, year = model_year)
 
 
 
@@ -270,8 +270,8 @@ class PrImpedance(_m.Tool()):
         self.SplitAutoImpedance(eb, imp_dict = bus_auto_md_wk, year = model_year)
         self.SplitAutoImpedance(eb, imp_dict = bus_auto_pm_wk, year = model_year)
         self.SplitAutoImpedance(eb, imp_dict = bus_auto_am_nw, year = model_year)
-        self.SplitAutoImpedance(eb, imp_dict = bus_auto_am_nw, year = model_year)
-        self.SplitAutoImpedance(eb, imp_dict = bus_auto_am_nw, year = model_year)
+        self.SplitAutoImpedance(eb, imp_dict = bus_auto_md_nw, year = model_year)
+        self.SplitAutoImpedance(eb, imp_dict = bus_auto_pm_nw, year = model_year)
 
 
         #spliting auto matrices work - bus mode
@@ -309,8 +309,8 @@ class PrImpedance(_m.Tool()):
         self.SplitAutoImpedance(eb, imp_dict = ral_auto_md_wk, year = model_year)
         self.SplitAutoImpedance(eb, imp_dict = ral_auto_pm_wk, year = model_year)
         self.SplitAutoImpedance(eb, imp_dict = ral_auto_am_nw, year = model_year)
-        self.SplitAutoImpedance(eb, imp_dict = ral_auto_am_nw, year = model_year)
-        self.SplitAutoImpedance(eb, imp_dict = ral_auto_am_nw, year = model_year)
+        self.SplitAutoImpedance(eb, imp_dict = ral_auto_md_nw, year = model_year)
+        self.SplitAutoImpedance(eb, imp_dict = ral_auto_pm_nw, year = model_year)
 
 
         #spliting auto matrices work - bus mode
@@ -348,8 +348,8 @@ class PrImpedance(_m.Tool()):
         self.SplitAutoImpedance(eb, imp_dict = wce_auto_md_wk, year = model_year)
         self.SplitAutoImpedance(eb, imp_dict = wce_auto_pm_wk, year = model_year)
         self.SplitAutoImpedance(eb, imp_dict = wce_auto_am_nw, year = model_year)
-        self.SplitAutoImpedance(eb, imp_dict = wce_auto_am_nw, year = model_year)
-        self.SplitAutoImpedance(eb, imp_dict = wce_auto_am_nw, year = model_year)
+        self.SplitAutoImpedance(eb, imp_dict = wce_auto_md_nw, year = model_year)
+        self.SplitAutoImpedance(eb, imp_dict = wce_auto_pm_nw, year = model_year)
 
 
 
