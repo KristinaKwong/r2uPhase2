@@ -139,55 +139,55 @@ class SkimsAccessibilities(_m.Tool()):
         # AM Auto distance and time
         Auto_AM_Expression= "mf101+mf100*6*ms18+mf102*ms19*6"
         Auto_AM_List=["mf100","mf101"]
-        Av_List=["1/2","1/2"]
+        Av_List=["0.5","0.5"]
         self.Calc_Intrazonals(Auto_AM_Expression, Auto_AM_List, Counter_Auto, Av_List)
 
         # MD Auto distance and time
         Auto_MD_Expression= "mf104+mf103*6*ms18+mf105*ms19*6"
         Auto_MD_List=["mf103","mf104"]
-        Av_List=["1/2","1/2"]
+        Av_List=["0.5","0.5"]
         self.Calc_Intrazonals(Auto_MD_Expression, Auto_MD_List, Counter_Auto, Av_List)
 
         # PM Auto distance and time
         Auto_PM_Expression= "mf2101+mf2100*6*ms18+mf2102*ms19*6"
         Auto_PM_List=["mf2100","mf2101"]
-        Av_List=["1/2","1/2"]
+        Av_List=["0.5","0.5"]
         self.Calc_Intrazonals(Auto_PM_Expression, Auto_PM_List, Counter_Auto, Av_List)
 
         # Transit AM OVTT, IVTT
         Transit_AM_Expression = "2*mf163+mf164"
         Transit_AM_List=["mf163","mf164"]
-        Av_List=["1","1/2"]
+        Av_List=["1.0","0.5"]
         self.Calc_Intrazonals(Transit_AM_Expression, Transit_AM_List, Counter_Transit, Av_List)
 
         # Transit MD OVTT, IVTT
         Transit_MD_Expression = "2*mf167+mf168"
         Transit_MD_List=["mf167","mf168"]
-        Av_List=["1","1/2"]
+        Av_List=["1.0","0.5"]
         self.Calc_Intrazonals(Transit_MD_Expression, Transit_MD_List, Counter_Transit, Av_List)
 
         # Transit PM OVTT, IVTT
         Transit_PM_Expression = "2*mf2163+mf2164"
         Transit_PM_List=["mf2163","mf2164"]
-        Av_List=["1","1/2"]
+        Av_List=["1.0","0.5"]
         self.Calc_Intrazonals(Transit_PM_Expression, Transit_PM_List, Counter_Transit, Av_List)
 
         # Bus AM Wait, IVTT, Board, Walk
         Bus_AM_Expression = "2.25*mf106+mf107+4*mf108+1.75*mf109"
         Bus_AM_List = ["mf106","mf107","mf108","mf109"]
-        Av_List=["1","1/2", "1", "1"]
+        Av_List=["1.0","0.5", "1.0", "1.0"]
         self.Calc_Intrazonals(Bus_AM_Expression, Bus_AM_List, Counter_Transit, Av_List)
 
          # Bus MD Wait, IVTT, Board, Walk
         Bus_MD_Expression = "2.25*mf111+mf112+4*mf113+1.75*mf114"
         Bus_MD_List = ["mf111","mf112","mf113","mf114"]
-        Av_List=["1","1/2", "1", "1"]
+        Av_List=["1.0","0.5", "1.0", "1.0"]
         self.Calc_Intrazonals(Bus_MD_Expression, Bus_MD_List, Counter_Transit, Av_List)
 
         # Bus PM Wait, IVTT, Board, Walk
         Bus_PM_Expression = "2.25*mf2106+mf2107+4*mf2108+1.75*mf2109"
         Bus_PM_List = ["mf2106","mf2107","mf2108","mf2109"]
-        Av_List=["1","1/2", "1", "1"]
+        Av_List=["1.0","0.5", "1.0", "1.0"]
         self.Calc_Intrazonals(Bus_PM_Expression, Bus_PM_List, Counter_Transit, Av_List)
 
     @_m.logbook_trace("Accessibilities Calculation")
@@ -277,7 +277,7 @@ class SkimsAccessibilities(_m.Tool()):
             iz_spec["aggregation"] = {"origins": None, "destinations": ".min."}
             specs.append(iz_spec)
 
-            ind_spec=util.matrix_spec("mo1026", "q*(mo1025.eq.mf1095)")
+            ind_spec=util.matrix_spec("mo1026", "q*(abs(mo1025-mf1095)<0.0001)")
             ind_spec["constraint"]["by_value"] = {"od_values": "mf970", "interval_min": 1, "interval_max": 1, "condition": "EXCLUDE"}
             ind_spec["constraint"]["by_zone"] = {"origins": "gm1-gm24", "destinations": "gm1-gm24"}
             ind_spec["aggregation"] = {"origins": None, "destinations": ".max."}
