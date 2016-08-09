@@ -1,6 +1,6 @@
 0CAFACB7-AD3C-40E4-80DD-675DE315EA7F 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 1 3 0
-# Emme project file generated on Fri Jun 10 10:21:07 2016
-# File: C:/proj/filter/RTM_R2015_01 2011_BC/RTM_R2015_01 2011_BC.emp
+# Emme project file generated on Wed Jul 27 07:45:06 2016
+# File: E:/RTM_R2015_01 2011_BC/RTM_R2015_01 2011_BC/RTM_R2015_01 2011_BC.emp
 #
 # String Name: name of preference configuration (tr)
 Name = TL_RTM_Release_2015_01.00 [2011 Base Case]
@@ -9,7 +9,7 @@ Description = Created on 2013-12-11 at 14:12:34 by AD.
 # String TranslationContext: context for translations of configuration texts (subst)
 TranslationContext = GeneralConfiguration
 # String OpenDatabases: database open in the project (subst)
-OpenDatabases = Template\emmebank
+OpenDatabases = eb_2011_generate_wce\emmebank
 # String ViewFolder: folder storing the view files (subst)
 ViewFolder = Views
 # String WorksheetFolder: folder storing worksheets (subst)
@@ -17,7 +17,9 @@ WorksheetFolder = Worksheets
 # String MediaFolder: folder for storing media files (subst)
 MediaFolder = Media
 # String ProjectDatabases: list of databases associated with the project (subst)
-ProjectDatabases = Template\emmebank;;windows-1252
+ProjectDatabases[] = Template\emmebank;;windows-1252
+ProjectDatabases[] = eb_2011_generate_wce\emmebank;;windows-1252
+ProjectDatabases[] = pb_test\emmebank;;windows-1252
 # String ProjectMacroPath: macro path (subst)
 ProjectMacroPath[] = %<$EnvironmentMacroPath>%
 ProjectMacroPath[] = %<$EnvironmentMacroPath>%
