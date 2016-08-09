@@ -405,11 +405,11 @@ class PrImpedance(_m.Tool()):
 		# gn2 exist only in 2011
 		# gn3 exist only in future
 		if year == 2011:
-			#intermediates = 'gn1;gn2'
-			intermediates = 'gn1;gn2'			
+			#intermediates = 'gn1;gn2', modified intermediates as using the ensembles was giving wrong results
+			intermediates = '100,130'			
 		else:
 			#intermediates = 'gn1;gn3'
-			intermediates = 'gn1;gn2'				
+			intermediates = '100,130'				
 
 		spec = {
 			"impedances": {
