@@ -567,8 +567,8 @@ class PrImpedance(_m.Tool()):
 		util = _m.Modeller().tool("translink.emme.util")
 		# [AM,MD,PM]
 		transit_mats = {"wceIVT" : ["mf5052",  "mf5058", "mf5064"],
-						"wceWait" : ["mf5053",  "mf5059", "mf5065"],
-						"railIVT" : ["mf5051",  "mf5057", "mf5063"],
+						"wceWait" : ["mf5053",	"mf5059", "mf5065"],
+						"railIVT" : ["mf5051",	"mf5057", "mf5063"],
 						"busIVT" : ["mf5050",  "mf5056", "mf5062"],
 						"auxTransit" : ["mf5055",  "mf5061", "mf5067"],
 						"boardings" : ["mf5054",  "mf5060", "mf5066"],
@@ -616,12 +616,12 @@ class PrImpedance(_m.Tool()):
 	def RailGT(self, eb):
 		util = _m.Modeller().tool("translink.emme.util")
 		# [AM,MD,PM]
-		transit_mats = {"railIVT" : ["mf5001",  "mf5006", "mf5011"],
-						"railWait" : ["mf5002",  "mf5007", "mf5012"],
+		transit_mats = {"railIVT" : ["mf5001",	"mf5006", "mf5011"],
+						"railWait" : ["mf5002",	 "mf5007", "mf5012"],
 						"busIVT" : ["mf5000",  "mf5005", "mf5010"],
 						"auxTransit" : ["mf5004", "mf5009", "mf5014"],
 						"boardings" : ["mf5003", "mf5008", "mf5013"],
-						"railFare" : ["mf161",  "mf161", "mf161"]}
+						"railFare" : ["mf161",	"mf161", "mf161"]}
 
 		# [Work, non-work]
 		vot_mats = ['msvotWkmed', 'msvotNWkmed']
@@ -704,7 +704,7 @@ class PrImpedance(_m.Tool()):
 	def AutoGT(self, eb):
 		util = _m.Modeller().tool("translink.emme.util")
 		# [AM,MD,PM]
-		auto_mats = {"autotime" : ["mf101",  "mf104", "mf2101"],
+		auto_mats = {"autotime" : ["mf101",	 "mf104", "mf2101"],
 					"autotoll" : ["mf102", "mf105", "mf2102"],
 					"autodist" : ["mf100", "mf103", "mf2100"] }
 
