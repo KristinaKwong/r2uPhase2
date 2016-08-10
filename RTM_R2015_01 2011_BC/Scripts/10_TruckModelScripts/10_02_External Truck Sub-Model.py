@@ -103,18 +103,17 @@ class ExternalTruckModel(_m.Tool()):
         util.initmat(eb, "ms151", "ExLgC1", "Cross Border Calc 1", 0)
         util.initmat(eb, "ms152", "ExHvC2", "Cross Border Calc 2", 0)
 
-        CrossBorderSpec=self.spec_as_dict
-        CrossBorderSpec["expression"] = "mf1001"
-        CrossBorderSpec["result"]="ms151"
-        CrossBorderSpec["aggregation"]["origins"]="+"
-        CrossBorderSpec["aggregation"]["destinations"]="+"
-        util.compute_matrix(CrossBorderSpec)
+        specs = []
 
-        CrossBorderSpec["expression"] = "mf1004"
-        CrossBorderSpec["result"]="ms152"
-        util.compute_matrix(CrossBorderSpec)
+        spec = util.matrix_spec("ms151", "mf1001")
+        spec["aggregation"] = {"origins": "+", "destinations": "+"}
+        specs.append(spec)
 
-        self.ResetSpec(CrossBorderSpec)
+        spec = util.matrix_spec("ms152", "mf1004")
+        spec["aggregation"] = {"origins": "+", "destinations": "+"}
+        specs.append(spec)
+
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Trip Generation")
     def TripGeneration(self, Year):
