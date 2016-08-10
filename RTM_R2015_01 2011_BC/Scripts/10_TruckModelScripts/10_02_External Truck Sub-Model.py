@@ -220,8 +220,8 @@ class ExternalTruckModel(_m.Tool()):
                 specs.append(spec)
         util.compute_matrix(specs)
 
-        self.AdjustInterCrossBorder("mf1001","mo1001", "md201")
-        self.AdjustInterCrossBorder("mf1004","mo1002", "md202")
+        self.AdjustInterCrossBorder("mf1001", "mo1001", "md201")
+        self.AdjustInterCrossBorder("mf1004", "mo1002", "md202")
 
     @_m.logbook_trace("Adjust Inter Regional mos and mds with Cross-Border mos and mds")
     def AdjustInterCrossBorder(self, matrix1, matrix2, matrix3):
@@ -255,15 +255,15 @@ class ExternalTruckModel(_m.Tool()):
         # Inputs: mo4, mo6, md404, md406, mf182 (O-D Survey Light Trucks Distribution), mf183 (O-D Survey Heavy Truck Distribution)
         # Outputs: mf184, mf185 (24 hour Light Truck O-D, 24 hour Heavy Truck O-D)
 
-        TripDistSpec=self.spec_as_dict
+        specs = []
 
-        ResultList=["mf1010","mf1011"]
-        ExpressionList=["mo1001*mf1008+md201*mf1008","mo1002*mf1009+md202*mf1009"]
+        spec = util.matrix_spec("mf1010", "mo1001*mf1008+md201*mf1008")
+        specs.append(spec)
 
-        for i in range (2):
-            TripDistSpec["expression"] = ExpressionList[i]
-            TripDistSpec["result"] = ResultList[i]
-            util.compute_matrix(TripDistSpec)
+        spec = util.matrix_spec("mf1011", "mo1002*mf1009+md202*mf1009")
+        specs.append(spec)
+
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Time Slicing")
     def TimeSlicing(self):
