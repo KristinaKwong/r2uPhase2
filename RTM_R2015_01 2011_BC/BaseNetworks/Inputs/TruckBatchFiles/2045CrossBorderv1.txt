@@ -1,14 +1,4 @@
 t matrices
-d mf1001
-d mf1002
-d mf1003
-d mf1004
-d mf1005
-d mf1006
-d ms151
-d ms152
-a matrix=ms151 ExLgC1 0 Cross Border Calc 1
-a matrix=ms152 ExHvC2 0 Cross Border Calc 2
 a matrix=mf1001 24CBLg 0 Cross Border Light Trucks 24 Hrs
    2   5   4.6343592
    8   5   2.6736684

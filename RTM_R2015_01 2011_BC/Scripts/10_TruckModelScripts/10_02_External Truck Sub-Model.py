@@ -87,10 +87,21 @@ class ExternalTruckModel(_m.Tool()):
 
         process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
         root_directory = util.get_input_path(eb)
+
+        util.delmat(eb, "mf1001")
+        util.delmat(eb, "mf1002")
+        util.delmat(eb, "mf1003")
+        util.delmat(eb, "mf1004")
+        util.delmat(eb, "mf1005")
+        util.delmat(eb, "mf1006")
         matrix_file1 = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"CrossBorderv1.txt")
-        matrix_file2 = os.path.join(root_directory, "TruckBatchFiles", "IRBatchIn.txt")
         process(transaction_file=matrix_file1, throw_on_error=True)
+
+        matrix_file2 = os.path.join(root_directory, "TruckBatchFiles", "IRBatchIn.txt")
         process(transaction_file=matrix_file2, throw_on_error=True)
+
+        util.initmat(eb, "ms151", "ExLgC1", "Cross Border Calc 1", 0)
+        util.initmat(eb, "ms152", "ExHvC2", "Cross Border Calc 2", 0)
 
         CrossBorderSpec=self.spec_as_dict
         CrossBorderSpec["expression"] = "mf1001"
