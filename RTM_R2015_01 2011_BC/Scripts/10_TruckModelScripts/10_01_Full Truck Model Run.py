@@ -175,6 +175,6 @@ class FullTruckModel(_m.Tool()):
         AsiaPacificModel=_m.Modeller().tool("translink.emme.stage5.step10.asiapacifictruck")
         AsiaPacificModel(Year)
         RegionalModel=_m.Modeller().tool("translink.emme.stage5.step10.regionaltruck")
-        RegionalModel(Year,Sensitivity,RegionalGrowth1, RegionalGrowth2)
+        RegionalModel(Year,eb,Sensitivity,RegionalGrowth1, RegionalGrowth2)
         TruckAssign=_m.Modeller().tool("translink.emme.stage5.step10.truckassign")
         TruckAssign(eb, AMScenario, MDScenario)

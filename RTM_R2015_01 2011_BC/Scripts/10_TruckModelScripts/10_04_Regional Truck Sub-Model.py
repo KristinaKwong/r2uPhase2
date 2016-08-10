@@ -11,8 +11,6 @@ import inro.modeller as _m
 import os
 import traceback as _traceback
 
-eb = _m.Modeller().emmebank
-
 class RegTruckModel(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
@@ -38,7 +36,7 @@ class RegTruckModel(_m.Tool()):
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Regional Truck Model")
-    def __call__(self, Year, Sensitivity, RegionalGrowth1, RegionalGrowth2):
+    def __call__(self, eb, Year, Sensitivity, RegionalGrowth1, RegionalGrowth2):
         util = _m.Modeller().tool("translink.emme.util")
         process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
         root_directory = util.get_input_path(_m.Modeller().emmebank)
