@@ -46,60 +46,19 @@ class AsiaPacificTruckModel(_m.Tool()):
         process(transaction_file=matrix_file, throw_on_error=True)
 
         #Distribute Asia Pacific matrix for "Other locations" based on non-retail employment
-        Spec1={
-            "expression": "(md12-md8)*(gy(q).lt.13)",
-            "result": "ms153",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {
-                    "origins": None,
-                    "destinations": "gg27"
-                }
-            },
-            "aggregation": {
-                "origins": None,
-                "destinations": "+"
-            },
-            "type": "MATRIX_CALCULATION"
-        }
-
-
-        Spec2={
-            "expression": "(md12-md8)/ms153*(gy(q).lt.13)",
-            "result": "md205",
-            "constraint": {
-                "by_value": None,
-                "by_zone": {
-                    "origins": None,
-                    "destinations": "gg27"
-                }
-            },
-            "aggregation": {
-                "origins": None,
-                "destinations": None
-            },
-            "type": "MATRIX_CALCULATION"
-        }
-
-        Spec3={
-            "expression": "md205'",
-            "result": "mo1005",
-            "constraint": {
-                "by_value": None,
-                "by_zone": None
-            },
-            "aggregation": {
-                "origins": None,
-                "destinations": None
-            },
-            "type": "MATRIX_CALCULATION"
-        }
-
-        util.compute_matrix(Spec1)
-        util.compute_matrix(Spec2)
-        util.compute_matrix(Spec3)
-
         specs = []
+
+        spec = util.matrix_spec("ms153", "(md12-md8)*(gy(q).lt.13)")
+        spec["constraint"]["by_zone"] = {"origins": None, "destinations": "gg27"}
+        spec["aggregation"] = {"origins": None, "destinations": "+"}
+        specs.append(spec)
+
+        spec = util.matrix_spec("md205", "(md12-md8)/ms153*(gy(q).lt.13)")
+        spec["constraint"]["by_zone"] = {"origins": None, "destinations": "gg27"}
+        specs.append(spec)
+
+        specs.append(util.matrix_spec("mo1005", "md205'"))
+
         specs.append(util.matrix_spec("mf1020", "mf1017*mo1005*md205"))
         specs.append(util.matrix_spec("mf1021", "mf1018*mo1005*md205"))
         specs.append(util.matrix_spec("mf1022", "mf1019*mo1005*md205"))
