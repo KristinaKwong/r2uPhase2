@@ -13,9 +13,6 @@ import traceback as _traceback
 
 eb = _m.Modeller().emmebank
 
-RgL11=107040
-RgH11=45950
-
 class RegTruckModel(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
@@ -31,8 +28,6 @@ class RegTruckModel(_m.Tool()):
         return pb.render()
 
     def run(self):
-
-
         self.tool_run_msg = ""
 
         try:
@@ -64,14 +59,17 @@ class RegTruckModel(_m.Tool()):
         util.compute_matrix(spec)
 
         RgLg = eb.matrix("ms151")
-        RgHv=eb.matrix("ms152")
-        RgLgVal=RgLg.data
-        RgHvVal=RgHv.data
+        RgHv = eb.matrix("ms152")
+        RgLgVal = RgLg.data
+        RgHvVal = RgHv.data
+
+        RgL11 = 107040
+        RgH11 = 45950
 
         # Determine Regional Sector Growth based on user inputs
-        if Sensitivity=="N":
-            RatioL=1
-            RatioH=1
+        if Sensitivity == "N":
+            RatioL = 1
+            RatioH = 1
 
         else:
 
@@ -81,8 +79,8 @@ class RegTruckModel(_m.Tool()):
             RatioH=(RgHvVal/CAGRHeavyI**(Year-2030)*((1+RegionalGrowth1/100)/(CAGRHeavyI))**(2030-2011)*(1+RegionalGrowth2/100)**(Year-2030))/RgHvVal
 
 
-        MatrixList1=["mf1031","mf1035","mf1036"]
-        MatrixList2=["mf1034","mf1037","mf1038"]
+        MatrixList1 = ["mf1031", "mf1035", "mf1036"]
+        MatrixList2 = ["mf1034", "mf1037", "mf1038"]
 
         for i in range(len(MatrixList1)):
             spec = util.matrix_spec(MatrixList1[i], MatrixList1[i] + "*" + str(RatioL))
