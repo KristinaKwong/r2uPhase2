@@ -121,8 +121,6 @@ class ExternalTruckModel(_m.Tool()):
         # Inputs: Regression Functions and directional factors
         # Outputs: 24 hours trip generation - mo4,mo6,md404,md406 (Light From, Heavy From, Light To, Heavy To)
 
-        TripGenSpec=self.spec_as_dict
-
         ## Adjustments
 
         IB_Split=[0.5,0.46,0.5] # IB=Towards CBD; IB-OB: Heavy East=0.5, Light East=0.46, All Trucks West=0.5
@@ -205,28 +203,22 @@ class ExternalTruckModel(_m.Tool()):
                         NorthLightTrucks*Wkd_Factor[4]
                            ]
 
-
-
         matrixlist=["mo1001","mo1002","md201","md202"]
 
         TruckList=[LightTrucksFrom,HeavyTrucksFrom, LightTrucksTo ,HeavyTrucksTo]
 
         ExtZoneList=[1,2,8,10,11] #[1: Highway 7, 2: Highway 2, 8: Tsawwassen, 10: HoreshoeBay, 11: Highway 99]
 
-
-        for i in range (0, len(matrixlist)) :
+        specs = []
+        for i in range (0, len(matrixlist)):
             for j in range(0, len(ExtZoneList)):
-                TripGenSpec["expression"] = str(TruckList[i][j])
-                if i<2:
-                    TripGenSpec["constraint"]["by_zone"]["origins"] = str(ExtZoneList[j])
-                    TripGenSpec["constraint"]["by_zone"]["destinations"] = None
+                spec = util.matrix_spec(matrixlist[i], str(TruckList[i][j]))
+                if i < 2:
+                    spec["constraint"]["by_zone"] = {"origins": str(ExtZoneList[j]), "destinations": None}
                 else:
-                    TripGenSpec["constraint"]["by_zone"]["origins"] = None
-                    TripGenSpec["constraint"]["by_zone"]["destinations"] = str(ExtZoneList[j])
-                TripGenSpec["result"] = matrixlist[i]
-                util.compute_matrix(TripGenSpec)
-        self.ResetSpec(TripGenSpec)
-
+                    spec["constraint"]["by_zone"] = {"origins": None, "destinations": str(ExtZoneList[j])}
+                specs.append(spec)
+        util.compute_matrix(specs)
 
         self.AdjustInterCrossBorder("mf1001","mo1001", "md201")
         self.AdjustInterCrossBorder("mf1004","mo1002", "md202")
