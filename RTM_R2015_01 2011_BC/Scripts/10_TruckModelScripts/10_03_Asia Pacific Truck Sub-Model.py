@@ -99,24 +99,8 @@ class AsiaPacificTruckModel(_m.Tool()):
         util.compute_matrix(Spec2)
         util.compute_matrix(Spec3)
 
-        Spec4={
-            "expression": "mf1017*mo1005*md205",
-            "result": "mf1053",
-            "constraint": {
-                "by_value": None,
-                "by_zone": None
-            },
-            "aggregation": {
-                "origins": None,
-                "destinations": None
-            },
-            "type": "MATRIX_CALCULATION"
-        }
-        CalcList=["mf1017","mf1018","mf1019"]
-        ResultList=["mf1020","mf1021","mf1022"]
-
-        for i in range (len(CalcList)):
-
-            Spec4["expression"]=CalcList[i]+"*mo1005*md205"
-            Spec4["result"]=ResultList[i]
-            util.compute_matrix(Spec4)
+        specs = []
+        specs.append(util.matrix_spec("mf1020", "mf1017*mo1005*md205"))
+        specs.append(util.matrix_spec("mf1021", "mf1018*mo1005*md205"))
+        specs.append(util.matrix_spec("mf1022", "mf1019*mo1005*md205"))
+        util.compute_matrix(specs)
