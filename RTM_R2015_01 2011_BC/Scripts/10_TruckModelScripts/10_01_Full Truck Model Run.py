@@ -140,7 +140,7 @@ class FullTruckModel(_m.Tool()):
         ExternalModel=_m.Modeller().tool("translink.emme.stage5.step10.externaltruck")
         ExternalModel(Year,Sensitivity,ExtGrowth1,ExtGrowth2, CascadeGrowth1, CascadeGrowth2)
         AsiaPacificModel=_m.Modeller().tool("translink.emme.stage5.step10.asiapacifictruck")
-        AsiaPacificModel(Year)
+        AsiaPacificModel(eb, Year)
         RegionalModel=_m.Modeller().tool("translink.emme.stage5.step10.regionaltruck")
         RegionalModel(eb)
         TruckAssign=_m.Modeller().tool("translink.emme.stage5.step10.truckassign")
