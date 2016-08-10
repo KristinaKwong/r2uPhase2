@@ -36,7 +36,7 @@ class RegTruckModel(_m.Tool()):
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Regional Truck Model")
-    def __call__(self, eb, Year, Sensitivity, RegionalGrowth1, RegionalGrowth2):
+    def __call__(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
 
         util.delmat(eb, "mf1025")
@@ -62,38 +62,6 @@ class RegTruckModel(_m.Tool()):
         spec["aggregation"]["origins"] = "+"
         spec["aggregation"]["destinations"] = "+"
         util.compute_matrix(spec)
-
-        RgLg = eb.matrix("ms151")
-        RgHv = eb.matrix("ms152")
-        RgLgVal = RgLg.data
-        RgHvVal = RgHv.data
-
-        RgL11 = 107040
-        RgH11 = 45950
-
-        # Determine Regional Sector Growth based on user inputs
-        if Sensitivity == "N":
-            RatioL = 1
-            RatioH = 1
-
-        else:
-
-            CAGRLightI=(RgLgVal/RgL11)**(1/float(Year-2011))
-            CAGRHeavyI=(RgHvVal/RgH11)**(1/float(Year-2011))
-            RatioL=(RgLgVal/CAGRLightI**(Year-2030)*((1+RegionalGrowth1/100)/(CAGRLightI))**(2030-2011)*(1+RegionalGrowth2/100)**(Year-2030))/RgLgVal
-            RatioH=(RgHvVal/CAGRHeavyI**(Year-2030)*((1+RegionalGrowth1/100)/(CAGRHeavyI))**(2030-2011)*(1+RegionalGrowth2/100)**(Year-2030))/RgHvVal
-
-
-        MatrixList1 = ["mf1031", "mf1035", "mf1036"]
-        MatrixList2 = ["mf1034", "mf1037", "mf1038"]
-
-        for i in range(len(MatrixList1)):
-            spec = util.matrix_spec(MatrixList1[i], MatrixList1[i] + "*" + str(RatioL))
-            util.compute_matrix(spec)
-
-        for i in range(len(MatrixList2)):
-            spec = util.matrix_spec(MatrixList2[i], MatrixList2[i] + "*" + str(RatioH))
-            util.compute_matrix(spec)
 
     def run_regional_truck_model(self, eb):
         """

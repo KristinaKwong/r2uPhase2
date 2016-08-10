@@ -18,8 +18,6 @@ class FullTruckModel(_m.Tool()):
     MDScenario=_m.Attribute(_m.InstanceType)
     CascadeGrowth1=_m.Attribute(float)
     CascadeGrowth2=_m.Attribute(float)
-    RegionalGrowth1=_m.Attribute(float)
-    RegionalGrowth2=_m.Attribute(float)
     AsiaPacificGrowth=_m.Attribute(str)
 
 
@@ -60,14 +58,6 @@ class FullTruckModel(_m.Tool()):
                             size="3",
                             title="Enter Cascade Cross-Border % Growth Assumption 2030-2045")
 
-            pb.add_text_box(tool_attribute_name="RegionalGrowth1",
-                            size="3",
-                            title="Enter Regional Sector Growth % Assumption 2011-2030")
-
-            pb.add_text_box(tool_attribute_name="RegionalGrowth2",
-                            size="3",
-                            title="Enter Regional Sector Growth % Assumption 2030-2045")
-
             pb.add_select(tool_attribute_name="AsiaPacificGrowth",
                             keyvalues=[["B","Base"],["L","Low"],["M","Med"],["H","High"]],
                             title="Enter Asia Pacific Growth Assumption")
@@ -91,8 +81,6 @@ class FullTruckModel(_m.Tool()):
                         $("#ExtGrowth2").prop("disabled", disable);
                         $("#CascadeGrowth1").prop("disabled", disable);
                         $("#CascadeGrowth2").prop("disabled", disable);
-                        $("#RegionalGrowth1").prop("disabled", disable);
-                        $("#RegionalGrowth2").prop("disabled", disable);
                         $("#AsiaPacificGrowth").prop("disabled", disable);
                     }).trigger("change") ;
                 });
@@ -114,8 +102,6 @@ class FullTruckModel(_m.Tool()):
                 self.ExtGrowth2=""
                 self.CascadeGrowth1=""
                 self.CascadeGrowth2=""
-                self.RegionalGrowth1=""
-                self.RegionalGrowth2=""
                 self.AsiaPacificGrowth="B"
                 self.__call__(AnalysisYear,self.Sensitivity,self.AMScenario,self.MDScenario,0,0,0,0,0,0,"")
 
@@ -126,18 +112,15 @@ class FullTruckModel(_m.Tool()):
                     self.ExtGrowth2=""
                     self.CascadeGrowth1=""
                     self.CascadeGrowth2=""
-                    self.RegionalGrowth1=""
-                    self.RegionalGrowth2=""
                     self.AsiaPacificGrowth="B"
 
 
                 if self.Sensitivity=="Y":
                     self.ExtGrowth2=""
                     self.CascadeGrowth2=""
-                    self.RegionalGrowth2=""
 
                 self.__call__(AnalysisYear, self.Sensitivity,self.AMScenario,self.MDScenario,self.ExtGrowth1, 0
-                , self.CascadeGrowth1, 0, self.RegionalGrowth1, 0, self.AsiaPacificGrowth)
+                , self.CascadeGrowth1, 0, 0, 0, self.AsiaPacificGrowth)
 
             if self.Year=="3":
                 AnalysisYear=2045
@@ -146,14 +129,12 @@ class FullTruckModel(_m.Tool()):
                     self.ExtGrowth2=""
                     self.CascadeGrowth1=""
                     self.CascadeGrowth2=""
-                    self.RegionalGrowth1=""
-                    self.RegionalGrowth2=""
                     self.AsiaPacificGrowth="B"
 
 
 
                 self.__call__(AnalysisYear, self.Sensitivity,self.AMScenario,self.MDScenario,self.ExtGrowth1, self.ExtGrowth2, self.CascadeGrowth1, self.CascadeGrowth2,
-                                self.RegionalGrowth1, self.RegionalGrowth2, self.AsiaPacificGrowth)
+                                0, 0, self.AsiaPacificGrowth)
 
 
             run_msg = "Tool completed"
@@ -175,6 +156,6 @@ class FullTruckModel(_m.Tool()):
         AsiaPacificModel=_m.Modeller().tool("translink.emme.stage5.step10.asiapacifictruck")
         AsiaPacificModel(Year)
         RegionalModel=_m.Modeller().tool("translink.emme.stage5.step10.regionaltruck")
-        RegionalModel(Year,eb,Sensitivity,RegionalGrowth1, RegionalGrowth2)
+        RegionalModel(eb)
         TruckAssign=_m.Modeller().tool("translink.emme.stage5.step10.truckassign")
         TruckAssign(eb, AMScenario, MDScenario)
