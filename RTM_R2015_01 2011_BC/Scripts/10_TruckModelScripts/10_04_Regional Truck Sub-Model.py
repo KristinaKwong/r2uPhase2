@@ -267,35 +267,13 @@ class RegTruckModel(_m.Tool()):
 
         util.compute_matrix(specs)
 
-
-        """
-        Peak Hour Factoring: Factor from Peak Period to Peak Hour Demand
-        """
-        specs = []
-
-        # Zero Special Generators
-        # TODO: Replace the filtering zones below with their corresponding new zone number
-        spec = util.matrix_spec("mf1030", "0")
-        spec["constraint"]["by_zone"] = {"origins": "3420;3540;6730;7100", "destinations": None}
-        specs.append(spec)
-
-        spec = util.matrix_spec("mf1030", "0")
-        spec["constraint"]["by_zone"] = {"origins": None, "destinations": "3420;3540;6730;7100"}
-        specs.append(spec)
-
-        spec = util.matrix_spec("mf1033", "0")
-        spec["constraint"]["by_zone"] = {"origins": "3420;3540;6730;7100", "destinations": None}
-        specs.append(spec)
-
-        spec = util.matrix_spec("mf1033", "0")
-        spec["constraint"]["by_zone"] = {"origins": None, "destinations": "3420;3540;6730;7100"}
-        specs.append(spec)
-
-        # Calculate Trips
+        # Peak Hour Factoring: Factor from Peak Period to Peak Hour Demand
         util.initmat(eb, "mf1035", "RGLgAM", "Rg LgTruck AM Trips", 0)
         util.initmat(eb, "mf1036", "RGLgMD", "Rg LgTruck MD Trips", 0)
         util.initmat(eb, "mf1037", "RGHvAM", "Rg HvTruck AM Trips", 0)
         util.initmat(eb, "mf1038", "RGHvMD", "Rg HvTruck MD Trips", 0)
+
+        specs = []
 
         spec = util.matrix_spec("mf1035", "mf1031*mf1025*ms154")
         specs.append(spec)
