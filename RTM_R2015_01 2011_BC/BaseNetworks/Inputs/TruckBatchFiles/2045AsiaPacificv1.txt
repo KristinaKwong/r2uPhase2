@@ -1,15 +1,6 @@
 c Emme Module:    3.14(v15101)  Date: 14-08-30 12:25   User: E496/HFA......none
 c Project:        2011_DB_Assigning_FMS                                       
 t matrices
-d mf1017
-d mf1018
-d mf1019
-d mf1020
-d mf1021
-d mf1022
-d md205
-d ms153
-a matrix=ms153 NonRet 0 NonRetail Employment
 a matrix=mf1018 PMVAM 0 PMVAM                
  gg1 gg1:8.16057692307692
  gg1 gg2:7.15784626488885
@@ -2041,9 +2032,6 @@ a matrix=mf1017 PMV24 0 PMV24Hrs
  gg27 gg25:1.58886219900131
  gg27 gg26:7.45543031839077
  gg27 gg27:227.085074288034
-a matrix=mf1020 APHv24 0 AP HvTrucks Daily Trips 
-a matrix=mf1021 APHvAM 0 AP HvTrucks AM Trips
-a matrix=mf1022 APHvMD 0 AP HvTrucks MD Trips 
 a matrix=md205 PMVrat 0 PMV activity ratio                          
  all 8510:1
  all 8160:1
