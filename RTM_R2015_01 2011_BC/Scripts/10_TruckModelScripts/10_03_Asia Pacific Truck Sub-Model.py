@@ -24,20 +24,18 @@ class AsiaPacificTruckModel(_m.Tool()):
         return pb.render()
 
     def run(self):
-
-
         self.tool_run_msg = ""
 
         try:
             self.__call__(_m.Modeller().emmebank, 2011)
-            run_msg = "Tool completed"
-            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info("Tool completed")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Asia Pacific Truck Model")
     def __call__(self, eb, Year):
         util = _m.Modeller().tool("translink.emme.util")
+
         #Batch input Asia Pacific matrix from TruckBatchFiles (gg ensemble format)
         util.delmat(eb, "mf1017")
         util.delmat(eb, "mf1018")
