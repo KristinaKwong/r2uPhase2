@@ -37,7 +37,7 @@ class AsiaPacificTruckModel(_m.Tool()):
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Asia Pacific Truck Model")
-    def __call__(self,Year):
+    def __call__(self, Year):
         util = _m.Modeller().tool("translink.emme.util")
         #Batch input Asia Pacific matrix from TruckBatchFiles (gg ensemble format)
         process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")

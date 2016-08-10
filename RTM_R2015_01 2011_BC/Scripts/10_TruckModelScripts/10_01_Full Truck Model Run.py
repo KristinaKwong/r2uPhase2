@@ -18,10 +18,6 @@ class FullTruckModel(_m.Tool()):
     MDScenario=_m.Attribute(_m.InstanceType)
     CascadeGrowth1=_m.Attribute(float)
     CascadeGrowth2=_m.Attribute(float)
-    AsiaPacificGrowth=_m.Attribute(str)
-
-
-
 
     tool_run_msg = _m.Attribute(unicode)
 
@@ -57,10 +53,6 @@ class FullTruckModel(_m.Tool()):
             pb.add_text_box(tool_attribute_name="CascadeGrowth2",
                             size="3",
                             title="Enter Cascade Cross-Border % Growth Assumption 2030-2045")
-
-            pb.add_select(tool_attribute_name="AsiaPacificGrowth",
-                            keyvalues=[["B","Base"],["L","Low"],["M","Med"],["H","High"]],
-                            title="Enter Asia Pacific Growth Assumption")
         pb.add_html("""
             <script>
                 $(document).ready( function ()
@@ -81,7 +73,6 @@ class FullTruckModel(_m.Tool()):
                         $("#ExtGrowth2").prop("disabled", disable);
                         $("#CascadeGrowth1").prop("disabled", disable);
                         $("#CascadeGrowth2").prop("disabled", disable);
-                        $("#AsiaPacificGrowth").prop("disabled", disable);
                     }).trigger("change") ;
                 });
             </script>""")
@@ -102,7 +93,6 @@ class FullTruckModel(_m.Tool()):
                 self.ExtGrowth2=""
                 self.CascadeGrowth1=""
                 self.CascadeGrowth2=""
-                self.AsiaPacificGrowth="B"
                 self.__call__(AnalysisYear,self.Sensitivity,self.AMScenario,self.MDScenario,0,0,0,0,0,0,"")
 
             if self.Year=="2":
@@ -112,7 +102,6 @@ class FullTruckModel(_m.Tool()):
                     self.ExtGrowth2=""
                     self.CascadeGrowth1=""
                     self.CascadeGrowth2=""
-                    self.AsiaPacificGrowth="B"
 
 
                 if self.Sensitivity=="Y":
@@ -120,7 +109,7 @@ class FullTruckModel(_m.Tool()):
                     self.CascadeGrowth2=""
 
                 self.__call__(AnalysisYear, self.Sensitivity,self.AMScenario,self.MDScenario,self.ExtGrowth1, 0
-                , self.CascadeGrowth1, 0, 0, 0, self.AsiaPacificGrowth)
+                , self.CascadeGrowth1, 0, 0, 0, 0)
 
             if self.Year=="3":
                 AnalysisYear=2045
@@ -129,12 +118,9 @@ class FullTruckModel(_m.Tool()):
                     self.ExtGrowth2=""
                     self.CascadeGrowth1=""
                     self.CascadeGrowth2=""
-                    self.AsiaPacificGrowth="B"
-
-
 
                 self.__call__(AnalysisYear, self.Sensitivity,self.AMScenario,self.MDScenario,self.ExtGrowth1, self.ExtGrowth2, self.CascadeGrowth1, self.CascadeGrowth2,
-                                0, 0, self.AsiaPacificGrowth)
+                                0, 0, 0)
 
 
             run_msg = "Tool completed"
