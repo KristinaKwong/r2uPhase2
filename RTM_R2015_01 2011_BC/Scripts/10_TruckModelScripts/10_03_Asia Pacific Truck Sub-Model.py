@@ -57,9 +57,7 @@ class AsiaPacificTruckModel(_m.Tool()):
         spec["constraint"]["by_zone"] = {"origins": None, "destinations": "gg27"}
         specs.append(spec)
 
-        specs.append(util.matrix_spec("mo1005", "md205'"))
-
-        specs.append(util.matrix_spec("mf1020", "mf1017*mo1005*md205"))
-        specs.append(util.matrix_spec("mf1021", "mf1018*mo1005*md205"))
-        specs.append(util.matrix_spec("mf1022", "mf1019*mo1005*md205"))
+        specs.append(util.matrix_spec("mf1020", "mf1017*md205'*md205"))
+        specs.append(util.matrix_spec("mf1021", "mf1018*md205'*md205"))
+        specs.append(util.matrix_spec("mf1022", "mf1019*md205'*md205"))
         util.compute_matrix(specs)
