@@ -24,8 +24,6 @@ class AsiaPacificTruckModel(_m.Tool()):
         return pb.render()
 
     def run(self):
-        self.tool_run_msg = ""
-
         try:
             self.__call__(_m.Modeller().emmebank, 2011)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool completed")

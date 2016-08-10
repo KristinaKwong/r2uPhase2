@@ -41,7 +41,6 @@ ExL11=1579.0
 ExH11=3718.0
 
 class ExternalTruckModel(_m.Tool()):
-    #    Analysis_Year = _m.Attribute(int)
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
@@ -57,7 +56,7 @@ class ExternalTruckModel(_m.Tool()):
 
     def run(self):
         try:
-            self.__call__(_m.Modeller().emmebank, Year)
+            self.__call__(_m.Modeller().emmebank, 2011)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool completed")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
