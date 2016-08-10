@@ -41,17 +41,6 @@ ExL11=1579.0
 ExH11=3718.0
 
 class ExternalTruckModel(_m.Tool()):
-    spec_as_dict = {
-    "expression": "EXPRESSION",
-    "result": "RESULT",
-    "constraint": {
-        "by_value": None,
-        "by_zone": {"origins": None, "destinations": None}
-    },
-    "aggregation": {"origins": None, "destinations": None},
-    "type": "MATRIX_CALCULATION"
-}
-
     #    Analysis_Year = _m.Attribute(int)
     tool_run_msg = _m.Attribute(unicode)
 
@@ -272,8 +261,6 @@ class ExternalTruckModel(_m.Tool()):
         # Inputs: mf184, mf185, Time Slice Factors from Screenline volumes
         # Outputs: Light AM, Light MD, Heavy AM, Heavy MD - mf186, mf188, mf187, mf189
 
-        TimeSliceSpec=self.spec_as_dict
-
 # IB                 Light Trucks AM            Light Trucks MD               Heavy Trucks AM         Heavy Trucks MD
         FactorIB=[[0.05868,0.04086,0.05086],[0.05868,0.09194,0.10426],[0.03811,0.09500,0.02912],[0.07470,0.09866,0.11649]]
 
@@ -287,31 +274,20 @@ class ExternalTruckModel(_m.Tool()):
         Matrix_List = ["mf1012","mf1014","mf1013","mf1015"]
         TripDistList= ["mf1010", "mf1011"]
 
-
         for i in range (len(TripDistList)) :
             for j in range (int((len(FactorIB)/2))):
                 for k in range (len(FactorIB[j])):
-                    TimeSliceSpec["expression"] = TripDistList[i]+"*"+str(FactorIB[2*i+j][k])
+                    spec = util.matrix_spec("", TripDistList[i]+"*"+str(FactorIB[2*i+j][k]))
                     for l in range (0, len(ConstraintList[k])):
-                        TimeSliceSpec["constraint"]["by_zone"]["origins"] = str(ConstraintList[k][l])
-                        TimeSliceSpec["constraint"]["by_zone"]["destinations"] = "*"
-                        TimeSliceSpec["result"] = Matrix_List[2*i+j]
-                        util.compute_matrix(TimeSliceSpec)
-
-        TimeSliceSpec["constraint"]["by_zone"]["origins"] = "*"
+                        spec["result"] = Matrix_List[2*i+j]
+                        spec["constraint"]["by_zone"] = {"origins": str(ConstraintList[k][l]), "destinations": None}
+                        util.compute_matrix(spec)
 
         for i in range (len(TripDistList)) :
             for j in range (int((len(FactorIB)/2))):
                 for k in range (len(FactorOB[j])):
-                    TimeSliceSpec["expression"] = str(TripDistList[i])+"*"+str(FactorOB[2*i+j][k])
+                    spec = util.matrix_spec("", str(TripDistList[i])+"*"+str(FactorOB[2*i+j][k]))
                     for l in range (0, len(ConstraintList[k])):
-                        TimeSliceSpec["constraint"]["by_zone"]["destinations"] = str(ConstraintList[k][l])
-                        TimeSliceSpec["result"] = Matrix_List[2*i+j]
-                        util.compute_matrix(TimeSliceSpec)
-
-    def ResetSpec (self, SpecItems):
-
-        SpecItems["constraint"]["by_zone"]["origins"] = None
-        SpecItems["constraint"]["by_zone"]["destinations"] = None
-        SpecItems["aggregation"]["origins"] = None
-        SpecItems["aggregation"]["destinations"] = None
+                        spec["result"] = Matrix_List[2*i+j]
+                        spec["constraint"]["by_zone"] = {"origins": None, "destinations": str(ConstraintList[k][l])}
+                        util.compute_matrix(spec)
