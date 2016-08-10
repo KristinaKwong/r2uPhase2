@@ -9,7 +9,6 @@
 import inro.modeller as _m
 import os
 import traceback as _traceback
-eb = _m.Modeller().emmebank
 
 # Regression coefficients:
 
@@ -85,24 +84,23 @@ class ExternalTruckModel(_m.Tool()):
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("External Truck Trips Model")
-    def __call__(self,Year, Sensitivity, ExtGrowth1,ExtGrowth2, CascadeGrowth1, CascadeGrowth2):
+    def __call__(self, eb, Year):
         # Call Modules of External Model
-        self.CrossBorder(Year, Sensitivity, CascadeGrowth1, CascadeGrowth2) # Import Cascade Cross-Border Matrices
-        self.TripGeneration(Year, Sensitivity, ExtGrowth1, ExtGrowth2)
+        self.CrossBorder(eb, Year) # Import Cascade Cross-Border Matrices
+        self.TripGeneration(Year)
         self.TripDistribution()
         self.TimeSlicing()
 
     @_m.logbook_trace("Import Cascade Cross-Border Matrices")
-    def CrossBorder(self, Year, Sensitivity, CascadeGrowth1, CascadeGrowth2):
+    def CrossBorder(self, eb, Year):
         util = _m.Modeller().tool("translink.emme.util")
 
         process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
-        root_directory = util.get_input_path(_m.Modeller().emmebank)
+        root_directory = util.get_input_path(eb)
         matrix_file1 = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"CrossBorderv1.txt")
         matrix_file2 = os.path.join(root_directory, "TruckBatchFiles", "IRBatchIn.txt")
         process(transaction_file=matrix_file1, throw_on_error=True)
         process(transaction_file=matrix_file2, throw_on_error=True)
-
 
         CrossBorderSpec=self.spec_as_dict
         CrossBorderSpec["expression"] = "mf1001"
@@ -117,37 +115,8 @@ class ExternalTruckModel(_m.Tool()):
 
         self.ResetSpec(CrossBorderSpec)
 
-        CBLg = eb.matrix("ms151")
-        CBHv=eb.matrix("ms152")
-        CBLgVal=CBLg.data
-        CBHvVal=CBHv.data
-        ## Determine growth based on sensitivity inputs
-        if Sensitivity=="N":
-            RatioL=1
-            RatioH=1
-
-        else:
-
-            CAGRLightI=(CBLgVal/CBL11)**(1/float(Year-2011))
-            CAGRHeavyI=(CBHvVal/CBH11)**(1/float(Year-2011))
-            RatioL=(CBLgVal/CAGRLightI**(Year-2030)*((1+CascadeGrowth1/100)/(CAGRLightI))**(2030-2011)*(1+CascadeGrowth2/100)**(Year-2030))/CBLgVal
-            RatioH=(CBHvVal/CAGRHeavyI**(Year-2030)*((1+CascadeGrowth1/100)/(CAGRHeavyI))**(2030-2011)*(1+CascadeGrowth2/100)**(Year-2030))/CBHvVal
-
-
-
-        MatrixList=["mf1001","mf1002", "mf1003", "mf1004", "mf1005", "mf1006"]
-
-        for i in range(len(MatrixList)):
-            if i<3:
-                CrossBorderSpec["expression"] = MatrixList[i]+"*"+str(RatioL)
-            else:
-                CrossBorderSpec["expression"] = MatrixList[i]+"*"+str(RatioH)
-            CrossBorderSpec["result"]=MatrixList[i]
-            util.compute_matrix(CrossBorderSpec)
-
-
     @_m.logbook_trace("Trip Generation")
-    def TripGeneration(self,Year, Sensitivity, ExtGrowth1, ExtGrowth2):
+    def TripGeneration(self, Year):
         util = _m.Modeller().tool("translink.emme.util")
         # Inputs: Regression Functions and directional factors
         # Outputs: 24 hours trip generation - mo4,mo6,md404,md406 (Light From, Heavy From, Light To, Heavy To)
@@ -207,44 +176,33 @@ class ExternalTruckModel(_m.Tool()):
 
         LightTruckSum=EastLightTrucks+0.35*WestTrucks+NorthLightTrucks
         HeavyTruckSum=EastHeavyTrucks+0.65*WestTrucks+NorthHeavyTrucks
-        ## Determine growth based on sensitivity inputs
-        if Sensitivity=="N":
-            RatioL=1
-            RatioH=1
 
-        else:
-            CAGRLightI=(LightTruckSum/ExL11)**(1/float(Year-2011))
-            CAGRHeavyI=(HeavyTruckSum/ExH11)**(1/float(Year-2011))
-            RatioL=(LightTruckSum/CAGRLightI**(Year-2030)*((1+ExtGrowth1/100)/(CAGRLightI))**(2030-2011)*(1+ExtGrowth2/100)**(Year-2030))/LightTruckSum
-            RatioH=(HeavyTruckSum/CAGRHeavyI**(Year-2030)*((1+ExtGrowth1/100)/(CAGRHeavyI))**(2030-2011)*(1+ExtGrowth2/100)**(Year-2030))/HeavyTruckSum
-
-
-        HeavyTrucksFrom=[RatioH*EastHeavyTrucks*(IB_Split[0])*(1-Hw1_Split[0])*Wkd_Factor[0],
-                         RatioH*EastHeavyTrucks*(IB_Split[0])*(Hw1_Split[0])*Wkd_Factor[0],
-                           RatioH*WestTrucks*(IB_Split[2])*TsawassenSplit*Wkd_Factor[2]*(1-TruckConFact),
-                           RatioH*WestTrucks*(IB_Split[2])*(1-TsawassenSplit)*Wkd_Factor[2]*(1-TruckConFact),
-                           RatioH*NorthHeavyTrucks*Wkd_Factor[3]
+        HeavyTrucksFrom=[EastHeavyTrucks*(IB_Split[0])*(1-Hw1_Split[0])*Wkd_Factor[0],
+                         EastHeavyTrucks*(IB_Split[0])*(Hw1_Split[0])*Wkd_Factor[0],
+                         WestTrucks*(IB_Split[2])*TsawassenSplit*Wkd_Factor[2]*(1-TruckConFact),
+                         WestTrucks*(IB_Split[2])*(1-TsawassenSplit)*Wkd_Factor[2]*(1-TruckConFact),
+                         NorthHeavyTrucks*Wkd_Factor[3]
                            ]
 
-        HeavyTrucksTo=  [RatioH*EastHeavyTrucks*(1-IB_Split[0])*(1-Hw1_Split[0])*Wkd_Factor[0],
-                           RatioH*EastHeavyTrucks*(1-IB_Split[0])*(Hw1_Split[0])*Wkd_Factor[0],
-                           RatioH*WestTrucks*(1-IB_Split[2])*TsawassenSplit*Wkd_Factor[2]*(1-TruckConFact),
-                           RatioH*WestTrucks*(1-IB_Split[2])*(1-TsawassenSplit)*Wkd_Factor[2]*(1-TruckConFact),
-                           RatioH*NorthHeavyTrucks*Wkd_Factor[3]
+        HeavyTrucksTo=  [EastHeavyTrucks*(1-IB_Split[0])*(1-Hw1_Split[0])*Wkd_Factor[0],
+                         EastHeavyTrucks*(1-IB_Split[0])*(Hw1_Split[0])*Wkd_Factor[0],
+                         WestTrucks*(1-IB_Split[2])*TsawassenSplit*Wkd_Factor[2]*(1-TruckConFact),
+                         WestTrucks*(1-IB_Split[2])*(1-TsawassenSplit)*Wkd_Factor[2]*(1-TruckConFact),
+                         NorthHeavyTrucks*Wkd_Factor[3]
                            ]
 
-        LightTrucksFrom=[RatioL*EastLightTrucks*(IB_Split[1])*(1-Hw1_Split[1])*Wkd_Factor[1],
-                          RatioL*EastLightTrucks*(IB_Split[1])*(Hw1_Split[1])*Wkd_Factor[1],
-                           RatioL*WestTrucks*(IB_Split[2])*TsawassenSplit*Wkd_Factor[2]*(TruckConFact),
-                           RatioL*WestTrucks*(IB_Split[2])*(1-TsawassenSplit)*Wkd_Factor[2]*(TruckConFact),
-                           RatioL*NorthLightTrucks*Wkd_Factor[4]]
+        LightTrucksFrom=[EastLightTrucks*(IB_Split[1])*(1-Hw1_Split[1])*Wkd_Factor[1],
+                         EastLightTrucks*(IB_Split[1])*(Hw1_Split[1])*Wkd_Factor[1],
+                         WestTrucks*(IB_Split[2])*TsawassenSplit*Wkd_Factor[2]*(TruckConFact),
+                         WestTrucks*(IB_Split[2])*(1-TsawassenSplit)*Wkd_Factor[2]*(TruckConFact),
+                         NorthLightTrucks*Wkd_Factor[4]]
 
 
-        LightTrucksTo= [RatioL*EastLightTrucks*(1-IB_Split[1])*(1-Hw1_Split[1])*Wkd_Factor[1],
-                           RatioL*EastLightTrucks*(1-IB_Split[1])*(Hw1_Split[1])*Wkd_Factor[1],
-                           RatioL*WestTrucks*(1-IB_Split[2])*TsawassenSplit*Wkd_Factor[2]*(TruckConFact),
-                           RatioL*WestTrucks*(1-IB_Split[2])*(1-TsawassenSplit)*Wkd_Factor[2]*(TruckConFact),
-                           RatioL*NorthLightTrucks*Wkd_Factor[4]
+        LightTrucksTo= [EastLightTrucks*(1-IB_Split[1])*(1-Hw1_Split[1])*Wkd_Factor[1],
+                        EastLightTrucks*(1-IB_Split[1])*(Hw1_Split[1])*Wkd_Factor[1],
+                        WestTrucks*(1-IB_Split[2])*TsawassenSplit*Wkd_Factor[2]*(TruckConFact),
+                        WestTrucks*(1-IB_Split[2])*(1-TsawassenSplit)*Wkd_Factor[2]*(TruckConFact),
+                        NorthLightTrucks*Wkd_Factor[4]
                            ]
 
 
