@@ -41,8 +41,6 @@ ExL11=1579.0
 ExH11=3718.0
 
 class ExternalTruckModel(_m.Tool()):
-
-
     spec_as_dict = {
     "expression": "EXPRESSION",
     "result": "RESULT",
@@ -55,8 +53,6 @@ class ExternalTruckModel(_m.Tool()):
 }
 
     #    Analysis_Year = _m.Attribute(int)
-    #    GDP_CAGR = _m.Attribute(float)
-    #    Quarter = _m.Attribute(int)
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
@@ -68,18 +64,12 @@ class ExternalTruckModel(_m.Tool()):
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
 
-
         return pb.render()
 
     def run(self):
-        ##        User start
-        self.tool_run_msg = ""
-        #GDP FOrecasts: 2011, 2031, 2045 in Real 2009 $ Value
-
         try:
-            self.__call__(Year)
-            run_msg = "Tool completed"
-            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
+            self.__call__(_m.Modeller().emmebank, Year)
+            self.tool_run_msg = _m.PageBuilder.format_info("Tool completed")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 

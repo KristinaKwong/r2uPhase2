@@ -44,9 +44,12 @@ class FullTruckModel(_m.Tool()):
     def __call__(self, eb, Year, AMScenario, MDScenario):
         ExternalModel=_m.Modeller().tool("translink.emme.stage5.step10.externaltruck")
         ExternalModel(eb, Year)
+
         AsiaPacificModel=_m.Modeller().tool("translink.emme.stage5.step10.asiapacifictruck")
         AsiaPacificModel(eb, Year)
+
         RegionalModel=_m.Modeller().tool("translink.emme.stage5.step10.regionaltruck")
         RegionalModel(eb)
+
         TruckAssign=_m.Modeller().tool("translink.emme.stage5.step10.truckassign")
         TruckAssign(eb, AMScenario, MDScenario)
