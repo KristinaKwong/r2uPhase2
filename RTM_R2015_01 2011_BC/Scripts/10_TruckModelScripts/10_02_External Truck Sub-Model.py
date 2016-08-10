@@ -228,36 +228,25 @@ class ExternalTruckModel(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
         #   Adjusts Inter-regional mo and md totals by subtracting Cross-border mo/mds with inter-regional zone end
 
-        AdjustSpec=self.spec_as_dict
-        ResultList=["mo1003","md203"]
+        specs = []
 
-        AdjustSpec["expression"]= matrix1
+        spec = util.matrix_spec("mo1003", matrix1)
+        spec["constraint"]["by_zone"] = {"origins": "1;2;8;10;11", "destinations": None}
+        spec["aggregation"] = {"origins": None, "destinations": "+"}
+        specs.append(spec)
 
-        for i in range (2):
-            if i==0:
-                AdjustSpec["constraint"]["by_zone"]["origins"] = "1;2;8;10;11"
-                AdjustSpec["constraint"]["by_zone"]["destinations"] = "*"
-                AdjustSpec["aggregation"]["origins"] = None
-                AdjustSpec["aggregation"]["destinations"] = "+"
-            if i==1:
-                AdjustSpec["constraint"]["by_zone"]["origins"] = "*"
-                AdjustSpec["constraint"]["by_zone"]["destinations"] = "1;2;8;10;11"
-                AdjustSpec["aggregation"]["origins"] = "+"
-                AdjustSpec["aggregation"]["destinations"] = None
+        spec = util.matrix_spec("md203", matrix1)
+        spec["constraint"]["by_zone"] = {"origins": None, "destinations": "1;2;8;10;11"}
+        spec["aggregation"] = {"origins": "+", "destinations": None}
+        specs.append(spec)
 
+        spec = util.matrix_spec(matrix2, "((%s-mo1003).max.0)" % matrix2)
+        specs.append(spec)
 
-            AdjustSpec["result"]=ResultList[i]
-            util.compute_matrix(AdjustSpec)
+        spec = util.matrix_spec(matrix3, "((%s-md203).max.0)" % matrix3)
+        specs.append(spec)
 
-        self.ResetSpec(AdjustSpec)
-
-        AdjustSpec["expression"]= "(("+matrix2+"-"+ResultList[0]+").max.0)"
-        AdjustSpec["result"]=matrix2
-        util.compute_matrix(AdjustSpec)
-
-        AdjustSpec["expression"]= "(("+matrix3+"-"+ResultList[1]+").max.0)"
-        AdjustSpec["result"]=matrix3
-        util.compute_matrix(AdjustSpec)
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Trip Distribution")
     def TripDistribution(self):
