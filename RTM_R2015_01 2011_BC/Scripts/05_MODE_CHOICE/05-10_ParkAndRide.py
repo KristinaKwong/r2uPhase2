@@ -384,7 +384,7 @@ class ParkAndRide(_m.Tool()):
         report = compute_impedance(spec, scenario=scenario)
         spec["constraint"]["by_zone"]["origins"] = "gp8-gp15"
         spec["constraint"]["by_zone"]["intermediates"] = "111"
-        spec["constraint"]["by_zone"]["destinations"] = "gr1,gr4"
+        spec["constraint"]["by_zone"]["destinations"] = "gr1-gr4"
         report = compute_impedance(spec, scenario=scenario)
         spec["constraint"]["by_zone"]["origins"] = "gp11-gp14"
         spec["constraint"]["by_zone"]["intermediates"] = "112"
