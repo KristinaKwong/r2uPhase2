@@ -29,9 +29,8 @@ class RegTruckModel(_m.Tool()):
         self.tool_run_msg = ""
 
         try:
-            self.__call__()
-            run_msg = "Tool completed"
-            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
+            self.__call__(_m.Modeller().emmebank)
+            self.tool_run_msg = _m.PageBuilder.format_info("Tool completed")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
@@ -44,7 +43,7 @@ class RegTruckModel(_m.Tool()):
         util.delmat(eb, "mf1027")
         util.delmat(eb, "mf1028")
         process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
-        root_directory = util.get_input_path(_m.Modeller().emmebank)
+        root_directory = util.get_input_path(eb)
         matrix_file1 = os.path.join(root_directory, "TruckBatchFiles", "RGBatchIn.txt")
         process(transaction_file=matrix_file1, throw_on_error=True)
 
