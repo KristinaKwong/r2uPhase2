@@ -5,12 +5,7 @@
 ##--Purpose: Generates a generic transit skim
 ##---------------------------------------------------------------------
 import inro.modeller as _m
-import os
-import simplejson
 import traceback as _traceback
-
-eb = _m.Modeller().emmebank
-
 
 class Transit_Assignment(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
@@ -27,11 +22,9 @@ class Transit_Assignment(_m.Tool()):
         return pb.render()
 
     def run(self):
-        self.tool_run_msg = ""
         try:
             self.__call__()
-            run_msg = "Tool completed"
-            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info("Tool completed")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
