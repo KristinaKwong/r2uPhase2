@@ -1,30 +1,4 @@
 t matrices
-d mo1001
-d mo1002
-d md201
-d md202
-d mo1003
-d md203
-d mf1008
-d mf1009
-d mf1010
-d mf1011
-d mf1012
-d mf1013
-d mf1014
-d mf1015
-a mo1001 IRLgPr 0 IR LgTruck Productions
-a mo1002 IRHvPr 0 IR HvTruck Productions
-a md201 IRLgAt 0 IR LgTruck Attractions
-a md202 IRHvAt 0 IR LgTruck Attractions
-a mo1003 IRAdj 0 IR Adjustment Calc
-a md203 IRAdj 0 IR Adjustment Calc
-a mf1010 IRLg24 0 IR LgTruck Daily Trips
-a mf1011 IRHv24 0 IR HvTruck Daily Trips
-a mf1012 IRLgAM 0 IR LgTruck AM Trips
-a mf1013 IRHvAM 0 IR HvTruck AM Trips
-a mf1014 IRLgMD 0 IR LgTruck MD Trips
-a mf1015 IRHvMD 0 IR HvTruck MD Trips
 a matrix=mf1008  IRLg99     0 IR Light Truck 1999 Survey Rat           
  1 1000:.00097
  1 1010:.00139

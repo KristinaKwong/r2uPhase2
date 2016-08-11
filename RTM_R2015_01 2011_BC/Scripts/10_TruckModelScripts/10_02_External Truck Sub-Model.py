@@ -85,11 +85,26 @@ class ExternalTruckModel(_m.Tool()):
         matrix_file1 = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"CrossBorderv1.txt")
         process(transaction_file=matrix_file1, throw_on_error=True)
 
+        util.delmat(eb, "mf1008")
+        util.delmat(eb, "mf1009")
         matrix_file2 = os.path.join(root_directory, "TruckBatchFiles", "IRBatchIn.txt")
         process(transaction_file=matrix_file2, throw_on_error=True)
 
         util.initmat(eb, "ms151", "ExLgC1", "Cross Border Calc 1", 0)
         util.initmat(eb, "ms152", "ExHvC2", "Cross Border Calc 2", 0)
+
+        util.initmat(eb, "mo1001", "IRLgPr", "IR LgTruck Productions", 0)
+        util.initmat(eb, "mo1002", "IRHvPr", "IR HvTruck Productions", 0)
+        util.initmat(eb, "md201",  "IRLgAt", "IR LgTruck Attractions", 0)
+        util.initmat(eb, "md202",  "IRHvAt", "IR LgTruck Attractions", 0)
+        util.initmat(eb, "mo1003",  "IRAdj", "IR Adjustment Calc", 0)
+        util.initmat(eb, "md203",   "IRAdj", "IR Adjustment Calc", 0)
+        util.initmat(eb, "mf1010", "IRLg24", "IR LgTruck Daily Trips", 0)
+        util.initmat(eb, "mf1011", "IRHv24", "IR HvTruck Daily Trips", 0)
+        util.initmat(eb, "mf1012", "IRLgAM", "IR LgTruck AM Trips", 0)
+        util.initmat(eb, "mf1013", "IRHvAM", "IR HvTruck AM Trips", 0)
+        util.initmat(eb, "mf1014", "IRLgMD", "IR LgTruck MD Trips", 0)
+        util.initmat(eb, "mf1015", "IRHvMD", "IR HvTruck MD Trips", 0)
 
         specs = []
 
