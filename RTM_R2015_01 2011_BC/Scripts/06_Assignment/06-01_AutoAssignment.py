@@ -213,8 +213,33 @@ class AutoAssignment(_m.Tool()):
             "type": "NETWORK_CALCULATION"
         }
 
+        #TODO Move the headway calculations to the transit assignment module
         # KB: why are the transit heady calculations in the traffic assignment tool ??????
-        ## Calculate effective headways based on following factors:
+
+        # Calculate effective headway based on
+        # 0-10 minutes 0.5
+        # 10-20 minutes 0.4
+        # 20-30 minutes 0.3
+        # > 30 minutes 0.1
+
+        spec = {
+            "result": "",
+            "expression": "",
+            "aggregation": None,
+            "selections": {
+                "transit_line": "all"
+            },
+            "type": "NETWORK_CALCULATION"
+        }
+
+        expression = "(hdw.le.10)*(hdw*.5)+(hdw.gt.10)*(hdw.le.20)*(5+(hdw-10)*.4)+(hdw.gt.20)*(hdw.le.30)*(5+4+(hdw-20)*.3)+(hdw.gt.30)*(5+4+3+(hdw-30)*.1)"
+        spec['expression'] = expression
+        spec['result'] = 'ut2'
+        calc_extra_attribute(spec, scenario=am_scenario)
+        calc_extra_attribute(spec, scenario=md_scenario)
+        calc_extra_attribute(spec, scenario=pm_scenario)
+
+        ## Calculate perception of headways based on following factors:
         ##        "l" rail=0.8,
         ##        "b" bus=1.2,
         ##        "s" seabus=0.67,
@@ -222,6 +247,18 @@ class AutoAssignment(_m.Tool()):
         ##        "f" LRT=1.1,
         ##        "h" Gondola=0.8,
         ##        "r" WCE=0.8
+        spec = {
+            "result": "",
+            "expression": "",
+            "aggregation": None,
+            "selections": {
+                "transit_line": "all"
+            },
+            "type": "NETWORK_CALCULATION"
+        }
+
+
+
         expressions_list = [["hdw*1.2", "mode=b", "ut1"],
                             ["hdw*0.8", "mode=l", "ut1"],
                             ["hdw*0.67", "mode=s", "ut1"],
