@@ -1,5 +1,7 @@
 c Emme Modeller - Transit Line Transaction
-c Scenario 3000:  2030 Base Network
+c Date: 2016-07-27 13:38:40
+c Project:        RTM 2016 07 13                                              
+c Scenario 3000:  2030 Base Network massey#2
 t lines
 c Transit Lines
 c Line  Mod Veh Headwy Speed Description             Data1  Data2  Data3
@@ -14901,7 +14903,9 @@ a'210N1A' b   1  12.00  35.00 'UpperLynn/Vancouver '      0      0      0
    250602          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250707          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   250708          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250710          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   250801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    124205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    123513          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -14967,7 +14971,9 @@ a'210N1M' b   1  30.00  35.00 'UpperLynn/Vancouver '      0      0      0
    250602          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250707          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   250708          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250710          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   250801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    124205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    123513          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -15033,7 +15039,9 @@ a'210N1P' b   1  12.00  35.00 'UpperLynn/Vancouver '      0      0      0
    250602          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250707          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   250708          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250710          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   250801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    124205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    123513          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -15330,7 +15338,9 @@ a'211E1P' b   1  12.00  23.00 'Seymour/Phibbs/Vanc '      0      0      0
    250602          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250707          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   250708          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250710          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   250801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    124205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    123513          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -15857,7 +15867,9 @@ a'214E1P' b   1  20.00  23.00 'BlueRidge/Phibbs/Van'      0      0      0
    250602          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250707          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   250708          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250710          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   250801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    124205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    123513          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -20969,22 +20981,37 @@ a'311N1A' b   1  20.00  35.00 'Scottsdale/Bridgeprt'      0      0      0
    542026          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542030          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542029          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542052          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542043          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542057          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542038          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542039          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542045          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542044          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541916          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542521          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542519          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541915          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542518          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541920          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541918          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541925          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541025          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541925          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541813          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532112          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541021          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541023          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532112          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    531507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   531505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513909          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   513907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512805          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -20995,6 +21022,7 @@ a'311N1A' b   1  20.00  35.00 'Scottsdale/Bridgeprt'      0      0      0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502        lay=5.00
@@ -21008,21 +21036,37 @@ a'311S1P' b   1  15.00  35.00 'Bridgeport/Scottdale'      0      0      0
    511603          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511605          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511606          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   512704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512705          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   515104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513908          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516307          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516308          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   518102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   521001          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522208          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532111          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541024          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541022          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541814          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541008          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541025          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541912          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541812          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541919          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542520          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542041          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542059          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542056          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542058          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543007          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543004          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543005          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -25326,33 +25370,54 @@ a'351N1A' b   1   9.00  35.00 'CrescentBch/Bridgepo'      0      0      0
    641013          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    641011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    641010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542032          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542028          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542037          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542030          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542050          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542037          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542030          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542029          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542052          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542043          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542057          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542038          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542039          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542045          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542044          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541916          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542521          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542519          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541915          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542518          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541920          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541918          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541925          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541025          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541925          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541813          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532112          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541021          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541023          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532112          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    531507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   531505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513909          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   513907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   512805          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511712          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511608          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511607          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502        lay=5.00
@@ -25402,33 +25467,54 @@ a'351N1M' b   1  15.00  35.00 'CrescentBch/Bridgepo'      0      0      0
    641013          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    641011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    641010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542032          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542028          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542037          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542030          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542050          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542037          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542030          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542029          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542052          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542043          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542057          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542038          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542039          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542045          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542044          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541916          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542521          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542519          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541915          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542518          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541920          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541918          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541925          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541025          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541925          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541813          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532112          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541021          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541023          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532112          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    531507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   531505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513909          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   513907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   512805          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511712          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511608          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511607          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502        lay=5.00
@@ -25478,33 +25564,54 @@ a'351N1P' b   1  15.00  35.00 'CrescentBch/Bridgepo'      0      0      0
    641013          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    641011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    641010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542032          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542028          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542037          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542030          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542050          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542037          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542030          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542029          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542052          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542043          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542057          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542038          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542039          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542045          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542044          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541916          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542521          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542519          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541915          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542518          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541920          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541918          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541925          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541025          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541925          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541813          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532112          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541021          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541023          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532112          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    531507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   531505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513909          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   513907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   512805          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511712          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511608          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511607          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502        lay=5.00
@@ -25518,25 +25625,42 @@ a'351S1A' b   1  15.00  35.00 'CrescentBch/Bridgepo'      0      0      0
    511603          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511605          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511606          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   512704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512705          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   515104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513908          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516307          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516308          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   518102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   521001          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522208          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532111          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541024          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541022          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541814          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541008          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541025          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541912          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541812          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541919          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542520          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542041          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   543007          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   543004          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542059          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542056          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542058          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   543007          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   543004          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543005          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542051          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542031          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543001          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    641015          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -25587,25 +25711,42 @@ a'351S1M' b   1  15.00  35.00 'CrescentBch/Bridgepo'      0      0      0
    511603          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511605          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511606          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   512704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512705          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   515104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513908          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516307          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516308          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   518102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   521001          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522208          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532111          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541024          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541022          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541814          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541008          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541025          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541912          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541812          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541919          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542520          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542041          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   543007          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   543004          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542059          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542056          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542058          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   543007          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   543004          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543005          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542051          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542031          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543001          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    641015          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -25656,25 +25797,42 @@ a'351S1P' b   1   9.00  35.00 'CrescentBch/Bridgepo'      0      0      0
    511603          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511605          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511606          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   512704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512705          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   515104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513908          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516307          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516308          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   518102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   521001          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522208          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532111          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541024          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541022          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541814          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541008          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541025          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541912          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541812          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541919          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542520          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542041          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   543007          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   543004          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542059          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542056          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542058          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   543007          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   543004          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543005          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542051          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542031          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543001          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    641015          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -25749,35 +25907,56 @@ a'352N1A' b   1   9.00  23.00 'OceanPark/Bridgeport'      0      0      0
    641019          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    641018          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    641013          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   641011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    641010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542032          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542028          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542037          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542030          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542050          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542037          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542030          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542029          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542052          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542043          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542057          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542038          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542039          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542045          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542044          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541916          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542521          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542519          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541915          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542518          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541920          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541923          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541918          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541925          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541025          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541925          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541813          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532112          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541021          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541023          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532112          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    531507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   531505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513909          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   513907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   512805          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511712          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511608          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511607          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502        lay=5.00
@@ -25791,25 +25970,42 @@ a'352S1P' b   1  15.00  35.00 'OceanPark/Bridgeport'      0      0      0
    511603          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511605          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511606          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   512704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512705          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   515104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513908          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516307          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516308          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   518102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   521001          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522208          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532111          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541024          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541022          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541814          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541008          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541025          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541912          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541812          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541919          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542520          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542041          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   543007          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   543004          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542059          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542056          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542058          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   543007          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   543004          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543005          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542051          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542031          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543001          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    641015          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -25880,33 +26076,54 @@ a'354N1A' b   1  15.00  35.00 'WhiteRkSth/BrdgprtSt'      0      0      0
    641013          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    641011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    641010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542032          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542028          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542037          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542036          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542050          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542037          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542030          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542029          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542052          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542043          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542057          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542038          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542039          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542045          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542044          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541916          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542521          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542519          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541915          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542518          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541920          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541918          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541925          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541025          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541925          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541813          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532112          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541021          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541023          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532112          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    531507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   531505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513909          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   513907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512805          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511712          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511608          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511607          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502        lay=5.00
@@ -25920,25 +26137,42 @@ a'354S1P' b   1  12.00  35.00 'WhiteRkSth/BrdgprtSt'      0      0      0
    511603          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511605          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511606          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   512704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512705          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   515104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513908          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516307          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516308          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   518102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   521001          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522208          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532111          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541024          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541022          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541814          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541008          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541025          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541912          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541812          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541919          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542520          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542041          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   543007          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   543004          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542059          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542056          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542058          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   543007          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   543004          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543005          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542051          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542031          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543001          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    641015          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -27956,11 +28190,11 @@ a'403N1A' b   1   8.00  34.00 'BridgePort/ThreeRoad'      0      0      0
   path=no
    532203          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532109          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532108          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532110          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532109          dwt=+0   ttf=5   us1=0   us2=0   us3=0
+   532108          dwt=#0   ttf=3   us1=0   us2=0   us3=0
+   521002          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522205          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522014          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    522204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522202          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522201          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -27999,11 +28233,11 @@ a'403N1M' b   1  15.00  34.00 'BridgePort/ThreeRoad'      0      0      0
   path=no
    532203          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532109          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532108          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532110          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532109          dwt=+0   ttf=5   us1=0   us2=0   us3=0
+   532108          dwt=#0   ttf=3   us1=0   us2=0   us3=0
+   521002          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522205          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522014          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    522204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522202          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522201          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -28042,11 +28276,11 @@ a'403N1P' b   1  15.00  34.00 'BridgePort/ThreeRoad'      0      0      0
   path=no
    532203          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532109          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532108          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532110          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532109          dwt=+0   ttf=5   us1=0   us2=0   us3=0
+   532108          dwt=#0   ttf=3   us1=0   us2=0   us3=0
+   521002          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522205          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522014          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    522204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522202          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522201          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -28114,12 +28348,12 @@ a'403S1A' b   1  20.00  34.00 'BridgePort/ThreeRoad'      0      0      0
    522601          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    521703          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522602          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   522201          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522201          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    522202          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522203          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532110          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522203          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522013          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532107          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    532108          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532109          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -28157,12 +28391,12 @@ a'403S1M' b   1  15.00  34.00 'BridgePort/ThreeRoad'      0      0      0
    522601          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    521703          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522602          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   522201          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522201          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    522202          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522203          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532110          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522203          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522013          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532107          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    532108          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532109          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -28200,12 +28434,12 @@ a'403S1P' b   1  10.00  34.00 'BridgePort/ThreeRoad'      0      0      0
    522601          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    521703          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522602          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   522201          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522201          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    522202          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522203          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532110          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522203          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522013          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532107          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    532108          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532109          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -28230,10 +28464,10 @@ a'404E1A' b   1  20.00  23.00 'Ladner Exch/Brighous'      0      0      0
    522602          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522201          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522202          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522203          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532110          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522203          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522013          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532107          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    532108          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532109          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -28258,10 +28492,10 @@ a'404E1M' b   1  30.00  23.00 'Ladner Exch/Brighous'      0      0      0
    522602          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522201          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522202          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522203          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532110          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522203          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522013          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532107          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    532108          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532109          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -28286,10 +28520,10 @@ a'404E1P' b   1  20.00  23.00 'Ladner Exch/Brighous'      0      0      0
    522602          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522201          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522202          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522203          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532110          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522203          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522013          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532107          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    532108          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532109          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -28299,10 +28533,10 @@ a'404W1A' b   1  20.00  23.00 'Ladner Exch/Brighous'      0      0      0
    532203          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532109          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532108          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532110          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532108          dwt=#0   ttf=3   us1=0   us2=0   us3=0
+   521002          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522205          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522014          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    522204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522202          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522201          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -28328,10 +28562,10 @@ a'404W1M' b   1  30.00  23.00 'Ladner Exch/Brighous'      0      0      0
    532203          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532109          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532108          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532110          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532108          dwt=#0   ttf=3   us1=0   us2=0   us3=0
+   521002          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522205          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522014          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    522204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522202          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522201          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -28357,10 +28591,10 @@ a'404W1P' b   1  20.00  23.00 'Ladner Exch/Brighous'      0      0      0
    532203          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532109          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532108          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532110          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532108          dwt=#0   ttf=3   us1=0   us2=0   us3=0
+   521002          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522205          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522014          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    522204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522202          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522201          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -28735,10 +28969,11 @@ a'407N1A' b   1  15.00  35.00 'Gilbert/Brdgprt     '      0      0      0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
-   510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   510509          dwt=+0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   511703          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   511703          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    511704          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    511705          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    510702          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -28799,10 +29034,11 @@ a'407N1M' b   1  30.00  35.00 'Gilbert/Brdgprt     '      0      0      0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
-   510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   510509          dwt=+0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   511703          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   511703          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    511704          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    511705          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    510702          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -28863,10 +29099,11 @@ a'407N1P' b   1  15.00  35.00 'Gilbert/Brdgprt     '      0      0      0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
-   510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   510509          dwt=+0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   511703          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   511703          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    511704          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    511705          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    510702          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -28909,11 +29146,12 @@ a'407S1A' b   1  15.00  35.00 'Gilbert/Brdgprt     '      0      0      0
    511801          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    510703          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    510702          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   511705          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511705          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    511704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   511701          dwt=+0   ttf=2   us1=0   us2=0   us3=0
+   511701          dwt=+0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -28979,11 +29217,12 @@ a'407S1M' b   1  30.00  35.00 'Gilbert/Brdgprt     '      0      0      0
    511801          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    510703          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    510702          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   511705          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511705          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    511704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   511701          dwt=+0   ttf=2   us1=0   us2=0   us3=0
+   511701          dwt=+0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -29049,11 +29288,12 @@ a'407S1P' b   1  12.00  35.00 'Gilbert/Brdgprt     '      0      0      0
    511801          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    510703          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    510702          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   511705          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511705          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    511704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   511701          dwt=+0   ttf=2   us1=0   us2=0   us3=0
+   511701          dwt=+0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -29606,12 +29846,13 @@ a'430E1A' b   1  20.00  23.00 'Metrtwn/Brighouse   '      0      0      0
    511505          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    511502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511601          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   511501          dwt=+0   ttf=2   us1=0   us2=0   us3=0
+   511501          dwt=#0   ttf=2   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -29670,12 +29911,13 @@ a'430E1M' b   1  30.00  23.00 'Metrtwn/Brighouse   '      0      0      0
    511505          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    511502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511601          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   511501          dwt=+0   ttf=2   us1=0   us2=0   us3=0
+   511501          dwt=#0   ttf=2   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -29734,12 +29976,13 @@ a'430E1P' b   1  15.00  23.00 'Metrtwn/Brighouse   '      0      0      0
    511505          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    511502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511601          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   511501          dwt=+0   ttf=2   us1=0   us2=0   us3=0
+   511501          dwt=#0   ttf=2   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -29818,11 +30061,12 @@ a'430W1A' b   1  15.00  23.00 'Metrtwn/Brighouse   '      0      0      0
    511704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   511701          dwt=+0   ttf=2   us1=0   us2=0   us3=0
+   511701          dwt=#0   ttf=2   us1=0   us2=0   us3=0
+   511009          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
+   510506          dwt=#0   ttf=2   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511501          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    511502          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -29879,11 +30123,12 @@ a'430W1M' b   1  30.00  23.00 'Metrtwn/Brighouse   '      0      0      0
    511704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   511701          dwt=+0   ttf=2   us1=0   us2=0   us3=0
+   511701          dwt=#0   ttf=2   us1=0   us2=0   us3=0
+   511009          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
+   510506          dwt=#0   ttf=2   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511501          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    511502          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -29940,11 +30185,12 @@ a'430W1P' b   1  15.00  23.00 'Metrtwn/Brighouse   '      0      0      0
    511704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   511701          dwt=+0   ttf=2   us1=0   us2=0   us3=0
+   511701          dwt=#0   ttf=2   us1=0   us2=0   us3=0
+   511009          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
+   510506          dwt=#0   ttf=2   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511501          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    511502          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -30012,6 +30258,7 @@ a'480E1A' b  10  30.00  23.00 'UBC/Brgprt/Brghouse '      0      0      0
    244402          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    244401          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511501          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
@@ -30065,6 +30312,7 @@ a'480E1M' b  10  15.00  23.00 'UBC/Brgprt/Brghouse '      0      0      0
    244402          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    244401          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511501          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
@@ -30118,6 +30366,7 @@ a'480E1P' b  10   9.00  23.00 'UBC/Brgprt/Brghouse '      0      0      0
    244402          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    244401          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511501          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
@@ -30127,9 +30376,11 @@ a'480W1A' b  10  10.00  23.00 'UBC/Brgprt/Brghouse '      0      0      0
    510502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511707          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511604          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    244709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    244406          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -30184,9 +30435,11 @@ a'480W1M' b  10  12.00  23.00 'UBC/Brgprt/Brghouse '      0      0      0
    510502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511707          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511604          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    244709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    244406          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -30241,9 +30494,11 @@ a'480W1P' b  10  15.00  23.00 'UBC/Brgprt/Brghouse '      0      0      0
    510502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511707          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511604          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    244709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    244406          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -32770,29 +33025,35 @@ a'601N1A' b   1  10.00  35.00 'SDelta/BndryBay/Bdgp'      0      0      0
    542314          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542504          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542503          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542304          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542508          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541812          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541815          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541810          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541813          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532112          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541023          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532112          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    531507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   531505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513909          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   513907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512805          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511712          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511608          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511607          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502        lay=5.00
@@ -32830,29 +33091,35 @@ a'601N1M' b   1  20.00  35.00 'SDelta/BndryBay/Bdgp'      0      0      0
    542314          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542504          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542503          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542304          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542508          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541812          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541815          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541810          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541813          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532112          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541023          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532112          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    531507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   531505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513909          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   513907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512805          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511712          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511608          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511607          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502        lay=5.00
@@ -32890,34 +33157,41 @@ a'601N1P' b   1  15.00  35.00 'SDelta/BndryBay/Bdgp'      0      0      0
    542314          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542504          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542503          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542304          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542508          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541812          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541815          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541810          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541813          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532112          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541023          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532112          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    531507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   531505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513909          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   513907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512805          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511712          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511608          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511607          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502        lay=5.00
 a'601S1A' b   1  15.00  35.00 'SDelta/BndryBay/Bdgp'      0      0      0
   path=no
+   510502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511501          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -32925,20 +33199,29 @@ a'601S1A' b   1  15.00  35.00 'SDelta/BndryBay/Bdgp'      0      0      0
    511603          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511605          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511606          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   512704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512705          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   515104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513908          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516307          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516308          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   518102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   521001          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522208          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532111          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541024          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541022          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541814          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542316          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542305          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542305          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542304          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    542801          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542314          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -32973,6 +33256,7 @@ a'601S1A' b   1  15.00  35.00 'SDelta/BndryBay/Bdgp'      0      0      0
    544309        lay=5.00
 a'601S1M' b   1  30.00  35.00 'SDelta/BndryBay/Bdgp'      0      0      0
   path=no
+   510502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511501          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -32980,20 +33264,29 @@ a'601S1M' b   1  30.00  35.00 'SDelta/BndryBay/Bdgp'      0      0      0
    511603          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511605          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511606          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   512704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512705          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   515104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513908          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516307          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516308          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   518102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   521001          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522208          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532111          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541024          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541022          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541814          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542316          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542305          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542305          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542304          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    542801          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542314          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -33028,6 +33321,7 @@ a'601S1M' b   1  30.00  35.00 'SDelta/BndryBay/Bdgp'      0      0      0
    544309        lay=5.00
 a'601S1P' b   1  15.00  35.00 'SDelta/BndryBay/Bdgp'      0      0      0
   path=no
+   510502          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511501          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -33035,20 +33329,29 @@ a'601S1P' b   1  15.00  35.00 'SDelta/BndryBay/Bdgp'      0      0      0
    511603          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511605          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511606          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   512704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512705          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   515104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513908          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516307          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516308          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   518102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   521001          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522208          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532111          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541024          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541022          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541814          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542316          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542305          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542305          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542304          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    542801          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542314          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -33104,29 +33407,35 @@ a'602N1A' b   1  30.00  35.00 'Tswwassen Hts/Vancvr'      0      0      0
    543306          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543109          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542504          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542503          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541922          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541905          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541815          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541810          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541813          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532112          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541023          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532112          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    531507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   531505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513909          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   513907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512805          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511712          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511608          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511607          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502        lay=5.00
@@ -33140,21 +33449,29 @@ a'602S1P' b  10  30.00  23.00 'TswwassenHts/BridgeP'      0      0      0
    511603          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511605          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511606          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512705          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   515104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513908          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516307          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516308          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   518102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   521001          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522208          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532111          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541024          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541022          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541814          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542316          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542305          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542305          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542304          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    542801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543409          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -33204,30 +33521,35 @@ a'603N1A' b   1  30.00  35.00 'BeachGrove/Brdgprt  '      0      0      0
    543306          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543109          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542504          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542503          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541922          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541905          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541815          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541810          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541813          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532112          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541023          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532112          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    531507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   531505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513909          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   513907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512805          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511712          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511608          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511607          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502        lay=5.00
@@ -33259,30 +33581,35 @@ a'603N1P' b   1  30.00  35.00 'BeachGrove/Brdgprt  '      0      0      0
    543306          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543109          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542504          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542503          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541922          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541905          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541815          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541810          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541813          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532112          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541023          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532112          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    531507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   531505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513909          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   513907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512805          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511712          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511608          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511607          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502        lay=5.00
@@ -33313,29 +33640,35 @@ a'604N1A' b   1  30.00  35.00 'English Bluff/Vancvr'      0      0      0
    543306          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543109          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542504          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542503          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541922          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541905          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541815          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541810          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541813          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532112          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541023          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532112          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    531507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   531505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513909          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   513907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512805          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511712          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511608          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511607          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502        lay=5.00
@@ -33366,29 +33699,35 @@ a'604N1P' b   1  30.00  35.00 'English Bluff/Vancvr'      0      0      0
    543306          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543109          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542504          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542503          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541922          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541905          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541815          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541810          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541813          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532112          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541023          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532112          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    531507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   531505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513909          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   513907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512805          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511712          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511608          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511607          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502        lay=5.00
@@ -33515,29 +33854,40 @@ a'620N1A' b  10  60.00  23.00 'TsawFerry/BrdgprtStn'      0      0      0
    543407          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543306          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543109          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542801          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542702          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542315          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542504          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542503          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541922          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541905          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541815          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541810          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541813          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532112          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541023          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532112          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    531507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   531505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513909          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   513907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512805          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511712          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511608          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511607          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502        lay=5.00
@@ -33550,29 +33900,40 @@ a'620N1M' b  10  30.00  23.00 'TsawFerry/BrdgprtStn'      0      0      0
    543407          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543306          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543109          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542801          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542702          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542315          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542504          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542503          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541922          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541905          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541815          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541810          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541813          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532112          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541023          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532112          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    531507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   531505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513909          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   513907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512805          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511712          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511608          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511607          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502        lay=5.00
@@ -33585,29 +33946,40 @@ a'620N1P' b  10  30.00  23.00 'TsawFerry/BrdgprtStn'      0      0      0
    543407          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543306          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    543109          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542801          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542702          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542315          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542504          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542503          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541922          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541905          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541815          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541810          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541813          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532112          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541023          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532112          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522011          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522003          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    531507          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   531505          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513909          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   513907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513902          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512805          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511712          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511608          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511709          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511607          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511703          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511702          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511009          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    510506          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    510502        lay=5.00
@@ -33621,21 +33993,31 @@ a'620S1A' b  10  60.00  23.00 'TsawFerry/BrdgprtStn'      0      0      0
    511603          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511605          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511606          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512705          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   515104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513908          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516307          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516308          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   518102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   521001          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522208          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532111          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541024          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541022          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541814          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542316          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542305          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542305          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542304          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    542801          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542702          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -33658,21 +34040,29 @@ a'620S1M' b  10  30.00  23.00 'TsawFerry/BrdgprtStn'      0      0      0
    511603          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511605          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511606          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512705          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   515104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513908          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516307          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516308          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   518102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   521001          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522208          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532111          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541024          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541022          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541814          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542316          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542305          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542305          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542304          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    542801          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542702          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -33695,21 +34085,29 @@ a'620S1P' b  10  30.00  23.00 'TsawFerry/BrdgprtStn'      0      0      0
    511603          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511605          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    511606          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   511006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512704          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    512705          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   515104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    513908          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516008          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   516006          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516307          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    516308          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   518102          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   521001          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522208          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522012          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522010          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532111          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541024          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541022          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541814          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542316          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542305          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   542305          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542304          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    542801          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542702          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -33728,11 +34126,9 @@ a'640N1A' b   1  20.00  35.00 'Ladner Exchange/Scot'      0      0      0
    542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542504          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542503          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542304          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542508          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541812          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542508          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541020          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541913          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541924          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541804          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -33785,11 +34181,9 @@ a'640N1M' b   1  30.00  35.00 'Ladner Exchange/Scot'      0      0      0
    542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542504          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542503          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542304          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542508          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541812          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542508          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541020          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541913          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541924          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541804          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -33842,11 +34236,9 @@ a'640N1P' b   1  20.00  35.00 'Ladner Exchange/Scot'      0      0      0
    542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542504          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542503          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542304          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542508          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541812          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542508          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541020          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541913          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541924          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541804          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -33936,11 +34328,13 @@ a'640S1A' b   1  20.00  35.00 'Ladner Exchange/Scot'      0      0      0
    541802          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    541804          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541816          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542303          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542302          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542305          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541924          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541913          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541020          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542508          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542306          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542305          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542304          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542801          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542702        lay=5.00
@@ -33987,11 +34381,13 @@ a'640S1M' b   1  30.00  35.00 'Ladner Exchange/Scot'      0      0      0
    541802          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    541804          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541816          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542303          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542302          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542305          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541924          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541913          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541020          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542508          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542306          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542305          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542304          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542801          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542702        lay=5.00
@@ -34038,11 +34434,13 @@ a'640S1P' b   1  30.00  35.00 'Ladner Exchange/Scot'      0      0      0
    541802          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    541804          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    541803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541816          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   541907          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542303          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542302          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   542305          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541924          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   541913          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   541020          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542508          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542306          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542305          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   542304          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    542801          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542702        lay=5.00
@@ -42809,10 +43207,10 @@ a'c93E1A' b  13  20.00  23.00 'Riverport/Steveston '      0      0      0
    522602          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522201          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    522202          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522203          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532110          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522203          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522013          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532107          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    532108          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532109          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -42839,10 +43237,10 @@ a'c93E1M' b  13  30.00  23.00 'Riverport/Steveston '      0      0      0
    522602          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522201          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    522202          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522203          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532110          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522203          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522013          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532107          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    532108          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532109          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -42869,10 +43267,10 @@ a'c93E1P' b  13  30.00  23.00 'Riverport/Steveston '      0      0      0
    522602          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522201          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    522202          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522203          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532110          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522203          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522013          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522207          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532107          dwt=+0   ttf=5   us1=0   us2=0   us3=0
    532108          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532109          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -42882,11 +43280,11 @@ a'c93W1A' b  13  30.00  23.00 'Riverport/Steveston '      0      0      0
    532203          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532109          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532108          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532110          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522204          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532108          dwt=#0   ttf=3   us1=0   us2=0   us3=0
+   521002          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522205          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522014          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522202          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522201          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522602          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -42914,11 +43312,11 @@ a'c93W1M' b  13  30.00  23.00 'Riverport/Steveston '      0      0      0
    532203          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532109          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532108          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532110          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522204          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532108          dwt=#0   ttf=3   us1=0   us2=0   us3=0
+   521002          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522205          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522014          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522202          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522201          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522602          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -42946,11 +43344,11 @@ a'c93W1P' b  13  30.00  23.00 'Riverport/Steveston '      0      0      0
    532203          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    532204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    532109          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532108          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   532107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   532110          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522205          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   522204          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   532108          dwt=#0   ttf=3   us1=0   us2=0   us3=0
+   521002          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522205          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   522014          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   522204          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522202          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522201          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    522602          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -49261,9 +49659,8 @@ a'n555EA' b   1  10.00  23.00 'LougheedStn-Langley '      0      0      0
    326216          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    325808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    326413          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   630705          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   631218          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   631210          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   630705          dwt=+0   ttf=5   us1=0   us2=0   us3=0
+   631215          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    631216          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    631613          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    631616          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -49301,9 +49698,8 @@ a'n555EM' b   1  30.00  23.00 'LougheedStn-Langley '      0      0      0
    326216          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    325808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    326413          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   630705          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   631218          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   631210          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   630705          dwt=+0   ttf=5   us1=0   us2=0   us3=0
+   631215          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    631216          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    631613          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    631616          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -49341,9 +49737,8 @@ a'n555EP' b   1  10.00  23.00 'LougheedStn-Langley '      0      0      0
    326216          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    325808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    326413          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   630705          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   631218          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   631210          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   630705          dwt=+0   ttf=5   us1=0   us2=0   us3=0
+   631215          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    631216          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    631613          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    631616          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -49388,7 +49783,8 @@ a'n555WA' b   1  10.00  23.00 'Langley-LougheedStn '      0      0      0
    632417          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    632430          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    632415          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   630804          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   630804          dwt=+0   ttf=5   us1=0   us2=0   us3=0
+   631215          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    630806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    630208          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    630103          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -49432,7 +49828,8 @@ a'n555WM' b   1  30.00  23.00 'Langley-LougheedStn '      0      0      0
    632417          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    632430          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    632415          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   630804          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   630804          dwt=+0   ttf=5   us1=0   us2=0   us3=0
+   631215          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    630806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    630208          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    630103          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -49476,7 +49873,8 @@ a'n555WP' b   1  10.00  23.00 'Langley-LougheedStn '      0      0      0
    632417          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    632430          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    632415          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   630804          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   630804          dwt=+0   ttf=5   us1=0   us2=0   us3=0
+   631215          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    630806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    630208          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    630103          dwt=#0   ttf=5   us1=0   us2=0   us3=0
