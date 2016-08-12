@@ -257,15 +257,13 @@ class AutoAssignment(_m.Tool()):
             "type": "NETWORK_CALCULATION"
         }
 
-
-
-        expressions_list = [["hdw*1.2", "mode=b", "ut1"],
-                            ["hdw*0.8", "mode=l", "ut1"],
-                            ["hdw*0.67", "mode=s", "ut1"],
-                            ["hdw*1.1", "mode=f", "ut1"],
-                            ["hdw*1.1", "mode=g", "ut1"],
-                            ["hdw*0.8", "mode=h", "ut1"],
-                            ["hdw*0.8", "mode=r", "ut1"],
+        expressions_list = [["ut2*1.2", "mode=b", "ut1"],
+                            ["ut2*0.8", "mode=l", "ut1"],
+                            ["ut2*0.67", "mode=s", "ut1"],
+                            ["ut2*1.1", "mode=f", "ut1"],
+                            ["ut2*1.1", "mode=g", "ut1"],
+                            ["ut2*0.8", "mode=h", "ut1"],
+                            ["ut2*0.8", "mode=r", "ut1"],
                             ["1", "all", "@ivttp"],
                             ["3.5", "mode=b", "@ivttp"],
                             ["3.5", "mode=g", "@ivttp"]]
