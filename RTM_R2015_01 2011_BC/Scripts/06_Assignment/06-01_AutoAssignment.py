@@ -77,7 +77,7 @@ class AutoAssignment(_m.Tool()):
     def calculate_truck_pce(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
         specs = []
-
+        #TODO move PCE factors to scalar matrix and initiate from InitEmmebank
         specs.append(util.matrix_spec("mf1980", "mf980 * 1.5"))
         specs.append(util.matrix_spec("mf1981", "mf981 * 2.5"))
         specs.append(util.matrix_spec("mf1982", "mf982 * 1.5"))
