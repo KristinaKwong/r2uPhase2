@@ -203,7 +203,7 @@ class AutoAssignment(_m.Tool()):
             calc_extra_attribute(spec, scenario=md_scenario)
             calc_extra_attribute(spec, scenario=pm_scenario)
 
-"""			
+        """
         spec = {
             "result": "",
             "expression": "",
@@ -223,7 +223,7 @@ class AutoAssignment(_m.Tool()):
         #        "f" LRT=1.1,
         #        "h" Gondola=0.8,
         #        "r" WCE=0.8
-	
+
         expressions_list = [["hdw*1.2", "mode=b", "ut1"],
                             ["hdw*0.8", "mode=l", "ut1"],
                             ["hdw*0.67", "mode=s", "ut1"],
@@ -244,7 +244,7 @@ class AutoAssignment(_m.Tool()):
             calc_extra_attribute(spec, scenario=pm_scenario)
 
 		"""
-			
+
     @_m.logbook_trace("Auto Traffic Assignment")
     def auto_assignment(self, am_scenario, md_scenario, pm_scenario, stopping_criteria):
         # 12 assignment classes: SOV: work by income (low, med, high) nonwork by income (low, med/high);
@@ -276,9 +276,9 @@ class AutoAssignment(_m.Tool()):
 		# AD: I kept the non-work skims the same for now, however these could be changed
         travel_time_list_nw = ["mf931", "mf943", "mf2001"]
         distance_list_nw = ["mf930", "mf942", "mf2000"]
-        # Work Medium Income Skims 
+        # Work Medium Income Skims
         travel_time_list_wk = ["mf2031", "mf2034", "mf2037"]
-        distance_list_wk = ["mf2030", "mf2033", "mf2036"]        
+        distance_list_wk = ["mf2030", "mf2033", "mf2036"]
 
         path_analysis = {
             "link_component": "length",
@@ -301,8 +301,8 @@ class AutoAssignment(_m.Tool()):
             spec["classes"][4]["results"]["od_travel_times"] = {"shortest_paths": travel_time_nw}
             spec["classes"][4]["analysis"] = {"results": {"od_values": distance_nw}}
             spec["classes"][1]["results"]["od_travel_times"] = {"shortest_paths": travel_time_wk}
-            spec["classes"][1]["analysis"] = {"results": {"od_values": distance_wk}}            
-            
+            spec["classes"][1]["analysis"] = {"results": {"od_values": distance_wk}}
+
             assign_traffic(spec, scenario=scenario)
 
         spec = {
@@ -386,8 +386,8 @@ class AutoAssignment(_m.Tool()):
         util.initmat(eb, "mf930", "eADANW", "Interim Skim AutoDistanceAM NW", 0)
         util.initmat(eb, "mf931", "eATANW", "Interim Skim AutoTimeAM NW", 0)
         util.initmat(eb, "mf932", "eALANW", "Interim Skim AutoTollAM NW", 0)
- 
- """
+
+        """
         util.initmat(eb, "mf933", "eBsWtA", "Interim Skim BusTotalWaitAM", 0)
         util.initmat(eb, "mf934", "eBsIvA", "Interim Skim BusIVTTAM", 0)
         util.initmat(eb, "mf935", "eBsBrA", "Interim Skim BusAvgBoardAM", 0)
@@ -398,11 +398,11 @@ class AutoAssignment(_m.Tool()):
         util.initmat(eb, "mf940", "eRlBrA", "Interim Skim RailAvgBoardAM", 0)
         util.initmat(eb, "mf941", "eRlAxA", "Interim Skim RailAuxAM", 0)
 
-"""
+        """
         util.initmat(eb, "mf942", "eADMNW", "Interim Skim AutoDistanceMD NW", 0)
         util.initmat(eb, "mf943", "eATMNW", "Interim Skim AutoTimeMD NW", 0)
         util.initmat(eb, "mf944", "eALMNW", "Interim Skim AutoTollMD NW", 0)
-"""		
+        """
         util.initmat(eb, "mf945", "eBsWtM", "Interim Skim BusTotalWaitMD", 0)
         util.initmat(eb, "mf946", "eBsIvM", "Interim Skim BusIVTTMD", 0)
         util.initmat(eb, "mf947", "eBsBrM", "Interim Skim BusAvgBoardMD", 0)
@@ -412,12 +412,12 @@ class AutoAssignment(_m.Tool()):
         util.initmat(eb, "mf951", "eRlWtM", "Interim Skim RailTotalWaitMD", 0)
         util.initmat(eb, "mf952", "eRlBrM", "Interim Skim RailAvgBoardMD", 0)
         util.initmat(eb, "mf953", "eRlAxM", "Interim Skim RailAuxMD", 0)
-"""		
+        """
         util.initmat(eb, "mf2000", "eADPNW", "Interim Skim AutoDistancePM NW", 0)
         util.initmat(eb, "mf2001", "eATPNW", "Interim Skim AutoTimePM NW", 0)
         util.initmat(eb, "mf2002", "eALPNW", "Interim Skim AutoTollPM NW", 0)
- 
-"""
+
+        """
 	    util.initmat(eb, "mf2003", "eBsWtP", "Interim Skim BusTotalWaitPM", 0)
         util.initmat(eb, "mf2004", "eBsIvP", "Interim Skim BusIVTTPM", 0)
         util.initmat(eb, "mf2005", "eBsBrP", "Interim Skim BusAvgBoardPM", 0)
@@ -440,8 +440,8 @@ class AutoAssignment(_m.Tool()):
         util.initmat(eb, "mf2014", "eTrAxP", "Interim Skim TransitAuxPM", 0)
         util.initmat(eb, "mf2015", "eTrBrP", "Interim Skim TransitBoardPM", 0)
 
-		
-		
+
+
         ## Initialize new block used for journey-level assignment
         util.initmat(eb, "mf1070", "nRBIvA", "Interim-JL Skim RailBusIVTTAM", 0)
         util.initmat(eb, "mf1071", "nRRIvA", "Interim-JL Skim RailRailIVTTAM", 0)
@@ -459,7 +459,7 @@ class AutoAssignment(_m.Tool()):
         util.initmat(eb, "mf2019", "nRlBrP", "Interim-JL Skim RailAvgBoardPM", 0)
         util.initmat(eb, "mf2020", "nRlAxP", "Interim-JL Skim RailAuxPM", 0)
 
-"""
+        """
         ## add matrices for truck PCE
         util.initmat(eb, "mf1980", "lgAMpce", "Veh-AMPH-PCE-LGV", 0)
         util.initmat(eb, "mf1981", "hgAMpce", "Veh-AMPH-PCE-HGV", 0)
@@ -472,11 +472,11 @@ class AutoAssignment(_m.Tool()):
         util.initmat(eb, "mf2030", "eADAWK", "Interim Skim AutoDistanceAM WK", 0)
         util.initmat(eb, "mf2031", "eATAWK", "Interim Skim AutoTimeAM WK", 0)
         util.initmat(eb, "mf2032", "eALAWK", "Interim Skim AutoTollAM WK", 0)
-        
+
         util.initmat(eb, "mf2033", "eADMWK", "Interim Skim AutoDistanceMD WK", 0)
         util.initmat(eb, "mf2034", "eATMWK", "Interim Skim AutoTimeMD WK", 0)
         util.initmat(eb, "mf2035", "eALMWK", "Interim Skim AutoTollMD WK", 0)
 
         util.initmat(eb, "mf2036", "eADPWK", "Interim Skim AutoDistancePM WK", 0)
         util.initmat(eb, "mf2037", "eATPWK", "Interim Skim AutoTimePM WK", 0)
-        util.initmat(eb, "mf2038", "eALPWK", "Interim Skim AutoTollPM WK", 0)        
+        util.initmat(eb, "mf2038", "eALPWK", "Interim Skim AutoTollPM WK", 0)
