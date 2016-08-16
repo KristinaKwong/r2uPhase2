@@ -63,7 +63,7 @@ class CongestedTransitAssignment(_m.Tool()):
                 "modes": ["b", "g", "a", "p"],
                 "demand": "mf853",
                 "waiting_time": {
-                    "headway_fraction": 1.0,
+                    "headway_fraction": 0.5,
                     "spread_factor": 1,
                     "perception_factor": 2.25,
                     "effective_headways": "ut1"
@@ -94,7 +94,7 @@ class CongestedTransitAssignment(_m.Tool()):
                 "modes": ["b", "f", "g", "l", "r", "s", "h", "a", "p"],
                 "demand": "mf854",
                 "waiting_time": {
-                    "headway_fraction": 1.0,
+                    "headway_fraction": 0.5,
                     "spread_factor": 1,
                     "perception_factor": 2.25,
                     "effective_headways": "ut1"

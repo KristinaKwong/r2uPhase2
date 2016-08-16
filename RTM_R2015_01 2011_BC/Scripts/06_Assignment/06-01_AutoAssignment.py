@@ -239,6 +239,18 @@ class AutoAssignment(_m.Tool()):
         calc_extra_attribute(spec, scenario=md_scenario)
         calc_extra_attribute(spec, scenario=pm_scenario)
 
+        #TODO confirm this is the correct approach with INRO
+        # doing this explicitly now.  Need to double the headway to use 0.5 headway fraction in assignment
+        # for stops with only one service this will return to the effective headway as calculated above
+        # for stops with multiple services, this will assume a random arrival of vehicles at the stops
+        # it may make more sense to
+        expression = "ut2*2"
+        spec['expression'] = expression
+        spec['result'] = 'ut2'
+        calc_extra_attribute(spec, scenario=am_scenario)
+        calc_extra_attribute(spec, scenario=md_scenario)
+        calc_extra_attribute(spec, scenario=pm_scenario)
+
         ## Calculate perception of headways based on following factors:
         ##        "l" rail=0.8,
         ##        "b" bus=1.2,

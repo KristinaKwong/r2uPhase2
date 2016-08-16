@@ -42,7 +42,7 @@ class Transit_Assignment(_m.Tool()):
             "modes": ["b", "f", "g", "l", "r", "s", "a", "p", "h"],
             "demand": "mf853",
             "waiting_time": {
-                "headway_fraction": 1.0,
+                "headway_fraction": 0.5,
                 "effective_headways": "ut1",
                 "spread_factor": 1,
                 "perception_factor": 2.25

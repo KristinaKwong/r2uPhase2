@@ -52,7 +52,7 @@ class Rail_Assignment(_m.Tool()):
                 "modes": ["r","b", "f", "g", "l", "s", "h", "a", "p"],
                 "demand": None,                 # demand specified for AM, MD, PM below
                 "waiting_time": {
-                    "headway_fraction": 1.0,
+                    "headway_fraction": 0.5,
                     "effective_headways": "ut1",
                     "spread_factor": 1,
                     "perception_factor": 2.25
@@ -106,7 +106,7 @@ class Rail_Assignment(_m.Tool()):
                     },
                     "boarding_cost": None,
                     "waiting_time": {
-                        "headway_fraction": 1.0,
+                        "headway_fraction": 0.5,
                         "effective_headways": "ut1",
                         "spread_factor": 1,
                         "perception_factor": 2.25
@@ -133,7 +133,7 @@ class Rail_Assignment(_m.Tool()):
                     },
                     "boarding_cost": None,
                     "waiting_time": {
-                        "headway_fraction": 1.0,
+                        "headway_fraction": 0.5,
                         "effective_headways": "ut1",
                         "spread_factor": 1,
                         "perception_factor": 2.25

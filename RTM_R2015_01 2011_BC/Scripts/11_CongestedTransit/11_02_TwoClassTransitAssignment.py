@@ -45,7 +45,7 @@ class TwoClassTransitAssignment(_m.Tool()):
             "modes": ["b", "g", "a", "p"],
             "demand": None,                 # demand specified for AM and MD below
             "waiting_time": {
-                "headway_fraction": 1.0,
+                "headway_fraction": 0.5,
                 "effective_headways": "ut1",
                 "spread_factor": 1,
                 "perception_factor": 2.25
@@ -96,7 +96,7 @@ class TwoClassTransitAssignment(_m.Tool()):
             "modes": ["b", "f", "g", "l", "r", "s", "h", "a", "p"],
             "demand": None,                 # demand specified for AM and MD below
             "waiting_time": {
-                "headway_fraction": 1.0,
+                "headway_fraction": 0.5,
                 "effective_headways": "ut1",
                 "spread_factor": 1,
                 "perception_factor": 2.25
