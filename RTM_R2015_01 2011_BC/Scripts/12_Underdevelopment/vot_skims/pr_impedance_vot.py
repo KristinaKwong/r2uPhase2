@@ -284,9 +284,9 @@ class PrImpedance(_m.Tool()):
 						  "autotoll" : ["mf2035", "mf6063", "mf6001"],
 						  "autodist" : ["mf2033", "mf6064", "mf6001"] }
 
-		ral_auto_pm_wk = {"autotime" : ["mf2037",, "mf6102", "mf6001"],
-						  "autotoll" : ["mf2038",, "mf6103", "mf6001"],
-						  "autodist" : ["mf2036",, "mf6104", "mf6001"] }
+		ral_auto_pm_wk = {"autotime" : ["mf2037", "mf6102", "mf6001"],
+						  "autotoll" : ["mf2038", "mf6103", "mf6001"],
+						  "autodist" : ["mf2036", "mf6104", "mf6001"] }
 
 
 
@@ -302,7 +302,7 @@ class PrImpedance(_m.Tool()):
 
 		ral_auto_pm_nw = {"autotime" : ["mf2001", "mf6227", "mf6131"],
 						  "autotoll" : ["mf2002", "mf6228", "mf6131"],
-						  "autodist" : ["mf2000",, "mf6229", "mf6131"] }
+						  "autodist" : ["mf2000", "mf6229", "mf6131"] }
 
 
 		self.SplitAutoImpedance(eb, imp_dict = ral_auto_am_wk, year = model_year)
@@ -323,9 +323,9 @@ class PrImpedance(_m.Tool()):
 #						  "autotoll" : ["mf2035", "mf6078", "mf6002"],
 #						  "autodist" : ["mf2033", "mf6079", "mf6002"] }
 
-		wce_auto_pm_wk = {"autotime" : ["mf2037",, "mf6117", "mf6002"],
-						  "autotoll" : ["mf2038",, "mf6118", "mf6002"],
-						  "autodist" : ["mf2036",, "mf6119", "mf6002"] }
+		wce_auto_pm_wk = {"autotime" : ["mf2037", "mf6117", "mf6002"],
+						  "autotoll" : ["mf2038", "mf6118", "mf6002"],
+						  "autodist" : ["mf2036", "mf6119", "mf6002"] }
 
 
 
