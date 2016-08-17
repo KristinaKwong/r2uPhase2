@@ -66,6 +66,7 @@ class SkimsAccessibilities(_m.Tool()):
                 "type": "MATRIX_CALCULATION"
             }
 
+        #TODO Change this so subtraction cannot drive values below 0
         expressions_list_am = [
             ["mf931-mf930*6*ms18-mf932*ms19*6", "mf931"],
             ["mf100*(1-" + str(j) + ")+mf930*" + str(j), "mf100"],
