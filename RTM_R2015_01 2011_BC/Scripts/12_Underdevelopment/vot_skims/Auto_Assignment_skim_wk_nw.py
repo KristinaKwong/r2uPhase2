@@ -331,8 +331,8 @@ class AutoAssignment(_m.Tool()):
         all_classes = []
 		# Replace existing for work with $10/hr (6 min/dollar), $15/hr (4 min/dollar), $20/hr (3 min/dollar) instead
         #perception_factors = [6, 3, 3, 12, 6]
-
-        perception_factors = [6, 4, 3, 12, 6]
+        # [work low income, work med income, work high income, non-work high, nonwork medium] only skimming pos 1 and 4
+        perception_factors = [6, 4, 3, 12, 8]
         class_details = [
             (zip(demand_matrices["sov"], perception_factors), "d", "@sovoc", "sov"),
             (zip(demand_matrices["hov"], perception_factors), "c", "@hovoc", "hov")
