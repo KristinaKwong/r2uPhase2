@@ -2,7 +2,7 @@
 ##--TransLink Phase 3 Regional Transportation Model Development
 ##--
 ##--Path: translink.emme.under_dev.autocalcskim
-##--Purpose: Generate Auto Skims and generate intra-zonals 
+##--Purpose: Generate Auto Skims and generate intra-zonals
 ##------------------------------------------------------------------------------
 import inro.modeller as _m
 import os
@@ -41,7 +41,7 @@ class AutoSkims(_m.Tool()):
     @_m.logbook_trace("Weighted Skims")
     def autoskims(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
-        VOTNW = str(6.0) # non-Work-purpose VOT 
+        VOTNW = str(8.0) # non-Work-purpose VOT
         VOTWK = str(4.0) # Work purpose VOT
         spec_as_dict = {
                 "expression": "EXPRESSION",
@@ -89,7 +89,7 @@ class AutoSkims(_m.Tool()):
         # for auto take 1/2 the distance and time, for transit only x1/2 of IVTT and x1 OVTT
         Counter_Auto=1  # >1 if more than 1 nearest neighbour is used
 
-# Non-work 
+# Non-work
 
         # AM Auto distance and time
         Auto_AM_Expression= "mf931+mf930*ms18*"+VOTNW+"+mf932*ms19*"+VOTNW
@@ -112,23 +112,23 @@ class AutoSkims(_m.Tool()):
 # Work
 
         # AM Auto distance and time
-        Auto_AM_Expression= "mf2031+mf2030*ms18*"+VOTWK+"+mf2032*ms19*"+VOTWK 
+        Auto_AM_Expression= "mf2031+mf2030*ms18*"+VOTWK+"+mf2032*ms19*"+VOTWK
         Auto_AM_List=["mf2030","mf2031"]
         Av_List=["0.5","0.5"]
         self.Calc_Intrazonals(Auto_AM_Expression, Auto_AM_List, Counter_Auto, Av_List)
 
         # MD Auto distance and time
-        Auto_MD_Expression= "mf2034+mf2033*ms18*"+VOTWK+"+mf2035*ms19*"+VOTWK 
+        Auto_MD_Expression= "mf2034+mf2033*ms18*"+VOTWK+"+mf2035*ms19*"+VOTWK
         Auto_MD_List=["mf2033","mf2034"]
         Av_List=["0.5","0.5"]
         self.Calc_Intrazonals(Auto_MD_Expression, Auto_MD_List, Counter_Auto, Av_List)
 
         # PM Auto distance and time
-        Auto_PM_Expression= "mf2037+mf2036*ms18*"+VOTWK+"+mf2038*ms19*"+VOTWK 
+        Auto_PM_Expression= "mf2037+mf2036*ms18*"+VOTWK+"+mf2038*ms19*"+VOTWK
         Auto_PM_List=["mf2036","mf2037"]
         Av_List=["0.5","0.5"]
-        self.Calc_Intrazonals(Auto_PM_Expression, Auto_PM_List, Counter_Auto, Av_List)        
-        
+        self.Calc_Intrazonals(Auto_PM_Expression, Auto_PM_List, Counter_Auto, Av_List)
+
 
     @_m.logbook_trace("Matrix Batchin")
     def Matrix_Batchins(self, eb):
