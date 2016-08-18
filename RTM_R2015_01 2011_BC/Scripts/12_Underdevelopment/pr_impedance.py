@@ -68,6 +68,10 @@ class PrImpedance(_m.Tool()):
 		util.compute_matrix(specs)
 
 
+		########################################################################
+		# PA Direction Impedance Splitting
+		########################################################################
+
 		# BUS WORK PA
 		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
 		ral_imp_am_wk  =  {"busIVT" : ["mf107", "mf6010", "mf6000"],
@@ -192,14 +196,6 @@ class PrImpedance(_m.Tool()):
 						"boardings" : ["mf5054", "mf6041", "mf6002"],
 						"wceFare" : ["mf161", "mf6043", "mf6002"]}
 
-		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
-#		wce_imp_md_wk = {"wceIVT" : ["mf5058", "mf6080", "mf6002"],
-#						"wceWait" : ["mf5059", "mf6081", "mf6002"],
-#						"railIVT" : ["mf5057", "mf6082", "mf6002"],
-#						"busIVT" : ["mf5056", "mf6084", "mf6002"],
-#						"auxTransit" : ["mf5061", "mf6087", "mf6002"],
-#						"boardings" : ["mf5060", "mf6086", "mf6002"],
-#						"wceFare" : ["mf161", "mf6088", "mf6002"]}
 
 		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
 		wce_imp_pm_wk = {"wceIVT" : ["mf5064", "mf6120", "mf6002"],
@@ -221,14 +217,6 @@ class PrImpedance(_m.Tool()):
 						"boardings" : ["mf5054", "mf6171", "mf6132"],
 						"wceFare" : ["mf161", "mf6173", "mf6132"]}
 
-		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
-#		wce_imp_md_nw = {"wceIVT" : ["mf5058", "mf6205", "mf6132"],
-#						"wceWait" : ["mf5059", "mf6206", "mf6132"],
-#						"railIVT" : ["mf5057", "mf6207", "mf6132"],
-#						"busIVT" : ["mf5056", "mf6209", "mf6132"],
-#						"auxTransit" : ["mf5061", "mf6212", "mf6132"],
-#						"boardings" : ["mf5060", "mf6211", "mf6132"],
-#						"wceFare" : ["mf161", "mf6213", "mf6132"]}
 
 		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
 		wce_imp_pm_nw = {"wceIVT" : ["mf5064", "mf6245", "mf6132"],
@@ -240,10 +228,8 @@ class PrImpedance(_m.Tool()):
 						"wceFare" : ["mf161", "mf6253", "mf6132"]}
 
 		self.SplitSecondLegImpedance(eb, imp_dict = wce_imp_am_wk, year = model_year)
-#		self.SplitSecondLegImpedance(eb, imp_dict = wce_imp_md_wk, year = model_year)
 		self.SplitSecondLegImpedance(eb, imp_dict = wce_imp_pm_wk, year = model_year)
 		self.SplitSecondLegImpedance(eb, imp_dict = wce_imp_am_nw, year = model_year)
-#		self.SplitSecondLegImpedance(eb, imp_dict = wce_imp_md_nw, year = model_year)
 		self.SplitSecondLegImpedance(eb, imp_dict = wce_imp_pm_nw, year = model_year)
 
 
@@ -279,12 +265,12 @@ class PrImpedance(_m.Tool()):
 						  "autodist" : ["mf2100", "mf6219", "mf6130"] }
 
 
-		self.SplitFirstLegImpedance((eb, imp_dict = bus_auto_am_wk, year = model_year)
-		self.SplitFirstLegImpedance((eb, imp_dict = bus_auto_md_wk, year = model_year)
-		self.SplitFirstLegImpedance((eb, imp_dict = bus_auto_pm_wk, year = model_year)
-		self.SplitFirstLegImpedance((eb, imp_dict = bus_auto_am_nw, year = model_year)
-		self.SplitFirstLegImpedance((eb, imp_dict = bus_auto_md_nw, year = model_year)
-		self.SplitFirstLegImpedance((eb, imp_dict = bus_auto_pm_nw, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = bus_auto_am_wk, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = bus_auto_md_wk, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = bus_auto_pm_wk, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = bus_auto_am_nw, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = bus_auto_md_nw, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = bus_auto_pm_nw, year = model_year)
 
 
 		#spliting auto matrices work - bus mode
@@ -318,12 +304,12 @@ class PrImpedance(_m.Tool()):
 						  "autodist" : ["mf2100", "mf6229", "mf6131"] }
 
 
-		self.SplitFirstLegImpedance((eb, imp_dict = ral_auto_am_wk, year = model_year)
-		self.SplitFirstLegImpedance((eb, imp_dict = ral_auto_md_wk, year = model_year)
-		self.SplitFirstLegImpedance((eb, imp_dict = ral_auto_pm_wk, year = model_year)
-		self.SplitFirstLegImpedance((eb, imp_dict = ral_auto_am_nw, year = model_year)
-		self.SplitFirstLegImpedance((eb, imp_dict = ral_auto_md_nw, year = model_year)
-		self.SplitFirstLegImpedance((eb, imp_dict = ral_auto_pm_nw, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = ral_auto_am_wk, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = ral_auto_md_wk, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = ral_auto_pm_wk, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = ral_auto_am_nw, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = ral_auto_md_nw, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = ral_auto_pm_nw, year = model_year)
 
 
 		#spliting auto matrices work - bus mode
@@ -332,9 +318,6 @@ class PrImpedance(_m.Tool()):
 						  "autotoll" : ["mf102", "mf6033", "mf6002"],
 						  "autodist" : ["mf100", "mf6034", "mf6002"] }
 
-#		wce_auto_md_wk = {"autotime" : ["mf104", "mf6077", "mf6002"],
-#						  "autotoll" : ["mf105", "mf6078", "mf6002"],
-#						  "autodist" : ["mf103", "mf6079", "mf6002"] }
 
 		wce_auto_pm_wk = {"autotime" : ["mf2101", "mf6117", "mf6002"],
 						  "autotoll" : ["mf2102", "mf6118", "mf6002"],
@@ -348,26 +331,20 @@ class PrImpedance(_m.Tool()):
 						  "autotoll" : ["mf102", "mf6163", "mf6132"],
 						  "autodist" : ["mf100", "mf6164", "mf6132"] }
 
-#		wce_auto_md_nw = {"autotime" : ["mf104", "mf6202", "mf6132"],
-#						  "autotoll" : ["mf105", "mf6203", "mf6132"],
-#						  "autodist" : ["mf103", "mf6204", "mf6132"] }
-
 		wce_auto_pm_nw = {"autotime" : ["mf2101", "mf6242", "mf6132"],
 						  "autotoll" : ["mf2102", "mf6243", "mf6132"],
 						  "autodist" : ["mf2100", "mf6244", "mf6132"] }
 
 
-		self.SplitFirstLegImpedance((eb, imp_dict = wce_auto_am_wk, year = model_year)
-#		self.SplitFirstLegImpedance((eb, imp_dict = wce_auto_md_wk, year = model_year)
-		self.SplitFirstLegImpedance((eb, imp_dict = wce_auto_pm_wk, year = model_year)
-		self.SplitFirstLegImpedance((eb, imp_dict = wce_auto_am_nw, year = model_year)
-#		self.SplitFirstLegImpedance((eb, imp_dict = wce_auto_md_nw, year = model_year)
-		self.SplitFirstLegImpedance((eb, imp_dict = wce_auto_pm_nw, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = wce_auto_am_wk, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = wce_auto_pm_wk, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = wce_auto_am_nw, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = wce_auto_pm_nw, year = model_year)
 
 
 
 	@_m.logbook_trace("UNDER DEV - PNR Impedance")
-	def SplitFirstLegImpedance((self, eb, imp_dict, year):
+	def SplitFirstLegImpedance(self, eb, imp_dict, year):
 		leg_impedances= _m.Modeller().tool(
 			"inro.emme.choice_model.pr.best_lot_step.leg_impedances")
 
