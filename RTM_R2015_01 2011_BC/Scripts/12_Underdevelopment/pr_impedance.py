@@ -55,7 +55,20 @@ class PrImpedance(_m.Tool()):
 		self.WceGT(eb)
 		self.bestlot(eb, model_year)
 
-		# BUS WORK
+        # transpose best lot matrices for use with the AP direction leg splitting
+        specs = []
+        # work purposes
+        specs.append(util.matrix_spec("mf6300", "mf6000'"))
+        specs.append(util.matrix_spec("mf6301", "mf6001'"))
+        specs.append(util.matrix_spec("mf6302", "mf6002'"))
+        #non-work purposes
+        specs.append(util.matrix_spec("mf6430", "mf6130'"))
+        specs.append(util.matrix_spec("mf6431", "mf6131'"))
+        specs.append(util.matrix_spec("mf6432", "mf6132'"))
+        util.compute_matrix(specs)
+
+
+		# BUS WORK PA
 		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
 		ral_imp_am_wk  =  {"busIVT" : ["mf107", "mf6010", "mf6000"],
 						   "busWait" : ["mf106", "mf6011", "mf6000"],
@@ -78,7 +91,7 @@ class PrImpedance(_m.Tool()):
 						   "busFare" : ["mf160", "mf6099", "mf6000"]}
 
 
-		# Bus nonWork
+		# Bus nonWork PA
 		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
 		ral_imp_am_nw  =  {"busIVT" : ["mf107", "mf6140", "mf6130"],
 						   "busWait" : ["mf106", "mf6141", "mf6130"],
