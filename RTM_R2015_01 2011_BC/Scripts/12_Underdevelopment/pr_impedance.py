@@ -35,7 +35,7 @@ class PrImpedance(_m.Tool()):
 
 
 
-	@_m.logbook_trace("UNDER DEV - PNR Impedance")
+	@_m.logbook_trace("Park and Ride Impedance Calculation")
 	def __call__(self, eb):
 
 		util = _m.Modeller().tool("translink.emme.util")
@@ -348,48 +348,48 @@ class PrImpedance(_m.Tool()):
 
         # BUS WORK AP
         # in the form {skim : [actual skim, output pnr leg skim, best lot]}
-        ral_imp_am_wk  =  {"busIVT" : ["mf107", "mf6310", "mf6300"],
-                   "busWait" : ["mf106", "mf6311", "mf6300"],
-                   "auxTransit" : ["mf109", "mf6313", "mf6300"],
-                   "boardings" : ["mf108", "mf6312", "mf6300"],
-                   "busFare" : ["mf160", "mf6314", "mf6300"]}
+		ral_imp_am_wk  =  {"busIVT" : ["mf107", "mf6310", "mf6300"],
+		           "busWait" : ["mf106", "mf6311", "mf6300"],
+		           "auxTransit" : ["mf109", "mf6313", "mf6300"],
+		           "boardings" : ["mf108", "mf6312", "mf6300"],
+		           "busFare" : ["mf160", "mf6314", "mf6300"]}
 
-        # in the form {skim : [actual skim, output pnr leg skim, best lot]}
-        ral_imp_md_wk  =  {"busIVT" : ["mf112", "mf6355", "mf6300"],
-                   "busWait" : ["mf111", "mf6356", "mf6300"],
-                   "auxTransit" : ["mf114", "mf6358", "mf6300"],
-                   "boardings" : ["mf113", "mf6357", "mf6300"],
-                   "busFare" : ["mf160", "mf6359", "mf6300"]}
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		ral_imp_md_wk  =  {"busIVT" : ["mf112", "mf6355", "mf6300"],
+		           "busWait" : ["mf111", "mf6356", "mf6300"],
+		           "auxTransit" : ["mf114", "mf6358", "mf6300"],
+		           "boardings" : ["mf113", "mf6357", "mf6300"],
+		           "busFare" : ["mf160", "mf6359", "mf6300"]}
 
-        # in the form {skim : [actual skim, output pnr leg skim, best lot]}
-        ral_imp_pm_wk  =  {"busIVT" : ["mf2107", "mf6395", "mf6300"],
-                   "busWait" : ["mf2106", "mf6396", "mf6300"],
-                   "auxTransit" : ["mf2109", "mf6398", "mf6300"],
-                   "boardings" : ["mf2108", "mf6397", "mf6300"],
-                   "busFare" : ["mf160", "mf6399", "mf6300"]}
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		ral_imp_pm_wk  =  {"busIVT" : ["mf2107", "mf6395", "mf6300"],
+		           "busWait" : ["mf2106", "mf6396", "mf6300"],
+		           "auxTransit" : ["mf2109", "mf6398", "mf6300"],
+		           "boardings" : ["mf2108", "mf6397", "mf6300"],
+		           "busFare" : ["mf160", "mf6399", "mf6300"]}
 
 
-        # Bus nonWork AP
-        # in the form {skim : [actual skim, output pnr leg skim, best lot]}
-        ral_imp_am_nw  =  {"busIVT" : ["mf107", "mf6440", "mf6430"],
-                   "busWait" : ["mf106", "mf6441", "mf6430"],
-                   "auxTransit" : ["mf109", "mf6443", "mf6430"],
-                   "boardings" : ["mf108", "mf6442", "mf6430"],
-                   "busFare" : ["mf160", "mf6444", "mf6430"]}
+		# Bus nonWork AP
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		ral_imp_am_nw  =  {"busIVT" : ["mf107", "mf6440", "mf6430"],
+		           "busWait" : ["mf106", "mf6441", "mf6430"],
+		           "auxTransit" : ["mf109", "mf6443", "mf6430"],
+		           "boardings" : ["mf108", "mf6442", "mf6430"],
+		           "busFare" : ["mf160", "mf6444", "mf6430"]}
 
-        # in the form {skim : [actual skim, output pnr leg skim, best lot]}
-        ral_imp_md_nw  =  {"busIVT" : ["mf112", "mf6480", "mf6430"],
-                   "busWait" : ["mf111", "mf6481", "mf6430"],
-                   "auxTransit" : ["mf114", "mf6483", "mf6430"],
-                   "boardings" : ["mf113", "mf6482", "mf6430"],
-                   "busFare" : ["mf160", "mf6484", "mf6430"]}
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		ral_imp_md_nw  =  {"busIVT" : ["mf112", "mf6480", "mf6430"],
+		           "busWait" : ["mf111", "mf6481", "mf6430"],
+		           "auxTransit" : ["mf114", "mf6483", "mf6430"],
+		           "boardings" : ["mf113", "mf6482", "mf6430"],
+		           "busFare" : ["mf160", "mf6484", "mf6430"]}
 
-        # in the form {skim : [actual skim, output pnr leg skim, best lot]}
-        ral_imp_pm_nw  =  {"busIVT" : ["mf2107", "mf6520", "mf6430"],
-                   "busWait" : ["mf2106", "mf6521", "mf6430"],
-                   "auxTransit" : ["mf2109", "mf6523", "mf6430"],
-                   "boardings" : ["mf2108", "mf6522", "mf6430"],
-                   "busFare" : ["mf160", "mf6524", "mf6430"]}
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		ral_imp_pm_nw  =  {"busIVT" : ["mf2107", "mf6520", "mf6430"],
+		           "busWait" : ["mf2106", "mf6521", "mf6430"],
+		           "auxTransit" : ["mf2109", "mf6523", "mf6430"],
+		           "boardings" : ["mf2108", "mf6522", "mf6430"],
+		           "busFare" : ["mf160", "mf6524", "mf6430"]}
 
 		self.SplitFirstLegImpedance(eb, imp_dict = ral_imp_am_wk, year = model_year)
 		self.SplitFirstLegImpedance(eb, imp_dict = ral_imp_md_wk, year = model_year)
@@ -619,7 +619,7 @@ class PrImpedance(_m.Tool()):
 
 
 
-	@_m.logbook_trace("UNDER DEV - PNR Impedance")
+	@_m.logbook_trace("Park and Ride - Split First Leg Impedance")
 	def SplitFirstLegImpedance(self, eb, imp_dict, year):
 		leg_impedances= _m.Modeller().tool(
 			"inro.emme.choice_model.pr.best_lot_step.leg_impedances")
@@ -660,7 +660,7 @@ class PrImpedance(_m.Tool()):
 			leg_impedances(spec)
 
 
-	@_m.logbook_trace("UNDER DEV - PNR Impedance")
+	@_m.logbook_trace("Park and Ride - Split Second Leg Impedance")
 	def SplitSecondLegImpedance(self, eb, imp_dict, year):
 		leg_impedances= _m.Modeller().tool(
 			"inro.emme.choice_model.pr.best_lot_step.leg_impedances")
@@ -702,7 +702,7 @@ class PrImpedance(_m.Tool()):
 			leg_impedances(spec)
 
 
-	@_m.logbook_trace("UNDER DEV - PNR Impedance")
+	@_m.logbook_trace("Park & Ride - Choose Best Lot")
 	def bestlot(self, eb, year):
 		compute_lot = _m.Modeller().tool(
 			"inro.emme.matrix_calculation.matrix_triple_index_operation")
@@ -828,7 +828,7 @@ class PrImpedance(_m.Tool()):
 
 
 
-	@_m.logbook_trace("UNDER DEV - PNR Impedance")
+	@_m.logbook_trace("Park and Ride Calculate West Coast Express Generalized Time")
 	def WceGT(self, eb):
 		util = _m.Modeller().tool("translink.emme.util")
 		# [AM,MD,PM]
@@ -878,7 +878,7 @@ class PrImpedance(_m.Tool()):
 
 
 
-	@_m.logbook_trace("UNDER DEV - PNR Impedance")
+	@_m.logbook_trace("Park & Ride Calculate Rail Generatized Time")
 	def RailGT(self, eb):
 		util = _m.Modeller().tool("translink.emme.util")
 		# [AM,MD,PM]
@@ -924,7 +924,7 @@ class PrImpedance(_m.Tool()):
 
 
 
-	@_m.logbook_trace("UNDER DEV - PNR Impedance")
+	@_m.logbook_trace("Park & Ride Calculate Bus Generalized Time")
 	def BusGT(self, eb):
 		util = _m.Modeller().tool("translink.emme.util")
 		# [AM,MD,PM]
@@ -966,7 +966,7 @@ class PrImpedance(_m.Tool()):
 
 
 
-	@_m.logbook_trace("UNDER DEV - PNR Impedance")
+	@_m.logbook_trace("Park & Ride Calculate Auto Generalized Time")
 	def AutoGT(self, eb):
 		util = _m.Modeller().tool("translink.emme.util")
 		# [AM,MD,PM]
@@ -999,7 +999,7 @@ class PrImpedance(_m.Tool()):
 
 
 
-	@_m.logbook_trace("UNDER DEV - PNR Impedance")
+	@_m.logbook_trace("Park & Ride - Read Input Files")
 	def read_file(self, eb, file):
 		util = _m.Modeller().tool("translink.emme.util")
 		#Read data from file and check number of lines
@@ -1029,7 +1029,7 @@ class PrImpedance(_m.Tool()):
 
 
 
-	@_m.logbook_trace("UNDER DEV - PNR Impedance")
+	@_m.logbook_trace("Park & Ride Matrix Batchins")
 	def matrix_batchins(self, eb):
 		util = _m.Modeller().tool("translink.emme.util")
 
