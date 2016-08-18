@@ -342,6 +342,282 @@ class PrImpedance(_m.Tool()):
 		self.SplitFirstLegImpedance(eb, imp_dict = wce_auto_pm_nw, year = model_year)
 
 
+		########################################################################
+		# AP Direction Impedance Splitting
+		########################################################################
+
+        # BUS WORK AP
+        # in the form {skim : [actual skim, output pnr leg skim, best lot]}
+        ral_imp_am_wk  =  {"busIVT" : ["mf107", "mf6310", "mf6300"],
+                   "busWait" : ["mf106", "mf6311", "mf6300"],
+                   "auxTransit" : ["mf109", "mf6313", "mf6300"],
+                   "boardings" : ["mf108", "mf6312", "mf6300"],
+                   "busFare" : ["mf160", "mf6314", "mf6300"]}
+
+        # in the form {skim : [actual skim, output pnr leg skim, best lot]}
+        ral_imp_md_wk  =  {"busIVT" : ["mf112", "mf6355", "mf6300"],
+                   "busWait" : ["mf111", "mf6356", "mf6300"],
+                   "auxTransit" : ["mf114", "mf6358", "mf6300"],
+                   "boardings" : ["mf113", "mf6357", "mf6300"],
+                   "busFare" : ["mf160", "mf6359", "mf6300"]}
+
+        # in the form {skim : [actual skim, output pnr leg skim, best lot]}
+        ral_imp_pm_wk  =  {"busIVT" : ["mf2107", "mf6395", "mf6300"],
+                   "busWait" : ["mf2106", "mf6396", "mf6300"],
+                   "auxTransit" : ["mf2109", "mf6398", "mf6300"],
+                   "boardings" : ["mf2108", "mf6397", "mf6300"],
+                   "busFare" : ["mf160", "mf6399", "mf6300"]}
+
+
+        # Bus nonWork AP
+        # in the form {skim : [actual skim, output pnr leg skim, best lot]}
+        ral_imp_am_nw  =  {"busIVT" : ["mf107", "mf6440", "mf6430"],
+                   "busWait" : ["mf106", "mf6441", "mf6430"],
+                   "auxTransit" : ["mf109", "mf6443", "mf6430"],
+                   "boardings" : ["mf108", "mf6442", "mf6430"],
+                   "busFare" : ["mf160", "mf6444", "mf6430"]}
+
+        # in the form {skim : [actual skim, output pnr leg skim, best lot]}
+        ral_imp_md_nw  =  {"busIVT" : ["mf112", "mf6480", "mf6430"],
+                   "busWait" : ["mf111", "mf6481", "mf6430"],
+                   "auxTransit" : ["mf114", "mf6483", "mf6430"],
+                   "boardings" : ["mf113", "mf6482", "mf6430"],
+                   "busFare" : ["mf160", "mf6484", "mf6430"]}
+
+        # in the form {skim : [actual skim, output pnr leg skim, best lot]}
+        ral_imp_pm_nw  =  {"busIVT" : ["mf2107", "mf6520", "mf6430"],
+                   "busWait" : ["mf2106", "mf6521", "mf6430"],
+                   "auxTransit" : ["mf2109", "mf6523", "mf6430"],
+                   "boardings" : ["mf2108", "mf6522", "mf6430"],
+                   "busFare" : ["mf160", "mf6524", "mf6430"]}
+
+		self.SplitFirstLegImpedance(eb, imp_dict = ral_imp_am_wk, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = ral_imp_md_wk, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = ral_imp_pm_wk, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = ral_imp_am_nw, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = ral_imp_md_nw, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = ral_imp_pm_nw, year = model_year)
+
+
+
+		# Rail impedances to Split
+		# work purposes AP
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		rail_imp_am_wk = {"railIVT" : ["mf5001", "mf6320", "mf6301"],
+						  "railWait" : ["mf5002", "mf6321", "mf6301"],
+						  "busIVT" : ["mf5000", "mf6322", "mf6301"],
+						  "auxTransit" : ["mf5004", "mf6325", "mf6301"],
+						  "boardings" : ["mf5003", "mf6324", "mf6301"],
+						  "railFare" : ["mf161", "mf6326", "mf6301"]}
+
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		rail_imp_md_wk = {"railIVT" : ["mf5006", "mf6365", "mf6301"],
+						  "railWait" : ["mf5007", "mf6366", "mf6301"],
+						  "busIVT" : ["mf5005", "mf6367", "mf6301"],
+						  "auxTransit" : ["mf5009", "mf6370", "mf6301"],
+						  "boardings" : ["mf5008", "mf6369", "mf6301"],
+						  "railFare" : ["mf161", "mf6371", "mf6301"]}
+
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		rail_imp_pm_wk = {"railIVT" : ["mf5011", "mf6405", "mf6301"],
+						  "railWait" : ["mf5012", "mf6406", "mf6301"],
+						  "busIVT" : ["mf5010", "mf6407", "mf6301"],
+						  "auxTransit" : ["mf5014", "mf6410", "mf6301"],
+						  "boardings" : ["mf5013", "mf6409", "mf6301"],
+						  "railFare" : ["mf161", "mf6411", "mf6301"]}
+
+		# work purposes
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		rail_imp_am_nw = {"railIVT" : ["mf5001", "mf6450", "mf6431"],
+						  "railWait" : ["mf5002", "mf6451", "mf6431"],
+						  "busIVT" : ["mf5000", "mf6452", "mf6431"],
+						  "auxTransit" : ["mf5004", "mf6455", "mf6431"],
+						  "boardings" : ["mf5003", "mf6454", "mf6431"],
+						  "railFare" : ["mf161", "mf6456", "mf6431"]}
+
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		rail_imp_md_nw = {"railIVT" : ["mf5006", "mf6490", "mf6431"],
+						  "railWait" : ["mf5007", "mf6491", "mf6431"],
+						  "busIVT" : ["mf5005", "mf6492", "mf6431"],
+						  "auxTransit" : ["mf5009", "mf6495", "mf6431"],
+						  "boardings" : ["mf5008", "mf6494", "mf6431"],
+						  "railFare" : ["mf161", "mf6496", "mf6431"]}
+
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		rail_imp_pm_nw = {"railIVT" : ["mf5011", "mf6530", "mf6431"],
+						  "railWait" : ["mf5012", "mf6531", "mf6431"],
+						  "busIVT" : ["mf5010", "mf6532", "mf6431"],
+						  "auxTransit" : ["mf5013", "mf6535", "mf6431"],
+						  "boardings" : ["mf5014", "mf6534", "mf6431"],
+						  "railFare" : ["mf161", "mf6536", "mf6431"]}
+
+
+
+		self.SplitFirstLegImpedance(eb, imp_dict = rail_imp_am_wk, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = rail_imp_md_wk, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = rail_imp_pm_wk, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = rail_imp_am_nw, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = rail_imp_md_nw, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = rail_imp_pm_nw, year = model_year)
+
+
+		# West Coast Express impedances to split AP direction
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		wce_imp_am_wk = {"wceIVT" : ["mf5052", "mf6335", "mf6302"],
+						"wceWait" : ["mf5053", "mf6336", "mf6302"],
+						"railIVT" : ["mf5051", "mf6337", "mf6302"],
+						"busIVT" : ["mf5050", "mf6339", "mf6302"],
+						"auxTransit" : ["mf5055", "mf6342", "mf6302"],
+						"boardings" : ["mf5054", "mf6341", "mf6302"],
+						"wceFare" : ["mf161", "mf6343", "mf6302"]}
+
+
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		wce_imp_pm_wk = {"wceIVT" : ["mf5064", "mf6420", "mf6302"],
+						"wceWait" : ["mf5065", "mf6421", "mf6302"],
+						"railIVT" : ["mf5063", "mf6422", "mf6302"],
+						"busIVT" : ["mf5062", "mf6424", "mf6302"],
+						"auxTransit" : ["mf5067", "mf6427", "mf6302"],
+						"boardings" : ["mf5066", "mf6426", "mf6302"],
+						"wceFare" : ["mf161", "mf6428", "mf6302"]}
+
+
+		# nonwork
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		wce_imp_am_nw = {"wceIVT" : ["mf5052", "mf6465", "mf6432"],
+						"wceWait" : ["mf5053", "mf6466", "mf6432"],
+						"railIVT" : ["mf5051", "mf6467", "mf6432"],
+						"busIVT" : ["mf5050", "mf6469", "mf6432"],
+						"auxTransit" : ["mf5055", "mf6472", "mf6432"],
+						"boardings" : ["mf5054", "mf6471", "mf6432"],
+						"wceFare" : ["mf161", "mf6473", "mf6432"]}
+
+
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		wce_imp_pm_nw = {"wceIVT" : ["mf5064", "mf6545", "mf6432"],
+						"wceWait" : ["mf5065", "mf6546", "mf6432"],
+						"railIVT" : ["mf5063", "mf6547", "mf6432"],
+						"busIVT" : ["mf5062", "mf6549", "mf6432"],
+						"auxTransit" : ["mf5067", "mf6552", "mf6432"],
+						"boardings" : ["mf5066", "mf6551", "mf6432"],
+						"wceFare" : ["mf161", "mf6553", "mf6432"]}
+
+		self.SplitFirstLegImpedance(eb, imp_dict = wce_imp_am_wk, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = wce_imp_pm_wk, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = wce_imp_am_nw, year = model_year)
+		self.SplitFirstLegImpedance(eb, imp_dict = wce_imp_pm_nw, year = model_year)
+
+
+
+		#spliting auto matrices work - bus mode AP direction
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		bus_auto_am_wk = {"autotime" : ["mf101", "mf6307", "mf6300"],
+						  "autotoll" : ["mf102", "mf6308", "mf6300"],
+						  "autodist" : ["mf100", "mf6309", "mf6300"] }
+
+		bus_auto_md_wk = {"autotime" : ["mf104", "mf6352", "mf6300"],
+						  "autotoll" : ["mf105", "mf6353", "mf6300"],
+						  "autodist" : ["mf103", "mf6354", "mf6300"] }
+
+		bus_auto_pm_wk = {"autotime" : ["mf2101", "mf6392", "mf6300"],
+						  "autotoll" : ["mf2102", "mf6393", "mf6300"],
+						  "autodist" : ["mf2100", "mf6394", "mf6300"] }
+
+
+
+		#spliting auto matrices non work - bus mode AP direction
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		bus_auto_am_nw = {"autotime" : ["mf101", "mf6437", "mf6430"],
+						  "autotoll" : ["mf102", "mf6438", "mf6430"],
+						  "autodist" : ["mf100", "mf6439", "mf6430"] }
+
+		bus_auto_md_nw = {"autotime" : ["mf104", "mf6477", "mf6430"],
+						  "autotoll" : ["mf105", "mf6478", "mf6430"],
+						  "autodist" : ["mf103", "mf6479", "mf6430"] }
+
+		bus_auto_pm_nw = {"autotime" : ["mf2101", "mf6517", "mf6430"],
+						  "autotoll" : ["mf2102", "mf6518", "mf6430"],
+						  "autodist" : ["mf2100", "mf6519", "mf6430"] }
+
+
+		self.SplitSecondLegImpedance(eb, imp_dict = bus_auto_am_wk, year = model_year)
+		self.SplitSecondLegImpedance(eb, imp_dict = bus_auto_md_wk, year = model_year)
+		self.SplitSecondLegImpedance(eb, imp_dict = bus_auto_pm_wk, year = model_year)
+		self.SplitSecondLegImpedance(eb, imp_dict = bus_auto_am_nw, year = model_year)
+		self.SplitSecondLegImpedance(eb, imp_dict = bus_auto_md_nw, year = model_year)
+		self.SplitSecondLegImpedance(eb, imp_dict = bus_auto_pm_nw, year = model_year)
+
+
+		#spliting auto matrices work - rail mode AP direction
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		ral_auto_am_wk = {"autotime" : ["mf101", "mf6317", "mf6301"],
+						  "autotoll" : ["mf102", "mf6318", "mf6301"],
+						  "autodist" : ["mf100", "mf6319", "mf6301"] }
+
+		ral_auto_md_wk = {"autotime" : ["mf104", "mf6362", "mf6301"],
+						  "autotoll" : ["mf105", "mf6363", "mf6301"],
+						  "autodist" : ["mf103", "mf6364", "mf6301"] }
+
+		ral_auto_pm_wk = {"autotime" : ["mf2101", "mf6402", "mf6301"],
+						  "autotoll" : ["mf2102", "mf6403", "mf6301"],
+						  "autodist" : ["mf2100", "mf6404", "mf6301"] }
+
+
+
+		#spliting auto matrices non work - rail mode AP direction
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		ral_auto_am_nw = {"autotime" : ["mf101", "mf6447", "mf6431"],
+						  "autotoll" : ["mf102", "mf6448", "mf6431"],
+						  "autodist" : ["mf100", "mf6449", "mf6431"] }
+
+		ral_auto_md_nw = {"autotime" : ["mf104", "mf6487", "mf6431"],
+						  "autotoll" : ["mf105", "mf6488", "mf6431"],
+						  "autodist" : ["mf103", "mf6489", "mf6431"] }
+
+		ral_auto_pm_nw = {"autotime" : ["mf2101", "mf6527", "mf6431"],
+						  "autotoll" : ["mf2102", "mf6528", "mf6431"],
+						  "autodist" : ["mf2100", "mf6529", "mf6431"] }
+
+
+		self.SplitSecondLegImpedance(eb, imp_dict = ral_auto_am_wk, year = model_year)
+		self.SplitSecondLegImpedance(eb, imp_dict = ral_auto_md_wk, year = model_year)
+		self.SplitSecondLegImpedance(eb, imp_dict = ral_auto_pm_wk, year = model_year)
+		self.SplitSecondLegImpedance(eb, imp_dict = ral_auto_am_nw, year = model_year)
+		self.SplitSecondLegImpedance(eb, imp_dict = ral_auto_md_nw, year = model_year)
+		self.SplitSecondLegImpedance(eb, imp_dict = ral_auto_pm_nw, year = model_year)
+
+
+		#spliting auto matrices work - WCE mode AP direction
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		wce_auto_am_wk = {"autotime" : ["mf101", "mf6332", "mf6302"],
+						  "autotoll" : ["mf102", "mf6333", "mf6302"],
+						  "autodist" : ["mf100", "mf6334", "mf6302"] }
+
+		wce_auto_pm_wk = {"autotime" : ["mf2101", "mf6417", "mf6302"],
+						  "autotoll" : ["mf2102", "mf6418", "mf6302"],
+						  "autodist" : ["mf2100", "mf6419", "mf6302"] }
+
+
+
+		#spliting auto matrices non work - wce mode AP direction
+		# in the form {skim : [actual skim, output pnr leg skim, best lot]}
+		wce_auto_am_nw = {"autotime" : ["mf101", "mf6462", "mf6432"],
+						  "autotoll" : ["mf102", "mf6463", "mf6432"],
+						  "autodist" : ["mf100", "mf6464", "mf6432"] }
+
+
+
+		wce_auto_pm_nw = {"autotime" : ["mf2101", "mf6542", "mf6432"],
+						  "autotoll" : ["mf2102", "mf6543", "mf6432"],
+						  "autodist" : ["mf2100", "mf6544", "mf6432"] }
+
+
+		self.SplitSecondLegImpedance(eb, imp_dict = wce_auto_am_wk, year = model_year)
+		self.SplitSecondLegImpedance(eb, imp_dict = wce_auto_pm_wk, year = model_year)
+		self.SplitSecondLegImpedance(eb, imp_dict = wce_auto_am_nw, year = model_year)
+		self.SplitSecondLegImpedance(eb, imp_dict = wce_auto_pm_nw, year = model_year)
+
+
 
 	@_m.logbook_trace("UNDER DEV - PNR Impedance")
 	def SplitFirstLegImpedance(self, eb, imp_dict, year):
