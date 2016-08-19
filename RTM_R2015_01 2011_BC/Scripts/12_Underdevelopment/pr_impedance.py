@@ -58,13 +58,13 @@ class PrImpedance(_m.Tool()):
 		# transpose best lot matrices for use with the AP direction leg splitting
 		specs = []
 		# work purposes
-		specs.append(util.matrix_spec("mf6300", "mf6000'"))
-		specs.append(util.matrix_spec("mf6301", "mf6001'"))
-		specs.append(util.matrix_spec("mf6302", "mf6002'"))
+		specs.append(util.matrix_spec("mf6300", "1.0 * mf6000'"))
+		specs.append(util.matrix_spec("mf6301", "1.0 * mf6001'"))
+		specs.append(util.matrix_spec("mf6302", "1.0 * mf6002'"))
 		#non-work purposes
-		specs.append(util.matrix_spec("mf6430", "mf6130'"))
-		specs.append(util.matrix_spec("mf6431", "mf6131'"))
-		specs.append(util.matrix_spec("mf6432", "mf6132'"))
+		specs.append(util.matrix_spec("mf6430", "1.0 * mf6130'"))
+		specs.append(util.matrix_spec("mf6431", "1.0 * mf6131'"))
+		specs.append(util.matrix_spec("mf6432", "1.0 * mf6132'"))
 		util.compute_matrix(specs)
 
 
