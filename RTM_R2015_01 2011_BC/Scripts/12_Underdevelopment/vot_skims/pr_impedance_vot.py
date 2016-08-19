@@ -65,7 +65,7 @@ class PrImpedance(_m.Tool()):
 		specs.append(util.matrix_spec("mf6430", "1.0 * mf6130'"))
 		specs.append(util.matrix_spec("mf6431", "1.0 * mf6131'"))
 		specs.append(util.matrix_spec("mf6432", "1.0 * mf6132'"))
-		util.compute_matrix(specs)
+		util.compute_matrix(specs, num_procs = 0)
 
 
 		########################################################################
