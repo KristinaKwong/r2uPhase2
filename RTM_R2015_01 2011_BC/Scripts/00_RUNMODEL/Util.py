@@ -73,14 +73,15 @@ class Util(_m.Tool()):
         }
         return spec
 
-    def compute_matrix(self, specs, scenario=None):
+    def compute_matrix(self, specs, scenario=None, num_procs=None):
         comp = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         if scenario is None:
             scenario = _m.Modeller().scenario
 
-        eb = scenario.emmebank
-        num_procs = int(eb.matrix("ms142").data)
+        if num_procs is None:
+            eb = scenario.emmebank
+            num_procs = int(eb.matrix("ms142").data)
 
         return comp(specs, scenario, num_procs)
 
@@ -128,7 +129,7 @@ class Util(_m.Tool()):
         eb -- The emmebank to be queried
         """
         return os.path.join(os.path.dirname(eb.path), "Outputs")
-        
+
     def get_input_path(self, eb):
         """Returns the inputs directory for the given databank
 
