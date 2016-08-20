@@ -1,5 +1,5 @@
 0CAFACB7-AD3C-40E4-80DD-675DE315EA7F 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 1 3 0
-# Emme project file generated on Wed Aug 17 13:53:50 2016
+# Emme project file generated on Thu Aug 18 08:03:37 2016
 # File: E:/RTM_R2015_01 2011_BC/RTM_R2015_01 2011_BC/RTM_R2015_01 2011_BC.emp
 #
 # String Name: name of preference configuration (tr)
@@ -9,7 +9,7 @@ Description = Created on 2013-12-11 at 14:12:34 by AD.
 # String TranslationContext: context for translations of configuration texts (subst)
 TranslationContext = GeneralConfiguration
 # String OpenDatabases: database open in the project (subst)
-OpenDatabases = eb_2011_generate_wce - Copy\emmebank
+OpenDatabases = headway_testing\emmebank
 # String ViewFolder: folder storing the view files (subst)
 ViewFolder = Views
 # String WorksheetFolder: folder storing worksheets (subst)
@@ -18,9 +18,8 @@ WorksheetFolder = Worksheets
 MediaFolder = Media
 # String ProjectDatabases: list of databases associated with the project (subst)
 ProjectDatabases[] = Template\emmebank;;windows-1252
-ProjectDatabases[] = eb_2011_generate_wce\emmebank;;windows-1252
-ProjectDatabases[] = pb_test\emmebank;;windows-1252
-ProjectDatabases[] = eb_2011_generate_wce - Copy\emmebank;worknonworkvot;windows-1252
+ProjectDatabases[] = votmed_testing\emmebank;;windows-1252
+ProjectDatabases[] = headway_testing\emmebank;Headway Testing;windows-1252
 # String ProjectMacroPath: macro path (subst)
 ProjectMacroPath[] = %<$EnvironmentMacroPath>%
 ProjectMacroPath[] = %<$EnvironmentMacroPath>%
