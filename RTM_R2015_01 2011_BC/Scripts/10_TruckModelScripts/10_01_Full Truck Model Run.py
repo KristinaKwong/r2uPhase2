@@ -44,9 +44,9 @@ class FullTruckModel(_m.Tool()):
         RegionalModel=_m.Modeller().tool("translink.emme.stage5.step10.regionaltruck")
         RegionalModel(eb)
 
-        self.aggregate_demand_pce()
+        self.aggregate_demand_pce(eb)
 
-    def aggregate_demand_pce(self):
+    def aggregate_demand_pce(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
 
         util.initmat(eb, "mf1040", "CBLgAp", "CB LgTruck AM PCE", 0)
