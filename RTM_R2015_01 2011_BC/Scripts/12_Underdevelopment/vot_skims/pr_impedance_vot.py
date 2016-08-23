@@ -975,7 +975,7 @@ class PrImpedance(_m.Tool()):
 		# [AM,MD,PM]
 		auto_mats = {"autotime" : ["mf2031",  "mf2034", "mf2037"],
 					"autotoll" : ["mf2032", "mf2035", "mf2038"],
-					"autodist" : ["mf2300", "mf2033", "mf2036"] }
+					"autodist" : ["mf2030", "mf2033", "mf2036"]}
 
 		# [Work, non-work]
 		vot_mat = 'msvotWkmed'
