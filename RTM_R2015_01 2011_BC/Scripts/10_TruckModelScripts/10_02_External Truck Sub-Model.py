@@ -234,12 +234,12 @@ class ExternalTruckModel(_m.Tool()):
         specs = []
 
         spec = util.matrix_spec("mo1003", matrix1)
-        spec["constraint"]["by_zone"] = {"origins": "1;2;8;10;11", "destinations": None}
+        spec["constraint"]["by_zone"] = {"origins": "1;2;8;10;11", "destinations": "*"}
         spec["aggregation"] = {"origins": None, "destinations": "+"}
         specs.append(spec)
 
         spec = util.matrix_spec("md203", matrix1)
-        spec["constraint"]["by_zone"] = {"origins": None, "destinations": "1;2;8;10;11"}
+        spec["constraint"]["by_zone"] = {"origins": "*", "destinations": "1;2;8;10;11"}
         spec["aggregation"] = {"origins": "+", "destinations": None}
         specs.append(spec)
 
@@ -294,7 +294,7 @@ class ExternalTruckModel(_m.Tool()):
                     spec = util.matrix_spec("", TripDistList[i]+"*"+str(FactorIB[2*i+j][k]))
                     for l in range (0, len(ConstraintList[k])):
                         spec["result"] = Matrix_List[2*i+j]
-                        spec["constraint"]["by_zone"] = {"origins": str(ConstraintList[k][l]), "destinations": None}
+                        spec["constraint"]["by_zone"] = {"origins": str(ConstraintList[k][l]), "destinations": "*"}
                         util.compute_matrix(spec)
 
         for i in range (len(TripDistList)) :
@@ -303,5 +303,5 @@ class ExternalTruckModel(_m.Tool()):
                     spec = util.matrix_spec("", str(TripDistList[i])+"*"+str(FactorOB[2*i+j][k]))
                     for l in range (0, len(ConstraintList[k])):
                         spec["result"] = Matrix_List[2*i+j]
-                        spec["constraint"]["by_zone"] = {"origins": None, "destinations": str(ConstraintList[k][l])}
+                        spec["constraint"]["by_zone"] = {"origins": "*", "destinations": str(ConstraintList[k][l])}
                         util.compute_matrix(spec)

@@ -9,7 +9,7 @@ import os
 import traceback as _traceback
 
 class FullTruckModel(_m.Tool()):
-    Year = _m.Attribute(str)
+    Year = _m.Attribute(int)
     AMScenario = _m.Attribute(_m.InstanceType)
     MDScenario = _m.Attribute(_m.InstanceType)
 
