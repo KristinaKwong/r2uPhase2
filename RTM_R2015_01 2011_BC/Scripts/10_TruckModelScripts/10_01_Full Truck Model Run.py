@@ -5,7 +5,6 @@
 ##--Purpose: Run Full truck Model
 ##---------------------------------------------------------------------
 import inro.modeller as _m
-import os
 import traceback as _traceback
 
 class FullTruckModel(_m.Tool()):
