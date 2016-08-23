@@ -47,11 +47,9 @@ class CongestedTransitAssignment(_m.Tool()):
         self.tool_run_msg = ""
         try:
             self(self.am_scenario, self.alpha, self.beta)
-            run_msg = "Tool completed"
-            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
-            self.tool_run_msg = _m.PageBuilder.format_exception(
-                e, _traceback.format_exc(e))
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("10-10 - Congested Transit Assignment")
     def __call__(self, scenarioam, alpha=7, beta=3):

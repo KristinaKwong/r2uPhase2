@@ -32,8 +32,7 @@ class TwoClassTransitAssignment(_m.Tool()):
             self.tool_run_msg = ""
             try:
                 self(self.am_scenario, self.md_scenario)
-                run_msg = "Tool completed"
-                self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
+                self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
             except Exception, e:
                 self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 

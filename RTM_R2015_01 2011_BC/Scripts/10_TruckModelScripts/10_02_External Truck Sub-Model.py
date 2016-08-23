@@ -57,7 +57,7 @@ class ExternalTruckModel(_m.Tool()):
     def run(self):
         try:
             self.__call__(_m.Modeller().emmebank, 2011)
-            self.tool_run_msg = _m.PageBuilder.format_info("Tool completed")
+            self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 

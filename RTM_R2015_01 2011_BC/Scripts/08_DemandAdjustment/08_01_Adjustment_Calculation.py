@@ -37,8 +37,7 @@ class DemandAdjustment(_m.Tool()):
             }
 
             self.__call__(eb, am_scenario, md_scenario, stopping_criteria)
-            run_msg = "Tool completed"
-            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 

@@ -27,8 +27,7 @@ class TollSkim(_m.Tool()):
         try:
             # TODO: add these inputs to the page
             self.__call__()
-            run_msg = "Tool completed"
-            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 

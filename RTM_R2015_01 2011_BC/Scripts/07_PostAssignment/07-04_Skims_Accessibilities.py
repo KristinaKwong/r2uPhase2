@@ -27,8 +27,7 @@ class SkimsAccessibilities(_m.Tool()):
         eb = _m.Modeller().emmebank
         try:
             self.__call__(eb)
-            run_msg = "Tool completed"
-            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
+            self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 

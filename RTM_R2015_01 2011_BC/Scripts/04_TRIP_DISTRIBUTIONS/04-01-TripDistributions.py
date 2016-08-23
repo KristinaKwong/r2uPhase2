@@ -50,10 +50,8 @@ class TripDistributions(_m.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            eb = _m.Modeller().emmebank
-            self.__call__(eb, self.max_iterations)
-            run_msg = "Tool completed"
-            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
+            self.__call__(_m.Modeller().emmebank, self.max_iterations)
+            self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 

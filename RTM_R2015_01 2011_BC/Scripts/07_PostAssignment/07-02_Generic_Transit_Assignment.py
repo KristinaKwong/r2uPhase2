@@ -24,7 +24,7 @@ class Transit_Assignment(_m.Tool()):
     def run(self):
         try:
             self.__call__()
-            self.tool_run_msg = _m.PageBuilder.format_info("Tool completed")
+            self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
