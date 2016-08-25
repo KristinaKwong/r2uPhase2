@@ -44,7 +44,7 @@ class InputLandUse(_m.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            self(self.LandUse1, self.LandUse2)
+            self(_m.Modeller().emmebank, self.LandUse1, self.LandUse2)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, error:
             self.tool_run_msg = _m.PageBuilder.format_exception(
@@ -52,8 +52,7 @@ class InputLandUse(_m.Tool()):
             raise
 
     @_m.logbook_trace("Import land use data", save_arguments=True)
-    def __call__(self, file1, file2):
-        eb = _m.Modeller().emmebank
+    def __call__(self, eb, file1, file2):
         self.read_file(eb, file1)
         self.read_file(eb, file2)
 

@@ -115,7 +115,7 @@ class FullModelRun(_m.Tool()):
 
         ## Call Model Tools - Socioeconomic segmentation, trip generation, trip distribution, mode choice, assignment
         land_use = _m.Modeller().tool("translink.emme.stage1.step0.landuse")
-        land_use(land_use_file1, land_use_file2)
+        land_use(eb, land_use_file1, land_use_file2)
 
         ## Read the settings file
         read_settings = _m.Modeller().tool("translink.emme.stage1.step0.settings")
