@@ -128,7 +128,7 @@ class Util(_m.Tool()):
         eb -- The emmebank to be queried
         """
         return os.path.join(os.path.dirname(eb.path), "Outputs")
-        
+
     def get_input_path(self, eb):
         """Returns the inputs directory for the given databank
 
@@ -166,3 +166,35 @@ class Util(_m.Tool()):
 
             for z in zones:
                 writer.writerow([z] + [data.get(z) for data in matrix_data])
+
+
+    @_m.logbook_trace("Reading csv file of mo/md values", save_arguments=True)
+    def read_csv_momd(self, eb, file):
+        #Read data from file and check number of lines
+        with open(file, "rb") as sourcefile:
+            lines = list(csv.reader(sourcefile, skipinitialspace=True))
+
+        # Validate that each line has the same number of caolumns as the first line
+        valid_cols = len(lines[0])
+        for num in range(len(lines)):
+            if len(lines[num]) != valid_cols:
+                raise Exception("File: %s Line: %d - expected %d columns, found %d" % (file, num + 1, valid_cols, len(lines[num])))
+
+        matrices = []
+        mat_data = []
+        # Initialize all matrices with 0-values and store a data reference
+        for i in range(1, len(lines[0])):
+            mat = self.initmat(eb, lines[0][i], lines[1][i], lines[2][i], 0)
+            matrices.append(mat)
+            mat_data.append(mat.get_data())
+
+        # loop over each data-containing line in the csv
+        for i in range(3, len(lines)):
+            line = lines[i]
+            # within each line set the data in each matrix
+            for j in range(1, len(line)):
+                mat_data[j-1].set(int(line[0]), float(line[j]))
+
+        # store the data back into the matrix on disk
+        for i in range(len(matrices)):
+            matrices[i].set_data(mat_data[i])

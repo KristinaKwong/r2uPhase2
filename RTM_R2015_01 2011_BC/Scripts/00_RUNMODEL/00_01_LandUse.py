@@ -53,37 +53,6 @@ class InputLandUse(_m.Tool()):
 
     @_m.logbook_trace("Import land use data", save_arguments=True)
     def __call__(self, eb, file1, file2):
-        self.read_file(eb, file1)
-        self.read_file(eb, file2)
-
-    @_m.logbook_trace("Reading File", save_arguments=True)
-    def read_file(self, eb, file):
         util = _m.Modeller().tool("translink.emme.util")
-        #Read data from file and check number of lines
-        with open(file, "rb") as sourcefile:
-            lines = list(csv.reader(sourcefile, skipinitialspace=True))
-
-        # Validate that each line has the same number of caolumns as the first line
-        valid_cols = len(lines[0])
-        for num in range(len(lines)):
-            if len(lines[num]) != valid_cols:
-                raise Exception("File: %s Line: %d - expected %d columns, found %d" % (file, num + 1, valid_cols, len(lines[num])))
-
-        matrices = []
-        mat_data = []
-        # Initialize all matrices with 0-values and store a data reference
-        for i in range(1, len(lines[0])):
-            mat = util.initmat(eb, lines[0][i], lines[1][i], lines[2][i], 0)
-            matrices.append(mat)
-            mat_data.append(mat.get_data())
-
-        # loop over each data-containing line in the csv
-        for i in range(3, len(lines)):
-            line = lines[i]
-            # within each line set the data in each matrix
-            for j in range(1, len(line)):
-                mat_data[j-1].set(int(line[0]), float(line[j]))
-
-        # store the data back into the matrix on disk
-        for i in range(len(matrices)):
-            matrices[i].set_data(mat_data[i])
+        util.read_csv_momd(eb, file1)
+        util.read_csv_momd(eb, file2)
