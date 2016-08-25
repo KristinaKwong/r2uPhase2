@@ -5,9 +5,8 @@
 ##--Purpose: input land use from external files
 ##---------------------------------------------------------------------
 import inro.modeller as _m
-import traceback as _traceback
-import csv
 import os
+import traceback as _traceback
 
 class InputLandUse(_m.Tool()):
     LandUse1 = _m.Attribute(unicode)
@@ -29,14 +28,14 @@ class InputLandUse(_m.Tool()):
         pb.add_select_file(tool_attribute_name="LandUse1",
                            window_type="file",
                            file_filter="*.csv",
-                           start_path=loc + "/00_RUNMODEL/LandUse",
+                           start_path=loc + "/Inputs",
                            title="Select Input LandUse file 1: ",
                            note="File must be csv file.")
 
         pb.add_select_file(tool_attribute_name="LandUse2",
                            window_type="file",
                            file_filter="*.csv",
-                           start_path=loc + "/00_RUNMODEL/LandUse",
+                           start_path=loc + "/Inputs",
                            title="Select Input LandUse file 2: ",
                            note="File must be csv file.")
         return pb.render()
@@ -46,10 +45,8 @@ class InputLandUse(_m.Tool()):
         try:
             self(_m.Modeller().emmebank, self.LandUse1, self.LandUse2)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
-        except Exception, error:
-            self.tool_run_msg = _m.PageBuilder.format_exception(
-                error, _traceback.format_exc(error))
-            raise
+        except Exception, e:
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Import land use data", save_arguments=True)
     def __call__(self, eb, file1, file2):
