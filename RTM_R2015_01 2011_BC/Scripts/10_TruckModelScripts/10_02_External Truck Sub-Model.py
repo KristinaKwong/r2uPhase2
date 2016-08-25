@@ -8,7 +8,6 @@
 ##---------------------------------------------------------------------
 import inro.modeller as _m
 import os
-import traceback as _traceback
 
 # Regression coefficients:
 
@@ -41,25 +40,14 @@ ExL11=1579.0
 ExH11=3718.0
 
 class ExternalTruckModel(_m.Tool()):
-    tool_run_msg = _m.Attribute(unicode)
-
     def page(self):
         pb = _m.ToolPageBuilder(self)
         pb.title = "External Truck Trips Model"
         pb.description = "Generates base/future forecasts for external light and heavy trucks trips"
         pb.branding_text = "TransLink"
-
-        if self.tool_run_msg:
-            pb.add_html(self.tool_run_msg)
+        pb.runnable = False
 
         return pb.render()
-
-    def run(self):
-        try:
-            self.__call__(_m.Modeller().emmebank, 2011)
-            self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
-        except Exception, e:
-            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("External Truck Trips Model")
     def __call__(self, eb, Year):

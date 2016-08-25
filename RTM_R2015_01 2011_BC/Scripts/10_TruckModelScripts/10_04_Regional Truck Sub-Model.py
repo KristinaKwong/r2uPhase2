@@ -9,30 +9,16 @@
 ##---------------------------------------------------------------------
 import inro.modeller as _m
 import os
-import traceback as _traceback
 
 class RegTruckModel(_m.Tool()):
-    tool_run_msg = _m.Attribute(unicode)
-
     def page(self):
         pb = _m.ToolPageBuilder(self)
         pb.title = "Regional Truck Trips Model"
         pb.description = "Generates base/future forecasts for regional light and heavy trucks trips"
         pb.branding_text = "TransLink"
-
-        if self.tool_run_msg:
-            pb.add_html(self.tool_run_msg)
+        pb.runnable = False
 
         return pb.render()
-
-    def run(self):
-        self.tool_run_msg = ""
-
-        try:
-            self.__call__(_m.Modeller().emmebank)
-            self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
-        except Exception, e:
-            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Regional Truck Model")
     def __call__(self, eb):
