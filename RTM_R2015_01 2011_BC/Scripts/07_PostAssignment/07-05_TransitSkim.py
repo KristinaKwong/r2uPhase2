@@ -29,9 +29,9 @@ class TransitSkim(_m.Tool()):
 
         # parameters for Mode availability matrices
         # Minimum IVTT; Disable value: 0
-        self.minimum_ivtt_rule = {'Bus': 2, 'Rail': 5, 'WCE': 5}
+        self.minimum_ivtt_rule = {'Bus': 2, 'Rail': 5, 'WCE': 5} # TODO look at rail availability
         # IVTT/Auto Time Ratio; Disable value: 10 or any large value
-        self.ivtt_auto_ratio = {'Bus': 10, 'Rail': 2.5, 'WCE': 2}
+        self.ivtt_auto_ratio = {'Bus': 10, 'Rail': 2.5, 'WCE': 2} #TODO look at that too - captives
         # Main Mode IVTT/ Total IVTT; Disable value: 0
         self.mivtt_totivt_ratio = {'Bus': 0, 'Rail': 0.3, 'WCE': 0.3}
         # IVTT - Bus skim IVTT; Not valid for Bus mode; Disable value: 999 or any large value
@@ -118,7 +118,7 @@ class TransitSkim(_m.Tool()):
                 "alighting": None
             },
             "sub_path_combination_operator": ".max.",
-            "sub_strategy_combination_operator": ".max.",
+            "sub_strategy_combination_operator": ".max.", # take max as opposed to average to get the full fare not the average
             "selected_demand_and_transit_volumes": {
                 "sub_strategies_to_retain": "FROM_COMBINATION_OPERATOR",
                 "selection_threshold": {"lower": -999999, "upper": 999999}
@@ -264,6 +264,8 @@ class TransitSkim(_m.Tool()):
             prem_invehicle_time = Travel_Time_List[i][5]
 
         # Mode Availability Rule
+        # TODO does this actually belong here
+        # TODO remove Ratype0 eventually
         if classname != "Ratype0":
             auto_time = ["mf931", "mf943", "mf2001"]
             bus_invehicle_time = ["mf934",  "mf946",  "mf2004"]
@@ -280,7 +282,3 @@ class TransitSkim(_m.Tool()):
             matrix_spec=[]
             matrix_spec.append(util.matrix_spec(result, expression1))
             util.compute_matrix(matrix_spec, scenarionumber)
-
-
-
-

@@ -49,7 +49,7 @@ class TransitAssignment(_m.Tool()):
         self.bus_zone1_fare = 2.1
         self.bus_zone_increment = 1.05
         # By Time Period
-        self.wce_bfare_zone1 = [0, 0, 5.03]
+        self.wce_bfare_zone1 = [0, 0, 5.03] #form [am, md ,pm] different directions have different values
         self.wce_bfare_zone3 = [2.12, 0, 2.72]
         self.wce_bfare_zone4 = [2.10, 0, 2.10]
         self.wce_bfare_zone5 = [3.79, 0 , 0]
@@ -96,7 +96,7 @@ class TransitAssignment(_m.Tool()):
 
         # No Crowding and Capacity constraint applied
         if run_crowding+run_capacity_constraint ==0:
-            self.max_iterations=2
+            self.max_iterations=2 #if neith Crowding or capacity, need 2 iterations to update dwell time
 
         # TODO: Select final option and remove this variable
         select_hfrac = 2 # 1 - RTM effective headway fractions, 2 -Non-Linear curves by frequency of service
@@ -115,8 +115,9 @@ class TransitAssignment(_m.Tool()):
             self.previous_level = _m.logbook_level()
             print "Scenario: "+sc.title+" ("+sc.id+")"
             report={}
-            _m.logbook_level(_m.LogbookLevel.NONE)
+            _m.logbook_level(_m.LogbookLevel.NONE) # set to none means it doesnt write to logbook.  keep it from writing interim calculations to logbook
             # Initialize Values for first cycle and use updated values from previous cycles later on
+            # this only done once - but for testing the cycle is always at 6
             if util.get_cycle(eb) >= 1:  # TODO: Change to util.get_cycle(eb) == 1
                 # Calculate headway fraction
                 self.headway_fraction_calc(sc, select_hfrac)
@@ -319,7 +320,7 @@ class TransitAssignment(_m.Tool()):
                     "boarding_time": None,
                     "boarding_cost": {
                         "at_nodes": None,
-                        "on_lines": {"penalty": "@xferlinefare","perception_factor": self.cost_perception_factor}
+                        "on_lines": {"penalty": "@xferlinefare","perception_factor": self.cost_perception_factor} #xferlinefare is set to 0, this allows free transfers otherwise if set to NONE it would be full boarding cost
                     },
                     "waiting_time": None
                 }
@@ -338,9 +339,9 @@ class TransitAssignment(_m.Tool()):
                         {"mode": "l", "next_journey_level": 2},
                         {"mode": "s", "next_journey_level": 2}
                     ],
-                    "boarding_time": None,
-                    "boarding_cost": None,
-                    "waiting_time": None
+                    "boarding_time": None, #none uses boarding cost from outside the journey level
+                    "boarding_cost": None, #none uses boarding cost from outside the journey level
+                    "waiting_time": None #none uses boarding cost from outside the journey level
                 },
                 {
                     "description": "Boarded bus only",
@@ -420,7 +421,7 @@ class TransitAssignment(_m.Tool()):
                 ],
                 "boarding_time": None,
                 "boarding_cost": {
-                    "at_nodes": {"penalty": "@wcexferfare", "perception_factor": self.cost_perception_factor},
+                    "at_nodes": {"penalty": "@wcexferfare", "perception_factor": self.cost_perception_factor}, #only coded at specific nodes.  most cases gets 0 out unless gettnig on WCE
                     "on_lines": {"penalty": "@xferlinefare","perception_factor": self.cost_perception_factor}
                 },
                 "waiting_time": None
@@ -567,7 +568,7 @@ class TransitAssignment(_m.Tool()):
 
     def dwell_time_calc(self, sc, period_length):
         # Fixed dwell time to account for stopping of vehicle
-        min_dwell_time = 0.33 # 20 seconds in minutes
+        min_dwell_time = 0.33 # 20 seconds in minutes fixed cost of making a stop
         # Zero Passenger - set us1 =0
         # Boarding and Alighting happens simultaneously (appplicable for most bus lines)
         self.update_extra_attributes(sc, 'us1', "(%s*((@boardavg+@alightavg).gt.0) +"
@@ -612,7 +613,7 @@ class TransitAssignment(_m.Tool()):
                 result['%4s'%iteration+'%7s'%modes]=rep
             print '%4s'%iteration+'%7s'%modes+rep
         return result
-
+    # avg boarding by line - not called needs to be enabled to be used
     def ridership_summary(self, sc):
         print "Line     RiderShip"
         networkCalcTool = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
