@@ -26302,9 +26302,8 @@ a'n555E ' b   1  10.00  23.00 'LougheedStn-Langley '      0      0      0
    326216          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    325808          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    326413          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   630705          dwt=+0   ttf=3   us1=0   us2=0   us3=0
-   631218          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   631210          dwt=#0   ttf=5   us1=0   us2=0   us3=0
+   630705          dwt=+0   ttf=5   us1=0   us2=0   us3=0
+   631215          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    631216          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    631613          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    631616          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -26349,7 +26348,8 @@ a'n555W ' b   1  10.00  23.00 'Langley-LougheedStn '      0      0      0
    632417          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    632430          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    632415          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   630804          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   630804          dwt=+0   ttf=5   us1=0   us2=0   us3=0
+   631215          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    630806          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    630208          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    630103          dwt=#0   ttf=5   us1=0   us2=0   us3=0
