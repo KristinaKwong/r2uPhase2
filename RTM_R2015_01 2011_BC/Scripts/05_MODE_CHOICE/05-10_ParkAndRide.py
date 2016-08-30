@@ -447,30 +447,6 @@ class ParkAndRide(_m.Tool()):
 
         triple_index_op = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_triple_index_operation")
-        create_matrix = _m.Modeller().tool(
-            "inro.emme.data.matrix.create_matrix")
-
-        spec = {
-            "expression": "",
-            "result": None,
-            "constraint": {
-                "by_value": {
-                    "od_values": "mf995",
-                    "interval_min": 1,
-                    "interval_max": 999,
-                    "condition": "INCLUDE"
-                    },
-                "by_zone": {
-                    "origins": "gp1,gp28",
-                    "destinations": "gr1,gr6"
-                }
-            },
-            "aggregation": {
-                "origins": None,
-                "destinations": None
-            },
-            "type": "MATRIX_CALCULATION"
-        }
 
         spec_triple_index = {
             "type": "MATRIX_TRIPLE_INDEX_OPERATION",
@@ -529,8 +505,11 @@ class ParkAndRide(_m.Tool()):
         util.initmat(scenario.emmebank, "mo963", "PRorcp", "PR lot demand by origin gp", 0)
         util.initmat(scenario.emmebank, "mo964", "pzones", "Number of zones in each gp", 0)
 
+        # Added constraint calculation
         specs = []
-        specs.append(util.matrix_spec("mf204", "(%s)/(1+exp(%s*(mf205-mf203+mf%s)))" % (base_demand, mode1, mode2)))
+        spec = util.matrix_spec("mf204", "(%s)/(1+exp(%s*(mf205-mf203+mf%s)))" % (base_demand, mode1, mode2))
+        spec["constraint"]["by_value"] = {"od_values": "mf995", "interval_min": 1, "interval_max": 999, "condition": "INCLUDE"}
+        specs.append(spec)
 
         spec = util.matrix_spec("mo963", "mf204")
         spec["aggregation"] = {"origins": None, "destinations": "+"}
@@ -542,7 +521,10 @@ class ParkAndRide(_m.Tool()):
 
         #multiply aggregated numbers by the number of zones in each partition
         #reduce mf204 by the ratio of origin demand to catchment area capacity
-        specs.append(util.matrix_spec("mf204", "mf204*((%s/((mo963*mo964)+0.001)).min.1)" % capacity_matrix))
+        # Added constraint calculation
+        spec = util.matrix_spec("mf204", "mf204*((%s/((mo963*mo964)+0.001)).min.1)" % capacity_matrix)
+        spec["constraint"]["by_value"] = {"od_values": "mf995", "interval_min": 1, "interval_max": 999, "condition": "INCLUDE"}
+        specs.append(spec)
         util.compute_matrix(specs, scenario=scenario)
 
     @_m.logbook_trace("Calculating park and ride utility functions")
