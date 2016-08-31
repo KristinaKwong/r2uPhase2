@@ -447,30 +447,6 @@ class ParkAndRide(_m.Tool()):
 
         triple_index_op = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_triple_index_operation")
-        create_matrix = _m.Modeller().tool(
-            "inro.emme.data.matrix.create_matrix")
-
-        spec = {
-            "expression": "",
-            "result": None,
-            "constraint": {
-                "by_value": {
-                    "od_values": "mf995",
-                    "interval_min": 1,
-                    "interval_max": 999,
-                    "condition": "INCLUDE"
-                    },
-                "by_zone": {
-                    "origins": "gp1,gp28",
-                    "destinations": "gr1,gr6"
-                }
-            },
-            "aggregation": {
-                "origins": None,
-                "destinations": None
-            },
-            "type": "MATRIX_CALCULATION"
-        }
 
         spec_triple_index = {
             "type": "MATRIX_TRIPLE_INDEX_OPERATION",
