@@ -1,7 +1,5 @@
 c Emme Modeller - Turn Transaction
-c Date: 2016-07-27 13:38:53
-c Project:        RTM 2016 07 13                                              
-c Scenario 3000:  2030 Base Network massey#2
+c Scenario 3000:  2030 Base Network
 t turns
 c     At   From     To   TPF  Data1  Data2  Data3
 a 110107 110108 110108     0      0      0      0

@@ -1,6 +1,4 @@
 c Emme Modeller - Base Network Transaction
-c Date: 2016-08-16 16:02:59
-c Project:        RTM 2016 08 12                                              
 c Scenario 1000:  2011 Base Network
 t nodes
 c   Node          X-coord          Y-coord   Data1   Data2   Data3 Label
