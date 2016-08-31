@@ -43,12 +43,15 @@ class TransitAssignment(_m.Tool()):
         self.bus_mode_list = ["b", "g", "a", "p"]
         self.rail_mode_list= ["b", "f", "g", "l", "s", "h", "a", "p"]
         self.wce_mode_list = ["b", "f", "g", "l", "r", "s", "h", "a", "p"]
-        self.summary_mode_list =["b", "s", "lr"]  # TODO: update with Modes available
+
+        # TODO: Assign summary_mode_list based on time period
+        self.pk_summary_mode_list =["b", "s", "l", "r"]
+        self.op_summary_mode_list = ["b", "s", "l"]
 
         # Fare Values in Dollars for assignment: TODO - Update
         self.bus_zone1_fare = 2.1
         self.bus_zone_increment = 1.05
-        # By Time Period
+        # By Time Period [AM, MD, PM]
         self.wce_bfare_zone1 = [0, 0, 5.03]
         self.wce_bfare_zone3 = [2.12, 0, 2.72]
         self.wce_bfare_zone4 = [2.10, 0, 2.10]
@@ -95,6 +98,7 @@ class TransitAssignment(_m.Tool()):
         run_capacity_constraint = 0
 
         # No Crowding and Capacity constraint applied
+        # Run 2 iterations only to update dwell times
         if run_crowding+run_capacity_constraint ==0:
             self.max_iterations=2
 
@@ -174,7 +178,7 @@ class TransitAssignment(_m.Tool()):
                 assign_transit(bus_spec, scenario=sc, add_volumes=False, save_strategies=True, class_name= 'Bus')
                 assign_transit(rail_spec, scenario=sc, add_volumes=True, save_strategies=True, class_name= 'Rail')
                 assign_transit(ratype0_spec, scenario=sc, add_volumes=True, save_strategies=True, class_name='Ratype0')
-                if sc is not scenariomd:
+                if sc is scenarioam or sc is scenariopm:
                     assign_transit(wce_spec, scenario=sc, add_volumes=True, save_strategies=True, class_name= 'WCE')
 
                 _m.logbook_level(_m.LogbookLevel.NONE)
@@ -566,7 +570,7 @@ class TransitAssignment(_m.Tool()):
         self.update_extra_attributes(sc, '@hdwyeff', "hdw*@hdwyfac*@hfrac")
 
     def dwell_time_calc(self, sc, period_length):
-        # Fixed dwell time to account for stopping of vehicle
+        # Fixed dwell time to account for acceleration and deceleration of vehicle
         min_dwell_time = 0.33 # 20 seconds in minutes
         # Zero Passenger - set us1 =0
         # Boarding and Alighting happens simultaneously (appplicable for most bus lines)
@@ -576,11 +580,16 @@ class TransitAssignment(_m.Tool()):
 
         # Boarding and Alighting happens sequentially
         # TODO: Identify lines and specify condition
-        self.update_extra_attributes(sc, 'us1', "(%s*((@boardavg+@alightavg).gt.0) +"
-                                                "(((@dwtboard*@boardavg) + (@dwtalight*@alightavg))*"
-                                                " hdw/(60*%s)))" %(min_dwell_time,period_length), "all","mode=bg")
+        #self.update_extra_attributes(sc, 'us1', "(%s*((@boardavg+@alightavg).gt.0) +"
+        #                                        "(((@dwtboard*@boardavg) + (@dwtalight*@alightavg))*"
+        #                                        " hdw/(60*%s)))" %(min_dwell_time,period_length), "all","mode=bg")
 
     def crowding_headway_report(self, sc, iteration):
+        if sc is self.am_scenario or sc is self.pm_scenario:
+            summary_mode_list = self.pk_summary_mode_list
+        if sc is self.md_scenario:
+            summary_mode_list = self.op_summary_mode_list
+
         if iteration==1:
             print "Iter   Mode     Seat.pass-kms    Stand.pass-kms   Excess.pass-kms  Max.crowd.factor   Min.Hdwy.Factor   Max.Hdwy.Factor"
         networkCalcTool = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
@@ -598,7 +607,7 @@ class TransitAssignment(_m.Tool()):
             #Max Headway Factor
             6: ["@hdwyfac", "maximum"]}
         result={}
-        for modes in self.summary_mode_list:
+        for modes in summary_mode_list:
             rep = ""
             for key in expression:
                 spec = {"type": "NETWORK_CALCULATION",
@@ -627,6 +636,11 @@ class TransitAssignment(_m.Tool()):
         print report
 
     def dwell_time_report(self, sc, iteration):
+        if sc is self.am_scenario or sc is self.pm_scenario:
+            summary_mode_list = self.pk_summary_mode_list
+        if sc is self.md_scenario:
+            summary_mode_list = self.op_summary_mode_list
+
         if iteration == 1:
             print "Iter   Mode     Min.Dwell     Max.Dwell"
         networkCalcTool = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
@@ -636,7 +650,7 @@ class TransitAssignment(_m.Tool()):
             # Max Dwell Time
             2: ["us1", "maximum"]}
         result = {}
-        for modes in self.summary_mode_list:
+        for modes in summary_mode_list:
             rep = ""
             for key in expression:
                 spec = {"type": "NETWORK_CALCULATION",
