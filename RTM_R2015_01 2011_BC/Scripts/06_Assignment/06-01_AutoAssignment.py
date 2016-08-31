@@ -52,16 +52,14 @@ class AutoAssignment(_m.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            eb = _m.Modeller().emmebank
             stopping_criteria = {
                 "relative_gap": self.relative_gap,
                 "best_relative_gap": self.best_relative_gap,
                 "normalized_gap": self.normalized_gap,
                 "max_iterations": self.max_iterations
             }
-            self(eb, self.am_scenario, self.md_scenario, self.pm_scenario, stopping_criteria)
-            run_msg = "Tool completed"
-            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
+            self(_m.Modeller().emmebank, self.am_scenario, self.md_scenario, self.pm_scenario, stopping_criteria)
+            self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 

@@ -32,8 +32,7 @@ class Rail_Assignment(_m.Tool()):
                 md_scenario = eb.scenario(22000)
                 pm_scenario = eb.scenario(23000)
                 self(am_scenario, md_scenario, pm_scenario)
-                run_msg = "Tool completed"
-                self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
+                self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
             except Exception, e:
                 self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
         pass

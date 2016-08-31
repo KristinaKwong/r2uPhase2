@@ -1,44 +1,6 @@
 c Emme Module:    3.14(v15101)  Date: 14-10-25 15:50   User: E496/HFA......none
 c Project:        2011 network with version 1 scripting                       
 t matrices
-d ms154
-d ms155
-d mo1007
-d mo1008
-d md207
-d md208
-d mf1025
-d mf1026
-d mf1027
-d mf1028
-d mf1029
-d mf1030
-d mf1031
-d mf1032
-d mf1033
-d mf1034
-d mf1035
-d mf1036
-d mf1037
-d mf1038
-a mo1007
-a mo1008
-a md207
-a md208
-a mf1029
-a mf1030
-a mf1031
-a mf1032
-a mf1033
-a mf1034
-a mf1035
-a mf1036
-a mf1037
-a mf1038
-a matrix=ms154   RGphAM     0 Rg Truck Peak Hour Factor AM    
- all all:.26000
-a matrix=ms155   RGphMD     0 Rg Truck Peak Hour Factor AM    
- all all:.24100
 a matrix=mf1025 RGLgAp      0 Rg LgTruck Peak Period AM            
  gy01 gy01:.39955
  gy01 gy02:.32922

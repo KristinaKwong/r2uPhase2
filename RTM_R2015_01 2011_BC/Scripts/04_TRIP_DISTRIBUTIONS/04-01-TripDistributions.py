@@ -50,10 +50,8 @@ class TripDistributions(_m.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            eb = _m.Modeller().emmebank
-            self.__call__(eb, self.max_iterations)
-            run_msg = "Tool completed"
-            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
+            self.__call__(_m.Modeller().emmebank, self.max_iterations)
+            self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
@@ -130,7 +128,7 @@ class TripDistributions(_m.Tool()):
         ]
 
         for i in range(0, 11):
-            self.matrix_balancing(eb, mo_list[i], md_list[i], impedance_list[i], output_list[i], max_iterations)
+            self.two_dim_matrix_balancing(eb, mo_list[i], md_list[i], impedance_list[i], output_list[i], max_iterations)
 
         # Transpose Matrices mfs 241 thru 303 and store in mfs 310 thru 372
 
@@ -213,29 +211,70 @@ class TripDistributions(_m.Tool()):
 
         util.compute_matrix(specs)
 
-    @_m.logbook_trace("Run matrix balancing to multiple productions")
-    def matrix_balancing(self, eb, mo_list, md_list, impedance_list, output_list, max_iterations):
+    @_m.logbook_trace("Run origin constrained matrix balancing")
+    def one_dim_matrix_balancing(self, eb, productions_list, impedance_list, output_demands):
+        """Perform a singly-constrained matrix balancing to production totals.
+
+        Calculate an output demand from an input production total and a utility matrix respecting
+        the production totals only. Zones with zero productions will have zero origin demand in the
+        final matrix. Zones with zero utility to all destinations will have zero demand in the final
+        matrix.
+
+        Arguments:
+        eb -- the emmebank to calculate in
+        productions_list -- a list of production totals (moXX)
+        impedance_list -- a list of impendences/utilities to use for balancing (mfXX)
+        output_demands -- the list of matrices to hold the output demands (mfXX)
+        """
         util = _m.Modeller().tool("translink.emme.util")
 
-        # Used to allocate results to  the "scratch" matrices
-        num_scratch = 0
-        util.initmat(eb, "mo927", "Scr1", "Scratch_MO_1", 0)
-        util.initmat(eb, "mo928", "Scr2", "Scratch_MO_2", 0)
-        util.initmat(eb, "mo929", "Scr3", "Scratch_MO_3", 0)
-        util.initmat(eb, "mo930", "Scr4", "Scratch_MO_4", 0)
+        temp_matrices = []
 
-        results = ["mo927", "mo928", "mo929", "mo930"]
+        specs = []
+        for i in range(0, len(productions_list)):
+            # Initialize a temporary mo to calculate origin totals
+            temp_id = eb.available_matrix_identifier("ORIGIN")
+            temp_matrices.append(temp_id)
+            util.initmat(eb, temp_id, "scratch", "scratch matrix in one-dimensional balancing", 0)
+
+            # Calculate the sum of the impedence list to calculate an alpha factor
+            spec = util.matrix_spec(temp_id, impedance_list[i])
+            spec["aggregation"] = {"origins": None, "destinations": "+"}
+            specs.append(spec)
+
+            # Divide the total impedence into the productions to produce an alpha value
+            # Avoid dividing by zero by adding one to origins with utility sum of zero
+            spec = util.matrix_spec(temp_id, "%s/(%s+(%s.eq.0))" % (productions_list[i], temp_id, temp_id))
+            specs.append(spec)
+
+            # Multiply the alpha value times the impedence to produce an output demand
+            spec = util.matrix_spec(output_demands[i], "%s * %s" % (temp_id, impedance_list[i]))
+            specs.append(spec)
+
+        util.compute_matrix(specs)
+
+        # Delete the temporary mo-matrices
+        for mat_id in temp_matrices:
+            util.delmat(eb, mat_id)
+
+    @_m.logbook_trace("Run matrix balancing to multiple productions")
+    def two_dim_matrix_balancing(self, eb, mo_list, md_list, impedance_list, output_list, max_iterations):
+        util = _m.Modeller().tool("translink.emme.util")
 
         # loops through mo_list for any list items that are expressions
         #  (contains "+") adding mo matrices up for aggregation.
         # Performs calulation and saves result in a scratch matrix.
         # then inserts scratch matrix instead of the initial expresssion
         specs = []
+        temp_matrices = []
         for i in range(0, len(mo_list)):
             if "+" in mo_list[i]:
-                specs.append(util.matrix_spec(results[num_scratch], mo_list[i]))
-                mo_list[i] = results[num_scratch]
-                num_scratch = num_scratch + 1
+                temp_id = eb.available_matrix_identifier("ORIGIN")
+                util.initmat(eb, temp_id, "scratch", "scratch matrix for two-dim balance", 0)
+                temp_matrices.append(temp_id)
+
+                specs.append(util.matrix_spec(temp_id, mo_list[i]))
+                mo_list[i] = temp_id
         util.compute_matrix(specs)
 
         #Begin balmprod
@@ -262,10 +301,10 @@ class TripDistributions(_m.Tool()):
             }
             spec_dict_matbal["classes"].append(class_spec)
         balancing_multiple_productions(spec_dict_matbal)
-        util.delmat(eb, "mo927")
-        util.delmat(eb, "mo928")
-        util.delmat(eb, "mo929")
-        util.delmat(eb, "mo930")
+
+        # Delete the temporary mo-matrices
+        for mat_id in temp_matrices:
+            util.delmat(eb, mat_id)
 
     #Calculate impedances for each purpose based on the original distribution macro distestall.mac
     @_m.logbook_trace("Calculate impedances")

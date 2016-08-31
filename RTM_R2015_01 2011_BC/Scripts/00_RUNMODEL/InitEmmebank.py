@@ -35,6 +35,7 @@ class InitEmmebank(_m.Tool()):
     def run(self):
         self.__call__()
 
+    @_m.logbook_trace("Initializing a new emmebank")
     def __call__(self):
         new_path = self.initfolder(self.emme_folder)
 
@@ -90,6 +91,7 @@ class InitEmmebank(_m.Tool()):
 
         return os.path.join(new_folder, "emmebank")
 
+    @_m.logbook_trace("Creating a base scenario")
     def initscenario(self, eb, scen_id, scen_title):
         mod = _m.Modeller()
         project = mod.desktop.project
@@ -176,12 +178,7 @@ class InitEmmebank(_m.Tool()):
                   scenario = scen,
                   merge_consecutive_separators = True)
 
-        data_path = os.path.join(proj_path, "BaseNetworks", "gz_ensem_tz1741.in")
         ensem_trans = _m.Modeller().tool("inro.emme.data.zone_partition.partition_transaction")
-        ensem_trans(transaction_file = data_path,
-                    throw_on_error = True,
-                    scenario = scen)
-
         data_path = os.path.join(proj_path, "BaseNetworks", "all_ensem_tz1741.in")
         ensem_trans(transaction_file = data_path,
                     throw_on_error = True,

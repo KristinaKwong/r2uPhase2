@@ -8,8 +8,6 @@
 ##---------------------------------------------------------------------
 import inro.modeller as _m
 import os
-import traceback as _traceback
-eb = _m.Modeller().emmebank
 
 # Regression coefficients:
 
@@ -42,117 +40,77 @@ ExL11=1579.0
 ExH11=3718.0
 
 class ExternalTruckModel(_m.Tool()):
-
-
-    spec_as_dict = {
-    "expression": "EXPRESSION",
-    "result": "RESULT",
-    "constraint": {
-        "by_value": None,
-        "by_zone": {"origins": None, "destinations": None}
-    },
-    "aggregation": {"origins": None, "destinations": None},
-    "type": "MATRIX_CALCULATION"
-}
-
-    #    Analysis_Year = _m.Attribute(int)
-    #    GDP_CAGR = _m.Attribute(float)
-    #    Quarter = _m.Attribute(int)
-    tool_run_msg = _m.Attribute(unicode)
-
     def page(self):
         pb = _m.ToolPageBuilder(self)
         pb.title = "External Truck Trips Model"
         pb.description = "Generates base/future forecasts for external light and heavy trucks trips"
         pb.branding_text = "TransLink"
-
-        if self.tool_run_msg:
-            pb.add_html(self.tool_run_msg)
-
+        pb.runnable = False
 
         return pb.render()
 
-    def run(self):
-        ##        User start
-        self.tool_run_msg = ""
-        #GDP FOrecasts: 2011, 2031, 2045 in Real 2009 $ Value
-
-        try:
-            self.__call__(Year)
-            run_msg = "Tool completed"
-            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
-        except Exception, e:
-            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
-
     @_m.logbook_trace("External Truck Trips Model")
-    def __call__(self,Year, Sensitivity, ExtGrowth1,ExtGrowth2, CascadeGrowth1, CascadeGrowth2):
+    def __call__(self, eb, Year):
         # Call Modules of External Model
-        self.CrossBorder(Year, Sensitivity, CascadeGrowth1, CascadeGrowth2) # Import Cascade Cross-Border Matrices
-        self.TripGeneration(Year, Sensitivity, ExtGrowth1, ExtGrowth2)
+        self.CrossBorder(eb, Year) # Import Cascade Cross-Border Matrices
+        self.TripGeneration(Year)
         self.TripDistribution()
         self.TimeSlicing()
 
     @_m.logbook_trace("Import Cascade Cross-Border Matrices")
-    def CrossBorder(self, Year, Sensitivity, CascadeGrowth1, CascadeGrowth2):
+    def CrossBorder(self, eb, Year):
         util = _m.Modeller().tool("translink.emme.util")
 
         process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
-        root_directory = util.get_input_path(_m.Modeller().emmebank)
+        root_directory = util.get_input_path(eb)
+
+        util.delmat(eb, "mf1001")
+        util.delmat(eb, "mf1002")
+        util.delmat(eb, "mf1003")
+        util.delmat(eb, "mf1004")
+        util.delmat(eb, "mf1005")
+        util.delmat(eb, "mf1006")
         matrix_file1 = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"CrossBorderv1.txt")
-        matrix_file2 = os.path.join(root_directory, "TruckBatchFiles", "IRBatchIn.txt")
         process(transaction_file=matrix_file1, throw_on_error=True)
+
+        util.delmat(eb, "mf1008")
+        util.delmat(eb, "mf1009")
+        matrix_file2 = os.path.join(root_directory, "TruckBatchFiles", "IRBatchIn.txt")
         process(transaction_file=matrix_file2, throw_on_error=True)
 
+        util.initmat(eb, "ms151", "ExLgC1", "Cross Border Calc 1", 0)
+        util.initmat(eb, "ms152", "ExHvC2", "Cross Border Calc 2", 0)
 
-        CrossBorderSpec=self.spec_as_dict
-        CrossBorderSpec["expression"] = "mf1001"
-        CrossBorderSpec["result"]="ms151"
-        CrossBorderSpec["aggregation"]["origins"]="+"
-        CrossBorderSpec["aggregation"]["destinations"]="+"
-        util.compute_matrix(CrossBorderSpec)
+        util.initmat(eb, "mo1001", "IRLgPr", "IR LgTruck Productions", 0)
+        util.initmat(eb, "mo1002", "IRHvPr", "IR HvTruck Productions", 0)
+        util.initmat(eb, "md201",  "IRLgAt", "IR LgTruck Attractions", 0)
+        util.initmat(eb, "md202",  "IRHvAt", "IR LgTruck Attractions", 0)
+        util.initmat(eb, "mo1003",  "IRAdj", "IR Adjustment Calc", 0)
+        util.initmat(eb, "md203",   "IRAdj", "IR Adjustment Calc", 0)
+        util.initmat(eb, "mf1010", "IRLg24", "IR LgTruck Daily Trips", 0)
+        util.initmat(eb, "mf1011", "IRHv24", "IR HvTruck Daily Trips", 0)
+        util.initmat(eb, "mf1012", "IRLgAM", "IR LgTruck AM Trips", 0)
+        util.initmat(eb, "mf1013", "IRHvAM", "IR HvTruck AM Trips", 0)
+        util.initmat(eb, "mf1014", "IRLgMD", "IR LgTruck MD Trips", 0)
+        util.initmat(eb, "mf1015", "IRHvMD", "IR HvTruck MD Trips", 0)
 
-        CrossBorderSpec["expression"] = "mf1004"
-        CrossBorderSpec["result"]="ms152"
-        util.compute_matrix(CrossBorderSpec)
+        specs = []
 
-        self.ResetSpec(CrossBorderSpec)
+        spec = util.matrix_spec("ms151", "mf1001")
+        spec["aggregation"] = {"origins": "+", "destinations": "+"}
+        specs.append(spec)
 
-        CBLg = eb.matrix("ms151")
-        CBHv=eb.matrix("ms152")
-        CBLgVal=CBLg.data
-        CBHvVal=CBHv.data
-        ## Determine growth based on sensitivity inputs
-        if Sensitivity=="N":
-            RatioL=1
-            RatioH=1
+        spec = util.matrix_spec("ms152", "mf1004")
+        spec["aggregation"] = {"origins": "+", "destinations": "+"}
+        specs.append(spec)
 
-        else:
-
-            CAGRLightI=(CBLgVal/CBL11)**(1/float(Year-2011))
-            CAGRHeavyI=(CBHvVal/CBH11)**(1/float(Year-2011))
-            RatioL=(CBLgVal/CAGRLightI**(Year-2030)*((1+CascadeGrowth1/100)/(CAGRLightI))**(2030-2011)*(1+CascadeGrowth2/100)**(Year-2030))/CBLgVal
-            RatioH=(CBHvVal/CAGRHeavyI**(Year-2030)*((1+CascadeGrowth1/100)/(CAGRHeavyI))**(2030-2011)*(1+CascadeGrowth2/100)**(Year-2030))/CBHvVal
-
-
-
-        MatrixList=["mf1001","mf1002", "mf1003", "mf1004", "mf1005", "mf1006"]
-
-        for i in range(len(MatrixList)):
-            if i<3:
-                CrossBorderSpec["expression"] = MatrixList[i]+"*"+str(RatioL)
-            else:
-                CrossBorderSpec["expression"] = MatrixList[i]+"*"+str(RatioH)
-            CrossBorderSpec["result"]=MatrixList[i]
-            util.compute_matrix(CrossBorderSpec)
-
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Trip Generation")
-    def TripGeneration(self,Year, Sensitivity, ExtGrowth1, ExtGrowth2):
+    def TripGeneration(self, Year):
         util = _m.Modeller().tool("translink.emme.util")
         # Inputs: Regression Functions and directional factors
         # Outputs: 24 hours trip generation - mo4,mo6,md404,md406 (Light From, Heavy From, Light To, Heavy To)
-
-        TripGenSpec=self.spec_as_dict
 
         ## Adjustments
 
@@ -207,47 +165,34 @@ class ExternalTruckModel(_m.Tool()):
 
         LightTruckSum=EastLightTrucks+0.35*WestTrucks+NorthLightTrucks
         HeavyTruckSum=EastHeavyTrucks+0.65*WestTrucks+NorthHeavyTrucks
-        ## Determine growth based on sensitivity inputs
-        if Sensitivity=="N":
-            RatioL=1
-            RatioH=1
 
-        else:
-            CAGRLightI=(LightTruckSum/ExL11)**(1/float(Year-2011))
-            CAGRHeavyI=(HeavyTruckSum/ExH11)**(1/float(Year-2011))
-            RatioL=(LightTruckSum/CAGRLightI**(Year-2030)*((1+ExtGrowth1/100)/(CAGRLightI))**(2030-2011)*(1+ExtGrowth2/100)**(Year-2030))/LightTruckSum
-            RatioH=(HeavyTruckSum/CAGRHeavyI**(Year-2030)*((1+ExtGrowth1/100)/(CAGRHeavyI))**(2030-2011)*(1+ExtGrowth2/100)**(Year-2030))/HeavyTruckSum
-
-
-        HeavyTrucksFrom=[RatioH*EastHeavyTrucks*(IB_Split[0])*(1-Hw1_Split[0])*Wkd_Factor[0],
-                         RatioH*EastHeavyTrucks*(IB_Split[0])*(Hw1_Split[0])*Wkd_Factor[0],
-                           RatioH*WestTrucks*(IB_Split[2])*TsawassenSplit*Wkd_Factor[2]*(1-TruckConFact),
-                           RatioH*WestTrucks*(IB_Split[2])*(1-TsawassenSplit)*Wkd_Factor[2]*(1-TruckConFact),
-                           RatioH*NorthHeavyTrucks*Wkd_Factor[3]
+        HeavyTrucksFrom=[EastHeavyTrucks*(IB_Split[0])*(1-Hw1_Split[0])*Wkd_Factor[0],
+                         EastHeavyTrucks*(IB_Split[0])*(Hw1_Split[0])*Wkd_Factor[0],
+                         WestTrucks*(IB_Split[2])*TsawassenSplit*Wkd_Factor[2]*(1-TruckConFact),
+                         WestTrucks*(IB_Split[2])*(1-TsawassenSplit)*Wkd_Factor[2]*(1-TruckConFact),
+                         NorthHeavyTrucks*Wkd_Factor[3]
                            ]
 
-        HeavyTrucksTo=  [RatioH*EastHeavyTrucks*(1-IB_Split[0])*(1-Hw1_Split[0])*Wkd_Factor[0],
-                           RatioH*EastHeavyTrucks*(1-IB_Split[0])*(Hw1_Split[0])*Wkd_Factor[0],
-                           RatioH*WestTrucks*(1-IB_Split[2])*TsawassenSplit*Wkd_Factor[2]*(1-TruckConFact),
-                           RatioH*WestTrucks*(1-IB_Split[2])*(1-TsawassenSplit)*Wkd_Factor[2]*(1-TruckConFact),
-                           RatioH*NorthHeavyTrucks*Wkd_Factor[3]
+        HeavyTrucksTo=  [EastHeavyTrucks*(1-IB_Split[0])*(1-Hw1_Split[0])*Wkd_Factor[0],
+                         EastHeavyTrucks*(1-IB_Split[0])*(Hw1_Split[0])*Wkd_Factor[0],
+                         WestTrucks*(1-IB_Split[2])*TsawassenSplit*Wkd_Factor[2]*(1-TruckConFact),
+                         WestTrucks*(1-IB_Split[2])*(1-TsawassenSplit)*Wkd_Factor[2]*(1-TruckConFact),
+                         NorthHeavyTrucks*Wkd_Factor[3]
                            ]
 
-        LightTrucksFrom=[RatioL*EastLightTrucks*(IB_Split[1])*(1-Hw1_Split[1])*Wkd_Factor[1],
-                          RatioL*EastLightTrucks*(IB_Split[1])*(Hw1_Split[1])*Wkd_Factor[1],
-                           RatioL*WestTrucks*(IB_Split[2])*TsawassenSplit*Wkd_Factor[2]*(TruckConFact),
-                           RatioL*WestTrucks*(IB_Split[2])*(1-TsawassenSplit)*Wkd_Factor[2]*(TruckConFact),
-                           RatioL*NorthLightTrucks*Wkd_Factor[4]]
+        LightTrucksFrom=[EastLightTrucks*(IB_Split[1])*(1-Hw1_Split[1])*Wkd_Factor[1],
+                         EastLightTrucks*(IB_Split[1])*(Hw1_Split[1])*Wkd_Factor[1],
+                         WestTrucks*(IB_Split[2])*TsawassenSplit*Wkd_Factor[2]*(TruckConFact),
+                         WestTrucks*(IB_Split[2])*(1-TsawassenSplit)*Wkd_Factor[2]*(TruckConFact),
+                         NorthLightTrucks*Wkd_Factor[4]]
 
 
-        LightTrucksTo= [RatioL*EastLightTrucks*(1-IB_Split[1])*(1-Hw1_Split[1])*Wkd_Factor[1],
-                           RatioL*EastLightTrucks*(1-IB_Split[1])*(Hw1_Split[1])*Wkd_Factor[1],
-                           RatioL*WestTrucks*(1-IB_Split[2])*TsawassenSplit*Wkd_Factor[2]*(TruckConFact),
-                           RatioL*WestTrucks*(1-IB_Split[2])*(1-TsawassenSplit)*Wkd_Factor[2]*(TruckConFact),
-                           RatioL*NorthLightTrucks*Wkd_Factor[4]
+        LightTrucksTo= [EastLightTrucks*(1-IB_Split[1])*(1-Hw1_Split[1])*Wkd_Factor[1],
+                        EastLightTrucks*(1-IB_Split[1])*(Hw1_Split[1])*Wkd_Factor[1],
+                        WestTrucks*(1-IB_Split[2])*TsawassenSplit*Wkd_Factor[2]*(TruckConFact),
+                        WestTrucks*(1-IB_Split[2])*(1-TsawassenSplit)*Wkd_Factor[2]*(TruckConFact),
+                        NorthLightTrucks*Wkd_Factor[4]
                            ]
-
-
 
         matrixlist=["mo1001","mo1002","md201","md202"]
 
@@ -255,59 +200,44 @@ class ExternalTruckModel(_m.Tool()):
 
         ExtZoneList=[1,2,8,10,11] #[1: Highway 7, 2: Highway 2, 8: Tsawwassen, 10: HoreshoeBay, 11: Highway 99]
 
-
-        for i in range (0, len(matrixlist)) :
+        specs = []
+        for i in range (0, len(matrixlist)):
             for j in range(0, len(ExtZoneList)):
-                TripGenSpec["expression"] = str(TruckList[i][j])
-                if i<2:
-                    TripGenSpec["constraint"]["by_zone"]["origins"] = str(ExtZoneList[j])
-                    TripGenSpec["constraint"]["by_zone"]["destinations"] = None
+                spec = util.matrix_spec(matrixlist[i], str(TruckList[i][j]))
+                if i < 2:
+                    spec["constraint"]["by_zone"] = {"origins": str(ExtZoneList[j]), "destinations": None}
                 else:
-                    TripGenSpec["constraint"]["by_zone"]["origins"] = None
-                    TripGenSpec["constraint"]["by_zone"]["destinations"] = str(ExtZoneList[j])
-                TripGenSpec["result"] = matrixlist[i]
-                util.compute_matrix(TripGenSpec)
-        self.ResetSpec(TripGenSpec)
+                    spec["constraint"]["by_zone"] = {"origins": None, "destinations": str(ExtZoneList[j])}
+                specs.append(spec)
+        util.compute_matrix(specs)
 
-
-        self.AdjustInterCrossBorder("mf1001","mo1001", "md201")
-        self.AdjustInterCrossBorder("mf1004","mo1002", "md202")
+        self.AdjustInterCrossBorder("mf1001", "mo1001", "md201")
+        self.AdjustInterCrossBorder("mf1004", "mo1002", "md202")
 
     @_m.logbook_trace("Adjust Inter Regional mos and mds with Cross-Border mos and mds")
     def AdjustInterCrossBorder(self, matrix1, matrix2, matrix3):
         util = _m.Modeller().tool("translink.emme.util")
         #   Adjusts Inter-regional mo and md totals by subtracting Cross-border mo/mds with inter-regional zone end
 
-        AdjustSpec=self.spec_as_dict
-        ResultList=["mo1003","md203"]
+        specs = []
 
-        AdjustSpec["expression"]= matrix1
+        spec = util.matrix_spec("mo1003", matrix1)
+        spec["constraint"]["by_zone"] = {"origins": "1;2;8;10;11", "destinations": "*"}
+        spec["aggregation"] = {"origins": None, "destinations": "+"}
+        specs.append(spec)
 
-        for i in range (2):
-            if i==0:
-                AdjustSpec["constraint"]["by_zone"]["origins"] = "1;2;8;10;11"
-                AdjustSpec["constraint"]["by_zone"]["destinations"] = "*"
-                AdjustSpec["aggregation"]["origins"] = None
-                AdjustSpec["aggregation"]["destinations"] = "+"
-            if i==1:
-                AdjustSpec["constraint"]["by_zone"]["origins"] = "*"
-                AdjustSpec["constraint"]["by_zone"]["destinations"] = "1;2;8;10;11"
-                AdjustSpec["aggregation"]["origins"] = "+"
-                AdjustSpec["aggregation"]["destinations"] = None
+        spec = util.matrix_spec("md203", matrix1)
+        spec["constraint"]["by_zone"] = {"origins": "*", "destinations": "1;2;8;10;11"}
+        spec["aggregation"] = {"origins": "+", "destinations": None}
+        specs.append(spec)
 
+        spec = util.matrix_spec(matrix2, "((%s-mo1003).max.0)" % matrix2)
+        specs.append(spec)
 
-            AdjustSpec["result"]=ResultList[i]
-            util.compute_matrix(AdjustSpec)
+        spec = util.matrix_spec(matrix3, "((%s-md203).max.0)" % matrix3)
+        specs.append(spec)
 
-        self.ResetSpec(AdjustSpec)
-
-        AdjustSpec["expression"]= "(("+matrix2+"-"+ResultList[0]+").max.0)"
-        AdjustSpec["result"]=matrix2
-        util.compute_matrix(AdjustSpec)
-
-        AdjustSpec["expression"]= "(("+matrix3+"-"+ResultList[1]+").max.0)"
-        AdjustSpec["result"]=matrix3
-        util.compute_matrix(AdjustSpec)
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Trip Distribution")
     def TripDistribution(self):
@@ -316,15 +246,15 @@ class ExternalTruckModel(_m.Tool()):
         # Inputs: mo4, mo6, md404, md406, mf182 (O-D Survey Light Trucks Distribution), mf183 (O-D Survey Heavy Truck Distribution)
         # Outputs: mf184, mf185 (24 hour Light Truck O-D, 24 hour Heavy Truck O-D)
 
-        TripDistSpec=self.spec_as_dict
+        specs = []
 
-        ResultList=["mf1010","mf1011"]
-        ExpressionList=["mo1001*mf1008+md201*mf1008","mo1002*mf1009+md202*mf1009"]
+        spec = util.matrix_spec("mf1010", "mo1001*mf1008+md201*mf1008")
+        specs.append(spec)
 
-        for i in range (2):
-            TripDistSpec["expression"] = ExpressionList[i]
-            TripDistSpec["result"] = ResultList[i]
-            util.compute_matrix(TripDistSpec)
+        spec = util.matrix_spec("mf1011", "mo1002*mf1009+md202*mf1009")
+        specs.append(spec)
+
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Time Slicing")
     def TimeSlicing(self):
@@ -332,8 +262,6 @@ class ExternalTruckModel(_m.Tool()):
         ## Time Slice 24 hour demands to AM and MD peak hour volumes
         # Inputs: mf184, mf185, Time Slice Factors from Screenline volumes
         # Outputs: Light AM, Light MD, Heavy AM, Heavy MD - mf186, mf188, mf187, mf189
-
-        TimeSliceSpec=self.spec_as_dict
 
 # IB                 Light Trucks AM            Light Trucks MD               Heavy Trucks AM         Heavy Trucks MD
         FactorIB=[[0.05868,0.04086,0.05086],[0.05868,0.09194,0.10426],[0.03811,0.09500,0.02912],[0.07470,0.09866,0.11649]]
@@ -348,31 +276,20 @@ class ExternalTruckModel(_m.Tool()):
         Matrix_List = ["mf1012","mf1014","mf1013","mf1015"]
         TripDistList= ["mf1010", "mf1011"]
 
-
         for i in range (len(TripDistList)) :
             for j in range (int((len(FactorIB)/2))):
                 for k in range (len(FactorIB[j])):
-                    TimeSliceSpec["expression"] = TripDistList[i]+"*"+str(FactorIB[2*i+j][k])
+                    spec = util.matrix_spec("", TripDistList[i]+"*"+str(FactorIB[2*i+j][k]))
                     for l in range (0, len(ConstraintList[k])):
-                        TimeSliceSpec["constraint"]["by_zone"]["origins"] = str(ConstraintList[k][l])
-                        TimeSliceSpec["constraint"]["by_zone"]["destinations"] = "*"
-                        TimeSliceSpec["result"] = Matrix_List[2*i+j]
-                        util.compute_matrix(TimeSliceSpec)
-
-        TimeSliceSpec["constraint"]["by_zone"]["origins"] = "*"
+                        spec["result"] = Matrix_List[2*i+j]
+                        spec["constraint"]["by_zone"] = {"origins": str(ConstraintList[k][l]), "destinations": "*"}
+                        util.compute_matrix(spec)
 
         for i in range (len(TripDistList)) :
             for j in range (int((len(FactorIB)/2))):
                 for k in range (len(FactorOB[j])):
-                    TimeSliceSpec["expression"] = str(TripDistList[i])+"*"+str(FactorOB[2*i+j][k])
+                    spec = util.matrix_spec("", str(TripDistList[i])+"*"+str(FactorOB[2*i+j][k]))
                     for l in range (0, len(ConstraintList[k])):
-                        TimeSliceSpec["constraint"]["by_zone"]["destinations"] = str(ConstraintList[k][l])
-                        TimeSliceSpec["result"] = Matrix_List[2*i+j]
-                        util.compute_matrix(TimeSliceSpec)
-
-    def ResetSpec (self, SpecItems):
-
-        SpecItems["constraint"]["by_zone"]["origins"] = None
-        SpecItems["constraint"]["by_zone"]["destinations"] = None
-        SpecItems["aggregation"]["origins"] = None
-        SpecItems["aggregation"]["destinations"] = None
+                        spec["result"] = Matrix_List[2*i+j]
+                        spec["constraint"]["by_zone"] = {"origins": "*", "destinations": str(ConstraintList[k][l])}
+                        util.compute_matrix(spec)

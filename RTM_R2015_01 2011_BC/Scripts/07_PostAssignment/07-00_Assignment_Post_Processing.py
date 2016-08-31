@@ -31,10 +31,8 @@ class PostAssignment(_m.Tool()):
             "normalized_gap": 0.01
         }
         try:
-            eb = _m.Modeller().emmebank
-            self.__call__(eb, stopping_criteria)
-            run_msg = "Tool completed"
-            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
+            self.__call__(_m.Modeller().emmebank, stopping_criteria)
+            self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 

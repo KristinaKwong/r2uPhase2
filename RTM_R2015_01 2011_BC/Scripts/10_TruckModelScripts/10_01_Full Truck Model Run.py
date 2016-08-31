@@ -5,25 +5,10 @@
 ##--Purpose: Run Full truck Model
 ##---------------------------------------------------------------------
 import inro.modeller as _m
-import os
 import traceback as _traceback
 
 class FullTruckModel(_m.Tool()):
-
-    Year= _m.Attribute(str)
-    Sensitivity=_m.Attribute(str)
-    ExtGrowth1=_m.Attribute(float)
-    ExtGrowth2=_m.Attribute(float)
-    AMScenario=_m.Attribute(_m.InstanceType)
-    MDScenario=_m.Attribute(_m.InstanceType)
-    CascadeGrowth1=_m.Attribute(float)
-    CascadeGrowth2=_m.Attribute(float)
-    RegionalGrowth1=_m.Attribute(float)
-    RegionalGrowth2=_m.Attribute(float)
-    AsiaPacificGrowth=_m.Attribute(str)
-
-
-
+    Year = _m.Attribute(int)
 
     tool_run_msg = _m.Attribute(unicode)
 
@@ -33,70 +18,8 @@ class FullTruckModel(_m.Tool()):
         pb.description = "Run Full Truck Model"
         pb.branding_text = "TransLink"
 
-        pb.add_select_scenario(tool_attribute_name="AMScenario",title="Select AM Scenario")
-
-        pb.add_select_scenario(tool_attribute_name="MDScenario",title="Select MD Scenario")
-
-        pb.add_select(tool_attribute_name="Year",keyvalues=[["1","2011"],["2","2030"],["3","2045"]],
+        pb.add_select(tool_attribute_name="Year",keyvalues=[[2011,"2011"],[2030,"2030"],[2045,"2045"]],
                         title="Choose Analysis Year (2011, 2030 or 2045)")
-
-        pb.add_select(tool_attribute_name="Sensitivity",keyvalues=[["N","No"],["Y","Yes"]],
-                        title="Choose whether to modify truck growth rates ")
-
-        with pb.section("Sensitivity options-Future Runs:"):
-            pb.add_text_box(tool_attribute_name="ExtGrowth1",
-                            size="3",
-                            title="Enter External Sector % Growth Assumption 2011-2030 ")
-
-            pb.add_text_box(tool_attribute_name="ExtGrowth2",
-                            size="3",
-                            title="Enter External Sector % Growth Assumption 2030-2045")
-
-            pb.add_text_box(tool_attribute_name="CascadeGrowth1",
-                            size="3",
-                            title="Enter Cascade Cross-Border % Growth Assumption 2011-2030")
-
-            pb.add_text_box(tool_attribute_name="CascadeGrowth2",
-                            size="3",
-                            title="Enter Cascade Cross-Border % Growth Assumption 2030-2045")
-
-            pb.add_text_box(tool_attribute_name="RegionalGrowth1",
-                            size="3",
-                            title="Enter Regional Sector Growth % Assumption 2011-2030")
-
-            pb.add_text_box(tool_attribute_name="RegionalGrowth2",
-                            size="3",
-                            title="Enter Regional Sector Growth % Assumption 2030-2045")
-
-            pb.add_select(tool_attribute_name="AsiaPacificGrowth",
-                            keyvalues=[["B","Base"],["L","Low"],["M","Med"],["H","High"]],
-                            title="Enter Asia Pacific Growth Assumption")
-        pb.add_html("""
-            <script>
-                $(document).ready( function ()
-                {
-                    // indent tool section items
-                    $(".t_tool_section")
-                        .children(".t_element")
-                        .css("padding-left", "70px");
-
-                    $("#Sensitivity").bind("change", function ()
-                    {
-                        $(this).commit();
-                        if ($(this).val() == "N")
-                            var disable = true;
-                        else
-                            var disable = false;
-                        $("#ExtGrowth1").prop("disabled", disable);
-                        $("#ExtGrowth2").prop("disabled", disable);
-                        $("#CascadeGrowth1").prop("disabled", disable);
-                        $("#CascadeGrowth2").prop("disabled", disable);
-                        $("#RegionalGrowth1").prop("disabled", disable);
-                        $("#RegionalGrowth2").prop("disabled", disable);
-                        $("#AsiaPacificGrowth").prop("disabled", disable);
-                    }).trigger("change") ;
-                });
-            </script>""")
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
@@ -104,77 +27,63 @@ class FullTruckModel(_m.Tool()):
         return pb.render()
 
     def run(self):
-
-
         try:
-            if self.Year=="1":
-                AnalysisYear=2011
-                self.Sensitivity="N"
-                self.ExtGrowth1=""
-                self.ExtGrowth2=""
-                self.CascadeGrowth1=""
-                self.CascadeGrowth2=""
-                self.RegionalGrowth1=""
-                self.RegionalGrowth2=""
-                self.AsiaPacificGrowth="B"
-                self.__call__(AnalysisYear,self.Sensitivity,self.AMScenario,self.MDScenario,0,0,0,0,0,0,"")
-
-            if self.Year=="2":
-                AnalysisYear=2030
-                if self.Sensitivity=="N":
-                    self.ExtGrowth1=""
-                    self.ExtGrowth2=""
-                    self.CascadeGrowth1=""
-                    self.CascadeGrowth2=""
-                    self.RegionalGrowth1=""
-                    self.RegionalGrowth2=""
-                    self.AsiaPacificGrowth="B"
-
-
-                if self.Sensitivity=="Y":
-                    self.ExtGrowth2=""
-                    self.CascadeGrowth2=""
-                    self.RegionalGrowth2=""
-
-                self.__call__(AnalysisYear, self.Sensitivity,self.AMScenario,self.MDScenario,self.ExtGrowth1, 0
-                , self.CascadeGrowth1, 0, self.RegionalGrowth1, 0, self.AsiaPacificGrowth)
-
-            if self.Year=="3":
-                AnalysisYear=2045
-                if self.Sensitivity=="N":
-                    self.ExtGrowth1=""
-                    self.ExtGrowth2=""
-                    self.CascadeGrowth1=""
-                    self.CascadeGrowth2=""
-                    self.RegionalGrowth1=""
-                    self.RegionalGrowth2=""
-                    self.AsiaPacificGrowth="B"
-
-
-
-                self.__call__(AnalysisYear, self.Sensitivity,self.AMScenario,self.MDScenario,self.ExtGrowth1, self.ExtGrowth2, self.CascadeGrowth1, self.CascadeGrowth2,
-                                self.RegionalGrowth1, self.RegionalGrowth2, self.AsiaPacificGrowth)
-
-
-            run_msg = "Tool completed"
-            self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
-
-
+            self.__call__(_m.Modeller().emmebank, self.Year)
+            self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
-
-
-                self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
-
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Full Truck Model Run")
-    def __call__(self, Year, Sensitivity, AMScenario,MDScenario, ExtGrowth1, ExtGrowth2, CascadeGrowth1, CascadeGrowth2, RegionalGrowth1, RegionalGrowth2, AsiaPacificGrowth):
-        eb = _m.Modeller().emmebank
-
+    def __call__(self, eb, Year):
         ExternalModel=_m.Modeller().tool("translink.emme.stage5.step10.externaltruck")
-        ExternalModel(Year,Sensitivity,ExtGrowth1,ExtGrowth2, CascadeGrowth1, CascadeGrowth2)
+        ExternalModel(eb, Year)
+
         AsiaPacificModel=_m.Modeller().tool("translink.emme.stage5.step10.asiapacifictruck")
-        AsiaPacificModel(Year)
+        AsiaPacificModel(eb, Year)
+
         RegionalModel=_m.Modeller().tool("translink.emme.stage5.step10.regionaltruck")
-        RegionalModel(Year,Sensitivity,RegionalGrowth1, RegionalGrowth2)
-        TruckAssign=_m.Modeller().tool("translink.emme.stage5.step10.truckassign")
-        TruckAssign(eb, AMScenario, MDScenario)
+        RegionalModel(eb)
+
+        self.aggregate_demand_pce(eb)
+
+    def aggregate_demand_pce(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
+
+        util.initmat(eb, "mf1040", "CBLgAp", "CB LgTruck AM PCE", 0)
+        util.initmat(eb, "mf1041", "CBHvAp", "CB HvTruck AM PCE", 0)
+        util.initmat(eb, "mf1042", "IRLgAp", "IR LgTruck AM PCE", 0)
+        util.initmat(eb, "mf1043", "IRHvAp", "IR HvTruck AM PCE", 0)
+        util.initmat(eb, "mf1044", "APHvAp", "AP HvTruck AM PCE", 0)
+        util.initmat(eb, "mf1045", "RGLgAp", "RG LgTruck AM PCE", 0)
+        util.initmat(eb, "mf1046", "RGHvAp", "RG HvTruck AM PCE", 0)
+        util.initmat(eb, "mf1047", "CBLgMp", "CB LgTruck MD PCE", 0)
+        util.initmat(eb, "mf1048", "CBHvMp", "CB HvTruck MD PCE", 0)
+        util.initmat(eb, "mf1049", "IRLgMp", "IR LgTruck MD PCE", 0)
+        util.initmat(eb, "mf1050", "IRHvMp", "IR HvTruck MD PCE", 0)
+        util.initmat(eb, "mf1051", "APHvMp", "AP HvTruck MD PCE", 0)
+        util.initmat(eb, "mf1052", "RGLgMp", "RG LgTruck MD PCE", 0)
+        util.initmat(eb, "mf1053", "RGHvMp", "RG HvTruck MD PCE", 0)
+
+        AMList1=["mf1002","mf1012","mf1035","mf1005","mf1013","mf1021","mf1037"]
+
+        AMList2=["mf1040","mf1042","mf1045","mf1041","mf1043","mf1044","mf1046"]
+
+        MDList1=["mf1003","mf1014","mf1036","mf1006","mf1015","mf1022","mf1038"]
+
+        MDList2=["mf1047","mf1049","mf1052","mf1048","mf1050","mf1051","mf1053"]
+
+        Ratios=[1.5,1.5,1.5,2.5,2.5,2.5,2.5]
+
+        specs = []
+        for i in range (len(AMList1)):
+            specs.append(util.matrix_spec(AMList2[i], AMList1[i] + "*" + str(Ratios[i])))
+            specs.append(util.matrix_spec(MDList2[i], MDList1[i] + "*" + str(Ratios[i])))
+
+        util.compute_matrix(specs)
+
+        specs = []
+        specs.append(util.matrix_spec("mf980", "mf1002 + mf1012 + mf1035"))
+        specs.append(util.matrix_spec("mf981", "mf1005 + mf1013 + mf1021 + mf1037"))
+        specs.append(util.matrix_spec("mf982", "mf1003 + mf1014 + mf1036"))
+        specs.append(util.matrix_spec("mf983", "mf1006 + mf1015 + mf1022 + mf1038"))
+        util.compute_matrix(specs)
