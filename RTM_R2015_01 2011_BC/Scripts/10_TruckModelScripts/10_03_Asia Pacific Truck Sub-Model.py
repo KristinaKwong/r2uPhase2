@@ -26,10 +26,13 @@ class AsiaPacificTruckModel(_m.Tool()):
         util.delmat(eb, "mf1017")
         util.delmat(eb, "mf1018")
         util.delmat(eb, "mf1019")
-        util.delmat(eb, "md205")
         process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
         root_directory = util.get_input_path(eb)
         matrix_file = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"AsiaPacificv1.txt")
+        process(transaction_file=matrix_file, throw_on_error=True)
+
+        util.delmat(eb, "md205")
+        matrix_file = os.path.join(root_directory, "TruckBatchFiles", "PMVActivity.txt")
         process(transaction_file=matrix_file, throw_on_error=True)
 
         util.initmat(eb, "ms153", "NonRet", "NonRetail Employment", 0)
