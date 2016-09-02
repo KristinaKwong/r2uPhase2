@@ -83,8 +83,8 @@ class FullModelRun(_m.Tool()):
                  self.land_use_file2, self.max_distribution_iterations,
                  self.max_assignment_iterations)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
-        except Exception, error:
-            self.tool_run_msg = _m.PageBuilder.format_exception(error, _traceback.format_exc(error))
+        except Exception, e:
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Full Model Run")
     def __call__(self, global_iterations, master_scen, land_use_file1, land_use_file2,

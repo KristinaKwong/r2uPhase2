@@ -31,10 +31,8 @@ class SetTolls(_m.Tool()):
             # TODO: add toll_file and scenario selectors to page and run method
             self(self.toll_file)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
-        except Exception, error:
-            self.tool_run_msg = _m.PageBuilder.format_exception(
-                error, _traceback.format_exc(error))
-            raise
+        except Exception, e:
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Setting toll values", save_arguments=True)
     def __call__(self, toll_file, scenarioam, scenariomd, scenariopm):

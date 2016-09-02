@@ -1,8 +1,14 @@
+##---------------------------------------------------------------------
+##--TransLink Phase 2.2 Regional Transportation Model
+##--
+##--Path: translink.emme.exportnet
+##--Purpose: export base networks as text files in BaseNetworks folder
+##---------------------------------------------------------------------
 import inro.modeller as _m
-import inro.emme as _emme
+import traceback as _traceback
 import os
 
-class InitEmmebank(_m.Tool()):
+class ExportNetwork(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
@@ -17,7 +23,11 @@ class InitEmmebank(_m.Tool()):
         return pb.render()
 
     def run(self):
-        self.__call__()
+        try:
+            self.__call__()
+            self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
+        except Exception, e:
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     def __call__(self):
         self.export(1000)

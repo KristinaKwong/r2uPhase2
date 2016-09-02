@@ -26,12 +26,10 @@ class InputSettings(_m.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            self(self.base_scenario)
+            self.__call__(self.base_scenario)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
-        except Exception, error:
-            self.tool_run_msg = _m.PageBuilder.format_exception(
-                error, _traceback.format_exc(error))
-            raise
+        except Exception, e:
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("00_00 Create Scenarios")
     def __call__(self, base_scenario):

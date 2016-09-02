@@ -40,10 +40,8 @@ class ParkAndRide(_m.Tool()):
         try:
             self(self.scenario)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
-        except Exception, error:
-            self.tool_run_msg = _m.PageBuilder.format_exception(
-                error, _traceback.format_exc(error))
-            raise
+        except Exception, e:
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Calculate P/R impedance and demand for bus and rail", save_arguments=True)
     def __call__(self, scenario):
