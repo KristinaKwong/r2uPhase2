@@ -6,6 +6,7 @@
 ##---------------------------------------------------------------------
 import inro.modeller as _m
 import inro.emme as _emme
+import traceback as _traceback
 import os
 import shutil
 
