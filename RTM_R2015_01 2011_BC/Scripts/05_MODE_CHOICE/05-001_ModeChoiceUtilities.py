@@ -49,6 +49,7 @@ def build_spec(expression=None, result=None, by_value=None, origins=None, destin
 def calculate_demand(scenario, demand_start, probability_start, result_start, num_segments=9):
     util = _m.Modeller().tool("translink.emme.util")
     spec_list = []
+    # TODO: Update hardcoded 9 to number of passed segments
     for i in range(num_segments):
         for k in range(7):
             expression1 = "mf" + str(demand_start + i) + "*" + "mf" + str(probability_start + i + k * 9)
