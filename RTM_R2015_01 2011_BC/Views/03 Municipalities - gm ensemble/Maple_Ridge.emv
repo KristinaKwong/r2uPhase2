@@ -1,6 +1,4 @@
 BE1EDF10-2EAD-462F-8D9D-01D816FE2C10 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
-# Emme View file generated on Wed Nov 5 15:31:19 2014
-# File: //vanco-ifs-01/Project/projects/202994TransLink Modelling Support/Work Program/NG Model Validation/030C NG TL MODEL/030C NG TL MODEL/Views/Municipalities/Maple_Ridge.emv
 #
 # String Name: user definable name of configurable object (tr)
 Name = Maple_Ridge
@@ -15,13 +13,13 @@ Delete : (0x80)
 # String FileType: File type (ro,nosave)
 FileType : (0x80)
 # Float XMin: X-coordinate of lower left corner of the view
-XMin = 37.075138092041
+XMin = 512.625
 # Float YMin: Y-coordinate of lower left corner of the view
-YMin = 19.3158664703369
+YMin = 5445.366
 # Float XMax: X-coordinate of upper right corner of the view
-XMax = 80.5084609985352
+XMax = 556.058
 # Float YMax: Y-coordinate of upper right corner of the view
-YMax = 41.5797424316406
+YMax = 5467.630
 # Box ViewBox: box defining the view (nosave)
 ViewBox : (0x80)
 

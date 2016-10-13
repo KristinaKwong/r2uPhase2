@@ -1,6 +1,4 @@
 BE1EDF10-2EAD-462F-8D9D-01D816FE2C10 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
-# Emme View file generated on Wed Nov 5 15:32:52 2014
-# File: //vanco-ifs-01/Project/projects/202994TransLink Modelling Support/Work Program/NG Model Validation/030C NG TL MODEL/030C NG TL MODEL/Views/Municipalities/Abbotsford.emv
 #
 # String Name: user definable name of configurable object (tr)
 Name = Abbotsford
@@ -15,13 +13,13 @@ Delete : (0x80)
 # String FileType: File type (ro,nosave)
 FileType : (0x80)
 # Float XMin: X-coordinate of lower left corner of the view
-XMin = 60.2882537841797
+XMin = 535.838
 # Float YMin: Y-coordinate of lower left corner of the view
-YMin = 0.620422601699829
+YMin = 5426.670
 # Float XMax: X-coordinate of upper right corner of the view
-XMax = 126.151405334473
+XMax = 601.701
 # Float YMax: Y-coordinate of upper right corner of the view
-YMax = 34.3818092346191
+YMax = 5460.432
 # Box ViewBox: box defining the view (nosave)
 ViewBox : (0x80)
 
