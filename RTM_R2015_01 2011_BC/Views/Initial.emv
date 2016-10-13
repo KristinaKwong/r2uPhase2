@@ -1,0 +1,27 @@
+BE1EDF10-2EAD-462F-8D9D-01D816FE2C10 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
+#
+# String Name: user definable name of configurable object (tr)
+Name = Initial View
+# String IncomingSyncs: regular expression to filter incoming sync signals
+IncomingSyncs = .
+# String OutgoingSyncs: regular expression to filter outgoing sync signals
+OutgoingSyncs = .
+# String File: Full file path (ro,subst,nosave)
+File : (0x80)
+# Click Delete: Delete file (nosave)
+Delete : (0x80)
+# String FileType: File type (ro,nosave)
+FileType : (0x80)
+# Click SetAsInitial: Set this view as the initial view
+SetAsInitial : (0x1)
+# Float XMin: X-coordinate of lower left corner of the view
+XMin = 478.364990234375
+# Float YMin: Y-coordinate of lower left corner of the view
+YMin = 5428.6279296875
+# Float XMax: X-coordinate of upper right corner of the view
+XMax = 540.513000488281
+# Float YMax: Y-coordinate of upper right corner of the view
+YMax = 5473.7109375
+# Box ViewBox: box defining the view (nosave)
+ViewBox : (0x80)
+
