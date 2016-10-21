@@ -33,7 +33,7 @@ class AsiaPacificTruckModel(_m.Tool()):
 
         util.delmat(eb, "md205")
         matrix_file = os.path.join(root_directory, "TruckBatchFiles", "PMVActivity.txt")
-        process(transaction_file=matrix_file, throw_on_error=True)
+        util.read_csv_momd(eb, matrix_file)
 
         util.initmat(eb, "ms153", "NonRet", "NonRetail Employment", 0)
         util.initmat(eb, "mf1020", "APHv24", "AP HvTrucks Daily Trips", 0)

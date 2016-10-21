@@ -1,6 +1,4 @@
 BE1EDF10-2EAD-462F-8D9D-01D816FE2C10 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
-# Emme View file generated on Wed Nov 5 15:21:21 2014
-# File: //vanco-ifs-01/Project/projects/202994TransLink Modelling Support/Work Program/NG Model Validation/030C NG TL MODEL/030C NG TL MODEL/Views/Municipalities/University_Endowment_Land.emv
 #
 # String Name: user definable name of configurable object (tr)
 Name = University_Endowment_Land
@@ -15,13 +13,13 @@ Delete : (0x80)
 # String FileType: File type (ro,nosave)
 FileType : (0x80)
 # Float XMin: X-coordinate of lower left corner of the view
-XMin = 2.76043057441711
+XMin = 478.310
 # Float YMin: Y-coordinate of lower left corner of the view
-YMin = 26.3377799987793
+YMin = 5452.388
 # Float XMax: X-coordinate of upper right corner of the view
-XMax = 17.091100692749
+XMax = 492.641
 # Float YMax: Y-coordinate of upper right corner of the view
-YMax = 33.683666229248
+YMax = 5459.734
 # Box ViewBox: box defining the view (nosave)
 ViewBox : (0x80)
 

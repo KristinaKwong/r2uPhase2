@@ -1,6 +1,4 @@
 BE1EDF10-2EAD-462F-8D9D-01D816FE2C10 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
-# Emme View file generated on Wed Nov 5 16:09:07 2014
-# File: //vanco-ifs-01/Project/projects/202994TransLink Modelling Support/Work Program/NG Model Validation/030C NG TL MODEL/030C NG TL MODEL/Views/GY Ensemble/WestVancouver.emv
 #
 # String Name: user definable name of configurable object (tr)
 Name = WestVancouver
@@ -15,13 +13,13 @@ Delete : (0x80)
 # String FileType: File type (ro,nosave)
 FileType : (0x80)
 # Float XMin: X-coordinate of lower left corner of the view
-XMin = -8.31599044799805
+XMin = 467.234
 # Float YMin: Y-coordinate of lower left corner of the view
-YMin = 35.7194976806641
+YMin = 5461.769
 # Float XMax: X-coordinate of upper right corner of the view
-XMax = 30.8970699310303
+XMax = 506.447
 # Float YMax: Y-coordinate of upper right corner of the view
-YMax = 55.8200721740723
+YMax = 5481.870
 # Box ViewBox: box defining the view (nosave)
 ViewBox : (0x80)
 

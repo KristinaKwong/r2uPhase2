@@ -1,6 +1,4 @@
 BE1EDF10-2EAD-462F-8D9D-01D816FE2C10 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
-# Emme View file generated on Wed Nov 5 15:30:16 2014
-# File: //vanco-ifs-01/Project/projects/202994TransLink Modelling Support/Work Program/NG Model Validation/030C NG TL MODEL/030C NG TL MODEL/Views/Municipalities/Surrey.emv
 #
 # String Name: user definable name of configurable object (tr)
 Name = Surrey
@@ -15,13 +13,13 @@ Delete : (0x80)
 # String FileType: File type (ro,nosave)
 FileType : (0x80)
 # Float XMin: X-coordinate of lower left corner of the view
-XMin = 17.0779247283936
+XMin = 492.628
 # Float YMin: Y-coordinate of lower left corner of the view
-YMin = 0.70080041885376
+YMin = 5426.751
 # Float XMax: X-coordinate of upper right corner of the view
-XMax = 68.4475631713867
+XMax = 543.998
 # Float YMax: Y-coordinate of upper right corner of the view
-YMax = 27.0328273773193
+YMax = 5453.083
 # Box ViewBox: box defining the view (nosave)
 ViewBox : (0x80)
 

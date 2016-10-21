@@ -1,6 +1,4 @@
 BE1EDF10-2EAD-462F-8D9D-01D816FE2C10 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
-# Emme View file generated on Fri Nov 28 09:55:26 2014
-# File: C:/EMME TL RTM/2011/040 NG TL MODEL/Views/01 Regions/FVRD2.emv
 #
 # String Name: user definable name of configurable object (tr)
 Name = FVRD
@@ -15,13 +13,13 @@ Delete : (0x81)
 # String FileType: File type (ro,nosave)
 FileType : (0x80)
 # Float XMin: X-coordinate of lower left corner of the view
-XMin = 56.5884
+XMin = 532.138
 # Float YMin: Y-coordinate of lower left corner of the view
-YMin = -25.407
+YMin = 5400.643
 # Float XMax: X-coordinate of upper right corner of the view
-XMax = 168.096
+XMax = 643.646
 # Float YMax: Y-coordinate of upper right corner of the view
-YMax = 82.301
+YMax = 5508.351
 # Box ViewBox: box defining the view (nosave)
 ViewBox : (0x80)
 
