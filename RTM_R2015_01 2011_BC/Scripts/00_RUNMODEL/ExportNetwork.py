@@ -68,9 +68,9 @@ class ExportNetwork(_m.Tool()):
 
         data_path = os.path.join(proj_path, "BaseNetworks")
         att_trans = mod.tool("inro.emme.data.extra_attribute.export_extra_attributes")
-        attribute_list = ["@lanesam", "@vdfam",
-                          "@lanesmd", "@vdfmd",
-                          "@lanespm", "@vdfpm",
+        attribute_list = ["@lanesam", "@vdfam", "@tollam",
+                          "@lanesmd", "@vdfmd", "@tollmd",
+                          "@lanespm", "@vdfpm", "@tollpm",
                           "@tpfam", "@tpfmd", "@tpfpm",
                           "@hdwyam", "@hdwymd", "@hdwypm"]
         att_trans(extra_attributes = attribute_list,
