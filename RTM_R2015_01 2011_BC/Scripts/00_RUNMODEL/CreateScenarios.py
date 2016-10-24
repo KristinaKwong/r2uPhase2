@@ -45,7 +45,7 @@ class InputSettings(_m.Tool()):
                       overwrite=True)
         amscen = eb.scenario(am_scenid)
 
-        self.attribute_code(amscen, "@lanesam", "@vdfam", "@tpfam", "@hdwyam")
+        self.attribute_code(amscen, "@lanesam", "@vdfam", "@tpfam", "@hdwyam", "@tollam")
         copy_scenario(from_scenario=amscen,
                       scenario_id=am_scenid + 30,
                       scenario_title=amscen.title + ": Final Iteration ",
@@ -59,7 +59,7 @@ class InputSettings(_m.Tool()):
                       overwrite=True)
         mdscen = eb.scenario(md_scenid)
 
-        self.attribute_code(mdscen, "@lanesmd", "@vdfmd", "@tpfmd", "@hdwymd")
+        self.attribute_code(mdscen, "@lanesmd", "@vdfmd", "@tpfmd", "@hdwymd", "@tollmd")
         copy_scenario(from_scenario=mdscen,
                       scenario_id=md_scenid + 30,
                       scenario_title=mdscen.title + ": Final Iteration ",
@@ -73,13 +73,13 @@ class InputSettings(_m.Tool()):
                       overwrite=True)
         pmscen = eb.scenario(pm_scenid)
 
-        self.attribute_code(pmscen, "@lanespm", "@vdfpm", "@tpfpm", "@hdwypm")
+        self.attribute_code(pmscen, "@lanespm", "@vdfpm", "@tpfpm", "@hdwypm", "@tollpm")
         copy_scenario(from_scenario=pmscen,
                       scenario_id=pm_scenid + 30,
                       scenario_title=pmscen.title + ": Final Iteration ",
                       overwrite=True)
 
-    def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr):
+    def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr, toll_attr):
         net_calc = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
 
         lane_spec = {
@@ -136,3 +136,16 @@ class InputSettings(_m.Tool()):
         del_transit = _m.Modeller().tool("inro.emme.data.network.transit.delete_transit_lines")
         del_transit(selection=hdw_attr+"=0",
                     scenario=scen)
+
+        create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
+        create_attr("LINK", "@tolls", "Link Toll Value ($)", 0, False, scen)
+        toll_spec = {
+            "type": "NETWORK_CALCULATION",
+            "result": "@tolls",
+            "expression": toll_attr,
+            "aggregation": None,
+            "selections": {
+                "link": "all"
+            }
+        }
+        net_calc(toll_spec, scen, False)

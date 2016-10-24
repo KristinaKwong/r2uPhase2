@@ -5,7 +5,6 @@
 ##--Purpose: Run Assignment to generate time and distance skims for work and nonwork
 ##------------------------------------------------------------------------------
 import inro.modeller as _m
-import os
 import traceback as _traceback
 
 class AutoAssignment(_m.Tool()):
@@ -107,8 +106,8 @@ class AutoAssignment(_m.Tool()):
         cr_list = ["sov" + str(i) for i in range(1, 6)] + \
                   ["hov" + str(i) for i in range(1, 6)]
 
-        Link_Cost_List=["@hovoc", "@sovoc", "@lgvoc" , "@hgvoc" , "@tkpen", "@tolls"]
-        Link_Cost_Desc=["HOV auto op cost", "SOV auto op cost","Lg trk op cost", "Hv trk op cost", "Truck penalty", "Tolls"]
+        Link_Cost_List=["@hovoc", "@sovoc", "@lgvoc" , "@hgvoc" , "@tkpen"]
+        Link_Cost_Desc=["HOV auto op cost", "SOV auto op cost","Lg trk op cost", "Hv trk op cost", "Truck penalty"]
         Link_Vol_List= ["@whovl", "@wsovl", "@lgvol" , "@hgvol"]
         Link_Vol_Desc= ["HOV Vol","SOV Vol","Lg Vol", "Hv Vol"]
         Link_Turn_List=["@whovt", "@wsovt", "@lgvtn" , "@hvgtn"]
@@ -171,13 +170,6 @@ class AutoAssignment(_m.Tool()):
         # @hovoc: HOV gc;
         # @lgvoc: light truck gc;
         # @hgvoc: heavy truck gc
-
-        # Input Tolls from toll file
-        util = _m.Modeller().tool("translink.emme.util")
-        input_path = util.get_input_path(eb)
-        toll_file = os.path.join(input_path, "tollinput.csv")
-        set_tolls = _m.Modeller().tool("translink.emme.stage3.step6.tollset")
-        set_tolls(toll_file, am_scenario, md_scenario, pm_scenario)
 
         calc_extra_attribute = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         spec = {
