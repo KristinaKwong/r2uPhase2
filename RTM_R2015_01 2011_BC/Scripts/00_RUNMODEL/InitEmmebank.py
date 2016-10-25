@@ -29,7 +29,7 @@ class InitEmmebank(_m.Tool()):
         pb.add_text_box(tool_attribute_name="emme_title",
                         size=30,
                         title="Enter the Title for the new emmebank")
-                        
+
         pb.add_text_box(tool_attribute_name="horizon_year",
                         size=4,
                         title="Enter the year to initialize matrices for")
@@ -143,6 +143,9 @@ class InitEmmebank(_m.Tool()):
                     scenario = scen)
 
         create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
+        create_attr("NODE", "@farezone", "Fare Zones by Node/Stop", 0, False, scen)
+        create_attr("LINK", "@fareboundary", "Fare Zone Boundary for Transit (0,1)", 0, False, scen)
+        create_attr("LINK", "@wcefareboundary", "Fare Zone Boundaries for WCE (13,34,45)", 0, False, scen)
         create_attr("LINK", "@lanesam", "AM Number of Lanes", 0, False, scen)
         create_attr("LINK", "@lanesmd", "MD Number of Lanes", 0, False, scen)
         create_attr("LINK", "@lanespm", "PM Number of Lanes", 0, False, scen)
@@ -159,35 +162,14 @@ class InitEmmebank(_m.Tool()):
         create_attr("TRANSIT_LINE", "@hdwymd", "MD Transit Headway", 0, False, scen)
         create_attr("TRANSIT_LINE", "@hdwypm", "PM Transit Headway", 0, False, scen)
 
-        # Added extra attributes for transit assignment with capacity and crowding : SG July 19, 2016
-
-        create_attr('TRANSIT_LINE', '@seatcapacity', 'Seated Line Capacity for time period', 0, False, scen)
-        create_attr('TRANSIT_LINE', '@totcapacity', 'Total Line Capacity for time period', 0, False, scen)
-        create_attr('TRANSIT_LINE', '@dwtboard',  'Dwell Time Boarding Factor', 0, False, scen)
-        create_attr('TRANSIT_LINE', '@dwtalight', 'Dwell Time Alighting Factor', 0, False, scen)
-        create_attr('TRANSIT_LINE', '@ridership', 'Average Line Boardings', 0, False, scen)
-        create_attr('TRANSIT_SEGMENT', '@hfrac', 'Headway Fraction', 1, False, scen)
-        create_attr('TRANSIT_SEGMENT', '@hdwyfac', 'Effective Headway Multiplier',1, False, scen)
-        create_attr('TRANSIT_SEGMENT', '@hdwyeff',  'Effective Headway', 0, False, scen)
-        create_attr('TRANSIT_SEGMENT', '@ivttfac',  'IVTT Perception Factor',1, False, scen)
-        create_attr('TRANSIT_SEGMENT', '@ivttp_ratype0',  'IVTT Perception Factor for Rail-Type0',1, False, scen)
-        create_attr('TRANSIT_SEGMENT', '@crowdingfactor',  'Crowding Perception IVTT Factor', 0, False, scen)
-        create_attr('TRANSIT_SEGMENT', '@pseat', 'Number of Seated Passengers', 0, False, scen)
-        create_attr('TRANSIT_SEGMENT', '@pstand', 'Number of Standing Passengers', 0, False, scen)
-        create_attr('TRANSIT_SEGMENT', '@boardavg',  'Average Boardings', 0, False, scen)
-        create_attr('TRANSIT_SEGMENT', '@voltravg',  'Average Transit Segment Volume', 0, False, scen)
-        create_attr('TRANSIT_SEGMENT', '@alightavg', 'Average Alightings', 0, False, scen)
-        create_attr('TRANSIT_SEGMENT', '@result', 'Save temporary results', 0, False, scen)
-
-        # Added extra attributes for transit fare : SG Aug 12, 2016
-        #create_attr('LINK', '@fareboundary', 'Fare Zone Boundary for Bus/Skytrain/Seabus (0,1)', 0, False, scen)
-        #create_attr('LINK', '@wcefareboundary', 'Fare Zone Boundaries for WCE (13, 34, 45)', 0, False, scen)
-        #create_attr('NODE', '@farezone', 'Fare Zones by Node/Stop', 0, False, scen)
-        create_attr('TRANSIT_LINE', '@linefare', 'Line Fare (zone1) for bus/skytrain ($)', 0, False, scen)
-        create_attr('TRANSIT_LINE', '@xferlinefare', 'Transfer Line Fare for bus/skytrain ($)', 0, False, scen)
-        create_attr('TRANSIT_SEGMENT', '@fareincrement', 'Increment Zone Fare ($)', 0, False, scen)
-        create_attr('NODE', '@wcestopfare', 'WCE Boarding Fare by Stop ($)', 0, False, scen)
-        create_attr('NODE', '@wcexferfare', 'Xfer WCE Boarding Fare by Stop($)', 0, False, scen)
+        data_path = os.path.join(proj_path, "BaseNetworks", "extra_nodes_%d.txt" % scen_id)
+        node_attr = _m.Modeller().tool("inro.emme.data.network.import_attribute_values")
+        node_attr(file_path = data_path,
+                  field_separator = ' ',
+                  column_labels = "FROM_HEADER",
+                  revert_on_error = True,
+                  scenario = scen,
+                  merge_consecutive_separators = True)
 
         data_path = os.path.join(proj_path, "BaseNetworks", "extra_links_%d.txt" % scen_id)
         link_attr = _m.Modeller().tool("inro.emme.data.network.import_attribute_values")

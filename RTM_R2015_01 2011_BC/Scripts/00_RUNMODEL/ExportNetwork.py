@@ -72,7 +72,8 @@ class ExportNetwork(_m.Tool()):
                           "@lanesmd", "@vdfmd", "@tollmd",
                           "@lanespm", "@vdfpm", "@tollpm",
                           "@tpfam", "@tpfmd", "@tpfpm",
-                          "@hdwyam", "@hdwymd", "@hdwypm"]
+                          "@hdwyam", "@hdwymd", "@hdwypm",
+                          "@farezone", "@fareboundary", "@wcefareboundary"]
         att_trans(extra_attributes = attribute_list,
                   export_path = data_path,
                   append_to_file = False,
