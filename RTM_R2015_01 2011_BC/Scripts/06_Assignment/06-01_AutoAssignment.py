@@ -97,10 +97,6 @@ class AutoAssignment(_m.Tool()):
         delete_extra = _m.Modeller().tool("inro.emme.data.extra_attribute.delete_extra_attribute")
         create_extra = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
 
-        del_list = ["@s1cst", "@s2cst", "@s3cst", "@s1vol", "@s2vol",
-                    "@s3vol", "@cpen", "@name", "@len", "@trncp",
-                    "@hwycl", "@hcst", "@voltr", "@rail", "@ivtp2"]
-
         cr_list = ["sov" + str(i) for i in range(1, 6)] + \
                   ["hov" + str(i) for i in range(1, 6)]
 
@@ -112,12 +108,6 @@ class AutoAssignment(_m.Tool()):
         Link_Turn_Desc=["HOV Trn","SOV Trn","Lg Trn", "Hv Trn"]
 
         for scenario in [am_scenario, md_scenario, pm_scenario]:
-
-            for attr_name in del_list:
-                attr = scenario.extra_attribute(attr_name)
-                if attr:
-                    delete_extra(attr_name, scenario=scenario)
-
             for attr_name in cr_list:
 
                 create_extra(extra_attribute_type="LINK",
