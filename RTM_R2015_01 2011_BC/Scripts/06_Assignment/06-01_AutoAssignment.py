@@ -93,65 +93,6 @@ class AutoAssignment(_m.Tool()):
         occ = str(eb.matrix("ms20").data)
         toll_sens = str(eb.matrix("ms147").data)
 
-        # Delete any unused attributes that might pre-exist and create attributes to store SOV and HOV volumes by class
-        delete_extra = _m.Modeller().tool("inro.emme.data.extra_attribute.delete_extra_attribute")
-        create_extra = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
-
-        cr_list = ["sov" + str(i) for i in range(1, 6)] + \
-                  ["hov" + str(i) for i in range(1, 6)]
-
-        Link_Cost_List=["@hovoc", "@sovoc", "@lgvoc" , "@hgvoc" , "@tkpen"]
-        Link_Cost_Desc=["HOV auto op cost", "SOV auto op cost","Lg trk op cost", "Hv trk op cost", "Truck penalty"]
-        Link_Vol_List= ["@whovl", "@wsovl", "@lgvol" , "@hgvol"]
-        Link_Vol_Desc= ["HOV Vol","SOV Vol","Lg Vol", "Hv Vol"]
-        Link_Turn_List=["@whovt", "@wsovt", "@lgvtn" , "@hvgtn"]
-        Link_Turn_Desc=["HOV Trn","SOV Trn","Lg Trn", "Hv Trn"]
-
-        for scenario in [am_scenario, md_scenario, pm_scenario]:
-            for attr_name in cr_list:
-
-                create_extra(extra_attribute_type="LINK",
-                             extra_attribute_name="@" + attr_name,
-                             extra_attribute_description=attr_name,
-                             extra_attribute_default_value=0,
-                             overwrite=True, scenario=scenario)
-
-                create_extra(extra_attribute_type="TURN",
-                             extra_attribute_name="@t" + attr_name,
-                             extra_attribute_description=attr_name,
-                             extra_attribute_default_value=0,
-                             overwrite=True, scenario=scenario)
-
-            for attribute in range (0, len(Link_Cost_List)):
-
-                create_extra(extra_attribute_type="LINK",
-                             extra_attribute_name=Link_Cost_List[attribute],
-                             extra_attribute_description=Link_Cost_Desc[attribute],
-                             extra_attribute_default_value=0,
-                             overwrite=True, scenario=scenario)
-
-            for attribute in range (0, len(Link_Vol_List)):
-
-                create_extra(extra_attribute_type="LINK",
-                             extra_attribute_name=Link_Vol_List[attribute],
-                             extra_attribute_description=Link_Vol_Desc[attribute],
-                             extra_attribute_default_value=0,
-                             overwrite=True, scenario=scenario)
-
-            for attribute in range (0, len(Link_Turn_List)):
-
-                create_extra(extra_attribute_type="TURN",
-                             extra_attribute_name=Link_Turn_List[attribute],
-                             extra_attribute_description=Link_Turn_Desc[attribute],
-                             extra_attribute_default_value=0,
-                             overwrite=True, scenario=scenario)
-            # create bus in-vehicle penalty attribute
-            create_extra(extra_attribute_type="TRANSIT_LINE",
-                         extra_attribute_name="@ivttp",
-                         extra_attribute_description="Bus IVTT Penalty",
-                         extra_attribute_default_value=0,
-                         overwrite=True, scenario=scenario)
-
         ## Calculate generalized costs for various classes;
         # @tkpen: truck penalty ;
         # @sovoc: SOV gc;

@@ -81,6 +81,7 @@ class InputSettings(_m.Tool()):
 
     def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr, toll_attr):
         net_calc = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
+        create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
         delete_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.delete_extra_attribute")
 
         lane_spec = {
@@ -150,7 +151,6 @@ class InputSettings(_m.Tool()):
         delete_attr("@hdwymd", scen)
         delete_attr("@hdwypm", scen)
 
-        create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
         create_attr("LINK", "@tolls", "Link Toll Value ($)", 0, False, scen)
         toll_spec = {
             "type": "NETWORK_CALCULATION",
@@ -165,3 +165,41 @@ class InputSettings(_m.Tool()):
         delete_attr("@tollam", scen)
         delete_attr("@tollmd", scen)
         delete_attr("@tollpm", scen)
+
+        # Add all required extra attibutes used in Auto Assignment
+        create_attr("LINK", "@sov1", "SOV Volume (Work L)",     0, False, scen)
+        create_attr("LINK", "@sov2", "SOV Volume (Work M)",     0, False, scen)
+        create_attr("LINK", "@sov3", "SOV Volume (Work H)",     0, False, scen)
+        create_attr("LINK", "@sov4", "SOV Volume (NonWork L)",  0, False, scen)
+        create_attr("LINK", "@sov5", "SOV Volume (NonWork MH)", 0, False, scen)
+        create_attr("LINK", "@hov1", "HOV Volume (Work L)",     0, False, scen)
+        create_attr("LINK", "@hov2", "HOV Volume (Work M)",     0, False, scen)
+        create_attr("LINK", "@hov3", "HOV Volume (Work H)",     0, False, scen)
+        create_attr("LINK", "@hov4", "HOV Volume (NonWork L)",  0, False, scen)
+        create_attr("LINK", "@hov5", "HOV Volume (NonWork MH)", 0, False, scen)
+        create_attr("LINK", "@wsovl", "SOV Link Volume", 0, False, scen)
+        create_attr("LINK", "@whovl", "HOV Link Volume", 0, False, scen)
+        create_attr("LINK", "@lgvol", "LGV Link Volume", 0, False, scen)
+        create_attr("LINK", "@hgvol", "HGV Link Volume", 0, False, scen)
+        create_attr("TURN", "@tsov1", "SOV Turn Volume (Work L)",     0, False, scen)
+        create_attr("TURN", "@tsov2", "SOV Turn Volume (Work M)",     0, False, scen)
+        create_attr("TURN", "@tsov3", "SOV Turn Volume (Work H)",     0, False, scen)
+        create_attr("TURN", "@tsov4", "SOV Turn Volume (NonWork L)",  0, False, scen)
+        create_attr("TURN", "@tsov5", "SOV Turn Volume (NonWork MH)", 0, False, scen)
+        create_attr("TURN", "@thov1", "HOV Turn Volume (Work L)",     0, False, scen)
+        create_attr("TURN", "@thov2", "HOV Turn Volume (Work M)",     0, False, scen)
+        create_attr("TURN", "@thov3", "HOV Turn Volume (Work H)",     0, False, scen)
+        create_attr("TURN", "@thov4", "HOV Turn Volume (NonWork L)",  0, False, scen)
+        create_attr("TURN", "@thov5", "HOV Turn Volume (NonWork MH)", 0, False, scen)
+        create_attr("TURN", "@wsovt", "SOV Turn Volume", 0, False, scen)
+        create_attr("TURN", "@whovt", "HOV Turn Volume", 0, False, scen)
+        create_attr("TURN", "@lgvtn", "LGV Turn Volume", 0, False, scen)
+        create_attr("TURN", "@hvgtn", "HGV Turn Volume", 0, False, scen)
+        create_attr("LINK", "@sovoc", "SOV Operating Cost ($)", 0, False, scen)
+        create_attr("LINK", "@hovoc", "HOV Operating Cost ($)", 0, False, scen)
+        create_attr("LINK", "@lgvoc", "LGV Operating Cost ($)", 0, False, scen)
+        create_attr("LINK", "@hgvoc", "HGV Operating Cost ($)", 0, False, scen)
+        create_attr("LINK", "@tkpen", "Truck Penalty", 0, False, scen)
+
+        # Add all required extra attibutes used in Transit Assignment
+        create_attr("TRANSIT_LINE", "@ivttp", "Bus IVTT Penalty", 0, False, scen)
