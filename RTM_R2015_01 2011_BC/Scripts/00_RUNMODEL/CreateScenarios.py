@@ -81,6 +81,7 @@ class InputSettings(_m.Tool()):
 
     def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr, toll_attr):
         net_calc = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
+        delete_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.delete_extra_attribute")
 
         lane_spec = {
             "type": "NETWORK_CALCULATION",
@@ -92,6 +93,9 @@ class InputSettings(_m.Tool()):
             }
         }
         net_calc(lane_spec, scen, False)
+        delete_attr("@lanesam", scen)
+        delete_attr("@lanesmd", scen)
+        delete_attr("@lanespm", scen)
 
         vdf_spec = {
             "type": "NETWORK_CALCULATION",
@@ -103,6 +107,9 @@ class InputSettings(_m.Tool()):
             }
         }
         net_calc(vdf_spec, scen, False)
+        delete_attr("@vdfam", scen)
+        delete_attr("@vdfmd", scen)
+        delete_attr("@vdfpm", scen)
 
         tpf_spec = {
             "type": "NETWORK_CALCULATION",
@@ -115,6 +122,9 @@ class InputSettings(_m.Tool()):
             }
         }
         net_calc(tpf_spec, scen, False)
+        delete_attr("@tpfam", scen)
+        delete_attr("@tpfmd", scen)
+        delete_attr("@tpfpm", scen)
 
         hdw_spec = {
             "type": "NETWORK_CALCULATION",
@@ -136,6 +146,9 @@ class InputSettings(_m.Tool()):
         del_transit = _m.Modeller().tool("inro.emme.data.network.transit.delete_transit_lines")
         del_transit(selection=hdw_attr+"=0",
                     scenario=scen)
+        delete_attr("@hdwyam", scen)
+        delete_attr("@hdwymd", scen)
+        delete_attr("@hdwypm", scen)
 
         create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
         create_attr("LINK", "@tolls", "Link Toll Value ($)", 0, False, scen)
@@ -149,3 +162,6 @@ class InputSettings(_m.Tool()):
             }
         }
         net_calc(toll_spec, scen, False)
+        delete_attr("@tollam", scen)
+        delete_attr("@tollmd", scen)
+        delete_attr("@tollpm", scen)
