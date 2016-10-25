@@ -122,6 +122,14 @@ class Util(_m.Tool()):
         """
         return int(eb.matrix("ms01").data)
 
+    def get_eb_path(self, eb):
+        """Returns the directory containing the given databank
+
+        Arguments:
+        eb -- The emmebank to be queried
+        """
+        return os.path.dirname(eb.path)
+
     def get_output_path(self, eb):
         """Returns the outputs directory for the given databank
 
