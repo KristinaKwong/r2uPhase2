@@ -29,6 +29,8 @@ class FullModelRun(_m.Tool()):
         pb.description = "Performs a full model run"
         pb.branding_text = "TransLink"
 
+        util = _m.Modeller().tool("translink.emme.util")
+        input_path = util.get_input_path(_m.Modeller().emmebank)
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
 
@@ -41,19 +43,17 @@ class FullModelRun(_m.Tool()):
                         title="Global model iterations:",
                         note="Use 6 iterations in normal operation")
 
-        loc = os.path.dirname(_m.Modeller().emmebank.path)
-
         pb.add_select_file(tool_attribute_name="land_use_file1",
                            window_type="file",
                            file_filter="*.csv",
-                           start_path=loc + "/Inputs",
+                           start_path= input_path,
                            title="LandUse file 1: ",
                            note="File must be csv file.")
 
         pb.add_select_file(tool_attribute_name="land_use_file2",
                            window_type="file",
                            file_filter="*.csv",
-                           start_path=loc + "/Inputs",
+                           start_path= input_path,
                            title="LandUse file 2: ",
                            note="File must be csv file.")
 

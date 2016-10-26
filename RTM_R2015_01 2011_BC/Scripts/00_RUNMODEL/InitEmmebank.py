@@ -9,6 +9,8 @@ import inro.emme as _emme
 import traceback as _traceback
 import os
 import shutil
+import sqlite3
+import pandas as pd
 
 class InitEmmebank(_m.Tool()):
     emme_title = _m.Attribute(_m.InstanceType)
@@ -53,6 +55,7 @@ class InitEmmebank(_m.Tool()):
         self.initbank(new_path, self.emme_title)
         _m.Modeller().desktop.data_explorer().add_database(new_path).open()
         self.initconstants(_m.Modeller().emmebank)
+        self.initdatabase(_m.Modeller().emmebank)
         self.initseeds(_m.Modeller().emmebank)
 
     def initbank(self, path, title):
@@ -260,6 +263,24 @@ class InitEmmebank(_m.Tool()):
         util.initmat(eb, "ms112", "EcVOT", "Ec value of time in min/$", 7.1)
         util.initmat(eb, "ms113", "NwVOT", "Nw value of time in min/$", 3)
         util.initmat(eb, "ms114", "NoVOT", "No value of time in min/$", 6)
+
+    def initdatabase(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
+
+        # create vector of zones - should this be done elsewhere?
+        util.initmat(eb, "mo51", "zoneindex", "Zone numbers")
+        spec = util.matrix_spec("mo51", "p")
+        util.compute_matrix(spec, _m.Modeller().scenario, 1)
+
+        # get zone list into numpy
+        # update with numpy helper if it's available
+        df = pd.DataFrame({"TAZ": eb.matrix("mo51").get_numpy_data()})
+        # set location for database creation
+        db_file_path = os.path.join(util.get_eb_path(eb), "rtm.db")
+        # connect to database (created automatically upon connection)
+        conn = sqlite3.connect(db_file_path)
+        df.to_sql(name="taz_index", con=conn, flavor="sqlite",index = False, if_exists="replace")
+        conn.close()
 
     def initseeds(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
