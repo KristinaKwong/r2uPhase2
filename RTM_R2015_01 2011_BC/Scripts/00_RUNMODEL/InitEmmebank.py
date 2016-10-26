@@ -107,6 +107,7 @@ class InitEmmebank(_m.Tool()):
 
     @_m.logbook_trace("Creating a base scenario")
     def initscenario(self, eb, scen_id, scen_title):
+        util = _m.Modeller().tool("translink.emme.util")
         mod = _m.Modeller()
         project = mod.desktop.project
         proj_path = os.path.dirname(project.path)
@@ -207,11 +208,47 @@ class InitEmmebank(_m.Tool()):
                   scenario = scen,
                   merge_consecutive_separators = True)
 
-        ensem_trans = _m.Modeller().tool("inro.emme.data.zone_partition.partition_transaction")
-        data_path = os.path.join(proj_path, "BaseNetworks", "all_ensem_tz1741.in")
-        ensem_trans(transaction_file = data_path,
-                    throw_on_error = True,
-                    scenario = scen)
+        file = os.path.join(proj_path, "BaseNetworks", "ensembles.csv")
+        util.read_csv_momd(eb, file)
+        self.initEnsembles(eb)
+
+    def initEnsembles(self, eb):
+        self.set_ensemble_from_mo(eb, "ga", "mo120")
+        self.set_ensemble_from_mo(eb, "gb", "mo121")
+        self.set_ensemble_from_mo(eb, "gc", "mo122")
+        self.set_ensemble_from_mo(eb, "gd", "mo123")
+        self.set_ensemble_from_mo(eb, "ge", "mo124")
+        self.set_ensemble_from_mo(eb, "gf", "mo125")
+        self.set_ensemble_from_mo(eb, "gg", "mo126")
+        self.set_ensemble_from_mo(eb, "gh", "mo127")
+        self.set_ensemble_from_mo(eb, "gi", "mo128")
+        self.set_ensemble_from_mo(eb, "gj", "mo129")
+        self.set_ensemble_from_mo(eb, "gk", "mo130")
+        self.set_ensemble_from_mo(eb, "gl", "mo131")
+        self.set_ensemble_from_mo(eb, "gm", "mo132")
+        self.set_ensemble_from_mo(eb, "gn", "mo133")
+        self.set_ensemble_from_mo(eb, "go", "mo134")
+        self.set_ensemble_from_mo(eb, "gp", "mo135")
+        self.set_ensemble_from_mo(eb, "gq", "mo136")
+        self.set_ensemble_from_mo(eb, "gr", "mo137")
+        self.set_ensemble_from_mo(eb, "gs", "mo138")
+        self.set_ensemble_from_mo(eb, "gt", "mo139")
+        self.set_ensemble_from_mo(eb, "gu", "mo140")
+        self.set_ensemble_from_mo(eb, "gv", "mo141")
+        self.set_ensemble_from_mo(eb, "gw", "mo142")
+        self.set_ensemble_from_mo(eb, "gx", "mo143")
+        self.set_ensemble_from_mo(eb, "gy", "mo144")
+        self.set_ensemble_from_mo(eb, "gz", "mo145")
+
+    def set_ensemble_from_mo(self, eb, part, orig_mat):
+        mat = eb.matrix(orig_mat)
+
+        matData = _emme.matrix.MatrixData(mat.get_data().indices, type="I")
+        matData.from_numpy(mat.get_numpy_data())
+
+        ensem = eb.partition(part)
+        ensem.description = mat.description
+        ensem.set_data(matData)
 
     def initconstants(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
