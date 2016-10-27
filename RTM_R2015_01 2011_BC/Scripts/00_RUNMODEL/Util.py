@@ -199,7 +199,7 @@ class Util(_m.Tool()):
             mat_data.append(mat.get_data())
 
         # loop over each data-containing line in the csv
-        for i in range(3, len(lines)):
+        for i in range(4, len(lines)):
             line = lines[i]
             # within each line set the data in each matrix
             for j in range(1, len(line)):
