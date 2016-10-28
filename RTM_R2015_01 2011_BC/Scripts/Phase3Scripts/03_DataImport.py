@@ -44,19 +44,18 @@ class DataImport(_m.Tool()):
 
 
     @_m.logbook_trace("Data Import")
-    def __call__(self, eb):
+    def __call__(self, eb, demographics_file, geographics_file):
         util = _m.Modeller().tool("translink.emme.util")
         self.init_scalars(eb)
-        self.import_vectors(eb)
+        self.import_vectors(eb, demographics_file, demographics_file)
 
     @_m.logbook_trace("Initializing Scalar Matrices")
     def init_scalars(self, eb):
 		util = _m.Modeller().tool("translink.emme.util")
-		util.initmat(eb, "ms10", "Year", "Horizon Year of Run", 2011)
 
 
     @_m.logbook_trace("Importing Vector Data from CSV")
-    def import_vectors(self, eb):
+    def import_vectors(self, eb, demographics_file, geographics_file):
         util = _m.Modeller().tool("translink.emme.util")
 
         # set directory locations for csv files and sqlite db
@@ -65,8 +64,8 @@ class DataImport(_m.Tool()):
         db_loc = util.get_eb_path(eb)
 
         # point to csv input files
-        demo_file = os.path.join(file_loc, 'taz1700_demographics_%s.csv' % model_year)
-        geo_file = os.path.join(file_loc, 'taz1700_geographics_%s.csv' % model_year)
+        demo_file = demographics_file
+        geo_file = geographics_file
         pnr_file = os.path.join(file_loc, 'taz1700_pnr.csv')
         dummy_file = os.path.join(file_loc,'taz1700_dummies.csv')
 
