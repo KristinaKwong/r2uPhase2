@@ -248,23 +248,23 @@ class DataImport(_m.Tool()):
 
 
         # Batch in external demand matrices
-        util.delmat(eb, "mf978")
-        util.delmat(eb, "mf979")
-        data_path = os.path.join(proj_path, "BaseNetworks", "Matrices", self.horizon_year, "AM_External_Demand.in")
+        util.delmat(eb, "mf70")
+        util.delmat(eb, "mf71")
+        data_path = os.path.join(proj_path, "BaseNetworks", "External_Demand_AM_%s.in" % model_year)
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
-        util.delmat(eb, "mf984")
-        util.delmat(eb, "mf985")
-        data_path = os.path.join(proj_path, "BaseNetworks", "Matrices", self.horizon_year, "MD_External_Demand.in")
+        util.delmat(eb, "mf75")
+        util.delmat(eb, "mf76")
+        data_path = os.path.join(proj_path, "BaseNetworks", "External_Demand_MD_%s.in" % model_year)
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
-		# TODO update extnernal demand
+		# TODO update external demand
 		# Note PM external demand is AM transposed multiplied by a factor
-        util.delmat(eb, "mf992")
-        util.delmat(eb, "mf993")
-        data_path = os.path.join(proj_path, "BaseNetworks", "Matrices", self.horizon_year, "PM_External_Demand.in")
+        util.delmat(eb, "mf80")
+        util.delmat(eb, "mf81")
+        data_path = os.path.join(proj_path, "BaseNetworks", "External_Demand_PM_%s.in" % model_year)
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
