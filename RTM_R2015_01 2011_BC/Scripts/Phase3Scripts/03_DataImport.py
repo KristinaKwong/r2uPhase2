@@ -29,7 +29,7 @@ class DataImport(_m.Tool()):
     def page(self):
         pb = _m.ToolPageBuilder(self)
         pb.title = "Import Data for Model Run"
-        pb.description = "Imports Scalar and Vector Data for Model Run"
+        pb.description = "Imports Scalars, Vectors, and Seed Matrices for Model Run"
         pb.branding_text = "TransLink"
 
         util = _m.Modeller().tool("translink.emme.util")
@@ -70,6 +70,8 @@ class DataImport(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
         self.init_scalars(eb)
         self.import_vectors(eb, demographics_file, demographics_file)
+
+        self.init_seeds(eb)
 
     @_m.logbook_trace("Initializing Scalar Matrices")
     def init_scalars(self, eb):
@@ -188,3 +190,124 @@ class DataImport(_m.Tool()):
         df.to_sql(name='dummies', con=conn, flavor='sqlite', index=False, if_exists='replace')
 
         conn.close()
+
+
+    def init_seeds(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
+
+        mod = _m.Modeller()
+        project = mod.desktop.project
+        proj_path = os.path.dirname(project.path)
+
+        mat_transaction = mod.tool("inro.emme.data.matrix.matrix_transaction")
+
+
+        # Batch in starter auto demand used for generating starter skims, demand is aggregated into 4 classes, SOV, HOV, Light Tr, Heavy Tr
+        util.delmat(eb, "mf893")
+        util.delmat(eb, "mf894")
+        data_path = os.path.join(proj_path, "BaseNetworks", "AM_Starter_Demand.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mf895")
+        util.delmat(eb, "mf896")
+        data_path = os.path.join(proj_path, "BaseNetworks", "MD_Starter_Demand.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mf897")
+        util.delmat(eb, "mf898")
+        data_path = os.path.join(proj_path, "BaseNetworks", "PM_Starter_Demand.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        # Batch in truck demand matrices
+        util.delmat(eb, "mf980")
+        util.delmat(eb, "mf981")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Matrices", self.horizon_year, "AM_Truck_Demand.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mf982")
+        util.delmat(eb, "mf983")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Matrices", self.horizon_year, "MD_Truck_Demand.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+		# TODO PM truck demand is currently transpose AM truck demand multiplied by a factor
+		# Factor was created by Parsons
+		# Should be updated with actual truck demand
+        util.delmat(eb, "mf990")
+        util.delmat(eb, "mf991")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Matrices", self.horizon_year, "PM_Truck_Demand.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+
+        # Batch in external demand matrices
+        util.delmat(eb, "mf978")
+        util.delmat(eb, "mf979")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Matrices", self.horizon_year, "AM_External_Demand.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mf984")
+        util.delmat(eb, "mf985")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Matrices", self.horizon_year, "MD_External_Demand.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+		# TODO update extnernal demand
+		# Note PM external demand is AM transposed multiplied by a factor
+        util.delmat(eb, "mf992")
+        util.delmat(eb, "mf993")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Matrices", self.horizon_year, "PM_External_Demand.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "md999")
+        data_path = os.path.join(proj_path, "BaseNetworks", "md_Grade_School_Adj.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mf160")
+        data_path = os.path.join(proj_path, "BaseNetworks", "mf_Bus_Fare_Matrix.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mf928")
+        util.delmat(eb, "mf929")
+        data_path = os.path.join(proj_path, "BaseNetworks", "mf_Pk_Prd_Bus_Adj.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mf975")
+        util.delmat(eb, "mf976")
+        data_path = os.path.join(proj_path, "BaseNetworks", "mf_Pk_Prd_Rail_Adj.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mf161")
+        data_path = os.path.join(proj_path, "BaseNetworks", "mf_Rail_Fare_Matrix.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mf169")
+        util.delmat(eb, "mf170")
+        util.delmat(eb, "mf171")
+        util.delmat(eb, "mf172")
+        util.delmat(eb, "mf173")
+        util.delmat(eb, "mf174")
+        util.delmat(eb, "mf175")
+        util.delmat(eb, "mf176")
+        util.delmat(eb, "mf177")
+        util.delmat(eb, "mf178")
+        util.delmat(eb, "mf179")
+        data_path = os.path.join(proj_path, "BaseNetworks", "mf_TripDist_Rij.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        util.delmat(eb, "mo58")
+        data_path = os.path.join(proj_path, "BaseNetworks", "mo_No_Wrk_Adj.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
