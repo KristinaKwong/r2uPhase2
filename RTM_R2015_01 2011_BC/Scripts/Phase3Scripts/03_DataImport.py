@@ -203,21 +203,21 @@ class DataImport(_m.Tool()):
 
 
         # Batch in starter auto demand used for generating starter skims, demand is aggregated into 4 classes, SOV, HOV, Light Tr, Heavy Tr
-        util.delmat(eb, "mf893")
-        util.delmat(eb, "mf894")
-        data_path = os.path.join(proj_path, "BaseNetworks", "AM_Starter_Demand.in")
+        util.delmat(eb, "mf10")
+        util.delmat(eb, "mf11")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_AM.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
-        util.delmat(eb, "mf895")
-        util.delmat(eb, "mf896")
-        data_path = os.path.join(proj_path, "BaseNetworks", "MD_Starter_Demand.in")
+        util.delmat(eb, "mf30")
+        util.delmat(eb, "mf31")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_MD.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
-        util.delmat(eb, "mf897")
-        util.delmat(eb, "mf898")
-        data_path = os.path.join(proj_path, "BaseNetworks", "PM_Starter_Demand.in")
+        util.delmat(eb, "mf50")
+        util.delmat(eb, "mf51")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_PM.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
