@@ -68,10 +68,12 @@ class DataImport(_m.Tool()):
     @_m.logbook_trace("Data Import")
     def __call__(self, eb, demographics_file, geographics_file):
         util = _m.Modeller().tool("translink.emme.util")
-        self.init_scalars(eb)
-        self.import_vectors(eb, demographics_file, demographics_file)
+        model_year = int(eb.matrix("ms10").data)
 
-        self.init_seeds(eb)
+        self.init_scalars(eb)
+        self.import_vectors(eb, demographics_file, geographics_file)
+
+        self.init_seeds(eb, horizon_year=model_year)
 
     @_m.logbook_trace("Initializing Scalar Matrices")
     def init_scalars(self, eb):
@@ -152,7 +154,6 @@ class DataImport(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
 
         # set directory locations for csv files and sqlite db
-        model_year = int(eb.matrix("ms10").data)
         file_loc= util.get_input_path(eb)
         db_loc = util.get_eb_path(eb)
 
@@ -192,12 +193,14 @@ class DataImport(_m.Tool()):
         conn.close()
 
 
-    def init_seeds(self, eb):
+    def init_seeds(self, eb, horizon_year):
         util = _m.Modeller().tool("translink.emme.util")
 
+        model_year = horizon_year
         mod = _m.Modeller()
         project = mod.desktop.project
         proj_path = os.path.dirname(project.path)
+
 
         mat_transaction = mod.tool("inro.emme.data.matrix.matrix_transaction")
 
