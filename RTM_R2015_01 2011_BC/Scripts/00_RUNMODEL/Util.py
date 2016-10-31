@@ -111,7 +111,7 @@ class Util(_m.Tool()):
         Arguments:
         eb -- The emmebank to be queried
         """
-        year = str(int(eb.matrix("ms149").data))
+        year = str(int(eb.matrix("ms10").data))
         return year
 
     def get_cycle(self, eb):
