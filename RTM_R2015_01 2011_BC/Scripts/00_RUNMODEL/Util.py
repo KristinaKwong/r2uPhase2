@@ -208,3 +208,43 @@ class Util(_m.Tool()):
         # store the data back into the matrix on disk
         for i in range(len(matrices)):
             matrices[i].set_data(mat_data[i])
+
+    def get_matrix_numpy(self, eb, mat_id):
+        """Get EMME matrix data as a numpy array
+
+        Origin (mo) matrices will be reshaped to allow calculations to expand
+        in a similar fashion to the EMME matrix calculator
+
+        Arguments:
+        eb -- the emmebank containing the matrix data
+        mat_id -- a string matrix identifier (msXX, moXX, mdXX, mfXX)
+        """
+        mat = eb.matrix(mat_id)
+        if (mat is None):
+            return mat
+
+        np_array = mat.get_numpy_data()
+
+        if (mat.type == "ORIGIN"):
+            np_array = np_array.reshape(np_array.shape[0], 1)
+
+        return np_array
+
+    def set_matrix_numpy(self, eb, mat_id, np_arr):
+        """Set EMME matrix data from a numpy array
+
+        Data input to Origin (mo) matrices will be reshaped as needed in case
+        the numpy array has additional dimensions.
+
+        Arguments:
+        eb -- the emmebank containing the matrix data
+        mat_id -- a string matrix identifier (msXX, moXX, mdXX, mfXX)
+        np_arr -- the numpy array containing data to be written back
+        """
+        mat = eb.matrix(mat_id)
+
+        if (mat.type == "ORIGIN" or mat.type == "DESTINATION"):
+            if (np_arr.ndim == 2):
+                np_arr = np_arr.reshape(np_arr.shape[0])
+
+        mat.set_numpy_data(np_arr)
