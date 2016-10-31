@@ -56,14 +56,14 @@ class FullModelRun(_m.Tool()):
 
         pb.add_select_file(tool_attribute_name="demographics_file",
                            window_type="file",
-                           file_filter="*.csv",
+                           file_filter="*demographics*.csv",
                            start_path= input_path,
                            title="Demographics File: ",
                            note="File must be csv file.")
 
         pb.add_select_file(tool_attribute_name="geographics_file",
                            window_type="file",
-                           file_filter="*.csv",
+                           file_filter="*geographics*.csv",
                            start_path= input_path,
                            title="Geographics File: ",
                            note="File must be csv file.")
