@@ -178,7 +178,6 @@ class Util(_m.Tool()):
 
 
     @_m.logbook_trace("Reading csv file of mo/md values", save_arguments=True)
-    #TODO Update to skip 4 lines instead of 3
     def read_csv_momd(self, eb, file):
         #Read data from file and check number of lines
         with open(file, "rb") as sourcefile:
