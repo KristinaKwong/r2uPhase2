@@ -268,10 +268,6 @@ class DataImport(_m.Tool()):
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
-        util.delmat(eb, "md999")
-        data_path = os.path.join(proj_path, "BaseNetworks", "md_Grade_School_Adj.in")
-        mat_transaction(transaction_file = data_path,
-                        throw_on_error = True)
 
         util.delmat(eb, "mf160")
         data_path = os.path.join(proj_path, "BaseNetworks", "mf_Bus_Fare_Matrix.in")
