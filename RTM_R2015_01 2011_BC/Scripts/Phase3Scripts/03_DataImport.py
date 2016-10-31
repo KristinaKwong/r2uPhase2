@@ -280,21 +280,6 @@ class DataImport(_m.Tool()):
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
-        util.delmat(eb, "mf169")
-        util.delmat(eb, "mf170")
-        util.delmat(eb, "mf171")
-        util.delmat(eb, "mf172")
-        util.delmat(eb, "mf173")
-        util.delmat(eb, "mf174")
-        util.delmat(eb, "mf175")
-        util.delmat(eb, "mf176")
-        util.delmat(eb, "mf177")
-        util.delmat(eb, "mf178")
-        util.delmat(eb, "mf179")
-        data_path = os.path.join(proj_path, "BaseNetworks", "mf_TripDist_Rij.in")
-        mat_transaction(transaction_file = data_path,
-                        throw_on_error = True)
-
         util.delmat(eb, "mo58")
         data_path = os.path.join(proj_path, "BaseNetworks", "mo_No_Wrk_Adj.in")
         mat_transaction(transaction_file = data_path,
