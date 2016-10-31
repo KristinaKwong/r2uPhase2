@@ -105,12 +105,24 @@ class FullModelRun(_m.Tool()):
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Full Model Run")
-    def __call__(self, horizon_year, global_iterations, master_scen, demographics_file, geographics_file,
-                 max_distribution_iterations=60,
-                 max_assignment_iterations=200, num_processors):
+    def __call__(self, horizon_year, global_iterations, master_scen, demographics_file,
+                    geographics_file, max_distribution_iterations,
+                    max_assignment_iterations, num_processors):
         eb = master_scen.emmebank
         util = _m.Modeller().tool("translink.emme.util")
-        self.initoptions(horizon_year, global_iterations, master_scen, max_distribution_iterations, max_assignment_iterations)
+        self.initoptions(eb=eb, horizon_year=horizon_year, global_iterations=global_iterations,
+                        max_distribution_iterations=max_distribution_iterations,
+                        max_assignment_iterations=max_assignment_iterations, num_processors=num_processors)
+
+        self.stage0(eb, demographics_file, geographics_file)
+
+    def stage0(self, eb, demographics_file, geographics_file):
+        util = _m.Modeller().tool("translink.emme.util")
+        data_import = _m.Modeller().tool("translink.emme.stage0.data_import")
+
+
+        data_import(eb, demographics_file, geographics_file)
+
 
 
 
