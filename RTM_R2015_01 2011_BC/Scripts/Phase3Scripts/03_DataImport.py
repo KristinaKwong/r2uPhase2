@@ -37,14 +37,14 @@ class DataImport(_m.Tool()):
 
         pb.add_select_file(tool_attribute_name="demographics_file",
                            window_type="file",
-                           file_filter="*.csv",
+                           file_filter="*demographics*.csv",
                            start_path= input_path,
                            title="Demographics File: ",
                            note="File must be csv file.")
 
         pb.add_select_file(tool_attribute_name="geographics_file",
                            window_type="file",
-                           file_filter="*.csv",
+                           file_filter="*geographics*.csv",
                            start_path= input_path,
                            title="Geographics File: ",
                            note="File must be csv file.")
@@ -68,7 +68,7 @@ class DataImport(_m.Tool()):
     @_m.logbook_trace("Data Import")
     def __call__(self, eb, demographics_file, geographics_file):
         util = _m.Modeller().tool("translink.emme.util")
-        model_year = int(eb.matrix("ms10").data)
+        model_year = int(util.get_year(eb))
 
         self.init_scalars(eb)
         self.import_vectors(eb, demographics_file, geographics_file)
