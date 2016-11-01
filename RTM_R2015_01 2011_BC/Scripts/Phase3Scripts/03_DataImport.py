@@ -192,7 +192,7 @@ class DataImport(_m.Tool()):
 
         conn.close()
 
-
+    @_m.logbook_trace("Importing Seed Matrices")
     def init_seeds(self, eb, horizon_year):
         util = _m.Modeller().tool("translink.emme.util")
 
