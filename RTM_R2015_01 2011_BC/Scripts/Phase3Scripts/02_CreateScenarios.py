@@ -1,7 +1,7 @@
 ##---------------------------------------------------------------------
-##--TransLink Phase 2.2 Regional Transportation Model
+##--TransLink Phase 3 Regional Transportation Model
 ##--
-##--Path: translink.emme.stage1.step0.create_scen
+##--Path: ?
 ##--Purpose: create scenarios
 ##---------------------------------------------------------------------
 import inro.modeller as _m
@@ -38,7 +38,7 @@ class InputSettings(_m.Tool()):
         eb = base_scenario.emmebank
 
         # Copy to new AM scenarios
-        am_scenid = int(eb.matrix("ms140").data)
+        am_scenid = int(eb.matrix("ms2").data)
         copy_scenario(from_scenario=base_scenario,
                       scenario_id=am_scenid,
                       scenario_title=base_scenario.title,
@@ -52,7 +52,7 @@ class InputSettings(_m.Tool()):
                       overwrite=True)
 
         # Copy to new MD Scenarios
-        md_scenid = int(eb.matrix("ms141").data)
+        md_scenid = int(eb.matrix("ms3").data)
         copy_scenario(from_scenario=base_scenario,
                       scenario_id=md_scenid,
                       scenario_title=base_scenario.title,
@@ -66,7 +66,7 @@ class InputSettings(_m.Tool()):
                       overwrite=True)
 
         # Copy to new pm Scenarios
-        pm_scenid = int(eb.matrix("ms150").data)
+        pm_scenid = int(eb.matrix("ms4").data)
         copy_scenario(from_scenario=base_scenario,
                       scenario_id=pm_scenid,
                       scenario_title=base_scenario.title,
