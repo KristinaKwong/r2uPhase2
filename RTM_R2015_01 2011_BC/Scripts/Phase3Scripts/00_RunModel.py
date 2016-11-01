@@ -118,8 +118,8 @@ class FullModelRun(_m.Tool()):
 
     def stage0(self, eb, master_scen, demographics_file, geographics_file):
         util = _m.Modeller().tool("translink.emme.util")
-        create_scenario = _m.Modeller().tool("translink.emme.stage0.create_scenarios")
-        data_import = _m.Modeller().tool("translink.emme.stage0.data_import")
+        create_scenario = _m.Modeller().tool("translink.RTM3.stage0.create_scenarios")
+        data_import = _m.Modeller().tool("translink.RTM3.stage0.data_import")
 
         create_scenario(base_scenario=master_scen)
         data_import(eb, demographics_file=demographics_file, geographics_file=geographics_file)
