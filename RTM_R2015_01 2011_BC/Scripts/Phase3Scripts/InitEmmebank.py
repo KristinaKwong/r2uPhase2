@@ -15,7 +15,6 @@ import pandas as pd
 class InitEmmebank(_m.Tool()):
     emme_title = _m.Attribute(_m.InstanceType)
     emme_folder = _m.Attribute(_m.InstanceType)
-    horizon_year = _m.Attribute(_m.InstanceType)
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
@@ -32,9 +31,7 @@ class InitEmmebank(_m.Tool()):
                         size=30,
                         title="Enter the Title for the new emmebank")
 
-        pb.add_text_box(tool_attribute_name="horizon_year",
-                        size=4,
-                        title="Enter the year to initialize matrices for")
+
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
