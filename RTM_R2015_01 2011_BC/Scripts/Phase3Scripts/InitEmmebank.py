@@ -31,8 +31,6 @@ class InitEmmebank(_m.Tool()):
                         size=30,
                         title="Enter the Title for the new emmebank")
 
-
-
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
 
@@ -203,7 +201,7 @@ class InitEmmebank(_m.Tool()):
                   scenario = scen,
                   merge_consecutive_separators = True)
 
-        file = os.path.join(proj_path, "BaseNetworks", "ensembles.csv")
+        file = os.path.join(proj_path, "BaseNetworks", "taz1700_ensembles.csv")
         util.read_csv_momd(eb, file)
         self.initEnsembles(eb)
 
