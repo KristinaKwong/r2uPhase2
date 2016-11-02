@@ -120,12 +120,11 @@ class FullModelRun(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
         create_scenario = _m.Modeller().tool("translink.RTM3.stage0.create_scenarios")
         data_import = _m.Modeller().tool("translink.RTM3.stage0.data_import")
+        data_generate = _m.Modeller().tool("translink.RTM3.stage0.data_generate")
 
         create_scenario(base_scenario=master_scen)
         data_import(eb, demographics_file=demographics_file, geographics_file=geographics_file)
-
-
-
+        data_generate(eb)
 
     def initoptions(self, eb, horizon_year, global_iterations,
                     max_distribution_iterations, max_assignment_iterations, num_processors):

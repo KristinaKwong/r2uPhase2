@@ -55,14 +55,13 @@ class DataImport(_m.Tool()):
         return pb.render()
 
     def run(self):
-        with _m.logbook_trace("Data Import"):
-            self.tool_run_msg = ""
-            try:
-            	eb = _m.Modeller().emmebank
-            	self.__call__(eb, self.demographics_file, self.geographics_file)
-            	self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
-            except Exception, e:
-            	self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
+        self.tool_run_msg = ""
+        try:
+            eb = _m.Modeller().emmebank
+            self.__call__(eb, self.demographics_file, self.geographics_file)
+            self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
+        except Exception, e:
+            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
 
     @_m.logbook_trace("Data Import")
@@ -223,29 +222,6 @@ class DataImport(_m.Tool()):
         data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_PM.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
-
-        # Batch in truck demand matrices
-        util.delmat(eb, "mf20")
-        util.delmat(eb, "mf21")
-        data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_Truck_AM_%s.in" % model_year)
-        mat_transaction(transaction_file = data_path,
-                        throw_on_error = True)
-
-        util.delmat(eb, "mf40")
-        util.delmat(eb, "mf41")
-        data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_Truck_MD_%s.in" % model_year)
-        mat_transaction(transaction_file = data_path,
-                        throw_on_error = True)
-
-		# TODO PM truck demand is currently transpose AM truck demand multiplied by a factor
-		# Factor was created by Parsons
-		# Should be updated with actual truck demand
-        util.delmat(eb, "mf60")
-        util.delmat(eb, "mf61")
-        data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_Truck_PM_%s.in" % model_year)
-        mat_transaction(transaction_file = data_path,
-                        throw_on_error = True)
-
 
         # Batch in external demand matrices
         util.delmat(eb, "mf70")
