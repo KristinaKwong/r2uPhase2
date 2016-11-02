@@ -243,3 +243,9 @@ class DataImport(_m.Tool()):
         data_path = os.path.join(proj_path, "BaseNetworks", "External_Demand_PM_%s.in" % model_year)
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
+
+
+        util.delmat(eb, "mf90")
+        data_path = os.path.join(proj_path, "BaseNetworks", "bike_score_skim_%s.in" % model_year)
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
