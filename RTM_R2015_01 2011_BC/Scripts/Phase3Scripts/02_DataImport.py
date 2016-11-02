@@ -25,7 +25,8 @@ class DataImport(_m.Tool()):
 
     tool_run_msg = _m.Attribute(unicode)
 
-
+    # TODO currently this tool is not directly runnable unless run model as been run
+    # requires ms10, which is created there.  Need to decide if this is correct
     def page(self):
         pb = _m.ToolPageBuilder(self)
         pb.title = "Import Data for Model Run"
