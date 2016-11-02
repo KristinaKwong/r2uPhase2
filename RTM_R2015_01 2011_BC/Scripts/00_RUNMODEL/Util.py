@@ -247,3 +247,12 @@ class Util(_m.Tool()):
                 np_arr = np_arr.reshape(np_arr.shape[0])
 
         mat.set_numpy_data(np_arr)
+
+    def sumproduct(self, factors, matrices):
+        if (len(factors) != len(matrices)):
+            raise Exception("Length of factors and matrices passed to sumproduct must be equal")
+
+        ret = 0
+        for i in range(len(factors)):
+            ret += factors[i] * matrices[i]
+        return ret
