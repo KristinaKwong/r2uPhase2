@@ -41,7 +41,7 @@ class FullModelRun(_m.Tool()):
             pb.add_html(self.tool_run_msg)
 
         pb.add_text_box(tool_attribute_name="horizon_year",
-                        size="3",
+                        size="4",
                         title="Model horizion year:",
                         note="Should match network scenario")
 
