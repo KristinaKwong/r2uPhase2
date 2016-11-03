@@ -7,6 +7,10 @@
 import inro.modeller as _m
 
 import traceback as _traceback
+import os
+import sqlite3
+import numpy as np
+import pandas as pd
 
 class DataGeneration(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
@@ -36,12 +40,72 @@ class DataGeneration(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
 
         self.matrix_batchins(eb)
+        self.calc_density(eb)
+
+
+
+    @_m.logbook_trace("Calculate Densities")
+    def calc_density(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
+
+        # get data from emmebank
+        zones = util.get_matrix_numpy(eb, "mo51")
+        totpop = util.get_matrix_numpy(eb, "mo10")
+        totemp = util.get_matrix_numpy(eb, "mo20")
+        combined = totpop + totemp
+        area = util.get_matrix_numpy(eb, "mo50")
+
+        # calculate densities
+        # handling divide by zero error and setting to 0
+        with np.errstate(divide='ignore', invalid='ignore'):
+            popdens = np.true_divide(totpop, area)
+            popdens[ ~ np.isfinite( popdens )] = 0
+
+        # handling divide by zero error and setting to 0
+        with np.errstate(divide='ignore', invalid='ignore'):
+            empdens = np.true_divide(totemp, area)
+            empdens[ ~ np.isfinite( empdens )] = 0
+
+        # handling divide by zero error and setting to 0
+        with np.errstate(divide='ignore', invalid='ignore'):
+            combinedens = np.true_divide(combined, area)
+            combinedens[ ~ np.isfinite( combinedens )] = 0
+
+        # write data to emmebank
+        util.set_matrix_numpy(eb, 'mo200',popdens)
+        util.set_matrix_numpy(eb, 'mo201',empdens)
+        util.set_matrix_numpy(eb, 'mo202',combinedens)
+
+        # reshape to create pandas dataframe
+        em = empdens.reshape(empdens.shape[0])
+        po = popdens.reshape(popdens.shape[0])
+        co = combinedens.reshape(combinedens.shape[0])
+        zo = zones.reshape(zones.shape[0])
+        df = pd.DataFrame({'TAZ1700': zo,
+               'popdens': po,
+               'empdens': em,
+               'combinedens' : co},
+               columns=['TAZ1700','popdens','empdens','combinedens'])
+
+        # write data to rtm sqlite database
+        db_loc = util.get_eb_path(eb)
+        db_path = os.path.join(db_loc, 'rtm.db')
+        conn = sqlite3.connect(db_path)
+        df.to_sql(name='densities', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        conn.close()
 
 
     @_m.logbook_trace("Initial Demand and Skim Matrix Creation")
     def matrix_batchins(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
 
+        ########################################################################
+        # densities
+        ########################################################################
+
+        util.initmat(eb, "mo200", "popdens", "Population density (per/hec)", 0)
+        util.initmat(eb, "mo201", "empdens", "Employment density (job/hec)", 0)
+        util.initmat(eb, "mo202", "combinedens", "Pop + Emp density (per hec)", 0)
 
         ########################################################################
         # demand matrices
