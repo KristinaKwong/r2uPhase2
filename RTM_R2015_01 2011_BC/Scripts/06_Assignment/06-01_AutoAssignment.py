@@ -82,7 +82,6 @@ class AutoAssignment(_m.Tool()):
         # 12 assignment classes: SOV: work by income (low, med, high) nonwork by income (low, med/high);
         #    HOV work by income (low, med, high) nonwork by income (low, med/high), light trucks, heavy trucks
         eb = am_scenario.emmebank
-        network_calculator = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         assign_traffic = _m.Modeller().tool("inro.emme.traffic_assignment.sola_traffic_assignment")
 
         num_processors = int(eb.matrix("ms142").data)
@@ -130,27 +129,9 @@ class AutoAssignment(_m.Tool()):
             spec["classes"][4]["analysis"] = {"results": {"od_values": distance}}
             assign_traffic(spec, scenario=scenario)
 
-        spec = {
-            "result": "",
-            "expression": "",
-            "aggregation": None,
-            "selections": {},
-            "type": "NETWORK_CALCULATION"
-        }
-        selection_type = {
-            "link": {"link": "all"},
-            "turn": {"incoming_link": "all", "outgoing_link": "all"}}
-        expressions_list = [["link", "@sov1+@sov2+@sov3+@sov4+@sov5", "@wsovl"],
-                            ["link", "@hov1+@hov2+@hov3+@hov4+@hov5", "@whovl"],
-                            ["turn", "@tsov1+@tsov2+@tsov3+@tsov4+@tsov5", "@wsovt"],
-                            ["turn", "@thov1+@thov2+@thov3+@thov4+@thov5", "@whovt"]]
-        for kind, expression, result in expressions_list:
-            spec["expression"] = expression
-            spec["selections"] = selection_type[kind]
-            spec["result"] = result
-            network_calculator(spec, scenario=am_scenario)
-            network_calculator(spec, scenario=md_scenario)
-            network_calculator(spec, scenario=pm_scenario)
+        self.calc_network_volumes(am_scenario)
+        self.calc_network_volumes(md_scenario)
+        self.calc_network_volumes(pm_scenario)
 
     def generate_specification(self, demand_matrices, stopping_criteria, num_processors, results=True):
         all_classes = []
@@ -201,6 +182,15 @@ class AutoAssignment(_m.Tool()):
         }
         return spec
 
+    @_m.logbook_trace("Calculate Link and Turn Aggregate Volumes")
+    def calc_network_volumes(self, scenario):
+        util = _m.Modeller().tool("translink.emme.util")
+
+        util.emme_link_calc(scenario, "@wsovl", "@sov1+@sov2+@sov3+@sov4+@sov5+@sov6")
+        util.emme_link_calc(scenario, "@whovl", "@hov1+@hov2+@hov3+@hov4+@hov5+@hov6")
+        util.emme_turn_calc(scenario, "@wsovt", "@tsov1+@tsov2+@tsov3+@tsov4+@tsov5+@tsov6")
+        util.emme_turn_calc(scenario, "@whovt", "@thov1+@thov2+@thov3+@thov4+@thov5+@thov6")
+
     @_m.logbook_trace("Calculate Fixed Network Costs")
     def calculate_network_costs(self, scenario):
         util = _m.Modeller().tool("translink.emme.util")
@@ -217,6 +207,7 @@ class AutoAssignment(_m.Tool()):
         util.emme_link_calc(scenario, "@lgvoc", "length * %s + 2 * @tolls" % (lgv_voc))
         util.emme_link_calc(scenario, "@hgvoc", "length * %s + 3 * @tolls + @tkpen" % (hgv_voc))
 
+    @_m.logbook_trace("Calculate Fixed Transit Line Costs")
     def calc_transit_costs(self, scenario):
         util = _m.Modeller().tool("translink.emme.util")
 
