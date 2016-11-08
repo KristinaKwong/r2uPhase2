@@ -198,7 +198,7 @@ class InputSettings(_m.Tool()):
         create_attr("TURN", "@wsovt", "SOV Turn Volume", 0, False, scen)
         create_attr("TURN", "@whovt", "HOV Turn Volume", 0, False, scen)
         create_attr("TURN", "@lgvtn", "LGV Turn Volume", 0, False, scen)
-        create_attr("TURN", "@hvgtn", "HGV Turn Volume", 0, False, scen)
+        create_attr("TURN", "@hgvtn", "HGV Turn Volume", 0, False, scen)
         create_attr("LINK", "@sovoc", "SOV Operating Cost ($)", 0, False, scen)
         create_attr("LINK", "@hovoc", "HOV Operating Cost ($)", 0, False, scen)
         create_attr("LINK", "@lgvoc", "LGV Operating Cost ($)", 0, False, scen)

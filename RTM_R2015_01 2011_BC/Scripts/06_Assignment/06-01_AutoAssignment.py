@@ -322,7 +322,7 @@ class AutoAssignment(_m.Tool()):
                 "generalized_cost": {
                     "link_costs": "@hgvoc", "perception_factor": 1.43},
                 "results": {
-                    "link_volumes": "@hgvol", "turn_volumes": "@hvgtn"}
+                    "link_volumes": "@hgvol", "turn_volumes": "@hgvtn"}
             })
         spec = {
             "type": "SOLA_TRAFFIC_ASSIGNMENT",

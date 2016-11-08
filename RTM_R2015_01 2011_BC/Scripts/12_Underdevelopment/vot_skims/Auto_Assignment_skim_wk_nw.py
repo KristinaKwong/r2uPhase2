@@ -110,7 +110,7 @@ class AutoAssignment(_m.Tool()):
         Link_Cost_Desc=["HOV auto op cost", "SOV auto op cost","Lg trk op cost", "Hv trk op cost", "Truck penalty"]
         Link_Vol_List= ["@whovl", "@wsovl", "@lgvol" , "@hgvol"]
         Link_Vol_Desc= ["HOV Vol","SOV Vol","Lg Vol", "Hv Vol"]
-        Link_Turn_List=["@whovt", "@wsovt", "@lgvtn" , "@hvgtn"]
+        Link_Turn_List=["@whovt", "@wsovt", "@lgvtn" , "@hgvtn"]
         Link_Turn_Desc=["HOV Trn","SOV Trn","Lg Trn", "Hv Trn"]
 
         for scenario in [am_scenario, md_scenario, pm_scenario]:
@@ -360,7 +360,7 @@ class AutoAssignment(_m.Tool()):
                 "generalized_cost": {
                     "link_costs": "@hgvoc", "perception_factor": 1.43},
                 "results": {
-                    "link_volumes": "@hgvol", "turn_volumes": "@hvgtn"}
+                    "link_volumes": "@hgvol", "turn_volumes": "@hgvtn"}
             })
         spec = {
             "type": "SOLA_TRAFFIC_ASSIGNMENT",
