@@ -88,83 +88,11 @@ class AutoAssignment(_m.Tool()):
     @_m.logbook_trace("Calculate Auto Cost")
     def calculate_auto_cost(self, am_scenario, md_scenario, pm_scenario):
         self.calculate_network_costs(am_scenario)
+        self.calc_transit_costs(am_scenario)
         self.calculate_network_costs(md_scenario)
+        self.calc_transit_costs(md_scenario)
         self.calculate_network_costs(pm_scenario)
-
-        #TODO Move the headway calculations to the transit assignment module
-        # KB: why are the transit heady calculations in the traffic assignment tool ??????
-
-        # Calculate effective headway based on
-        # 0-10 minutes 0.5
-        # 10-20 minutes 0.4
-        # 20-30 minutes 0.3
-        # > 30 minutes 0.1
-
-        spec = {
-            "result": "",
-            "expression": "",
-            "aggregation": None,
-            "selections": {
-                "transit_line": "all"
-            },
-            "type": "NETWORK_CALCULATION"
-        }
-
-        expression = "(hdw.le.10)*(hdw*.5)+(hdw.gt.10)*(hdw.le.20)*(5+(hdw-10)*.4)+(hdw.gt.20)*(hdw.le.30)*(5+4+(hdw-20)*.3)+(hdw.gt.30)*(5+4+3+(hdw-30)*.1)"
-        spec['expression'] = expression
-        spec['result'] = 'ut2'
-        calc_extra_attribute(spec, scenario=am_scenario)
-        calc_extra_attribute(spec, scenario=md_scenario)
-        calc_extra_attribute(spec, scenario=pm_scenario)
-
-        #TODO confirm this is the correct approach with INRO
-        # doing this explicitly now.  Need to double the headway to use 0.5 headway fraction in assignment
-        # for stops with only one service this will return to the effective headway as calculated above
-        # for stops with multiple services, this will assume a random arrival of vehicles at the stops
-        # it may make more sense to
-        expression = "ut2*2"
-        spec['expression'] = expression
-        spec['result'] = 'ut2'
-        calc_extra_attribute(spec, scenario=am_scenario)
-        calc_extra_attribute(spec, scenario=md_scenario)
-        calc_extra_attribute(spec, scenario=pm_scenario)
-
-        ## Calculate perception of headways based on following factors:
-        ##        "l" rail=0.8,
-        ##        "b" bus=1.2,
-        ##        "s" seabus=0.67,
-        ##        "g" BRT=1.1,
-        ##        "f" LRT=1.1,
-        ##        "h" Gondola=0.8,
-        ##        "r" WCE=0.8
-        spec = {
-            "result": "",
-            "expression": "",
-            "aggregation": None,
-            "selections": {
-                "transit_line": "all"
-            },
-            "type": "NETWORK_CALCULATION"
-        }
-
-        expressions_list = [["ut2*1.2", "mode=b", "ut1"],
-                            ["ut2*0.8", "mode=l", "ut1"],
-                            ["ut2*0.67", "mode=s", "ut1"],
-                            ["ut2*1.1", "mode=f", "ut1"],
-                            ["ut2*1.1", "mode=g", "ut1"],
-                            ["ut2*0.8", "mode=h", "ut1"],
-                            ["ut2*0.8", "mode=r", "ut1"],
-                            ["1", "all", "@ivttp"],
-                            ["3.5", "mode=b", "@ivttp"],
-                            ["3.5", "mode=g", "@ivttp"]]
-
-        for expression, selection, result in expressions_list:
-            spec["expression"] = expression
-            spec["selections"]["transit_line"] = selection
-            spec["result"] = result
-            calc_extra_attribute(spec, scenario=am_scenario)
-            calc_extra_attribute(spec, scenario=md_scenario)
-            calc_extra_attribute(spec, scenario=pm_scenario)
+        self.calc_transit_costs(pm_scenario)
 
     @_m.logbook_trace("Auto Traffic Assignment")
     def auto_assignment(self, am_scenario, md_scenario, pm_scenario, stopping_criteria):
@@ -305,6 +233,48 @@ class AutoAssignment(_m.Tool()):
         util.emme_link_calc(scenario, "@hovoc", "length * %s + @tolls / %s" % (auto_voc, 2.5))
         util.emme_link_calc(scenario, "@lgvoc", "length * %s + 2 * @tolls" % (lgv_voc))
         util.emme_link_calc(scenario, "@hgvoc", "length * %s + 3 * @tolls + @tkpen" % (hgv_voc))
+
+    def calc_transit_costs(self, scenario):
+        util = _m.Modeller().tool("translink.emme.util")
+
+        #TODO Move the headway calculations to the transit assignment module
+        # KB: why are the transit heady calculations in the traffic assignment tool ??????
+
+        # Calculate effective headway based on
+        # 0-10 minutes 0.5
+        # 10-20 minutes 0.4
+        # 20-30 minutes 0.3
+        # > 30 minutes 0.1
+        util.emme_tline_calc(scenario, "ut2", "(hdw.le.10)*(hdw*.5)+(hdw.gt.10)*(hdw.le.20)*(5+(hdw-10)*.4)+(hdw.gt.20)*(hdw.le.30)*(5+4+(hdw-20)*.3)+(hdw.gt.30)*(5+4+3+(hdw-30)*.1)")
+
+
+        #TODO confirm this is the correct approach with INRO
+        # doing this explicitly now.  Need to double the headway to use 0.5 headway fraction in assignment
+        # for stops with only one service this will return to the effective headway as calculated above
+        # for stops with multiple services, this will assume a random arrival of vehicles at the stops
+        # it may make more sense to
+        util.emme_tline_calc(scenario, "ut2", "ut2*2")
+
+        ## Calculate perception of headways based on following factors:
+        ##        "l" rail=0.8,
+        ##        "b" bus=1.2,
+        ##        "s" seabus=0.67,
+        ##        "g" BRT=1.1,
+        ##        "f" LRT=1.1,
+        ##        "h" Gondola=0.8,
+        ##        "r" WCE=0.8
+        util.emme_tline_calc(scenario, "ut1", "ut2*1.2",  sel_line="mode=b")
+        util.emme_tline_calc(scenario, "ut1", "ut2*0.8",  sel_line="mode=l")
+        util.emme_tline_calc(scenario, "ut1", "ut2*0.67", sel_line="mode=s")
+        util.emme_tline_calc(scenario, "ut1", "ut2*1.1",  sel_line="mode=f")
+        util.emme_tline_calc(scenario, "ut1", "ut2*1.1",  sel_line="mode=g")
+        util.emme_tline_calc(scenario, "ut1", "ut2*0.8",  sel_line="mode=h")
+        util.emme_tline_calc(scenario, "ut1", "ut2*0.8",  sel_line="mode=r")
+
+        ## Calculate in vehicle traval time perception factors
+        util.emme_tline_calc(scenario, "@ivttp", "1")
+        util.emme_tline_calc(scenario, "@ivttp", "3.5", sel_line="mode=b")
+        util.emme_tline_calc(scenario, "@ivttp", "3.5", sel_line="mode=g")
 
     @_m.logbook_trace("Matrix Batchin")
     def matrix_batchins(self, eb):
