@@ -87,52 +87,9 @@ class AutoAssignment(_m.Tool()):
 
     @_m.logbook_trace("Calculate Auto Cost")
     def calculate_auto_cost(self, am_scenario, md_scenario, pm_scenario):
-        eb = am_scenario.emmebank
-
-        voc = str(eb.matrix("ms18").data)
-        occ = str(eb.matrix("ms20").data)
-        toll_sens = str(eb.matrix("ms147").data)
-
-        ## Calculate generalized costs for various classes;
-        # @tkpen: truck penalty ;
-        # @sovoc: SOV gc;
-        # @hovoc: HOV gc;
-        # @lgvoc: light truck gc;
-        # @hgvoc: heavy truck gc
-
-        calc_extra_attribute = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
-        spec = {
-            "result": "",
-            "expression": "",
-            "selections": {"link": "all"},
-            "type": "NETWORK_CALCULATION"
-        }
-
-        expressions_list = [
-            ["0", "all", "@tkpen"],
-            ["length*100", "mode=n", "@tkpen"],
-            ["length*" + voc + "+@tolls*" + toll_sens, "all", "@sovoc"],
-            ["length*" + voc + "+@tolls*" + toll_sens + "/" + occ, "all", "@hovoc"],
-            ["length*0.24+@tolls*2*" + toll_sens, "all", "@lgvoc"],
-            ["length*0.56+@tolls*3*" + toll_sens + "+@tkpen", "all", "@hgvoc"]
-        ]
-        for expression, selection, result in expressions_list:
-            spec["expression"] = expression
-            spec["selections"]["link"] = selection
-            spec["result"] = result
-            calc_extra_attribute(spec, scenario=am_scenario)
-            calc_extra_attribute(spec, scenario=md_scenario)
-            calc_extra_attribute(spec, scenario=pm_scenario)
-
-        spec = {
-            "result": "",
-            "expression": "",
-            "aggregation": None,
-            "selections": {
-                "transit_line": "all"
-            },
-            "type": "NETWORK_CALCULATION"
-        }
+        self.calculate_network_costs(am_scenario)
+        self.calculate_network_costs(md_scenario)
+        self.calculate_network_costs(pm_scenario)
 
         #TODO Move the headway calculations to the transit assignment module
         # KB: why are the transit heady calculations in the traffic assignment tool ??????
@@ -332,6 +289,22 @@ class AutoAssignment(_m.Tool()):
             "performance_settings": {"number_of_processors": num_processors},
         }
         return spec
+
+    @_m.logbook_trace("Calculate Fixed Network Costs")
+    def calculate_network_costs(self, scenario):
+        util = _m.Modeller().tool("translink.emme.util")
+        eb = scenario.emmebank
+
+        auto_voc = eb.matrix("ms100").data
+        lgv_voc = eb.matrix("ms101").data
+        hgv_voc = eb.matrix("ms102").data
+
+        util.emme_link_calc(scenario, "@tkpen", 0)
+        util.emme_link_calc(scenario, "@tkpen", "length * 100", sel_link="mode=n")
+        util.emme_link_calc(scenario, "@sovoc", "length * %s + @tolls" % (auto_voc))
+        util.emme_link_calc(scenario, "@hovoc", "length * %s + @tolls / %s" % (auto_voc, 2.5))
+        util.emme_link_calc(scenario, "@lgvoc", "length * %s + 2 * @tolls" % (lgv_voc))
+        util.emme_link_calc(scenario, "@hgvoc", "length * %s + 3 * @tolls + @tkpen" % (hgv_voc))
 
     @_m.logbook_trace("Matrix Batchin")
     def matrix_batchins(self, eb):
