@@ -64,26 +64,9 @@ class AutoAssignment(_m.Tool()):
 
     @_m.logbook_trace("06-01 - Auto Assignment")
     def __call__(self, eb, scenarioam, scenariomd, scenariopm, stopping_criteria):
-
         self.matrix_batchins(eb)
-        self.calculate_truck_pce(eb)
         self.calculate_auto_cost(scenarioam, scenariomd, scenariopm)
         self.auto_assignment(scenarioam, scenariomd, scenariopm, stopping_criteria)
-
-    @_m.logbook_trace("Calculate Truck PCE")
-    def calculate_truck_pce(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
-        specs = []
-        #TODO move PCE factors to scalar matrix and initiate from InitEmmebank
-        specs.append(util.matrix_spec("mf1980", "mf980 * 1.5"))
-        specs.append(util.matrix_spec("mf1981", "mf981 * 2.5"))
-        specs.append(util.matrix_spec("mf1982", "mf982 * 1.5"))
-        specs.append(util.matrix_spec("mf1983", "mf983 * 2.5"))
-        specs.append(util.matrix_spec("mf1990", "mf990 * 1.5"))
-        specs.append(util.matrix_spec("mf1991", "mf991 * 2.5"))
-
-        util.compute_matrix(specs)
-
 
     @_m.logbook_trace("Calculate Auto Cost")
     def calculate_auto_cost(self, am_scenario, md_scenario, pm_scenario):
