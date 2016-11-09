@@ -8,10 +8,10 @@ import inro.modeller as _m
 import traceback as _traceback
 
 class AutoAssignment(_m.Tool()):
-
     am_scenario = _m.Attribute(_m.InstanceType)
     md_scenario = _m.Attribute(_m.InstanceType)
     pm_scenario = _m.Attribute(_m.InstanceType)
+
     relative_gap = _m.Attribute(float)
     best_relative_gap = _m.Attribute(float)
     normalized_gap = _m.Attribute(float)
@@ -83,6 +83,7 @@ class AutoAssignment(_m.Tool()):
 
         self.calc_network_costs(scenario)
         self.calc_transit_costs(scenario)
+        self.init_matrices(scenario.emmebank)
 
         # First assignment to generate toll skims
         spec = self.get_class_specs(scenario.emmebank, demands)
@@ -127,10 +128,10 @@ class AutoAssignment(_m.Tool()):
         self.add_mode_specification(all_classes, "x", demand_matrices["truck"][0], "@lgvoc", eb.matrix("ms218").data, "mf9912", "@lgvol", "@lgvtn")
         self.add_mode_specification(all_classes, "t", demand_matrices["truck"][1], "@hgvoc", eb.matrix("ms219").data, "mf9913", "@hgvol", "@hgvtn")
 
-        stopping_criteria = { "max_iterations"   : int(eb.matrix("ms40").data,
+        stopping_criteria = { "max_iterations"   : int(eb.matrix("ms40").data),
                               "relative_gap"     : eb.matrix("ms41").data,
                               "best_relative_gap": eb.matrix("ms42").data,
-                              "normalized_gap"   : eb.matrix("ms43").data)
+                              "normalized_gap"   : eb.matrix("ms43").data
                             }
         spec = {
             "type": "SOLA_TRAFFIC_ASSIGNMENT",
@@ -180,6 +181,7 @@ class AutoAssignment(_m.Tool()):
                                          "path_value": True
                                      }
                                  }
+                                }
         spec["classes"][ 0]["analysis"] = {"results": {"od_values": "mf9940"}}
         spec["classes"][ 1]["analysis"] = {"results": {"od_values": "mf9941"}}
         spec["classes"][ 2]["analysis"] = {"results": {"od_values": "mf9942"}}
@@ -214,7 +216,7 @@ class AutoAssignment(_m.Tool()):
         lgv_voc = eb.matrix("ms101").data
         hgv_voc = eb.matrix("ms102").data
 
-        util.emme_link_calc(scenario, "@tkpen", 0)
+        util.emme_link_calc(scenario, "@tkpen", "0")
         util.emme_link_calc(scenario, "@tkpen", "length * 100", sel_link="mode=n")
         util.emme_link_calc(scenario, "@sovoc", "length * %s + @tolls" % (auto_voc))
         #TODO: investigate why occupancy is only applied to tolls and not to fixed link costs
@@ -264,3 +266,51 @@ class AutoAssignment(_m.Tool()):
         util.emme_tline_calc(scenario, "@ivttp", "1")
         util.emme_tline_calc(scenario, "@ivttp", "3.5", sel_line="mode=b")
         util.emme_tline_calc(scenario, "@ivttp", "3.5", sel_line="mode=g")
+
+    def init_matrices(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
+
+        util.initmat(eb, "mf9900", "SOVTimeWkL",  "SOV Time Work Low Income",     0)
+        util.initmat(eb, "mf9901", "SOVTimeWkM",  "SOV Time Work Med Income",     0)
+        util.initmat(eb, "mf9902", "SOVTimeWkH",  "SOV Time Work High Income",    0)
+        util.initmat(eb, "mf9903", "SOVTimeNwkL", "SOV Time NonWork Low Income",  0)
+        util.initmat(eb, "mf9904", "SOVTimeNwkM", "SOV Time NonWork Med Income",  0)
+        util.initmat(eb, "mf9905", "SOVTimeNwkH", "SOV Time NonWork High Income", 0)
+        util.initmat(eb, "mf9906", "HOVTimeWkL",  "HOV Time Work Low Income",     0)
+        util.initmat(eb, "mf9907", "HOVTimeWkM",  "HOV Time Work Med Income",     0)
+        util.initmat(eb, "mf9908", "HOVTimeWkH",  "HOV Time Work High Income",    0)
+        util.initmat(eb, "mf9909", "HOVTimeNwkL", "HOV Time NonWork Low Income",  0)
+        util.initmat(eb, "mf9910", "HOVTimeNwkM", "HOV Time NonWork Med Income",  0)
+        util.initmat(eb, "mf9911", "HOVTimeNwkH", "HOV Time NonWork High Income", 0)
+        util.initmat(eb, "mf9912", "LGVTime",     "LGV Time", 0)
+        util.initmat(eb, "mf9913", "HGVTime",     "HGV Time", 0)
+
+        util.initmat(eb, "mf9920", "SOVDistWkL",  "SOV Distance Work Low Income",     0)
+        util.initmat(eb, "mf9921", "SOVDistWkM",  "SOV Distance Work Med Income",     0)
+        util.initmat(eb, "mf9922", "SOVDistWkH",  "SOV Distance Work High Income",    0)
+        util.initmat(eb, "mf9923", "SOVDistNwkL", "SOV Distance NonWork Low Income",  0)
+        util.initmat(eb, "mf9924", "SOVDistNwkM", "SOV Distance NonWork Med Income",  0)
+        util.initmat(eb, "mf9925", "SOVDistNwkH", "SOV Distance NonWork High Income", 0)
+        util.initmat(eb, "mf9926", "HOVDistWkL",  "HOV Distance Work Low Income",     0)
+        util.initmat(eb, "mf9927", "HOVDistWkM",  "HOV Distance Work Med Income",     0)
+        util.initmat(eb, "mf9928", "HOVDistWkH",  "HOV Distance Work High Income",    0)
+        util.initmat(eb, "mf9929", "HOVDistNwkL", "HOV Distance NonWork Low Income",  0)
+        util.initmat(eb, "mf9930", "HOVDistNwkM", "HOV Distance NonWork Med Income",  0)
+        util.initmat(eb, "mf9931", "HOVDistNwkH", "HOV Distance NonWork High Income", 0)
+        util.initmat(eb, "mf9932", "LGVDist",     "LGV Distance", 0)
+        util.initmat(eb, "mf9933", "HGVDist",     "HGV Distance", 0)
+
+        util.initmat(eb, "mf9940", "SOVTollWkL",  "SOV Toll Work Low Income",     0)
+        util.initmat(eb, "mf9941", "SOVTollWkM",  "SOV Toll Work Med Income",     0)
+        util.initmat(eb, "mf9942", "SOVTollWkH",  "SOV Toll Work High Income",    0)
+        util.initmat(eb, "mf9943", "SOVTollNwkL", "SOV Toll NonWork Low Income",  0)
+        util.initmat(eb, "mf9944", "SOVTollNwkM", "SOV Toll NonWork Med Income",  0)
+        util.initmat(eb, "mf9945", "SOVTollNwkH", "SOV Toll NonWork High Income", 0)
+        util.initmat(eb, "mf9946", "HOVTollWkL",  "HOV Toll Work Low Income",     0)
+        util.initmat(eb, "mf9947", "HOVTollWkM",  "HOV Toll Work Med Income",     0)
+        util.initmat(eb, "mf9948", "HOVTollWkH",  "HOV Toll Work High Income",    0)
+        util.initmat(eb, "mf9949", "HOVTollNwkL", "HOV Toll NonWork Low Income",  0)
+        util.initmat(eb, "mf9950", "HOVTollNwkM", "HOV Toll NonWork Med Income",  0)
+        util.initmat(eb, "mf9951", "HOVTollNwkH", "HOV Toll NonWork High Income", 0)
+        util.initmat(eb, "mf9952", "LGVToll",     "LGV Toll", 0)
+        util.initmat(eb, "mf9953", "HGVToll",     "HGV Toll", 0)

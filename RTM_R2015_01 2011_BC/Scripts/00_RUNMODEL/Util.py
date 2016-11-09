@@ -288,16 +288,16 @@ class Util(_m.Tool()):
         calc_link = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         spec = { "result": result,
                  "expression": expression,
-                 "selections": {"transit_line": sel_line}
+                 "selections": {"transit_line": sel_line},
                  "type": "NETWORK_CALCULATION"
                }
         calc_link(spec, scenario=scen)
 
-    def emme_segment_calc(self, scen, result, expression, sel_link="all", sel_line"all"):
+    def emme_segment_calc(self, scen, result, expression, sel_link="all", sel_line="all"):
         calc_link = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         spec = { "result": result,
                  "expression": expression,
-                 "selections": {"link": sel_link, "transit_line": sel_line}
+                 "selections": {"link": sel_link, "transit_line": sel_line},
                  "type": "NETWORK_CALCULATION"
                }
         calc_link(spec, scenario=scen)
