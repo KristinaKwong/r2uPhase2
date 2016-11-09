@@ -81,10 +81,7 @@ class AutoAssignment(_m.Tool()):
     def auto_assignment(self, am_scenario, md_scenario, pm_scenario, stopping_criteria):
         # 12 assignment classes: SOV: work by income (low, med, high) nonwork by income (low, med/high);
         #    HOV work by income (low, med, high) nonwork by income (low, med/high), light trucks, heavy trucks
-        eb = am_scenario.emmebank
         assign_traffic = _m.Modeller().tool("inro.emme.traffic_assignment.sola_traffic_assignment")
-
-        num_processors = int(eb.matrix("ms142").data)
 
         demands_list = [
             {
@@ -133,52 +130,45 @@ class AutoAssignment(_m.Tool()):
         self.calc_network_volumes(md_scenario)
         self.calc_network_volumes(pm_scenario)
 
-    def generate_specification(self, demand_matrices, stopping_criteria, num_processors, results=True):
-        all_classes = []
-        perception_factors = [6, 3, 3, 12, 6]
-        class_details = [
-            (zip(demand_matrices["sov"], perception_factors), "d", "@sovoc", "sov"),
-            (zip(demand_matrices["hov"], perception_factors), "c", "@hovoc", "hov")
-        ]
-        for details, mode, cost, name in class_details:
-            for i, (demand, perception) in enumerate(details, start=1):
-                result_sub_spec = {
-                    "link_volumes": "@" + name + str(i),
-                    "turn_volumes": "@t" + name + str(i),
+    def add_mode_specification(self, specs, mode, demand, gc_cost, gc_factor, link_vol, turn_vol):
+        spec = {"mode": mode,
+                "demand": demand,
+                "generalized_cost": { "link_costs": gc_cost, "perception_factor": gc_factor },
+                "results": { "link_volumes": link_vol, "turn_volumes": turn_vol }
                 }
-                all_classes.append({
-                    "mode": mode,
-                    "demand": demand,
-                    "generalized_cost": {
-                        "link_costs": cost,
-                        "perception_factor": perception
-                    },
-                    "results": result_sub_spec if results else {}
-                })
-        all_classes.append(
-            {
-                "mode": "x",
-                "demand": demand_matrices["truck"][0],
-                "generalized_cost": {
-                    "link_costs": "@lgvoc", "perception_factor": 2.03},
-                "results": {
-                    "link_volumes": "@lgvol", "turn_volumes": "@lgvtn"}
-            })
-        all_classes.append(
-            {
-                "mode": "t",
-                "demand": demand_matrices["truck"][1],
-                "generalized_cost": {
-                    "link_costs": "@hgvoc", "perception_factor": 1.43},
-                "results": {
-                    "link_volumes": "@hgvol", "turn_volumes": "@hgvtn"}
-            })
+        specs.append(spec)
+
+    def get_class_specs(self, eb, demand_matrices):
+        all_classes = []
+        # SOV Classes
+        self.add_mode_specification(all_classes, "d", demand_matrices["sov"][0], "@sovoc", eb.matrix("ms200").data, "@sov1", "@tsov1")
+        self.add_mode_specification(all_classes, "d", demand_matrices["sov"][1], "@sovoc", eb.matrix("ms201").data, "@sov2", "@tsov2")
+        self.add_mode_specification(all_classes, "d", demand_matrices["sov"][2], "@sovoc", eb.matrix("ms202").data, "@sov3", "@tsov3")
+        self.add_mode_specification(all_classes, "d", demand_matrices["sov"][3], "@sovoc", eb.matrix("ms206").data, "@sov4", "@tsov4")
+        self.add_mode_specification(all_classes, "d", demand_matrices["sov"][4], "@sovoc", eb.matrix("ms207").data, "@sov5", "@tsov5")
+        self.add_mode_specification(all_classes, "d", demand_matrices["sov"][5], "@sovoc", eb.matrix("ms208").data, "@sov6", "@tsov6")
+        # HOV Classes
+        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][0], "@hovoc", eb.matrix("ms203").data, "@hov1", "@thov1")
+        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][1], "@hovoc", eb.matrix("ms204").data, "@hov2", "@thov2")
+        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][2], "@hovoc", eb.matrix("ms205").data, "@hov3", "@thov3")
+        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][3], "@hovoc", eb.matrix("ms209").data, "@hov4", "@thov4")
+        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][4], "@hovoc", eb.matrix("ms210").data, "@hov5", "@thov5")
+        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][5], "@hovoc", eb.matrix("ms211").data, "@hov6", "@thov6")
+        # Truck Classes
+        self.add_mode_specification(all_classes, "x", demand_matrices["truck"][0], "@lgvoc", eb.matrix("ms218").data, "@lgvol", "@lgvtn")
+        self.add_mode_specification(all_classes, "t", demand_matrices["truck"][1], "@hgvoc", eb.matrix("ms219").data, "@hgvol", "@hgvtn")
+
+        stopping_criteria = { "max_iterations"   : int(eb.matrix("ms40").data,
+                              "relative_gap"     : eb.matrix("ms41").data,
+                              "best_relative_gap": eb.matrix("ms42").data,
+                              "normalized_gap"   : eb.matrix("ms43").data)
+                            }
         spec = {
             "type": "SOLA_TRAFFIC_ASSIGNMENT",
             "background_traffic": {"add_transit_vehicles": True},
             "classes": all_classes,
             "stopping_criteria": stopping_criteria,
-            "performance_settings": {"number_of_processors": num_processors},
+            "performance_settings": {"number_of_processors": int(eb.matrix("ms12").data)},
         }
         return spec
 
