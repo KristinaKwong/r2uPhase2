@@ -130,33 +130,35 @@ class AutoAssignment(_m.Tool()):
         self.calc_network_volumes(md_scenario)
         self.calc_network_volumes(pm_scenario)
 
-    def add_mode_specification(self, specs, mode, demand, gc_cost, gc_factor, link_vol, turn_vol):
+    def add_mode_specification(self, specs, mode, demand, gc_cost, gc_factor, travel_time, link_vol, turn_vol):
         spec = {"mode": mode,
                 "demand": demand,
                 "generalized_cost": { "link_costs": gc_cost, "perception_factor": gc_factor },
-                "results": { "link_volumes": link_vol, "turn_volumes": turn_vol }
+                "results": { "od_travel_times": {"shortest_paths": travel_time},
+                             "link_volumes": link_vol,
+                             "turn_volumes": turn_vol }
                 }
         specs.append(spec)
 
     def get_class_specs(self, eb, demand_matrices):
         all_classes = []
         # SOV Classes
-        self.add_mode_specification(all_classes, "d", demand_matrices["sov"][0], "@sovoc", eb.matrix("ms200").data, "@sov1", "@tsov1")
-        self.add_mode_specification(all_classes, "d", demand_matrices["sov"][1], "@sovoc", eb.matrix("ms201").data, "@sov2", "@tsov2")
-        self.add_mode_specification(all_classes, "d", demand_matrices["sov"][2], "@sovoc", eb.matrix("ms202").data, "@sov3", "@tsov3")
-        self.add_mode_specification(all_classes, "d", demand_matrices["sov"][3], "@sovoc", eb.matrix("ms206").data, "@sov4", "@tsov4")
-        self.add_mode_specification(all_classes, "d", demand_matrices["sov"][4], "@sovoc", eb.matrix("ms207").data, "@sov5", "@tsov5")
-        self.add_mode_specification(all_classes, "d", demand_matrices["sov"][5], "@sovoc", eb.matrix("ms208").data, "@sov6", "@tsov6")
+        self.add_mode_specification(all_classes, "d", demand_matrices["sov"][0], "@sovoc", eb.matrix("ms200").data, "mf9900", "@sov1", "@tsov1")
+        self.add_mode_specification(all_classes, "d", demand_matrices["sov"][1], "@sovoc", eb.matrix("ms201").data, "mf9901", "@sov2", "@tsov2")
+        self.add_mode_specification(all_classes, "d", demand_matrices["sov"][2], "@sovoc", eb.matrix("ms202").data, "mf9902", "@sov3", "@tsov3")
+        self.add_mode_specification(all_classes, "d", demand_matrices["sov"][3], "@sovoc", eb.matrix("ms206").data, "mf9903", "@sov4", "@tsov4")
+        self.add_mode_specification(all_classes, "d", demand_matrices["sov"][4], "@sovoc", eb.matrix("ms207").data, "mf9904", "@sov5", "@tsov5")
+        self.add_mode_specification(all_classes, "d", demand_matrices["sov"][5], "@sovoc", eb.matrix("ms208").data, "mf9905", "@sov6", "@tsov6")
         # HOV Classes
-        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][0], "@hovoc", eb.matrix("ms203").data, "@hov1", "@thov1")
-        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][1], "@hovoc", eb.matrix("ms204").data, "@hov2", "@thov2")
-        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][2], "@hovoc", eb.matrix("ms205").data, "@hov3", "@thov3")
-        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][3], "@hovoc", eb.matrix("ms209").data, "@hov4", "@thov4")
-        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][4], "@hovoc", eb.matrix("ms210").data, "@hov5", "@thov5")
-        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][5], "@hovoc", eb.matrix("ms211").data, "@hov6", "@thov6")
+        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][0], "@hovoc", eb.matrix("ms203").data, "mf9906", "@hov1", "@thov1")
+        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][1], "@hovoc", eb.matrix("ms204").data, "mf9907", "@hov2", "@thov2")
+        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][2], "@hovoc", eb.matrix("ms205").data, "mf9908", "@hov3", "@thov3")
+        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][3], "@hovoc", eb.matrix("ms209").data, "mf9909", "@hov4", "@thov4")
+        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][4], "@hovoc", eb.matrix("ms210").data, "mf9910", "@hov5", "@thov5")
+        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][5], "@hovoc", eb.matrix("ms211").data, "mf9911", "@hov6", "@thov6")
         # Truck Classes
-        self.add_mode_specification(all_classes, "x", demand_matrices["truck"][0], "@lgvoc", eb.matrix("ms218").data, "@lgvol", "@lgvtn")
-        self.add_mode_specification(all_classes, "t", demand_matrices["truck"][1], "@hgvoc", eb.matrix("ms219").data, "@hgvol", "@hgvtn")
+        self.add_mode_specification(all_classes, "x", demand_matrices["truck"][0], "@lgvoc", eb.matrix("ms218").data, "mf9912", "@lgvol", "@lgvtn")
+        self.add_mode_specification(all_classes, "t", demand_matrices["truck"][1], "@hgvoc", eb.matrix("ms219").data, "mf9913", "@hgvol", "@hgvtn")
 
         stopping_criteria = { "max_iterations"   : int(eb.matrix("ms40").data,
                               "relative_gap"     : eb.matrix("ms41").data,
@@ -172,6 +174,60 @@ class AutoAssignment(_m.Tool()):
         }
         return spec
 
+    def add_distance_path_analysis(self, spec):
+        spec["path_analysis"] = {"link_component": "length",
+                                 "operator": "+",
+                                 "selection_threshold": {"lower": -999999, "upper": 999999},
+                                 "path_to_od_composition": {
+                                     "considered_paths": "ALL",
+                                     "multiply_path_proportions_by": {
+                                         "analyzed_demand": False,
+                                         "path_value": True
+                                     }
+                                 }
+                                }
+        spec["classes"][ 0]["analysis"] = {"results": {"od_values": "mf9920"}}
+        spec["classes"][ 1]["analysis"] = {"results": {"od_values": "mf9921"}}
+        spec["classes"][ 2]["analysis"] = {"results": {"od_values": "mf9922"}}
+        spec["classes"][ 3]["analysis"] = {"results": {"od_values": "mf9923"}}
+        spec["classes"][ 4]["analysis"] = {"results": {"od_values": "mf9924"}}
+        spec["classes"][ 5]["analysis"] = {"results": {"od_values": "mf9925"}}
+        spec["classes"][ 6]["analysis"] = {"results": {"od_values": "mf9926"}}
+        spec["classes"][ 7]["analysis"] = {"results": {"od_values": "mf9927"}}
+        spec["classes"][ 8]["analysis"] = {"results": {"od_values": "mf9928"}}
+        spec["classes"][ 9]["analysis"] = {"results": {"od_values": "mf9929"}}
+        spec["classes"][10]["analysis"] = {"results": {"od_values": "mf9930"}}
+        spec["classes"][11]["analysis"] = {"results": {"od_values": "mf9931"}}
+        spec["classes"][12]["analysis"] = {"results": {"od_values": "mf9932"}}
+        spec["classes"][13]["analysis"] = {"results": {"od_values": "mf9933"}}
+
+    def add_toll_path_analysis(self, spec):
+        spec["path_analysis"] = {"link_component": "@tolls",
+                                 "turn_component": None,
+                                 "operator": "+",
+                                 "selection_threshold": {"lower": 0.01, "upper": 100},
+                                 "path_to_od_composition": {
+                                     "considered_paths": "SELECTED",
+                                     "multiply_path_proportions_by": {
+                                         "analyzed_demand": False,
+                                         "path_value": True
+                                     }
+                                 }
+        spec["classes"][ 0]["analysis"] = {"results": {"od_values": "mf9940"}}
+        spec["classes"][ 1]["analysis"] = {"results": {"od_values": "mf9941"}}
+        spec["classes"][ 2]["analysis"] = {"results": {"od_values": "mf9942"}}
+        spec["classes"][ 3]["analysis"] = {"results": {"od_values": "mf9943"}}
+        spec["classes"][ 4]["analysis"] = {"results": {"od_values": "mf9944"}}
+        spec["classes"][ 5]["analysis"] = {"results": {"od_values": "mf9945"}}
+        spec["classes"][ 6]["analysis"] = {"results": {"od_values": "mf9946"}}
+        spec["classes"][ 7]["analysis"] = {"results": {"od_values": "mf9947"}}
+        spec["classes"][ 8]["analysis"] = {"results": {"od_values": "mf9948"}}
+        spec["classes"][ 9]["analysis"] = {"results": {"od_values": "mf9949"}}
+        spec["classes"][10]["analysis"] = {"results": {"od_values": "mf9950"}}
+        spec["classes"][11]["analysis"] = {"results": {"od_values": "mf9951"}}
+        spec["classes"][12]["analysis"] = {"results": {"od_values": "mf9952"}}
+        spec["classes"][13]["analysis"] = {"results": {"od_values": "mf9953"}}
+        
     @_m.logbook_trace("Calculate Link and Turn Aggregate Volumes")
     def calc_network_volumes(self, scenario):
         util = _m.Modeller().tool("translink.emme.util")
