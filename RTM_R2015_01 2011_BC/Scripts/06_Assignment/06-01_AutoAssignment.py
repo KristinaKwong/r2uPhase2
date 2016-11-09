@@ -1,5 +1,5 @@
 ##---------------------------------------------------------------------
-##--TransLink Phase 2.2 Regional Transportation Model
+##--TransLink Phase 3.0 Regional Transportation Model
 ##--
 ##--Path: translink.emme.stage3.step6.autoassignment
 ##--Purpose: Auto assignment procedure
@@ -29,7 +29,7 @@ class AutoAssignment(_m.Tool()):
         pb = _m.ToolPageBuilder(self)
         pb.title = "Auto Assignment"
         pb.description = "Performs a multi-class auto assignment with " +\
-                         "12 classes. An analysis is also performed to calculate " +\
+                         "14 classes. An analysis is also performed to calculate " +\
                          "auto distance and auto time."
         pb.branding_text = "TransLink"
 
@@ -37,7 +37,7 @@ class AutoAssignment(_m.Tool()):
             pb.add_html(self.tool_run_msg)
 
         pb.add_select_scenario("am_scenario", title="AM scenario:")
-        pb.add_select_scenario("md_scenario", title="Midday scenario:")
+        pb.add_select_scenario("md_scenario", title="MD scenario:")
         pb.add_select_scenario("pm_scenario", title="PM scenario:")
 
         with pb.section("Stopping criteria:"):
@@ -51,84 +51,51 @@ class AutoAssignment(_m.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            stopping_criteria = {
-                "relative_gap": self.relative_gap,
-                "best_relative_gap": self.best_relative_gap,
-                "normalized_gap": self.normalized_gap,
-                "max_iterations": self.max_iterations
-            }
-            self(_m.Modeller().emmebank, self.am_scenario, self.md_scenario, self.pm_scenario, stopping_criteria)
+            #TODO: set ms4X matrices based on user input
+            self(self.am_scenario, self.md_scenario, self.pm_scenario)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("06-01 - Auto Assignment")
-    def __call__(self, eb, scenarioam, scenariomd, scenariopm, stopping_criteria):
-        self.matrix_batchins(eb)
-        self.calculate_auto_cost(scenarioam, scenariomd, scenariopm)
-        self.auto_assignment(scenarioam, scenariomd, scenariopm, stopping_criteria)
-
-    @_m.logbook_trace("Calculate Auto Cost")
-    def calculate_auto_cost(self, am_scenario, md_scenario, pm_scenario):
-        self.calculate_network_costs(am_scenario)
-        self.calc_transit_costs(am_scenario)
-        self.calculate_network_costs(md_scenario)
-        self.calc_transit_costs(md_scenario)
-        self.calculate_network_costs(pm_scenario)
-        self.calc_transit_costs(pm_scenario)
+    def __call__(self, scenarioam, scenariomd, scenariopm):
+        self.auto_assignment(scenarioam, scenariomd, scenariopm)
 
     @_m.logbook_trace("Auto Traffic Assignment")
-    def auto_assignment(self, am_scenario, md_scenario, pm_scenario, stopping_criteria):
-        # 12 assignment classes: SOV: work by income (low, med, high) nonwork by income (low, med/high);
-        #    HOV work by income (low, med, high) nonwork by income (low, med/high), light trucks, heavy trucks
+    def auto_assignment(self, am_scenario, md_scenario, pm_scenario):
+        am_demands = {"sov":   ["mf300", "mf301", "mf302", "mf303", "mf304", "mf305"],
+                      "hov":   ["mf306", "mf307", "mf308", "mf309", "mf310", "mf311"],
+                      "truck": ["mf312", "mf313"]}
+        self.assign_scen(am_scenario, am_demands)
+
+        md_demands = {"sov":   ["mf320", "mf321", "mf322", "mf323", "mf324", "mf325"],
+                      "hov":   ["mf326", "mf327", "mf328", "mf329", "mf330", "mf331"],
+                      "truck": ["mf332", "mf333"]}
+        self.assign_scen(md_scenario, md_demands)
+
+        pm_demands = {"sov":   ["mf340", "mf341", "mf342", "mf343", "mf344", "mf345"],
+                      "hov":   ["mf346", "mf347", "mf348", "mf349", "mf350", "mf351"],
+                      "truck": ["mf352", "mf353"]}
+        self.assign_scen(pm_scenario, pm_demands)
+
+    def assign_scen(self, scenario, demands):
         assign_traffic = _m.Modeller().tool("inro.emme.traffic_assignment.sola_traffic_assignment")
 
-        demands_list = [
-            {
-                "sov": ["mf843", "mf844", "mf845", "mf846", "mf847"],
-                "hov": ["mf848", "mf849", "mf850", "mf851", "mf852"],
-                "truck": ["mf1980", "mf1981"]
-            },
-            {
-                "sov": ["mf856", "mf857", "mf858", "mf859", "mf860"],
-                "hov": ["mf861", "mf862", "mf863", "mf864", "mf865"],
-                "truck": ["mf1982", "mf1983"]
-            },
-            {
-                "sov": ["mf869", "mf870", "mf871", "mf872", "mf873"],
-                "hov": ["mf874", "mf875", "mf876", "mf877", "mf878"],
-                "truck": ["mf1990", "mf1991"]
-            }
-        ]
+        self.calc_network_costs(scenario)
+        self.calc_transit_costs(scenario)
 
-        travel_time_list = ["mf931", "mf943", "mf2001"]
-        distance_list = ["mf930", "mf942", "mf2000"]
+        # First assignment to generate toll skims
+        spec = self.get_class_specs(scenario.emmebank, demands)
+        self.add_toll_path_analysis(spec)
+        assign_traffic(spec, scenario=scenario)
 
-        path_analysis = {
-            "link_component": "length",
-            "operator": "+",
-            "selection_threshold": {"lower": -999999, "upper": 999999},
-            "path_to_od_composition": {
-                "considered_paths": "ALL",
-                "multiply_path_proportions_by": {
-                    "analyzed_demand": False,
-                    "path_value": True
-                }
-            }
-        }
-        input_items = zip([am_scenario, md_scenario, pm_scenario], demands_list,
-                          travel_time_list, distance_list)
-        for scenario, demands, travel_time, distance in input_items:
-            spec = self.generate_specification(
-                demands, stopping_criteria, num_processors)
-            spec["path_analysis"] = path_analysis
-            spec["classes"][4]["results"]["od_travel_times"] = {"shortest_paths": travel_time}
-            spec["classes"][4]["analysis"] = {"results": {"od_values": distance}}
-            assign_traffic(spec, scenario=scenario)
+        # Second assignment to generate distance and time skims
+        spec = self.get_class_specs(scenario.emmebank, demands)
+        self.add_distance_path_analysis(spec)
+        assign_traffic(spec, scenario=scenario)
 
-        self.calc_network_volumes(am_scenario)
-        self.calc_network_volumes(md_scenario)
-        self.calc_network_volumes(pm_scenario)
+        # Aggregate network volumes post-assignment
+        self.calc_network_volumes(scenario)
 
     def add_mode_specification(self, specs, mode, demand, gc_cost, gc_factor, travel_time, link_vol, turn_vol):
         spec = {"mode": mode,
@@ -227,7 +194,7 @@ class AutoAssignment(_m.Tool()):
         spec["classes"][11]["analysis"] = {"results": {"od_values": "mf9951"}}
         spec["classes"][12]["analysis"] = {"results": {"od_values": "mf9952"}}
         spec["classes"][13]["analysis"] = {"results": {"od_values": "mf9953"}}
-        
+
     @_m.logbook_trace("Calculate Link and Turn Aggregate Volumes")
     def calc_network_volumes(self, scenario):
         util = _m.Modeller().tool("translink.emme.util")
@@ -238,7 +205,7 @@ class AutoAssignment(_m.Tool()):
         util.emme_turn_calc(scenario, "@whovt", "@thov1+@thov2+@thov3+@thov4+@thov5+@thov6")
 
     @_m.logbook_trace("Calculate Fixed Network Costs")
-    def calculate_network_costs(self, scenario):
+    def calc_network_costs(self, scenario):
         util = _m.Modeller().tool("translink.emme.util")
         eb = scenario.emmebank
 
@@ -297,81 +264,3 @@ class AutoAssignment(_m.Tool()):
         util.emme_tline_calc(scenario, "@ivttp", "1")
         util.emme_tline_calc(scenario, "@ivttp", "3.5", sel_line="mode=b")
         util.emme_tline_calc(scenario, "@ivttp", "3.5", sel_line="mode=g")
-
-    @_m.logbook_trace("Matrix Batchin")
-    def matrix_batchins(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
-        #TODO initialize matrices for bus and rail skims inside those tools rather then here in auto assignment
-        util.initmat(eb, "mf930", "eAuDsA", "Interim Skim AutoDistanceAM", 0)
-        util.initmat(eb, "mf931", "eAuTmA", "Interim Skim AutoTimeAM", 0)
-        util.initmat(eb, "mf932", "eAuTlA", "Interim Skim AutoTollAM", 0)
-        util.initmat(eb, "mf933", "eBsWtA", "Interim Skim BusTotalWaitAM", 0)
-        util.initmat(eb, "mf934", "eBsIvA", "Interim Skim BusIVTTAM", 0)
-        util.initmat(eb, "mf935", "eBsBrA", "Interim Skim BusAvgBoardAM", 0)
-        util.initmat(eb, "mf936", "eBsAxA", "Interim Skim BusAuxAM", 0)
-        util.initmat(eb, "mf937", "eRBIvA", "Interim Skim RailBusIVTTAM", 0)
-        util.initmat(eb, "mf938", "eRRIvA", "Interim Skim RailRailIVTTAM", 0)
-        util.initmat(eb, "mf939", "eRlWtA", "Interim Skim RailTotalWaitAM", 0)
-        util.initmat(eb, "mf940", "eRlBrA", "Interim Skim RailAvgBoardAM", 0)
-        util.initmat(eb, "mf941", "eRlAxA", "Interim Skim RailAuxAM", 0)
-        util.initmat(eb, "mf942", "eAuDsM", "Interim Skim AutoDistanceMD", 0)
-        util.initmat(eb, "mf943", "eAuTmM", "Interim Skim AutoTimeMD", 0)
-        util.initmat(eb, "mf944", "eAuTlM", "Interim Skim AutoTollMD", 0)
-        util.initmat(eb, "mf945", "eBsWtM", "Interim Skim BusTotalWaitMD", 0)
-        util.initmat(eb, "mf946", "eBsIvM", "Interim Skim BusIVTTMD", 0)
-        util.initmat(eb, "mf947", "eBsBrM", "Interim Skim BusAvgBoardMD", 0)
-        util.initmat(eb, "mf948", "eBsAxM", "Interim Skim BusAuxMD", 0)
-        util.initmat(eb, "mf949", "eRBIvM", "Interim Skim RailBusIVTTMD", 0)
-        util.initmat(eb, "mf950", "eRRIvM", "Interim Skim RailRailIVTTMD", 0)
-        util.initmat(eb, "mf951", "eRlWtM", "Interim Skim RailTotalWaitMD", 0)
-        util.initmat(eb, "mf952", "eRlBrM", "Interim Skim RailAvgBoardMD", 0)
-        util.initmat(eb, "mf953", "eRlAxM", "Interim Skim RailAuxMD", 0)
-        util.initmat(eb, "mf2000", "eAuDsP", "Interim Skim AutoDistancePM", 0)
-        util.initmat(eb, "mf2001", "eAuTmP", "Interim Skim AutoTimePM", 0)
-        util.initmat(eb, "mf2002", "eAuTlP", "Interim Skim AutoTollPM", 0)
-        util.initmat(eb, "mf2003", "eBsWtP", "Interim Skim BusTotalWaitPM", 0)
-        util.initmat(eb, "mf2004", "eBsIvP", "Interim Skim BusIVTTPM", 0)
-        util.initmat(eb, "mf2005", "eBsBrP", "Interim Skim BusAvgBoardPM", 0)
-        util.initmat(eb, "mf2006", "eBsAxP", "Interim Skim BusAuxPM", 0)
-        util.initmat(eb, "mf2007", "eRBIvP", "Interim Skim RailBusIVTTPM", 0)
-        util.initmat(eb, "mf2008", "eRRIvP", "Interim Skim RailRailIVTTPM", 0)
-        util.initmat(eb, "mf2009", "eRlWtP", "Interim Skim RailTotalWaitPM", 0)
-        util.initmat(eb, "mf2010", "eRlBrP", "Interim Skim RailAvgBoardPM", 0)
-        util.initmat(eb, "mf2011", "eRlAxP", "Interim Skim RailAuxPM", 0)
-        util.initmat(eb, "mf954", "eTrWtA", "Interim Skim TransitTotalWaitAM", 0)
-        util.initmat(eb, "mf955", "eTrIvA", "Interim Skim TransitIVTTAM", 0)
-        util.initmat(eb, "mf956", "eTrAxA", "Interim Skim TransitAuxAM", 0)
-        util.initmat(eb, "mf957", "eTrBrA", "Interim Skim TransitBoardAM", 0)
-        util.initmat(eb, "mf958", "eTrWtM", "Interim Skim TransitTotalWaitMD", 0)
-        util.initmat(eb, "mf959", "eTrIvM", "Interim Skim TransitIVTTMD", 0)
-        util.initmat(eb, "mf960", "eTrAxM", "Interim Skim TransitAuxMD", 0)
-        util.initmat(eb, "mf961", "eTrBrM", "Interim Skim TransitBoardMD", 0)
-        util.initmat(eb, "mf2012", "eTrWtP", "Interim Skim TransitTotalWaitPM", 0)
-        util.initmat(eb, "mf2013", "eTrIvP", "Interim Skim TransitIVTTPM", 0)
-        util.initmat(eb, "mf2014", "eTrAxP", "Interim Skim TransitAuxPM", 0)
-        util.initmat(eb, "mf2015", "eTrBrP", "Interim Skim TransitBoardPM", 0)
-
-        ## Initialize new block used for journey-level assignment
-        util.initmat(eb, "mf1070", "nRBIvA", "Interim-JL Skim RailBusIVTTAM", 0)
-        util.initmat(eb, "mf1071", "nRRIvA", "Interim-JL Skim RailRailIVTTAM", 0)
-        util.initmat(eb, "mf1072", "nRlWtA", "Interim-JL Skim RailTotalWaitAM", 0)
-        util.initmat(eb, "mf1073", "nRlBrA", "Interim-JL Skim RailAvgBoardAM", 0)
-        util.initmat(eb, "mf1074", "nRlAxA", "Interim-JL Skim RailAuxAM", 0)
-        util.initmat(eb, "mf1075", "nRBIvM", "Interim-JL Skim RailBusIVTTMD", 0)
-        util.initmat(eb, "mf1076", "nRRIvM", "Interim-JL Skim RailRailIVTTMD", 0)
-        util.initmat(eb, "mf1077", "nRlWtM", "Interim-JL Skim RailTotalWaitMD", 0)
-        util.initmat(eb, "mf1078", "nRlBrM", "Interim-JL Skim RailAvgBoardMD", 0)
-        util.initmat(eb, "mf1079", "nRlAxM", "Interim-JL Skim RailAuxMD", 0)
-        util.initmat(eb, "mf2016", "nRBIvP", "Interim-JL Skim RailBusIVTTPM", 0)
-        util.initmat(eb, "mf2017", "nRRIvP", "Interim-JL Skim RailRailIVTTPM", 0)
-        util.initmat(eb, "mf2018", "nRlWtP", "Interim-JL Skim RailTotalWaitPM", 0)
-        util.initmat(eb, "mf2019", "nRlBrP", "Interim-JL Skim RailAvgBoardPM", 0)
-        util.initmat(eb, "mf2020", "nRlAxP", "Interim-JL Skim RailAuxPM", 0)
-
-        ## add matrices for truck PCE
-        util.initmat(eb, "mf1980", "lgAMpce", "Veh-AMPH-PCE-LGV", 0)
-        util.initmat(eb, "mf1981", "hgAMpce", "Veh-AMPH-PCE-HGV", 0)
-        util.initmat(eb, "mf1982", "lgMDpce", "Veh-MDPH-PCE-LGV", 0)
-        util.initmat(eb, "mf1983", "hgMDpce", "Veh-MDPH-PCE-HGV", 0)
-        util.initmat(eb, "mf1990", "lgPMpce", "Veh-PMPH-PCE-LGV", 0)
-        util.initmat(eb, "mf1991", "hgPMpce", "Veh-PMPH-PCE-HGV", 0)
