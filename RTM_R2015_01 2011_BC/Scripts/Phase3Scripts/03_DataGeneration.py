@@ -157,6 +157,15 @@ class DataGeneration(_m.Tool()):
         util.initmat(eb, "mf352", "lgvPcePm", "light trucks PCE PM", 0)
         util.initmat(eb, "mf353", "hgvPcePm", "heavy trucks PCE PM", 0)
 
+        # Move seed demand into Work SOV/HOV Medium Income for AM/MD/PM
+        specs = []
+        specs.append(util.matrix_spec("mf301", "mf10"))
+        specs.append(util.matrix_spec("mf307", "mf11"))
+        specs.append(util.matrix_spec("mf321", "mf30"))
+        specs.append(util.matrix_spec("mf327", "mf31"))
+        specs.append(util.matrix_spec("mf341", "mf50"))
+        specs.append(util.matrix_spec("mf347", "mf51"))
+        util.compute_matrix(specs)
 
         ########################################################################
         # skim matrices
