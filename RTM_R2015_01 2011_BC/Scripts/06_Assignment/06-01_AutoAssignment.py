@@ -196,6 +196,7 @@ class AutoAssignment(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
         eb = scenario.emmebank
 
+        hov_occupancy = eb.matrix("ms44").data
         auto_voc = eb.matrix("ms100").data
         lgv_voc = eb.matrix("ms101").data
         hgv_voc = eb.matrix("ms102").data
@@ -203,7 +204,8 @@ class AutoAssignment(_m.Tool()):
         util.emme_link_calc(scenario, "@tkpen", 0)
         util.emme_link_calc(scenario, "@tkpen", "length * 100", sel_link="mode=n")
         util.emme_link_calc(scenario, "@sovoc", "length * %s + @tolls" % (auto_voc))
-        util.emme_link_calc(scenario, "@hovoc", "length * %s + @tolls / %s" % (auto_voc, 2.5))
+        #TODO: investigate why occupancy is only applied to tolls and not to fixed link costs
+        util.emme_link_calc(scenario, "@hovoc", "length * %s + @tolls / %s" % (auto_voc, hov_occupancy))
         util.emme_link_calc(scenario, "@lgvoc", "length * %s + 2 * @tolls" % (lgv_voc))
         util.emme_link_calc(scenario, "@hgvoc", "length * %s + 3 * @tolls + @tkpen" % (hgv_voc))
 
