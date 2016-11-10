@@ -36,12 +36,35 @@ class ExportNetwork(_m.Tool()):
         self.export(4000)
 
     def export(self, scen_id):
+        util = _m.Modeller().tool("translink.emme.util")
+
         mod = _m.Modeller()
         eb = mod.emmebank
         project = mod.desktop.project
         proj_path = os.path.dirname(project.path)
 
         scen = eb.scenario(scen_id)
+
+        # Clear the user settable state to zero for anything actually batched out
+        util.emme_node_calc(scen, "ui1", "0")
+        util.emme_node_calc(scen, "ui2", "0")
+        util.emme_node_calc(scen, "ui3", "0")
+
+        util.emme_link_calc(scen, "ul1", "0")
+        util.emme_link_calc(scen, "ul2", "0")
+        util.emme_link_calc(scen, "ul3", "0")
+
+        util.emme_turn_calc(scen, "up1", "0")
+        util.emme_turn_calc(scen, "up2", "0")
+        util.emme_turn_calc(scen, "up3", "0")
+
+        util.emme_tline_calc(scen, "ut1", "0")
+        util.emme_tline_calc(scen, "ut2", "0")
+        util.emme_tline_calc(scen, "ut3", "0")
+
+        util.emme_segment_calc(scen, "us1", "0")
+        util.emme_segment_calc(scen, "us2", "0")
+        util.emme_segment_calc(scen, "us3", "0")
 
         data_path = os.path.join(proj_path, "BaseNetworks", "base_network_%d.txt" % scen_id)
         net_trans = mod.tool("inro.emme.data.network.base.export_base_network")
