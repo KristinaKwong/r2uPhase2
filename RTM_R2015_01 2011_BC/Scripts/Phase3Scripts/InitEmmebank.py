@@ -267,10 +267,6 @@ class InitEmmebank(_m.Tool()):
 
     def initfunctions(self, eb):
         eb.create_function("fd01", "length * 60 / 40")
-        eb.create_function("fd02", "((volau + volad) / lanes - 1900) * .017 * ((volau + volad) / lanes .ge. 1900) + .01")
-        eb.create_function("fd03", "ul3")
-        eb.create_function("fd04", "((volau + volad) / lanes - 1600) * .0065 * ((volau + volad) / lanes .ge. 1600) + .25")
-        eb.create_function("fd05", "length * 60 / 4 * (1 + .6 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 4) + (volau + volad - 100 * lanes) * (((volau + volad) .ge. 100 * lanes) * .6) / lanes")
         eb.create_function("fd06", "40 + ((volau + volad) - 100) * 60 / (volau + volad) * ((volau +  volad) .ge. 100)")
         eb.create_function("fd22", "length * 60 / 20 + .85 * ((volau + volad) / (400 * lanes)) ^ 5")
         eb.create_function("fd23", "length * 60 / 30 + .85 * ((volau + volad) / (400 * lanes)) ^ 5")
@@ -340,7 +336,6 @@ class InitEmmebank(_m.Tool()):
         eb.create_function("fd87", "length * 60 / 70 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)")
         eb.create_function("fd88", "length * 60 / (80 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5.25)")
         eb.create_function("fd89", "length * 60 / (90 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5.25)")
-        eb.create_function("fd99", "length")
         # Update FT functions to include dwell time (us1) based on boardings and alightings
         eb.create_function("ft01", "timau + 3 * length + us1")
         eb.create_function("ft02", "timau + 1.8 * length + us1")
