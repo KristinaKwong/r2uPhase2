@@ -148,5 +148,5 @@ class FullModelRun(_m.Tool()):
         util.initmat(eb, "ms40", "IterAss", "Assignment Iterations", max_assignment_iterations)
         util.initmat(eb, "ms41", "ConRelGap", "ConvergenceRelativeGap", 0.0001)
         util.initmat(eb, "ms42", "ConBestRel", "ConvergenceBestRelative", 0.01)
-        util.initmat(eb, "ms43", "ConNorm", "ConvergaenceNormalized", 0.005)
+        util.initmat(eb, "ms43", "ConNorm", "ConvergenceNormalized", 0.005)
         util.initmat(eb, "ms44", "AutoOcc", "Standard HOV Occupancy", 2.4)
