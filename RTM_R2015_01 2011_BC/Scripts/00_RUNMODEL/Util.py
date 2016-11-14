@@ -9,6 +9,8 @@ import inro.modeller as _m
 import os
 import csv as csv
 
+import pandas as pd
+
 class Util(_m.Tool()):
     def page(self):
         pb = _m.ToolPageBuilder(self)
@@ -247,6 +249,19 @@ class Util(_m.Tool()):
                 np_arr = np_arr.reshape(np_arr.shape[0])
 
         mat.set_numpy_data(np_arr)
+
+    def get_pd_ij_df(self, eb):
+        index = self.get_matrix_numpy(eb, "mozoneindex")
+        i = pd.DataFrame(index, columns = ['i'])
+        j = pd.DataFrame(index, columns = ['j'])
+        i['key'] = 1
+        j['key'] = 1
+        ij = pd.merge(i, j,on='key')
+        ij.drop('key', axis=1, inplace=True)
+        return ij
+
+
+
 
     def sumproduct(self, factors, matrices):
         if (len(factors) != len(matrices)):
