@@ -46,11 +46,11 @@ class DataGeneration(_m.Tool()):
 
 
         # auto matrices for intrazonal calcs
-        intrazonal_mats = [AmSovWkDist, AmSovWkTime, AmSovNwkDist, AmSovNwkTime
-        ,AmHovWkDist, AmHovWkTime, AmHovNwkDist, AmHovNwkTime, MdSovWkDist
-        ,MdSovWkTime, MdSovNwkDist, MdSovNwkTime, MdHovWkDist, MdHovWkTime
-        ,MdHovNwkDist, MdHovNwkTime, PmSovWkDist, PmSovWkTime, PPmSovNwkDist
-        ,PmSovNwkTime, PmHovWkDist, PmHovWkTime, PmHovNwkDist, PmHovNwkTime]
+        intrazonal_mats = ["AmSovWkDist", "AmSovWkTime", "AmSovNwkDist", "AmSovNwkTime"
+        ,"AmHovWkDist", "AmHovWkTime", "AmHovNwkDist", "AmHovNwkTime", "MdSovWkDist"
+        ,"MdSovWkTime", "MdSovNwkDist", "MdSovNwkTime", "MdHovWkDist", "MdHovWkTime"
+        ,"MdHovNwkDist", "MdHovNwkTime", "PmSovWkDist", "PmSovWkTime", "PmSovNwkDist"
+        ,"PmSovNwkTime", "PmHovWkDist", "PmHovWkTime", "PmHovNwkDist", "PmHovNwkTime"]
 
         for skim in intrazonal_mats:
             mat = "mf{skim}".format(skim=skim)
@@ -83,7 +83,7 @@ class DataGeneration(_m.Tool()):
 
         # get length of array for reshaping database - should always be 1741 in phase 3
         # but allows for sub area models without breaking the calculation
-        length = int(np.sqrt(len(test_df['value'])))
+        length = int(np.sqrt(len(ij['value'])))
 
         # put back in emmebank with square shape
         util.set_matrix_numpy(eb, matrix, ij['value'].reshape(length,length))
