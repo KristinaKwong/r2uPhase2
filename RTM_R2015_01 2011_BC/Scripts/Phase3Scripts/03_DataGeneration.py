@@ -42,6 +42,24 @@ class DataGeneration(_m.Tool()):
         self.matrix_batchins(eb)
         self.calc_density(eb)
 
+        # place holder run initial assignments and skims
+
+
+        # auto matrices for intrazonal calcs
+        intrazonal_mats = [AmSovWkDist, AmSovWkTime, AmSovWkToll, AmSovNwkDist
+        ,AmSovNwkTime, AmSovNwkToll, AmHovWkDist, AmHovWkTime, AmHovWkToll
+        ,AmHovNwkDist, AmHovNwkTime, AmHovNwkToll, MdSovWkDist, MdSovWkTime
+        ,MdSovWkToll, MdSovNwkDist, MdSovNwkTime, MdSovNwkToll, MdHovWkDist
+        ,MdHovWkTime, MdHovWkToll, MdHovNwkDist, MdHovNwkTime, MdHovNwkToll
+        ,PmSovWkDist, PmSovWkTime, PmSovWkToll, PmSovNwkDist, PmSovNwkTime
+        ,PmSovNwkToll, PmHovWkDist, PmHovWkTime, PmHovWkToll, PmHovNwkDist
+        ,PmHovNwkTime, PmHovNwkToll]
+
+        for skim in intrazonal_mats:
+            mat = "mf{skim}".format(skim=skim)
+            self.intra_zonal_calc(eb = eb, matrix = mat)
+
+
 
 
     @_m.logbook_trace("Execute Intrazonal Calculation")
