@@ -83,7 +83,7 @@ class Util(_m.Tool()):
 
         if num_procs is None:
             eb = scenario.emmebank
-            num_procs = int(eb.matrix("ms142").data)
+            num_procs = int(eb.matrix("ms12").data)
 
         return comp(specs, scenario, num_procs)
 
