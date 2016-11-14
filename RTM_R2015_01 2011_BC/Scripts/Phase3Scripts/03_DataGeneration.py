@@ -46,14 +46,11 @@ class DataGeneration(_m.Tool()):
 
 
         # auto matrices for intrazonal calcs
-        intrazonal_mats = [AmSovWkDist, AmSovWkTime, AmSovWkToll, AmSovNwkDist
-        ,AmSovNwkTime, AmSovNwkToll, AmHovWkDist, AmHovWkTime, AmHovWkToll
-        ,AmHovNwkDist, AmHovNwkTime, AmHovNwkToll, MdSovWkDist, MdSovWkTime
-        ,MdSovWkToll, MdSovNwkDist, MdSovNwkTime, MdSovNwkToll, MdHovWkDist
-        ,MdHovWkTime, MdHovWkToll, MdHovNwkDist, MdHovNwkTime, MdHovNwkToll
-        ,PmSovWkDist, PmSovWkTime, PmSovWkToll, PmSovNwkDist, PmSovNwkTime
-        ,PmSovNwkToll, PmHovWkDist, PmHovWkTime, PmHovWkToll, PmHovNwkDist
-        ,PmHovNwkTime, PmHovNwkToll]
+        intrazonal_mats = [AmSovWkDist, AmSovWkTime, AmSovNwkDist, AmSovNwkTime
+        ,AmHovWkDist, AmHovWkTime, AmHovNwkDist, AmHovNwkTime, MdSovWkDist
+        ,MdSovWkTime, MdSovNwkDist, MdSovNwkTime, MdHovWkDist, MdHovWkTime
+        ,MdHovNwkDist, MdHovNwkTime, PmSovWkDist, PmSovWkTime, PPmSovNwkDist
+        ,PmSovNwkTime, PmHovWkDist, PmHovWkTime, PmHovNwkDist, PmHovNwkTime]
 
         for skim in intrazonal_mats:
             mat = "mf{skim}".format(skim=skim)
