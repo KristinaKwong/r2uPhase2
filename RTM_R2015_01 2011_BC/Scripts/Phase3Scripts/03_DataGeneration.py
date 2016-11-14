@@ -275,16 +275,19 @@ class DataGeneration(_m.Tool()):
         util.initmat(eb, "mf5204", "AmBusFare", "Am Bus Fare", 0)
 
         # MD
-        util.initmat(eb, "mf5210", "MdBusWait", "Md Bus Waiting Time", 0)
-        util.initmat(eb, "mf5211", "MdBusAux", "Md Bus Auxillary Time", 0)
-        util.initmat(eb, "mf5212", "MdBusBoard", "Md Bus Boardings", 0)
-        util.initmat(eb, "mf5213", "MdBusFare", "Md Bus Fare", 0)
+        util.initmat(eb, "mf5210", "MdBusIvtt", "Md Bus InVehicle Time", 0)
+        util.initmat(eb, "mf5211", "MdBusWait", "Md Bus Waiting Time", 0)
+        util.initmat(eb, "mf5212", "MdBusAux", "Md Bus Auxillary Time", 0)
+        util.initmat(eb, "mf5213", "MdBusBoard", "Md Bus Boardings", 0)
+        util.initmat(eb, "mf5214", "MdBusFare", "Md Bus Fare", 0)
 
         # PM
-        util.initmat(eb, "mf5220", "PmBusWait", "Pm Bus Waiting Time", 0)
-        util.initmat(eb, "mf5221", "PmBusAux", "Pm Bus Auxillary Time", 0)
-        util.initmat(eb, "mf5222", "PmBusBoard", "Pm Bus Boardings", 0)
-        util.initmat(eb, "mf5223", "PmBusFare", "Pm Bus Fare", 0)
+        util.initmat(eb, "mf5220", "PmBusIvtt", "Pm Bus InVehicle Time", 0)
+        util.initmat(eb, "mf5221", "PmBusWait", "Pm Bus Waiting Time", 0)
+        util.initmat(eb, "mf5222", "PmBusAux", "Pm Bus Auxillary Time", 0)
+        util.initmat(eb, "mf5223", "PmBusBoard", "Pm Bus Boardings", 0)
+        util.initmat(eb, "mf5224", "PmBusFare", "Pm Bus Fare", 0)
+
 
         #####################
         # Rail
