@@ -163,6 +163,13 @@ class DataGeneration(_m.Tool()):
         util.initmat(eb, "mo213", "distTc", "Distance to Town Centre", 0)
         util.initmat(eb, "mo214", "uniAcc", "University Accessibility", 0)
 
+        util.initmat(eb, "mo220", "autoAccLn", "Log Auto Accessibility", 0)
+        util.initmat(eb, "mo221", "transitAccLn", "Log Transit Accessibility", 0)
+        util.initmat(eb, "mo222", "distCbdLn", "Log Distance to CBD", 0)
+        util.initmat(eb, "mo223", "distTcLn", "Log Distance to Town Centre", 0)
+        util.initmat(eb, "mo224", "uniAccLn", "Log University Accessibility", 0)
+
+
         ########################################################################
         # demand matrices
         ########################################################################
