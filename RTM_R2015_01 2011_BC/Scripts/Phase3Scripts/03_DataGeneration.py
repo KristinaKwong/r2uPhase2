@@ -154,6 +154,16 @@ class DataGeneration(_m.Tool()):
         util.initmat(eb, "mo202", "combinedens", "Pop + Emp density (per hec)", 0)
 
         ########################################################################
+        # accessibilities
+        ########################################################################
+
+        util.initmat(eb, "mo210", "autoAcc", "Auto Accessibility", 0)
+        util.initmat(eb, "mo211", "transitAcc", "Transit Accessibility", 0)
+        util.initmat(eb, "mo212", "distCbd", "Distance to CBD", 0)
+        util.initmat(eb, "mo213", "distTc", "Distance to Town Centre", 0)
+        util.initmat(eb, "mo214", "uniAcc", "University Accessibility", 0)
+
+        ########################################################################
         # demand matrices
         ########################################################################
 
