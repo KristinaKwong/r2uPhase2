@@ -255,7 +255,7 @@ class InitEmmebank(_m.Tool()):
 
         # get zone list into numpy
         # update with numpy helper if it's available
-        df = pd.DataFrame({"TAZ": eb.matrix("mo51").get_numpy_data()})
+        df = pd.DataFrame({"TAZ1741": eb.matrix("mozoneindex").get_numpy_data()})
         # set location for database creation
         db_file_path = os.path.join(util.get_eb_path(eb), "rtm.db")
         # connect to database (created automatically upon connection)
