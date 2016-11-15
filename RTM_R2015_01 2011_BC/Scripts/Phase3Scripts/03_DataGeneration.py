@@ -59,6 +59,7 @@ class DataGeneration(_m.Tool()):
         # note transit_uni_accessibility has to run before other accessibilities
         # this is where the data table is started
         self.transit_uni_accessibility(eb)
+        self.auto_accessibility(eb)
 
     @_m.logbook_trace("Calculate Transit Accessibility")
     def transit_uni_accessibility(self, eb):
@@ -224,6 +225,86 @@ class DataGeneration(_m.Tool()):
     	db_path = os.path.join(db_loc, 'rtm.db')
     	conn = sqlite3.connect(db_path)
     	ij_acc.to_sql(name='accessibilities', con=conn, flavor='sqlite', index=False, if_exists='replace')
+    	conn.close()
+
+    @_m.logbook_trace("Calculate Auto Accessibility")
+    def auto_accessibility(self, eb):
+    	util = _m.Modeller().tool("translink.emme.util")
+
+    	# define parameters
+    	am_weight = 0.29
+    	md_weight = 0.45
+    	pm_weight = 0.26
+    	time_cut = 30
+
+    	mat_am = 'mfAmSovNwkTime'
+    	mat_md = 'mfMdSovNwkTime'
+    	mat_pm = 'mfPmSovNwkTime'
+
+    	# get zone numbers
+    	index = util.get_matrix_numpy(eb, "mozoneindex")
+    	index = index.reshape(index.shape[0])
+
+    	# get employment data
+    	emp = util.get_matrix_numpy(eb, "moTotEmp")
+    	emp = emp.reshape(emp.shape[0])
+
+    	# merge employment and zone number
+    	emp = pd.DataFrame({"taz": index, "emp": emp}, columns=["taz","emp"])
+
+    	# create a long matrix of zone interchanges and join employment data to it
+    	ij = util.get_pd_ij_df(eb)
+    	ij = pd.merge(ij, emp, how='left', left_on = ['j'], right_on = ['taz'])
+    	ij['emp'].fillna(0, inplace=True)
+    	ij.drop(['taz'], axis=1, inplace=True)
+
+
+    	# add skim data to data frame with
+    	ij['amtime'] = util.get_matrix_numpy(eb, mat_am).flatten()
+    	ij['mdtime'] = util.get_matrix_numpy(eb, mat_md).flatten()
+    	ij['pmtime'] = util.get_matrix_numpy(eb, mat_pm).flatten()
+
+    	# create blended accessibility value of jobs meeting the time cutoff criteria
+    	ij['auto_acc'] = np.where(ij['amtime'] <= time_cut, ij['emp'] * am_weight, 0) \
+    	+ np.where(ij['mdtime'] <= time_cut, ij['emp'] * md_weight, 0)  \
+    	+ np.where(ij['pmtime'] <= time_cut, ij['emp'] * pm_weight, 0)
+
+    	#aggregate to the origin zone
+    	ij_acc = ij['auto_acc'].groupby(ij['i'])
+    	ij_acc = ij_acc.sum()
+    	ij_acc = ij_acc.reset_index()
+
+    	# log transform, floor output at 0
+    	if ij_acc['auto_acc'].min() < 1:
+    		log_trans_const = 1 - ij_acc['auto_acc'].min()
+    	else:
+    		log_trans_const = 0
+
+    	ij_acc['auto_acc_ln'] = np.log(ij_acc['auto_acc'] + log_trans_const)
+
+    	# write data back to emmebank
+    	# note have to reshape to work with util helper
+    	util.set_matrix_numpy(eb, 'moautoAcc', ij_acc['auto_acc'].reshape(ij_acc['auto_acc'].shape[0], 1))
+    	util.set_matrix_numpy(eb, 'moautoAccLn', ij_acc['auto_acc_ln'].reshape(ij_acc['auto_acc_ln'].shape[0], 1))
+
+
+    	#######################################################################
+    	# Write everything to sqlite database
+    	#######################################################################
+
+    	# establish connection to db and write out data
+    	# note, this table is created in transit accessibilities method and expanded with the other accessibilities methods
+    	db_loc = util.get_eb_path(eb)
+    	db_path = os.path.join(db_loc, 'rtm.db')
+    	conn = sqlite3.connect(db_path)
+
+    	# read existing accessibilities table from db and append with this data set
+    	df = pd.read_sql("select * from accessibilities", conn)
+    	df = pd.merge(df, ij_acc, how='left', left_on=['TAZ1741'], right_on = ['i'])
+    	df.drop('i', axis=1, inplace=True)
+
+    	# write the data back to database
+    	df.to_sql(name='accessibilities', con=conn, flavor='sqlite', index=False, if_exists='replace')
     	conn.close()
 
 
