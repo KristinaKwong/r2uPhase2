@@ -56,6 +56,176 @@ class DataGeneration(_m.Tool()):
             mat = "mf{skim}".format(skim=skim)
             self.intra_zonal_calc(eb = eb, matrix = mat)
 
+        # note transit_uni_accessibility has to run before other accessibilities
+        # this is where the data table is started
+        self.transit_uni_accessibility(eb)
+
+    @_m.logbook_trace("Calculate Transit Accessibility")
+    def transit_uni_accessibility(self, eb):
+    	util = _m.Modeller().tool("translink.emme.util")
+
+    	# define parameters
+    	am_weight = 0.20
+    	md_weight = 0.41
+    	pm_weight = 0.39
+    	time_cut = 30
+    	time_cut_uni = 30
+
+    	# get zone numbers
+    	index = util.get_matrix_numpy(eb, "mozoneindex")
+    	index = index.reshape(index.shape[0])
+
+    	# get employment data
+    	emp = util.get_matrix_numpy(eb, "moTotEmp")
+    	emp = emp.reshape(emp.shape[0])
+
+    	# get post sec FTE enrolment
+    	ps = util.get_matrix_numpy(eb, "moEnrolPsFte")
+    	ps = ps.reshape(ps.shape[0])
+
+    	# merge employment and zone number
+    	emp = pd.DataFrame({"taz": index, "emp": emp, "postsec" : ps}, columns=["taz","emp", "postsec"])
+
+    	# create a long matrix of zone interchanges and join employment data to it
+    	ij = util.get_pd_ij_df(eb)
+    	ij = pd.merge(ij, emp, how='left', left_on = ['j'], right_on = ['taz'])
+    	ij['emp'].fillna(0, inplace=True)
+    	ij.drop(['taz'], axis=1, inplace=True)
+
+
+    	# get bus skims
+    	AmBusIvtt = util.get_matrix_numpy(eb, 'mfAmBusIvtt').flatten()
+    	AmBusWait = util.get_matrix_numpy(eb, 'mfAmBusIvtt').flatten()
+    	AmBusAux = util.get_matrix_numpy(eb, 'mfAmBusIvtt').flatten()
+
+    	MdBusIvtt = util.get_matrix_numpy(eb, 'mfMdBusIvtt').flatten()
+    	MdBusWait = util.get_matrix_numpy(eb, 'mfMdBusIvtt').flatten()
+    	MdBusAux = util.get_matrix_numpy(eb, 'mfMdBusIvtt').flatten()
+
+    	PmBusIvtt = util.get_matrix_numpy(eb, 'mfPmBusIvtt').flatten()
+    	PmBusWait = util.get_matrix_numpy(eb, 'mfPmBusIvtt').flatten()
+    	PmBusAux = util.get_matrix_numpy(eb, 'mfPmBusIvtt').flatten()
+
+    	# get rail skims
+    	AmRailIvtt = util.get_matrix_numpy(eb, 'mfAmRailIvtt').flatten()
+    	AmRailIvttBus = util.get_matrix_numpy(eb, 'mfAmRailIvttBus').flatten()
+    	AmRailWait = util.get_matrix_numpy(eb, 'mfAmRailIvtt').flatten()
+    	AmRailAux = util.get_matrix_numpy(eb, 'mfAmRailIvtt').flatten()
+
+    	MdRailIvtt = util.get_matrix_numpy(eb, 'mfMdRailIvtt').flatten()
+    	MdRailIvttBus = util.get_matrix_numpy(eb, 'mfMdRailIvttBus').flatten()
+    	MdRailWait = util.get_matrix_numpy(eb, 'mfMdRailIvtt').flatten()
+    	MdRailAux = util.get_matrix_numpy(eb, 'mfMdRailIvtt').flatten()
+
+    	PmRailIvtt = util.get_matrix_numpy(eb, 'mfPmRailIvtt').flatten()
+    	PmRailIvttBus = util.get_matrix_numpy(eb, 'mfPmRailIvttBus').flatten()
+    	PmRailWait = util.get_matrix_numpy(eb, 'mfPmRailIvtt').flatten()
+    	PmRailAux = util.get_matrix_numpy(eb, 'mfPmRailIvtt').flatten()
+
+    	# get Wce Skims
+    	AmWceIvtt = util.get_matrix_numpy(eb, 'mfAmWceIvtt').flatten()
+    	AmWceIvttRail = util.get_matrix_numpy(eb, 'mfAmWceIvttRail').flatten()
+    	AmWceIvttBus = util.get_matrix_numpy(eb, 'mfAmWceIvttBus').flatten()
+    	AmWceWait = util.get_matrix_numpy(eb, 'mfAmWceIvtt').flatten()
+    	AmWceAux = util.get_matrix_numpy(eb, 'mfAmWceIvtt').flatten()
+
+    	PmWceIvtt = util.get_matrix_numpy(eb, 'mfPmWceIvtt').flatten()
+    	PmWceIvttRail = util.get_matrix_numpy(eb, 'mfPmWceIvttRail').flatten()
+    	PmWceIvttBus = util.get_matrix_numpy(eb, 'mfPmWceIvttBus').flatten()
+    	PmWceWait = util.get_matrix_numpy(eb, 'mfPmWceIvtt').flatten()
+    	PmWceAux = util.get_matrix_numpy(eb, 'mfPmWceIvtt').flatten()
+
+    	# calculate total travel time by mode and add to ij matrix
+    	ij['AmBusTime'] = AmBusIvtt + AmBusWait + AmBusAux
+    	ij['MdBusTime'] = MdBusIvtt + MdBusWait + MdBusAux
+    	ij['PmBusTime'] = PmBusIvtt + PmBusWait + PmBusAux
+
+    	ij['AmRailTime'] = AmRailIvtt + AmRailWait + AmRailAux + AmRailIvttBus
+    	ij['MdRailTime'] = MdRailIvtt + MdRailWait + MdRailAux + MdRailIvttBus
+    	ij['PmRailTime'] = PmRailIvtt + PmRailWait + PmRailAux + PmRailIvttBus
+
+    	ij['AmWceTime'] = AmWceIvtt + AmWceWait + AmWceAux + AmWceIvttBus + AmWceIvttRail
+    	ij['PmWceTime'] = PmWceIvtt + PmWceWait + PmWceAux + PmWceIvttBus + PmWceIvttRail
+
+    	# get the minimum of the 3 travel times and call that transit time
+    	# conceptually similar to the generic transit skim
+    	ij['AmTransitTime'] = ij[['AmBusTime','AmRailTime','AmWceTime']].min(axis=1)
+    	ij['MdTransitTime'] = ij[['MdBusTime','MdRailTime']].min(axis=1)
+    	ij['PmTransitTime'] = ij[['PmBusTime','PmRailTime','PmWceTime']].min(axis=1)
+
+    	#######################################################################
+    	# Calculate and set transit accessibilities
+    	#######################################################################
+
+    	# calculate weighted accessibilities
+    	ij['transit_acc'] = np.where(ij['AmTransitTime'] <= time_cut, ij['emp'] * am_weight, 0) \
+    	+ np.where(ij['MdTransitTime'] <= time_cut, ij['emp'] * md_weight, 0)  \
+    	+ np.where(ij['PmTransitTime'] <= time_cut, ij['emp'] * pm_weight, 0)
+
+    	#aggregate to the origin zone
+    	ij_acc = ij['transit_acc'].groupby(ij['i'])
+    	ij_acc = ij_acc.sum()
+    	ij_acc = ij_acc.reset_index()
+
+    	# log transform, floor output at 0
+    	if ij_acc['transit_acc'].min() < 1:
+    		log_trans_const = 1 - ij_acc['transit_acc'].min()
+    	else:
+    		log_trans_const = 0
+
+    	ij_acc['transit_acc_ln'] = np.log(ij_acc['transit_acc'] + log_trans_const)
+
+    	# write data back to emmebank
+    	# note have to reshape to work with util helper
+    	util.set_matrix_numpy(eb, 'motransitAcc', ij_acc['transit_acc'].reshape(ij_acc['transit_acc'].shape[0], 1))
+    	util.set_matrix_numpy(eb, 'motransitAccLn', ij_acc['transit_acc_ln'].reshape(ij_acc['transit_acc_ln'].shape[0], 1))
+
+
+    	#######################################################################
+    	# Calculate and set university accessibilities
+    	#######################################################################
+
+    	# calculate accessibilities
+    	ij['uni_acc'] = np.where(ij['MdTransitTime'] <= time_cut_uni, ij['postsec'], 0)
+
+    	#aggregate to the origin zone
+    	ij_acc_u = ij['uni_acc'].groupby(ij['i'])
+    	ij_acc_u = ij_acc_u.sum()
+    	ij_acc_u = ij_acc_u.reset_index()
+
+
+    	# log transform, floor output at 0
+    	if ij_acc_u['uni_acc'].min() < 1:
+    		log_trans_const = 1 - ij_acc_u['uni_acc'].min()
+    	else:
+    		log_trans_const = 0
+
+    	ij_acc_u['uni_acc_ln'] = np.log(ij_acc_u['uni_acc'] + log_trans_const)
+
+
+    	# note have to reshape to work with util helper
+    	util.set_matrix_numpy(eb, 'mouniAcc', ij_acc_u['uni_acc'].reshape(ij_acc_u['uni_acc'].shape[0], 1))
+    	util.set_matrix_numpy(eb, 'mouniAccLn', ij_acc_u['uni_acc_ln'].reshape(ij_acc_u['uni_acc_ln'].shape[0], 1))
+
+
+    	#######################################################################
+    	# Write everything to sqlite database
+    	#######################################################################
+
+    	# create index column for table.  name denotes full index
+    	ij_acc.rename(columns={'i' : 'TAZ1741'}, inplace=True)
+    	# merge both accessibility dataframes and drop addition taz column (i)
+    	ij_acc = pd.merge(ij_acc, ij_acc_u, how='left', left_on=['TAZ1741'], right_on=['i'])
+    	ij_acc.drop('i', axis=1, inplace=True)
+
+    	# establish connection to db and write out data
+    	# note, this table is created in transit accessibilities method and expanded with the methods
+    	db_loc = util.get_eb_path(eb)
+    	db_path = os.path.join(db_loc, 'rtm.db')
+    	conn = sqlite3.connect(db_path)
+    	ij_acc.to_sql(name='accessibilities', con=conn, flavor='sqlite', index=False, if_exists='replace')
+    	conn.close()
+
 
 
 
