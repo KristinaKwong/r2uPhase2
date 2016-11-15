@@ -346,11 +346,11 @@ class DataGeneration(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
 
         # get data from emmebank
-        zones = util.get_matrix_numpy(eb, "mo51")
-        totpop = util.get_matrix_numpy(eb, "mo10")
-        totemp = util.get_matrix_numpy(eb, "mo20")
+        zones = util.get_matrix_numpy(eb, "mozoneindex")
+        totpop = util.get_matrix_numpy(eb, "moTotPop")
+        totemp = util.get_matrix_numpy(eb, "moTotEmp")
         combined = totpop + totemp
-        area = util.get_matrix_numpy(eb, "mo50")
+        area = util.get_matrix_numpy(eb, "moareahc")
 
         # calculate densities
         # handling divide by zero error and setting to 0
@@ -369,9 +369,9 @@ class DataGeneration(_m.Tool()):
             combinedens[ ~ np.isfinite( combinedens )] = 0
 
         # write data to emmebank
-        util.set_matrix_numpy(eb, 'mo200',popdens)
-        util.set_matrix_numpy(eb, 'mo201',empdens)
-        util.set_matrix_numpy(eb, 'mo202',combinedens)
+        util.set_matrix_numpy(eb, 'mopopdens',popdens)
+        util.set_matrix_numpy(eb, 'moempdens',empdens)
+        util.set_matrix_numpy(eb, 'mocombinedens',combinedens)
 
         # reshape to create pandas dataframe
         em = empdens.reshape(empdens.shape[0])
