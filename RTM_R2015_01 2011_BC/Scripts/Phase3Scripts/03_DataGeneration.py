@@ -60,6 +60,94 @@ class DataGeneration(_m.Tool()):
         # this is where the data table is started
         self.transit_uni_accessibility(eb)
         self.auto_accessibility(eb)
+        self.dist_cbd_tc(eb)
+
+    @_m.logbook_trace("Calculate Minimum Distances to CBD and Towncentre")
+    def dist_cbd_tc(self, eb):
+    	util = _m.Modeller().tool("translink.emme.util")
+
+    	# acquire cbd and TC dummies
+    	sql = """
+    	SELECT
+    	ti.TAZ1741, IFNULL(du.cbd, 0) as cbd, IFNULL(du.towncentre, 0) as tc
+    	FROM taz_index ti
+    	LEFT JOIN dummies du on du.TAZ1700 = ti.TAZ1741
+    	"""
+    	db_loc = util.get_eb_path(eb)
+    	db_path = os.path.join(db_loc, 'rtm.db')
+    	conn = sqlite3.connect(db_path)
+    	df = pd.read_sql(sql, conn)
+    	conn.close()
+
+
+    	# get ij matrix and distance skims
+    	# currently using non-work
+    	# find minimum distance across all times of day
+    	ij = util.get_pd_ij_df(eb)
+
+    	ij['distAm'] = util.get_matrix_numpy(eb, "mfAmSovNwkDist").flatten()
+    	ij['distMd'] = util.get_matrix_numpy(eb, "mfMdSovNwkDist").flatten()
+    	ij['distPm'] = util.get_matrix_numpy(eb, "mfPmSovNwkDist").flatten()
+    	ij['dist'] = ij[['distAm','distMd','distPm']].min(axis=1)
+
+    	# join the dummies to the skims
+    	ij = pd.merge(ij, df, how='left', left_on=['j'], right_on=['TAZ1741'])
+
+
+    	# cbd min distance calculation
+    	ij_cbd = ij[ij.cbd == 1]
+    	ij_cbd = ij['dist'].groupby(ij['i'])
+    	ij_cbd = ij_cbd.min()
+    	ij_cbd = ij_cbd.reset_index()
+    	ij_cbd['dist'] = np.where(ij_cbd['dist'] == 0, 0.5, ij_cbd['dist']) # set a minumimum distance so it isnt nothing
+
+    	# create log transformed version for cbd
+    	if ij_cbd['dist'].min() < 1:
+    		log_trans_const = 1 - ij_cbd['dist'].min()
+    	else:
+    		log_trans_const = 0
+
+    	ij_cbd['dist_cbd_ln'] = np.log(ij_cbd['dist'] + log_trans_const)
+    	ij_cbd.rename(columns={'dist' : 'dist_cbd'}, inplace=True)
+
+    	# tc min distance calculation
+    	ij_tc = ij[ij.tc == 1]
+    	ij_tc = ij['dist'].groupby(ij['i'])
+    	ij_tc = ij_tc.min()
+    	ij_tc = ij_tc.reset_index()
+    	ij_tc['dist'] = np.where(ij_tc['dist'] == 0, 0.5, ij_tc['dist']) # set a minumimum distance so it isnt nothing
+
+    	# create log transformed version for tc
+    	if ij_tc['dist'].min() < 1:
+    		log_trans_const = 1 - ij_tc['dist'].min()
+    	else:
+    		log_trans_const = 0
+
+    	ij_tc['dist_tc_ln'] = np.log(ij_tc['dist'] + log_trans_const)
+    	ij_tc.rename(columns={'dist' : 'dist_tc'}, inplace=True)
+
+    	# one dataframe with both min distances
+    	ij_dist = pd.merge(ij_cbd, ij_tc, how='left', left_on=['i'], right_on=['i'])
+
+    	# write to emmebank
+    	util.set_matrix_numpy(eb, 'modistCbd', ij_dist['dist_cbd'].reshape(ij_dist['dist_cbd'].shape[0], 1))
+    	util.set_matrix_numpy(eb, 'modistCbdLn', ij_dist['dist_cbd_ln'].reshape(ij_dist['dist_cbd_ln'].shape[0], 1))
+    	util.set_matrix_numpy(eb, 'modistTc', ij_dist['dist_tc'].reshape(ij_dist['dist_tc'].shape[0], 1))
+    	util.set_matrix_numpy(eb, 'modistTcLn', ij_dist['dist_tc_ln'].reshape(ij_dist['dist_tc_ln'].shape[0], 1))
+
+    	# write data to sqlite database
+    	db_loc = util.get_eb_path(eb)
+    	db_path = os.path.join(db_loc, 'rtm.db')
+    	conn = sqlite3.connect(db_path)
+
+    	# read existing accessibilities table from db and append with this data set
+    	df = pd.read_sql("select * from accessibilities", conn)
+    	df = pd.merge(df, ij_dist, how='left', left_on=['TAZ1741'], right_on = ['i'])
+    	df.drop('i', axis=1, inplace=True)
+
+    	# write the data back to database
+    	df.to_sql(name='accessibilities', con=conn, flavor='sqlite', index=False, if_exists='replace')
+    	conn.close()
 
     @_m.logbook_trace("Calculate Transit Accessibility")
     def transit_uni_accessibility(self, eb):
@@ -306,8 +394,6 @@ class DataGeneration(_m.Tool()):
     	# write the data back to database
     	df.to_sql(name='accessibilities', con=conn, flavor='sqlite', index=False, if_exists='replace')
     	conn.close()
-
-
 
 
     @_m.logbook_trace("Execute Intrazonal Calculation")
