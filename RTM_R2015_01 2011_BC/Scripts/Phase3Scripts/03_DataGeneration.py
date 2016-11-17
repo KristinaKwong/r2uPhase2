@@ -42,11 +42,12 @@ class DataGeneration(_m.Tool()):
         self.matrix_batchins(eb)
         self.calc_density(eb)
 
-        # place holder run initial assignments and skims
-
-
-        # auto matrices for intrazonal calcs
-        # TODO: wire up initial assignment call
+        # Run Initial Assignment to generate skims from seed demands
+        auto_assign = _m.Modeller().tool("translink.emme.stage3.step6.autoassignment")
+        am_scen = eb.scenario(int(eb.matrix("ms2").data))
+        md_scen = eb.scenario(int(eb.matrix("ms3").data))
+        pm_scen = eb.scenario(int(eb.matrix("ms4").data))
+        auto_assign(am_scen, md_scen, pm_scen)
 
         # note transit_uni_accessibility has to run before other accessibilities
         # this is where the data table is started

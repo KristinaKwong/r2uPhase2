@@ -116,64 +116,49 @@ class AutoAssignment(_m.Tool()):
     @_m.logbook_trace("Execute Intrazonal Calculation")
     def calc_intrazonal_skims(self, eb):
         # Calculate Intrazonal GC Minutes
-        self.calc_intrazonal_skim("mf9900")
-        self.calc_intrazonal_skim("mf9901")
-        self.calc_intrazonal_skim("mf9902")
-        self.calc_intrazonal_skim("mf9903")
-        self.calc_intrazonal_skim("mf9904")
-        self.calc_intrazonal_skim("mf9905")
-        self.calc_intrazonal_skim("mf9906")
-        self.calc_intrazonal_skim("mf9907")
-        self.calc_intrazonal_skim("mf9908")
-        self.calc_intrazonal_skim("mf9909")
-        self.calc_intrazonal_skim("mf9910")
-        self.calc_intrazonal_skim("mf9911")
-        self.calc_intrazonal_skim("mf9912")
-        self.calc_intrazonal_skim("mf9913")
+        self.calc_intrazonal_skim(eb, "mf9900")
+        self.calc_intrazonal_skim(eb, "mf9901")
+        self.calc_intrazonal_skim(eb, "mf9902")
+        self.calc_intrazonal_skim(eb, "mf9903")
+        self.calc_intrazonal_skim(eb, "mf9904")
+        self.calc_intrazonal_skim(eb, "mf9905")
+        self.calc_intrazonal_skim(eb, "mf9906")
+        self.calc_intrazonal_skim(eb, "mf9907")
+        self.calc_intrazonal_skim(eb, "mf9908")
+        self.calc_intrazonal_skim(eb, "mf9909")
+        self.calc_intrazonal_skim(eb, "mf9910")
+        self.calc_intrazonal_skim(eb, "mf9911")
+        self.calc_intrazonal_skim(eb, "mf9912")
+        self.calc_intrazonal_skim(eb, "mf9913")
 
         # Calculate Intrazonal Distance
-        self.calc_intrazonal_skim("mf9920")
-        self.calc_intrazonal_skim("mf9921")
-        self.calc_intrazonal_skim("mf9922")
-        self.calc_intrazonal_skim("mf9923")
-        self.calc_intrazonal_skim("mf9924")
-        self.calc_intrazonal_skim("mf9925")
-        self.calc_intrazonal_skim("mf9926")
-        self.calc_intrazonal_skim("mf9927")
-        self.calc_intrazonal_skim("mf9928")
-        self.calc_intrazonal_skim("mf9929")
-        self.calc_intrazonal_skim("mf9930")
-        self.calc_intrazonal_skim("mf9931")
-        self.calc_intrazonal_skim("mf9932")
-        self.calc_intrazonal_skim("mf9933")
+        self.calc_intrazonal_skim(eb, "mf9920")
+        self.calc_intrazonal_skim(eb, "mf9921")
+        self.calc_intrazonal_skim(eb, "mf9922")
+        self.calc_intrazonal_skim(eb, "mf9923")
+        self.calc_intrazonal_skim(eb, "mf9924")
+        self.calc_intrazonal_skim(eb, "mf9925")
+        self.calc_intrazonal_skim(eb, "mf9926")
+        self.calc_intrazonal_skim(eb, "mf9927")
+        self.calc_intrazonal_skim(eb, "mf9928")
+        self.calc_intrazonal_skim(eb, "mf9929")
+        self.calc_intrazonal_skim(eb, "mf9930")
+        self.calc_intrazonal_skim(eb, "mf9931")
+        self.calc_intrazonal_skim(eb, "mf9932")
+        self.calc_intrazonal_skim(eb, "mf9933")
 
     def calc_intrazonal_skim(self, eb, matrix):
         util = _m.Modeller().tool("translink.emme.util")
 
-        # get longform index of all zone combinations
-        ij = util.get_pd_ij_df(eb)
+        np_mat = util.get_matrix_numpy(eb, matrix)
 
-        # add matrix to dataframe
-        ij['value'] = util.get_matrix_numpy(eb, matrix).flatten()
+        # calculate the mimimum non-zero value in each row and set half that
+        # as the intrazonal value
+        for i in xrange(np_mat.shape[0]):
+            np_mat[i][i] = np_mat[i][np_mat[i] > 0].min() * 0.5
 
-        # calculate the minimum ij value where value > 0
-        ijmin = ij[ij.value > 0]
-        ijmin = ijmin['value'].groupby(ijmin['i'])
-        ijmin = ijmin.min() * 0.5
-        ijmin = ijmin.reset_index()
-
-        # attach minimum value to input matrix and replace value for intrazonals
-        ij = pd.merge(ij, ijmin, how='left', left_on = ['i','j'], right_on = ['i','i'])
-        ij['value'] = np.where(ij['i'] == ij['j'], ij['value_y'], ij['value_x'])
-        ij.drop(['value_x', 'value_y'], axis=1, inplace=True)
-        ij['value'].fillna(0, inplace=True)
-
-        # get length of array for reshaping database - should always be 1741 in phase 3
-        # but allows for sub area models without breaking the calculation
-        length = int(np.sqrt(len(ij['value'])))
-
-        # put back in emmebank with square shape
-        util.set_matrix_numpy(eb, matrix, ij['value'].reshape(length,length))
+        # write the updated matrix back to the emmebank
+        util.set_matrix_numpy(eb, matrix, np_mat)
 
     def store_skims(self, scenario, skim_list):
         util = _m.Modeller().tool("translink.emme.util")
