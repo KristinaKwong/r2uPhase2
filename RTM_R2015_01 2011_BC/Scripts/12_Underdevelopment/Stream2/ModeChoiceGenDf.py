@@ -60,15 +60,15 @@ class ModeChoiceGenDf(_m.Tool()):
         BLWcNw = util.get_matrix_numpy(eb, "mf6132").flatten() #Best Lot WCE Non-Work
 
         ##############################################################################
-        ##       Auto Skims work
+        ##       Auto Skims work SOV
         ##############################################################################
         # Initialize Time Distance and Toll Skim Dictionaries
         TimeDict, DistDict, TollDict = {}, {}, {}
         # Generate Skim Dictionaries
         #                                 AM    ,    MD   ,     PM
-        self.GenSkimDict(eb, TimeDict, ["mf2031", "mf2034", "mf2037"]) # Time
-        self.GenSkimDict(eb, DistDict, ["mf2030", "mf2033", "mf2036"]) # Distance
-        self.GenSkimDict(eb, TollDict, ["mf2032", "mf2035", "mf2038"]) # Toll
+        self.GenSkimDict(eb, DistDict, ["mf5000", "mf5020", "mf5040"]) # Distance
+        self.GenSkimDict(eb, TimeDict, ["mf5001", "mf5021", "mf5041"]) # Time
+        self.GenSkimDict(eb, TollDict, ["mf5002", "mf5022", "mf5042"]) # Toll
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
         BlendDict = {'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8000', 'mf8001', 'mf8002']}, # Home-base work
@@ -77,9 +77,9 @@ class ModeChoiceGenDf(_m.Tool()):
         for keys, values in BlendDict.items():
             Df = {}
             # Calculate blended skim
-            Df['AutoTim'] = self.testcalc(values, TimeDict)
-            Df['AutoDis'] = self.testcalc(values, DistDict)
-            Df['AutoTol'] = self.testcalc(values, TollDict)
+            Df['AutoTim'] = self.calc_blend(values, TimeDict)
+            Df['AutoDis'] = self.calc_blend(values, DistDict)
+            Df['AutoTol'] = self.calc_blend(values, TollDict)
         # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoTim'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoDis'])
@@ -105,9 +105,9 @@ class ModeChoiceGenDf(_m.Tool()):
             Dfmerge = pd.DataFrame({'Or': Or, 'De': De, 'BL': values['BL']})
             # Generate second data frame and attach to it blended
             Df_Auto_Leg = pd.DataFrame({'OrAuto': Or, 'DeAuto': De})
-            Df_Auto_Leg['AutoTim'] = self.testcalc(values, TimeDict).flatten()
-            Df_Auto_Leg['AutoDis'] = self.testcalc(values, DistDict).flatten()
-            Df_Auto_Leg['AutoTol'] = self.testcalc(values, TollDict).flatten()
+            Df_Auto_Leg['AutoTim'] = self.calc_blend(values, TimeDict).flatten()
+            Df_Auto_Leg['AutoDis'] = self.calc_blend(values, DistDict).flatten()
+            Df_Auto_Leg['AutoTol'] = self.calc_blend(values, TollDict).flatten()
             # Join the two data frames based on skims from Origin to the Best Lot
             Df = pd.merge(Dfmerge, Df_Auto_Leg, left_on = ['Or', 'BL'],
                      right_on = ['OrAuto', 'DeAuto'], how = 'left')
@@ -119,15 +119,43 @@ class ModeChoiceGenDf(_m.Tool()):
         del Df, Dfmerge, Df_Auto_Leg, TimeDict, DistDict, TollDict
 
         ##############################################################################
-        ##       Auto Skims Non-work
+        ##       Auto Skims work HOV
         ##############################################################################
         # Initialize Time Distance and Toll Skim Dictionaries
         TimeDict, DistDict, TollDict = {}, {}, {}
         # Generate Skim Dictionaries
         #                                 AM    ,    MD   ,     PM
-        self.GenSkimDict(eb, TimeDict, ["mf931", "mf943", "mf2001"]) # Time
-        self.GenSkimDict(eb, DistDict, ["mf930", "mf942", "mf2000"]) # Distance
-        self.GenSkimDict(eb, TollDict, ["mf932", "mf944", "mf2002"]) # Toll
+        self.GenSkimDict(eb, DistDict, ["mf5006", "mf5026", "mf5046"]) # Distance
+        self.GenSkimDict(eb, TimeDict, ["mf5007", "mf5027", "mf5047"]) # Time
+        self.GenSkimDict(eb, TollDict, ["mf5008", "mf5028", "mf5048"]) # Toll
+
+        # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
+        BlendDict = {'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8000', 'mf8001', 'mf8002']}, # Home-base work
+                     'nhbw':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8100', 'mf8101', 'mf8102']}} # Non-home base work
+
+        for keys, values in BlendDict.items():
+            Df = {}
+            # Calculate blended skim
+            Df['AutoTim'] = self.calc_blend(values, TimeDict)
+            Df['AutoDis'] = self.calc_blend(values, DistDict)
+            Df['AutoTol'] = self.calc_blend(values, TollDict)
+        # Put results back in the Emmebank
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoTim'])
+            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoDis'])
+            util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'])
+
+        del Df, TimeDict, DistDict, TollDict
+
+        ##############################################################################
+        ##       Auto Skims Non-work SOV
+        ##############################################################################
+        # Initialize Time Distance and Toll Skim Dictionaries
+        TimeDict, DistDict, TollDict = {}, {}, {}
+        # Generate Skim Dictionaries
+        #                                 AM    ,    MD   ,     PM
+        self.GenSkimDict(eb, DistDict, ["mf5003", "mf5023", "mf5043"]) # Distance
+        self.GenSkimDict(eb, TimeDict, ["mf5004", "mf5024", "mf5044"]) # Time
+        self.GenSkimDict(eb, TollDict, ["mf5005", "mf5025", "mf5045"]) # Toll
         #
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM     Where Blended Matrices get stored in same order as above
         BlendDict = {'hbsc':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8200', 'mf8201', 'mf8202']}, # Home-base school
@@ -141,9 +169,9 @@ class ModeChoiceGenDf(_m.Tool()):
         for keys, values in BlendDict.items():
             # Calculate blended skim
             Df = {}
-            Df['AutoTim'] = self.testcalc(values, TimeDict)
-            Df['AutoDis'] = self.testcalc(values, DistDict)
-            Df['AutoTol'] = self.testcalc(values, TollDict)
+            Df['AutoTim'] = self.calc_blend(values, TimeDict)
+            Df['AutoDis'] = self.calc_blend(values, DistDict)
+            Df['AutoTol'] = self.calc_blend(values, TollDict)
             # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoTim'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoDis'])
@@ -159,12 +187,6 @@ class ModeChoiceGenDf(_m.Tool()):
                        'hbunprr':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8550', 'mf8551', 'mf8552'], #HbUni Rail
                        'BL': BLRlNw},
                        'hbunprw':{'PA':[0.4, 0.0, 0.15], 'AP':[0.05, 0.0, 0.4], 'Mat':['mf8560', 'mf8561', 'mf8562'], #HbUni WCE
-                       'BL': BLWcNw},
-                       'hbsoprb':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8740', 'mf8741', 'mf8742'], #HbSoc Bus
-                       'BL': BLBsNw},
-                       'hbsoprr':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8750', 'mf8751', 'mf8752'], #HbSoc Rail
-                       'BL': BLRlNw},
-                       'hbsoprw':{'PA':[0.4, 0.0, 0.15], 'AP':[0.05, 0.0, 0.4], 'Mat':['mf8760', 'mf8761', 'mf8762'], #HbSoc WCE
                        'BL': BLWcNw}
                        }
 
@@ -175,9 +197,9 @@ class ModeChoiceGenDf(_m.Tool()):
             Dfmerge = pd.DataFrame({'Or': Or, 'De': De, 'BL': values['BL']})
             # Generate second data frame and attach to it blended auto skims
             Df_Auto_Leg = pd.DataFrame({'OrAuto': Or, 'DeAuto': De})
-            Df_Auto_Leg['AutoTim'] = self.testcalc(values, TimeDict).flatten()
-            Df_Auto_Leg['AutoDis'] = self.testcalc(values, DistDict).flatten()
-            Df_Auto_Leg['AutoTol'] = self.testcalc(values, TollDict).flatten()
+            Df_Auto_Leg['AutoTim'] = self.calc_blend(values, TimeDict).flatten()
+            Df_Auto_Leg['AutoDis'] = self.calc_blend(values, DistDict).flatten()
+            Df_Auto_Leg['AutoTol'] = self.calc_blend(values, TollDict).flatten()
             # Join the two data frames based on skims from Origin to the Best Lot
             Df = pd.merge(Dfmerge, Df_Auto_Leg, left_on = ['Or', 'BL'],
                      right_on = ['OrAuto', 'DeAuto'], how = 'left')
@@ -187,7 +209,40 @@ class ModeChoiceGenDf(_m.Tool()):
             util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'].reshape(1741,1741))
         # delete data generated to free up memory
         del Df, Dfmerge, Df_Auto_Leg, TimeDict, DistDict, TollDict
-#
+
+        ##############################################################################
+        ##       Auto Skims Non-work HOV
+        ##############################################################################
+        # Initialize Time Distance and Toll Skim Dictionaries
+        TimeDict, DistDict, TollDict = {}, {}, {}
+        # Generate Skim Dictionaries
+        #                                 AM    ,    MD   ,     PM
+        self.GenSkimDict(eb, DistDict, ["mf5009", "mf5029", "mf5049"]) # Distance
+        self.GenSkimDict(eb, TimeDict, ["mf5010", "mf5030", "mf5050"]) # Time
+        self.GenSkimDict(eb, TollDict, ["mf5011", "mf5031", "mf5051"]) # Toll
+        #
+        # Blend Factors            AM , MD  , PM           AM  ,MD , PM     Where Blended Matrices get stored in same order as above
+        BlendDict = {'hbsc':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8200', 'mf8201', 'mf8202']}, # Home-base school
+                     'hbsh':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8300', 'mf8301', 'mf8302']}, # Home-base shopping
+                     'hbpb':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8400', 'mf8401', 'mf8402']}, # Home-base personal business
+                     'hbun':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8500', 'mf8501', 'mf8502']}, # Home-base unitiversity
+                     'hbes':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8600', 'mf8601', 'mf8602']}, # Home-base escorting
+                     'hbso':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8700', 'mf8701', 'mf8702']}, # Home-base social
+                     'nhbo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8800', 'mf8801', 'mf8802']}} # non-home base other
+
+        for keys, values in BlendDict.items():
+            # Calculate blended skim
+            Df = {}
+            Df['AutoTim'] = self.calc_blend(values, TimeDict)
+            Df['AutoDis'] = self.calc_blend(values, DistDict)
+            Df['AutoTol'] = self.calc_blend(values, TollDict)
+            # Put results back in the Emmebank
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoTim'])
+            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoDis'])
+            util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'])
+        # delete data generated to free up memory
+        del Df, TimeDict, DistDict, TollDict
+
 #       ##############################################################################
 #       ##       Bus Skims
 #       ##############################################################################
@@ -196,11 +251,11 @@ class ModeChoiceGenDf(_m.Tool()):
         BusBrdDict, BusFarDict = {}, {}
         # Generate Skim Dictionaries
         #                                  AM    ,    MD   ,     PM
-        self.GenSkimDict(eb, BusIVTDict, ["mf107", "mf112", "mf2107"]) # Bus IVTT
-        self.GenSkimDict(eb, BusWatDict, ["mf106", "mf111", "mf2106"]) # Bus Wait
-        self.GenSkimDict(eb, BusAuxDict, ["mf109", "mf114", "mf2109"]) # Bus Aux
-        self.GenSkimDict(eb, BusBrdDict, ["mf108", "mf113", "mf2108"]) # Bus Boarding
-        self.GenSkimDict(eb, BusFarDict, ["mf160", "mf160", "mf160"])  # Bus Fare
+        self.GenSkimDict(eb, BusIVTDict, ["mf5200", "mf5210", "mf5220"]) # Bus IVTT
+        self.GenSkimDict(eb, BusWatDict, ["mf5201", "mf5211", "mf5221"]) # Bus Wait
+        self.GenSkimDict(eb, BusAuxDict, ["mf5202", "mf5212", "mf5222"]) # Bus Aux
+        self.GenSkimDict(eb, BusBrdDict, ["mf5203", "mf5213", "mf5223"]) # Bus Boarding
+        self.GenSkimDict(eb, BusFarDict, ["mf5204", "mf5214", "mf5224"]) # Bus Fare
 
        # Blend Factors
         BlendDict = {   #AM,   MD,   PM         AM,   MD,   PM         Where Blended Matrices get stored in same order as above
@@ -217,11 +272,11 @@ class ModeChoiceGenDf(_m.Tool()):
         for keys, values in BlendDict.items():
             # Calculate blended skims
             Df = {}
-            Df['BusIVT']  = self.testcalc(values, BusIVTDict)
-            Df['BusWat']  = self.testcalc(values, BusWatDict)
-            Df['BusAux']  = self.testcalc(values, BusAuxDict)
-            Df['BusBrd']  = self.testcalc(values, BusBrdDict)
-            Df['BusFar']  = self.testcalc(values, BusFarDict)
+            Df['BusIVT']  = self.calc_blend(values, BusIVTDict)
+            Df['BusWat']  = self.calc_blend(values, BusWatDict)
+            Df['BusAux']  = self.calc_blend(values, BusAuxDict)
+            Df['BusBrd']  = self.calc_blend(values, BusBrdDict)
+            Df['BusFar']  = self.calc_blend(values, BusFarDict)
             # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['BusIVT'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['BusWat'])
@@ -236,9 +291,8 @@ class ModeChoiceGenDf(_m.Tool()):
          'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8043', 'mf8044', 'mf8045', 'mf8046', 'mf8047'], # Home-base work
          'BL': BLBsWk},
          'hbun':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8543', 'mf8544', 'mf8545', 'mf8546', 'mf8547'], # Home-base unitiversity
-         'BL': BLBsNw},
-         'hbso':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8743', 'mf8744', 'mf8745', 'mf8746', 'mf8747'], # Home-base social
          'BL': BLBsNw}}
+}
 
         for keys, values in BlendDictPR.items():
 
@@ -247,11 +301,11 @@ class ModeChoiceGenDf(_m.Tool()):
             Dfmerge = pd.DataFrame({'Or': Or, 'De': De, 'BL': values['BL']})
             # Generate second data frame and attach to it bus skims
             Df_Bus_Leg = pd.DataFrame({'OrTran': Or, 'DeTran': De})
-            Df_Bus_Leg['BusIVT']  = self.testcalc(values, BusIVTDict).flatten()
-            Df_Bus_Leg['BusWat']  = self.testcalc(values, BusWatDict).flatten()
-            Df_Bus_Leg['BusAux']  = self.testcalc(values, BusAuxDict).flatten()
-            Df_Bus_Leg['BusBrd']  = self.testcalc(values, BusBrdDict).flatten()
-            Df_Bus_Leg['BusFar']  = self.testcalc(values, BusFarDict).flatten()
+            Df_Bus_Leg['BusIVT']  = self.calc_blend(values, BusIVTDict).flatten()
+            Df_Bus_Leg['BusWat']  = self.calc_blend(values, BusWatDict).flatten()
+            Df_Bus_Leg['BusAux']  = self.calc_blend(values, BusAuxDict).flatten()
+            Df_Bus_Leg['BusBrd']  = self.calc_blend(values, BusBrdDict).flatten()
+            Df_Bus_Leg['BusFar']  = self.calc_blend(values, BusFarDict).flatten()
             # Join the two data frames based on skims from the Best Lot to the destination
             Df = pd.merge(Dfmerge, Df_Bus_Leg, left_on = ['BL', 'De'],
                      right_on = ['OrTran', 'DeTran'], how = 'left')
@@ -273,12 +327,12 @@ class ModeChoiceGenDf(_m.Tool()):
 
         # Generate Skim Dictionaries
         #                                  AM    ,    MD   ,     PM
-        self.GenSkimDict(eb, RalIVBDict, ["mf5000", "mf5005", "mf5010"]) # Rail IVB
-        self.GenSkimDict(eb, RalIVRDict, ["mf5001", "mf5006", "mf5011"]) # Rail IVR
-        self.GenSkimDict(eb, RalWatDict, ["mf5002", "mf5007", "mf5012"]) # Rail Wait
-        self.GenSkimDict(eb, RalAuxDict, ["mf5004", "mf5009", "mf5014"]) # Rail Aux
-        self.GenSkimDict(eb, RalBrdDict, ["mf5003", "mf5008", "mf5013"]) # Rail Boarding
-        self.GenSkimDict(eb, RalFarDict, ["mf161", "mf161", "mf161"])    # Rail Fare
+        self.GenSkimDict(eb, RalIVRDict, ["mf5400", "mf5410", "mf5420"]) # Rail IVR
+        self.GenSkimDict(eb, RalIVBDict, ["mf5401", "mf5411", "mf5421"]) # Rail IVB
+        self.GenSkimDict(eb, RalWatDict, ["mf5402", "mf5412", "mf5422"]) # Rail Wait
+        self.GenSkimDict(eb, RalAuxDict, ["mf5403", "mf5413", "mf5423"]) # Rail Aux
+        self.GenSkimDict(eb, RalBrdDict, ["mf5404", "mf5414", "mf5424"]) # Rail Boarding
+        self.GenSkimDict(eb, RalFarDict, ["mf5405", "mf5415", "mf5425"])    # Rail Fare
 
         # Blend Factors
         BlendDict = {  #AM,   MD,   PM         AM,   MD,   PM
@@ -304,12 +358,12 @@ class ModeChoiceGenDf(_m.Tool()):
         for keys, values in BlendDict.items():
             # Calculate blended skims
             Df = {}
-            Df['RalIVB'] = self.testcalc(values, RalIVBDict)
-            Df['RalIVR'] = self.testcalc(values, RalIVRDict)
-            Df['RalWat'] = self.testcalc(values, RalWatDict)
-            Df['RalAux'] = self.testcalc(values, RalAuxDict)
-            Df['RalBrd'] = self.testcalc(values, RalBrdDict)
-            Df['RalFar'] = self.testcalc(values, RalFarDict)
+            Df['RalIVB'] = self.calc_blend(values, RalIVBDict)
+            Df['RalIVR'] = self.calc_blend(values, RalIVRDict)
+            Df['RalWat'] = self.calc_blend(values, RalWatDict)
+            Df['RalAux'] = self.calc_blend(values, RalAuxDict)
+            Df['RalBrd'] = self.calc_blend(values, RalBrdDict)
+            Df['RalFar'] = self.calc_blend(values, RalFarDict)
             # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['RalIVB'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['RalIVR'])
@@ -324,9 +378,8 @@ class ModeChoiceGenDf(_m.Tool()):
          'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
                  'Mat':['mf8053', 'mf8054', 'mf8055', 'mf8056', 'mf8057', 'mf8058'], 'BL': BLRlWk}, #Where Blended Matrices get stored in same order as above
          'hbun':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
-                 'Mat':['mf8543', 'mf8544', 'mf8545', 'mf8546', 'mf8557', 'mf8558'], 'BL': BLRlNw},
-         'hbso':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
-                 'Mat':['mf8743', 'mf8744', 'mf8745', 'mf8746', 'mf8757', 'mf8758'], 'BL': BLRlNw}}
+                 'Mat':['mf8543', 'mf8544', 'mf8545', 'mf8546', 'mf8557', 'mf8558'], 'BL': BLRlNw}
+                    }
 
         for keys, values in BlendDictPR.items():
 
@@ -335,12 +388,12 @@ class ModeChoiceGenDf(_m.Tool()):
             Dfmerge = pd.DataFrame({'Or': Or, 'De': De, 'BL': values['BL']})
             # Generate second data frame and attach to it rail skims
             Df_Rail_Leg = pd.DataFrame({'OrTran': Or, 'DeTran': De})
-            Df_Rail_Leg['RalIVB'] = self.testcalc(values, RalIVBDict).flatten()
-            Df_Rail_Leg['RalIVR'] = self.testcalc(values, RalIVRDict).flatten()
-            Df_Rail_Leg['RalWat'] = self.testcalc(values, RalWatDict).flatten()
-            Df_Rail_Leg['RalAux'] = self.testcalc(values, RalAuxDict).flatten()
-            Df_Rail_Leg['RalBrd'] = self.testcalc(values, RalBrdDict).flatten()
-            Df_Rail_Leg['RalFar'] = self.testcalc(values, RalFarDict).flatten()
+            Df_Rail_Leg['RalIVB'] = self.calc_blend(values, RalIVBDict).flatten()
+            Df_Rail_Leg['RalIVR'] = self.calc_blend(values, RalIVRDict).flatten()
+            Df_Rail_Leg['RalWat'] = self.calc_blend(values, RalWatDict).flatten()
+            Df_Rail_Leg['RalAux'] = self.calc_blend(values, RalAuxDict).flatten()
+            Df_Rail_Leg['RalBrd'] = self.calc_blend(values, RalBrdDict).flatten()
+            Df_Rail_Leg['RalFar'] = self.calc_blend(values, RalFarDict).flatten()
             # Join the two data frames based on skims from the Best Lot to the destination
             Df = pd.merge(Dfmerge, Df_Rail_Leg, left_on = ['BL', 'De'],
                      right_on = ['OrTran', 'DeTran'], how = 'left')
@@ -363,13 +416,14 @@ class ModeChoiceGenDf(_m.Tool()):
         WCEFarDict = {}
 #        # Generate Skim Dictionaries
 #        #                                        AM ,    PM
-        self.GenSkimDictWCE(eb, WCEIVBDict, ["mf5050", "mf5062"]) # WCE IVB
-        self.GenSkimDictWCE(eb, WCEIVRDict, ["mf5051", "mf5063"]) # WCE IVR
-        self.GenSkimDictWCE(eb, WCEIVWDict, ["mf5052", "mf5064"]) # WCE IVW
-        self.GenSkimDictWCE(eb, WCEWatDict, ["mf5053", "mf5065"]) # WCE Wait
-        self.GenSkimDictWCE(eb, WCEAuxDict, ["mf5055", "mf5067"]) # WCE Aux
-        self.GenSkimDictWCE(eb, WCEBrdDict, ["mf5054", "mf5066"]) # WCE Boarding
-        self.GenSkimDictWCE(eb, WCEFarDict, ["mf161", "mf161"])   # WCE Fare
+
+        self.GenSkimDictWCE(eb, WCEIVWDict, ["mf5600", "mf5620"]) # WCE IVW
+        self.GenSkimDictWCE(eb, WCEIVRDict, ["mf5601", "mf5621"]) # WCE IVR
+        self.GenSkimDictWCE(eb, WCEIVBDict, ["mf5602", "mf5622"]) # WCE IVB
+        self.GenSkimDictWCE(eb, WCEWatDict, ["mf5603", "mf5623"]) # WCE Wait
+        self.GenSkimDictWCE(eb, WCEAuxDict, ["mf5604", "mf5624"]) # WCE Aux
+        self.GenSkimDictWCE(eb, WCEBrdDict, ["mf5605", "mf5625"]) # WCE Boarding
+        self.GenSkimDictWCE(eb, WCEFarDict, ["mf5606", "mf5626"])   # WCE Fare
 
 #        # Blend Factors
         BlendDict = {    #AM,   PM,        AM,   PM,
@@ -395,13 +449,13 @@ class ModeChoiceGenDf(_m.Tool()):
         for keys, values in BlendDict.items():
             # Calculate blended skims
             Df = {}
-            Df['WCEIVB'] = self.testcalc(values, WCEIVBDict)
-            Df['WCEIVR'] = self.testcalc(values, WCEIVRDict)
-            Df['WCEIVW'] = self.testcalc(values, WCEIVWDict)
-            Df['WCEWat'] = self.testcalc(values, WCEWatDict)
-            Df['WCEAux'] = self.testcalc(values, WCEAuxDict)
-            Df['WCEBrd'] = self.testcalc(values, WCEBrdDict)
-            Df['WCEFar'] = self.testcalc(values, WCEFarDict)
+            Df['WCEIVB'] = self.calc_blend(values, WCEIVBDict)
+            Df['WCEIVR'] = self.calc_blend(values, WCEIVRDict)
+            Df['WCEIVW'] = self.calc_blend(values, WCEIVWDict)
+            Df['WCEWat'] = self.calc_blend(values, WCEWatDict)
+            Df['WCEAux'] = self.calc_blend(values, WCEAuxDict)
+            Df['WCEBrd'] = self.calc_blend(values, WCEBrdDict)
+            Df['WCEFar'] = self.calc_blend(values, WCEFarDict)
             # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['WCEIVB'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['WCEIVR'])
@@ -417,9 +471,8 @@ class ModeChoiceGenDf(_m.Tool()):
          'hbwo':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],  'BL': BLWcWk,
                  'Mat':['mf8063', 'mf8064', 'mf8065', 'mf8066', 'mf8067', 'mf8068', 'mf8069']}, # Where Blended Matrices get stored in same order as above
          'hbun':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],  'BL': BLWcNw,
-                 'Mat':['mf8563', 'mf8564', 'mf8565', 'mf8566', 'mf8567', 'mf8568', 'mf8569']},
-         'hbso':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],  'BL': BLWcNw,
-                 'Mat':['mf8763', 'mf8764', 'mf8765', 'mf8766', 'mf8767', 'mf8768', 'mf8769']}}
+                 'Mat':['mf8563', 'mf8564', 'mf8565', 'mf8566', 'mf8567', 'mf8568', 'mf8569']}
+                      }
 
         for keys, values in BlendDictPR.items():
 
@@ -428,13 +481,13 @@ class ModeChoiceGenDf(_m.Tool()):
             Dfmerge = pd.DataFrame({'Or': Or, 'De': De, 'BL': values['BL']})
             # Generate second data frame and attach to it wce skims
             Df_WCE_Leg = pd.DataFrame({'OrTran': Or, 'DeTran': De})
-            Df_WCE_Leg['WCEIVB'] = self.testcalc(values, WCEIVBDict).flatten()
-            Df_WCE_Leg['WCEIVR'] = self.testcalc(values, WCEIVRDict).flatten()
-            Df_WCE_Leg['WCEIVW'] = self.testcalc(values, WCEIVWDict).flatten()
-            Df_WCE_Leg['WCEWat'] = self.testcalc(values, WCEWatDict).flatten()
-            Df_WCE_Leg['WCEAux'] = self.testcalc(values, WCEAuxDict).flatten()
-            Df_WCE_Leg['WCEBrd'] = self.testcalc(values, WCEBrdDict).flatten()
-            Df_WCE_Leg['WCEFar'] = self.testcalc(values, WCEFarDict).flatten()
+            Df_WCE_Leg['WCEIVB'] = self.calc_blend(values, WCEIVBDict).flatten()
+            Df_WCE_Leg['WCEIVR'] = self.calc_blend(values, WCEIVRDict).flatten()
+            Df_WCE_Leg['WCEIVW'] = self.calc_blend(values, WCEIVWDict).flatten()
+            Df_WCE_Leg['WCEWat'] = self.calc_blend(values, WCEWatDict).flatten()
+            Df_WCE_Leg['WCEAux'] = self.calc_blend(values, WCEAuxDict).flatten()
+            Df_WCE_Leg['WCEBrd'] = self.calc_blend(values, WCEBrdDict).flatten()
+            Df_WCE_Leg['WCEFar'] = self.calc_blend(values, WCEFarDict).flatten()
              # Join the two data frames based on skims from the Best Lot to the destination
             Df = pd.merge(Dfmerge, Df_WCE_Leg, left_on = ['BL', 'De'],
                      right_on = ['OrTran', 'DeTran'], how = 'left')
@@ -459,7 +512,7 @@ class ModeChoiceGenDf(_m.Tool()):
         MD_Mat = util.get_matrix_numpy(eb, Mat[1])
         PM_Mat = util.get_matrix_numpy(eb, Mat[2])
         Dict['PA'] = [AM_Mat, MD_Mat, PM_Mat]
-        Dict['AP'] = [AM_Mat.transpose(), MD_Mat.transpose(),PM_Mat.transpose()]
+        Dict['AP'] = [AM_Mat.transpose(), MD_Mat.transpose(), PM_Mat.transpose()]
         return (Dict)
 
     def GenSkimDictWCE(self, eb, Dict, Mat):
@@ -471,7 +524,7 @@ class ModeChoiceGenDf(_m.Tool()):
         Dict['AP'] = [AM_Mat.transpose(), PM_Mat.transpose()]
         return (Dict)
 
-    def testcalc(self, Fact, Dict):
+    def calc_blend(self, Fact, Dict):
         util = _m.Modeller().tool("translink.emme.util")
         Result = util.sumproduct(Fact['PA'], Dict['PA']) + util.sumproduct(Fact['AP'], Dict['AP'])
 
