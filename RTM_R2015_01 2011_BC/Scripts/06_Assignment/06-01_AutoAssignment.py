@@ -67,16 +67,30 @@ class AutoAssignment(_m.Tool()):
                       "hov":   ["mf306", "mf307", "mf308", "mf309", "mf310", "mf311"],
                       "truck": ["mf312", "mf313"]}
         self.assign_scen(am_scenario, am_demands)
+        am_skims = {"sovWk":  ["mf5000", "mf5001", "mf5002"],
+                    "sovNwk": ["mf5003", "mf5004", "mf5005"],
+                    "hovWk":  ["mf5006", "mf5007", "mf5008"],
+                    "hovNwk": ["mf5009", "mf5010", "mf5011"]}
+        self.store_skims(am_scenario, am_skims)
 
         md_demands = {"sov":   ["mf320", "mf321", "mf322", "mf323", "mf324", "mf325"],
                       "hov":   ["mf326", "mf327", "mf328", "mf329", "mf330", "mf331"],
                       "truck": ["mf332", "mf333"]}
         self.assign_scen(md_scenario, md_demands)
-
+        md_skims = {"sovWk":  ["mf5020", "mf5021", "mf5022"],
+                    "sovNwk": ["mf5023", "mf5024", "mf5025"],
+                    "hovWk":  ["mf5026", "mf5027", "mf5028"],
+                    "hovNwk": ["mf5029", "mf5030", "mf5031"]}
+        self.store_skims(md_scenario, md_skims)
         pm_demands = {"sov":   ["mf340", "mf341", "mf342", "mf343", "mf344", "mf345"],
                       "hov":   ["mf346", "mf347", "mf348", "mf349", "mf350", "mf351"],
                       "truck": ["mf352", "mf353"]}
         self.assign_scen(pm_scenario, pm_demands)
+        pm_skims = {"sovWk":  ["mf5040", "mf5041", "mf5042"],
+                    "sovNwk": ["mf5043", "mf5044", "mf5045"],
+                    "hovWk":  ["mf5046", "mf5047", "mf5048"],
+                    "hovNwk": ["mf5049", "mf5050", "mf5051"]}
+        self.store_skims(pm_scenario, pm_skims)
 
     def assign_scen(self, scenario, demands):
         assign_traffic = _m.Modeller().tool("inro.emme.traffic_assignment.sola_traffic_assignment")
@@ -97,6 +111,28 @@ class AutoAssignment(_m.Tool()):
 
         # Aggregate network volumes post-assignment
         self.calc_network_volumes(scenario)
+
+    def store_skims(self, scenario, skim_list):
+        util = _m.Modeller().tool("translink.emme.util")
+
+        specs = []
+        # Set Distance Matrices
+        specs.append(util.matrix_spec( skim_list["sovWk"][0], "mf9921"))
+        specs.append(util.matrix_spec(skim_list["sovNwk"][0], "mf9924"))
+        specs.append(util.matrix_spec( skim_list["hovWk"][0], "mf9927"))
+        specs.append(util.matrix_spec(skim_list["hovNwk"][0], "mf9930"))
+        # Set GC Time Matrices
+        specs.append(util.matrix_spec( skim_list["sovWk"][1], "mf9901"))
+        specs.append(util.matrix_spec(skim_list["sovNwk"][1], "mf9904"))
+        specs.append(util.matrix_spec( skim_list["hovWk"][1], "mf9907"))
+        specs.append(util.matrix_spec(skim_list["hovNwk"][1], "mf9910"))
+        # Set GC Toll Matrices
+        specs.append(util.matrix_spec( skim_list["sovWk"][2], "mf9941"))
+        specs.append(util.matrix_spec(skim_list["sovNwk"][2], "mf9944"))
+        specs.append(util.matrix_spec( skim_list["hovWk"][2], "mf9947"))
+        specs.append(util.matrix_spec(skim_list["hovNwk"][2], "mf9950"))
+
+        util.compute_matrix(specs, scenario)
 
     def add_mode_specification(self, specs, mode, demand, gc_cost, gc_factor, travel_time, link_vol, turn_vol):
         spec = {"mode": mode,
