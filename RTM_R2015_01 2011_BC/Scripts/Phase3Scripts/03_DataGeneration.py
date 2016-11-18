@@ -42,19 +42,12 @@ class DataGeneration(_m.Tool()):
         self.matrix_batchins(eb)
         self.calc_density(eb)
 
-        # place holder run initial assignments and skims
-
-
-        # auto matrices for intrazonal calcs
-        intrazonal_mats = ["AmSovWkDist", "AmSovWkTime", "AmSovNwkDist", "AmSovNwkTime"
-        ,"AmHovWkDist", "AmHovWkTime", "AmHovNwkDist", "AmHovNwkTime", "MdSovWkDist"
-        ,"MdSovWkTime", "MdSovNwkDist", "MdSovNwkTime", "MdHovWkDist", "MdHovWkTime"
-        ,"MdHovNwkDist", "MdHovNwkTime", "PmSovWkDist", "PmSovWkTime", "PmSovNwkDist"
-        ,"PmSovNwkTime", "PmHovWkDist", "PmHovWkTime", "PmHovNwkDist", "PmHovNwkTime"]
-
-        for skim in intrazonal_mats:
-            mat = "mf{skim}".format(skim=skim)
-            self.intra_zonal_calc(eb = eb, matrix = mat)
+        # Run Initial Assignment to generate skims from seed demands
+        auto_assign = _m.Modeller().tool("translink.emme.stage3.step6.autoassignment")
+        am_scen = eb.scenario(int(eb.matrix("ms2").data))
+        md_scen = eb.scenario(int(eb.matrix("ms3").data))
+        pm_scen = eb.scenario(int(eb.matrix("ms4").data))
+        auto_assign(am_scen, md_scen, pm_scen)
 
         # note transit_uni_accessibility has to run before other accessibilities
         # this is where the data table is started
@@ -394,38 +387,6 @@ class DataGeneration(_m.Tool()):
     	# write the data back to database
     	df.to_sql(name='accessibilities', con=conn, flavor='sqlite', index=False, if_exists='replace')
     	conn.close()
-
-
-    @_m.logbook_trace("Execute Intrazonal Calculation")
-    def intra_zonal_calc(self, eb, matrix):
-        util = _m.Modeller().tool("translink.emme.util")
-
-        # get longform index of all zone combinations
-        ij = util.get_pd_ij_df(eb)
-
-        # add matrix to dataframe
-        ij['value'] = util.get_matrix_numpy(eb, matrix).flatten()
-
-        # calculate the minimum ij value where value > 0
-        ijmin = ij[ij.value > 0]
-        ijmin = ijmin['value'].groupby(ijmin['i'])
-        ijmin = ijmin.min() * 0.5
-        ijmin = ijmin.reset_index()
-
-        # attach minimum value to input matrix and replace value for intrazonals
-        ij = pd.merge(ij, ijmin, how='left', left_on = ['i','j'], right_on = ['i','i'])
-        ij['value'] = np.where(ij['i'] == ij['j'], ij['value_y'], ij['value_x'])
-        ij.drop(['value_x', 'value_y'], axis=1, inplace=True)
-        ij['value'].fillna(0, inplace=True)
-
-        # get length of array for reshaping database - should always be 1741 in phase 3
-        # but allows for sub area models without breaking the calculation
-        length = int(np.sqrt(len(ij['value'])))
-
-        # put back in emmebank with square shape
-        util.set_matrix_numpy(eb, matrix, ij['value'].reshape(length,length))
-
-
 
     @_m.logbook_trace("Calculate Densities")
     def calc_density(self, eb):

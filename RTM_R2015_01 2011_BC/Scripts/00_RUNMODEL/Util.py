@@ -210,7 +210,7 @@ class Util(_m.Tool()):
         for i in range(len(matrices)):
             matrices[i].set_data(mat_data[i])
 
-    def get_matrix_numpy(self, eb, mat_id):
+    def get_matrix_numpy(self, eb, mat_id, reshape=True):
         """Get EMME matrix data as a numpy array
 
         Origin (mo) matrices will be reshaped to allow calculations to expand
@@ -226,8 +226,9 @@ class Util(_m.Tool()):
 
         np_array = mat.get_numpy_data()
 
-        if (mat.type == "ORIGIN"):
-            np_array = np_array.reshape(np_array.shape[0], 1)
+        if (reshape):
+            if (mat.type == "ORIGIN"):
+                np_array = np_array.reshape(np_array.shape[0], 1)
 
         return np_array
 
