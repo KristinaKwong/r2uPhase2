@@ -77,9 +77,9 @@ class TransitAssignment(_m.Tool()):
         self.tool_run_msg = ""
         try:
             eb = _m.Modeller().emmebank
-            self.am_scenario = _m.Modeller().emmebank.scenario(int(eb.matrix("ms140").data))
-            self.md_scenario = _m.Modeller().emmebank.scenario(int(eb.matrix("ms141").data))
-            self.pm_scenario = _m.Modeller().emmebank.scenario(int(eb.matrix("ms150").data))
+            self.am_scenario = _m.Modeller().emmebank.scenario(int(eb.matrix("ms2").data))
+            self.md_scenario = _m.Modeller().emmebank.scenario(int(eb.matrix("ms3").data))
+            self.pm_scenario = _m.Modeller().emmebank.scenario(int(eb.matrix("ms4").data))
 
             self(eb, self.am_scenario, self.md_scenario, self.pm_scenario)
             run_msg = "Tool completed"
@@ -105,11 +105,13 @@ class TransitAssignment(_m.Tool()):
         # TODO: Select final option and remove this variable
         select_hfrac = 2 # 1 - RTM effective headway fractions, 2 -Non-Linear curves by frequency of service
 
-        demand_bus_list = ["mf853", "mf866", "mf879"]
-        demand_rail_list = ["mf854", "mf867", "mf880"]  # TODO: Update with revised Rail trip tables
+        demand_bus_list = ["mf218", "mf248", "mf278"]
+        demand_rail_list = ["mf219", "mf249", "mf279"]
         # Used for RaType0 assignments
+        # TODO add this initialization and allocate final matrix location
+        util.initmat(eb, "ms160", "small", "small transit demand", 0.001)
         zero_demand_list = ["ms160", "ms160", "ms160"]
-        demand_wce_list = ["ms160", "ms160", "ms160"]  # TODO: Update with revised WCE trip tables
+        demand_wce_list = ["mf220", "mf250", "mf280"]
 
         scenario_list = [scenarioam, scenariomd, scenariopm]
         #TODO: Assignments are done for peak hour
