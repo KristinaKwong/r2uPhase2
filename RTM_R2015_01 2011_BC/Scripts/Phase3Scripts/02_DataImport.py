@@ -154,6 +154,11 @@ class DataImport(_m.Tool()):
     def import_vectors(self, eb, demographics_file, geographics_file):
         util = _m.Modeller().tool("translink.emme.util")
 
+        mod = _m.Modeller()
+        project = mod.desktop.project
+        proj_path = os.path.dirname(project.path)
+
+
         # set directory locations for csv files and sqlite db
         file_loc= util.get_input_path(eb)
         db_loc = util.get_eb_path(eb)
@@ -163,6 +168,7 @@ class DataImport(_m.Tool()):
         geo_file = geographics_file
         pnr_file = os.path.join(file_loc, 'taz1700_pnr.csv')
         dummy_file = os.path.join(file_loc,'taz1700_dummies.csv')
+        ensem_file = os.path.join(proj_path, "BaseNetworks", "taz1700_ensembles.csv")
 
         # import raw data to mo's in emmebank
         util.read_csv_momd(eb, demo_file)
@@ -190,6 +196,10 @@ class DataImport(_m.Tool()):
         # dummary variables
         df = pd.read_csv(dummy_file, skiprows = 3)
         df.to_sql(name='dummies', con=conn, flavor='sqlite', index=False, if_exists='replace')
+
+        df = pd.read_csv(ensem_file, skiprows = 3)
+        df.to_sql(name='ensembles', con=conn, flavor='sqlite', index=False, if_exists='replace')
+
 
         conn.close()
 
