@@ -93,7 +93,6 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms118", "HOV3OccNHBo", "HOV3 Occupancy NHB Other", 3.63)
         util.initmat(eb, "ms130", "lgvPCE", "Light Truck Passenger Car Equivalent", 1.5)
         util.initmat(eb, "ms131", "hgvPCE", "Heavy Truck Passenger Car Equivalent", 2.5)
-
         util.initmat(eb, "ms200", "VotWkLowIncSov", "VOTSOV Work Low"      , 6.58)
         util.initmat(eb, "ms201", "VotWkMedIncSov", "VOTSOV Work Med"      , 4.12)
         util.initmat(eb, "ms202", "VotWkHighIncSov", "VOTSOV Work High"    , 3.38)
