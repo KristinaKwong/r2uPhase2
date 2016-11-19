@@ -71,30 +71,30 @@ class ModeChoiceGenDf(_m.Tool()):
         self.GenSkimDict(eb, TollDict, ["mf5002", "mf5022", "mf5042"]) # Toll
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
-        BlendDict = {'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8000', 'mf8001', 'mf8002']}, # Home-base work
-                     'nhbw':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8100', 'mf8101', 'mf8102']}} # Non-home base work
+        BlendDict = {'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5100', 'mf5101', 'mf5102']}, # Home-base work
+                     'nhbw':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5170', 'mf5171', 'mf5172']}} # Non-home base work
 
         for keys, values in BlendDict.items():
             Df = {}
             # Calculate blended skim
-            Df['AutoTim'] = self.calc_blend(values, TimeDict)
             Df['AutoDis'] = self.calc_blend(values, DistDict)
+            Df['AutoTim'] = self.calc_blend(values, TimeDict)
             Df['AutoTol'] = self.calc_blend(values, TollDict)
         # Put results back in the Emmebank
-            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoTim'])
-            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoDis'])
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoDis'])
+            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
             util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'])
-        ##############################################################################
 
+        ##############################################################################
         ##       Park and Ride Home-base work Auto-leg
         ##############################################################################
 
         # Blend Factors                AM , MD  , PM           AM  ,MD , PM    Where Blended Matrices get stored in same order as above
-        BlendDictPR = {'hbwprb':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8040', 'mf8041', 'mf8042'], #Bus
+        BlendDictPR = {'hbwprb':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf6800', 'mf6801', 'mf6802'], #Bus
                        'BL': BLBsWk},
-                       'hbwprr':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8050', 'mf8051', 'mf8052'], #Rail
+                       'hbwprr':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf6810', 'mf6811', 'mf6812'], #Rail
                        'BL': BLRlWk},
-                       'hbwprw':{'PA':[0.4, 0.0, 0.15], 'AP':[0.05, 0.0, 0.4], 'Mat':['mf8060', 'mf8061', 'mf8062'], #WCE
+                       'hbwprw':{'PA':[0.4, 0.0, 0.15], 'AP':[0.05, 0.0, 0.4], 'Mat':['mf6820', 'mf6821', 'mf6822'], #WCE
                        'BL': BLWcWk}
                      }
 
@@ -105,15 +105,15 @@ class ModeChoiceGenDf(_m.Tool()):
             Dfmerge = pd.DataFrame({'Or': Or, 'De': De, 'BL': values['BL']})
             # Generate second data frame and attach to it blended
             Df_Auto_Leg = pd.DataFrame({'OrAuto': Or, 'DeAuto': De})
-            Df_Auto_Leg['AutoTim'] = self.calc_blend(values, TimeDict).flatten()
             Df_Auto_Leg['AutoDis'] = self.calc_blend(values, DistDict).flatten()
+            Df_Auto_Leg['AutoTim'] = self.calc_blend(values, TimeDict).flatten()
             Df_Auto_Leg['AutoTol'] = self.calc_blend(values, TollDict).flatten()
             # Join the two data frames based on skims from Origin to the Best Lot
             Df = pd.merge(Dfmerge, Df_Auto_Leg, left_on = ['Or', 'BL'],
                      right_on = ['OrAuto', 'DeAuto'], how = 'left')
             # Put results back in the Emmebank
-            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoTim'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoDis'].reshape(1741,1741))
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoDis'].reshape(1741,1741))
+            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'].reshape(1741,1741))
             util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'].reshape(1741,1741))
         # delete data generated to free up memory
         del Df, Dfmerge, Df_Auto_Leg, TimeDict, DistDict, TollDict
@@ -130,18 +130,18 @@ class ModeChoiceGenDf(_m.Tool()):
         self.GenSkimDict(eb, TollDict, ["mf5008", "mf5028", "mf5048"]) # Toll
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
-        BlendDict = {'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8000', 'mf8001', 'mf8002']}, # Home-base work
-                     'nhbw':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8100', 'mf8101', 'mf8102']}} # Non-home base work
+        BlendDict = {'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5106', 'mf5107', 'mf5108']}, # Home-base work
+                     'nhbw':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5176', 'mf5177', 'mf5178']}} # Non-home base work
 
         for keys, values in BlendDict.items():
             Df = {}
             # Calculate blended skim
-            Df['AutoTim'] = self.calc_blend(values, TimeDict)
             Df['AutoDis'] = self.calc_blend(values, DistDict)
+            Df['AutoTim'] = self.calc_blend(values, TimeDict)
             Df['AutoTol'] = self.calc_blend(values, TollDict)
         # Put results back in the Emmebank
-            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoTim'])
-            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoDis'])
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoDis'])
+            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
             util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'])
 
         del Df, TimeDict, DistDict, TollDict
@@ -158,57 +158,25 @@ class ModeChoiceGenDf(_m.Tool()):
         self.GenSkimDict(eb, TollDict, ["mf5005", "mf5025", "mf5045"]) # Toll
         #
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM     Where Blended Matrices get stored in same order as above
-        BlendDict = {'hbsc':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8200', 'mf8201', 'mf8202']}, # Home-base school
-                     'hbsh':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8300', 'mf8301', 'mf8302']}, # Home-base shopping
-                     'hbpb':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8400', 'mf8401', 'mf8402']}, # Home-base personal business
-                     'hbun':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8500', 'mf8501', 'mf8502']}, # Home-base unitiversity
-                     'hbes':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8600', 'mf8601', 'mf8602']}, # Home-base escorting
-                     'hbso':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8700', 'mf8701', 'mf8702']}, # Home-base social
-                     'nhbo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8800', 'mf8801', 'mf8802']}} # non-home base other
+        BlendDict = {
+                     'hbun':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5110', 'mf5111', 'mf5112']}, # Home-base university
+                     'hbsc':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5120', 'mf5121', 'mf5122']}, # Home-base school
+                     'hbsh':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5130', 'mf5131', 'mf5132']}, # Home-base shopping
+                     'hbpb':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5140', 'mf5141', 'mf5142']}, # Home-base personal business
+                     'hbso':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5150', 'mf5151', 'mf5152']}, # Home-base social
+                     'hbes':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5160', 'mf5161', 'mf5162']}, # Home-base escorting
+                     'nhbo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5180', 'mf5181', 'mf5182']}} # non-home base other
 
         for keys, values in BlendDict.items():
             # Calculate blended skim
             Df = {}
-            Df['AutoTim'] = self.calc_blend(values, TimeDict)
             Df['AutoDis'] = self.calc_blend(values, DistDict)
+            Df['AutoTim'] = self.calc_blend(values, TimeDict)
             Df['AutoTol'] = self.calc_blend(values, TollDict)
             # Put results back in the Emmebank
-            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoTim'])
-            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoDis'])
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoDis'])
+            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
             util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'])
-
-        ##############################################################################
-        ##       Park and Ride Home-base Uni/Soc Auto-leg
-        ##############################################################################
-        #
-        # Blend Factors                AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
-        BlendDictPR = {'hbunprb':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8540', 'mf8541', 'mf8542'], #HbUni Bus
-                       'BL': BLBsNw},
-                       'hbunprr':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8550', 'mf8551', 'mf8552'], #HbUni Rail
-                       'BL': BLRlNw},
-                       'hbunprw':{'PA':[0.4, 0.0, 0.15], 'AP':[0.05, 0.0, 0.4], 'Mat':['mf8560', 'mf8561', 'mf8562'], #HbUni WCE
-                       'BL': BLWcNw}
-                       }
-
-        for keys, values in BlendDictPR.items():
-
-            Df = pd.DataFrame()
-            # Generate data frame with Origin Destination and best lot
-            Dfmerge = pd.DataFrame({'Or': Or, 'De': De, 'BL': values['BL']})
-            # Generate second data frame and attach to it blended auto skims
-            Df_Auto_Leg = pd.DataFrame({'OrAuto': Or, 'DeAuto': De})
-            Df_Auto_Leg['AutoTim'] = self.calc_blend(values, TimeDict).flatten()
-            Df_Auto_Leg['AutoDis'] = self.calc_blend(values, DistDict).flatten()
-            Df_Auto_Leg['AutoTol'] = self.calc_blend(values, TollDict).flatten()
-            # Join the two data frames based on skims from Origin to the Best Lot
-            Df = pd.merge(Dfmerge, Df_Auto_Leg, left_on = ['Or', 'BL'],
-                     right_on = ['OrAuto', 'DeAuto'], how = 'left')
-            # Put results back in the Emmebank
-            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoTim'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoDis'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'].reshape(1741,1741))
-        # delete data generated to free up memory
-        del Df, Dfmerge, Df_Auto_Leg, TimeDict, DistDict, TollDict
 
         ##############################################################################
         ##       Auto Skims Non-work HOV
@@ -222,23 +190,24 @@ class ModeChoiceGenDf(_m.Tool()):
         self.GenSkimDict(eb, TollDict, ["mf5011", "mf5031", "mf5051"]) # Toll
         #
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM     Where Blended Matrices get stored in same order as above
-        BlendDict = {'hbsc':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8200', 'mf8201', 'mf8202']}, # Home-base school
-                     'hbsh':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8300', 'mf8301', 'mf8302']}, # Home-base shopping
-                     'hbpb':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8400', 'mf8401', 'mf8402']}, # Home-base personal business
-                     'hbun':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8500', 'mf8501', 'mf8502']}, # Home-base unitiversity
-                     'hbes':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8600', 'mf8601', 'mf8602']}, # Home-base escorting
-                     'hbso':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8700', 'mf8701', 'mf8702']}, # Home-base social
-                     'nhbo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8800', 'mf8801', 'mf8802']}} # non-home base other
+        BlendDict = {
+                     'hbun':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5116', 'mf5117', 'mf5118']}, # Home-base university
+                     'hbsc':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5126', 'mf5127', 'mf5128']}, # Home-base school
+                     'hbsh':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5136', 'mf5137', 'mf5138']}, # Home-base shopping
+                     'hbpb':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5146', 'mf5147', 'mf5148']}, # Home-base personal business
+                     'hbso':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5156', 'mf5157', 'mf5158']}, # Home-base social
+                     'hbes':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5166', 'mf5167', 'mf5168']}, # Home-base escorting
+                     'nhbo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5186', 'mf5187', 'mf5188']}} # non-home base other
 
         for keys, values in BlendDict.items():
             # Calculate blended skim
             Df = {}
-            Df['AutoTim'] = self.calc_blend(values, TimeDict)
             Df['AutoDis'] = self.calc_blend(values, DistDict)
+            Df['AutoTim'] = self.calc_blend(values, TimeDict)
             Df['AutoTol'] = self.calc_blend(values, TollDict)
             # Put results back in the Emmebank
-            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoTim'])
-            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoDis'])
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoDis'])
+            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
             util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'])
         # delete data generated to free up memory
         del Df, TimeDict, DistDict, TollDict
@@ -259,15 +228,15 @@ class ModeChoiceGenDf(_m.Tool()):
 
        # Blend Factors
         BlendDict = {   #AM,   MD,   PM         AM,   MD,   PM         Where Blended Matrices get stored in same order as above
-         'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8010', 'mf8011', 'mf8012', 'mf8013', 'mf8014']},  # Home-base work
-         'nhbw':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8110', 'mf8111', 'mf8112', 'mf8113', 'mf8114']},  # Non-home base work
-         'hbsc':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8210', 'mf8211', 'mf8212', 'mf8213', 'mf8214']},  # Home-base school
-         'hbsh':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8310', 'mf8311', 'mf8312', 'mf8313', 'mf8314']},  # Home-base shopping
-         'hbpb':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8410', 'mf8411', 'mf8412', 'mf8413', 'mf8414']},  # Home-base personal business
-         'hbun':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8510', 'mf8511', 'mf8512', 'mf8513', 'mf8514']},  # Home-base unitiversity
-         'hbes':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8610', 'mf8611', 'mf8612', 'mf8613', 'mf8614']},  # Home-base escorting
-         'hbso':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8710', 'mf8711', 'mf8712', 'mf8713', 'mf8714']},  # Home-base social
-         'nhbo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8810', 'mf8811', 'mf8812', 'mf8813', 'mf8814']}}  # Non-home base other
+         'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5300', 'mf5301', 'mf5302', 'mf5303', 'mf5304']},  # Home-base work
+         'hbun':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5310', 'mf5311', 'mf5312', 'mf5313', 'mf5314']},  # Home-base university
+         'hbsc':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5320', 'mf5321', 'mf5322', 'mf5323', 'mf5324']},  # Home-base school
+         'hbsh':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5330', 'mf5331', 'mf5332', 'mf5333', 'mf5334']},  # Home-base shopping
+         'hbpb':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5340', 'mf5341', 'mf5342', 'mf5343', 'mf5344']},  # Home-base personal business
+         'hbso':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5350', 'mf5351', 'mf5352', 'mf5353', 'mf5354']},  # Home-base social
+         'hbes':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5360', 'mf5361', 'mf5362', 'mf5363', 'mf5364']},  # Home-base escorting
+         'nhbw':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5370', 'mf5371', 'mf5372', 'mf5373', 'mf5374']},  # Non-home base work
+         'nhbo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5380', 'mf5381', 'mf5382', 'mf5383', 'mf5384']}}  # Non-home base other
 
         for keys, values in BlendDict.items():
             # Calculate blended skims
@@ -288,12 +257,9 @@ class ModeChoiceGenDf(_m.Tool()):
        ##       Park and Ride Home-base Work/Uni/Soc Bus-leg
        ##############################################################################
         BlendDictPR = { #AM,   MD,   PM         AM,   MD,   PM         Where Blended Matrices get stored in same order as above
-         'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8043', 'mf8044', 'mf8045', 'mf8046', 'mf8047'], # Home-base work
-         'BL': BLBsWk},
-         'hbun':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf8543', 'mf8544', 'mf8545', 'mf8546', 'mf8547'], # Home-base unitiversity
-         'BL': BLBsNw}}
-}
-
+         'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf6900', 'mf6901', 'mf6902', 'mf6903', 'mf6904'], # Home-base work
+         'BL': BLBsWk}
+                      }
         for keys, values in BlendDictPR.items():
 
             Df = pd.DataFrame()
@@ -332,41 +298,41 @@ class ModeChoiceGenDf(_m.Tool()):
         self.GenSkimDict(eb, RalWatDict, ["mf5402", "mf5412", "mf5422"]) # Rail Wait
         self.GenSkimDict(eb, RalAuxDict, ["mf5403", "mf5413", "mf5423"]) # Rail Aux
         self.GenSkimDict(eb, RalBrdDict, ["mf5404", "mf5414", "mf5424"]) # Rail Boarding
-        self.GenSkimDict(eb, RalFarDict, ["mf5405", "mf5415", "mf5425"])    # Rail Fare
+        self.GenSkimDict(eb, RalFarDict, ["mf5405", "mf5415", "mf5425"]) # Rail Fare
 
         # Blend Factors
         BlendDict = {  #AM,   MD,   PM         AM,   MD,   PM
          'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
-                 'Mat':['mf8020', 'mf8021', 'mf8022', 'mf8023', 'mf8024', 'mf8025']}, # Where Blended Matrices get stored in same order as above
-         'nhbw':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
-                 'Mat':['mf8120', 'mf8121', 'mf8122', 'mf8123', 'mf8124', 'mf8125']},
-         'hbsc':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
-                 'Mat':['mf8220', 'mf8221', 'mf8222', 'mf8223', 'mf8224', 'mf8225']},
-         'hbsh':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
-                 'Mat':['mf8320', 'mf8321', 'mf8322', 'mf8323', 'mf8324', 'mf8325']},
-         'hbpb':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
-                 'Mat':['mf8420', 'mf8421', 'mf8422', 'mf8423', 'mf8424', 'mf8425']},
+                 'Mat':['mf5500', 'mf5501', 'mf5502', 'mf5503', 'mf5504', 'mf5505']}, # Where Blended Matrices get stored in same order as above
          'hbun':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
-                 'Mat':['mf8520', 'mf8521', 'mf8522', 'mf8523', 'mf8524', 'mf8525']},
-         'hbes':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
-                 'Mat':['mf8620', 'mf8621', 'mf8622', 'mf8623', 'mf8624', 'mf8625']},
+                 'Mat':['mf5510', 'mf5511', 'mf5512', 'mf5513', 'mf5514', 'mf5515']},
+         'hbsc':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
+                 'Mat':['mf5520', 'mf5521', 'mf5522', 'mf5523', 'mf5524', 'mf5525']},
+         'hbsh':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
+                 'Mat':['mf5530', 'mf5531', 'mf5532', 'mf5533', 'mf5534', 'mf5535']},
+         'hbpb':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
+                 'Mat':['mf5540', 'mf5541', 'mf5542', 'mf5543', 'mf5544', 'mf5545']},
          'hbso':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
-                 'Mat':['mf8720', 'mf8721', 'mf8722', 'mf8723', 'mf8724', 'mf8725']},
+                 'Mat':['mf5550', 'mf5551', 'mf5552', 'mf5553', 'mf5554', 'mf5555']},
+         'hbes':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
+                 'Mat':['mf5560', 'mf5561', 'mf5562', 'mf5563', 'mf5564', 'mf5565']},
+         'nhbw':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
+                 'Mat':['mf5570', 'mf5571', 'mf5572', 'mf5573', 'mf5574', 'mf5575']},
          'nhbo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
-                 'Mat':['mf8820', 'mf8821', 'mf8822', 'mf8823', 'mf8824', 'mf8825']}}
+                 'Mat':['mf5580', 'mf5581', 'mf5582', 'mf5583', 'mf5584', 'mf5585']}}
 
         for keys, values in BlendDict.items():
             # Calculate blended skims
             Df = {}
-            Df['RalIVB'] = self.calc_blend(values, RalIVBDict)
             Df['RalIVR'] = self.calc_blend(values, RalIVRDict)
+            Df['RalIVB'] = self.calc_blend(values, RalIVBDict)
             Df['RalWat'] = self.calc_blend(values, RalWatDict)
             Df['RalAux'] = self.calc_blend(values, RalAuxDict)
             Df['RalBrd'] = self.calc_blend(values, RalBrdDict)
             Df['RalFar'] = self.calc_blend(values, RalFarDict)
             # Put results back in the Emmebank
-            util.set_matrix_numpy(eb, values['Mat'][0], Df['RalIVB'])
-            util.set_matrix_numpy(eb, values['Mat'][1], Df['RalIVR'])
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['RalIVR'])
+            util.set_matrix_numpy(eb, values['Mat'][1], Df['RalIVB'])
             util.set_matrix_numpy(eb, values['Mat'][2], Df['RalWat'])
             util.set_matrix_numpy(eb, values['Mat'][3], Df['RalAux'])
             util.set_matrix_numpy(eb, values['Mat'][4], Df['RalBrd'])
@@ -375,11 +341,9 @@ class ModeChoiceGenDf(_m.Tool()):
 #        ##       Park and Ride Home-base Work/Uni/Soc Rail-leg
 #        ##############################################################################
         BlendDictPR = { #AM,   MD,   PM         AM,   MD,   PM
-         'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
-                 'Mat':['mf8053', 'mf8054', 'mf8055', 'mf8056', 'mf8057', 'mf8058'], 'BL': BLRlWk}, #Where Blended Matrices get stored in same order as above
-         'hbun':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
-                 'Mat':['mf8543', 'mf8544', 'mf8545', 'mf8546', 'mf8557', 'mf8558'], 'BL': BLRlNw}
-                    }
+           'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
+                 'Mat':['mf6910', 'mf6911', 'mf6912', 'mf6913', 'mf6914', 'mf6915'], 'BL': BLRlWk}, #Where Blended Matrices get stored in same order as above
+                      }
 
         for keys, values in BlendDictPR.items():
 
@@ -388,8 +352,8 @@ class ModeChoiceGenDf(_m.Tool()):
             Dfmerge = pd.DataFrame({'Or': Or, 'De': De, 'BL': values['BL']})
             # Generate second data frame and attach to it rail skims
             Df_Rail_Leg = pd.DataFrame({'OrTran': Or, 'DeTran': De})
-            Df_Rail_Leg['RalIVB'] = self.calc_blend(values, RalIVBDict).flatten()
             Df_Rail_Leg['RalIVR'] = self.calc_blend(values, RalIVRDict).flatten()
+            Df_Rail_Leg['RalIVB'] = self.calc_blend(values, RalIVBDict).flatten()
             Df_Rail_Leg['RalWat'] = self.calc_blend(values, RalWatDict).flatten()
             Df_Rail_Leg['RalAux'] = self.calc_blend(values, RalAuxDict).flatten()
             Df_Rail_Leg['RalBrd'] = self.calc_blend(values, RalBrdDict).flatten()
@@ -398,8 +362,8 @@ class ModeChoiceGenDf(_m.Tool()):
             Df = pd.merge(Dfmerge, Df_Rail_Leg, left_on = ['BL', 'De'],
                      right_on = ['OrTran', 'DeTran'], how = 'left')
             # Put results back in the Emmebank
-            util.set_matrix_numpy(eb, values['Mat'][0], Df['RalIVB'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][1], Df['RalIVR'].reshape(1741,1741))
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['RalIVR'].reshape(1741,1741))
+            util.set_matrix_numpy(eb, values['Mat'][1], Df['RalIVB'].reshape(1741,1741))
             util.set_matrix_numpy(eb, values['Mat'][2], Df['RalWat'].reshape(1741,1741))
             util.set_matrix_numpy(eb, values['Mat'][3], Df['RalAux'].reshape(1741,1741))
             util.set_matrix_numpy(eb, values['Mat'][4], Df['RalBrd'].reshape(1741,1741))
@@ -416,7 +380,6 @@ class ModeChoiceGenDf(_m.Tool()):
         WCEFarDict = {}
 #        # Generate Skim Dictionaries
 #        #                                        AM ,    PM
-
         self.GenSkimDictWCE(eb, WCEIVWDict, ["mf5600", "mf5620"]) # WCE IVW
         self.GenSkimDictWCE(eb, WCEIVRDict, ["mf5601", "mf5621"]) # WCE IVR
         self.GenSkimDictWCE(eb, WCEIVBDict, ["mf5602", "mf5622"]) # WCE IVB
@@ -428,38 +391,39 @@ class ModeChoiceGenDf(_m.Tool()):
 #        # Blend Factors
         BlendDict = {    #AM,   PM,        AM,   PM,
          'hbwo':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],
-                 'Mat':['mf8030', 'mf8031', 'mf8032', 'mf8033', 'mf8034', 'mf8035', 'mf8036']},  # Where Blended Matrices get stored in same order as above
+                 'Mat':['mf5700', 'mf5701', 'mf5702', 'mf5703', 'mf5704', 'mf5705', 'mf5706']},  # Where Blended Matrices get stored in same order as above
          'nhbw':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],
-                 'Mat':['mf8130', 'mf8131', 'mf8132', 'mf8133', 'mf8134', 'mf8135', 'mf8136']},
+                 'Mat':['mf5710', 'mf5711', 'mf5712', 'mf5713', 'mf5714', 'mf5715', 'mf5716']},
          'hbsc':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],
-                 'Mat':['mf8230', 'mf8231', 'mf8232', 'mf8233', 'mf8234', 'mf8235', 'mf8236']},
+                 'Mat':['mf5720', 'mf5721', 'mf5722', 'mf5723', 'mf5724', 'mf5725', 'mf5726']},
          'hbsh':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],
-                 'Mat':['mf8330', 'mf8331', 'mf8332', 'mf8333', 'mf8334', 'mf8335', 'mf8336']},
+                 'Mat':['mf5730', 'mf5731', 'mf5732', 'mf5733', 'mf5734', 'mf5735', 'mf5736']},
          'hbpb':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],
-                 'Mat':['mf8430', 'mf8431', 'mf8432', 'mf8433', 'mf8434', 'mf8435', 'mf8436']},
+                 'Mat':['mf5740', 'mf5741', 'mf5742', 'mf5743', 'mf5744', 'mf5745', 'mf5746']},
          'hbun':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],
-                 'Mat':['mf8530', 'mf8531', 'mf8532', 'mf8533', 'mf8534', 'mf8535', 'mf8536']},
+                 'Mat':['mf5750', 'mf5751', 'mf5752', 'mf5753', 'mf5754', 'mf5755', 'mf5756']},
          'hbes':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],
-                 'Mat':['mf8630', 'mf8631', 'mf8632', 'mf8633', 'mf8634', 'mf8635', 'mf8636']},
+                 'Mat':['mf5760', 'mf5761', 'mf5762', 'mf5763', 'mf5764', 'mf5765', 'mf5766']},
          'hbso':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],
-                 'Mat':['mf8730', 'mf8731', 'mf8732', 'mf8733', 'mf8734', 'mf8735', 'mf8736']},
+                 'Mat':['mf5770', 'mf5771', 'mf5772', 'mf5773', 'mf5774', 'mf5775', 'mf5776']},
          'nhbo':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],
-                 'Mat':['mf8830', 'mf8831', 'mf8832', 'mf8833', 'mf8834', 'mf8835', 'mf8836']}}
+                 'Mat':['mf5780', 'mf5781', 'mf5782', 'mf5783', 'mf5784', 'mf5785', 'mf5786']}}
 
         for keys, values in BlendDict.items():
             # Calculate blended skims
             Df = {}
-            Df['WCEIVB'] = self.calc_blend(values, WCEIVBDict)
-            Df['WCEIVR'] = self.calc_blend(values, WCEIVRDict)
             Df['WCEIVW'] = self.calc_blend(values, WCEIVWDict)
+            Df['WCEIVR'] = self.calc_blend(values, WCEIVRDict)
+            Df['WCEIVB'] = self.calc_blend(values, WCEIVBDict)
+
             Df['WCEWat'] = self.calc_blend(values, WCEWatDict)
             Df['WCEAux'] = self.calc_blend(values, WCEAuxDict)
             Df['WCEBrd'] = self.calc_blend(values, WCEBrdDict)
             Df['WCEFar'] = self.calc_blend(values, WCEFarDict)
             # Put results back in the Emmebank
-            util.set_matrix_numpy(eb, values['Mat'][0], Df['WCEIVB'])
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['WCEIVW'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['WCEIVR'])
-            util.set_matrix_numpy(eb, values['Mat'][2], Df['WCEIVW'])
+            util.set_matrix_numpy(eb, values['Mat'][2], Df['WCEIVB'])
             util.set_matrix_numpy(eb, values['Mat'][3], Df['WCEWat'])
             util.set_matrix_numpy(eb, values['Mat'][4], Df['WCEAux'])
             util.set_matrix_numpy(eb, values['Mat'][5], Df['WCEBrd'])
@@ -469,9 +433,7 @@ class ModeChoiceGenDf(_m.Tool()):
 #        ##############################################################################
         BlendDictPR = { #AM,   PM,        AM,   PM,
          'hbwo':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],  'BL': BLWcWk,
-                 'Mat':['mf8063', 'mf8064', 'mf8065', 'mf8066', 'mf8067', 'mf8068', 'mf8069']}, # Where Blended Matrices get stored in same order as above
-         'hbun':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],  'BL': BLWcNw,
-                 'Mat':['mf8563', 'mf8564', 'mf8565', 'mf8566', 'mf8567', 'mf8568', 'mf8569']}
+                 'Mat':['mf6920', 'mf6921', 'mf6922', 'mf6923', 'mf6924', 'mf6925', 'mf6926']} # Where Blended Matrices get stored in same order as above
                       }
 
         for keys, values in BlendDictPR.items():
@@ -481,9 +443,9 @@ class ModeChoiceGenDf(_m.Tool()):
             Dfmerge = pd.DataFrame({'Or': Or, 'De': De, 'BL': values['BL']})
             # Generate second data frame and attach to it wce skims
             Df_WCE_Leg = pd.DataFrame({'OrTran': Or, 'DeTran': De})
-            Df_WCE_Leg['WCEIVB'] = self.calc_blend(values, WCEIVBDict).flatten()
-            Df_WCE_Leg['WCEIVR'] = self.calc_blend(values, WCEIVRDict).flatten()
             Df_WCE_Leg['WCEIVW'] = self.calc_blend(values, WCEIVWDict).flatten()
+            Df_WCE_Leg['WCEIVR'] = self.calc_blend(values, WCEIVRDict).flatten()
+            Df_WCE_Leg['WCEIVB'] = self.calc_blend(values, WCEIVBDict).flatten()
             Df_WCE_Leg['WCEWat'] = self.calc_blend(values, WCEWatDict).flatten()
             Df_WCE_Leg['WCEAux'] = self.calc_blend(values, WCEAuxDict).flatten()
             Df_WCE_Leg['WCEBrd'] = self.calc_blend(values, WCEBrdDict).flatten()
@@ -492,9 +454,9 @@ class ModeChoiceGenDf(_m.Tool()):
             Df = pd.merge(Dfmerge, Df_WCE_Leg, left_on = ['BL', 'De'],
                      right_on = ['OrTran', 'DeTran'], how = 'left')
             # Put results back in the Emmebank
-            util.set_matrix_numpy(eb, values['Mat'][0], Df['WCEIVB'].reshape(1741,1741))
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['WCEIVW'].reshape(1741,1741))
             util.set_matrix_numpy(eb, values['Mat'][1], Df['WCEIVR'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][2], Df['WCEIVW'].reshape(1741,1741))
+            util.set_matrix_numpy(eb, values['Mat'][2], Df['WCEIVB'].reshape(1741,1741))
             util.set_matrix_numpy(eb, values['Mat'][3], Df['WCEWat'].reshape(1741,1741))
             util.set_matrix_numpy(eb, values['Mat'][4], Df['WCEAux'].reshape(1741,1741))
             util.set_matrix_numpy(eb, values['Mat'][5], Df['WCEBrd'].reshape(1741,1741))
@@ -658,13 +620,13 @@ class ModeChoiceGenDf(_m.Tool()):
     def WceGT(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
         # [AM,MD,PM]
-        transit_mats = {"wceIVT" : ["mf5052",  "mf5058", "mf5064"],
-                        "wceWait" : ["mf5053",  "mf5059", "mf5065"],
-                        "railIVT" : ["mf5051",  "mf5057", "mf5063"],
-                        "busIVT" : ["mf5050",  "mf5056", "mf5062"],
-                        "auxTransit" : ["mf5055",  "mf5061", "mf5067"],
-                        "boardings" : ["mf5054",  "mf5060", "mf5066"],
-                        "wceFare" : ["mf161",  "mf161", "mf161"]}
+        transit_mats = {"wceIVT" : ["mf5600",  "mf5610", "mf5620"],
+                        "wceWait" : ["mf5603",  "mf5613", "mf5623"],
+                        "railIVT" : ["mf5601",  "mf5611", "mf5621"],
+                        "busIVT" : ["mf5602",  "mf5612", "mf5622"],
+                        "auxTransit" : ["mf5604",  "mf5614", "mf5624"],
+                        "boardings" : ["mf5605",  "mf5615", "mf5625"],
+                        "wceFare" : ["mf5606",  "mf5616", "mf5626"]}
 
         # [Work, non-work]
         vot_mats = ['msvotWkmed', 'msvotNWkmed']
@@ -706,12 +668,12 @@ class ModeChoiceGenDf(_m.Tool()):
     def RailGT(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
         # [AM,MD,PM]
-        transit_mats = {"railIVT" : ["mf5001",  "mf5006", "mf5011"],
-                        "railWait" : ["mf5002",  "mf5007", "mf5012"],
-                        "busIVT" : ["mf5000",  "mf5005", "mf5010"],
-                        "auxTransit" : ["mf5004", "mf5009", "mf5014"],
-                        "boardings" : ["mf5003", "mf5008", "mf5013"],
-                        "railFare" : ["mf161",  "mf161", "mf161"]}
+        transit_mats = {"railIVT" : ["mf5400",  "mf5410", "mf5420"],
+                        "railWait" : ["mf5402",  "mf5412", "mf5422"],
+                        "busIVT" : ["mf5401",  "mf5411", "mf5421"],
+                        "auxTransit" : ["mf5403", "mf5413", "mf5423"],
+                        "boardings" : ["mf5404", "mf5414", "mf5424"],
+                        "railFare" : ["mf5405",  "mf5415", "mf5425"]}
 
         # [Work, non-work]
         vot_mats = ['msvotWkmed', 'msvotNWkmed']
@@ -752,11 +714,11 @@ class ModeChoiceGenDf(_m.Tool()):
     def BusGT(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
         # [AM,MD,PM]
-        transit_mats = {"busIVT" : ["mf107",  "mf112", "mf2107"],
-                        "busWait" : ["mf106",  "mf111", "mf2106"],
-                        "auxTransit" : ["mf109", "mf114", "mf2109"],
-                        "boardings" : ["mf108", "mf113", "mf2108"],
-                        "busFare" : ["mf160",  "mf160", "mf160"]}
+        transit_mats = {"busIVT" : ["mf5200",  "mf5210", "mf5220"],
+                        "busWait" : ["mf5201",  "mf5211", "mf5221"],
+                        "auxTransit" : ["mf5202", "mf5212", "mf5222"],
+                        "boardings" : ["mf5203", "mf5213", "mf5223"],
+                        "busFare" : ["mf5204",  "mf5214", "mf5224"]}
 
         # [Work, non-work]
         vot_mats = ['msvotWkmed', 'msvotNWkmed']
@@ -794,9 +756,9 @@ class ModeChoiceGenDf(_m.Tool()):
 
         # work trips - not ideal formulation but quick and gets it done
         # [AM,MD,PM]
-        auto_mats = {"autotime" : ["mf2031",  "mf2034", "mf2037"],
-                    "autotoll" : ["mf2032", "mf2035", "mf2038"],
-                    "autodist" : ["mf2030", "mf2033", "mf2036"]}
+        auto_mats = {"autotime" : ["mf5001",  "mf5021", "mf5041"],
+                    "autotoll" : ["mf5002", "mf5022", "mf5042"],
+                    "autodist" : ["mf5000", "mf5020", "mf5040"]}
 
         # [Work, non-work]
         vot_mat = 'msvotWkmed'
@@ -822,9 +784,9 @@ class ModeChoiceGenDf(_m.Tool()):
 
 
 
-        auto_mats = {"autotime" : ["mf931",  "mf943", "mf2001"],
-                    "autotoll" : ["mf932", "mf944", "mf2002"],
-                    "autodist" : ["mf930", "mf942", "mf2000"] }
+        auto_mats = {"autotime" : ["mf5004",  "mf5024", "mf5044"],
+                    "autotoll" : ["mf5005", "mf5025", "mf5045"],
+                    "autodist" : ["mf5003", "mf5023", "mf5043"] }
 
         # [Work, non-work]
         vot_mat = 'msvotNWkmed'
@@ -883,276 +845,193 @@ class ModeChoiceGenDf(_m.Tool()):
         # Blended Skims
         ###################
 
-        util.initmat(eb, "mf8000", "HwAuTi", "HwAuTi", 0)
-        util.initmat(eb, "mf8001", "HwAuDi", "HwAuDi", 0)
-        util.initmat(eb, "mf8002", "HwAuTo", "HwAuTo", 0)
-        util.initmat(eb, "mf8010", "HwBsIB", "HwBsIB", 0)
-        util.initmat(eb, "mf8011", "HwBsWB", "HwBsWB", 0)
-        util.initmat(eb, "mf8012", "HwBsAB", "HwBsAB", 0)
-        util.initmat(eb, "mf8013", "HwBsBB", "HwBsBB", 0)
-        util.initmat(eb, "mf8014", "HwBsFB", "HwBsFB", 0)
-        util.initmat(eb, "mf8020", "HwRlIB", "HwRlIB", 0)
-        util.initmat(eb, "mf8021", "HwRlIR", "HwRlIR", 0)
-        util.initmat(eb, "mf8022", "HwRlWR", "HwRlWR", 0)
-        util.initmat(eb, "mf8023", "HwRlAR", "HwRlAR", 0)
-        util.initmat(eb, "mf8024", "HwRlBR", "HwRlBR", 0)
-        util.initmat(eb, "mf8025", "HwRlFR", "HwRlFR", 0)
-        util.initmat(eb, "mf8030", "HwWcIB", "HwWcIB", 0)
-        util.initmat(eb, "mf8031", "HwWcIR", "HwWcIR", 0)
-        util.initmat(eb, "mf8032", "HwWcIW", "HwWcIW", 0)
-        util.initmat(eb, "mf8033", "HwWcWW", "HwWcWW", 0)
-        util.initmat(eb, "mf8034", "HwWcAW", "HwWcAW", 0)
-        util.initmat(eb, "mf8035", "HwWcBW", "HwWcBW", 0)
-        util.initmat(eb, "mf8036", "HwWcFW", "HwWcFW", 0)
-        util.initmat(eb, "mf8040", "HwPRBAti", "HwPRBAti", 0)
-        util.initmat(eb, "mf8041", "HwPRBAdi", "HwPRBAdi", 0)
-        util.initmat(eb, "mf8042", "HwPRBAto", "HwPRBAto", 0)
-        util.initmat(eb, "mf8043", "HwPRBIB", "HwPRBIB", 0)
-        util.initmat(eb, "mf8044", "HwPRBWB", "HwPRBWB", 0)
-        util.initmat(eb, "mf8045", "HwPRBAB", "HwPRBAB", 0)
-        util.initmat(eb, "mf8046", "HwPRBBB", "HwPRBBB", 0)
-        util.initmat(eb, "mf8047", "HwPRBFB", "HwPRBFB", 0)
-        util.initmat(eb, "mf8050", "HwPRRAti", "HwPRRAti", 0)
-        util.initmat(eb, "mf8051", "HwPRRAdi", "HwPRRAdi", 0)
-        util.initmat(eb, "mf8052", "HwPRRAto", "HwPRRAto", 0)
-        util.initmat(eb, "mf8053", "HwPRRIB", "HwPRRIB", 0)
-        util.initmat(eb, "mf8054", "HwPRRIR", "HwPRRIR", 0)
-        util.initmat(eb, "mf8055", "HwPRRWR", "HwPRRWR", 0)
-        util.initmat(eb, "mf8056", "HwPRRAR", "HwPRRAR", 0)
-        util.initmat(eb, "mf8057", "HwPRRBR", "HwPRRBR", 0)
-        util.initmat(eb, "mf8058", "HwPRRFR", "HwPRRFR", 0)
-        util.initmat(eb, "mf8060", "HwPRWAti", "HwPRWAti", 0)
-        util.initmat(eb, "mf8061", "HwPRWAdi", "HwPRWAdi", 0)
-        util.initmat(eb, "mf8062", "HwPRWAto", "HwPRWAto", 0)
-        util.initmat(eb, "mf8063", "HwPRWIB", "HwPRWIB", 0)
-        util.initmat(eb, "mf8064", "HwPRWIR", "HwPRWIR", 0)
-        util.initmat(eb, "mf8065", "HwPRWIW", "HwPRWIW", 0)
-        util.initmat(eb, "mf8066", "HwPRWWW", "HwPRWWW", 0)
-        util.initmat(eb, "mf8067", "HwPRWAW", "HwPRWAW", 0)
-        util.initmat(eb, "mf8068", "HwPRWBW", "HwPRWBW", 0)
-        util.initmat(eb, "mf8069", "HwPRWFW", "HwPRWFW", 0)
-        util.initmat(eb, "mf8100", "NhwAuTi", "NhwAuTi", 0)
-        util.initmat(eb, "mf8101", "NhwAuDi", "NhwAuDi", 0)
-        util.initmat(eb, "mf8102", "NhwAuTo", "NhwAuTo", 0)
-        util.initmat(eb, "mf8110", "NhwBsIB", "NhwBsIB", 0)
-        util.initmat(eb, "mf8111", "NhwBsWB", "NhwBsWB", 0)
-        util.initmat(eb, "mf8112", "NhwBsAB", "NhwBsAB", 0)
-        util.initmat(eb, "mf8113", "NhwBsBB", "NhwBsBB", 0)
-        util.initmat(eb, "mf8114", "NhwBsFB", "NhwBsFB", 0)
-        util.initmat(eb, "mf8120", "NhwRlIB", "NhwRlIB", 0)
-        util.initmat(eb, "mf8121", "NhwRlIR", "NhwRlIR", 0)
-        util.initmat(eb, "mf8122", "NhwRlWR", "NhwRlWR", 0)
-        util.initmat(eb, "mf8123", "NhwRlAR", "NhwRlAR", 0)
-        util.initmat(eb, "mf8124", "NhwRlBR", "NhwRlBR", 0)
-        util.initmat(eb, "mf8125", "NhwRlFR", "NhwRlFR", 0)
-        util.initmat(eb, "mf8130", "NhwWcIB", "NhwWcIB", 0)
-        util.initmat(eb, "mf8131", "NhwWcIR", "NhwWcIR", 0)
-        util.initmat(eb, "mf8132", "NhwWcIW", "NhwWcIW", 0)
-        util.initmat(eb, "mf8133", "NhwWcWW", "NhwWcWW", 0)
-        util.initmat(eb, "mf8134", "NhwWcAW", "NhwWcAW", 0)
-        util.initmat(eb, "mf8135", "NhwWcBW", "NhwWcBW", 0)
-        util.initmat(eb, "mf8136", "NhwWcFW", "NhwWcFW", 0)
-        util.initmat(eb, "mf8140", "NhwPRBAti", "NhwPRBAti", 0)
-        util.initmat(eb, "mf8141", "NhwPRBAdi", "NhwPRBAdi", 0)
-        util.initmat(eb, "mf8142", "NhwPRBAto", "NhwPRBAto", 0)
-        util.initmat(eb, "mf8143", "NhwPRBIB", "NhwPRBIB", 0)
-        util.initmat(eb, "mf8144", "NhwPRBWB", "NhwPRBWB", 0)
-        util.initmat(eb, "mf8145", "NhwPRBAB", "NhwPRBAB", 0)
-        util.initmat(eb, "mf8146", "NhwPRBBB", "NhwPRBBB", 0)
-        util.initmat(eb, "mf8147", "NhwPRBFB", "NhwPRBFB", 0)
-        util.initmat(eb, "mf8150", "NhwPRRAti", "NhwPRRAti", 0)
-        util.initmat(eb, "mf8151", "NhwPRRAdi", "NhwPRRAdi", 0)
-        util.initmat(eb, "mf8152", "NhwPRRAto", "NhwPRRAto", 0)
-        util.initmat(eb, "mf8153", "NhwPRRIB", "NhwPRRIB", 0)
-        util.initmat(eb, "mf8154", "NhwPRRIR", "NhwPRRIR", 0)
-        util.initmat(eb, "mf8155", "NhwPRRWR", "NhwPRRWR", 0)
-        util.initmat(eb, "mf8156", "NhwPRRAR", "NhwPRRAR", 0)
-        util.initmat(eb, "mf8157", "NhwPRRBR", "NhwPRRBR", 0)
-        util.initmat(eb, "mf8158", "NhwPRRFR", "NhwPRRFR", 0)
-        util.initmat(eb, "mf8160", "NhwPRWAti", "NhwPRWAti", 0)
-        util.initmat(eb, "mf8161", "NhwPRWAdi", "NhwPRWAdi", 0)
-        util.initmat(eb, "mf8162", "NhwPRWAto", "NhwPRWAto", 0)
-        util.initmat(eb, "mf8163", "NhwPRWIB", "NhwPRWIB", 0)
-        util.initmat(eb, "mf8164", "NhwPRWIR", "NhwPRWIR", 0)
-        util.initmat(eb, "mf8165", "NhwPRWIW", "NhwPRWIW", 0)
-        util.initmat(eb, "mf8166", "NhwPRWWW", "NhwPRWWW", 0)
-        util.initmat(eb, "mf8167", "NhwPRWAW", "NhwPRWAW", 0)
-        util.initmat(eb, "mf8168", "NhwPRWBW", "NhwPRWBW", 0)
-        util.initmat(eb, "mf8169", "NhwPRWFW", "NhwPRWFW", 0)
-        util.initmat(eb, "mf8200", "HSchAuTi", "HSchAuTi", 0)
-        util.initmat(eb, "mf8201", "HSchAuDi", "HSchAuDi", 0)
-        util.initmat(eb, "mf8202", "HSchAuTo", "HSchAuTo", 0)
-        util.initmat(eb, "mf8210", "HSchBsIB", "HSchBsIB", 0)
-        util.initmat(eb, "mf8211", "HSchBsWB", "HSchBsWB", 0)
-        util.initmat(eb, "mf8212", "HSchBsAB", "HSchBsAB", 0)
-        util.initmat(eb, "mf8213", "HSchBsBB", "HSchBsBB", 0)
-        util.initmat(eb, "mf8214", "HSchBsFB", "HSchBsFB", 0)
-        util.initmat(eb, "mf8220", "HSchRlIB", "HSchRlIB", 0)
-        util.initmat(eb, "mf8221", "HSchRlIR", "HSchRlIR", 0)
-        util.initmat(eb, "mf8222", "HSchRlWR", "HSchRlWR", 0)
-        util.initmat(eb, "mf8223", "HSchRlAR", "HSchRlAR", 0)
-        util.initmat(eb, "mf8224", "HSchRlBR", "HSchRlBR", 0)
-        util.initmat(eb, "mf8225", "HSchRlFR", "HSchRlFR", 0)
-        util.initmat(eb, "mf8230", "HSchWcIB", "HSchWcIB", 0)
-        util.initmat(eb, "mf8231", "HSchWcIR", "HSchWcIR", 0)
-        util.initmat(eb, "mf8232", "HSchWcIW", "HSchWcIW", 0)
-        util.initmat(eb, "mf8233", "HSchWcWW", "HSchWcWW", 0)
-        util.initmat(eb, "mf8234", "HSchWcAW", "HSchWcAW", 0)
-        util.initmat(eb, "mf8235", "HSchWcBW", "HSchWcBW", 0)
-        util.initmat(eb, "mf8236", "HSchWcFW", "HSchWcFW", 0)
-        util.initmat(eb, "mf8300", "HShpAuTi", "HShpAuTi", 0)
-        util.initmat(eb, "mf8301", "HShpAuDi", "HShpAuDi", 0)
-        util.initmat(eb, "mf8302", "HShpAuTo", "HShpAuTo", 0)
-        util.initmat(eb, "mf8310", "HShpBsIB", "HShpBsIB", 0)
-        util.initmat(eb, "mf8311", "HShpBsWB", "HShpBsWB", 0)
-        util.initmat(eb, "mf8312", "HShpBsAB", "HShpBsAB", 0)
-        util.initmat(eb, "mf8313", "HShpBsBB", "HShpBsBB", 0)
-        util.initmat(eb, "mf8314", "HShpBsFB", "HShpBsFB", 0)
-        util.initmat(eb, "mf8320", "HShpRlIB", "HShpRlIB", 0)
-        util.initmat(eb, "mf8321", "HShpRlIR", "HShpRlIR", 0)
-        util.initmat(eb, "mf8322", "HShpRlWR", "HShpRlWR", 0)
-        util.initmat(eb, "mf8323", "HShpRlAR", "HShpRlAR", 0)
-        util.initmat(eb, "mf8324", "HShpRlBR", "HShpRlBR", 0)
-        util.initmat(eb, "mf8325", "HShpRlFR", "HShpRlFR", 0)
-        util.initmat(eb, "mf8330", "HShpWcIB", "HShpWcIB", 0)
-        util.initmat(eb, "mf8331", "HShpWcIR", "HShpWcIR", 0)
-        util.initmat(eb, "mf8332", "HShpWcIW", "HShpWcIW", 0)
-        util.initmat(eb, "mf8333", "HShpWcWW", "HShpWcWW", 0)
-        util.initmat(eb, "mf8334", "HShpWcAW", "HShpWcAW", 0)
-        util.initmat(eb, "mf8335", "HShpWcBW", "HShpWcBW", 0)
-        util.initmat(eb, "mf8336", "HShpWcFW", "HShpWcFW", 0)
-        util.initmat(eb, "mf8400", "HPBAuTi", "HPBAuTi", 0)
-        util.initmat(eb, "mf8401", "HPBAuDi", "HPBAuDi", 0)
-        util.initmat(eb, "mf8402", "HPBAuTo", "HPBAuTo", 0)
-        util.initmat(eb, "mf8410", "HPBBsIB", "HPBBsIB", 0)
-        util.initmat(eb, "mf8411", "HPBBsWB", "HPBBsWB", 0)
-        util.initmat(eb, "mf8412", "HPBBsAB", "HPBBsAB", 0)
-        util.initmat(eb, "mf8413", "HPBBsBB", "HPBBsBB", 0)
-        util.initmat(eb, "mf8414", "HPBBsFB", "HPBBsFB", 0)
-        util.initmat(eb, "mf8420", "HPBRlIB", "HPBRlIB", 0)
-        util.initmat(eb, "mf8421", "HPBRlIR", "HPBRlIR", 0)
-        util.initmat(eb, "mf8422", "HPBRlWR", "HPBRlWR", 0)
-        util.initmat(eb, "mf8423", "HPBRlAR", "HPBRlAR", 0)
-        util.initmat(eb, "mf8424", "HPBRlBR", "HPBRlBR", 0)
-        util.initmat(eb, "mf8425", "HPBRlFR", "HPBRlFR", 0)
-        util.initmat(eb, "mf8430", "HPBWcIB", "HPBWcIB", 0)
-        util.initmat(eb, "mf8431", "HPBWcIR", "HPBWcIR", 0)
-        util.initmat(eb, "mf8432", "HPBWcIW", "HPBWcIW", 0)
-        util.initmat(eb, "mf8433", "HPBWcWW", "HPBWcWW", 0)
-        util.initmat(eb, "mf8434", "HPBWcAW", "HPBWcAW", 0)
-        util.initmat(eb, "mf8435", "HPBWcBW", "HPBWcBW", 0)
-        util.initmat(eb, "mf8436", "HPBWcFW", "HPBWcFW", 0)
-        util.initmat(eb, "mf8500", "HUniAuTi", "HUniAuTi", 0)
-        util.initmat(eb, "mf8501", "HUniAuDi", "HUniAuDi", 0)
-        util.initmat(eb, "mf8502", "HUniAuTo", "HUniAuTo", 0)
-        util.initmat(eb, "mf8510", "HUniBsIB", "HUniBsIB", 0)
-        util.initmat(eb, "mf8511", "HUniBsWB", "HUniBsWB", 0)
-        util.initmat(eb, "mf8512", "HUniBsAB", "HUniBsAB", 0)
-        util.initmat(eb, "mf8513", "HUniBsBB", "HUniBsBB", 0)
-        util.initmat(eb, "mf8514", "HUniBsFB", "HUniBsFB", 0)
-        util.initmat(eb, "mf8520", "HUniRlIB", "HUniRlIB", 0)
-        util.initmat(eb, "mf8521", "HUniRlIR", "HUniRlIR", 0)
-        util.initmat(eb, "mf8522", "HUniRlWR", "HUniRlWR", 0)
-        util.initmat(eb, "mf8523", "HUniRlAR", "HUniRlAR", 0)
-        util.initmat(eb, "mf8524", "HUniRlBR", "HUniRlBR", 0)
-        util.initmat(eb, "mf8525", "HUniRlFR", "HUniRlFR", 0)
-        util.initmat(eb, "mf8530", "HUniWcIB", "HUniWcIB", 0)
-        util.initmat(eb, "mf8531", "HUniWcIR", "HUniWcIR", 0)
-        util.initmat(eb, "mf8532", "HUniWcIW", "HUniWcIW", 0)
-        util.initmat(eb, "mf8533", "HUniWcWW", "HUniWcWW", 0)
-        util.initmat(eb, "mf8534", "HUniWcAW", "HUniWcAW", 0)
-        util.initmat(eb, "mf8535", "HUniWcBW", "HUniWcBW", 0)
-        util.initmat(eb, "mf8536", "HUniWcFW", "HUniWcFW", 0)
-        util.initmat(eb, "mf8540", "HUniPRBAti", "HUniPRBAti", 0)
-        util.initmat(eb, "mf8541", "HUniPRBAdi", "HUniPRBAdi", 0)
-        util.initmat(eb, "mf8542", "HUniPRBAto", "HUniPRBAto", 0)
-        util.initmat(eb, "mf8543", "HUniPRBIB", "HUniPRBIB", 0)
-        util.initmat(eb, "mf8544", "HUniPRBWB", "HUniPRBWB", 0)
-        util.initmat(eb, "mf8545", "HUniPRBAB", "HUniPRBAB", 0)
-        util.initmat(eb, "mf8546", "HUniPRBBB", "HUniPRBBB", 0)
-        util.initmat(eb, "mf8547", "HUniPRBFB", "HUniPRBFB", 0)
-        util.initmat(eb, "mf8550", "HUniPRRAti", "HUniPRRAti", 0)
-        util.initmat(eb, "mf8551", "HUniPRRAdi", "HUniPRRAdi", 0)
-        util.initmat(eb, "mf8552", "HUniPRRAto", "HUniPRRAto", 0)
-        util.initmat(eb, "mf8553", "HUniPRRIB", "HUniPRRIB", 0)
-        util.initmat(eb, "mf8554", "HUniPRRIR", "HUniPRRIR", 0)
-        util.initmat(eb, "mf8555", "HUniPRRWR", "HUniPRRWR", 0)
-        util.initmat(eb, "mf8556", "HUniPRRAR", "HUniPRRAR", 0)
-        util.initmat(eb, "mf8557", "HUniPRRBR", "HUniPRRBR", 0)
-        util.initmat(eb, "mf8558", "HUniPRRFR", "HUniPRRFR", 0)
-        util.initmat(eb, "mf8560", "HUniPRWAti", "HUniPRWAti", 0)
-        util.initmat(eb, "mf8561", "HUniPRWAdi", "HUniPRWAdi", 0)
-        util.initmat(eb, "mf8562", "HUniPRWAto", "HUniPRWAto", 0)
-        util.initmat(eb, "mf8563", "HUniPRWIB", "HUniPRWIB", 0)
-        util.initmat(eb, "mf8564", "HUniPRWIR", "HUniPRWIR", 0)
-        util.initmat(eb, "mf8565", "HUniPRWIW", "HUniPRWIW", 0)
-        util.initmat(eb, "mf8566", "HUniPRWWW", "HUniPRWWW", 0)
-        util.initmat(eb, "mf8567", "HUniPRWAW", "HUniPRWAW", 0)
-        util.initmat(eb, "mf8568", "HUniPRWBW", "HUniPRWBW", 0)
-        util.initmat(eb, "mf8569", "HUniPRWFW", "HUniPRWFW", 0)
-        util.initmat(eb, "mf8600", "HescAuTi", "HescAuTi", 0)
-        util.initmat(eb, "mf8601", "HescAuDi", "HescAuDi", 0)
-        util.initmat(eb, "mf8602", "HescAuTo", "HescAuTo", 0)
-        util.initmat(eb, "mf8610", "HescBsIB", "HescBsIB", 0)
-        util.initmat(eb, "mf8611", "HescBsWB", "HescBsWB", 0)
-        util.initmat(eb, "mf8612", "HescBsAB", "HescBsAB", 0)
-        util.initmat(eb, "mf8613", "HescBsBB", "HescBsBB", 0)
-        util.initmat(eb, "mf8614", "HescBsFB", "HescBsFB", 0)
-        util.initmat(eb, "mf8620", "HescRlIB", "HescRlIB", 0)
-        util.initmat(eb, "mf8621", "HescRlIR", "HescRlIR", 0)
-        util.initmat(eb, "mf8622", "HescRlWR", "HescRlWR", 0)
-        util.initmat(eb, "mf8623", "HescRlAR", "HescRlAR", 0)
-        util.initmat(eb, "mf8624", "HescRlBR", "HescRlBR", 0)
-        util.initmat(eb, "mf8625", "HescRlFR", "HescRlFR", 0)
-        util.initmat(eb, "mf8630", "HescWcIB", "HescWcIB", 0)
-        util.initmat(eb, "mf8631", "HescWcIR", "HescWcIR", 0)
-        util.initmat(eb, "mf8632", "HescWcIW", "HescWcIW", 0)
-        util.initmat(eb, "mf8633", "HescWcWW", "HescWcWW", 0)
-        util.initmat(eb, "mf8634", "HescWcAW", "HescWcAW", 0)
-        util.initmat(eb, "mf8635", "HescWcBW", "HescWcBW", 0)
-        util.initmat(eb, "mf8636", "HescWcFW", "HescWcFW", 0)
-        util.initmat(eb, "mf8700", "HsoAuTi", "HsoAuTi", 0)
-        util.initmat(eb, "mf8701", "HsoAuDi", "HsoAuDi", 0)
-        util.initmat(eb, "mf8702", "HsoAuTo", "HsoAuTo", 0)
-        util.initmat(eb, "mf8710", "HsoBsIB", "HsoBsIB", 0)
-        util.initmat(eb, "mf8711", "HsoBsWB", "HsoBsWB", 0)
-        util.initmat(eb, "mf8712", "HsoBsAB", "HsoBsAB", 0)
-        util.initmat(eb, "mf8713", "HsoBsBB", "HsoBsBB", 0)
-        util.initmat(eb, "mf8714", "HsoBsFB", "HsoBsFB", 0)
-        util.initmat(eb, "mf8720", "HsoRlIB", "HsoRlIB", 0)
-        util.initmat(eb, "mf8721", "HsoRlIR", "HsoRlIR", 0)
-        util.initmat(eb, "mf8722", "HsoRlWR", "HsoRlWR", 0)
-        util.initmat(eb, "mf8723", "HsoRlAR", "HsoRlAR", 0)
-        util.initmat(eb, "mf8724", "HsoRlBR", "HsoRlBR", 0)
-        util.initmat(eb, "mf8725", "HsoRlFR", "HsoRlFR", 0)
-        util.initmat(eb, "mf8730", "HsoWcIB", "HsoWcIB", 0)
-        util.initmat(eb, "mf8731", "HsoWcIR", "HsoWcIR", 0)
-        util.initmat(eb, "mf8732", "HsoWcIW", "HsoWcIW", 0)
-        util.initmat(eb, "mf8733", "HsoWcWW", "HsoWcWW", 0)
-        util.initmat(eb, "mf8734", "HsoWcAW", "HsoWcAW", 0)
-        util.initmat(eb, "mf8735", "HsoWcBW", "HsoWcBW", 0)
-        util.initmat(eb, "mf8736", "HsoWcFW", "HsoWcFW", 0)
-        util.initmat(eb, "mf8800", "NHOAuTi", "NHOAuTi", 0)
-        util.initmat(eb, "mf8801", "NHOAuDi", "NHOAuDi", 0)
-        util.initmat(eb, "mf8802", "NHOAuTo", "NHOAuTo", 0)
-        util.initmat(eb, "mf8810", "NHOBsIB", "NHOBsIB", 0)
-        util.initmat(eb, "mf8811", "NHOBsWB", "NHOBsWB", 0)
-        util.initmat(eb, "mf8812", "NHOBsAB", "NHOBsAB", 0)
-        util.initmat(eb, "mf8813", "NHOBsBB", "NHOBsBB", 0)
-        util.initmat(eb, "mf8814", "NHOBsFB", "NHOBsFB", 0)
-        util.initmat(eb, "mf8820", "NHORlIB", "NHORlIB", 0)
-        util.initmat(eb, "mf8821", "NHORlIR", "NHORlIR", 0)
-        util.initmat(eb, "mf8822", "NHORlWR", "NHORlWR", 0)
-        util.initmat(eb, "mf8823", "NHORlAR", "NHORlAR", 0)
-        util.initmat(eb, "mf8824", "NHORlBR", "NHORlBR", 0)
-        util.initmat(eb, "mf8825", "NHORlFR", "NHORlFR", 0)
-        util.initmat(eb, "mf8830", "NHOWcIB", "NHOWcIB", 0)
-        util.initmat(eb, "mf8831", "NHOWcIR", "NHOWcIR", 0)
-        util.initmat(eb, "mf8832", "NHOWcIW", "NHOWcIW", 0)
-        util.initmat(eb, "mf8833", "NHOWcWW", "NHOWcWW", 0)
-        util.initmat(eb, "mf8834", "NHOWcAW", "NHOWcAW", 0)
-        util.initmat(eb, "mf8835", "NHOWcBW", "NHOWcBW", 0)
-        util.initmat(eb, "mf8836", "NHOWcFW", "NHOWcFW", 0)
+        util.initmat(eb, "mf5100", "HbWBlSovDist", "HbW Bl Sov Distance", 0)
+        util.initmat(eb, "mf5101", "HbWBlSovTime", "HbW Bl Sov Time", 0)
+        util.initmat(eb, "mf5102", "HbWBlSovToll", "HbW Bl Sov Toll", 0)
+        util.initmat(eb, "mf5106", "HbWBlHovDist", "HbW Bl Hov Distance", 0)
+        util.initmat(eb, "mf5107", "HbWBlHovTime", "HbW Bl Hov Time", 0)
+        util.initmat(eb, "mf5108", "HbWBlHovToll", "HbW Bl Hov Toll", 0)
+        util.initmat(eb, "mf5110", "HbUBlSovDist", "HbU Bl Sov Distance", 0)
+        util.initmat(eb, "mf5111", "HbUBlSovTime", "HbU Bl Sov Time", 0)
+        util.initmat(eb, "mf5112", "HbUBlSovToll", "HbU Bl Sov Toll", 0)
+        util.initmat(eb, "mf5116", "HbUBlHovDist", "HbU Bl Hov Distance", 0)
+        util.initmat(eb, "mf5117", "HbUBlHovTime", "HbU Bl Hov Time", 0)
+        util.initmat(eb, "mf5118", "HbUBlHovToll", "HbU Bl Hov Toll", 0)
+        util.initmat(eb, "mf5120", "HbScBlSovDist", "HbSc Bl Sov Distance", 0)
+        util.initmat(eb, "mf5121", "HbScBlSovTime", "HbSc Bl Sov Time", 0)
+        util.initmat(eb, "mf5122", "HbScBlSovToll", "HbSc Bl Sov Toll", 0)
+        util.initmat(eb, "mf5126", "HbScBlHovDist", "HbSc Bl Hov Distance", 0)
+        util.initmat(eb, "mf5127", "HbScBlHovTime", "HbSc Bl Hov Time", 0)
+        util.initmat(eb, "mf5128", "HbScBlHovToll", "HbSc Bl Hov Toll", 0)
+        util.initmat(eb, "mf5130", "HbShBlSovDist", "HbSh Bl Sov Distance", 0)
+        util.initmat(eb, "mf5131", "HbShBlSovTime", "HbSh Bl Sov Time", 0)
+        util.initmat(eb, "mf5132", "HbShBlSovToll", "HbSh Bl Sov Toll", 0)
+        util.initmat(eb, "mf5136", "HbShBlHovDist", "HbSh Bl Hov Distance", 0)
+        util.initmat(eb, "mf5137", "HbShBlHovTime", "HbSh Bl Hov Time", 0)
+        util.initmat(eb, "mf5138", "HbShBlHovToll", "HbSh Bl Hov Toll", 0)
+        util.initmat(eb, "mf5140", "HbPbBlSovDist", "HbPb Bl Sov Distance", 0)
+        util.initmat(eb, "mf5141", "HbPbBlSovTime", "HbPb Bl Sov Time", 0)
+        util.initmat(eb, "mf5142", "HbPbBlSovToll", "HbPb Bl Sov Toll", 0)
+        util.initmat(eb, "mf5146", "HbPbBlHovDist", "HbPb Bl Hov Distance", 0)
+        util.initmat(eb, "mf5147", "HbPbBlHovTime", "HbPb Bl Hov Time", 0)
+        util.initmat(eb, "mf5148", "HbPbBlHovToll", "HbPb Bl Hov Toll", 0)
+        util.initmat(eb, "mf5150", "HbSoBlSovDist", "HbSo Bl Sov Distance", 0)
+        util.initmat(eb, "mf5151", "HbSoBlSovTime", "HbSo Bl Sov Time", 0)
+        util.initmat(eb, "mf5152", "HbSoBlSovToll", "HbSo Bl Sov Toll", 0)
+        util.initmat(eb, "mf5156", "HbSoBlHovDist", "HbSo Bl Hov Distance", 0)
+        util.initmat(eb, "mf5157", "HbSoBlHovTime", "HbSo Bl Hov Time", 0)
+        util.initmat(eb, "mf5158", "HbSoBlHovToll", "HbSo Bl Hov Toll", 0)
+        util.initmat(eb, "mf5160", "HbEsBlSovDist", "HbEs Bl Sov Distance", 0)
+        util.initmat(eb, "mf5161", "HbEsBlSovTime", "HbEs Bl Sov Time", 0)
+        util.initmat(eb, "mf5162", "HbEsBlSovToll", "HbEs Bl Sov Toll", 0)
+        util.initmat(eb, "mf5166", "HbEsBlHovDist", "HbEs Bl Hov Distance", 0)
+        util.initmat(eb, "mf5167", "HbEsBlHovTime", "HbEs Bl Hov Time", 0)
+        util.initmat(eb, "mf5168", "HbEsBlHovToll", "HbEs Bl Hov Toll", 0)
+        util.initmat(eb, "mf5170", "NHbWBlSovDist", "NHbW Bl Sov Distance", 0)
+        util.initmat(eb, "mf5171", "NHbWBlSovTime", "NHbW Bl Sov Time", 0)
+        util.initmat(eb, "mf5172", "NHbWBlSovToll", "NHbW Bl Sov Toll", 0)
+        util.initmat(eb, "mf5176", "NHbWBlHovDist", "NHbW Bl Hov Distance", 0)
+        util.initmat(eb, "mf5177", "NHbWBlHovTime", "NHbW Bl Hov Time", 0)
+        util.initmat(eb, "mf5178", "NHbWBlHovToll", "NHbW Bl Hov Toll", 0)
+        util.initmat(eb, "mf5180", "NHbOBlSovDist", "NHbO Bl Sov Distance", 0)
+        util.initmat(eb, "mf5181", "NHbOBlSovTime", "NHbO Bl Sov Time", 0)
+        util.initmat(eb, "mf5182", "NHbOBlSovToll", "NHbO Bl Sov Toll", 0)
+        util.initmat(eb, "mf5186", "NHbOBlHovDist", "NHbO Bl Hov Distance", 0)
+        util.initmat(eb, "mf5187", "NHbOBlHovTime", "NHbO Bl Hov Time", 0)
+        util.initmat(eb, "mf5188", "NHbOBlHovToll", "NHbO Bl Hov Toll", 0)
+        util.initmat(eb, "mf5300", "HbWBlBusIvtt", "HbW Bl Bus InVehicle Time", 0)
+        util.initmat(eb, "mf5301", "HbWBlBusWait", "HbW Bl Bus Waiting Time", 0)
+        util.initmat(eb, "mf5302", "HbWBlBusAux", "HbW Bl Bus Auxillary Time", 0)
+        util.initmat(eb, "mf5303", "HbWBlBusBoard", "HbW Bl Bus Boardings", 0)
+        util.initmat(eb, "mf5304", "HbWBlBusFare", "HbW Bl Bus Fare", 0)
+        util.initmat(eb, "mf5310", "HbUBlBusIvtt", "HbU Bl Bus InVehicle Time", 0)
+        util.initmat(eb, "mf5311", "HbUBlBusWait", "HbU Bl Bus Waiting Time", 0)
+        util.initmat(eb, "mf5312", "HbUBlBusAux", "HbU Bl Bus Auxillary Time", 0)
+        util.initmat(eb, "mf5313", "HbUBlBusBoard", "HbU Bl Bus Boardings", 0)
+        util.initmat(eb, "mf5314", "HbUBlBusFare", "HbU Bl Bus Fare", 0)
+        util.initmat(eb, "mf5320", "HbScBlBusIvtt", "HbSc Bl Bus InVehicle Time", 0)
+        util.initmat(eb, "mf5321", "HbScBlBusWait", "HbSc Bl Bus Waiting Time", 0)
+        util.initmat(eb, "mf5322", "HbScBlBusAux", "HbSc Bl Bus Auxillary Time", 0)
+        util.initmat(eb, "mf5323", "HbScBlBusBoard", "HbSc Bl Bus Boardings", 0)
+        util.initmat(eb, "mf5324", "HbScBlBusFare", "HbSc Bl Bus Fare", 0)
+        util.initmat(eb, "mf5330", "HbShBlBusIvtt", "HbSh Bl Bus InVehicle Time", 0)
+        util.initmat(eb, "mf5331", "HbShBlBusWait", "HbSh Bl Bus Waiting Time", 0)
+        util.initmat(eb, "mf5332", "HbShBlBusAux", "HbSh Bl Bus Auxillary Time", 0)
+        util.initmat(eb, "mf5333", "HbShBlBusBoard", "HbSh Bl Bus Boardings", 0)
+        util.initmat(eb, "mf5334", "HbShBlBusFare", "HbSh Bl Bus Fare", 0)
+        util.initmat(eb, "mf5340", "HbPbBlBusIvtt", "HbPb Bl Bus InVehicle Time", 0)
+        util.initmat(eb, "mf5341", "HbPbBlBusWait", "HbPb Bl Bus Waiting Time", 0)
+        util.initmat(eb, "mf5342", "HbPbBlBusAux", "HbPb Bl Bus Auxillary Time", 0)
+        util.initmat(eb, "mf5343", "HbPbBlBusBoard", "HbPb Bl Bus Boardings", 0)
+        util.initmat(eb, "mf5344", "HbPbBlBusFare", "HbPb Bl Bus Fare", 0)
+        util.initmat(eb, "mf5350", "HbSoBlBusIvtt", "HbSo Bl Bus InVehicle Time", 0)
+        util.initmat(eb, "mf5351", "HbSoBlBusWait", "HbSo Bl Bus Waiting Time", 0)
+        util.initmat(eb, "mf5352", "HbSoBlBusAux", "HbSo Bl Bus Auxillary Time", 0)
+        util.initmat(eb, "mf5353", "HbSoBlBusBoard", "HbSo Bl Bus Boardings", 0)
+        util.initmat(eb, "mf5354", "HbSoBlBusFare", "HbSo Bl Bus Fare", 0)
+        util.initmat(eb, "mf5360", "HbEsBlBusIvtt", "HbEs Bl Bus InVehicle Time", 0)
+        util.initmat(eb, "mf5361", "HbEsBlBusWait", "HbEs Bl Bus Waiting Time", 0)
+        util.initmat(eb, "mf5362", "HbEsBlBusAux", "HbEs Bl Bus Auxillary Time", 0)
+        util.initmat(eb, "mf5363", "HbEsBlBusBoard", "HbEs Bl Bus Boardings", 0)
+        util.initmat(eb, "mf5364", "HbEsBlBusFare", "HbEs Bl Bus Fare", 0)
+        util.initmat(eb, "mf5370", "NHbWBlBusIvtt", "NHbW Bl Bus InVehicle Time", 0)
+        util.initmat(eb, "mf5371", "NHbWBlBusWait", "NHbW Bl Bus Waiting Time", 0)
+        util.initmat(eb, "mf5372", "NHbWBlBusAux", "NHbW Bl Bus Auxillary Time", 0)
+        util.initmat(eb, "mf5373", "NHbWBlBusBoard", "NHbW Bl Bus Boardings", 0)
+        util.initmat(eb, "mf5374", "NHbWBlBusFare", "NHbW Bl Bus Fare", 0)
+        util.initmat(eb, "mf5380", "NHbOBlBusIvtt", "NHbO Bl Bus InVehicle Time", 0)
+        util.initmat(eb, "mf5381", "NHbOBlBusWait", "NHbO Bl Bus Waiting Time", 0)
+        util.initmat(eb, "mf5382", "NHbOBlBusAux", "NHbO Bl Bus Auxillary Time", 0)
+        util.initmat(eb, "mf5383", "NHbOBlBusBoard", "NHbO Bl Bus Boardings", 0)
+        util.initmat(eb, "mf5384", "NHbOBlBusFare", "NHbO Bl Bus Fare", 0)
+        util.initmat(eb, "mf5500", "HbWBlRailIvtt", "HbW Bl Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5501", "HbWBlRailIvttBus", "HbW Bl Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5502", "HbWBlRailWait", "HbW Bl Rail Waiting Time", 0)
+        util.initmat(eb, "mf5503", "HbWBlRailAux", "HbW Bl Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5504", "HbWBlRailBoard", "HbW Bl Rail Boardings", 0)
+        util.initmat(eb, "mf5505", "HbWBlRailFare", "HbW Bl Rail Fare", 0)
+        util.initmat(eb, "mf5510", "HbUBlRailIvtt", "HbU Bl Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5511", "HbUBlRailIvttBus", "HbU Bl Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5512", "HbUBlRailWait", "HbU Bl Rail Waiting Time", 0)
+        util.initmat(eb, "mf5513", "HbUBlRailAux", "HbU Bl Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5514", "HbUBlRailBoard", "HbU Bl Rail Boardings", 0)
+        util.initmat(eb, "mf5515", "HbUBlRailFare", "HbU Bl Rail Fare", 0)
+        util.initmat(eb, "mf5520", "HbScBlRailIvtt", "HbSc Bl Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5521", "HbScBlRailIvttBus", "HbSc Bl Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5522", "HbScBlRailWait", "HbSc Bl Rail Waiting Time", 0)
+        util.initmat(eb, "mf5523", "HbScBlRailAux", "HbSc Bl Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5524", "HbScBlRailBoard", "HbSc Bl Rail Boardings", 0)
+        util.initmat(eb, "mf5525", "HbScBlRailFare", "HbSc Bl Rail Fare", 0)
+        util.initmat(eb, "mf5530", "HbShBlRailIvtt", "HbSh Bl Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5531", "HbShBlRailIvttBus", "HbSh Bl Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5532", "HbShBlRailWait", "HbSh Bl Rail Waiting Time", 0)
+        util.initmat(eb, "mf5533", "HbShBlRailAux", "HbSh Bl Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5534", "HbShBlRailBoard", "HbSh Bl Rail Boardings", 0)
+        util.initmat(eb, "mf5535", "HbShBlRailFare", "HbSh Bl Rail Fare", 0)
+        util.initmat(eb, "mf5540", "HbPbBlRailIvtt", "HbPb Bl Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5541", "HbPbBlRailIvttBus", "HbPb Bl Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5542", "HbPbBlRailWait", "HbPb Bl Rail Waiting Time", 0)
+        util.initmat(eb, "mf5543", "HbPbBlRailAux", "HbPb Bl Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5544", "HbPbBlRailBoard", "HbPb Bl Rail Boardings", 0)
+        util.initmat(eb, "mf5545", "HbPbBlRailFare", "HbPb Bl Rail Fare", 0)
+        util.initmat(eb, "mf5550", "HbSoBlRailIvtt", "HbSo Bl Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5551", "HbSoBlRailIvttBus", "HbSo Bl Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5552", "HbSoBlRailWait", "HbSo Bl Rail Waiting Time", 0)
+        util.initmat(eb, "mf5553", "HbSoBlRailAux", "HbSo Bl Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5554", "HbSoBlRailBoard", "HbSo Bl Rail Boardings", 0)
+        util.initmat(eb, "mf5555", "HbSoBlRailFare", "HbSo Bl Rail Fare", 0)
+        util.initmat(eb, "mf5560", "HbEsBlRailIvtt", "HbEs Bl Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5561", "HbEsBlRailIvttBus", "HbEs Bl Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5562", "HbEsBlRailWait", "HbEs Bl Rail Waiting Time", 0)
+        util.initmat(eb, "mf5563", "HbEsBlRailAux", "HbEs Bl Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5564", "HbEsBlRailBoard", "HbEs Bl Rail Boardings", 0)
+        util.initmat(eb, "mf5565", "HbEsBlRailFare", "HbEs Bl Rail Fare", 0)
+        util.initmat(eb, "mf5570", "NHbWBlRailIvtt", "NHbW Bl Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5571", "NHbWBlRailIvttBus", "NHbW Bl Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5572", "NHbWBlRailWait", "NHbW Bl Rail Waiting Time", 0)
+        util.initmat(eb, "mf5573", "NHbWBlRailAux", "NHbW Bl Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5574", "NHbWBlRailBoard", "NHbW Bl Rail Boardings", 0)
+        util.initmat(eb, "mf5575", "NHbWBlRailFare", "NHbW Bl Rail Fare", 0)
+        util.initmat(eb, "mf5580", "NHbOBlRailIvtt", "NHbO Bl Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5581", "NHbOBlRailIvttBus", "NHbO Bl Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5582", "NHbOBlRailWait", "NHbO Bl Rail Waiting Time", 0)
+        util.initmat(eb, "mf5583", "NHbOBlRailAux", "NHbO Bl Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5584", "NHbOBlRailBoard", "NHbO Bl Rail Boardings", 0)
+        util.initmat(eb, "mf5585", "NHbOBlRailFare", "NHbO Bl Rail Fare", 0)
+        util.initmat(eb, "mf5700", "HbWBlWceIvtt", "HbW Bl WCE Invehicle Time", 0)
+        util.initmat(eb, "mf5701", "HbWBlWceIvttRail", "HbW Bl WCE Invehicle Time on WCE", 0)
+        util.initmat(eb, "mf5702", "HbWBlWceIvttBus", "HbW Bl WCE Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5703", "HbWBlWceWait", "HbW Bl WCE Waiting Time", 0)
+        util.initmat(eb, "mf5704", "HbWBlWceAux", "HbW Bl WCE Auxilliary Time", 0)
+        util.initmat(eb, "mf5705", "HbWBlWceBoards", "HbW Bl WCE Boardings", 0)
+        util.initmat(eb, "mf5706", "HbWBlWceFare", "HbW Bl WCE Fare", 0)
+        util.initmat(eb, "mf6800", "HbWBlBAuPRDist", "HbW Bl Bus-Auto PR Distance", 0)
+        util.initmat(eb, "mf6801", "HbWBlBAuPRTime", "HbW Bl Bus-Auto PR Time", 0)
+        util.initmat(eb, "mf6802", "HbWBlBAuPRToll", "HbW Bl Bus-Auto PR Toll", 0)
+        util.initmat(eb, "mf6810", "HbWBlRAuPRDist", "HbW Bl Rail-Auto PR Distance", 0)
+        util.initmat(eb, "mf6811", "HbWBlRAuPRTime", "HbW Bl Rail-Auto PR Time", 0)
+        util.initmat(eb, "mf6812", "HbWBlRAuPRToll", "HbW Bl Rail-Auto PR Toll", 0)
+        util.initmat(eb, "mf6820", "HbWBlWAuPRDist", "HbW Bl WCE-Auto PR Distance", 0)
+        util.initmat(eb, "mf6821", "HbWBlWAuPRTime", "HbW Bl WCE-Auto PR Time", 0)
+        util.initmat(eb, "mf6822", "HbWBlWAuPRToll", "HbW Bl WCE-Auto PR Toll", 0)
+        util.initmat(eb, "mf6900", "HbWBlBAuBusIvtt", "HbW Bl Bus-Auto PR InVehicle Time", 0)
+        util.initmat(eb, "mf6901", "HbWBlBAuBusWait", "HbW Bl Bus-Auto PR Bus Waiting Time", 0)
+        util.initmat(eb, "mf6902", "HbWBlBAuBusAux", "HbW Bl Bus-Auto PR Bus Auxillary Time", 0)
+        util.initmat(eb, "mf6903", "HbWBlBAuBusBoard", "HbW Bl Bus-Auto PR Bus Boardings", 0)
+        util.initmat(eb, "mf6904", "HbWBlBAuBusFare", "HbW Bl Bus-Auto PR Bus Fare", 0)
+        util.initmat(eb, "mf6910", "HbWBlRAuRailIvtt", "HbW Bl Rail-Auto Rail Invehicle Time", 0)
+        util.initmat(eb, "mf6911", "HbWBlRAuRailIvttBus", "HbW Bl Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf6912", "HbWBlRAuRailWait", "HbW Bl Rail-Auto Rail Waiting Time", 0)
+        util.initmat(eb, "mf6913", "HbWBlRAuRailAux", "HbW Bl Rail-Auto Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf6914", "HbWBlRAuRailBoard", "HbW Bl Rail-Auto Rail Boardings", 0)
+        util.initmat(eb, "mf6915", "HbWBlRAuRailFare", "HbW Bl Rail-Auto Rail Fare", 0)
+        util.initmat(eb, "mf6920", "HbWBlWAuWceIvtt", "HbW Bl WCE-Auto WCE Invehicle Time", 0)
+        util.initmat(eb, "mf6921", "HbWBlWAuWceIvttRail", "HbW Bl WCE-Auto WCE Invehicle Time on Rail", 0)
+        util.initmat(eb, "mf6922", "HbWBlWAuWceIvttBus", "HbW Bl WCE-Auto WCE Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf6923", "HbWBlWAuWceWait", "HbW Bl WCE-Auto WCE Waiting Time", 0)
+        util.initmat(eb, "mf6924", "HbWBlWAuWceAux", "HbW Bl WCE-Auto WCE Auxilliary Time", 0)
+        util.initmat(eb, "mf6925", "HbWBlWAuWceBoards", "HbW Bl WCE-Auto WCE Boardings", 0)
+        util.initmat(eb, "mf6926", "HbWBlWAuWceFare", "HbW Bl WCE-Auto WCE Fare", 0)
 
         ####################
         # PnR Batch-in files
