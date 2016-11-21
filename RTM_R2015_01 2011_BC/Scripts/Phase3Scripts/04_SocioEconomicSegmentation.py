@@ -48,7 +48,7 @@ class SocioEconomicSegmentation(_m.Tool()):
         df = self.Generate_Data_Frame(eb)
 
         ##Calculate Utilities, Probabilties and Worker-Income Segments for HH1
-        # self.Calc_Wrkr_Inc(df, eb)
+        self.Calc_Wrkr_Inc(df, eb)
 
     @_m.logbook_trace("Calculate_Worker-Income Segmentation")
     def Calc_Wrkr_Inc(self, df, eb):
@@ -461,7 +461,7 @@ class SocioEconomicSegmentation(_m.Tool()):
         HH1_Dict = {
                     'HH1W0' : [[Util_HH1W0I1, Util_HH1W0I2, Util_HH1W0I3],
                                [Mat_Index+0, Mat_Index+1, Mat_Index+2]],
-                    'HH0W1' : [[Util_HH1W1I1, Util_HH1W1I2, Util_HH1W1I3],
+                    'HH1W1' : [[Util_HH1W1I1, Util_HH1W1I2, Util_HH1W1I3],
                                [Mat_Index+3, Mat_Index+4, Mat_Index+5]]
                    }
         HH1_Dict, counter = self.Calc_Prob_Segments(eb, HH1_Dict, HH1, Mat_Index)
