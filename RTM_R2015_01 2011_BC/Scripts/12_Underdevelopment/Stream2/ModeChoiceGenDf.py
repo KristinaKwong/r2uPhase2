@@ -59,6 +59,36 @@ class ModeChoiceGenDf(_m.Tool()):
         BLWcWk = util.get_matrix_numpy(eb, "mf6002").flatten() #Best Lot WCE Work
         BLWcNw = util.get_matrix_numpy(eb, "mf6132").flatten() #Best Lot WCE Non-Work
 
+        hbwo_fct = self.get_fact[["HbWBl_AM_P-A", "HbWBl_MD_P-A", "HbWBl_PM_P-A"],
+                                 ["HbWBl_AM_A-P", "HbWBl_MD_A-P", "HbWBl_PM_A-P"]]
+
+        hbwo_fct_wce = self.get_fact_wce[["HbWBl_AM_P-A_WCE", "Zero",],
+                                     ["Zero", "HbWBl_PM_A-P_WCE"]]
+
+        nhbw_fct = self.get_fact[["NHbWBl_AM_P-A", "NHbWBl_MD_P-A", "NHbWBl_PM_P-A"],
+                                 ["Zero", "Zero", "Zero"]]
+
+        hbun_fct = self.get_fact[["HbUBl_AM_P-A", "HbUBl_MD_P-A", "HbUBl_PM_P-A"],
+                                 ["HbUBl_AM_A-P", "HbUBl_MD_A-P", "HbUBl_PM_A-P"]]
+
+        hbsc_fct = self.get_fact[["HbScBl_AM_P-A", "HbScBl_MD_P-A", "HbScBl_PM_P-A"],
+                                 ["HbScBl_AM_A-P", "HbScBl_MD_A-P", "HbScBl_PM_A-P"]]
+
+        hbsh_fct = self.get_fact[["HbShBl_AM_P-A", "HbShBl_MD_P-A", "HbShBl_PM_P-A"],
+                                 ["HbShBl_AM_A-P", "HbShBl_MD_A-P", "HbShBl_PM_A-P"]]
+
+        hbpb_fct = self.get_fact[["HbPbBl_AM_P-A", "HbPbBl_MD_P-A", "HbPbBl_PM_P-A"],
+                                 ["HbPbBl_AM_A-P", "HbPbBl_MD_A-P", "HbPbBl_PM_A-P"]]
+
+        hbso_fct = self.get_fact[["HbSoBl_AM_P-A", "HbSoBl_MD_P-A", "HbSoBl_PM_P-A"],
+                                 ["HbSoBl_AM_A-P", "HbSoBl_MD_A-P", "HbSoBl_PM_A-P"]]
+
+        hbes_fct = self.get_fact[["HbEsBl_AM_P-A", "HbEsBl_MD_P-A", "HbEsBl_PM_P-A"],
+                                 ["HbEsBl_AM_A-P", "HbEsBl_MD_A-P", "HbEsBl_PM_A-P"]]
+
+        nhbo_fct = self.get_fact[["NHbOBl_AM_P-A", "NHbOBl_MD_P-A", "NHbOBl_PM_P-A"],
+                                 ["Zero", "Zero", "Zero"]]
+
         ##############################################################################
         ##       Auto Skims work SOV
         ##############################################################################
@@ -71,8 +101,8 @@ class ModeChoiceGenDf(_m.Tool()):
         self.GenSkimDict(eb, TollDict, ["mf5002", "mf5022", "mf5042"]) # Toll
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
-        BlendDict = {'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5100', 'mf5101', 'mf5102']}, # Home-base work
-                     'nhbw':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5170', 'mf5171', 'mf5172']}} # Non-home base work
+        BlendDict = {'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['mf5100', 'mf5101', 'mf5102']}, # Home-base work
+                     'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['mf5170', 'mf5171', 'mf5172']}} # Non-home base work
 
         for keys, values in BlendDict.items():
             Df = {}
@@ -90,11 +120,11 @@ class ModeChoiceGenDf(_m.Tool()):
         ##############################################################################
 
         # Blend Factors                AM , MD  , PM           AM  ,MD , PM    Where Blended Matrices get stored in same order as above
-        BlendDictPR = {'hbwprb':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf6800', 'mf6801', 'mf6802'], #Bus
+        BlendDictPR = {'hbwprb':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['mf6800', 'mf6801', 'mf6802'], #Bus
                        'BL': BLBsWk},
-                       'hbwprr':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf6810', 'mf6811', 'mf6812'], #Rail
+                       'hbwprr':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['mf6810', 'mf6811', 'mf6812'], #Rail
                        'BL': BLRlWk},
-                       'hbwprw':{'PA':[0.4, 0.0, 0.15], 'AP':[0.05, 0.0, 0.4], 'Mat':['mf6820', 'mf6821', 'mf6822'], #WCE
+                       'hbwprw':{'PA': hbwo_fct_wce[0], 'AP':hbwo_fct_wce[1], 'Mat':['mf6820', 'mf6821', 'mf6822'], #WCE
                        'BL': BLWcWk}
                      }
 
@@ -130,8 +160,8 @@ class ModeChoiceGenDf(_m.Tool()):
         self.GenSkimDict(eb, TollDict, ["mf5008", "mf5028", "mf5048"]) # Toll
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
-        BlendDict = {'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5106', 'mf5107', 'mf5108']}, # Home-base work
-                     'nhbw':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5176', 'mf5177', 'mf5178']}} # Non-home base work
+        BlendDict = {'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['mf5106', 'mf5107', 'mf5108']}, # Home-base work
+                     'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['mf5176', 'mf5177', 'mf5178']}} # Non-home base work
 
         for keys, values in BlendDict.items():
             Df = {}
@@ -159,13 +189,13 @@ class ModeChoiceGenDf(_m.Tool()):
         #
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM     Where Blended Matrices get stored in same order as above
         BlendDict = {
-                     'hbun':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5110', 'mf5111', 'mf5112']}, # Home-base university
-                     'hbsc':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5120', 'mf5121', 'mf5122']}, # Home-base school
-                     'hbsh':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5130', 'mf5131', 'mf5132']}, # Home-base shopping
-                     'hbpb':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5140', 'mf5141', 'mf5142']}, # Home-base personal business
-                     'hbso':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5150', 'mf5151', 'mf5152']}, # Home-base social
-                     'hbes':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5160', 'mf5161', 'mf5162']}, # Home-base escorting
-                     'nhbo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5180', 'mf5181', 'mf5182']}} # non-home base other
+                     'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['mf5110', 'mf5111', 'mf5112']}, # Home-base university
+                     'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['mf5120', 'mf5121', 'mf5122']}, # Home-base school
+                     'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['mf5130', 'mf5131', 'mf5132']}, # Home-base shopping
+                     'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['mf5140', 'mf5141', 'mf5142']}, # Home-base personal business
+                     'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['mf5150', 'mf5151', 'mf5152']}, # Home-base social
+                     'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['mf5160', 'mf5161', 'mf5162']}, # Home-base escorting
+                     'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['mf5180', 'mf5181', 'mf5182']}} # non-home base other
 
         for keys, values in BlendDict.items():
             # Calculate blended skim
@@ -191,13 +221,13 @@ class ModeChoiceGenDf(_m.Tool()):
         #
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM     Where Blended Matrices get stored in same order as above
         BlendDict = {
-                     'hbun':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5116', 'mf5117', 'mf5118']}, # Home-base university
-                     'hbsc':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5126', 'mf5127', 'mf5128']}, # Home-base school
-                     'hbsh':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5136', 'mf5137', 'mf5138']}, # Home-base shopping
-                     'hbpb':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5146', 'mf5147', 'mf5148']}, # Home-base personal business
-                     'hbso':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5156', 'mf5157', 'mf5158']}, # Home-base social
-                     'hbes':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5166', 'mf5167', 'mf5168']}, # Home-base escorting
-                     'nhbo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5186', 'mf5187', 'mf5188']}} # non-home base other
+                     'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['mf5116', 'mf5117', 'mf5118']}, # Home-base university
+                     'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['mf5126', 'mf5127', 'mf5128']}, # Home-base school
+                     'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['mf5136', 'mf5137', 'mf5138']}, # Home-base shopping
+                     'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['mf5146', 'mf5147', 'mf5148']}, # Home-base personal business
+                     'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['mf5156', 'mf5157', 'mf5158']}, # Home-base social
+                     'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['mf5166', 'mf5167', 'mf5168']}, # Home-base escorting
+                     'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['mf5186', 'mf5187', 'mf5188']}} # non-home base other
 
         for keys, values in BlendDict.items():
             # Calculate blended skim
@@ -228,15 +258,15 @@ class ModeChoiceGenDf(_m.Tool()):
 
        # Blend Factors
         BlendDict = {   #AM,   MD,   PM         AM,   MD,   PM         Where Blended Matrices get stored in same order as above
-         'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5300', 'mf5301', 'mf5302', 'mf5303', 'mf5304']},  # Home-base work
-         'hbun':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5310', 'mf5311', 'mf5312', 'mf5313', 'mf5314']},  # Home-base university
-         'hbsc':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5320', 'mf5321', 'mf5322', 'mf5323', 'mf5324']},  # Home-base school
-         'hbsh':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5330', 'mf5331', 'mf5332', 'mf5333', 'mf5334']},  # Home-base shopping
-         'hbpb':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5340', 'mf5341', 'mf5342', 'mf5343', 'mf5344']},  # Home-base personal business
-         'hbso':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5350', 'mf5351', 'mf5352', 'mf5353', 'mf5354']},  # Home-base social
-         'hbes':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5360', 'mf5361', 'mf5362', 'mf5363', 'mf5364']},  # Home-base escorting
-         'nhbw':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5370', 'mf5371', 'mf5372', 'mf5373', 'mf5374']},  # Non-home base work
-         'nhbo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf5380', 'mf5381', 'mf5382', 'mf5383', 'mf5384']}}  # Non-home base other
+         'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['mf5300', 'mf5301', 'mf5302', 'mf5303', 'mf5304']},  # Home-base work
+         'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['mf5310', 'mf5311', 'mf5312', 'mf5313', 'mf5314']},  # Home-base university
+         'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['mf5320', 'mf5321', 'mf5322', 'mf5323', 'mf5324']},  # Home-base school
+         'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['mf5330', 'mf5331', 'mf5332', 'mf5333', 'mf5334']},  # Home-base shopping
+         'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['mf5340', 'mf5341', 'mf5342', 'mf5343', 'mf5344']},  # Home-base personal business
+         'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['mf5350', 'mf5351', 'mf5352', 'mf5353', 'mf5354']},  # Home-base social
+         'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['mf5360', 'mf5361', 'mf5362', 'mf5363', 'mf5364']},  # Home-base escorting
+         'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['mf5370', 'mf5371', 'mf5372', 'mf5373', 'mf5374']},  # Non-home base work
+         'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['mf5380', 'mf5381', 'mf5382', 'mf5383', 'mf5384']}}  # Non-home base other
 
         for keys, values in BlendDict.items():
             # Calculate blended skims
@@ -257,7 +287,7 @@ class ModeChoiceGenDf(_m.Tool()):
        ##       Park and Ride Home-base Work/Uni/Soc Bus-leg
        ##############################################################################
         BlendDictPR = { #AM,   MD,   PM         AM,   MD,   PM         Where Blended Matrices get stored in same order as above
-         'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3], 'Mat':['mf6900', 'mf6901', 'mf6902', 'mf6903', 'mf6904'], # Home-base work
+         'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['mf6900', 'mf6901', 'mf6902', 'mf6903', 'mf6904'], # Home-base work
          'BL': BLBsWk}
                       }
         for keys, values in BlendDictPR.items():
@@ -302,23 +332,23 @@ class ModeChoiceGenDf(_m.Tool()):
 
         # Blend Factors
         BlendDict = {  #AM,   MD,   PM         AM,   MD,   PM
-         'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
+         'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
                  'Mat':['mf5500', 'mf5501', 'mf5502', 'mf5503', 'mf5504', 'mf5505']}, # Where Blended Matrices get stored in same order as above
-         'hbun':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
+         'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1],
                  'Mat':['mf5510', 'mf5511', 'mf5512', 'mf5513', 'mf5514', 'mf5515']},
-         'hbsc':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
+         'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1],
                  'Mat':['mf5520', 'mf5521', 'mf5522', 'mf5523', 'mf5524', 'mf5525']},
-         'hbsh':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
+         'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1],
                  'Mat':['mf5530', 'mf5531', 'mf5532', 'mf5533', 'mf5534', 'mf5535']},
-         'hbpb':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
+         'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1],
                  'Mat':['mf5540', 'mf5541', 'mf5542', 'mf5543', 'mf5544', 'mf5545']},
-         'hbso':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
+         'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1],
                  'Mat':['mf5550', 'mf5551', 'mf5552', 'mf5553', 'mf5554', 'mf5555']},
-         'hbes':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
+         'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1],
                  'Mat':['mf5560', 'mf5561', 'mf5562', 'mf5563', 'mf5564', 'mf5565']},
-         'nhbw':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
+         'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1],
                  'Mat':['mf5570', 'mf5571', 'mf5572', 'mf5573', 'mf5574', 'mf5575']},
-         'nhbo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
+         'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1],
                  'Mat':['mf5580', 'mf5581', 'mf5582', 'mf5583', 'mf5584', 'mf5585']}}
 
         for keys, values in BlendDict.items():
@@ -341,10 +371,9 @@ class ModeChoiceGenDf(_m.Tool()):
 #        ##       Park and Ride Home-base Work/Uni/Soc Rail-leg
 #        ##############################################################################
         BlendDictPR = { #AM,   MD,   PM         AM,   MD,   PM
-           'hbwo':{'PA':[0.3, 0.1, 0.15], 'AP':[0.05, 0.1, 0.3],
+           'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
                  'Mat':['mf6910', 'mf6911', 'mf6912', 'mf6913', 'mf6914', 'mf6915'], 'BL': BLRlWk}, #Where Blended Matrices get stored in same order as above
                       }
-
         for keys, values in BlendDictPR.items():
 
             Df = pd.DataFrame()
@@ -390,23 +419,23 @@ class ModeChoiceGenDf(_m.Tool()):
 
 #        # Blend Factors
         BlendDict = {    #AM,   PM,        AM,   PM,
-         'hbwo':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],
+         'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
                  'Mat':['mf5700', 'mf5701', 'mf5702', 'mf5703', 'mf5704', 'mf5705', 'mf5706']},  # Where Blended Matrices get stored in same order as above
-         'nhbw':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],
+         'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1],
                  'Mat':['mf5710', 'mf5711', 'mf5712', 'mf5713', 'mf5714', 'mf5715', 'mf5716']},
-         'hbsc':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],
+         'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1],
                  'Mat':['mf5720', 'mf5721', 'mf5722', 'mf5723', 'mf5724', 'mf5725', 'mf5726']},
-         'hbsh':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],
+         'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1],
                  'Mat':['mf5730', 'mf5731', 'mf5732', 'mf5733', 'mf5734', 'mf5735', 'mf5736']},
-         'hbpb':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],
+         'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1],
                  'Mat':['mf5740', 'mf5741', 'mf5742', 'mf5743', 'mf5744', 'mf5745', 'mf5746']},
-         'hbun':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],
+         'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1],
                  'Mat':['mf5750', 'mf5751', 'mf5752', 'mf5753', 'mf5754', 'mf5755', 'mf5756']},
-         'hbes':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],
+         'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1],
                  'Mat':['mf5760', 'mf5761', 'mf5762', 'mf5763', 'mf5764', 'mf5765', 'mf5766']},
-         'hbso':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],
+         'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1],
                  'Mat':['mf5770', 'mf5771', 'mf5772', 'mf5773', 'mf5774', 'mf5775', 'mf5776']},
-         'nhbo':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],
+         'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1],
                  'Mat':['mf5780', 'mf5781', 'mf5782', 'mf5783', 'mf5784', 'mf5785', 'mf5786']}}
 
         for keys, values in BlendDict.items():
@@ -432,7 +461,7 @@ class ModeChoiceGenDf(_m.Tool()):
 #        ##       Park and Ride Home-base Work/Uni/Soc WCE-leg
 #        ##############################################################################
         BlendDictPR = { #AM,   PM,        AM,   PM,
-         'hbwo':{'PA':[0.4, 0.15], 'AP':[0.1, 0.35],  'BL': BLWcWk,
+         'hbwo':{'PA': hbwo_fct_wce[0], 'AP':hbwo_fct_wce[1],  'BL': BLWcWk,
                  'Mat':['mf6920', 'mf6921', 'mf6922', 'mf6923', 'mf6924', 'mf6925', 'mf6926']} # Where Blended Matrices get stored in same order as above
                       }
 
@@ -492,6 +521,36 @@ class ModeChoiceGenDf(_m.Tool()):
 
         return Result
 
+    def get_fact(self, eb, FactList):
+
+        util = _m.Modeller().tool("translink.emme.util")
+        PA_List = np.array([
+                            util.get_matrix_numpy(FactList[0][0]),
+                            util.get_matrix_numpy(FactList[0][1]),
+                            util.get_matrix_numpy(FactList[0][2])
+                           ])
+
+        AP_List = np.array([
+                            util.get_matrix_numpy(FactList[1][0]),
+                            util.get_matrix_numpy(FactList[1][1]),
+                            util.get_matrix_numpy(FactList[1][2])
+                           ])
+        return np.array([PAList, AP_List])
+
+    def get_fact_wce(self, eb, FactList):
+
+        util = _m.Modeller().tool("translink.emme.util")
+        PA_List = np.array([
+                            util.get_matrix_numpy(FactList[0][0]),
+                            util.get_matrix_numpy(FactList[0][1]),
+                           ])
+
+        AP_List = np.array([
+                            util.get_matrix_numpy(FactList[1][0]),
+                            util.get_matrix_numpy(FactList[1][1]),
+                           ])
+        return np.array([PAList, AP_List])
+
     @_m.logbook_trace("Park & Ride - Choose Best Lot")
     def bestlot(self, eb, year):
         compute_lot = _m.Modeller().tool(
@@ -501,7 +560,6 @@ class ModeChoiceGenDf(_m.Tool()):
         # gn1 exist in 2011 and future
         # gn2 exist only in 2011
         # gn3 exist only in future
-
 
         if year == 2011:
         #    intermediates = 'gn1;gn2'
@@ -707,8 +765,6 @@ class ModeChoiceGenDf(_m.Tool()):
                 result = ("{railGT}").format(railGT=result_mats[j][i])
                 specs.append(util.matrix_spec(result, expression))
         util.compute_matrix(specs)
-
-
 
     @_m.logbook_trace("Park & Ride Calculate Bus Generalized Time")
     def BusGT(self, eb):
