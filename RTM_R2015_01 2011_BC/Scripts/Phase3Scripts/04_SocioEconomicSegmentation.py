@@ -8,6 +8,7 @@ import inro.modeller as _m
 import csv
 import os
 import sqlite3
+import re
 import numpy as np
 import pandas as pd
 import traceback as _traceback
@@ -509,6 +510,32 @@ class SocioEconomicSegmentation(_m.Tool()):
                    }
         HH4_Dict, counter = self.Calc_Prob_Segments(eb, HH4_Dict, HH4, Mat_Index)
 
+        # compile data to single table and output to sqlite
+        taz = util.get_matrix_numpy(eb, 'zoneindex')
+        output_df = pd.DataFrame()
+
+        # extract output data from dictionary
+        output_df = self.hh_dataframer(HHDict = HH1_Dict, df = output_df, zonelist = taz)
+        output_df = self.hh_dataframer(HHDict = HH2_Dict, df = output_df, zonelist = taz)
+        output_df = self.hh_dataframer(HHDict = HH3_Dict, df = output_df, zonelist = taz)
+        output_df = self.hh_dataframer(HHDict = HH4_Dict, df = output_df, zonelist = taz)
+
+        # reorder columns to prepare table
+        output_df = output_df[['TAZ','HHSize','HHWorker',0L,1L,2L]]
+        # change income index to start at 1 instead of 2
+
+        output_df.columns = ['TAZ','HHSize','HHWorker',1L,2L,3L]
+        # move to long format
+        output_df = pd.melt(output_df, id_vars = ['TAZ','HHSize','HHWorker'], var_name='HHInc', value_name='CountHHs')
+
+        db_loc = util.get_eb_path(eb)
+        db_path = os.path.join(db_loc, 'rtm.db')
+        conn = sqlite3.connect(db_path)
+        output_df.to_sql(name='HhWkIn', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        conn.close()
+
+
+
     def Calc_Prob_Segments(self, eb, HH_Dict, HHSize, Mat_Index):
 
         Theta = 0.5637
@@ -531,6 +558,23 @@ class SocioEconomicSegmentation(_m.Tool()):
                 eb.matrix("mo"+str(HH_Dict[key][1][nest_len])).set_numpy_data(Seg_Dict[key][nest_len])
                 counter = counter + 1
         return (Seg_Dict, counter)
+
+
+    def hh_dataframer(self, HHDict, df, zonelist):
+
+        k = HHDict.keys()
+
+        for key in k:
+            new_df = pd.DataFrame(HHDict[key]).transpose()
+            new_df['TAZ'] = zonelist
+
+            cols = re.compile(r'(\w\w)(\d)(\w)(\d)')
+            vals = cols.search(key)
+            new_df['HHSize'] = vals.group(2)
+            new_df['HHWorker'] = vals.group(4)
+            df = df.append(new_df)
+        return df
+
 
     def Generate_Data_Frame(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
