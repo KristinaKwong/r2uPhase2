@@ -570,8 +570,8 @@ class SocioEconomicSegmentation(_m.Tool()):
 
             cols = re.compile(r'(\w\w)(\d)(\w)(\d)')
             vals = cols.search(key)
-            new_df['HHSize'] = vals.group(2)
-            new_df['HHWorker'] = vals.group(4)
+            new_df['HHSize'] = int(vals.group(2))
+            new_df['HHWorker'] = int(vals.group(4))
             df = df.append(new_df)
         return df
 
