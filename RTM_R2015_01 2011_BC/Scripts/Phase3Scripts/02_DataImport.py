@@ -143,6 +143,8 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms352", "wceWALKprcpNwk", "wce walk time perception nonwork", 0)
         util.initmat(eb, "ms353", "wceTRANSprcpNwk", "wce transfer perception nonwork", 0)
         util.initmat(eb, "ms354", "wceBOARDSprcpNwk", "wce boarding perception nonwork", 0)
+##      Batch in Blending Factors
+        
         util.initmat(eb, "ms400", "HbWBl_AM_P-A", "HbW Blend AM P-A Factor", 0.387)
         util.initmat(eb, "ms401", "HbWBl_MD_P-A", "HbW Blend MD P-A Factor", 0.13)
         util.initmat(eb, "ms402", "HbWBl_PM_P-A", "HbW Blend PM P-A Factor", 0.024)
@@ -193,6 +195,7 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms480", "NHbOBl_AM_P-A", "NHbO Blend AM P-A Factor", 0.122)
         util.initmat(eb, "ms481", "NHbOBl_MD_P-A", "NHbO Blend MD P-A Factor", 0.6)
         util.initmat(eb, "ms482", "NHbOBl_PM_P-A", "NHbO Blend PM P-A Factor", 0.278)
+        util.initmat(eb, "ms490", "Zero", "Zero", 0)
 
     @_m.logbook_trace("Importing Vector Data from CSV")
     def import_vectors(self, eb, demographics_file, geographics_file):
