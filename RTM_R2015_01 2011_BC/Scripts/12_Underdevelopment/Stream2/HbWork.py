@@ -47,34 +47,43 @@ class HbWork(_m.Tool()):
 #        ##############################################################################
         # Generate Dataframe
         Df = {}
-        VOC = 0.18
-        Occ = 3.25
+        MaxPark = 10.0
+        VOC = util.get_matrix_numpy(eb, 'ms100')
+        Occ = util.get_matrix_numpy(eb, 'ms103')
+        Df['ParkCost'] = util.get_matrix_numpy(eb, 'mo61')
+        Df['ParkCost'][Df['ParkCost']>MaxPark] = MaxPark
+        Df['ParkCost'] = Df['ParkCost'].reshape(1, 1741) + np.zeros((1741, 1))
+
+        Df['AutoAccess'] = util.get_matrix_numpy(eb, 'mo220').reshape(1741,1) + np.zeros((1, 1741))
+
         Df['AutoDisSOV'] = util.get_matrix_numpy(eb, 'mf5100')
         Df['AutoTimSOV'] = util.get_matrix_numpy(eb, 'mf5101')
-        Df['AutoCosSOV'] = Df['AutoDisSOV']*VOC + util.get_matrix_numpy(eb, 'mf5102')
+
+        Df['AutoCosSOV'] = Df['AutoDisSOV']*VOC + util.get_matrix_numpy(eb, 'mf5102') + Df['ParkCost']
 
         Df['AutoDisHOV'] = util.get_matrix_numpy(eb, 'mf5106')
         Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'mf5107')
-        Df['AutoCosHOV'] = Df['AutoDisHOV']*VOC + util.get_matrix_numpy(eb, 'mf5108')        
-        
+        Df['AutoCosHOV'] = Df['AutoDisHOV']*VOC + util.get_matrix_numpy(eb, 'mf5108') + Df['ParkCost']
+
         # Coefficients
-        AscH2 = -3.343842
-        AscH3 = -5.184035
-        CstI1 = -0.345117
-        CstI2 = -0.225996
-        CstI3 = -0.190001
-        AutTi = -0.110655
-        SOVA1 =  2.178567
-        SOVA2 =  2.725776
-        HOVA1 =  1.276692
-        HOVA2 =  1.822254
+        AscH2 = -2.660152
+        AscH3 = -4.427692
+        CstI1 = -0.251320
+        CstI2 = -0.161345
+        CstI3 = -0.139374
+        AutTi = -0.068191
+        SOVA1 =  1.800794
+        SOVA2 =  2.328981
+        HOVA1 =  1.041047
+        HOVA2 =  1.559570
+        AuAcc =  0.092440
 
         # Utilities
         # SOV
         ## TODO Parking Cost
         ## Auto Accessibility
-        Coef = [AutTi]
-        Vari = [Df['AutoTimSOV']]
+        Coef = [AutTi, AuAcc]
+        Vari = [Df['AutoTimSOV'], Df['AutoAccess']]
         Df['GeUtl']  = util.sumproduct(Coef, Vari)
         Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisSOV'], Df['GeUtl'])
 
@@ -85,8 +94,8 @@ class HbWork(_m.Tool()):
         # HOV2
         ## TODO Parking Cost
         ## Auto Accessibility
-        Coef = [AutTi]
-        Vari = [Df['AutoTimHOV']]
+        Coef = [AutTi, AuAcc]
+        Vari = [Df['AutoTimHOV'], Df['AutoAccess']]
         Df['GeUtl']  = util.sumproduct(Coef, Vari) + AscH2
         Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisHOV'], Df['GeUtl'])
 
@@ -97,8 +106,8 @@ class HbWork(_m.Tool()):
         # HOV3
         ## TODO Parking Cost
         ## Auto Accessibility
-        Coef = [AutTi]
-        Vari = [Df['AutoTimHOV']]
+        Coef = [AutTi, AuAcc]
+        Vari = [Df['AutoTimHOV'], Df['AutoAccess']]
         Df['GeUtl']  = util.sumproduct(Coef, Vari) + AscH3
         Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisHOV'], Df['GeUtl'])
 
@@ -128,7 +137,7 @@ class HbWork(_m.Tool()):
         Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] + Df['RalBrd']
         Df['RalIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Tiny)
         Df['RalIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Tiny)
-        
+
         Df['WCEIVW'] = util.get_matrix_numpy(eb, 'mf5700')
         Df['WCEIVR'] = util.get_matrix_numpy(eb, 'mf5701')
         Df['WCEIVB'] = util.get_matrix_numpy(eb, 'mf5702')
@@ -139,11 +148,12 @@ class HbWork(_m.Tool()):
         Df['WCETot'] = Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW'] + Df['WCEWat'] + Df['WCEAux'] + Df['WCEBrd']
         Df['WCEIBR'] = Df['WCEIVB']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW'] + Tiny)
         Df['WCEIRR'] = Df['WCEIVR']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW'] + Tiny)
-        Df['WCEIWR'] = Df['WCEIVW']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW'] + Tiny)        
-        
-        Df['IntZnl'] = util.get_matrix_numpy(eb, 'mf970')        
+        Df['WCEIWR'] = Df['WCEIVW']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW'] + Tiny)
 
-        
+        Df['TranAccess'] = util.get_matrix_numpy(eb, 'mo221').reshape(1741,1) + np.zeros((1, 1741))
+        Df['IntZnl'] = util.get_matrix_numpy(eb, 'mf970')
+
+
         # Coefficients
         AscBs =  0.404758
         AscRl =  1.503990
@@ -157,14 +167,15 @@ class HbWork(_m.Tool()):
         TrAux = -0.086025
         TrTrf = -0.844939
         TraA0 =  0.709275
+        TrAcc =  0.052047
 
         # Utilities
         # Bus Utility
         ## TODO Transit Accessibility
 
-        Coef = [BsIVT, TrWat, TrAux, TrTrf]
+        Coef = [BsIVT, TrWat, TrAux, TrTrf, TrAcc]
         Vari = [Df['BusIVT'], Df['BusWat'], Df['BusAux'],
-                Df['BusBrd'] -1]
+                Df['BusBrd'] -1, Df['TranAccess']]
         Df['GeUtl'] = util.sumproduct(Coef, Vari) + AscBs
         Df['GeUtl'] = MChM.BusAvail(Df, Df['GeUtl'])
 
@@ -174,10 +185,10 @@ class HbWork(_m.Tool()):
 
         # Rail Utility
         ## TODO Transit Accessibility
-        Coef = [AscBs, AscRl, BsIVT, RTIVT, TrWat, TrAux, TrTrf]
+        Coef = [AscBs, AscRl, BsIVT, RTIVT, TrWat, TrAux, TrTrf, TrAcc]
         Vari = [Df['RalIBR'],Df['RalIRR'], Df['RalIVB'], Df['RalIVR'],
-                Df['RalWat'],Df['RalAux'], Df['RalBrd'] -1]
-                
+                Df['RalWat'],Df['RalAux'], Df['RalBrd'] -1, Df['TranAccess']]
+
         Df['GeUtl'] = util.sumproduct(Coef, Vari)
         Df['GeUtl'] = MChM.RailAvail(Df, Df['GeUtl'])
 
@@ -187,9 +198,9 @@ class HbWork(_m.Tool()):
 
         # WCE Utility
         ## TODO Transit Accessibility
-        Coef = [AscBs, AscRl, AscWc, BsIVT, RTIVT, RTIVT, TrWat, TrAux, TrTrf]
+        Coef = [AscBs, AscRl, AscWc, BsIVT, RTIVT, RTIVT, TrWat, TrAux, TrTrf, TrAcc]
         Vari = [Df['WCEIBR'], Df['WCEIRR'], Df['WCEIWR'], Df['WCEIVB'],
-                Df['WCEIVR'], Df['WCEIVW'],Df['WCEWat'], Df['WCEAux'], Df['WCEBrd'] -1]
+                Df['WCEIVR'], Df['WCEIVW'],Df['WCEWat'], Df['WCEAux'], Df['WCEBrd'] -1, Df['TranAccess']]
         Df['GeUtl'] = util.sumproduct(Coef, Vari) + AscWc
         Df['GeUtl'] = MChM.WCEAvail(Df, Df['GeUtl'])
 
@@ -212,7 +223,7 @@ class HbWork(_m.Tool()):
         Df['BusFar'] = util.get_matrix_numpy(eb, 'mf6904')
         Df['BAuTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] + Df['BusBrd'] + Df['BAuTim']
         Df['BAuIBR'] = Df['BusIVT']/(Df['BusIVT'] + Df['BAuTim'] + Tiny)
-   
+
         Df['RAuDis'] = util.get_matrix_numpy(eb, 'mf6810')
         Df['RAuTim'] = util.get_matrix_numpy(eb, 'mf6811')
         Df['RAuCos'] = Df['RAuDis']*VOC + util.get_matrix_numpy(eb, 'mf6812')
@@ -223,8 +234,8 @@ class HbWork(_m.Tool()):
         Df['RalBrd'] = util.get_matrix_numpy(eb, 'mf6914')
         Df['RalFar'] = util.get_matrix_numpy(eb, 'mf6915')
         Df['RAuTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] + Df['RalBrd'] +  Df['RAuTim']
-        Df['RAuIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Df['RAuTim'] + Tiny)        
-        Df['RAuIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Df['RAuTim'] + Tiny)         
+        Df['RAuIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Df['RAuTim'] + Tiny)
+        Df['RAuIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Df['RAuTim'] + Tiny)
 
         Df['WAuDis'] = util.get_matrix_numpy(eb, 'mf6820')
         Df['WAuTim'] = util.get_matrix_numpy(eb, 'mf6821')
@@ -237,12 +248,12 @@ class HbWork(_m.Tool()):
         Df['WCEBrd'] = util.get_matrix_numpy(eb, 'mf6925')
         Df['WCEFar'] = util.get_matrix_numpy(eb, 'mf6926')
         Df['WAuTot'] = Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW'] + Df['WCEWat'] + Df['WCEAux'] + Df['WCEBrd'] + Df['WAuTim']
-        Df['WAuIBR'] = Df['WCEIVB']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW']+ Df['WAuTim'] + Tiny)        
-        Df['WAuIRR'] = Df['WCEIVR']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW']+ Df['WAuTim'] + Tiny)          
-        Df['WAuIWR'] = Df['WCEIVW']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW']+ Df['WAuTim'] + Tiny)          
-        
+        Df['WAuIBR'] = Df['WCEIVB']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW']+ Df['WAuTim'] + Tiny)
+        Df['WAuIRR'] = Df['WCEIVR']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW']+ Df['WAuTim'] + Tiny)
+        Df['WAuIWR'] = Df['WCEIVW']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW']+ Df['WAuTim'] + Tiny)
+
         Df['IntZnl'] = util.get_matrix_numpy(eb, 'mf970')
-        
+
         # Coefficients
         AscBAu =  2.478336
         AscRAu =  3.869495
@@ -262,6 +273,7 @@ class HbWork(_m.Tool()):
         Coef = [AscBs, AutTi, BsIVT, TrWat, TrAux, TrTrf]
         Vari = [Df['BAuIBR'], Df['BAuTim'], Df['BusIVT'], Df['BusWat'],
                 Df['BusAux'], (Df['BusBrd'] -1)]
+
         DfU['GeUtl'] = util.sumproduct(Coef, Vari) + AscBAu
         DfU['GeUtl'] = MChM.BAuAvail(Df, DfU['GeUtl'])
 
@@ -282,7 +294,7 @@ class HbWork(_m.Tool()):
 
         # WCE Utility
         Coef = [AscBs, AscRl, AscWc, AutTi, BsIVT, RTIVT, RTIVT, TrWat, TrAux, TrTrf]
-        Vari = [Df['WAuIBR'], Df['WAuIRR'], Df['WAuIWR'], Df['WAuTim'], Df['WCEIVB'], 
+        Vari = [Df['WAuIBR'], Df['WAuIRR'], Df['WAuIWR'], Df['WAuTim'], Df['WCEIVB'],
                 Df['WCEIVR'], Df['WCEIVW'],Df['WCEWat'], Df['WCEAux'], Df['WCEBrd'] -1]
         DfU['GeUtl'] = util.sumproduct(Coef, Vari) + AscWAu
         DfU['GeUtl'] = MChM.WAuAvail(Df, DfU['GeUtl'])
@@ -324,10 +336,13 @@ class HbWork(_m.Tool()):
 #        ##############################################################################
 #        ##       Calculate Probabilities
 #        ##############################################################################
-
+        ## Add SOV Availability Term
+        
+        CarShare = util.get_matrix_numpy(eb, 'mo71').reshape(1741,1) + np.zeros((1, 1741))
+        LrgU     = -99999.0
         ## Low Income Zero Autos
         Dict = {
-               'SOV'  : [DfU['SOVI1']],
+               'SOV'  : [np.where(CarShare>0, DfU['SOVI1'], LrgU)],
                'HOV'  : [DfU['HV2I1'], DfU['HV3I1']],
                'WTra' : [DfU['BusI1'] + TraA0, DfU['RalI1'] + TraA0, DfU['WCEI1'] + TraA0],
                'DTra' : [DfU['BAuI1'], DfU['RAuI1'], DfU['WAuI1']],
@@ -358,7 +373,7 @@ class HbWork(_m.Tool()):
 
         ## Med Income Zero Autos
         Dict = {
-               'SOV'  : [DfU['SOVI2']],
+               'SOV'  : [np.where(CarShare>0, DfU['SOVI2'], LrgU)],
                'HOV'  : [DfU['HV2I2'], DfU['HV3I2']],
                'WTra' : [DfU['BusI2'] + TraA0, DfU['RalI2'] + TraA0, DfU['WCEI2'] + TraA0],
                'DTra' : [DfU['BAuI2'], DfU['RAuI2'], DfU['WAuI2']],
@@ -388,7 +403,7 @@ class HbWork(_m.Tool()):
 
         ## High Income Zero Autos
         Dict = {
-               'SOV'  : [DfU['SOVI3']],
+               'SOV'  : [np.where(CarShare>0, DfU['SOVI3'], LrgU)],
                'HOV'  : [DfU['HV2I3'], DfU['HV3I3']],
                'WTra' : [DfU['BusI3'] + TraA0, DfU['RalI3'] + TraA0, DfU['WCEI3'] + TraA0],
                'DTra' : [DfU['BAuI3'], DfU['RAuI3'], DfU['WAuI3']],
@@ -417,7 +432,7 @@ class HbWork(_m.Tool()):
         I3A2_Dict = self.Calc_Prob(eb, Dict, "mf9008")
 
         del DfU, Dict
-        
+
        ##############################################################################
         ##       Trip Distribution
        ##############################################################################
