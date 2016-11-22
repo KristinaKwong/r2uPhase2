@@ -524,9 +524,9 @@ class SocioEconomicSegmentation(_m.Tool()):
         output_df = output_df[['TAZ','HHSize','HHWorker',0L,1L,2L]]
         # change income index to start at 1 instead of 2
 
-        output_df.columns = ['TAZ','HHSize','HHWorker',1L,2L,3L]
+        output_df.columns = ['TAZ1741','HHSize','HHWorker',1L,2L,3L]
         # move to long format
-        output_df = pd.melt(output_df, id_vars = ['TAZ','HHSize','HHWorker'], var_name='HHInc', value_name='CountHHs')
+        output_df = pd.melt(output_df, id_vars = ['TAZ1741','HHSize','HHWorker'], var_name='HHInc', value_name='CountHHs')
 
         db_loc = util.get_eb_path(eb)
         db_path = os.path.join(db_loc, 'rtm.db')
