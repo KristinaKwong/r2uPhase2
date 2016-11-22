@@ -320,8 +320,10 @@ class AutoAssignment(_m.Tool()):
         # 10-20 minutes 0.4
         # 20-30 minutes 0.3
         # > 30 minutes 0.1
-        util.emme_tline_calc(scenario, "ut2", "(hdw.le.10)*(hdw*.5)+(hdw.gt.10)*(hdw.le.20)*(5+(hdw-10)*.4)+(hdw.gt.20)*(hdw.le.30)*(5+4+(hdw-20)*.3)+(hdw.gt.30)*(5+4+3+(hdw-30)*.1)")
-
+        util.emme_tline_calc(scenario, "ut2", "hdw*0.5", sel_line="hdw=0,10")
+        util.emme_tline_calc(scenario, "ut2", "5 +  (hdw-10)*0.4", sel_line="hdw=10,20")
+        util.emme_tline_calc(scenario, "ut2", "9 +  (hdw-20)*0.3", sel_line="hdw=20,30")
+        util.emme_tline_calc(scenario, "ut2", "12 + (hdw-30)*0.1", sel_line="hdw=30,999")
 
         #TODO confirm this is the correct approach with INRO
         # doing this explicitly now.  Need to double the headway to use 0.5 headway fraction in assignment
