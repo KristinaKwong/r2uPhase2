@@ -11,21 +11,6 @@ import numpy as np
 import pandas as pd
 import traceback as _traceback
 
-# Define Availability Thresholds
-AutDist  = 0.0
-WlkDist  = 5.0
-BikDist  = 25.0
-TranIVT  = 1.0
-TranWat  = 30.0
-TranAux  = 30.0
-TranBrd  = 6.0
-BRTotLow = 10.0
-BRTotHig = 120.0
-WCTotLow = 30.0
-WCTotHig = 130.0
-PRAutTim = 0.0
-LrgU     = -99999.0
-
 class ModeChoiceUtilities(_m.Tool()):
     tool_run_msg = ""
 
@@ -106,78 +91,78 @@ class ModeChoiceUtilities(_m.Tool()):
             util.delmat(eb, mat_id)
 
     def AutoAvail(self, Distance, Utility):
-
+        LrgU     = -99999.0
         return np.where(Distance>AutDist,  Utility ,LrgU)
 
     def WalkAvail(self, Distance, Utility):
-
+        LrgU     = -99999.0
         return np.where(Distance<=WlkDist,  Utility ,LrgU)
 
     def BikeAvail(self, Distance, Utility):
-
+        LrgU     = -99999.0
         return np.where(Distance<=BikDist,  Utility , LrgU)
 
 
     def BusAvail(self, Df, Utility):
-
+        LrgU     = -99999.0
         return np.where((Df['BusIVT']>TranIVT) &
                         (Df['BusWat']<TranWat) &
                         (Df['BusAux']<TranAux) &
                         (Df['BusBrd']<TranBrd) &
-                        (Df['IntZnl']!=1)      &                        
+                        (Df['IntZnl']!=1)      &
                         (np.logical_and(Df['BusTot']>=BRTotLow, Df['BusTot']<=BRTotHig)),
                          Utility, LrgU)
 
     def RailAvail(self, Df, Utility):
-
+        LrgU     = -99999.0
         return np.where((Df['RalIVR']>TranIVT) &
                         (Df['RalWat']<TranWat) &
                         (Df['RalAux']<TranAux) &
                         (Df['RalBrd']<TranBrd) &
-                        (Df['IntZnl']!=1)      &                          
+                        (Df['IntZnl']!=1)      &
                         (np.logical_and(Df['RalTot']>=BRTotLow, Df['RalTot']<=BRTotHig)),
                          Utility, LrgU)
 
     def WCEAvail(self, Df, Utility):
-
+        LrgU     = -99999.0
         return np.where((Df['WCEIVW']>TranIVT) &
                         (Df['WCEWat']<TranWat) &
                         (Df['WCEAux']<TranAux) &
                         (Df['WCEBrd']<TranBrd) &
-                        (Df['IntZnl']!=1)      &                          
+                        (Df['IntZnl']!=1)      &
                         (np.logical_and(Df['WCETot']>=WCTotLow, Df['WCETot']<=WCTotHig)),
                          Utility, LrgU)
 
     def BAuAvail(self, Df, Utility):
-
+        LrgU     = -99999.0
         return np.where((Df['BusIVT']>TranIVT) &
                         (Df['BusWat']<TranWat) &
                         (Df['BusAux']<TranAux) &
                         (Df['BusBrd']<TranBrd) &
                         (Df['BAuTim']>PRAutTim)&
-                        (Df['IntZnl']!=1)      &                         
+                        (Df['IntZnl']!=1)      &
                         (np.logical_and(Df['BAuTot']>=BRTotLow, Df['BAuTot']<=BRTotHig)),
                          Utility, LrgU)
 
     def RAuAvail(self, Df, Utility):
-
+        LrgU     = -99999.0
         return np.where((Df['RalIVR']>TranIVT) &
                         (Df['RalWat']<TranWat) &
                         (Df['RalAux']<TranAux) &
                         (Df['RalBrd']<TranBrd) &
                         (Df['RAuTim']>PRAutTim)&
-                        (Df['IntZnl']!=1)      &                          
+                        (Df['IntZnl']!=1)      &
                         (np.logical_and(Df['RAuTot']>=BRTotLow, Df['RAuTot']<=BRTotHig)),
                          Utility, LrgU)
 
     def WAuAvail(self, Df, Utility):
-
+        LrgU     = -99999.0
         return np.where((Df['WCEIVW']>TranIVT) &
                         (Df['WCEWat']<TranWat) &
                         (Df['WCEAux']<TranAux) &
                         (Df['WCEBrd']<TranBrd) &
                         (Df['WAuTim']>PRAutTim)&
-                        (Df['IntZnl']!=1)      &                          
+                        (Df['IntZnl']!=1)      &
                         (np.logical_and(Df['WAuTot']>=WCTotLow, Df['WAuTot']<=WCTotHig)),
                          Utility , LrgU)
 

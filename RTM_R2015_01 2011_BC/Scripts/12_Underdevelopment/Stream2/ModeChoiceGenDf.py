@@ -120,11 +120,11 @@ class ModeChoiceGenDf(_m.Tool()):
         ##############################################################################
 
         # Blend Factors                AM , MD  , PM           AM  ,MD , PM    Where Blended Matrices get stored in same order as above
-        BlendDictPR = {'hbwprb':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['mf6800', 'mf6801', 'mf6802'], #Bus
+        BlendDictPR = {'hbwprb':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['mf6800', 'mf6801', 'mf6802', 'mf6803', 'mf6804'], #Bus
                        'BL': BLBsWk},
-                       'hbwprr':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['mf6810', 'mf6811', 'mf6812'], #Rail
+                       'hbwprr':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['mf6810', 'mf6811', 'mf6812', 'mf6813', 'mf6814'], #Rail
                        'BL': BLRlWk},
-                       'hbwprw':{'PA': hbwo_fct_wce[0], 'AP':hbwo_fct_wce[1], 'Mat':['mf6820', 'mf6821', 'mf6822'], #WCE
+                       'hbwprw':{'PA': hbwo_fct_wce[0], 'AP':hbwo_fct_wce[1], 'Mat':['mf6820', 'mf6821', 'mf6822',  'mf6823', 'mf6824'], #WCE
                        'BL': BLWcWk}
                      }
 
@@ -138,6 +138,10 @@ class ModeChoiceGenDf(_m.Tool()):
             Df_Auto_Leg['AutoDis'] = self.calc_blend(values, DistDict).flatten()
             Df_Auto_Leg['AutoTim'] = self.calc_blend(values, TimeDict).flatten()
             Df_Auto_Leg['AutoTol'] = self.calc_blend(values, TollDict).flatten()
+            Df_Auto_Leg['Parking'] = util.get_matrix_numpy(eb, "mo90").reshape(1, 1741) + np.zeros(1741, 1)
+            Df_Auto_Leg['TermTim'] = util.get_matrix_numpy(eb, "mo92").reshape(1, 1741) + np.zeros(1741, 1)
+            Df_Auto_Leg['Parking'] = Df_Auto_Leg['Parking'].flatten()
+            Df_Auto_Leg['TermTim'] = Df_Auto_Leg['TermTim'].flatten()
             # Join the two data frames based on skims from Origin to the Best Lot
             Df = pd.merge(Dfmerge, Df_Auto_Leg, left_on = ['Or', 'BL'],
                      right_on = ['OrAuto', 'DeAuto'], how = 'left')
@@ -145,6 +149,9 @@ class ModeChoiceGenDf(_m.Tool()):
             util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoDis'].reshape(1741,1741))
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'].reshape(1741,1741))
             util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'].reshape(1741,1741))
+            util.set_matrix_numpy(eb, values['Mat'][3], Df['Parking'].reshape(1741,1741))
+            util.set_matrix_numpy(eb, values['Mat'][4], Df['TermTim'].reshape(1741,1741))
+
         # delete data generated to free up memory
         del Df, Dfmerge, Df_Auto_Leg, TimeDict, DistDict, TollDict
 
@@ -1064,12 +1071,18 @@ class ModeChoiceGenDf(_m.Tool()):
         util.initmat(eb, "mf6800", "HbWBlBAuPRDist", "HbW Bl Bus-Auto PR Distance", 0)
         util.initmat(eb, "mf6801", "HbWBlBAuPRTime", "HbW Bl Bus-Auto PR Time", 0)
         util.initmat(eb, "mf6802", "HbWBlBAuPRToll", "HbW Bl Bus-Auto PR Toll", 0)
+        util.initmat(eb, "mf6803", "HbWBAuPrkCst", "HbW Bus-Auto PR Parking Cost", 0)
+        util.initmat(eb, "mf6804", "HbWBAuTrmTim", "HbW Bus-Auto PR Terminal Time", 0)
         util.initmat(eb, "mf6810", "HbWBlRAuPRDist", "HbW Bl Rail-Auto PR Distance", 0)
         util.initmat(eb, "mf6811", "HbWBlRAuPRTime", "HbW Bl Rail-Auto PR Time", 0)
         util.initmat(eb, "mf6812", "HbWBlRAuPRToll", "HbW Bl Rail-Auto PR Toll", 0)
+        util.initmat(eb, "mf6813", "HbWRAuPrkCst", "HbW Rail-Auto PR Parking Cost", 0)
+        util.initmat(eb, "mf6814", "HbWRAuTrmTim", "HbW Rail-Auto PR Terminal Time", 0)
         util.initmat(eb, "mf6820", "HbWBlWAuPRDist", "HbW Bl WCE-Auto PR Distance", 0)
         util.initmat(eb, "mf6821", "HbWBlWAuPRTime", "HbW Bl WCE-Auto PR Time", 0)
         util.initmat(eb, "mf6822", "HbWBlWAuPRToll", "HbW Bl WCE-Auto PR Toll", 0)
+        util.initmat(eb, "mf6823", "HbWWAuPrkCst", "HbW WCE-Auto PR Parking Cost", 0)
+        util.initmat(eb, "mf6824", "HbWWAuTrmTim", "HbW WCE-Auto PR Terminal Time", 0)
         util.initmat(eb, "mf6900", "HbWBlBAuBusIvtt", "HbW Bl Bus-Auto PR InVehicle Time", 0)
         util.initmat(eb, "mf6901", "HbWBlBAuBusWait", "HbW Bl Bus-Auto PR Bus Waiting Time", 0)
         util.initmat(eb, "mf6902", "HbWBlBAuBusAux", "HbW Bl Bus-Auto PR Bus Auxillary Time", 0)
