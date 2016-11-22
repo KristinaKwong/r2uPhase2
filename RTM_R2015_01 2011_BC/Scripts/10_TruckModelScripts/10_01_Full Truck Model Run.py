@@ -66,23 +66,23 @@ class FullTruckModel(_m.Tool()):
 
         specs = []
         # AM LGV
-        specs.append(util.matrix_spec("mf1040", "mf1002*1.5"))
-        specs.append(util.matrix_spec("mf1042", "mf1012*1.5"))
-        specs.append(util.matrix_spec("mf1045", "mf1035*1.5"))
+        specs.append(util.matrix_spec("mf1040", "mf1002*ms130"))
+        specs.append(util.matrix_spec("mf1042", "mf1012*ms130"))
+        specs.append(util.matrix_spec("mf1045", "mf1035*ms130"))
         # AM HGV
-        specs.append(util.matrix_spec("mf1041", "mf1005*2.5"))
-        specs.append(util.matrix_spec("mf1043", "mf1013*2.5"))
-        specs.append(util.matrix_spec("mf1044", "mf1021*2.5"))
-        specs.append(util.matrix_spec("mf1046", "mf1037*2.5"))
+        specs.append(util.matrix_spec("mf1041", "mf1005*ms131"))
+        specs.append(util.matrix_spec("mf1043", "mf1013*ms131"))
+        specs.append(util.matrix_spec("mf1044", "mf1021*ms131"))
+        specs.append(util.matrix_spec("mf1046", "mf1037*ms131"))
         # MD LGV
-        specs.append(util.matrix_spec("mf1047", "mf1003*1.5"))
-        specs.append(util.matrix_spec("mf1049", "mf1014*1.5"))
-        specs.append(util.matrix_spec("mf1052", "mf1036*1.5"))
+        specs.append(util.matrix_spec("mf1047", "mf1003*ms130"))
+        specs.append(util.matrix_spec("mf1049", "mf1014*ms130"))
+        specs.append(util.matrix_spec("mf1052", "mf1036*ms130"))
         # MD HGV
-        specs.append(util.matrix_spec("mf1048", "mf1006*2.5"))
-        specs.append(util.matrix_spec("mf1050", "mf1015*2.5"))
-        specs.append(util.matrix_spec("mf1051", "mf1022*2.5"))
-        specs.append(util.matrix_spec("mf1053", "mf1038*2.5"))
+        specs.append(util.matrix_spec("mf1048", "mf1006*ms131"))
+        specs.append(util.matrix_spec("mf1050", "mf1015*ms131"))
+        specs.append(util.matrix_spec("mf1051", "mf1022*ms131"))
+        specs.append(util.matrix_spec("mf1053", "mf1038*ms131"))
 
         # Aggregate total LGV and HGV vehicle demand
         specs.append(util.matrix_spec("mf980", "mf1002 + mf1012 + mf1035"))
