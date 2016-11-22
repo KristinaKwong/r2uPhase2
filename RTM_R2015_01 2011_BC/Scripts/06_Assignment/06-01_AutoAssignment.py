@@ -51,7 +51,12 @@ class AutoAssignment(_m.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            #TODO: set ms4X matrices based on user input
+            eb = _m.Modeller().emmebank
+            eb.matrix("ms40").data = self.max_iterations
+            eb.matrix("ms41").data = self.relative_gap
+            eb.matrix("ms42").data = self.best_relative_gap
+            eb.matrix("ms43").data = self.normalized_gap
+
             self(self.am_scenario, self.md_scenario, self.pm_scenario)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
