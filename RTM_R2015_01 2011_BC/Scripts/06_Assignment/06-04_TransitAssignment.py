@@ -167,13 +167,13 @@ class TransitAssignment(_m.Tool()):
 
                 # Different boarding fares for WCE by node
                 # For First boarding
-                self.update_node_attributes(sc, "@wcestopfare", "%s*(@farezone.eq.10)+%s*(@farezone.eq.30)+"
+                util.emme_node_calc(sc, "@wcestopfare", "%s*(@farezone.eq.10)+%s*(@farezone.eq.30)+"
                                                 "%s*(@farezone.eq.40)+%s*(@farezone.eq.50)"
                                             %(self.wce_bfare_zone1[i],self.wce_bfare_zone3[i],
                                               self.wce_bfare_zone4[i], self.wce_bfare_zone5[i]))
 
                 # Transfer from Bus/Skytrain
-                self.update_node_attributes(sc, "@wcexferfare", "(@wcestopfare - %s).max.0" % self.bus_zone1_fare)
+                util.emme_node_calc(sc, "@wcexferfare", "(@wcestopfare - %s).max.0" % self.bus_zone1_fare)
 
                 # In-vehicle Cost (@fareincrement)
                 # For Buses/Skytrain/Seabus
@@ -481,17 +481,6 @@ class TransitAssignment(_m.Tool()):
             "selections": {"link": nlinks, "transit_line": nlines}
         }
         networkCalcTool(spec, full_report=False, scenario=sc)
-
-    def update_node_attributes(self, sc, attr_id, condition, nodes="all"):
-        networkCalcTool = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
-        spec = {
-            "type" : "NETWORK_CALCULATION",
-            "result": attr_id,
-            "expression": condition,
-            "aggregation": None,
-            "selections": {"node": nodes}
-        }
-        networkCalcTool(spec, full_report=False, scenario = sc)
 
     def headway_fraction_calc(self, sc, select_hfrac):
         if select_hfrac ==1:
