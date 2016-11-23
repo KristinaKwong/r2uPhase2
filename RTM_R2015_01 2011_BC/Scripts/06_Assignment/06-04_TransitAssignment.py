@@ -147,12 +147,12 @@ class TransitAssignment(_m.Tool()):
                 self.headway_fraction_calc(sc, select_hfrac)
 
                 # Intial Assignment of Parameters
-                self.update_extra_attributes(sc, '@ivttfac', "1")
-                self.update_extra_attributes(sc, '@ivttp_ratype0', "@ivttp")   # Making bus modes more onerous
-                self.update_extra_attributes(sc, '@hdwyeff', "hdw*@hfrac")
-                self.update_extra_attributes(sc, '@hdwyfac', "1")
-                self.update_extra_attributes(sc, '@crowdingfactor', "0")
-                self.update_extra_attributes(sc, 'us1', '0')  # dwell time
+                util.emme_segment_calc(sc, "@ivttfac", "1")
+                util.emme_segment_calc(sc, "@ivttp_ratype0", "@ivttp")   # Making bus modes more onerous
+                util.emme_segment_calc(sc, "@hdwyeff", "hdw*@hfrac")
+                util.emme_segment_calc(sc, "@hdwyfac", "1")
+                util.emme_segment_calc(sc, "@crowdingfactor", "0")
+                util.emme_segment_calc(sc, "us1", "0")  # dwell time
                 util.emme_tline_calc(sc, "@seatcapacity", "%s*vcaps*60/hdw" % period_length)
                 util.emme_tline_calc(sc, "@totcapacity", "%s*vcapt*60/hdw" % period_length)
 
@@ -177,12 +177,12 @@ class TransitAssignment(_m.Tool()):
 
                 # In-vehicle Cost (@fareincrement)
                 # For Buses/Skytrain/Seabus
-                self.update_extra_attributes(sc, '@fareincrement', "%s*(@fareboundary.eq.1)" %self.bus_zone_increment,
-                                             nlinks ="all", nlines="mode=bgsfhl")
+                util.emme_segment_calc(sc, "@fareincrement", "%s*(@fareboundary.eq.1)" %self.bus_zone_increment,
+                                             sel_link="all", sel_line="mode=bgsfhl")
                 # For WCE
-                self.update_extra_attributes(sc, '@fareincrement', "%s*(@wcefareboundary.eq.13) +%s*(@wcefareboundary.eq.34)+"
+                util.emme_segment_calc(sc, "@fareincrement", "%s*(@wcefareboundary.eq.13) +%s*(@wcefareboundary.eq.34)+"
                                              "%s*(@wcefareboundary.eq.45)" %(self.wce_fare_zone13[i], self.wce_fare_zone34[i], self.wce_fare_zone45[i]),
-                                             nlinks="all", nlines="mode=r")
+                                             sel_link="all", sel_line="mode=r")
 
             # LOOP FOR CROWDING AND CAPACITY CONSTRAINT
             for iteration in xrange(1, self.max_iterations+1):
@@ -471,17 +471,6 @@ class TransitAssignment(_m.Tool()):
         ]
         return spec
 
-    def update_extra_attributes(self, sc, attr_id, condition, nlinks ="all", nlines="all", aggregate=None):
-        networkCalcTool = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
-        spec = {
-            "type" : "NETWORK_CALCULATION",
-            "result": attr_id,
-            "expression": condition,
-            "aggregation": aggregate,
-            "selections": {"link": nlinks, "transit_line": nlines}
-        }
-        networkCalcTool(spec, full_report=False, scenario=sc)
-
     def headway_fraction_calc(self, sc, select_hfrac):
         if select_hfrac ==1:
             ## Option 1: Calculate headway fraction based on following factors:
@@ -492,10 +481,10 @@ class TransitAssignment(_m.Tool()):
             ##        "f" LRT=1.1,
             ##        "h" Gondola=0.8,
             ##        "r" WCE=0.8
-            self.update_extra_attributes(sc, '@hfrac', "1.2*0.5", "all", "mode=b")
-            self.update_extra_attributes(sc, '@hfrac', "1.1*0.5", "all", "mode=gf")
-            self.update_extra_attributes(sc, '@hfrac', "0.67*0.5", "all", "mode=s")
-            self.update_extra_attributes(sc, '@hfrac', "0.8*0.5", "all", "mode=rlh")
+            util.emme_segment_calc(sc, "@hfrac", "1.2*0.5", "all", "mode=b")
+            util.emme_segment_calc(sc, "@hfrac", "1.1*0.5", "all", "mode=gf")
+            util.emme_segment_calc(sc, "@hfrac", "0.67*0.5", "all", "mode=s")
+            util.emme_segment_calc(sc, "@hfrac", "0.8*0.5", "all", "mode=rlh")
 
         if select_hfrac == 2:
             ## Option 2: Calculate headway fraction based on service frequency
@@ -511,7 +500,7 @@ class TransitAssignment(_m.Tool()):
             wait_bus_seg2 = wait_bus_seg1+len_bus_seg2*slope_bus_seg2 # wait at end of 2nd segment, bus
             wait_bus_seg3 = wait_bus_seg2+len_bus_seg3*slope_bus_seg3  # wait at end of 3rd segment, bus
             # TODO: Check applicable Modes
-            self.update_extra_attributes(sc, '@hfrac', "((%s*hdw).min.(%s+%s*(hdw-%s)).min."
+            util.emme_segment_calc(sc, "@hfrac", "((%s*hdw).min.(%s+%s*(hdw-%s)).min."
                                                        "(%s+ %s*(hdw-%s-%s)).min.(%s+%s*(hdw-%s-%s-%s)))/hdw" %(slope_bus_seg1,
                                                         wait_bus_seg1,slope_bus_seg2,len_bus_seg1,
                                                         wait_bus_seg2,slope_bus_seg3, len_bus_seg2,len_bus_seg1,
@@ -529,7 +518,7 @@ class TransitAssignment(_m.Tool()):
             wait_rail_seg2 = wait_rail_seg1 + len_rail_seg2 * slope_rail_seg2  # wait at end of 2nd segment, rail
             wait_rail_seg3 = wait_rail_seg2 + len_rail_seg3 * slope_rail_seg3  # wait at end of 3rd segment, rail
             # TODO: Check applicable Modes
-            self.update_extra_attributes(sc, '@hfrac', "((%s*hdw).min.(%s+%s*(hdw-%s)).min."
+            util.emme_segment_calc(sc, "@hfrac", "((%s*hdw).min.(%s+%s*(hdw-%s)).min."
                                                        "(%s+%s*(hdw-%s-%s)).min.(%s+%s*(hdw-%s-%s-%s)))/hdw" % (slope_rail_seg1,
                                                         wait_rail_seg1, slope_rail_seg2, len_rail_seg1,
                                                         wait_rail_seg2, slope_rail_seg3, len_rail_seg2,len_rail_seg1,
@@ -539,15 +528,15 @@ class TransitAssignment(_m.Tool()):
     def averaging_transit_volumes(self, sc, iteration):
         # MSA on Boardings and transit Volumes
         msa_factor = 1.0 / iteration
-        self.update_extra_attributes(sc, '@boardavg' , "board*%s + @boardavg*(1-%s)" %(msa_factor, msa_factor))
-        self.update_extra_attributes(sc, '@voltravg', "voltr*%s + @voltravg*(1-%s)" % (msa_factor,  msa_factor))
+        util.emme_segment_calc(sc, "@boardavg" , "board*%s + @boardavg*(1-%s)" %(msa_factor, msa_factor))
+        util.emme_segment_calc(sc, "@voltravg", "voltr*%s + @voltravg*(1-%s)" % (msa_factor,  msa_factor))
 
         # Average Alightings
-        self.update_extra_attributes(sc, '@alightavgn' ,"@boardavgn + @voltravg - @voltravgn")
+        util.emme_segment_calc(sc, "@alightavgn" ,"@boardavgn + @voltravg - @voltravgn")
 
         # Update @pseat and @pstand
-        self.update_extra_attributes(sc, '@pseat', "@voltravg.min.@seatcapacity")
-        self.update_extra_attributes(sc, '@pstand', "(@voltravg - @seatcapacity).max.0")
+        util.emme_segment_calc(sc, "@pseat", "@voltravg.min.@seatcapacity")
+        util.emme_segment_calc(sc, "@pstand", "(@voltravg - @seatcapacity).max.0")
 
     def crowding_factor_calc(self, sc):
         # In-vehicle Crowding Function
@@ -557,28 +546,28 @@ class TransitAssignment(_m.Tool()):
                                                        self.power_seat_weight, self.min_stand_weight,
                                                        self.max_stand_weight, self.min_stand_weight, self.power_stand_weight)
 
-        self.update_extra_attributes(sc, '@crowdingfactor', crowd_spec)
-        self.update_extra_attributes(sc, '@ivttfac', "1+ @crowdingfactor")
-        #self.update_extra_attributes(sc, '@ivttp_ratype0', "@ivttp*(1+ @crowdingfactor)")
+        util.emme_segment_calc(sc, "@crowdingfactor", crowd_spec)
+        util.emme_segment_calc(sc, "@ivttfac", "1+ @crowdingfactor")
+        #util.emme_segment_calc(sc, "@ivttp_ratype0", "@ivttp*(1+ @crowdingfactor)")
 
     def effective_headway_calc(self, sc):
         # [(Boardings/max(Total Capacity - Transit Volume + Boardings,1)).min.3.0].max.1
         hdwy_spec = "((@boardavg/((@totcapacity-@voltravg+@boardavg).max.1)).min.(3.0)).max.1"
-        self.update_extra_attributes(sc, '@hdwyfac', hdwy_spec)
-        self.update_extra_attributes(sc, '@hdwyeff', "hdw*@hdwyfac*@hfrac")
+        util.emme_segment_calc(sc, "@hdwyfac", hdwy_spec)
+        util.emme_segment_calc(sc, "@hdwyeff", "hdw*@hdwyfac*@hfrac")
 
     def dwell_time_calc(self, sc, period_length):
         # Fixed dwell time to account for acceleration and deceleration of vehicle
         min_dwell_time = 0.33 # 20 seconds in minutes
         # Zero Passenger - set us1 =0
         # Boarding and Alighting happens simultaneously (appplicable for most bus lines)
-        self.update_extra_attributes(sc, 'us1', "(%s*((@boardavg+@alightavg).gt.0) +"
+        util.emme_segment_calc(sc, "us1", "(%s*((@boardavg+@alightavg).gt.0) +"
                                                 "(((@dwtboard*@boardavg) .max. (@dwtalight*@alightavg))*"
                                                 " hdw/(60*%s)))" %(min_dwell_time,period_length), "all","mode=bg")
 
         # Boarding and Alighting happens sequentially
         # TODO: Identify lines and specify condition
-        #self.update_extra_attributes(sc, 'us1', "(%s*((@boardavg+@alightavg).gt.0) +"
+        #util.emme_segment_calc(sc, "us1", "(%s*((@boardavg+@alightavg).gt.0) +"
         #                                        "(((@dwtboard*@boardavg) + (@dwtalight*@alightavg))*"
         #                                        " hdw/(60*%s)))" %(min_dwell_time,period_length), "all","mode=bg")
 
