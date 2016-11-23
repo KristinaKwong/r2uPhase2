@@ -11,21 +11,6 @@ import numpy as np
 import pandas as pd
 import traceback as _traceback
 
-# Define Availability Thresholds
-AutDist  = 0.0
-WlkDist  = 5.0
-BikDist  = 25.0
-TranIVT  = 1.0
-TranWat  = 30.0
-TranAux  = 30.0
-TranBrd  = 6.0
-BRTotLow = 10.0
-BRTotHig = 120.0
-WCTotLow = 30.0
-WCTotHig = 130.0
-PRAutTim = 0.0
-LrgU     = -99999.0
-
 class ModeChoiceUtilities(_m.Tool()):
     tool_run_msg = ""
 
@@ -105,80 +90,86 @@ class ModeChoiceUtilities(_m.Tool()):
         for mat_id in temp_matrices:
             util.delmat(eb, mat_id)
 
-    def AutoAvail(self, Distance, Utility):
+    def AutoAvail(self, Distance, Utility, AvailDict):
+        LrgU     = -99999.0
+        return np.where(Distance>AvailDict['AutDist'], Utility , LrgU)
 
-        return np.where(Distance>AutDist,  Utility ,LrgU)
+    def WalkAvail(self, Distance, Utility, AvailDict):
+        LrgU     = -99999.0
+        return np.where(Distance<=AvailDict['WlkDist'], Utility , LrgU)
 
-    def WalkAvail(self, Distance, Utility):
-
-        return np.where(Distance<=WlkDist,  Utility ,LrgU)
-
-    def BikeAvail(self, Distance, Utility):
-
-        return np.where(Distance<=BikDist,  Utility , LrgU)
+    def BikeAvail(self, Distance, Utility, AvailDict):
+        LrgU     = -99999.0
+        return np.where(Distance<=AvailDict['BikDist'], Utility , LrgU)
 
 
-    def BusAvail(self, Df, Utility):
+    def BusAvail(self, Df, Utility, AvailDict):
 
-        return np.where((Df['BusIVT']>TranIVT) &
-                        (Df['BusWat']<TranWat) &
-                        (Df['BusAux']<TranAux) &
-                        (Df['BusBrd']<TranBrd) &
-                        (Df['IntZnl']!=1)      &                        
-                        (np.logical_and(Df['BusTot']>=BRTotLow, Df['BusTot']<=BRTotHig)),
+        LrgU     = -99999.0
+        return np.where((Df['BusIVT']>AvailDict['TranIVT']) &
+                        (Df['BusWat']<AvailDict['TranWat']) &
+                        (Df['BusAux']<AvailDict['TranAux']) &
+                        (Df['BusBrd']<AvailDict['TranBrd']) &
+                        (Df['IntZnl']!=1)                   &
+                        (np.logical_and(Df['BusTot']>=AvailDict['BRTotLow'], Df['BusTot']<=AvailDict['BRTotHig'])),
                          Utility, LrgU)
 
-    def RailAvail(self, Df, Utility):
+    def RailAvail(self, Df, Utility, AvailDict):
 
-        return np.where((Df['RalIVR']>TranIVT) &
-                        (Df['RalWat']<TranWat) &
-                        (Df['RalAux']<TranAux) &
-                        (Df['RalBrd']<TranBrd) &
-                        (Df['IntZnl']!=1)      &                          
-                        (np.logical_and(Df['RalTot']>=BRTotLow, Df['RalTot']<=BRTotHig)),
+        LrgU     = -99999.0
+        return np.where((Df['RalIVR']>AvailDict['TranIVT']) &
+                        (Df['RalWat']<AvailDict['TranWat']) &
+                        (Df['RalAux']<AvailDict['TranAux']) &
+                        (Df['RalBrd']<AvailDict['TranBrd']) &
+                        (Df['IntZnl']!=1)                   &
+                        (np.logical_and(Df['RalTot']>=AvailDict['BRTotLow'], Df['RalTot']<=AvailDict['BRTotHig'])),
                          Utility, LrgU)
 
-    def WCEAvail(self, Df, Utility):
+    def WCEAvail(self, Df, Utility, AvailDict):
 
-        return np.where((Df['WCEIVW']>TranIVT) &
-                        (Df['WCEWat']<TranWat) &
-                        (Df['WCEAux']<TranAux) &
-                        (Df['WCEBrd']<TranBrd) &
-                        (Df['IntZnl']!=1)      &                          
-                        (np.logical_and(Df['WCETot']>=WCTotLow, Df['WCETot']<=WCTotHig)),
+        LrgU     = -99999.0
+        return np.where((Df['WCEIVW']>AvailDict['TranIVT']) &
+                        (Df['WCEWat']<AvailDict['TranWat']) &
+                        (Df['WCEAux']<AvailDict['TranAux']) &
+                        (Df['WCEBrd']<AvailDict['TranBrd']) &
+                        (Df['IntZnl']!=1)                   &
+                        (np.logical_and(Df['WCETot']>=AvailDict['WCTotLow'], Df['WCETot']<=AvailDict['WCTotHig'])),
                          Utility, LrgU)
 
-    def BAuAvail(self, Df, Utility):
+    def BAuAvail(self, Df, Utility, AvailDict):
 
-        return np.where((Df['BusIVT']>TranIVT) &
-                        (Df['BusWat']<TranWat) &
-                        (Df['BusAux']<TranAux) &
-                        (Df['BusBrd']<TranBrd) &
-                        (Df['BAuTim']>PRAutTim)&
-                        (Df['IntZnl']!=1)      &                         
-                        (np.logical_and(Df['BAuTot']>=BRTotLow, Df['BAuTot']<=BRTotHig)),
+        LrgU     = -99999.0
+        return np.where((Df['BusIVT']>AvailDict['TranIVT']) &
+                        (Df['BusWat']<AvailDict['TranWat']) &
+                        (Df['BusAux']<AvailDict['TranAux']) &
+                        (Df['BusBrd']<AvailDict['TranBrd']) &
+                        (Df['BAuTim']>AvailDict['PRAutTim'])&
+                        (Df['IntZnl']!=1)                   &
+                        (np.logical_and(Df['BAuTot']>=AvailDict['BRTotLow'], Df['BAuTot']<=AvailDict['BRTotHig'])),
                          Utility, LrgU)
 
-    def RAuAvail(self, Df, Utility):
+    def RAuAvail(self, Df, Utility, AvailDict):
 
-        return np.where((Df['RalIVR']>TranIVT) &
-                        (Df['RalWat']<TranWat) &
-                        (Df['RalAux']<TranAux) &
-                        (Df['RalBrd']<TranBrd) &
-                        (Df['RAuTim']>PRAutTim)&
-                        (Df['IntZnl']!=1)      &                          
-                        (np.logical_and(Df['RAuTot']>=BRTotLow, Df['RAuTot']<=BRTotHig)),
+        LrgU     = -99999.0
+        return np.where((Df['RalIVR']>AvailDict['TranIVT']) &
+                        (Df['RalWat']<AvailDict['TranWat']) &
+                        (Df['RalAux']<AvailDict['TranAux']) &
+                        (Df['RalBrd']<AvailDict['TranBrd']) &
+                        (Df['RAuTim']>AvailDict['PRAutTim'])&
+                        (Df['IntZnl']!=1)                   &
+                        (np.logical_and(Df['RAuTot']>=AvailDict['BRTotLow'], Df['RAuTot']<=AvailDict['BRTotHig'])),
                          Utility, LrgU)
 
-    def WAuAvail(self, Df, Utility):
+    def WAuAvail(self, Df, Utility, AvailDict):
 
-        return np.where((Df['WCEIVW']>TranIVT) &
-                        (Df['WCEWat']<TranWat) &
-                        (Df['WCEAux']<TranAux) &
-                        (Df['WCEBrd']<TranBrd) &
-                        (Df['WAuTim']>PRAutTim)&
-                        (Df['IntZnl']!=1)      &                          
-                        (np.logical_and(Df['WAuTot']>=WCTotLow, Df['WAuTot']<=WCTotHig)),
+        LrgU     = -99999.0
+        return np.where((Df['WCEIVW']>AvailDict['TranIVT']) &
+                        (Df['WCEWat']<AvailDict['TranWat']) &
+                        (Df['WCEAux']<AvailDict['TranAux']) &
+                        (Df['WCEBrd']<AvailDict['TranBrd']) &
+                        (Df['WAuTim']>AvailDict['PRAutTim')]&
+                        (Df['IntZnl']!=1)                   &
+                        (np.logical_and(Df['WAuTot']>=AvailDict['WCTotLow'], Df['WAuTot']<=AvailDict['WCTotHig'])),
                          Utility , LrgU)
 
     @_m.logbook_trace("Run matrix balancing to multiple productions")
