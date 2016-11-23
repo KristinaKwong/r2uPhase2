@@ -51,6 +51,7 @@ class InitEmmebank(_m.Tool()):
         _m.Modeller().desktop.data_explorer().add_database(new_path).open()
         self.initdatabase(_m.Modeller().emmebank)
 
+
     def initbank(self, path, title):
         dim = {"scalar_matrices": 9999,
                "origin_matrices": 2000,
@@ -82,6 +83,7 @@ class InitEmmebank(_m.Tool()):
             self.initscenario(eb, 2000, "2015 Base Network")
             self.initscenario(eb, 3000, "2030 Base Network")
             self.initscenario(eb, 4000, "2045 Base Network")
+            self.initoptions(eb)
 
     def initfolder(self, emme_folder):
         project = _m.Modeller().desktop.project
@@ -359,3 +361,17 @@ class InitEmmebank(_m.Tool()):
         eb.create_function("fp16", "(.1 + pvolau / 1600) ^ 4")
         eb.create_function("fp24", "(.1 + pvolau / 2400) ^ 4")
         eb.create_function("fp32", "(.1 + pvolau / 3200) ^ 4")
+
+
+
+
+    def initoptions(self, eb):
+
+        util = _m.Modeller().tool("translink.emme.util")
+        # model business
+        util.initmat(eb, "ms2", "AmScen", "AMScenario", 21000)
+        util.initmat(eb, "ms3", "MdScen", "MDScenario", 22000)
+        util.initmat(eb, "ms4", "PmScen", "PMScenario", 23000)
+        util.initmat(eb, "ms5", "AmScen_p", "AMScenario_Previous", 21030)
+        util.initmat(eb, "ms6", "MdScen_p", "MDScenario_Previous", 22030)
+        util.initmat(eb, "ms7", "PmScen_p", "PMScenario_Previous", 23030)

@@ -415,21 +415,54 @@ class DataGeneration(_m.Tool()):
             combinedens = np.true_divide(combined, area)
             combinedens[ ~ np.isfinite( combinedens )] = 0
 
+    	# create log transformed variables
+    	if popdens.min() < 1:
+    		log_trans_const = 1 - popdens.min()
+    	else:
+    		log_trans_const = 0
+    	popdensln = np.log(popdens + log_trans_const)
+
+    	if empdens.min() < 1:
+    		log_trans_const = 1 - empdens.min()
+    	else:
+    		log_trans_const = 0
+    	empdensln = np.log(empdens + log_trans_const)
+
+    	if combinedens.min() < 1:
+    		log_trans_const = 1 - combinedens.min()
+    	else:
+    		log_trans_const = 0
+    	combinedensln = np.log(combinedens + log_trans_const)
+
+
         # write data to emmebank
         util.set_matrix_numpy(eb, 'mopopdens',popdens)
         util.set_matrix_numpy(eb, 'moempdens',empdens)
         util.set_matrix_numpy(eb, 'mocombinedens',combinedens)
 
+        util.set_matrix_numpy(eb, 'mopopdensln',popdensln)
+        util.set_matrix_numpy(eb, 'moempdensln',empdensln)
+        util.set_matrix_numpy(eb, 'mocombinedensln',combinedensln)
+
         # reshape to create pandas dataframe
+        zo = zones.reshape(zones.shape[0])
+
         em = empdens.reshape(empdens.shape[0])
         po = popdens.reshape(popdens.shape[0])
         co = combinedens.reshape(combinedens.shape[0])
-        zo = zones.reshape(zones.shape[0])
+
+        el = empdensln.reshape(empdensln.shape[0])
+        pl = popdensln.reshape(popdensln.shape[0])
+        cl = combinedensln.reshape(combinedensln.shape[0])
+        
         df = pd.DataFrame({'TAZ1700': zo,
                'popdens': po,
                'empdens': em,
-               'combinedens' : co},
-               columns=['TAZ1700','popdens','empdens','combinedens'])
+               'combinedens' : co,
+               'popdensln': pl,
+               'empdensln': el,
+               'combinedensln' : cl },
+               columns=['TAZ1700','popdens','empdens','combinedens', 'popdensln','empdensln','combinedensln'])
 
         # write data to rtm sqlite database
         db_loc = util.get_eb_path(eb)
@@ -450,6 +483,11 @@ class DataGeneration(_m.Tool()):
         util.initmat(eb, "mo200", "popdens", "Population density (per/hec)", 0)
         util.initmat(eb, "mo201", "empdens", "Employment density (job/hec)", 0)
         util.initmat(eb, "mo202", "combinedens", "Pop + Emp density (per hec)", 0)
+
+        util.initmat(eb, "mo205", "popdensln", "Log Population density (per/hec)", 0)
+        util.initmat(eb, "mo206", "empdensln", "Log Employment density (job/hec)", 0)
+        util.initmat(eb, "mo207", "combinedensln", "Log Pop + Emp density (per hec)", 0)
+
 
         ########################################################################
         # accessibilities
