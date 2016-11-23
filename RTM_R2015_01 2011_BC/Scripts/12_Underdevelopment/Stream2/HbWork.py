@@ -51,9 +51,11 @@ class HbWork(_m.Tool()):
                      'WlkDist ' = 5.0
                      'BikDist ' = 20.0
                      'TranIVT ' = 1.0
-                     'TranWat ' = 30.0
+                     'TranWat ' = 20.0
                      'TranAux ' = 30.0
-                     'TranBrd ' = 6.0
+                     'WCEWat '  = 30.0
+                     'WCEAux '  = 40.0
+                     'TranBrd ' = 4.0
                      'BRTotLow' = 10.0
                      'BRTotHig' = 120.0
                      'WCTotLow' = 30.0

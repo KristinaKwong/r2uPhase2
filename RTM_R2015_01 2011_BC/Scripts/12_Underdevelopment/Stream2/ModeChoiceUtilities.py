@@ -129,8 +129,8 @@ class ModeChoiceUtilities(_m.Tool()):
 
         LrgU     = -99999.0
         return np.where((Df['WCEIVW']>AvailDict['TranIVT']) &
-                        (Df['WCEWat']<AvailDict['TranWat']) &
-                        (Df['WCEAux']<AvailDict['TranAux']) &
+                        (Df['WCEWat']<AvailDict['WCEWat'])  &
+                        (Df['WCEAux']<AvailDict['WCEAux'])  &
                         (Df['WCEBrd']<AvailDict['TranBrd']) &
                         (Df['IntZnl']!=1)                   &
                         (np.logical_and(Df['WCETot']>=AvailDict['WCTotLow'], Df['WCETot']<=AvailDict['WCTotHig'])),
@@ -164,8 +164,8 @@ class ModeChoiceUtilities(_m.Tool()):
 
         LrgU     = -99999.0
         return np.where((Df['WCEIVW']>AvailDict['TranIVT']) &
-                        (Df['WCEWat']<AvailDict['TranWat']) &
-                        (Df['WCEAux']<AvailDict['TranAux']) &
+                        (Df['WCEWat']<AvailDict['WCEWat'])  &
+                        (Df['WCEAux']<AvailDict['WCEAux'])  &
                         (Df['WCEBrd']<AvailDict['TranBrd']) &
                         (Df['WAuTim']>AvailDict['PRAutTim')]&
                         (Df['IntZnl']!=1)                   &
