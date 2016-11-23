@@ -51,7 +51,12 @@ class AutoAssignment(_m.Tool()):
     def run(self):
         self.tool_run_msg = ""
         try:
-            #TODO: set ms4X matrices based on user input
+            eb = _m.Modeller().emmebank
+            eb.matrix("ms40").data = self.max_iterations
+            eb.matrix("ms41").data = self.relative_gap
+            eb.matrix("ms42").data = self.best_relative_gap
+            eb.matrix("ms43").data = self.normalized_gap
+
             self(self.am_scenario, self.md_scenario, self.pm_scenario)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
@@ -320,8 +325,10 @@ class AutoAssignment(_m.Tool()):
         # 10-20 minutes 0.4
         # 20-30 minutes 0.3
         # > 30 minutes 0.1
-        util.emme_tline_calc(scenario, "ut2", "(hdw.le.10)*(hdw*.5)+(hdw.gt.10)*(hdw.le.20)*(5+(hdw-10)*.4)+(hdw.gt.20)*(hdw.le.30)*(5+4+(hdw-20)*.3)+(hdw.gt.30)*(5+4+3+(hdw-30)*.1)")
-
+        util.emme_tline_calc(scenario, "ut2", "hdw*0.5", sel_line="hdw=0,10")
+        util.emme_tline_calc(scenario, "ut2", "5 +  (hdw-10)*0.4", sel_line="hdw=10,20")
+        util.emme_tline_calc(scenario, "ut2", "9 +  (hdw-20)*0.3", sel_line="hdw=20,30")
+        util.emme_tline_calc(scenario, "ut2", "12 + (hdw-30)*0.1", sel_line="hdw=30,999")
 
         #TODO confirm this is the correct approach with INRO
         # doing this explicitly now.  Need to double the headway to use 0.5 headway fraction in assignment
