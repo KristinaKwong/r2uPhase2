@@ -69,17 +69,17 @@ class TransitAssignment(_m.Tool()):
 
         # parameters for Mode availability matrices
         # Minimum IVTT; Disable value: 0
-        self.minimum_ivtt_rule = {'Bus': 2, 'Rail': 5, 'WCE': 5} # TODO look at rail availability
+        self.minimum_ivtt_rule = {"Bus": 2, "Rail": 5, "WCE": 5} # TODO look at rail availability
         # IVTT/Auto Time Ratio; Disable value: 10 or any large value
-        self.ivtt_auto_ratio = {'Bus': 10, 'Rail': 2.5, 'WCE': 2} #TODO look at that too - captives
+        self.ivtt_auto_ratio = {"Bus": 10, "Rail": 2.5, "WCE": 2} #TODO look at that too - captives
         # Main Mode IVTT/ Total IVTT; Disable value: 0
-        self.mivtt_totivt_ratio = {'Bus': 0, 'Rail': 0.3, 'WCE': 0.3}
+        self.mivtt_totivt_ratio = {"Bus": 0, "Rail": 0.3, "WCE": 0.3}
         # IVTT - Bus skim IVTT; Not valid for Bus mode; Disable value: 999 or any large value
-        self.ivtt_vs_busivtt = {'Bus': 999, 'Rail': 30, 'WCE': 30}
+        self.ivtt_vs_busivtt = {"Bus": 999, "Rail": 30, "WCE": 30}
         # IVTT to Bus skim IVTT ratio; Not valid for Bus mode; Disable value: 10 or any large value
-        self.ivtt_busivtt_ratio = {'Bus': 10, 'Rail': 2, 'WCE': 2}
+        self.ivtt_busivtt_ratio = {"Bus": 10, "Rail": 2, "WCE": 2}
         # IVTT bus component to Bus skim IVTT ratio; Not valid for Bus mode; Disable value: 10 or any large value
-        self.ivttb_busivtt_ratio = {'Bus': 10, 'Rail': 1, 'WCE': 1}
+        self.ivttb_busivtt_ratio = {"Bus": 10, "Rail": 1, "WCE": 1}
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
@@ -196,11 +196,11 @@ class TransitAssignment(_m.Tool()):
                 wce_spec = self.set_extended_transit_assignment_spec("WCE", demand_wce)
 
                 # Run Assignment
-                assign_transit(bus_spec, scenario=sc, add_volumes=False, save_strategies=True, class_name= 'Bus')
-                assign_transit(rail_spec, scenario=sc, add_volumes=True, save_strategies=True, class_name= 'Rail')
-                assign_transit(ratype0_spec, scenario=sc, add_volumes=True, save_strategies=True, class_name='Ratype0')
+                assign_transit(bus_spec, scenario=sc, add_volumes=False, save_strategies=True, class_name= "Bus")
+                assign_transit(rail_spec, scenario=sc, add_volumes=True, save_strategies=True, class_name= "Rail")
+                assign_transit(ratype0_spec, scenario=sc, add_volumes=True, save_strategies=True, class_name="Ratype0")
                 if sc is scenarioam or sc is scenariopm:
-                    assign_transit(wce_spec, scenario=sc, add_volumes=True, save_strategies=True, class_name= 'WCE')
+                    assign_transit(wce_spec, scenario=sc, add_volumes=True, save_strategies=True, class_name= "WCE")
 
                 _m.logbook_level(_m.LogbookLevel.NONE)
 
@@ -209,7 +209,7 @@ class TransitAssignment(_m.Tool()):
 
                 # Run Crowding and Headway Reports
                 if iteration==1:
-                    report['  Iter    Mode'] = "     Seat.pass-kms    Stand.pass-kms   Excess.pass-kms  Max.crowd.factor   Min.Hdwy Factor   Max.Hdwy Factor"
+                    report["  Iter    Mode"] = "     Seat.pass-kms    Stand.pass-kms   Excess.pass-kms  Max.crowd.factor   Min.Hdwy Factor   Max.Hdwy Factor"
                 rep = self.crowding_headway_report(sc, iteration)
                 report.update(rep)
 
@@ -599,14 +599,14 @@ class TransitAssignment(_m.Tool()):
             for key in expression:
                 spec = {"type": "NETWORK_CALCULATION",
                         "expression": expression[key][0],
-                        "result": '@result',
+                        "result": "@result",
                         "selections": {
                             "link": "all",
                             "transit_line": "mode="+modes}}
                 report=networkCalcTool(spec, scenario = sc, full_report = False)
                 rep = rep + ("%s"%(report[expression[key][1]])).rjust(18)
-                result['%4s'%iteration+'%7s'%modes]=rep
-            print '%4s'%iteration+'%7s'%modes+rep
+                result["%4s"%iteration+"%7s"%modes]=rep
+            print "%4s"%iteration+"%7s"%modes+rep
         return result
 
     def ridership_summary(self, sc):
@@ -614,7 +614,7 @@ class TransitAssignment(_m.Tool()):
         networkCalcTool = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         spec = {"type": "NETWORK_CALCULATION",
                 "expression": "@boardavg",
-                "result" : '@ridership',
+                "result" : "@ridership",
                  "aggregate": "+",
                 "selections": {
                      "link": "all",
@@ -642,14 +642,14 @@ class TransitAssignment(_m.Tool()):
             for key in expression:
                 spec = {"type": "NETWORK_CALCULATION",
                         "expression": expression[key][0],
-                        "result": '@result',
+                        "result": "@result",
                         "selections": {
                             "link": "all",
                             "transit_line": "mode=" + modes}}
                 report = networkCalcTool(spec, scenario=sc, full_report=False)
                 rep = rep + ("%s" % (report[expression[key][1]])).rjust(14)
-                result['%4s' % iteration + '%7s' % modes] = rep
-            print '%4s' % iteration + '%7s' % modes + rep
+                result["%4s" % iteration + "%7s" % modes] = rep
+            print "%4s" % iteration + "%7s" % modes + rep
         return result
 
     @_m.logbook_trace("Transit Skims")
