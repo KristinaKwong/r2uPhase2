@@ -153,17 +153,17 @@ class TransitAssignment(_m.Tool()):
                 self.update_extra_attributes(sc, '@hdwyfac', "1")
                 self.update_extra_attributes(sc, '@crowdingfactor', "0")
                 self.update_extra_attributes(sc, 'us1', '0')  # dwell time
-                self.update_transit_line_attributes(sc, '@seatcapacity', "%s*vcaps*60/hdw" % period_length)
-                self.update_transit_line_attributes(sc, '@totcapacity', "%s*vcapt*60/hdw" % period_length)
+                util.emme_tline_calc(sc, "@seatcapacity", "%s*vcaps*60/hdw" % period_length)
+                util.emme_tline_calc(sc, "@totcapacity", "%s*vcapt*60/hdw" % period_length)
 
                 # TODO: By Vehicle type or mode
-                self.update_transit_line_attributes(sc, '@dwtboard', str(self.dwt_board_factor_bus), "mode=bg")
-                self.update_transit_line_attributes(sc, '@dwtalight', str(self.dwt_alight_factor_bus), "mode=bg")
+                util.emme_tline_calc(sc, "@dwtboard", str(self.dwt_board_factor_bus), sel_line="mode=bg")
+                util.emme_tline_calc(sc, "@dwtalight", str(self.dwt_alight_factor_bus), sel_line="mode=bg")
 
                 # Fare Calculations
 
                 # Constant Boarding fare For Buses/Skytrain/Seabus by line
-                self.update_transit_line_attributes(sc, '@linefare', str(self.bus_zone1_fare), "mode=bgsfhl")
+                util.emme_tline_calc(sc, "@linefare", str(self.bus_zone1_fare), sel_line="mode=bgsfhl")
 
                 # Different boarding fares for WCE by node
                 # For First boarding
@@ -481,17 +481,6 @@ class TransitAssignment(_m.Tool()):
             "selections": {"link": nlinks, "transit_line": nlines}
         }
         networkCalcTool(spec, full_report=False, scenario=sc)
-
-    def update_transit_line_attributes(self, sc, attr_id, condition, nlines="all"):
-        networkCalcTool = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
-        spec = {
-            "type" : "NETWORK_CALCULATION",
-            "result": attr_id,
-            "expression": condition,
-            "aggregation": None,
-            "selections": {"transit_line": nlines}
-        }
-        networkCalcTool(spec, full_report=False, scenario = sc)
 
     def update_node_attributes(self, sc, attr_id, condition, nodes="all"):
         networkCalcTool = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
