@@ -62,12 +62,8 @@ class AutoAssignment(_m.Tool()):
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    @_m.logbook_trace("06-01 - Auto Assignment")
-    def __call__(self, scenarioam, scenariomd, scenariopm):
-        self.auto_assignment(scenarioam, scenariomd, scenariopm)
-
     @_m.logbook_trace("Auto Traffic Assignment")
-    def auto_assignment(self, am_scenario, md_scenario, pm_scenario):
+    def __call__(self, am_scenario, md_scenario, pm_scenario):
         am_demands = {"sov":   ["mf300", "mf301", "mf302", "mf303", "mf304", "mf305"],
                       "hov":   ["mf306", "mf307", "mf308", "mf309", "mf310", "mf311"],
                       "truck": ["mf312", "mf313"]}
