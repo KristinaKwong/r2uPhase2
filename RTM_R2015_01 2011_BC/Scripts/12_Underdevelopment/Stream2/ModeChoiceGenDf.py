@@ -50,14 +50,13 @@ class ModeChoiceGenDf(_m.Tool()):
         self.WceGT(eb)
         self.bestlot(eb, model_year)
         ## General Setup
-        Or = util.get_matrix_numpy(eb, "mf1").flatten()  #Store Vector by origin
-        De = util.get_matrix_numpy(eb, "mf2").flatten() #Store Vector by destination
         BLBsWk = util.get_matrix_numpy(eb, "mf6000").flatten() #Best Lot Bus Work
         BLBsNw = util.get_matrix_numpy(eb, "mf6130").flatten() #Best Lot Bus Non-Work
         BLRlWk = util.get_matrix_numpy(eb, "mf6001").flatten() #Best Lot Rail Work
         BLRlNw = util.get_matrix_numpy(eb, "mf6131").flatten() #Best Lot Rail Non-Work
         BLWcWk = util.get_matrix_numpy(eb, "mf6002").flatten() #Best Lot WCE Work
         BLWcNw = util.get_matrix_numpy(eb, "mf6132").flatten() #Best Lot WCE Non-Work
+        NoTAZ  = len(util.get_matrix_numpy(eb, "mo51"))
 
         hbwo_fct = self.get_fact[["HbWBl_AM_P-A", "HbWBl_MD_P-A", "HbWBl_PM_P-A"],
                                  ["HbWBl_AM_A-P", "HbWBl_MD_A-P", "HbWBl_PM_A-P"]]
@@ -126,31 +125,33 @@ class ModeChoiceGenDf(_m.Tool()):
                        'BL': BLRlWk},
                        'hbwprw':{'PA': hbwo_fct_wce[0], 'AP':hbwo_fct_wce[1], 'Mat':['mf6820', 'mf6821', 'mf6822',  'mf6823', 'mf6824'], #WCE
                        'BL': BLWcWk}
-                     }
+                      }
 
         for keys, values in BlendDictPR.items():
 
             Df = pd.DataFrame()
+
             # Generate data frame with Origin Destination and best lot
-            Dfmerge = pd.DataFrame({'Or': Or, 'De': De, 'BL': values['BL']})
+            Dfmerge = util.get_pd_ij_df(eb)
+            Dfmerge['BL'] = values['BL']
             # Generate second data frame and attach to it blended
-            Df_Auto_Leg = pd.DataFrame({'OrAuto': Or, 'DeAuto': De})
+            Df_Auto_Leg = util.get_pd_ij_df(eb)
             Df_Auto_Leg['AutoDis'] = self.calc_blend(values, DistDict).flatten()
             Df_Auto_Leg['AutoTim'] = self.calc_blend(values, TimeDict).flatten()
             Df_Auto_Leg['AutoTol'] = self.calc_blend(values, TollDict).flatten()
-            Df_Auto_Leg['Parking'] = util.get_matrix_numpy(eb, "mo90").reshape(1, 1741) + np.zeros(1741, 1)
-            Df_Auto_Leg['TermTim'] = util.get_matrix_numpy(eb, "mo92").reshape(1, 1741) + np.zeros(1741, 1)
+            Df_Auto_Leg['Parking'] = util.get_matrix_numpy(eb, "mo90").reshape(1, NoTAZ) + np.zeros(NoTAZ,1)
+            Df_Auto_Leg['TermTim'] = util.get_matrix_numpy(eb, "mo92").reshape(1, NoTAZ) + np.zeros(NoTAZ,1)
             Df_Auto_Leg['Parking'] = Df_Auto_Leg['Parking'].flatten()
             Df_Auto_Leg['TermTim'] = Df_Auto_Leg['TermTim'].flatten()
             # Join the two data frames based on skims from Origin to the Best Lot
-            Df = pd.merge(Dfmerge, Df_Auto_Leg, left_on = ['Or', 'BL'],
-                     right_on = ['OrAuto', 'DeAuto'], how = 'left')
+            Df = pd.merge(Dfmerge, Df_Auto_Leg, left_on = ['i', 'BL'],
+                     right_on = ['i', 'j'], how = 'left')
             # Put results back in the Emmebank
-            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoDis'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][3], Df['Parking'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][4], Df['TermTim'].reshape(1741,1741))
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoDis'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][3], Df['Parking'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][4], Df['TermTim'].reshape(NoTAZ,NoTAZ))
 
         # delete data generated to free up memory
         del Df, Dfmerge, Df_Auto_Leg, TimeDict, DistDict, TollDict
@@ -301,23 +302,24 @@ class ModeChoiceGenDf(_m.Tool()):
 
             Df = pd.DataFrame()
             # Generate data frame with Origin Destination and best lot
-            Dfmerge = pd.DataFrame({'Or': Or, 'De': De, 'BL': values['BL']})
-            # Generate second data frame and attach to it bus skims
-            Df_Bus_Leg = pd.DataFrame({'OrTran': Or, 'DeTran': De})
-            Df_Bus_Leg['BusIVT']  = self.calc_blend(values, BusIVTDict).flatten()
-            Df_Bus_Leg['BusWat']  = self.calc_blend(values, BusWatDict).flatten()
-            Df_Bus_Leg['BusAux']  = self.calc_blend(values, BusAuxDict).flatten()
-            Df_Bus_Leg['BusBrd']  = self.calc_blend(values, BusBrdDict).flatten()
-            Df_Bus_Leg['BusFar']  = self.calc_blend(values, BusFarDict).flatten()
+            Dfmerge = util.get_pd_ij_df(eb)
+            Dfmerge['BL'] = values['BL']
+            # Generate second data frame and attach to it blended
+            Df_Bus_Leg = util.get_pd_ij_df(eb)
+            Df_Bus_Leg['BusIVT'] = self.calc_blend(values, BusIVTDict).flatten()
+            Df_Bus_Leg['BusWat'] = self.calc_blend(values, BusWatDict).flatten()
+            Df_Bus_Leg['BusAux'] = self.calc_blend(values, BusAuxDict).flatten()
+            Df_Bus_Leg['BusBrd'] = self.calc_blend(values, BusBrdDict).flatten()
+            Df_Bus_Leg['BusFar'] = self.calc_blend(values, BusFarDict).flatten()
             # Join the two data frames based on skims from the Best Lot to the destination
-            Df = pd.merge(Dfmerge, Df_Bus_Leg, left_on = ['BL', 'De'],
-                     right_on = ['OrTran', 'DeTran'], how = 'left')
+            Df = pd.merge(Dfmerge, Df_Bus_Leg, left_on = ['BL', 'j'],
+                     right_on = ['i', 'j'], how = 'left')
             # Put results back in the Emmebank
-            util.set_matrix_numpy(eb, values['Mat'][0], Df['BusIVT'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][1], Df['BusWat'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][2], Df['BusAux'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][3], Df['BusBrd'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][4], Df['BusFar'].reshape(1741,1741))
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['BusIVT'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][1], Df['BusWat'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][2], Df['BusAux'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][3], Df['BusBrd'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][4], Df['BusFar'].reshape(NoTAZ,NoTAZ))
         # delete data generated to free up memory
         del Df, Dfmerge, Df_Bus_Leg, BusIVTDict, BusWatDict, BusAuxDict, BusBrdDict, BusFarDict
 #
@@ -385,9 +387,10 @@ class ModeChoiceGenDf(_m.Tool()):
 
             Df = pd.DataFrame()
             # Generate data frame with Origin Destination and best lot
-            Dfmerge = pd.DataFrame({'Or': Or, 'De': De, 'BL': values['BL']})
-            # Generate second data frame and attach to it rail skims
-            Df_Rail_Leg = pd.DataFrame({'OrTran': Or, 'DeTran': De})
+            Dfmerge = util.get_pd_ij_df(eb)
+            Dfmerge['BL'] = values['BL']
+            # Generate second data frame and attach to it blended
+            Df_Rail_Leg = util.get_pd_ij_df(eb)
             Df_Rail_Leg['RalIVR'] = self.calc_blend(values, RalIVRDict).flatten()
             Df_Rail_Leg['RalIVB'] = self.calc_blend(values, RalIVBDict).flatten()
             Df_Rail_Leg['RalWat'] = self.calc_blend(values, RalWatDict).flatten()
@@ -395,15 +398,15 @@ class ModeChoiceGenDf(_m.Tool()):
             Df_Rail_Leg['RalBrd'] = self.calc_blend(values, RalBrdDict).flatten()
             Df_Rail_Leg['RalFar'] = self.calc_blend(values, RalFarDict).flatten()
             # Join the two data frames based on skims from the Best Lot to the destination
-            Df = pd.merge(Dfmerge, Df_Rail_Leg, left_on = ['BL', 'De'],
-                     right_on = ['OrTran', 'DeTran'], how = 'left')
+            Df = pd.merge(Dfmerge, Df_Rail_Leg, left_on = ['BL', 'j'],
+                     right_on = ['i', 'j'], how = 'left')
             # Put results back in the Emmebank
-            util.set_matrix_numpy(eb, values['Mat'][0], Df['RalIVR'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][1], Df['RalIVB'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][2], Df['RalWat'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][3], Df['RalAux'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][4], Df['RalBrd'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][5], Df['RalFar'].reshape(1741,1741))
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['RalIVR'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][1], Df['RalIVB'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][2], Df['RalWat'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][3], Df['RalAux'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][4], Df['RalBrd'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][5], Df['RalFar'].reshape(NoTAZ,NoTAZ))
         # delete data generated to free up memory
         del Df, Dfmerge, Df_Rail_Leg, RalIVBDict, RalIVRDict, RalWatDict, RalAuxDict, RalBrdDict, RalFarDict
 #
@@ -473,12 +476,13 @@ class ModeChoiceGenDf(_m.Tool()):
                       }
 
         for keys, values in BlendDictPR.items():
-
+        
             Df = pd.DataFrame()
             # Generate data frame with Origin Destination and best lot
-            Dfmerge = pd.DataFrame({'Or': Or, 'De': De, 'BL': values['BL']})
-            # Generate second data frame and attach to it wce skims
-            Df_WCE_Leg = pd.DataFrame({'OrTran': Or, 'DeTran': De})
+            Dfmerge = util.get_pd_ij_df(eb)
+            Dfmerge['BL'] = values['BL']
+            # Generate second data frame and attach to it blended
+            Df_WCE_Leg = util.get_pd_ij_df(eb)
             Df_WCE_Leg['WCEIVW'] = self.calc_blend(values, WCEIVWDict).flatten()
             Df_WCE_Leg['WCEIVR'] = self.calc_blend(values, WCEIVRDict).flatten()
             Df_WCE_Leg['WCEIVB'] = self.calc_blend(values, WCEIVBDict).flatten()
@@ -487,16 +491,16 @@ class ModeChoiceGenDf(_m.Tool()):
             Df_WCE_Leg['WCEBrd'] = self.calc_blend(values, WCEBrdDict).flatten()
             Df_WCE_Leg['WCEFar'] = self.calc_blend(values, WCEFarDict).flatten()
              # Join the two data frames based on skims from the Best Lot to the destination
-            Df = pd.merge(Dfmerge, Df_WCE_Leg, left_on = ['BL', 'De'],
-                     right_on = ['OrTran', 'DeTran'], how = 'left')
+            Df = pd.merge(Dfmerge, Df_WCE_Leg, left_on = ['BL', 'j'],
+                     right_on = ['i', 'j'], how = 'left')
             # Put results back in the Emmebank
-            util.set_matrix_numpy(eb, values['Mat'][0], Df['WCEIVW'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][1], Df['WCEIVR'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][2], Df['WCEIVB'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][3], Df['WCEWat'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][4], Df['WCEAux'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][5], Df['WCEBrd'].reshape(1741,1741))
-            util.set_matrix_numpy(eb, values['Mat'][6], Df['WCEFar'].reshape(1741,1741))
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['WCEIVW'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][1], Df['WCEIVR'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][2], Df['WCEIVB'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][3], Df['WCEWat'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][4], Df['WCEAux'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][5], Df['WCEBrd'].reshape(NoTAZ,NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][6], Df['WCEFar'].reshape(NoTAZ,NoTAZ))
         # delete data generated to free up memory
         del Df, Dfmerge, Df_WCE_Leg, WCEIVBDict, WCEIVRDict, WCEIVWDict, WCEWatDict, WCEAuxDict, WCEBrdDict, WCEFarDict
 
