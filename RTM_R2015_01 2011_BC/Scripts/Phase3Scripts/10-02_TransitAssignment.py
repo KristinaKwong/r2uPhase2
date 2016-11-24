@@ -1,12 +1,12 @@
 ##---------------------------------------------------------------------
-##--TransLink Phase 2.2 Regional Transportation Model
+##--TransLink Phase 3.0 Regional Transportation Model
 ##--
-##--Path: translink.emme.stage3.step6.transitassignment
+##--Path: translink.RTM3.stage3.transitassignment
 ##--Purpose: Transit assignment procedure by Class with Crowding, Capacity, Dwell Time
 ##---------------------------------------------------------------------
-
 import inro.modeller as _m
 import traceback as _traceback
+from copy import deepcopy as _deepcopy
 
 class TransitAssignment(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
@@ -124,13 +124,13 @@ class TransitAssignment(_m.Tool()):
         # TODO: Select final option and remove this variable
         select_hfrac = 2 # 1 - RTM effective headway fractions, 2 -Non-Linear curves by frequency of service
 
-        demand_bus_list = ["mf218", "mf248", "mf278"]
-        demand_rail_list = ["mf219", "mf249", "mf279"]
+        demand_bus_list = ["mf314", "mf334", "mf354"]
+        demand_rail_list = ["mf315", "mf335", "mf355"]
         # Used for RaType0 assignments
         # TODO add this initialization and allocate final matrix location
         util.initmat(eb, "ms160", "small", "small transit demand", 0.001)
         zero_demand_list = ["ms160", "ms160", "ms160"]
-        demand_wce_list = ["mf220", "mf250", "mf280"]
+        demand_wce_list = ["mf316", "mf336", "mf356"]
 
         scenario_list = [scenarioam, scenariomd, scenariopm]
         #TODO: Assignments are done for peak hour
@@ -526,6 +526,7 @@ class TransitAssignment(_m.Tool()):
                                                         "all", "mode=sfrhl")
 
     def averaging_transit_volumes(self, sc, iteration):
+        util = _m.Modeller().tool("translink.emme.util")
         # MSA on Boardings and transit Volumes
         msa_factor = 1.0 / iteration
         util.emme_segment_calc(sc, "@boardavg" , "board*%s + @boardavg*(1-%s)" %(msa_factor, msa_factor))
@@ -539,6 +540,7 @@ class TransitAssignment(_m.Tool()):
         util.emme_segment_calc(sc, "@pstand", "(@voltravg - @seatcapacity).max.0")
 
     def crowding_factor_calc(self, sc):
+        util = _m.Modeller().tool("translink.emme.util")
         # In-vehicle Crowding Function
         crowd_spec = ("((((%s + (%s - %s)*(@voltravg/@totcapacity)^%s)* @pseat +"
                       "(%s + (%s - %s)*(@voltravg/@totcapacity)^%s)* @pstand)"
@@ -551,12 +553,14 @@ class TransitAssignment(_m.Tool()):
         #util.emme_segment_calc(sc, "@ivttp_ratype0", "@ivttp*(1+ @crowdingfactor)")
 
     def effective_headway_calc(self, sc):
+        util = _m.Modeller().tool("translink.emme.util")
         # [(Boardings/max(Total Capacity - Transit Volume + Boardings,1)).min.3.0].max.1
         hdwy_spec = "((@boardavg/((@totcapacity-@voltravg+@boardavg).max.1)).min.(3.0)).max.1"
         util.emme_segment_calc(sc, "@hdwyfac", hdwy_spec)
         util.emme_segment_calc(sc, "@hdwyeff", "hdw*@hdwyfac*@hfrac")
 
     def dwell_time_calc(self, sc, period_length):
+        util = _m.Modeller().tool("translink.emme.util")
         # Fixed dwell time to account for acceleration and deceleration of vehicle
         min_dwell_time = 0.33 # 20 seconds in minutes
         # Zero Passenger - set us1 =0

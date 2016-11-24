@@ -1,7 +1,7 @@
 ##---------------------------------------------------------------------
 ##--TransLink Phase 3.0 Regional Transportation Model
 ##--
-##--Path: translink.emme.stage3.step6.autoassignment
+##--Path: translink.RTM3.stage3.autoassignment
 ##--Purpose: Auto assignment procedure
 ##---------------------------------------------------------------------
 import inro.modeller as _m
