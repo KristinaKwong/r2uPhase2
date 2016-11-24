@@ -125,7 +125,7 @@ class TripProductions(_m.Tool()):
                     vec = "{purpose} {income} {auto}".format(purpose=purpose, income=income, auto=auto)
                     util.set_matrix_numpy(eb, mo, df_emme[vec].reshape(df_emme[vec].shape[0], 1))
 
-        return nhbw_ct, nhbo_ct
+        return np.round(nhbw_ct,6), np.round(nhbo_ct,6)
 
 
 
@@ -261,7 +261,8 @@ class TripProductions(_m.Tool()):
         return hh_commute_prds, hh_noncommute_prds
 
 
-        @_m.logbook_trace("Initialize Trip Production Matrices")
+
+    @_m.logbook_trace("Initialize Trip Production Matrices")
     def matrix_batchins(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
 
