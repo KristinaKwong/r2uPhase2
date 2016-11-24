@@ -246,23 +246,27 @@ class Util(_m.Tool()):
         mat = eb.matrix(mat_id)
 
         if (mat.type == "ORIGIN" or mat.type == "DESTINATION"):
-            if (np_arr.ndim == 2):
-                np_arr = np_arr.reshape(np_arr.shape[0])
+            if (np_arr.ndim != 1):
+                np_arr = np_arr.reshape(mat.get_numpy_data().shape)
+
+        if (mat.type == "FULL"):
+            if (np_arr.ndim != 2):
+                np_arr = np_arr.reshape(mat.get_numpy_data().shape)
 
         mat.set_numpy_data(np_arr)
 
     def get_pd_ij_df(self, eb):
-        index = self.get_matrix_numpy(eb, "mozoneindex")
-        i = pd.DataFrame(index, columns = ['i'])
-        j = pd.DataFrame(index, columns = ['j'])
-        i['key'] = 1
-        j['key'] = 1
-        ij = pd.merge(i, j,on='key')
-        ij.drop('key', axis=1, inplace=True)
+        index_row = self.get_matrix_numpy(eb, "mozoneindex", reshape=False)
+        # create a column version of the row array
+        index_col = index_row.reshape(index_row.shape[0], 1)
+
+        # expand to a full matrix containing the origin zone number in each cell
+        i = index_col + (0 * index_row)
+
+        ij = pd.DataFrame()
+        ij["i"] = i.flatten()
+        ij["j"] = i.transpose().flatten()
         return ij
-
-
-
 
     def sumproduct(self, factors, matrices):
         if (len(factors) != len(matrices)):
