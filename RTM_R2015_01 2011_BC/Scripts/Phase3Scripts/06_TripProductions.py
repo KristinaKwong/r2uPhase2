@@ -48,8 +48,9 @@ class TripProductions(_m.Tool()):
 
         ##Generate Dataframe (Df for short hand) used for
         hh_c_df, hh_nc_df = self.Generate_HH_Trip_Productions_dfs(eb)
+        nhbw_ct, nhbo_ct = self.Calcuate_HH_Level_Trips(eb, hh_c_df=hh_c_df, hh_nc_df=hh_nc_df)
 
-
+    @_m.logbook_trace("Calculate Household Level Trip Productions")
     def Calcuate_HH_Level_Trips(self, eb, hh_c_df, hh_nc_df):
         util = _m.Modeller().tool("translink.emme.util")
 
