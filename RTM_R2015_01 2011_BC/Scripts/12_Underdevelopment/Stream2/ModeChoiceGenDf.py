@@ -61,7 +61,7 @@ class ModeChoiceGenDf(_m.Tool()):
         hbwo_fct = self.get_fact[["HbWBl_AM_P-A", "HbWBl_MD_P-A", "HbWBl_PM_P-A"],
                                  ["HbWBl_AM_A-P", "HbWBl_MD_A-P", "HbWBl_PM_A-P"]]
 
-        hbwo_fct_wce = self.get_fact_wce[["HbWBl_AM_P-A_WCE", "Zero",],
+        hbwo_fct_wce = self.get_fact_wce[["HbWBl_AM_P-A_WCE", "HbWBl_PM_P-A_WCE"],
                                      ["Zero", "HbWBl_PM_A-P_WCE"]]
 
         nhbw_fct = self.get_fact[["NHbWBl_AM_P-A", "NHbWBl_MD_P-A", "NHbWBl_PM_P-A"],
