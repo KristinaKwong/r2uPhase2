@@ -54,8 +54,8 @@ class InitEmmebank(_m.Tool()):
 
     def initbank(self, path, title):
         dim = {"scalar_matrices": 9999,
-               "origin_matrices": 2000,
-               "destination_matrices": 2000,
+               "origin_matrices": 9999,
+               "destination_matrices": 9999,
                "full_matrices": 9999,
                "scenarios": 30,
                "functions": 99,
