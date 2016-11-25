@@ -889,14 +889,3 @@ class TransitAssignment(_m.Tool()):
         util.initmat(eb, "mf7081", "WClboP", "Interim-JL Skim WCE Boarding Zone PM", 0)
         util.initmat(eb, "mf7082", "WClalP", "Interim-JL Skim WCE Alighting Zone PM", 0)
         util.initmat(eb, "mf7083", "WClfaP", "Interim-JL Skim WCE Fare PM", 0)
-
-        # Intialize Mode Availability Matrices
-        util.initmat(eb, "mf7003", "BsAvailAM", "Bus Availability Matrix AM", 1)
-        util.initmat(eb, "mf7013", "BsAvailMD", "Bus Availability Matrix MD", 1)
-        util.initmat(eb, "mf7023", "BsAvailPM", "Bus Availability Matrix PM", 1)
-        util.initmat(eb, "mf7033", "RlAvailAM", "Rail Availability Matrix AM", 1)
-        util.initmat(eb, "mf7043", "RlAvailMD", "Rail Availability Matrix MD", 1)
-        util.initmat(eb, "mf7053", "RlAvailPM", "Rail Availability Matrix PM", 1)
-        util.initmat(eb, "mf7064", "WCAvailAM", "WCE Availability Matrix AM", 1)
-        util.initmat(eb, "mf7074", "WCAvailMD", "WCE Availability Matrix MD", 1)
-        util.initmat(eb, "mf7084", "WCAvailPM", "WCE Availability Matrix PM", 1)
