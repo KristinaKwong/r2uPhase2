@@ -673,7 +673,7 @@ class TransitAssignment(_m.Tool()):
         strategy_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.strategy_based_analysis")
 
         classname = "Bus"
-        modelist = ["b", "g", "a", "p"]
+        modelist = self.bus_mode_list
         Travel_Time_List = ["mf9960", "mf9961", "mf9962", "mf9963", "mf9964", "mf9965", "mf9966"]
 
         spec_as_dict = self.get_matrix_skim_spec(modelist)
@@ -702,7 +702,7 @@ class TransitAssignment(_m.Tool()):
         strategy_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.strategy_based_analysis")
 
         classname = "Rail"
-        modelist = ["b", "f", "g", "l", "s", "a", "h", "p"]
+        modelist = self.rail_mode_list
         Travel_Time_List = ["mf9970", "mf9971", "mf9972", "mf9973", "mf9974", "mf9975", "mf9976", "mf9977"]
 
         spec_as_dict = self.get_matrix_skim_spec(modelist)
@@ -740,7 +740,7 @@ class TransitAssignment(_m.Tool()):
         strategy_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.strategy_based_analysis")
 
         classname = "WCE"
-        modelist = ["b", "f", "g", "l", "r", "s", "a", "h", "p"]
+        modelist = self.wce_mode_list
         Travel_Time_List = ["mf9980", "mf9981", "mf9982", "mf9983", "mf9984", "mf9985","mf9986", "mf9987", "mf9988", "mf9989"]
 
         spec_as_dict = self.get_matrix_skim_spec(modelist)
@@ -832,4 +832,3 @@ class TransitAssignment(_m.Tool()):
         util.initmat(eb, "mf9987", "WClbo", "Interim-JL Skim WCE Boarding Zone", 0)
         util.initmat(eb, "mf9988", "WClal", "Interim-JL Skim WCE Alighting Zone", 0)
         util.initmat(eb, "mf9989", "WClfa", "Interim-JL Skim WCE Fare", 0)
-
