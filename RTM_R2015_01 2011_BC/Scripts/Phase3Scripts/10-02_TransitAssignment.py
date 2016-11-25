@@ -643,13 +643,19 @@ class TransitAssignment(_m.Tool()):
             print "%4s" % iteration + "%7s" % modes + rep
         return result
 
+    def get_matrix_skim_spec(self, modes):
+        spec = {
+            "by_mode_subset": { "modes": modes },
+            "type": "EXTENDED_TRANSIT_MATRIX_RESULTS"
+        }
+        return spec
+
     @_m.logbook_trace("Transit Skims")
     def skim_transit(self, i, scenarionumber, classname):
         transit_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.matrix_results")
         strategy_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.strategy_based_analysis")
         util = _m.Modeller().tool("translink.emme.util")
 
-        # Note: could remove the None items from the tmplt
         # TODO: Update Matrices mf 7000+ that are used for fare skims and availability of Modes
         # TODO: Initialize matrices - where are the matrices initialized?
         if classname == "Bus":
@@ -671,21 +677,6 @@ class TransitAssignment(_m.Tool()):
                                 [ "mf5056", "mf5057", "mf5058", "mf5059", "mf5060", "mf5061", "mf7070", "mf7071", "mf7072", "mf7073"],
                                 [ "mf5062", "mf5063", "mf5064", "mf5065", "mf5066", "mf5067", "mf7080", "mf7081", "mf7082", "mf7083"]]
 
-        tmplt_spec = {
-            "by_mode_subset": {
-                "modes": modelist,
-                "avg_boardings": None,
-                "actual_total_boarding_times": None,
-                "actual_in_vehicle_times": None,
-                "actual_aux_transit_times": None,
-                "actual_first_boarding_costs": None,
-                "actual_total_boarding_costs": None,
-                "actual_in_vehicle_costs": None
-            },
-            "type": "EXTENDED_TRANSIT_MATRIX_RESULTS",
-            "actual_total_waiting_times": None
-        }
-
         strategy_spec = {
             "type": "EXTENDED_TRANSIT_STRATEGY_ANALYSIS",
             "trip_components": {
@@ -705,7 +696,7 @@ class TransitAssignment(_m.Tool()):
         matrix_spec = []
 
         if classname =="Bus":
-            spec_as_dict = _deepcopy(tmplt_spec)
+            spec_as_dict = self.get_matrix_skim_spec(modelist)
             spec_as_dict["actual_total_waiting_times"] = Travel_Time_List[i][0]
             spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = Travel_Time_List[i][1]
             spec_as_dict["by_mode_subset"]["actual_aux_transit_times"] = Travel_Time_List[i][2]
@@ -726,19 +717,19 @@ class TransitAssignment(_m.Tool()):
             util.compute_matrix(matrix_spec, scenarionumber)
 
         if classname == "Rail" :
-            spec_as_dict = _deepcopy(tmplt_spec)
+            spec_as_dict = self.get_matrix_skim_spec(modelist)
             spec_as_dict["by_mode_subset"]["actual_total_boarding_times"] = Travel_Time_List[i][0]
             spec_as_dict["by_mode_subset"]["actual_aux_transit_times"] = Travel_Time_List[i][1]
             spec_as_dict["actual_total_waiting_times"] = Travel_Time_List[i][2]
             spec_as_dict["by_mode_subset"]["actual_first_boarding_costs"] = Travel_Time_List[i][6]
             transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
-            spec_as_dict = _deepcopy(tmplt_spec)
+            spec_as_dict = self.get_matrix_skim_spec(modelist)
             spec_as_dict["by_mode_subset"]["modes"] = ["b", "g"]
             spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = Travel_Time_List[i][3]
             transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
-            spec_as_dict = _deepcopy(tmplt_spec)
+            spec_as_dict = self.get_matrix_skim_spec(modelist)
             spec_as_dict["by_mode_subset"]["modes"] = ["s", "l", "r", "f", "h"]
             spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = Travel_Time_List[i][4]
             transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
@@ -756,23 +747,23 @@ class TransitAssignment(_m.Tool()):
             util.compute_matrix(matrix_spec, scenarionumber)
 
         if classname == "WCE":
-            spec_as_dict = _deepcopy(tmplt_spec)
+            spec_as_dict = self.get_matrix_skim_spec(modelist)
             spec_as_dict["by_mode_subset"]["actual_total_boarding_times"] = Travel_Time_List[i][0]
             spec_as_dict["by_mode_subset"]["actual_aux_transit_times"] = Travel_Time_List[i][1]
             spec_as_dict["actual_total_waiting_times"] = Travel_Time_List[i][2]
             transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
-            spec_as_dict = _deepcopy(tmplt_spec)
+            spec_as_dict = self.get_matrix_skim_spec(modelist)
             spec_as_dict["by_mode_subset"]["modes"] = ["b", "g"]
             spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = Travel_Time_List[i][3]
             transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
-            spec_as_dict = _deepcopy(tmplt_spec)
+            spec_as_dict = self.get_matrix_skim_spec(modelist)
             spec_as_dict["by_mode_subset"]["modes"] = ["s", "l", "f", "h"]
             spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = Travel_Time_List[i][4]
             transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
-            spec_as_dict = _deepcopy(tmplt_spec)
+            spec_as_dict = self.get_matrix_skim_spec(modelist)
             spec_as_dict["by_mode_subset"]["modes"] = ["r"]
             spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = Travel_Time_List[i][5]
             transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
