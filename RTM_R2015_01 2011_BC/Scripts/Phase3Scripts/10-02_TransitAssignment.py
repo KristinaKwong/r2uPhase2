@@ -6,7 +6,6 @@
 ##---------------------------------------------------------------------
 import inro.modeller as _m
 import traceback as _traceback
-from copy import deepcopy as _deepcopy
 
 class TransitAssignment(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
@@ -650,6 +649,24 @@ class TransitAssignment(_m.Tool()):
         }
         return spec
 
+    def get_strategy_skim_spec(self):
+        spec = {
+            "trip_components": {
+                "boarding": None,
+                "in_vehicle": None,
+                "alighting": None
+            },
+            "sub_path_combination_operator": ".max.",
+            "sub_strategy_combination_operator": ".max.", # take max as opposed to average to get the full fare not the average
+            "selected_demand_and_transit_volumes": {
+                "sub_strategies_to_retain": "FROM_COMBINATION_OPERATOR",
+                "selection_threshold": {"lower": -999999, "upper": 999999}
+            },
+            "results" : {"strategy_values": None},
+            "type": "EXTENDED_TRANSIT_STRATEGY_ANALYSIS"
+        }
+        return spec
+
     @_m.logbook_trace("Transit Skims")
     def skim_transit(self, i, scenarionumber, classname):
         transit_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.matrix_results")
@@ -677,22 +694,6 @@ class TransitAssignment(_m.Tool()):
                                 [ "mf5056", "mf5057", "mf5058", "mf5059", "mf5060", "mf5061", "mf7070", "mf7071", "mf7072", "mf7073"],
                                 [ "mf5062", "mf5063", "mf5064", "mf5065", "mf5066", "mf5067", "mf7080", "mf7081", "mf7082", "mf7083"]]
 
-        strategy_spec = {
-            "type": "EXTENDED_TRANSIT_STRATEGY_ANALYSIS",
-            "trip_components": {
-                "boarding": None,
-                "in_vehicle": None,
-                "alighting": None
-            },
-            "sub_path_combination_operator": ".max.",
-            "sub_strategy_combination_operator": ".max.", # take max as opposed to average to get the full fare not the average
-            "selected_demand_and_transit_volumes": {
-                "sub_strategies_to_retain": "FROM_COMBINATION_OPERATOR",
-                "selection_threshold": {"lower": -999999, "upper": 999999}
-            },
-            "results" : {"strategy_values": None}
-        }
-
         matrix_spec = []
 
         if classname =="Bus":
@@ -705,7 +706,7 @@ class TransitAssignment(_m.Tool()):
             transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
             # Skim for FareIncrements
-            strat_spec = _deepcopy(strategy_spec)
+            strat_spec = self.get_strategy_skim_spec()
             strat_spec["trip_components"]["in_vehicle"] = "@fareincrement"
             strat_spec["sub_path_combination_operator"]= "+"
             strat_spec["results"]["strategy_values"] = Travel_Time_List[i][4]
@@ -735,7 +736,7 @@ class TransitAssignment(_m.Tool()):
             transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
             # Skim for Fare Increments: In-vehicle costs
-            strat_spec = _deepcopy(strategy_spec)
+            strat_spec = self.get_strategy_skim_spec()
             strat_spec["trip_components"]["in_vehicle"] = "@fareincrement"
             strat_spec["sub_path_combination_operator"]= "+"
             strat_spec["results"]["strategy_values"] = Travel_Time_List[i][5]
@@ -769,20 +770,20 @@ class TransitAssignment(_m.Tool()):
             transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
             # Fare Increments for only bus/skytrain
-            strat_spec = _deepcopy(strategy_spec)
+            strat_spec = self.get_strategy_skim_spec()
             strat_spec["trip_components"]["in_vehicle"] = "@fareboundary"
             strat_spec["sub_path_combination_operator"]= "+"
             strat_spec["results"]["strategy_values"] = Travel_Time_List[i][6]
             strategy_skim(strat_spec, scenario=scenarionumber, class_name=classname)
 
             # Boarding and Alighting Fare Zone for WCE Fare Calculation
-            fzone_spec = _deepcopy(strategy_spec)
+            fzone_spec = self.get_strategy_skim_spec()
             fzone_spec["sub_path_combination_operator"] = ".max."
             fzone_spec["trip_components"]["boarding"] = "@farezone"
             fzone_spec["results"]["strategy_values"] = Travel_Time_List[i][7]
             strategy_skim(fzone_spec, scenario=scenarionumber, class_name=classname)
 
-            fzone_spec2 = _deepcopy(strategy_spec)
+            fzone_spec2 = self.get_strategy_skim_spec()
             fzone_spec2["sub_path_combination_operator"] = ".max."
             fzone_spec2["trip_components"]["alighting"] = "@farezone"
             fzone_spec2["results"]["strategy_values"] = Travel_Time_List[i][8]
