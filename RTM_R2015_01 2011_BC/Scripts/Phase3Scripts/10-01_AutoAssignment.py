@@ -349,11 +349,6 @@ class AutoAssignment(_m.Tool()):
         util.emme_tline_calc(scenario, "ut1", "ut2*0.8",  sel_line="mode=h")
         util.emme_tline_calc(scenario, "ut1", "ut2*0.8",  sel_line="mode=r")
 
-        ## Calculate in vehicle traval time perception factors
-        util.emme_tline_calc(scenario, "@ivttp", "1")
-        util.emme_tline_calc(scenario, "@ivttp", "3.5", sel_line="mode=b")
-        util.emme_tline_calc(scenario, "@ivttp", "3.5", sel_line="mode=g")
-
     def init_matrices(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
 

@@ -126,10 +126,6 @@ class TransitAssignment(_m.Tool()):
 
         demand_bus_list = ["mf314", "mf334", "mf354"]
         demand_rail_list = ["mf315", "mf335", "mf355"]
-        # Used for RaType0 assignments
-        # TODO add this initialization and allocate final matrix location
-        util.initmat(eb, "ms160", "small", "small transit demand", 0.001)
-        zero_demand_list = ["ms160", "ms160", "ms160"]
         demand_wce_list = ["mf316", "mf336", "mf356"]
 
         scenario_list = [scenarioam, scenariomd, scenariopm]
@@ -141,6 +137,7 @@ class TransitAssignment(_m.Tool()):
             print "Scenario: "+sc.title+" ("+sc.id+")"
             report={}
             _m.logbook_level(_m.LogbookLevel.NONE)
+            util.emme_segment_calc(sc, "@hdwyeff", "hdw*@hfrac")
             # Initialize Values for first cycle and use updated values from previous cycles later on
             if util.get_cycle(eb) >= 1:  # TODO: Change to util.get_cycle(eb) == 1
                 # Calculate headway fraction
@@ -148,7 +145,6 @@ class TransitAssignment(_m.Tool()):
 
                 # Intial Assignment of Parameters
                 util.emme_segment_calc(sc, "@ivttfac", "1")
-                util.emme_segment_calc(sc, "@ivttp_ratype0", "@ivttp")   # Making bus modes more onerous
                 util.emme_segment_calc(sc, "@hdwyeff", "hdw*@hfrac")
                 util.emme_segment_calc(sc, "@hdwyfac", "1")
                 util.emme_segment_calc(sc, "@crowdingfactor", "0")
@@ -192,13 +188,11 @@ class TransitAssignment(_m.Tool()):
                 # Set Assignment Parameters
                 bus_spec = self.set_extended_transit_assignment_spec("Bus", demand_bus)
                 rail_spec = self.set_extended_transit_assignment_spec("Rail", demand_rail)
-                ratype0_spec = self.set_extended_transit_assignment_spec("Ratype0", zero_demand_list[i])
                 wce_spec = self.set_extended_transit_assignment_spec("WCE", demand_wce)
 
                 # Run Assignment
                 assign_transit(bus_spec, scenario=sc, add_volumes=False, save_strategies=True, class_name= "Bus")
                 assign_transit(rail_spec, scenario=sc, add_volumes=True, save_strategies=True, class_name= "Rail")
-                assign_transit(ratype0_spec, scenario=sc, add_volumes=True, save_strategies=True, class_name="Ratype0")
                 if sc is scenarioam or sc is scenariopm:
                     assign_transit(wce_spec, scenario=sc, add_volumes=True, save_strategies=True, class_name= "WCE")
 
@@ -231,7 +225,6 @@ class TransitAssignment(_m.Tool()):
             # Create Skims
             self.skim_transit(i, sc, classname="Bus")
             self.skim_transit(i, sc, classname="Rail")
-            self.skim_transit(i, sc, classname="Ratype0")
             if sc is not scenariomd:
                 self.skim_transit(i, sc, classname="WCE")
 
@@ -246,11 +239,6 @@ class TransitAssignment(_m.Tool()):
             boarding_time_penalty = 1
             mode_list = self.rail_mode_list
             ivtt_perception = "@ivttfac"
-
-        if assign_mode == "Ratype0":
-            boarding_time_penalty = 1
-            mode_list = self.rail_mode_list
-            ivtt_perception = "@ivttp_ratype0"
 
         if assign_mode == "WCE":
             boarding_time_penalty = 1
@@ -313,7 +301,7 @@ class TransitAssignment(_m.Tool()):
                 "choices_at_regular_nodes": "OPTIMAL_STRATEGY"
             }
 
-        if assign_mode == "Rail" or assign_mode == "Ratype0" or assign_mode == "WCE":
+        if assign_mode == "Rail" or assign_mode == "WCE":
             spec["flow_distribution_at_origins"]= {
                                             "by_time_to_destination": "BEST_CONNECTOR",
                                             "by_fixed_proportions": None
@@ -550,7 +538,6 @@ class TransitAssignment(_m.Tool()):
 
         util.emme_segment_calc(sc, "@crowdingfactor", crowd_spec)
         util.emme_segment_calc(sc, "@ivttfac", "1+ @crowdingfactor")
-        #util.emme_segment_calc(sc, "@ivttp_ratype0", "@ivttp*(1+ @crowdingfactor)")
 
     def effective_headway_calc(self, sc):
         util = _m.Modeller().tool("translink.emme.util")
@@ -670,20 +657,12 @@ class TransitAssignment(_m.Tool()):
             Travel_Time_List = [["mf933", "mf934", "mf936", "mf935", "mf7000", "mf7001", "mf7002"],
                             ["mf945", "mf946", "mf948", "mf947", "mf7010", "mf7011", "mf7012"],
                             ["mf2003", "mf2004", "mf2006", "mf2005", "mf7020", "mf7021", "mf7022"]]
-            Mode_Avail_List = ["mf7003", "mf7013", "mf7023"]
 
         if classname == "Rail":
             modelist = ["b", "f", "g", "l", "s", "a", "h", "p"]
             Travel_Time_List = [["mf1073", "mf1074", "mf1072", "mf1070", "mf1071", "mf7030", "mf7031", "mf7032"],
                             ["mf1078", "mf1079", "mf1077", "mf1075", "mf1076", "mf7040", "mf7041", "mf7042"],
                             ["mf2019", "mf2020", "mf2018", "mf2016", "mf2017", "mf7050", "mf7051", "mf7052"]]
-            Mode_Avail_List = ["mf7033", "mf7043", "mf7053"]
-
-        if classname == "Ratype0":
-            modelist = ["b", "f", "g", "l", "s", "a", "h", "p"]
-            Travel_Time_List = [["mf940", "mf941", "mf939", "mf937", "mf938"],
-                            ["mf952", "mf953", "mf951", "mf949", "mf950"],
-                            ["mf2010", "mf2011", "mf2009", "mf2007", "mf2008"]]
 
         # TODO: Define travel time matrix numbers
         if classname == "WCE":
@@ -691,7 +670,6 @@ class TransitAssignment(_m.Tool()):
             Travel_Time_List = [[ "mf5050", "mf5051", "mf5052", "mf5053", "mf5054", "mf5055","mf7060", "mf7061", "mf7062", "mf7063"],
                                 [ "mf5056", "mf5057", "mf5058", "mf5059", "mf5060", "mf5061", "mf7070", "mf7071", "mf7072", "mf7073"],
                                 [ "mf5062", "mf5063", "mf5064", "mf5065", "mf5066", "mf5067", "mf7080", "mf7081", "mf7082", "mf7083"]]
-            Mode_Avail_List = ["mf7064", "mf7074", "mf7084"]
 
         tmplt_spec = {
             "by_mode_subset": {
@@ -747,10 +725,6 @@ class TransitAssignment(_m.Tool()):
             matrix_spec.append(util.matrix_spec(Travel_Time_List[i][6], expression1))
             util.compute_matrix(matrix_spec, scenarionumber)
 
-            total_invehicle_time = Travel_Time_List[i][1]
-            invehicle_bus_time = Travel_Time_List[i][1]
-            prem_invehicle_time = Travel_Time_List[i][1]
-
         if classname == "Rail" :
             spec_as_dict = _deepcopy(tmplt_spec)
             spec_as_dict["by_mode_subset"]["actual_total_boarding_times"] = Travel_Time_List[i][0]
@@ -780,27 +754,6 @@ class TransitAssignment(_m.Tool()):
             expression1 = Travel_Time_List[i][5] + " + " + Travel_Time_List[i][6]
             matrix_spec.append(util.matrix_spec(Travel_Time_List[i][7], expression1))
             util.compute_matrix(matrix_spec, scenarionumber)
-
-            total_invehicle_time = "("+Travel_Time_List[i][3]+"+"+Travel_Time_List[i][4]+")"
-            invehicle_bus_time = Travel_Time_List[i][3]
-            prem_invehicle_time = Travel_Time_List[i][4]
-
-        if classname  =="Ratype0":
-            spec_as_dict = _deepcopy(tmplt_spec)
-            spec_as_dict["by_mode_subset"]["actual_total_boarding_times"] = Travel_Time_List[i][0]
-            spec_as_dict["by_mode_subset"]["actual_aux_transit_times"] = Travel_Time_List[i][1]
-            spec_as_dict["actual_total_waiting_times"] = Travel_Time_List[i][2]
-            transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
-
-            spec_as_dict = _deepcopy(tmplt_spec)
-            spec_as_dict["by_mode_subset"]["modes"] = ["b", "g"]
-            spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = Travel_Time_List[i][3]
-            transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
-
-            spec_as_dict = _deepcopy(tmplt_spec)
-            spec_as_dict["by_mode_subset"]["modes"] = ["s", "l", "r", "f", "h"]
-            spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = Travel_Time_List[i][4]
-            transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
         if classname == "WCE":
             spec_as_dict = _deepcopy(tmplt_spec)
@@ -855,30 +808,6 @@ class TransitAssignment(_m.Tool()):
                                                               result, self.wce_fare_zone[4], result, self.wce_fare_zone[5])
             matrix_spec.append(util.matrix_spec(result, expression1))
             matrix_spec.append(util.matrix_spec(result, expression2))
-            util.compute_matrix(matrix_spec, scenarionumber)
-
-            total_invehicle_time = "(" + Travel_Time_List[i][3] + "+" + Travel_Time_List[i][4]+ "+" + Travel_Time_List[i][5] + ")"
-            invehicle_bus_time = Travel_Time_List[i][3]
-            prem_invehicle_time = Travel_Time_List[i][5]
-
-        # Mode Availability Rule
-        # TODO does this actually belong here
-        # TODO remove Ratype0 eventually
-        if classname != "Ratype0":
-            auto_time = ["mf931", "mf943", "mf2001"]
-            bus_invehicle_time = ["mf934",  "mf946",  "mf2004"]
-
-            result = Mode_Avail_List[i]
-            expression1 = "(%s .ge. %s)*((%s/%s).le.%s)*((%s/%s).ge.%s)*((%s-%s).le.%s)*((%s/%s).le.%s)*((%s/%s).le.%s)" %(
-                total_invehicle_time,self.minimum_ivtt_rule[classname],
-                total_invehicle_time, auto_time[i], self.ivtt_auto_ratio[classname],
-                prem_invehicle_time, total_invehicle_time,  self.mivtt_totivt_ratio[classname],
-                total_invehicle_time,  bus_invehicle_time[i], self.ivtt_vs_busivtt[classname],
-                total_invehicle_time, bus_invehicle_time[i], self.ivtt_busivtt_ratio[classname],
-                invehicle_bus_time, bus_invehicle_time[i], self.ivttb_busivtt_ratio[classname])
-
-            matrix_spec=[]
-            matrix_spec.append(util.matrix_spec(result, expression1))
             util.compute_matrix(matrix_spec, scenarionumber)
 
     @_m.logbook_trace("Matrix Batchin")
