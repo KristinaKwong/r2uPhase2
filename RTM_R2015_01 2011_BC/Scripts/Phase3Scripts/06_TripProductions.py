@@ -453,98 +453,11 @@ class TripProductions(_m.Tool()):
         hh_noncommute_prds = pd.merge(df, nhbo_ct_prod_df, how= 'left', left_on = ['HHSize', 'HHInc'], right_on = ['HHSize', 'HHInc'])
 
         return hh_commute_prds, hh_noncommute_prds
-        util = _m.Modeller().tool("translink.emme.util")
-
-        # set coefficents
-        c_hbu_int = 10.839151
-        c_iP1824UnAc = 0.078256
-        c_iP2434UnAc = 0.010967
-
-        c_nhbw_int = 9.681545
-        c_nhbw_CM = 0.270333
-        c_nhbw_TW = 0.275153
-        c_nhbw_FIRE = 0.281857
-        c_nhbw_BOS = 0.421432
-        c_nhbw_AFIC = 0.277586
-        c_nhbw_Ret = 0.6667
-        c_nhbw_HEPA = 0.427405
-        c_nhbw_EE = 0.059958
-        c_nhbw_SE = 0.096454
-        c_nhbw_HHs = 0.055766
-
-        c_nhbo_int = 14.79997
-        c_nhbo_AFIC = 0.566856
-        c_nhbo_Ret = 1.81639
-        c_nhbo_HEPA = 0.367859
-        c_nhbo_EE = 0.400214
-        c_nhbo_SE = 0.235789
-        c_nhbo_PS = 0.044565
-        c_nhbo_HHs = 0.173736
-
-        nhbw_ct_2011 = (eb.matrix("msnhbwCt2011").data)
-        nhbo_ct_2011 = (eb.matrix("msnhboCt2011").data)
-
-        # calculate hbu productions
-        df['hbu'] = ( c_hbu_int
-                    + c_iP1824UnAc * df['iPop1824UnAc']
-                    + c_iP2434UnAc * df['iPop2534UnAc'] )
-
-        # calculate non-home based work productions
-        df['nhbw'] = ( c_nhbw_int
-                     + c_nhbw_CM * df['EMP_Construct_Mfg']
-                     + c_nhbw_TW * df['EMP_TCU_Wholesale']
-                     + c_nhbw_FIRE * df['EMP_FIRE']
-                     + c_nhbw_BOS * df['EMP_Business_OtherServices']
-                     + c_nhbw_AFIC * df['EMP_AccomFood_InfoCult']
-                     + c_nhbw_Ret * df['EMP_Retail']
-                     + c_nhbw_HEPA * df['EMP_Health_Educat_PubAdmin']
-                     + c_nhbw_EE * df['Elementary_Enrolment']
-                     + c_nhbw_SE * df['Secondary_Enrolment']
-                     + c_nhbw_HHs * df['HH_Total'] )
-
-        # calculate non-home based other productions
-        df['nhbo'] = ( c_nhbo_int
-                     + c_nhbo_AFIC * df['EMP_AccomFood_InfoCult']
-                     + c_nhbo_Ret * df['EMP_Retail']
-                     + c_nhbo_HEPA * df['EMP_Health_Educat_PubAdmin']
-                     + c_nhbo_EE * df['Elementary_Enrolment']
-                     + c_nhbo_SE * df['Secondary_Enrolment']
-                     + c_nhbo_PS * df['PostSecFTE']
-                     + c_nhbo_HHs * df['HH_Total'] )
-
-        # clear out intercept trips from pnr and external zones
-        df['hbu'] = np.where(df['TAZ1741'] < 1000, 0, df['hbu'])
-        df['nhbw'] = np.where(df['TAZ1741'] < 1000, 0, df['nhbw'])
-        df['nhbo'] = np.where(df['TAZ1741'] < 1000, 0, df['nhbo'])
-
-        # scale based on houseold productions
-        nhbw_scalar = nhbw_ct / nhbw_ct_2011
-        nhbo_scalar = nhbo_ct / nhbo_ct_2011
-        df['nhbw'] = df['nhbw'] * nhbw_scalar
-        df['nhbo'] = df['nhbo'] * nhbo_scalar
-
-
-        # export data to sqlite database
-        df = df[['TAZ1741','hbu','nhbw','nhbo']]
-
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
-        df.to_sql(name='TripsTazPrds', con=conn, flavor='sqlite', index=False, if_exists='replace')
-        conn.close()
-
-        # stuff in emmebank
-        util.set_matrix_numpy(eb, 'mohbuprd', df['hbu'].reshape(df['hbu'].shape[0], 1))
-        util.set_matrix_numpy(eb, 'monhbwprd', df['nhbw'].reshape(df['nhbw'].shape[0], 1))
-        util.set_matrix_numpy(eb, 'monhboprd', df['nhbo'].reshape(df['nhbo'].shape[0], 1))
-
 
 
     @_m.logbook_trace("Initialize Trip Production Matrices")
     def matrix_batchins(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
-
-        # scalar matrices to store control totals
 
         util.initmat(eb, "mo2000", "hbwInc1Au0prd", "hbwInc1Au0 Productions", 0)
         util.initmat(eb, "mo2001", "hbwInc2Au0prd", "hbwInc2Au0 Productions", 0)
