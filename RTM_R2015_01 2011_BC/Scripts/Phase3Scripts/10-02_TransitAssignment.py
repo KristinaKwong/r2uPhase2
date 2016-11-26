@@ -35,6 +35,7 @@ class TransitAssignment(_m.Tool()):
         self.max_stand_weight = 2.0
         self.power_stand_weight = 3.0
 
+        self.num_processors = 1
         # TODO: Update factors and define by multiple modes or vehicle types
         self.dwt_board_factor_bus = 0.025  # 1.5 sec per boarding
         self.dwt_alight_factor_bus = 0.0083 # 0.5 sec per boarding
@@ -105,10 +106,11 @@ class TransitAssignment(_m.Tool()):
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    _m.logbook_trace("06-04 - Transit Assignment")
+    _m.logbook_trace("Transit Assignment")
     def __call__(self, eb, scenarioam, scenariomd, scenariopm):
         self.matrix_batchins(eb)
 
+        self.num_processors = int(eb.matrix("ms12").data)
         assign_transit = _m.Modeller().tool("inro.emme.transit_assignment.extended_transit_assignment")
         util = _m.Modeller().tool("translink.emme.util")
 
@@ -285,7 +287,7 @@ class TransitAssignment(_m.Tool()):
             },
             "journey_levels": [],
             "performance_settings": {
-                "number_of_processors": 2
+                "number_of_processors": self.num_processors
             },
             "type": "EXTENDED_TRANSIT_ASSIGNMENT"
         }
