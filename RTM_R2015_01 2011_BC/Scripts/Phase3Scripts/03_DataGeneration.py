@@ -362,7 +362,6 @@ class DataGeneration(_m.Tool()):
     	ij_acc['auto_acc_ln'] = np.log(ij_acc['auto_acc'] + log_trans_const)
 
     	# write data back to emmebank
-    	# note have to reshape to work with util helper
     	util.set_matrix_numpy(eb, 'moautoAcc', ij_acc['auto_acc'].values)
     	util.set_matrix_numpy(eb, 'moautoAccLn', ij_acc['auto_acc_ln'].values)
 
@@ -391,11 +390,11 @@ class DataGeneration(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
 
         # get data from emmebank
-        zones = util.get_matrix_numpy(eb, "mozoneindex")
-        totpop = util.get_matrix_numpy(eb, "moTotPop")
-        totemp = util.get_matrix_numpy(eb, "moTotEmp")
+        zones = util.get_matrix_numpy(eb, "mozoneindex", reshape=False)
+        totpop = util.get_matrix_numpy(eb, "moTotPop", reshape=False)
+        totemp = util.get_matrix_numpy(eb, "moTotEmp", reshape=False)
         combined = totpop + totemp
-        area = util.get_matrix_numpy(eb, "moareahc")
+        area = util.get_matrix_numpy(eb, "moareahc", reshape=False)
 
         # calculate densities
         # handling divide by zero error and setting to 0
@@ -442,24 +441,14 @@ class DataGeneration(_m.Tool()):
         util.set_matrix_numpy(eb, 'moempdensln',empdensln)
         util.set_matrix_numpy(eb, 'mocombinedensln',combinedensln)
 
-        # reshape to create pandas dataframe
-        zo = zones.reshape(zones.shape[0])
-
-        em = empdens.reshape(empdens.shape[0])
-        po = popdens.reshape(popdens.shape[0])
-        co = combinedens.reshape(combinedens.shape[0])
-
-        el = empdensln.reshape(empdensln.shape[0])
-        pl = popdensln.reshape(popdensln.shape[0])
-        cl = combinedensln.reshape(combinedensln.shape[0])
-
-        df = pd.DataFrame({'TAZ1700': zo,
-               'popdens': po,
-               'empdens': em,
-               'combinedens' : co,
-               'popdensln': pl,
-               'empdensln': el,
-               'combinedensln' : cl },
+        # create pandas df to build sqilite table
+        df = pd.DataFrame({'TAZ1700': zones,
+               'popdens': popdens,
+               'empdens': empdens,
+               'combinedens' : combinedens,
+               'popdensln': popdensln,
+               'empdensln': empdensln,
+               'combinedensln' : combinedensln },
                columns=['TAZ1700','popdens','empdens','combinedens', 'popdensln','empdensln','combinedensln'])
 
         # write data to rtm sqlite database
