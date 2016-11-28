@@ -93,6 +93,10 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms118", "HOV3OccNHBo", "HOV3 Occupancy NHB Other", 3.63)
         util.initmat(eb, "ms130", "lgvPCE", "Light Truck Passenger Car Equivalent", 1.5)
         util.initmat(eb, "ms131", "hgvPCE", "Heavy Truck Passenger Car Equivalent", 2.5)
+
+        util.initmat(eb, "ms150", "nhbwCt2011", "NHBW HH Production Control Total", 596590.636153)
+        util.initmat(eb, "ms151", "nhboCt2011", "NHB0 HH Production Control Total", 852928.057776)
+
         util.initmat(eb, "ms200", "VotWkLowIncSov", "VOTSOV Work Low"      , 6.58)
         util.initmat(eb, "ms201", "VotWkMedIncSov", "VOTSOV Work Med"      , 4.12)
         util.initmat(eb, "ms202", "VotWkHighIncSov", "VOTSOV Work High"    , 3.38)
@@ -143,9 +147,9 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms352", "wceWALKprcpNwk", "wce walk time perception nonwork", 0)
         util.initmat(eb, "ms353", "wceTRANSprcpNwk", "wce transfer perception nonwork", 0)
         util.initmat(eb, "ms354", "wceBOARDSprcpNwk", "wce boarding perception nonwork", 0)
-        
+
 ##      Batch in Blending Factors
-        
+
         util.initmat(eb, "ms400", "HbWBl_AM_P-A", "HbW Blend AM P-A Factor", 0.391751)
         util.initmat(eb, "ms401", "HbWBl_MD_P-A", "HbW Blend MD P-A Factor", 0.116333)
         util.initmat(eb, "ms402", "HbWBl_PM_P-A", "HbW Blend PM P-A Factor", 0.026389)

@@ -116,6 +116,8 @@ class FullModelRun(_m.Tool()):
 
         self.stage0(eb, master_scen=master_scen, demographics_file=demographics_file, geographics_file=geographics_file)
 
+        self.stage1(eb)
+
     def stage0(self, eb, master_scen, demographics_file, geographics_file):
         util = _m.Modeller().tool("translink.emme.util")
         create_scenario = _m.Modeller().tool("translink.RTM3.stage0.create_scenarios")
@@ -125,6 +127,19 @@ class FullModelRun(_m.Tool()):
         create_scenario(base_scenario=master_scen)
         data_import(eb, demographics_file=demographics_file, geographics_file=geographics_file)
         data_generate(eb)
+
+    def stage1(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
+        workers_and_income = _m.Modeller().tool("translink.RTM3.stage1.workinc")
+        vehicle_availability = _m.Modeller().tool("translink.RTM3.stage1.vam")
+        trip_productions = _m.Modeller().tool("translink.RTM3.stage1.prds")
+        trip_attractions = _m.Modeller().tool("translink.RTM3.stage1.atrs")
+
+        workers_and_income(eb)
+        vehicle_availability(eb)
+        trip_productions(eb)
+        trip_attractions(eb)
+
 
     def initoptions(self, eb, horizon_year, global_iterations,
                     max_distribution_iterations, max_assignment_iterations, num_processors):

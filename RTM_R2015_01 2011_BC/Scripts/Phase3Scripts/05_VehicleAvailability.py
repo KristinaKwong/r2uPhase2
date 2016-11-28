@@ -207,7 +207,7 @@ class VehicleAvailability(_m.Tool()):
             ,IFNULL(a.dist_cbd_ln, 0) as log_dist_cbd
             ,IFNULL(a.dist_tc_ln, 0) as log_dist_tc
             ,IFNULL(de.combinedensln, 0 ) as log_density
-            ,IFNULL(a.transit_acc + a.auto_acc, 0) as accessibility
+            ,IFNULL(a.auto_acc / IFNULL(a.transit_acc + 0.000001, 0.000001), 0) as accessibility  -- ratio of auto:transit accessibility
             ,IFNULL(g.car_share_500m, 0 ) as car_share_500m
 
         FROM taz_index ti
