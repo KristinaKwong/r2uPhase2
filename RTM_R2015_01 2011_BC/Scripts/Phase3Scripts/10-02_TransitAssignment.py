@@ -106,7 +106,7 @@ class TransitAssignment(_m.Tool()):
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    _m.logbook_trace("Transit Assignment")
+    @_m.logbook_trace("Transit Assignment")
     def __call__(self, eb, scenarioam, scenariomd, scenariopm):
         self.matrix_batchins(eb)
 
@@ -800,7 +800,7 @@ class TransitAssignment(_m.Tool()):
         specs.append(util.matrix_spec(result, expression2))
         util.compute_matrix(specs, scenarionumber)
 
-    @_m.logbook_trace("Matrix Batchin")
+    @_m.logbook_trace("Initialize Skim Matrices")
     def matrix_batchins(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
 
