@@ -10,6 +10,8 @@ import traceback as _traceback
 class TransitAssignment(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
+    run_congested_transit = _m.Attribute(bool)
+    run_capacited_transit = _m.Attribute(bool)
     max_iterations = _m.Attribute(int)
     min_seat_weight = _m.Attribute(float)
     max_seat_weight = _m.Attribute(float)
@@ -87,6 +89,9 @@ class TransitAssignment(_m.Tool()):
         pb.description = "Performs Transit Assignments by Class (Bus, Rail, WCE) with Crowding and Capacity Constraint Options"
         pb.branding_text = "TransLink"
 
+        pb.add_checkbox("run_congested_transit", label="Run Congested Transit Assignment")
+        pb.add_checkbox("run_capacited_transit", label="Run Capacited Transit Assignment")
+
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
 
@@ -100,6 +105,9 @@ class TransitAssignment(_m.Tool()):
             self.md_scenario = _m.Modeller().emmebank.scenario(int(eb.matrix("ms3").data))
             self.pm_scenario = _m.Modeller().emmebank.scenario(int(eb.matrix("ms4").data))
 
+            eb.matrix("ms45").data = int(self.run_congested_transit)
+            eb.matrix("ms46").data = int(self.run_capacited_transit)
+
             self(eb, self.am_scenario, self.md_scenario, self.pm_scenario)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
@@ -108,14 +116,17 @@ class TransitAssignment(_m.Tool()):
 
     @_m.logbook_trace("Transit Assignment")
     def __call__(self, eb, scenarioam, scenariomd, scenariopm):
+        self.am_scenario = scenarioam
+        self.md_scenario = scenariomd
+        self.pm_scenario = scenariopm
         self.matrix_batchins(eb)
 
         self.num_processors = int(eb.matrix("ms12").data)
         assign_transit = _m.Modeller().tool("inro.emme.transit_assignment.extended_transit_assignment")
         util = _m.Modeller().tool("translink.emme.util")
 
-        run_crowding = 0
-        run_capacity_constraint = 0
+        run_crowding = int(eb.matrix("ms45").data)
+        run_capacity_constraint = int(eb.matrix("ms46").data)
 
         # No Crowding and Capacity constraint applied
         # Run 2 iterations only to update dwell times
