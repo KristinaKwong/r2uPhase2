@@ -123,10 +123,10 @@ class DataGeneration(_m.Tool()):
     	ij_dist = pd.merge(ij_cbd, ij_tc, how='left', left_on=['i'], right_on=['i'])
 
     	# write to emmebank
-    	util.set_matrix_numpy(eb, 'modistCbd', ij_dist['dist_cbd'].reshape(ij_dist['dist_cbd'].shape[0], 1))
-    	util.set_matrix_numpy(eb, 'modistCbdLn', ij_dist['dist_cbd_ln'].reshape(ij_dist['dist_cbd_ln'].shape[0], 1))
-    	util.set_matrix_numpy(eb, 'modistTc', ij_dist['dist_tc'].reshape(ij_dist['dist_tc'].shape[0], 1))
-    	util.set_matrix_numpy(eb, 'modistTcLn', ij_dist['dist_tc_ln'].reshape(ij_dist['dist_tc_ln'].shape[0], 1))
+    	util.set_matrix_numpy(eb, 'modistCbd', ij_dist['dist_cbd'].values)
+    	util.set_matrix_numpy(eb, 'modistCbdLn', ij_dist['dist_cbd_ln'].values)
+    	util.set_matrix_numpy(eb, 'modistTc', ij_dist['dist_tc'].values)
+    	util.set_matrix_numpy(eb, 'modistTcLn', ij_dist['dist_tc_ln'].values)
 
     	# write data to sqlite database
     	db_loc = util.get_eb_path(eb)
@@ -154,16 +154,13 @@ class DataGeneration(_m.Tool()):
     	time_cut_uni = 30
 
     	# get zone numbers
-    	index = util.get_matrix_numpy(eb, "mozoneindex")
-    	index = index.reshape(index.shape[0])
+    	index = util.get_matrix_numpy(eb, "mozoneindex", reshape=False)
 
     	# get employment data
-    	emp = util.get_matrix_numpy(eb, "moTotEmp")
-    	emp = emp.reshape(emp.shape[0])
+    	emp = util.get_matrix_numpy(eb, "moTotEmp", reshape=False)
 
     	# get post sec FTE enrolment
-    	ps = util.get_matrix_numpy(eb, "moEnrolPsFte")
-    	ps = ps.reshape(ps.shape[0])
+    	ps = util.get_matrix_numpy(eb, "moEnrolPsFte", reshape=False)
 
     	# merge employment and zone number
     	emp = pd.DataFrame({"taz": index, "emp": emp, "postsec" : ps}, columns=["taz","emp", "postsec"])
@@ -258,9 +255,8 @@ class DataGeneration(_m.Tool()):
     	ij_acc['transit_acc_ln'] = np.log(ij_acc['transit_acc'] + log_trans_const)
 
     	# write data back to emmebank
-    	# note have to reshape to work with util helper
-    	util.set_matrix_numpy(eb, 'motransitAcc', ij_acc['transit_acc'].reshape(ij_acc['transit_acc'].shape[0], 1))
-    	util.set_matrix_numpy(eb, 'motransitAccLn', ij_acc['transit_acc_ln'].reshape(ij_acc['transit_acc_ln'].shape[0], 1))
+    	util.set_matrix_numpy(eb, 'motransitAcc', ij_acc['transit_acc'].values)
+    	util.set_matrix_numpy(eb, 'motransitAccLn', ij_acc['transit_acc_ln'].values)
 
 
     	#######################################################################
@@ -285,9 +281,9 @@ class DataGeneration(_m.Tool()):
     	ij_acc_u['uni_acc_ln'] = np.log(ij_acc_u['uni_acc'] + log_trans_const)
 
 
-    	# note have to reshape to work with util helper
-    	util.set_matrix_numpy(eb, 'mouniAcc', ij_acc_u['uni_acc'].reshape(ij_acc_u['uni_acc'].shape[0], 1))
-    	util.set_matrix_numpy(eb, 'mouniAccLn', ij_acc_u['uni_acc_ln'].reshape(ij_acc_u['uni_acc_ln'].shape[0], 1))
+    	# write data back to emmebank
+    	util.set_matrix_numpy(eb, 'mouniAcc', ij_acc_u['uni_acc'].values)
+    	util.set_matrix_numpy(eb, 'mouniAccLn', ij_acc_u['uni_acc_ln'].values)
 
 
     	#######################################################################
@@ -323,12 +319,10 @@ class DataGeneration(_m.Tool()):
     	mat_pm = 'mfPmSovNwkTime'
 
     	# get zone numbers
-    	index = util.get_matrix_numpy(eb, "mozoneindex")
-    	index = index.reshape(index.shape[0])
+    	index = util.get_matrix_numpy(eb, "mozoneindex", reshape=False)
 
     	# get employment data
-    	emp = util.get_matrix_numpy(eb, "moTotEmp")
-    	emp = emp.reshape(emp.shape[0])
+    	emp = util.get_matrix_numpy(eb, "moTotEmp", reshape=False)
 
     	# merge employment and zone number
     	emp = pd.DataFrame({"taz": index, "emp": emp}, columns=["taz","emp"])
@@ -365,8 +359,8 @@ class DataGeneration(_m.Tool()):
 
     	# write data back to emmebank
     	# note have to reshape to work with util helper
-    	util.set_matrix_numpy(eb, 'moautoAcc', ij_acc['auto_acc'].reshape(ij_acc['auto_acc'].shape[0], 1))
-    	util.set_matrix_numpy(eb, 'moautoAccLn', ij_acc['auto_acc_ln'].reshape(ij_acc['auto_acc_ln'].shape[0], 1))
+    	util.set_matrix_numpy(eb, 'moautoAcc', ij_acc['auto_acc'].values)
+    	util.set_matrix_numpy(eb, 'moautoAccLn', ij_acc['auto_acc_ln'].values)
 
 
     	#######################################################################
