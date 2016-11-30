@@ -419,6 +419,11 @@ class HbWork(_m.Tool()):
 #        ##############################################################################
 #        ##       Calculate Probabilities
 #        ##############################################################################
+
+        ############
+        # Low Income
+        ############
+
         ## Add SOV Availability Term
 
         CarShare = util.get_matrix_numpy(eb, 'mo71').reshape(NoTAZ,1) + np.zeros((1, NoTAZ))
@@ -454,6 +459,10 @@ class HbWork(_m.Tool()):
                }
         I1A2_Dict = self.Calc_Prob(eb, Dict, "mf9002", thet)
 
+        ############
+        # Med Income
+        ############
+
         ## Med Income Zero Autos
         Dict = {
                'SOV'  : [np.where(CarShare>0, DfU['SOVI2'], LrgU)],
@@ -483,6 +492,10 @@ class HbWork(_m.Tool()):
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
         I2A2_Dict = self.Calc_Prob(eb, Dict, "mf9005", thet)
+
+        #############
+        # High Income
+        #############
 
         ## High Income Zero Autos
         Dict = {
@@ -527,23 +540,23 @@ class HbWork(_m.Tool()):
                    ]
 
         imp_list = [
-                  "mf9500", "mf9501", "mf9502",
-                  "mf9503", "mf9504", "mf9505",
-                  "mf9506", "mf9507", "mf9508"
+                  "mf9100", "mf9101", "mf9102",
+                  "mf9103", "mf9104", "mf9105",
+                  "mf9106", "mf9107", "mf9108"
                    ]
 
         mo_list =  [
-                    "mo161", "mo164", "mo167+mo170",
-                    "mo162", "mo165", "mo168+mo171",
-                    "mo163", "mo166", "mo169+mo172"
+                    "mo2000", "mo2003", "mo2006",
+                    "mo2001", "mo2004", "mo2007",
+                    "mo2002", "mo2005", "mo2008"
                    ]
 
-        md_list =  ["md200"]
+        md_list =  ["md2000"]
 
         out_list = [
-                    "mf9510", "mf9511", "mf9512",
-                    "mf9513", "mf9514", "mf9515",
-                    "mf9516", "mf9517", "mf9518"
+                    "mf3050", "mf3051", "mf3052",
+                    "mf3053", "mf3054", "mf3055",
+                    "mf3056", "mf3057", "mf3058"
                    ]
 
         LS_Coeff = 0.5
@@ -685,30 +698,20 @@ class HbWork(_m.Tool()):
 #       ##############################################################################
 #        ##       Set Demand Matrices
 #       ##############################################################################
-        util.set_matrix_numpy(eb, "mf9100", SOVI1)
-        util.set_matrix_numpy(eb, "mf9101", SOVI2)
-        util.set_matrix_numpy(eb, "mf9102", SOVI3)
-        util.set_matrix_numpy(eb, "mf9103", HV2I1)
-        util.set_matrix_numpy(eb, "mf9104", HV2I2)
-        util.set_matrix_numpy(eb, "mf9105", HV2I3)
-        util.set_matrix_numpy(eb, "mf9106", HV3I1)
-        util.set_matrix_numpy(eb, "mf9107", HV3I2)
-        util.set_matrix_numpy(eb, "mf9108", HV3I3)
-        util.set_matrix_numpy(eb, "mf9109", Bus)
-        util.set_matrix_numpy(eb, "mf9110", Rail)
-        util.set_matrix_numpy(eb, "mf9111", WCE)
-        util.set_matrix_numpy(eb, "mf9112", Walk)
-        util.set_matrix_numpy(eb, "mf9113", Bike)
-        util.set_matrix_numpy(eb, "mf9114", BAuI1)
-        util.set_matrix_numpy(eb, "mf9115", BAuI2)
-        util.set_matrix_numpy(eb, "mf9116", BAuI3)
-        util.set_matrix_numpy(eb, "mf9117", RAuI1)
-        util.set_matrix_numpy(eb, "mf9118", RAuI2)
-        util.set_matrix_numpy(eb, "mf9119", RAuI3)
-        util.set_matrix_numpy(eb, "mf9120", WAuI1)
-        util.set_matrix_numpy(eb, "mf9121", WAuI2)
-        util.set_matrix_numpy(eb, "mf9122", WAuI3)
-
+        util.set_matrix_numpy(eb, "mf3000", SOVI1)
+        util.set_matrix_numpy(eb, "mf3001", SOVI2)
+        util.set_matrix_numpy(eb, "mf3002", SOVI3)
+        util.set_matrix_numpy(eb, "mf3005", HV2I1)
+        util.set_matrix_numpy(eb, "mf3006", HV2I2)
+        util.set_matrix_numpy(eb, "mf3007", HV2I3)
+        util.set_matrix_numpy(eb, "mf3010", HV3I1)
+        util.set_matrix_numpy(eb, "mf3011", HV3I2)
+        util.set_matrix_numpy(eb, "mf3012", HV3I3)
+        util.set_matrix_numpy(eb, "mf3015", Bus)
+        util.set_matrix_numpy(eb, "mf3020", Rail)
+        util.set_matrix_numpy(eb, "mf3025", WCE)
+        util.set_matrix_numpy(eb, "mf3030", Walk)
+        util.set_matrix_numpy(eb, "mf3035", Bike)
 
     def Calc_Prob(self, eb, Dict, Logsum, Th):
         util = _m.Modeller().tool("translink.emme.util")
@@ -751,54 +754,51 @@ class HbWork(_m.Tool()):
     @_m.logbook_trace("Initialize Matrices")
     def matrix_batchins(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
+        ## Initialze Logsum Matrices
+        util.initmat(eb, "mf9000", "HbWLSI1A0", " HbW LogSum I1 A0", 0)
+        util.initmat(eb, "mf9001", "HbWLSI1A1", " HbW LogSum I1 A1", 0)
+        util.initmat(eb, "mf9002", "HbWLSI1A2", " HbW LogSum I1 A2", 0)
+        util.initmat(eb, "mf9003", "HbWLSI2A0", " HbW LogSum I1 A0", 0)
+        util.initmat(eb, "mf9004", "HbWLSI2A1", " HbW LogSum I1 A1", 0)
+        util.initmat(eb, "mf9005", "HbWLSI2A2", " HbW LogSum I1 A2", 0)
+        util.initmat(eb, "mf9006", "HbWLSI3A0", " HbW LogSum I1 A0", 0)
+        util.initmat(eb, "mf9007", "HbWLSI3A1", " HbW LogSum I1 A1", 0)
+        util.initmat(eb, "mf9008", "HbWLSI3A2", " HbW LogSum I1 A2", 0)
 
-        util.initmat(eb, "mf9000", "WkLSI1A1", "LogSum Wk I1 A1", 0)
-        util.initmat(eb, "mf9001", "WkLSI1A2", "LogSum Wk I1 A2", 0)
-        util.initmat(eb, "mf9002", "WkLSI1A3", "LogSum Wk I1 A3", 0)
-        util.initmat(eb, "mf9003", "WkLSI2A1", "LogSum Wk I2 A1", 0)
-        util.initmat(eb, "mf9004", "WkLSI2A2", "LogSum Wk I2 A2", 0)
-        util.initmat(eb, "mf9005", "WkLSI2A3", "LogSum Wk I2 A3", 0)
-        util.initmat(eb, "mf9006", "WkLSI3A1", "LogSum Wk I3 A1", 0)
-        util.initmat(eb, "mf9007", "WkLSI3A2", "LogSum Wk I3 A2", 0)
-        util.initmat(eb, "mf9008", "WkLSI3A3", "LogSum Wk I3 A3", 0)
-        util.initmat(eb, "mf9100", "SOVI1", "LogSum Wk I1 A1", 0)
-        util.initmat(eb, "mf9101", "SOVI2", "LogSum Wk I1 A2", 0)
-        util.initmat(eb, "mf9102", "SOVI3", "LogSum Wk I1 A3", 0)
-        util.initmat(eb, "mf9103", "HV2I1", "LogSum Wk I2 A1", 0)
-        util.initmat(eb, "mf9104", "HV2I2", "LogSum Wk I2 A2", 0)
-        util.initmat(eb, "mf9105", "HV2I3", "LogSum Wk I2 A3", 0)
-        util.initmat(eb, "mf9106", "HV3I1", "LogSum Wk I3 A1", 0)
-        util.initmat(eb, "mf9107", "HV3I2", "LogSum Wk I3 A2", 0)
-        util.initmat(eb, "mf9108", "HV3I3", "LogSum Wk I3 A3", 0)
-        util.initmat(eb, "mf9109", "Bus", "LogSum Wk I3 A3", 0)
-        util.initmat(eb, "mf9110", "Rail", "LogSum Wk I1 A1", 0)
-        util.initmat(eb, "mf9111", "WCE", "LogSum Wk I1 A2", 0)
-        util.initmat(eb, "mf9112", "Walk", "LogSum Wk I1 A3", 0)
-        util.initmat(eb, "mf9113", "Bike", "LogSum Wk I2 A1", 0)
-        util.initmat(eb, "mf9114", "BAUI1", "LogSum Wk I1 A2", 0)
-        util.initmat(eb, "mf9115", "BAUI2", "LogSum Wk I1 A3", 0)
-        util.initmat(eb, "mf9116", "BAUI3", "LogSum Wk I2 A1", 0)
-        util.initmat(eb, "mf9117", "RAUI1", "LogSum Wk I1 A2", 0)
-        util.initmat(eb, "mf9118", "RAUI2", "LogSum Wk I1 A3", 0)
-        util.initmat(eb, "mf9119", "RAUI3", "LogSum Wk I2 A1", 0)
-        util.initmat(eb, "mf9120", "WAUI1", "LogSum Wk I1 A2", 0)
-        util.initmat(eb, "mf9121", "WAUI2", "LogSum Wk I1 A3", 0)
-        util.initmat(eb, "mf9122", "WAUI3", "LogSum Wk I2 A1", 0)
-        util.initmat(eb, "mf9500", "WkLSI1A1", "LogSum Wk I1 A1", 0)
-        util.initmat(eb, "mf9501", "WkLSI1A2", "LogSum Wk I1 A2", 0)
-        util.initmat(eb, "mf9502", "WkLSI1A3", "LogSum Wk I1 A3", 0)
-        util.initmat(eb, "mf9503", "WkLSI2A1", "LogSum Wk I2 A1", 0)
-        util.initmat(eb, "mf9504", "WkLSI2A2", "LogSum Wk I2 A2", 0)
-        util.initmat(eb, "mf9505", "WkLSI2A3", "LogSum Wk I2 A3", 0)
-        util.initmat(eb, "mf9506", "WkLSI3A1", "LogSum Wk I3 A1", 0)
-        util.initmat(eb, "mf9507", "WkLSI3A2", "LogSum Wk I3 A2", 0)
-        util.initmat(eb, "mf9508", "WkLSI3A3", "LogSum Wk I3 A3", 0)
-        util.initmat(eb, "mf9510", "WkLSI1A1", "LogSum Wk I1 A1", 0)
-        util.initmat(eb, "mf9511", "WkLSI1A2", "LogSum Wk I1 A2", 0)
-        util.initmat(eb, "mf9512", "WkLSI1A3", "LogSum Wk I1 A3", 0)
-        util.initmat(eb, "mf9513", "WkLSI2A1", "LogSum Wk I2 A1", 0)
-        util.initmat(eb, "mf9514", "WkLSI2A2", "LogSum Wk I2 A2", 0)
-        util.initmat(eb, "mf9515", "WkLSI2A3", "LogSum Wk I2 A3", 0)
-        util.initmat(eb, "mf9516", "WkLSI3A1", "LogSum Wk I3 A1", 0)
-        util.initmat(eb, "mf9517", "WkLSI3A2", "LogSum Wk I3 A2", 0)
-        util.initmat(eb, "mf9518", "WkLSI3A3", "LogSum Wk I3 A3", 0)
+        ## Initialze Friction Factor Matrices
+        util.initmat(eb, "mf9100", "P-AFrictionFact1", "Trip Distribution Friction Factor 1", 0)
+        util.initmat(eb, "mf9101", "P-AFrictionFact2", "Trip Distribution Friction Factor 2", 0)
+        util.initmat(eb, "mf9102", "P-AFrictionFact3", "Trip Distribution Friction Factor 3", 0)
+        util.initmat(eb, "mf9103", "P-AFrictionFact4", "Trip Distribution Friction Factor 4", 0)
+        util.initmat(eb, "mf9104", "P-AFrictionFact5", "Trip Distribution Friction Factor 5", 0)
+        util.initmat(eb, "mf9105", "P-AFrictionFact6", "Trip Distribution Friction Factor 6", 0)
+        util.initmat(eb, "mf9106", "P-AFrictionFact7", "Trip Distribution Friction Factor 7", 0)
+        util.initmat(eb, "mf9107", "P-AFrictionFact8", "Trip Distribution Friction Factor 8", 0)
+        util.initmat(eb, "mf9108", "P-AFrictionFact9", "Trip Distribution Friction Factor 9", 0)
+
+        ## Initialize P-A Trip Tables by mode
+        util.initmat(eb, "mf3000", "HbWSOVI1PerTrips", "HbW SOV Low Income Per-Trips", 0)
+        util.initmat(eb, "mf3001", "HbWSOVI2PerTrips", "HbW SOV Med Income Per-Trips", 0)
+        util.initmat(eb, "mf3002", "HbWSOVI3PerTrips", "HbW SOV High Income Per-Trips", 0)
+        util.initmat(eb, "mf3005", "HbWHV2I1PerTrips", "HbW HV2 Low Income Per-Trips", 0)
+        util.initmat(eb, "mf3006", "HbWHV2I2PerTrips", "HbW HV2 Med Income Per-Trips", 0)
+        util.initmat(eb, "mf3007", "HbWHV2I3PerTrips", "HbW HV2 High Income Per-Trips", 0)
+        util.initmat(eb, "mf3010", "HbWHV3+I1PerTrips", "HbW HV3+ Low Income Per-Trips", 0)
+        util.initmat(eb, "mf3011", "HbWHV3+I2PerTrips", "HbW HV3+ Med Income Per-Trips", 0)
+        util.initmat(eb, "mf3012", "HbWHV3+I3PerTrips", "HbW HV3+ High Income Per-Trips", 0)
+        util.initmat(eb, "mf3015", "HbWBusPerTrips", "HbW Bus Per-Trips", 0)
+        util.initmat(eb, "mf3020", "HbWRailPerTrips", "HbW Rail Per-Trips", 0)
+        util.initmat(eb, "mf3025", "HbWWCEPerTrips", "HbW WCE Per-Trips", 0)
+        util.initmat(eb, "mf3030", "HbWWalkPerTrips", "HbW Walk Per-Trips", 0)
+        util.initmat(eb, "mf3035", "HbWBikePerTrips", "HbW Bike Per-Trips", 0)
+
+        ## Initialize P-A Trip Tables from trip distribution
+        util.initmat(eb, "mf3050", "HbWP-AI1A0", " HbW P-A Trips I1 A0", 0)
+        util.initmat(eb, "mf3051", "HbWP-AI1A1", " HbW P-A Trips I1 A1", 0)
+        util.initmat(eb, "mf3052", "HbWP-AI1A2", " HbW P-A Trips I1 A2", 0)
+        util.initmat(eb, "mf3053", "HbWP-AI2A0", " HbW P-A Trips I1 A0", 0)
+        util.initmat(eb, "mf3054", "HbWP-AI2A1", " HbW P-A Trips I1 A1", 0)
+        util.initmat(eb, "mf3055", "HbWP-AI2A2", " HbW P-A Trips I1 A2", 0)
+        util.initmat(eb, "mf3056", "HbWP-AI3A0", " HbW P-A Trips I1 A0", 0)
+        util.initmat(eb, "mf3057", "HbWP-AI3A1", " HbW P-A Trips I1 A1", 0)
+        util.initmat(eb, "mf3058", "HbWP-AI3A2", " HbW P-A Trips I1 A2", 0)
