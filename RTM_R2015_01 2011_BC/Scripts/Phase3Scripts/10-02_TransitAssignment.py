@@ -64,6 +64,9 @@ class TransitAssignment(_m.Tool()):
 
         self.cost_perception_factor = 6 # 1/VOT in min/$, assuming VOT = 10 $/hr
 
+        self.run_congested_transit = False
+        self.run_capacited_transit = False
+
         # Values used to derive individidual transit skims
         # WCE Zonal Fare Values in Dollars For Skimming
         # TODO - Update values
@@ -241,26 +244,10 @@ class TransitAssignment(_m.Tool()):
             if sc is not scenariomd:
                 self.skim_wce(sc)
 
-    def set_extended_transit_assignment_spec(self, assign_mode, triptable):
-        ## auxiliary weight: 1.75, waiting time factor: 0.5, wait time weight: 2.25, boarding weight: 4
-        if assign_mode == "Bus":
-            boarding_time_penalty = 1
-            mode_list = self.bus_mode_list
-            ivtt_perception = "@ivttfac"
-
-        if assign_mode == "Rail":
-            boarding_time_penalty = 1
-            mode_list = self.rail_mode_list
-            ivtt_perception = "@ivttfac"
-
-        if assign_mode == "WCE":
-            boarding_time_penalty = 1
-            mode_list = self.wce_mode_list
-            ivtt_perception = "@ivttfac"
-
+    def get_common_transit_assignment_spec(self, modes, demand):
         spec = {
-            "modes": mode_list,
-            "demand": triptable,
+            "modes": modes,
+            "demand": demand,
             "waiting_time": {
                 "headway_fraction": 1,
                 "effective_headways": "@hdwyeff",
@@ -269,7 +256,7 @@ class TransitAssignment(_m.Tool()):
             },
             "boarding_time": {
                 "at_nodes": {
-                    "penalty": boarding_time_penalty,
+                    "penalty": 1,
                     "perception_factor": 4
                 },
                 "on_lines": None
@@ -279,7 +266,7 @@ class TransitAssignment(_m.Tool()):
                 "on_lines": {"penalty": "@linefare", "perception_factor": self.cost_perception_factor}
             },
             "in_vehicle_time": {
-                "perception_factor": ivtt_perception
+                "perception_factor": "@ivttfac"
             },
             "in_vehicle_cost": {"penalty": "@fareincrement","perception_factor": self.cost_perception_factor},
             "aux_transit_time": {
@@ -303,6 +290,18 @@ class TransitAssignment(_m.Tool()):
             },
             "type": "EXTENDED_TRANSIT_ASSIGNMENT"
         }
+        return spec
+
+    def set_extended_transit_assignment_spec(self, assign_mode, triptable):
+        ## auxiliary weight: 1.75, waiting time factor: 0.5, wait time weight: 2.25, boarding weight: 4
+        if assign_mode == "Bus":
+            spec = self.get_common_transit_assignment_spec(self.bus_mode_list, triptable)
+
+        if assign_mode == "Rail":
+            spec = self.get_common_transit_assignment_spec(self.rail_mode_list, triptable)
+
+        if assign_mode == "WCE":
+            spec = self.get_common_transit_assignment_spec(self.wce_mode_list, triptable)
 
         # Define Flow Distribution settings
         if assign_mode=="Bus":
