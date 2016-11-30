@@ -202,9 +202,9 @@ class TransitAssignment(_m.Tool()):
                 _m.logbook_level(self.previous_level)
 
                 # Set Assignment Parameters
-                bus_spec = self.set_extended_transit_assignment_spec("Bus", demand_bus)
-                rail_spec = self.set_extended_transit_assignment_spec("Rail", demand_rail)
-                wce_spec = self.set_extended_transit_assignment_spec("WCE", demand_wce)
+                bus_spec  = self.get_bus_transit_assignment_spec(demand_bus)
+                rail_spec = self.get_rail_transit_assignment_spec(demand_rail)
+                wce_spec  = self.get_wce_transit_assignment_spec(demand_wce)
 
                 # Run Assignment
                 assign_transit(bus_spec, scenario=sc, add_volumes=False, save_strategies=True, class_name= "Bus")
@@ -292,128 +292,123 @@ class TransitAssignment(_m.Tool()):
         }
         return spec
 
-    def set_extended_transit_assignment_spec(self, assign_mode, triptable):
-        ## auxiliary weight: 1.75, waiting time factor: 0.5, wait time weight: 2.25, boarding weight: 4
-        if assign_mode == "Bus":
-            spec = self.get_common_transit_assignment_spec(self.bus_mode_list, triptable)
+    def get_bus_transit_assignment_spec(self, demand):
+        spec = self.get_common_transit_assignment_spec(self.bus_mode_list, demand)
 
-        if assign_mode == "Rail":
-            spec = self.get_common_transit_assignment_spec(self.rail_mode_list, triptable)
-
-        if assign_mode == "WCE":
-            spec = self.get_common_transit_assignment_spec(self.wce_mode_list, triptable)
-
-        # Define Flow Distribution settings
-        if assign_mode=="Bus":
-            spec["flow_distribution_at_origins"]= {
+        spec["flow_distribution_at_origins"]= {
                 "choices_at_origins": "OPTIMAL_STRATEGY",
                 "fixed_proportions_on_connectors": None
-            }
-            spec["flow_distribution_at_regular_nodes_with_aux_transit_choices"]= {
-                "choices_at_regular_nodes": "OPTIMAL_STRATEGY"
-            }
+        }
+        spec["flow_distribution_at_regular_nodes_with_aux_transit_choices"]= {
+            "choices_at_regular_nodes": "OPTIMAL_STRATEGY"
+        }
 
-        if assign_mode == "Rail" or assign_mode == "WCE":
-            spec["flow_distribution_at_origins"]= {
-                                            "by_time_to_destination": "BEST_CONNECTOR",
-                                            "by_fixed_proportions": None
-                                        }
-        # Define Journey Levels
-        # Journey Level for Bus to account for free transfers between buses
-        if assign_mode == "Bus":
-            spec["journey_levels"] =[
-                {
-                    "description": "Not boarded yet",
-                    "destinations_reachable": False,
-                    "transition_rules": [
-                        {"mode": "b", "next_journey_level": 1},
-                        {"mode": "g", "next_journey_level": 1}
-                    ],
-                    "boarding_time": None,
-                    "boarding_cost": None,
-                    "waiting_time": None
+        spec["journey_levels"] =[
+            {
+                "description": "Not boarded yet",
+                "destinations_reachable": False,
+                "transition_rules": [
+                    {"mode": "b", "next_journey_level": 1},
+                    {"mode": "g", "next_journey_level": 1}
+                ],
+                "boarding_time": None,
+                "boarding_cost": None,
+                "waiting_time": None
+            },
+            {
+                "description": "Boarded bus",
+                "destinations_reachable": True,
+                "transition_rules": [
+                    {"mode": "b", "next_journey_level": 1},
+                    {"mode": "g", "next_journey_level": 1}
+                ],
+                "boarding_time": None,
+                "boarding_cost": {
+                    "at_nodes": None,
+                    "on_lines": {"penalty": "@xferlinefare","perception_factor": self.cost_perception_factor}
                 },
-                {
-                    "description": "Boarded bus",
-                    "destinations_reachable": True,
-                    "transition_rules": [
-                        {"mode": "b", "next_journey_level": 1},
-                        {"mode": "g", "next_journey_level": 1}
-                    ],
-                    "boarding_time": None,
-                    "boarding_cost": {
-                        "at_nodes": None,
-                        "on_lines": {"penalty": "@xferlinefare","perception_factor": self.cost_perception_factor}
-                    },
-                    "waiting_time": None
-                }
-            ]
-        # Journey Level for Rail to account for free transfers and must use mode
-        if assign_mode == "Rail":
-            spec["journey_levels"] =[
-                {
-                    "description": "Not boarded yet",
-                    "destinations_reachable": False,
-                    "transition_rules": [
-                        {"mode": "b", "next_journey_level": 1},
-                        {"mode": "f", "next_journey_level": 2},
-                        {"mode": "g", "next_journey_level": 1},
-                        {"mode": "h", "next_journey_level": 2},
-                        {"mode": "l", "next_journey_level": 2},
-                        {"mode": "s", "next_journey_level": 2}
-                    ],
-                    "boarding_time": None,
-                    "boarding_cost": None,
-                    "waiting_time": None
-                },
-                {
-                    "description": "Boarded bus only",
-                    "destinations_reachable": False,
-                    "transition_rules": [
-                        {"mode": "b", "next_journey_level": 1},
-                        {"mode": "f", "next_journey_level": 2},
-                        {"mode": "g", "next_journey_level": 1},
-                        {"mode": "h", "next_journey_level": 2},
-                        {"mode": "l", "next_journey_level": 2},
-                        {"mode": "s", "next_journey_level": 2}
-                    ],
-                    "boarding_time": None,
-                    "boarding_cost": {
-                        "at_nodes": None,
-                        "on_lines": {"penalty": "@xferlinefare","perception_factor": self.cost_perception_factor}
-                    },
-                    "waiting_time": None
-                },
-                {
-                    "description": "Boarded rail",
-                    "destinations_reachable": True,
-                    "transition_rules": [
-                        {"mode": "b", "next_journey_level": 2},
-                        {"mode": "f", "next_journey_level": 2},
-                        {"mode": "g", "next_journey_level": 2},
-                        {"mode": "h", "next_journey_level": 2},
-                        {"mode": "l", "next_journey_level": 2},
-                        {"mode": "s", "next_journey_level": 2}
-                    ],
-                    "boarding_time": None,
-                    "boarding_cost": {
-                        "at_nodes": None,
-                        "on_lines": {"penalty": "@xferlinefare", "perception_factor": self.cost_perception_factor}
-                    },
-                    "waiting_time": None
-                }
-            ]
-
-        # Journey Level for WCE to account for free/reduced transfers and must use mode
-        # Free transfers from WCE to Bus/Skytrain
-        # Upgrade from Bus/Skytrain to WCE
-        if assign_mode == "WCE":
-            spec["boarding_cost"] = {
-                "at_nodes": {"penalty": "@wcestopfare", "perception_factor": self.cost_perception_factor},
-                "on_lines": {"penalty": "@linefare", "perception_factor": self.cost_perception_factor}
+                "waiting_time": None
             }
+        ]
+        return spec
 
-            spec["journey_levels"] =[
+    def get_rail_transit_assignment_spec(self, demand):
+        spec = self.get_common_transit_assignment_spec(self.rail_mode_list, demand)
+
+        spec["flow_distribution_at_origins"]= {
+                "by_time_to_destination": "BEST_CONNECTOR",
+                "by_fixed_proportions": None
+        }
+
+        spec["journey_levels"] = [
+            {
+                "description": "Not boarded yet",
+                "destinations_reachable": False,
+                "transition_rules": [
+                    {"mode": "b", "next_journey_level": 1},
+                    {"mode": "f", "next_journey_level": 2},
+                    {"mode": "g", "next_journey_level": 1},
+                    {"mode": "h", "next_journey_level": 2},
+                    {"mode": "l", "next_journey_level": 2},
+                    {"mode": "s", "next_journey_level": 2}
+                ],
+                "boarding_time": None,
+                "boarding_cost": None,
+                "waiting_time": None
+            },
+            {
+                "description": "Boarded bus only",
+                "destinations_reachable": False,
+                "transition_rules": [
+                    {"mode": "b", "next_journey_level": 1},
+                    {"mode": "f", "next_journey_level": 2},
+                    {"mode": "g", "next_journey_level": 1},
+                    {"mode": "h", "next_journey_level": 2},
+                    {"mode": "l", "next_journey_level": 2},
+                    {"mode": "s", "next_journey_level": 2}
+                ],
+                "boarding_time": None,
+                "boarding_cost": {
+                    "at_nodes": None,
+                    "on_lines": {"penalty": "@xferlinefare","perception_factor": self.cost_perception_factor}
+                },
+                "waiting_time": None
+            },
+            {
+                "description": "Boarded rail",
+                "destinations_reachable": True,
+                "transition_rules": [
+                    {"mode": "b", "next_journey_level": 2},
+                    {"mode": "f", "next_journey_level": 2},
+                    {"mode": "g", "next_journey_level": 2},
+                    {"mode": "h", "next_journey_level": 2},
+                    {"mode": "l", "next_journey_level": 2},
+                    {"mode": "s", "next_journey_level": 2}
+                ],
+                "boarding_time": None,
+                "boarding_cost": {
+                    "at_nodes": None,
+                    "on_lines": {"penalty": "@xferlinefare", "perception_factor": self.cost_perception_factor}
+                },
+                "waiting_time": None
+            }
+        ]
+        return spec
+
+    def get_wce_transit_assignment_spec(self, demand):
+        spec = self.get_common_transit_assignment_spec(self.wce_mode_list, demand)
+
+        spec["flow_distribution_at_origins"]= {
+                "by_time_to_destination": "BEST_CONNECTOR",
+                "by_fixed_proportions": None
+        }
+
+        spec["boarding_cost"] = {
+            "at_nodes": {"penalty": "@wcestopfare", "perception_factor": self.cost_perception_factor},
+            "on_lines": {"penalty": "@linefare", "perception_factor": self.cost_perception_factor}
+        }
+
+        spec["journey_levels"] = [
             {
                 "description": "Not boarded yet",
                 "destinations_reachable": False,
