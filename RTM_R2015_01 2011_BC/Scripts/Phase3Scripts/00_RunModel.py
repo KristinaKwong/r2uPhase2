@@ -91,8 +91,9 @@ class FullModelRun(_m.Tool()):
                              "considered converged.  If this is not "
                              "the case run again with more iterations.")
 
-        pb.add_checkbox("run_congested_transit", label="Run Congested Transit Assignment")
-        pb.add_checkbox("run_capacited_transit", label="Run Capacited Transit Assignment")
+        with pb.section("Transit Assignment Options"):
+            pb.add_checkbox("run_congested_transit", label="Run Congested Transit Assignment")
+            pb.add_checkbox("run_capacited_transit", label="Run Capacited Transit Assignment")
 
         pb.add_text_box(tool_attribute_name="num_processors",
                         size="3",

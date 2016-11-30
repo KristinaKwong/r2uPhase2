@@ -89,8 +89,9 @@ class TransitAssignment(_m.Tool()):
         pb.description = "Performs Transit Assignments by Class (Bus, Rail, WCE) with Crowding and Capacity Constraint Options"
         pb.branding_text = "TransLink"
 
-        pb.add_checkbox("run_congested_transit", label="Run Congested Transit Assignment")
-        pb.add_checkbox("run_capacited_transit", label="Run Capacited Transit Assignment")
+        with pb.section("Transit Assignment Options"):
+            pb.add_checkbox("run_congested_transit", label="Run Congested Transit Assignment")
+            pb.add_checkbox("run_capacited_transit", label="Run Capacited Transit Assignment")
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
