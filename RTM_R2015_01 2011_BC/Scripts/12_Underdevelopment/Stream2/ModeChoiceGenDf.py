@@ -42,7 +42,7 @@ class ModeChoiceGenDf(_m.Tool()):
         #self.matrix_batchins(eb)
         ## Park and Ride determine best lot
         pnr_costs = os.path.join(input_path, "pnr_inputs.csv")
-        model_year = int(eb.matrix("ms149").data)
+        model_year = int(util.get_matrix_numpy(eb, "Year"))
         self.read_file(eb, pnr_costs)
         self.AutoGT(eb)
         self.BusGT(eb)
@@ -50,13 +50,16 @@ class ModeChoiceGenDf(_m.Tool()):
         self.WceGT(eb)
         self.bestlot(eb, model_year)
         ## General Setup
-        BLBsWk = util.get_matrix_numpy(eb, "mf6000").flatten() #Best Lot Bus Work
-        BLBsNw = util.get_matrix_numpy(eb, "mf6130").flatten() #Best Lot Bus Non-Work
-        BLRlWk = util.get_matrix_numpy(eb, "mf6001").flatten() #Best Lot Rail Work
-        BLRlNw = util.get_matrix_numpy(eb, "mf6131").flatten() #Best Lot Rail Non-Work
-        BLWcWk = util.get_matrix_numpy(eb, "mf6002").flatten() #Best Lot WCE Work
-        BLWcNw = util.get_matrix_numpy(eb, "mf6132").flatten() #Best Lot WCE Non-Work
-        NoTAZ  = len(util.get_matrix_numpy(eb, "mo51"))
+        BLBsWk = util.get_matrix_numpy(eb, "buspr-lotChceWkAMPA").flatten() #Best Lot Bus Work
+        BLBsNw = util.get_matrix_numpy(eb, "buspr-lotChceNWkAMPA").flatten() #Best Lot Bus Non-Work
+        BLRlWk = util.get_matrix_numpy(eb, "railpr-lotChceWkAMPA").flatten() #Best Lot Rail Work
+        BLRlNw = util.get_matrix_numpy(eb, "railpr-lotChceNWkAMPA").flatten() #Best Lot Rail Non-Work
+        BLWcWk = util.get_matrix_numpy(eb, "wcepr-lotChceWkAMPA").flatten() #Best Lot WCE Work
+        BLWcNw = util.get_matrix_numpy(eb, "wcepr-lotChceNWkAMPA").flatten() #Best Lot WCE Non-Work
+        NoTAZ  = len(util.get_matrix_numpy(eb, "zoneindex")) # Number of TAZs in Model
+
+
+
 
         hbwo_fct = self.get_fact[["HbWBl_AM_P-A", "HbWBl_MD_P-A", "HbWBl_PM_P-A"],
                                  ["HbWBl_AM_A-P", "HbWBl_MD_A-P", "HbWBl_PM_A-P"]]
@@ -95,13 +98,13 @@ class ModeChoiceGenDf(_m.Tool()):
         TimeDict, DistDict, TollDict = {}, {}, {}
         # Generate Skim Dictionaries
         #                                 AM    ,    MD   ,     PM
-        self.GenSkimDict(eb, DistDict, ["mf5000", "mf5020", "mf5040"]) # Distance
-        self.GenSkimDict(eb, TimeDict, ["mf5001", "mf5021", "mf5041"]) # Time
-        self.GenSkimDict(eb, TollDict, ["mf5002", "mf5022", "mf5042"]) # Toll
+        self.GenSkimDict(eb, DistDict, ["AmSovWkDist", "MdSovWkDist", "PmSovWkDist"]) # Distance
+        self.GenSkimDict(eb, TimeDict, ["AmSovWkTime", "MdSovWkTime", "PmSovWkTime"]) # Time
+        self.GenSkimDict(eb, TollDict, ["AmSovWkToll", "MdSovWkToll", "PmSovWkToll"]) # Toll
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
-        BlendDict = {'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['mf5100', 'mf5101', 'mf5102']}, # Home-base work
-                     'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['mf5170', 'mf5171', 'mf5172']}} # Non-home base work
+        BlendDict = {'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlSovDist', 'HbWBlSovTime', 'HbWBlSovToll']}, # Home-base work
+                     'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlSovDist', 'NHbWBlSovTime', 'NHbWBlSovToll']}} # Non-home base work
 
         for keys, values in BlendDict.items():
             Df = {}
@@ -119,12 +122,12 @@ class ModeChoiceGenDf(_m.Tool()):
         ##############################################################################
 
         # Blend Factors                AM , MD  , PM           AM  ,MD , PM    Where Blended Matrices get stored in same order as above
-        BlendDictPR = {'hbwprb':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['mf6800', 'mf6801', 'mf6802', 'mf6803', 'mf6804'], #Bus
-                       'BL': BLBsWk},
-                       'hbwprr':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['mf6810', 'mf6811', 'mf6812', 'mf6813', 'mf6814'], #Rail
-                       'BL': BLRlWk},
-                       'hbwprw':{'PA': hbwo_fct_wce[0], 'AP':hbwo_fct_wce[1], 'Mat':['mf6820', 'mf6821', 'mf6822',  'mf6823', 'mf6824'], #WCE
-                       'BL': BLWcWk}
+        BlendDictPR = {'hbwprb':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
+                       'Mat':['HbWBlBAuPRDist', 'HbWBlBAuPRTime', 'HbWBlBAuPRToll', 'HbWBAuPrkCst', 'HbWBAuTrmTim'], 'BL': BLBsWk}, #Bus
+                       'hbwprr':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
+                       'Mat':['HbWBlRAuPRDist', 'HbWBlRAuPRTime', 'HbWBlRAuPRToll', 'HbWRAuPrkCst', 'HbWRAuTrmTim'], 'BL': BLRlWk}, # Rail
+                       'hbwprw':{'PA': hbwo_fct_wce[0], 'AP':hbwo_fct_wce[1],
+                       'Mat':['HbWBlWAuPRDist', 'HbWBlWAuPRTime', 'HbWBlWAuPRToll', 'HbWWAuPrkCst', 'HbWWAuTrmTim'], 'BL': BLWcWk} # WCE
                       }
 
         for keys, values in BlendDictPR.items():
@@ -139,8 +142,8 @@ class ModeChoiceGenDf(_m.Tool()):
             Df_Auto_Leg['AutoDis'] = self.calc_blend(values, DistDict).flatten()
             Df_Auto_Leg['AutoTim'] = self.calc_blend(values, TimeDict).flatten()
             Df_Auto_Leg['AutoTol'] = self.calc_blend(values, TollDict).flatten()
-            Df_Auto_Leg['Parking'] = util.get_matrix_numpy(eb, "mo90").reshape(1, NoTAZ) + np.zeros(NoTAZ,1)
-            Df_Auto_Leg['TermTim'] = util.get_matrix_numpy(eb, "mo92").reshape(1, NoTAZ) + np.zeros(NoTAZ,1)
+            Df_Auto_Leg['Parking'] = util.get_matrix_numpy(eb, "prcost").reshape(1, NoTAZ) + np.zeros(NoTAZ,1)
+            Df_Auto_Leg['TermTim'] = util.get_matrix_numpy(eb, "prtrmt").reshape(1, NoTAZ) + np.zeros(NoTAZ,1)
             Df_Auto_Leg['Parking'] = Df_Auto_Leg['Parking'].flatten()
             Df_Auto_Leg['TermTim'] = Df_Auto_Leg['TermTim'].flatten()
             # Join the two data frames based on skims from Origin to the Best Lot
@@ -163,13 +166,13 @@ class ModeChoiceGenDf(_m.Tool()):
         TimeDict, DistDict, TollDict = {}, {}, {}
         # Generate Skim Dictionaries
         #                                 AM    ,    MD   ,     PM
-        self.GenSkimDict(eb, DistDict, ["mf5006", "mf5026", "mf5046"]) # Distance
-        self.GenSkimDict(eb, TimeDict, ["mf5007", "mf5027", "mf5047"]) # Time
-        self.GenSkimDict(eb, TollDict, ["mf5008", "mf5028", "mf5048"]) # Toll
+        self.GenSkimDict(eb, DistDict, ["AmHovWkDist", "MdHovWkDist", "PmHovWkDist"]) # Distance
+        self.GenSkimDict(eb, TimeDict, ["AmHovWkTime", "MdHovWkTime", "PmHovWkTime"]) # Time
+        self.GenSkimDict(eb, TollDict, ["AmHovWkToll", "MdHovWkToll", "PmHovWkToll"]) # Toll
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
-        BlendDict = {'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['mf5106', 'mf5107', 'mf5108']}, # Home-base work
-                     'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['mf5176', 'mf5177', 'mf5178']}} # Non-home base work
+        BlendDict = {'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovDist', 'HbWBlHovTime', 'HbWBlHovToll']}, # Home-base work
+                     'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlHovDist', 'NHbWBlHovTime', 'NHbWBlHovToll']}} # Non-home base work
 
         for keys, values in BlendDict.items():
             Df = {}
@@ -191,19 +194,19 @@ class ModeChoiceGenDf(_m.Tool()):
         TimeDict, DistDict, TollDict = {}, {}, {}
         # Generate Skim Dictionaries
         #                                 AM    ,    MD   ,     PM
-        self.GenSkimDict(eb, DistDict, ["mf5003", "mf5023", "mf5043"]) # Distance
-        self.GenSkimDict(eb, TimeDict, ["mf5004", "mf5024", "mf5044"]) # Time
-        self.GenSkimDict(eb, TollDict, ["mf5005", "mf5025", "mf5045"]) # Toll
+        self.GenSkimDict(eb, DistDict, ["AmSovNwkDist", "MdSovNwkDist", "PmSovNwkDist"]) # Distance
+        self.GenSkimDict(eb, TimeDict, ["AmSovNwkTime", "MdSovNwkTime", "PmSovNwkTime"]) # Time
+        self.GenSkimDict(eb, TollDict, ["AmSovNwkToll", "MdSovNwkToll", "PmSovNwkToll"]) # Toll
         #
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM     Where Blended Matrices get stored in same order as above
         BlendDict = {
-                     'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['mf5110', 'mf5111', 'mf5112']}, # Home-base university
-                     'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['mf5120', 'mf5121', 'mf5122']}, # Home-base school
-                     'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['mf5130', 'mf5131', 'mf5132']}, # Home-base shopping
-                     'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['mf5140', 'mf5141', 'mf5142']}, # Home-base personal business
-                     'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['mf5150', 'mf5151', 'mf5152']}, # Home-base social
-                     'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['mf5160', 'mf5161', 'mf5162']}, # Home-base escorting
-                     'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['mf5180', 'mf5181', 'mf5182']}} # non-home base other
+                     'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['HbUBlSovDist', 'HbUBlSovTime', 'HbUBlSovToll']}, # Home-base university
+                     'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlSovDist', 'HbScBlSovTime', 'HbScBlSovToll']}, # Home-base school
+                     'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlSovDist', 'HbShBlSovTime', 'HbShBlSovToll']}, # Home-base shopping
+                     'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlSovDist', 'HbPbBlSovTime', 'HbPbBlSovToll']}, # Home-base personal business
+                     'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlSovDist', 'HbSoBlSovTime', 'HbSoBlSovToll']}, # Home-base social
+                     'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlSovDist', 'HbEsBlSovTime', 'HbEsBlSovToll']}, # Home-base escorting
+                     'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlSovDist', 'NHbOBlSovTime', 'NHbOBlSovToll']}} # non-home base other
 
         for keys, values in BlendDict.items():
             # Calculate blended skim
@@ -223,19 +226,19 @@ class ModeChoiceGenDf(_m.Tool()):
         TimeDict, DistDict, TollDict = {}, {}, {}
         # Generate Skim Dictionaries
         #                                 AM    ,    MD   ,     PM
-        self.GenSkimDict(eb, DistDict, ["mf5009", "mf5029", "mf5049"]) # Distance
-        self.GenSkimDict(eb, TimeDict, ["mf5010", "mf5030", "mf5050"]) # Time
-        self.GenSkimDict(eb, TollDict, ["mf5011", "mf5031", "mf5051"]) # Toll
+        self.GenSkimDict(eb, DistDict, ["AmHovNwkDist", "MdHovNwkDist", "PmHovNwkDist"]) # Distance
+        self.GenSkimDict(eb, TimeDict, ["AmHovNwkTime", "MdHovNwkTime", "PmHovNwkTime"]) # Time
+        self.GenSkimDict(eb, TollDict, ["AmHovNwkToll", "MdHovNwkToll", "PmHovNwkToll"]) # Toll
         #
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM     Where Blended Matrices get stored in same order as above
         BlendDict = {
-                     'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['mf5116', 'mf5117', 'mf5118']}, # Home-base university
-                     'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['mf5126', 'mf5127', 'mf5128']}, # Home-base school
-                     'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['mf5136', 'mf5137', 'mf5138']}, # Home-base shopping
-                     'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['mf5146', 'mf5147', 'mf5148']}, # Home-base personal business
-                     'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['mf5156', 'mf5157', 'mf5158']}, # Home-base social
-                     'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['mf5166', 'mf5167', 'mf5168']}, # Home-base escorting
-                     'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['mf5186', 'mf5187', 'mf5188']}} # non-home base other
+                     'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['HbUBlHovDist', 'HbUBlHovTime', 'HbUBlHovToll']}, # Home-base university
+                     'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlHovDist', 'HbScBlHovTime', 'HbScBlHovToll']}, # Home-base school
+                     'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovDist', 'HbShBlHovTime', 'HbShBlHovToll']}, # Home-base shopping
+                     'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovDist', 'HbPbBlHovTime', 'HbPbBlHovToll']}, # Home-base personal business
+                     'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovDist', 'HbSoBlHovTime', 'HbSoBlHovToll']}, # Home-base social
+                     'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlHovDist', 'HbEsBlHovTime', 'HbEsBlHovToll']}, # Home-base escorting
+                     'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlHovDist', 'NHbOBlHovTime', 'NHbOBlHovToll']}} # non-home base other
 
         for keys, values in BlendDict.items():
             # Calculate blended skim
@@ -258,23 +261,24 @@ class ModeChoiceGenDf(_m.Tool()):
         BusBrdDict, BusFarDict = {}, {}
         # Generate Skim Dictionaries
         #                                  AM    ,    MD   ,     PM
-        self.GenSkimDict(eb, BusIVTDict, ["mf5200", "mf5210", "mf5220"]) # Bus IVTT
-        self.GenSkimDict(eb, BusWatDict, ["mf5201", "mf5211", "mf5221"]) # Bus Wait
-        self.GenSkimDict(eb, BusAuxDict, ["mf5202", "mf5212", "mf5222"]) # Bus Aux
-        self.GenSkimDict(eb, BusBrdDict, ["mf5203", "mf5213", "mf5223"]) # Bus Boarding
-        self.GenSkimDict(eb, BusFarDict, ["mf5204", "mf5214", "mf5224"]) # Bus Fare
+        self.GenSkimDict(eb, BusIVTDict, ["AmBusIvtt", "MdBusIvtt",  "PmBusIvtt"]) # Bus IVTT
+        self.GenSkimDict(eb, BusWatDict, ["AmBusWait", "MdBusWait",  "PmBusWait"]) # Bus Wait
+        self.GenSkimDict(eb, BusAuxDict, ["AmBusAux",  "MdBusAux",   "PmBusAux"]) # Bus Aux
+        self.GenSkimDict(eb, BusBrdDict, ["AmBusBoard","MdBusBoard", "PmBusBoard"]) # Bus Boarding
+        self.GenSkimDict(eb, BusFarDict, ["AmBusFare", "MdBusFare",  "PmBusFare"]) # Bus Fare
+
 
        # Blend Factors
         BlendDict = {   #AM,   MD,   PM         AM,   MD,   PM         Where Blended Matrices get stored in same order as above
-         'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['mf5300', 'mf5301', 'mf5302', 'mf5303', 'mf5304']},  # Home-base work
-         'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['mf5310', 'mf5311', 'mf5312', 'mf5313', 'mf5314']},  # Home-base university
-         'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['mf5320', 'mf5321', 'mf5322', 'mf5323', 'mf5324']},  # Home-base school
-         'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['mf5330', 'mf5331', 'mf5332', 'mf5333', 'mf5334']},  # Home-base shopping
-         'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['mf5340', 'mf5341', 'mf5342', 'mf5343', 'mf5344']},  # Home-base personal business
-         'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['mf5350', 'mf5351', 'mf5352', 'mf5353', 'mf5354']},  # Home-base social
-         'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['mf5360', 'mf5361', 'mf5362', 'mf5363', 'mf5364']},  # Home-base escorting
-         'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['mf5370', 'mf5371', 'mf5372', 'mf5373', 'mf5374']},  # Non-home base work
-         'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['mf5380', 'mf5381', 'mf5382', 'mf5383', 'mf5384']}}  # Non-home base other
+         'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlBusIvtt', 'HbWBlBusWait', 'HbWBlBusAux', 'HbWBlBusBoard', 'HbWBlBusFare']},  # Home-base work
+         'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['HbUBlBusIvtt', 'HbUBlBusWait', 'HbUBlBusAux', 'HbUBlBusBoard', 'HbUBlBusFare']},  # Home-base university
+         'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlBusIvtt', 'HbScBlBusWait', 'HbScBlBusAux', 'HbScBlBusBoard', 'HbScBlBusFare']},  # Home-base school
+         'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlBusIvtt', 'HbShBlBusWait', 'HbShBlBusAux', 'HbShBlBusBoard', 'HbShBlBusFare']},  # Home-base shopping
+         'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlBusIvtt', 'HbPbBlBusWait', 'HbPbBlBusAux', 'HbPbBlBusBoard', 'HbPbBlBusFare']},  # Home-base personal business
+         'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlBusIvtt', 'HbSoBlBusWait', 'HbSoBlBusAux', 'HbSoBlBusBoard', 'HbSoBlBusFare']},  # Home-base social
+         'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlBusIvtt', 'HbEsBlBusWait', 'HbEsBlBusAux', 'HbEsBlBusBoard', 'HbEsBlBusFare']},  # Home-base escorting
+         'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlBusIvtt', 'NHbWBlBusWait', 'NHbWBlBusAux', 'NHbWBlBusBoard', 'NHbWBlBusFare']},  # Non-home base work
+         'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlBusIvtt', 'NHbOBlBusWait', 'NHbOBlBusAux', 'NHbOBlBusBoard', 'NHbOBlBusFare']}}  # Non-home base other
 
         for keys, values in BlendDict.items():
             # Calculate blended skims
@@ -295,8 +299,8 @@ class ModeChoiceGenDf(_m.Tool()):
        ##       Park and Ride Home-base Work/Uni/Soc Bus-leg
        ##############################################################################
         BlendDictPR = { #AM,   MD,   PM         AM,   MD,   PM         Where Blended Matrices get stored in same order as above
-         'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['mf6900', 'mf6901', 'mf6902', 'mf6903', 'mf6904'], # Home-base work
-         'BL': BLBsWk}
+         'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
+         'Mat':['HbWBlBAuBusIvtt', 'HbWBlBAuBusWait', 'HbWBlBAuBusAux', 'HbWBlBAuBusBoard', 'HbWBlBAuBusFare'], 'BL': BLBsWk}
                       }
         for keys, values in BlendDictPR.items():
 
@@ -332,33 +336,33 @@ class ModeChoiceGenDf(_m.Tool()):
 
         # Generate Skim Dictionaries
         #                                  AM    ,    MD   ,     PM
-        self.GenSkimDict(eb, RalIVRDict, ["mf5400", "mf5410", "mf5420"]) # Rail IVR
-        self.GenSkimDict(eb, RalIVBDict, ["mf5401", "mf5411", "mf5421"]) # Rail IVB
-        self.GenSkimDict(eb, RalWatDict, ["mf5402", "mf5412", "mf5422"]) # Rail Wait
-        self.GenSkimDict(eb, RalAuxDict, ["mf5403", "mf5413", "mf5423"]) # Rail Aux
-        self.GenSkimDict(eb, RalBrdDict, ["mf5404", "mf5414", "mf5424"]) # Rail Boarding
-        self.GenSkimDict(eb, RalFarDict, ["mf5405", "mf5415", "mf5425"]) # Rail Fare
+        self.GenSkimDict(eb, RalIVRDict, ["AmRailIvtt",    "MdRailIvtt",    "PmRailIvtt"]) # Rail IVR
+        self.GenSkimDict(eb, RalIVBDict, ["AmRailIvttBus", "MdRailIvttBus", "PmRailIvttBus"]) # Rail IVB
+        self.GenSkimDict(eb, RalWatDict, ["AmRailWait",    "MdRailWait",    "PmRailWait"]) # Rail Wait
+        self.GenSkimDict(eb, RalAuxDict, ["AmRailAux",     "MdRailAux",     "PmRailAux"]) # Rail Aux
+        self.GenSkimDict(eb, RalBrdDict, ["AmRailBoard",   "MdRailBoard",   "PmRailBoard"]) # Rail Boarding
+        self.GenSkimDict(eb, RalFarDict, ["AmRailFare",    "MdRailFare",    "PmRailFare"]) # Rail Fare
 
         # Blend Factors
         BlendDict = {  #AM,   MD,   PM         AM,   MD,   PM
          'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
-                 'Mat':['mf5500', 'mf5501', 'mf5502', 'mf5503', 'mf5504', 'mf5505']}, # Where Blended Matrices get stored in same order as above
+                 'Mat':['HbWBlRailIvtt', 'HbWBlRailIvttBus', 'HbWBlRailWait', 'HbWBlRailAux', 'HbWBlRailBoard', 'HbWBlRailFare']}, # Where Blended Matrices get stored in same order as above
          'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1],
-                 'Mat':['mf5510', 'mf5511', 'mf5512', 'mf5513', 'mf5514', 'mf5515']},
+                 'Mat':['HbUBlRailIvtt', 'HbUBlRailIvttBus', 'HbUBlRailWait', 'HbUBlRailAux', 'HbUBlRailBoard', 'HbUBlRailFare']},
          'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1],
-                 'Mat':['mf5520', 'mf5521', 'mf5522', 'mf5523', 'mf5524', 'mf5525']},
+                 'Mat':['HbScBlRailIvtt', 'HbScBlRailIvttBus', 'HbScBlRailWait', 'HbScBlRailAux', 'HbScBlRailBoard', 'HbScBlRailFare']},
          'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1],
-                 'Mat':['mf5530', 'mf5531', 'mf5532', 'mf5533', 'mf5534', 'mf5535']},
+                 'Mat':['HbShBlRailIvtt', 'HbShBlRailIvttBus', 'HbShBlRailWait', 'HbShBlRailAux', 'HbShBlRailBoard', 'HbShBlRailFare']},
          'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1],
-                 'Mat':['mf5540', 'mf5541', 'mf5542', 'mf5543', 'mf5544', 'mf5545']},
+                 'Mat':['HbPbBlRailIvtt', 'HbPbBlRailIvttBus', 'HbPbBlRailWait', 'HbPbBlRailAux', 'HbPbBlRailBoard', 'HbPbBlRailFare']},
          'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1],
-                 'Mat':['mf5550', 'mf5551', 'mf5552', 'mf5553', 'mf5554', 'mf5555']},
+                 'Mat':['HbSoBlRailIvtt', 'HbSoBlRailIvttBus', 'HbSoBlRailWait', 'HbSoBlRailAux', 'HbSoBlRailBoard', 'HbSoBlRailFare']},
          'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1],
-                 'Mat':['mf5560', 'mf5561', 'mf5562', 'mf5563', 'mf5564', 'mf5565']},
+                 'Mat':['HbEsBlRailIvtt', 'HbEsBlRailIvttBus', 'HbEsBlRailWait', 'HbEsBlRailAux', 'HbEsBlRailBoard', 'HbEsBlRailFare']},
          'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1],
-                 'Mat':['mf5570', 'mf5571', 'mf5572', 'mf5573', 'mf5574', 'mf5575']},
+                 'Mat':['NHbWBlRailIvtt', 'NHbWBlRailIvttBus', 'NHbWBlRailWait', 'NHbWBlRailAux', 'NHbWBlRailBoard', 'NHbWBlRailFare']},
          'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1],
-                 'Mat':['mf5580', 'mf5581', 'mf5582', 'mf5583', 'mf5584', 'mf5585']}}
+                 'Mat':['NHbOBlRailIvtt', 'NHbOBlRailIvttBus', 'NHbOBlRailWait', 'NHbOBlRailAux', 'NHbOBlRailBoard', 'NHbOBlRailFare']},
 
         for keys, values in BlendDict.items():
             # Calculate blended skims
@@ -381,7 +385,8 @@ class ModeChoiceGenDf(_m.Tool()):
 #        ##############################################################################
         BlendDictPR = { #AM,   MD,   PM         AM,   MD,   PM
            'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
-                 'Mat':['mf6910', 'mf6911', 'mf6912', 'mf6913', 'mf6914', 'mf6915'], 'BL': BLRlWk}, #Where Blended Matrices get stored in same order as above
+                 'Mat':['HbWBlRAuRailIvtt', 'HbWBlRAuRailIvttBus', 'HbWBlRAuRailWait', 'HbWBlRAuRailAux', 'HbWBlRAuRailBoard', 'HbWBlRAuRailFare'],
+                        'BL': BLRlWk}, #Where Blended Matrices get stored in same order as above
                       }
         for keys, values in BlendDictPR.items():
 
@@ -419,34 +424,19 @@ class ModeChoiceGenDf(_m.Tool()):
         WCEFarDict = {}
 #        # Generate Skim Dictionaries
 #        #                                        AM ,    PM
-        self.GenSkimDictWCE(eb, WCEIVWDict, ["mf5600", "mf5620"]) # WCE IVW
-        self.GenSkimDictWCE(eb, WCEIVRDict, ["mf5601", "mf5621"]) # WCE IVR
-        self.GenSkimDictWCE(eb, WCEIVBDict, ["mf5602", "mf5622"]) # WCE IVB
-        self.GenSkimDictWCE(eb, WCEWatDict, ["mf5603", "mf5623"]) # WCE Wait
-        self.GenSkimDictWCE(eb, WCEAuxDict, ["mf5604", "mf5624"]) # WCE Aux
-        self.GenSkimDictWCE(eb, WCEBrdDict, ["mf5605", "mf5625"]) # WCE Boarding
-        self.GenSkimDictWCE(eb, WCEFarDict, ["mf5606", "mf5626"])   # WCE Fare
+        self.GenSkimDictWCE(eb, WCEIVWDict, ["AmWceIvtt",     "PmWceIvtt"]) # WCE IVW
+        self.GenSkimDictWCE(eb, WCEIVRDict, ["AmWceIvttRail", "PmWceIvttRail"]) # WCE IVR
+        self.GenSkimDictWCE(eb, WCEIVBDict, ["AmWceIvttBus",  "PmWceIvttBus"]) # WCE IVB
+        self.GenSkimDictWCE(eb, WCEWatDict, ["AmWceWait",     "PmWceWait"]) # WCE Wait
+        self.GenSkimDictWCE(eb, WCEAuxDict, ["AmWceAux",      "PmWceAux"]) # WCE Aux
+        self.GenSkimDictWCE(eb, WCEBrdDict, ["AmWceBoards",   "PmWceBoards"]) # WCE Boarding
+        self.GenSkimDictWCE(eb, WCEFarDict, ["AmWceFare",     "PmWceFare"])   # WCE Fare
 
 #        # Blend Factors
         BlendDict = {    #AM,   PM,        AM,   PM,
          'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
-                 'Mat':['mf5700', 'mf5701', 'mf5702', 'mf5703', 'mf5704', 'mf5705', 'mf5706']},  # Where Blended Matrices get stored in same order as above
-         'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1],
-                 'Mat':['mf5710', 'mf5711', 'mf5712', 'mf5713', 'mf5714', 'mf5715', 'mf5716']},
-         'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1],
-                 'Mat':['mf5720', 'mf5721', 'mf5722', 'mf5723', 'mf5724', 'mf5725', 'mf5726']},
-         'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1],
-                 'Mat':['mf5730', 'mf5731', 'mf5732', 'mf5733', 'mf5734', 'mf5735', 'mf5736']},
-         'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1],
-                 'Mat':['mf5740', 'mf5741', 'mf5742', 'mf5743', 'mf5744', 'mf5745', 'mf5746']},
-         'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1],
-                 'Mat':['mf5750', 'mf5751', 'mf5752', 'mf5753', 'mf5754', 'mf5755', 'mf5756']},
-         'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1],
-                 'Mat':['mf5760', 'mf5761', 'mf5762', 'mf5763', 'mf5764', 'mf5765', 'mf5766']},
-         'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1],
-                 'Mat':['mf5770', 'mf5771', 'mf5772', 'mf5773', 'mf5774', 'mf5775', 'mf5776']},
-         'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1],
-                 'Mat':['mf5780', 'mf5781', 'mf5782', 'mf5783', 'mf5784', 'mf5785', 'mf5786']}}
+                 'Mat':['HbWBlWceIvtt', 'HbWBlWceIvttRail', 'HbWBlWceIvttBus', 'HbWBlWceWait', 'HbWBlWceAux', 'HbWBlWceBoards', 'HbWBlWceFare']},  # Where Blended Matrices get stored in same order as above
+                    }
 
         for keys, values in BlendDict.items():
             # Calculate blended skims
@@ -472,11 +462,12 @@ class ModeChoiceGenDf(_m.Tool()):
 #        ##############################################################################
         BlendDictPR = { #AM,   PM,        AM,   PM,
          'hbwo':{'PA': hbwo_fct_wce[0], 'AP':hbwo_fct_wce[1],  'BL': BLWcWk,
-                 'Mat':['mf6920', 'mf6921', 'mf6922', 'mf6923', 'mf6924', 'mf6925', 'mf6926']} # Where Blended Matrices get stored in same order as above
+                 'Mat':['HbWBlWAuWceIvtt', 'HbWBlWAuWceIvttRail', 'HbWBlWAuWceIvttBus',
+                        'HbWBlWAuWceWait', 'HbWBlWAuWceAux', 'HbWBlWAuWceBoards', 'HbWBlWAuWceFare']} # Where Blended Matrices get stored in same order as above
                       }
 
         for keys, values in BlendDictPR.items():
-        
+
             Df = pd.DataFrame()
             # Generate data frame with Origin Destination and best lot
             Dfmerge = util.get_pd_ij_df(eb)
@@ -698,7 +689,7 @@ class ModeChoiceGenDf(_m.Tool()):
                         "wceFare" : ["mf5606",  "mf5616", "mf5626"]}
 
         # [Work, non-work]
-        vot_mats = ['msvotWkmed', 'msvotNWkmed']
+        vot_mats = ['VotWkWce', 'VotWkWce']
 
         # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
         result_mats = [["mf6030",  "mf6075", "mf6115"],["mf6160",  "mf6200", "mf6240"]]
@@ -721,12 +712,12 @@ class ModeChoiceGenDf(_m.Tool()):
                                        auxTrans=transit_mats["auxTransit"][i],
                                        boardings=transit_mats["boardings"][i],
                                        fare=transit_mats["wceFare"][i],
-                                       wceIVTprcp="mswceIVTprcp",
-                                       wceOVTprcp="mswceOVTprcp",
-                                       railIVTprcp="msrailIVTprcp",
-                                       busIVTprcp="msbusIVTprcp",
-                                       walkprcp="mswalkprcp",
-                                       transferprcp="mswceTRANSprcp",
+                                       wceIVTprcp="wceIVTprcpWk",
+                                       wceOVTprcp="wceWAITprcpWk",
+                                       railIVTprcp="railIVTprcpWk",
+                                       busIVTprcp="busIVTprcpWk",
+                                       walkprcp="wceWALKprcpWk",
+                                       transferprcp="wceTRANSprcpWk",
                                        VOT=vot_mats[j])
 
                 result = ("{wceGT}").format(wceGT=result_mats[j][i])
@@ -745,7 +736,7 @@ class ModeChoiceGenDf(_m.Tool()):
                         "railFare" : ["mf5405",  "mf5415", "mf5425"]}
 
         # [Work, non-work]
-        vot_mats = ['msvotWkmed', 'msvotNWkmed']
+        vot_mats = ['VotWkRail', 'VotWkRail']
 
         # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
         result_mats = [["mf6015", "mf6060", "mf6100"],['mf6145','mf6185','mf6225']]
@@ -766,11 +757,11 @@ class ModeChoiceGenDf(_m.Tool()):
                                        auxTrans=transit_mats["auxTransit"][i],
                                        boardings=transit_mats["boardings"][i],
                                        fare=transit_mats["railFare"][i],
-                                       railIVTprcp="msrailIVTprcp",
-                                       railOVTprcp="msrailOVTprcp",
-                                       busIVTprcp="msbusIVTprcp",
-                                       walkprcp="mswalkprcp",
-                                       transferprcp="msrailTRANSprcp",
+                                       railIVTprcp="railIVTprcpWk",
+                                       railOVTprcp="railWAITprcpWk",
+                                       busIVTprcp="busIVTprcpWk",
+                                       walkprcp="railWALKprcpWk",
+                                       transferprcp="railTRANSprcpWk",
                                        VOT=vot_mats[j])
 
                 result = ("{railGT}").format(railGT=result_mats[j][i])
@@ -788,7 +779,7 @@ class ModeChoiceGenDf(_m.Tool()):
                         "busFare" : ["mf5204",  "mf5214", "mf5224"]}
 
         # [Work, non-work]
-        vot_mats = ['msvotWkmed', 'msvotNWkmed']
+        vot_mats = ['VotWkBus', 'VotWkBus']
 
         # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
         result_mats = [["mf6005", "mf6050", "mf6090"],['mf6135','mf6175','mf6215']]
@@ -807,10 +798,10 @@ class ModeChoiceGenDf(_m.Tool()):
                                        auxTrans=transit_mats["auxTransit"][i],
                                        boardings=transit_mats["boardings"][i],
                                        fare=transit_mats["busFare"][i],
-                                       busIVTprcp="msbusIVTprcp",
-                                       busOVTprcp="msbusOVTprcp",
-                                       walkprcp="mswalkprcp",
-                                       transferprcp="msbusTRANSprcp",
+                                       busIVTprcp="busIVTprcpWk",
+                                       busOVTprcp="busWAITprcpWk",
+                                       walkprcp="busWALKprcpWk",
+                                       transferprcp="busTRANSprcpWk",
                                        VOT=vot_mats[j])
 
                 result = ("{busGT}").format(busGT=result_mats[j][i])
@@ -828,7 +819,7 @@ class ModeChoiceGenDf(_m.Tool()):
                     "autodist" : ["mf5000", "mf5020", "mf5040"]}
 
         # [Work, non-work]
-        vot_mat = 'msvotWkmed'
+        vot_mat = 'VotWkMedIncSov'
 
         # [AMWk, MDWk, PMWk]
         result_mats = ["mf6003", "mf6048", "mf6088"]
@@ -841,7 +832,7 @@ class ModeChoiceGenDf(_m.Tool()):
                                    autotoll=auto_mats["autotoll"][i],
                                    autodist=auto_mats["autodist"][i],
                                    VOT=vot_mat,
-                                   VOC="msVOC",
+                                   VOC="autoOpCost",
                                    lotcost = "mdPRcost",
                                    termtime = "mdPRtermtime")
 
@@ -856,7 +847,7 @@ class ModeChoiceGenDf(_m.Tool()):
                     "autodist" : ["mf5003", "mf5023", "mf5043"] }
 
         # [Work, non-work]
-        vot_mat = 'msvotNWkmed'
+        vot_mat = 'VotNwkMedIncSov'
 
         # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
         result_mats = ['mf6133','mf6173','mf6213']
@@ -869,7 +860,7 @@ class ModeChoiceGenDf(_m.Tool()):
                                    autotoll=auto_mats["autotoll"][i],
                                    autodist=auto_mats["autodist"][i],
                                    VOT=vot_mat,
-                                   VOC="msVOC",
+                                   VOC="autoOpCost",
                                    lotcost = "mdPRcost",
                                    termtime = "mdPRtermtime")
 
@@ -1110,26 +1101,6 @@ class ModeChoiceGenDf(_m.Tool()):
         # PnR Batch-in files
         ####################
 
-        #TODO move the VOT to actual file Batchin -
-        util.initmat(eb,"ms120","votWklow", "work VOT low income in min/$", 6)
-        util.initmat(eb,"ms121","votWkmed", "work VOT med income in min/$", 4)
-        util.initmat(eb,"ms122","votWkhigh", "work VOT high income in min/$", 3)
-        util.initmat(eb,"ms123","votNWklow", "non-work VOT low income in min/$", 12)
-        util.initmat(eb,"ms124","votNWkmed", "non-work VOT med income in min/$", 8)
-        util.initmat(eb,"ms125","votNWkhigh", "non-work VOT high income in min/$", 6)
-        util.initmat(eb,"ms130", "VOC", "Vehicle Operating Variable Cost (/km)", 0.18) # CAA includes fuel, tires, maintence
-        # transit scalars
-        #TODO update these factors to actual values
-        util.initmat(eb, "ms199", "walkprcp", "walk time perception factor", 1)
-        util.initmat(eb, "ms200", "busIVTprcp", "bus IVT perception factor", 1)
-        util.initmat(eb, "ms201", "busOVTprcp", "bus OVT perception factor", 1.5)
-        util.initmat(eb, "ms202", "busTRANSprcp", "bus transfer perception factor", 5)
-        util.initmat(eb, "ms205", "railIVTprcp", "rail IVT perception factor", 1)
-        util.initmat(eb, "ms206", "railOVTprcp", "rail OVT perception factor", 1.5)
-        util.initmat(eb, "ms207", "railTRANSprcp", "rail transfer perception factor", 5)
-        util.initmat(eb, "ms210", "wceIVTprcp", "wce IVT perception factor", 1)
-        util.initmat(eb, "ms211", "wceOVTprcp", "wce OVT perception factor", 1.5)
-        util.initmat(eb, "ms212", "wceTRANSprcp", "wce transfer perception factor", 5)
         # Lot choice using AM impedances, but lot choice fixed for all time periods
         util.initmat(eb, "mf6000", "buspr-lotChceWkAMPA", "Bus Best PnR Lot - Bus",0)
         util.initmat(eb, "mf6001", "railpr-lotChceWkAMPA", "Rail Best PnR Lot - Rail",0)
