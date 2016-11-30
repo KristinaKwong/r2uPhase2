@@ -243,7 +243,7 @@ class TransitAssignment(_m.Tool()):
     def set_extended_transit_assignment_spec(self, assign_mode, triptable):
         ## auxiliary weight: 1.75, waiting time factor: 0.5, wait time weight: 2.25, boarding weight: 4
         if assign_mode == "Bus":
-            boarding_time_penalty = 0
+            boarding_time_penalty = 1
             mode_list = self.bus_mode_list
             ivtt_perception = "@ivttfac"
 
