@@ -47,20 +47,20 @@ class HbWork(_m.Tool()):
 #        ##############################################################################
 
         AvailDict = {
-                     'AutDist ' = 0.0
-                     'WlkDist ' = 5.0
-                     'BikDist ' = 20.0
-                     'TranIVT ' = 1.0
-                     'TranWat ' = 20.0
-                     'TranAux ' = 30.0
-                     'WCEWat '  = 30.0
-                     'WCEAux '  = 40.0
-                     'TranBrd ' = 4.0
-                     'BRTotLow' = 10.0
-                     'BRTotHig' = 120.0
-                     'WCTotLow' = 30.0
-                     'WCTotHig' = 130.0
-                     'PRAutTim' = 0.0
+                     'AutDist ': 0.0,
+                     'WlkDist ': 5.0,
+                     'BikDist ': 20.0,
+                     'TranIVT ': 1.0,
+                     'TranWat ': 20.0,
+                     'TranAux ': 30.0,
+                     'WCEWat ' : 30.0,
+                     'WCEAux ' : 40.0,
+                     'TranBrd ': 4.0,
+                     'BRTotLow': 10.0,
+                     'BRTotHig': 120.0,
+                     'WCTotLow': 30.0,
+                     'WCTotHig': 130.0,
+                     'PRAutTim': 0.0
                     }
 
         # Declare Utilities Data Frame
@@ -455,7 +455,7 @@ class HbWork(_m.Tool()):
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
 
-        I1A0_Dict = self.Calc_Prob(eb, Dict, "mf9000", thet)
+        I1A0_Dict = self.Calc_Prob(eb, Dict, "HbWLSI1A0", thet)
 
         ## Low Income One Auto
         Dict = {
@@ -465,7 +465,7 @@ class HbWork(_m.Tool()):
                'DTra' : [DfU['BAuI1'], DfU['RAuI1'], DfU['WAuI1']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
-        I1A1_Dict = self.Calc_Prob(eb, Dict, "mf9001", thet)
+        I1A1_Dict = self.Calc_Prob(eb, Dict, "HbWLSI1A1", thet)
 
         ## Low Income Two Autos
         Dict = {
@@ -475,7 +475,7 @@ class HbWork(_m.Tool()):
                'DTra' : [DfU['BAuI1'], DfU['RAuI1'], DfU['WAuI1']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
-        I1A2_Dict = self.Calc_Prob(eb, Dict, "mf9002", thet)
+        I1A2_Dict = self.Calc_Prob(eb, Dict, "HbWLSI1A2", thet)
 
         ############
         # Med Income
@@ -489,7 +489,7 @@ class HbWork(_m.Tool()):
                'DTra' : [DfU['BAuI2'], DfU['RAuI2'], DfU['WAuI2']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
-        I2A0_Dict = self.Calc_Prob(eb, Dict, "mf9003", thet)
+        I2A0_Dict = self.Calc_Prob(eb, Dict, "HbWLSI2A0", thet)
 
         ## Med Income One Auto
         Dict = {
@@ -499,7 +499,7 @@ class HbWork(_m.Tool()):
                'DTra' : [DfU['BAuI2'], DfU['RAuI2'], DfU['WAuI2']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
-        I2A1_Dict = self.Calc_Prob(eb, Dict, "mf9004", thet)
+        I2A1_Dict = self.Calc_Prob(eb, Dict, "HbWLSI2A1", thet)
 
         ## Med Income Two Autos
         Dict = {
@@ -509,7 +509,7 @@ class HbWork(_m.Tool()):
                'DTra' : [DfU['BAuI2'], DfU['RAuI2'], DfU['WAuI2']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
-        I2A2_Dict = self.Calc_Prob(eb, Dict, "mf9005", thet)
+        I2A2_Dict = self.Calc_Prob(eb, Dict, "HbWLSI2A2", thet)
 
         #############
         # High Income
@@ -523,7 +523,7 @@ class HbWork(_m.Tool()):
                'DTra' : [DfU['BAuI3'], DfU['RAuI3'], DfU['WAuI3']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
-        I3A0_Dict = self.Calc_Prob(eb, Dict, "mf9006", thet)
+        I3A0_Dict = self.Calc_Prob(eb, Dict, "HbWLSI3A0", thet)
 
         ## High Income One Auto
         Dict = {
@@ -533,7 +533,7 @@ class HbWork(_m.Tool()):
                'DTra' : [DfU['BAuI3'], DfU['RAuI3'], DfU['WAuI3']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
-        I3A1_Dict = self.Calc_Prob(eb, Dict, "mf9007", thet)
+        I3A1_Dict = self.Calc_Prob(eb, Dict, "HbWLSI3A1", thet)
 
         ## High Income Two Autos
         Dict = {
@@ -543,7 +543,7 @@ class HbWork(_m.Tool()):
                'DTra' : [DfU['BAuI3'], DfU['RAuI3'], DfU['WAuI3']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
-        I3A2_Dict = self.Calc_Prob(eb, Dict, "mf9008", thet)
+        I3A2_Dict = self.Calc_Prob(eb, Dict, "HbWLSI3A2", thet)
 
         del DfU, Dict
 
