@@ -458,7 +458,7 @@ class TransitAssignment(_m.Tool()):
         ]
         return spec
 
-    def calc_network_costs(self, sc, select_hfrac):
+    def calc_network_costs(self, sc):
         util = _m.Modeller().tool("translink.emme.util")
 
         ## Calculate headway fraction based on service frequency
