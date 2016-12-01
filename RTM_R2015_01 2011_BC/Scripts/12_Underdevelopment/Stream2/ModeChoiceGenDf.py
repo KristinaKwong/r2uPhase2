@@ -39,11 +39,11 @@ class ModeChoiceGenDf(_m.Tool()):
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
         input_path = util.get_input_path(eb)
-        #self.matrix_batchins(eb)
+        self.matrix_batchins(eb)
         ## Park and Ride determine best lot
         pnr_costs = os.path.join(input_path, "pnr_inputs.csv")
         model_year = int(util.get_matrix_numpy(eb, "Year"))
-        self.read_file(eb, pnr_costs)
+
         self.AutoGT(eb)
         self.BusGT(eb)
         self.RailGT(eb)
@@ -61,35 +61,36 @@ class ModeChoiceGenDf(_m.Tool()):
 
 
 
-        hbwo_fct = self.get_fact[["HbWBl_AM_P-A", "HbWBl_MD_P-A", "HbWBl_PM_P-A"],
-                                 ["HbWBl_AM_A-P", "HbWBl_MD_A-P", "HbWBl_PM_A-P"]]
+        hbwo_fct = self.get_fact(eb, [["HbWBl_AM_P-A", "HbWBl_MD_P-A", "HbWBl_PM_P-A"],
+                                ["HbWBl_AM_A-P", "HbWBl_MD_A-P", "HbWBl_PM_A-P"]])
 
-        hbwo_fct_wce = self.get_fact_wce[["HbWBl_AM_P-A_WCE", "HbWBl_PM_P-A_WCE"],
-                                     ["Zero", "HbWBl_PM_A-P_WCE"]]
+        hbwo_fct_wce = self.get_fact(eb,[["HbWBl_AM_WCE_P-A", "Zero", "HbWBl_PM_WCE_P-A"],
+                                     ["Zero", "Zero", "HbWBl_PM_WCE_A-P"]])
 
-        nhbw_fct = self.get_fact[["NHbWBl_AM_P-A", "NHbWBl_MD_P-A", "NHbWBl_PM_P-A"],
-                                 ["Zero", "Zero", "Zero"]]
+        nhbw_fct = self.get_fact(eb, [["NHbWBl_AM_P-A", "NHbWBl_MD_P-A", "NHbWBl_PM_P-A"],
+                                 ["Zero", "Zero", "Zero"]])
 
-        hbun_fct = self.get_fact[["HbUBl_AM_P-A", "HbUBl_MD_P-A", "HbUBl_PM_P-A"],
-                                 ["HbUBl_AM_A-P", "HbUBl_MD_A-P", "HbUBl_PM_A-P"]]
+        hbun_fct = self.get_fact(eb, [["HbUBl_AM_P-A", "HbUBl_MD_P-A", "HbUBl_PM_P-A"],
+                                 ["HbUBl_AM_A-P", "HbUBl_MD_A-P", "HbUBl_PM_A-P"]])
 
-        hbsc_fct = self.get_fact[["HbScBl_AM_P-A", "HbScBl_MD_P-A", "HbScBl_PM_P-A"],
-                                 ["HbScBl_AM_A-P", "HbScBl_MD_A-P", "HbScBl_PM_A-P"]]
+        hbsc_fct = self.get_fact(eb, [["HbScBl_AM_P-A", "HbScBl_MD_P-A", "HbScBl_PM_P-A"],
+                                 ["HbScBl_AM_A-P", "HbScBl_MD_A-P", "HbScBl_PM_A-P"]])
 
-        hbsh_fct = self.get_fact[["HbShBl_AM_P-A", "HbShBl_MD_P-A", "HbShBl_PM_P-A"],
-                                 ["HbShBl_AM_A-P", "HbShBl_MD_A-P", "HbShBl_PM_A-P"]]
+        hbsh_fct = self.get_fact(eb, [["HbShBl_AM_P-A", "HbShBl_MD_P-A", "HbShBl_PM_P-A"],
+                                 ["HbShBl_AM_A-P", "HbShBl_MD_A-P", "HbShBl_PM_A-P"]])
 
-        hbpb_fct = self.get_fact[["HbPbBl_AM_P-A", "HbPbBl_MD_P-A", "HbPbBl_PM_P-A"],
-                                 ["HbPbBl_AM_A-P", "HbPbBl_MD_A-P", "HbPbBl_PM_A-P"]]
+        hbpb_fct = self.get_fact(eb, [["HbPbBl_AM_P-A", "HbPbBl_MD_P-A", "HbPbBl_PM_P-A"],
+                                 ["HbPbBl_AM_A-P", "HbPbBl_MD_A-P", "HbPbBl_PM_A-P"]])
 
-        hbso_fct = self.get_fact[["HbSoBl_AM_P-A", "HbSoBl_MD_P-A", "HbSoBl_PM_P-A"],
-                                 ["HbSoBl_AM_A-P", "HbSoBl_MD_A-P", "HbSoBl_PM_A-P"]]
+        hbso_fct = self.get_fact(eb, [["HbSoBl_AM_P-A", "HbSoBl_MD_P-A", "HbSoBl_PM_P-A"],
+                                 ["HbSoBl_AM_A-P", "HbSoBl_MD_A-P", "HbSoBl_PM_A-P"]])
 
-        hbes_fct = self.get_fact[["HbEsBl_AM_P-A", "HbEsBl_MD_P-A", "HbEsBl_PM_P-A"],
-                                 ["HbEsBl_AM_A-P", "HbEsBl_MD_A-P", "HbEsBl_PM_A-P"]]
+        hbes_fct = self.get_fact(eb, [["HbEsBl_AM_P-A", "HbEsBl_MD_P-A", "HbEsBl_PM_P-A"],
+                                 ["HbEsBl_AM_A-P", "HbEsBl_MD_A-P", "HbEsBl_PM_A-P"]])
 
-        nhbo_fct = self.get_fact[["NHbOBl_AM_P-A", "NHbOBl_MD_P-A", "NHbOBl_PM_P-A"],
-                                 ["Zero", "Zero", "Zero"]]
+        nhbo_fct = self.get_fact(eb, [["NHbOBl_AM_P-A", "NHbOBl_MD_P-A", "NHbOBl_PM_P-A"],
+                                 ["Zero", "Zero", "Zero"]])
+
 
         ##############################################################################
         ##       Auto Skims work SOV
@@ -142,10 +143,9 @@ class ModeChoiceGenDf(_m.Tool()):
             Df_Auto_Leg['AutoDis'] = self.calc_blend(values, DistDict).flatten()
             Df_Auto_Leg['AutoTim'] = self.calc_blend(values, TimeDict).flatten()
             Df_Auto_Leg['AutoTol'] = self.calc_blend(values, TollDict).flatten()
-            Df_Auto_Leg['Parking'] = util.get_matrix_numpy(eb, "prcost").reshape(1, NoTAZ) + np.zeros(NoTAZ,1)
-            Df_Auto_Leg['TermTim'] = util.get_matrix_numpy(eb, "prtrmt").reshape(1, NoTAZ) + np.zeros(NoTAZ,1)
-            Df_Auto_Leg['Parking'] = Df_Auto_Leg['Parking'].flatten()
-            Df_Auto_Leg['TermTim'] = Df_Auto_Leg['TermTim'].flatten()
+            Df_Auto_Leg['Parking'] = (util.get_matrix_numpy(eb, "prcost").reshape(1, NoTAZ) + np.zeros((NoTAZ,1))).flatten()
+            Df_Auto_Leg['TermTim'] = (util.get_matrix_numpy(eb, "prtrmt").reshape(1, NoTAZ) + np.zeros((NoTAZ,1))).flatten()
+
             # Join the two data frames based on skims from Origin to the Best Lot
             Df = pd.merge(Dfmerge, Df_Auto_Leg, left_on = ['i', 'BL'],
                      right_on = ['i', 'j'], how = 'left')
@@ -362,7 +362,7 @@ class ModeChoiceGenDf(_m.Tool()):
          'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1],
                  'Mat':['NHbWBlRailIvtt', 'NHbWBlRailIvttBus', 'NHbWBlRailWait', 'NHbWBlRailAux', 'NHbWBlRailBoard', 'NHbWBlRailFare']},
          'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1],
-                 'Mat':['NHbOBlRailIvtt', 'NHbOBlRailIvttBus', 'NHbOBlRailWait', 'NHbOBlRailAux', 'NHbOBlRailBoard', 'NHbOBlRailFare']},
+                 'Mat':['NHbOBlRailIvtt', 'NHbOBlRailIvttBus', 'NHbOBlRailWait', 'NHbOBlRailAux', 'NHbOBlRailBoard', 'NHbOBlRailFare']}}
 
         for keys, values in BlendDict.items():
             # Calculate blended skims
@@ -424,13 +424,13 @@ class ModeChoiceGenDf(_m.Tool()):
         WCEFarDict = {}
 #        # Generate Skim Dictionaries
 #        #                                        AM ,    PM
-        self.GenSkimDictWCE(eb, WCEIVWDict, ["AmWceIvtt",     "PmWceIvtt"]) # WCE IVW
-        self.GenSkimDictWCE(eb, WCEIVRDict, ["AmWceIvttRail", "PmWceIvttRail"]) # WCE IVR
-        self.GenSkimDictWCE(eb, WCEIVBDict, ["AmWceIvttBus",  "PmWceIvttBus"]) # WCE IVB
-        self.GenSkimDictWCE(eb, WCEWatDict, ["AmWceWait",     "PmWceWait"]) # WCE Wait
-        self.GenSkimDictWCE(eb, WCEAuxDict, ["AmWceAux",      "PmWceAux"]) # WCE Aux
-        self.GenSkimDictWCE(eb, WCEBrdDict, ["AmWceBoards",   "PmWceBoards"]) # WCE Boarding
-        self.GenSkimDictWCE(eb, WCEFarDict, ["AmWceFare",     "PmWceFare"])   # WCE Fare
+        self.GenSkimDict(eb, WCEIVWDict, ["AmWceIvtt",    "MdWceIvtt"     , "PmWceIvtt"]) # WCE IVW
+        self.GenSkimDict(eb, WCEIVRDict, ["AmWceIvttRail","MdWceIvttRail" , "PmWceIvttRail"]) # WCE IVR
+        self.GenSkimDict(eb, WCEIVBDict, ["AmWceIvttBus", "MdWceIvttBus"  , "PmWceIvttBus"]) # WCE IVB
+        self.GenSkimDict(eb, WCEWatDict, ["AmWceWait",    "MdWceWait"     , "PmWceWait"]) # WCE Wait
+        self.GenSkimDict(eb, WCEAuxDict, ["AmWceAux",     "MdWceAux"      , "PmWceAux"]) # WCE Aux
+        self.GenSkimDict(eb, WCEBrdDict, ["AmWceBoards",  "MdWceBoards"   , "PmWceBoards"]) # WCE Boarding
+        self.GenSkimDict(eb, WCEFarDict, ["AmWceFare",    "MdWceFare"     , "PmWceFare"])   # WCE Fare
 
 #        # Blend Factors
         BlendDict = {    #AM,   PM,        AM,   PM,
@@ -508,15 +508,6 @@ class ModeChoiceGenDf(_m.Tool()):
         Dict['AP'] = [AM_Mat.transpose(), MD_Mat.transpose(), PM_Mat.transpose()]
         return (Dict)
 
-    def GenSkimDictWCE(self, eb, Dict, Mat):
-        util = _m.Modeller().tool("translink.emme.util")
-        AM_Mat = util.get_matrix_numpy(eb, Mat[0])
-        PM_Mat = util.get_matrix_numpy(eb, Mat[1])
-
-        Dict['PA'] = [AM_Mat, PM_Mat]
-        Dict['AP'] = [AM_Mat.transpose(), PM_Mat.transpose()]
-        return (Dict)
-
     def calc_blend(self, Fact, Dict):
         util = _m.Modeller().tool("translink.emme.util")
         Result = util.sumproduct(Fact['PA'], Dict['PA']) + util.sumproduct(Fact['AP'], Dict['AP'])
@@ -527,31 +518,17 @@ class ModeChoiceGenDf(_m.Tool()):
 
         util = _m.Modeller().tool("translink.emme.util")
         PA_List = np.array([
-                            util.get_matrix_numpy(FactList[0][0]),
-                            util.get_matrix_numpy(FactList[0][1]),
-                            util.get_matrix_numpy(FactList[0][2])
+                            float(util.get_matrix_numpy(eb, FactList[0][0])),
+                            float(util.get_matrix_numpy(eb, FactList[0][1])),
+                            float(util.get_matrix_numpy(eb, FactList[0][2]))
                            ])
 
         AP_List = np.array([
-                            util.get_matrix_numpy(FactList[1][0]),
-                            util.get_matrix_numpy(FactList[1][1]),
-                            util.get_matrix_numpy(FactList[1][2])
+                            float(util.get_matrix_numpy(eb, FactList[1][0])),
+                            float(util.get_matrix_numpy(eb, FactList[1][1])),
+                            float(util.get_matrix_numpy(eb, FactList[1][2]))
                            ])
-        return np.array([PAList, AP_List])
-
-    def get_fact_wce(self, eb, FactList):
-
-        util = _m.Modeller().tool("translink.emme.util")
-        PA_List = np.array([
-                            util.get_matrix_numpy(FactList[0][0]),
-                            util.get_matrix_numpy(FactList[0][1]),
-                           ])
-
-        AP_List = np.array([
-                            util.get_matrix_numpy(FactList[1][0]),
-                            util.get_matrix_numpy(FactList[1][1]),
-                           ])
-        return np.array([PAList, AP_List])
+        return np.array([PA_List, AP_List])
 
     @_m.logbook_trace("Park & Ride - Choose Best Lot")
     def bestlot(self, eb, year):
@@ -833,8 +810,8 @@ class ModeChoiceGenDf(_m.Tool()):
                                    autodist=auto_mats["autodist"][i],
                                    VOT=vot_mat,
                                    VOC="autoOpCost",
-                                   lotcost = "mdPRcost",
-                                   termtime = "mdPRtermtime")
+                                   lotcost = "mo90'",
+                                   termtime = "mo92'")
 
             result = ("{autoGT}").format(autoGT=result_mats[i])
             specs.append(util.matrix_spec(result, expression))
@@ -861,8 +838,8 @@ class ModeChoiceGenDf(_m.Tool()):
                                    autodist=auto_mats["autodist"][i],
                                    VOT=vot_mat,
                                    VOC="autoOpCost",
-                                   lotcost = "mdPRcost",
-                                   termtime = "mdPRtermtime")
+                                   lotcost = "mo90'",
+                                   termtime = "mo92'")
 
             result = ("{autoGT}").format(autoGT=result_mats[i])
             specs.append(util.matrix_spec(result, expression))
