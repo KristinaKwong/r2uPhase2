@@ -28,21 +28,6 @@ class ModeChoiceUtilities(_m.Tool()):
     def __call__(self):
         pass
 
-    @_m.logbook_trace("Impedance Calc")
-    def ImpCalc(self, eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, Dist):
-
-        util = _m.Modeller().tool("translink.emme.util")
-        input_path = util.get_input_path(eb)
-
-        Distance = util.get_matrix_numpy(eb, Dist)
-        for i in range (len(imp_list)):
-
-            A = util.get_matrix_numpy(eb, Logsum[i])
-            Imp = LS_Coeff*A+LambdaList[i]*Distance+AlphaList[i]*pow(Distance, 2)+GammaList[i]*pow(Distance, 3)
-            Imp = np.exp(Imp)
-            util.set_matrix_numpy(eb, imp_list[i], Imp)
-
-        del Distance, A, Imp
 
     @_m.logbook_trace("Run origin constrained matrix balancing")
     def one_dim_matrix_balancing(self, eb, productions_list, impedance_list, output_demands):
@@ -89,6 +74,56 @@ class ModeChoiceUtilities(_m.Tool()):
         # Delete the temporary mo-matrices
         for mat_id in temp_matrices:
             util.delmat(eb, mat_id)
+
+    @_m.logbook_trace("Run matrix balancing to multiple productions")
+    def two_dim_matrix_balancing(self, eb, mo_list, md_list, impedance_list, output_list, max_iterations):
+        util = _m.Modeller().tool("translink.emme.util")
+
+        # loops through mo_list for any list items that are expressions
+        #  (contains "+") adding mo matrices up for aggregation.
+        # Performs calulation and saves result in a scratch matrix.
+        # then inserts scratch matrix instead of the initial expresssion
+#        specs = []
+#        temp_matrices = []
+#        for i in range(0, len(mo_list)):
+#            if "+" in mo_list[i]:
+#                temp_id = eb.available_matrix_identifier("ORIGIN")
+#                util.initmat(eb, temp_id, "scratch", "scratch matrix for two-dim balance", 0)
+#                temp_matrices.append(temp_id)
+#
+#                specs.append(util.matrix_spec(temp_id, mo_list[i]))
+#                mo_list[i] = temp_id
+#        util.compute_matrix(specs)
+
+        #Begin balmprod
+        balancing_multiple_productions = _m.Modeller().tool("inro.emme.matrix_calculation.balancing_multiple_productions")
+        spec_dict_matbal = {
+            "type": "MATRIX_BALANCING_MULTIPLE_PRODUCTIONS",
+            "destination_totals": "destinations",
+            "classes": [],
+            "destination_coefficients": None,
+            "max_iterations": max_iterations,
+            "max_relative_error": 0.0001
+        }
+
+        #assign values for matrix balancing
+        spec_dict_matbal["destination_totals"] = md_list[0]
+        for mo, output, mf in zip(mo_list, output_list, impedance_list):
+            class_spec = {
+                "origin_totals": mo,
+                "od_values_to_balance": mf,
+                "results": {
+                    "origin_coefficients": None,
+                    "od_balanced_values": output
+                }
+            }
+            spec_dict_matbal["classes"].append(class_spec)
+        balancing_multiple_productions(spec_dict_matbal)
+
+        # Delete the temporary mo-matrices
+#        for mat_id in temp_matrices:
+#            util.delmat(eb, mat_id)
+
 
     def AutoAvail(self, Distance, Utility, AvailDict):
         LrgU     = -99999.0
@@ -167,56 +202,92 @@ class ModeChoiceUtilities(_m.Tool()):
                         (Df['WCEWat']<AvailDict['WCEWat'])  &
                         (Df['WCEAux']<AvailDict['WCEAux'])  &
                         (Df['WCEBrd']<AvailDict['TranBrd']) &
-                        (Df['WAuTim']>AvailDict['PRAutTim')]&
+                        (Df['WAuTim']>AvailDict['PRAutTim'])&
                         (Df['IntZnl']!=1)                   &
                         (np.logical_and(Df['WAuTot']>=AvailDict['WCTotLow'], Df['WAuTot']<=AvailDict['WCTotHig'])),
                          Utility , LrgU)
 
-    @_m.logbook_trace("Run matrix balancing to multiple productions")
-    def two_dim_matrix_balancing(self, eb, mo_list, md_list, impedance_list, output_list, max_iterations):
+    @_m.logbook_trace("Impedance Calc")
+    def ImpCalc(self, eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, Distance, RunType):
+
         util = _m.Modeller().tool("translink.emme.util")
+        input_path = util.get_input_path(eb)
 
-        # loops through mo_list for any list items that are expressions
-        #  (contains "+") adding mo matrices up for aggregation.
-        # Performs calulation and saves result in a scratch matrix.
-        # then inserts scratch matrix instead of the initial expresssion
-        specs = []
-        temp_matrices = []
-        for i in range(0, len(mo_list)):
-            if "+" in mo_list[i]:
-                temp_id = eb.available_matrix_identifier("ORIGIN")
-                util.initmat(eb, temp_id, "scratch", "scratch matrix for two-dim balance", 0)
-                temp_matrices.append(temp_id)
+        for i in range (len(imp_list)):
 
-                specs.append(util.matrix_spec(temp_id, mo_list[i]))
-                mo_list[i] = temp_id
-        util.compute_matrix(specs)
+            A = util.get_matrix_numpy(eb, Logsum[i])
 
-        #Begin balmprod
-        balancing_multiple_productions = _m.Modeller().tool("inro.emme.matrix_calculation.balancing_multiple_productions")
-        spec_dict_matbal = {
-            "type": "MATRIX_BALANCING_MULTIPLE_PRODUCTIONS",
-            "destination_totals": "destinations",
-            "classes": [],
-            "destination_coefficients": None,
-            "max_iterations": max_iterations,
-            "max_relative_error": 0.0001
-        }
+            if RunType == 0:
 
-        #assign values for matrix balancing
-        spec_dict_matbal["destination_totals"] = md_list[0]
-        for mo, output in zip(mo_list, output_list):
-            class_spec = {
-                "origin_totals": mo,
-                "od_values_to_balance": impedance_list[0],
-                "results": {
-                    "origin_coefficients": None,
-                    "od_balanced_values": output
-                }
-            }
-            spec_dict_matbal["classes"].append(class_spec)
-        balancing_multiple_productions(spec_dict_matbal)
+                Imp = (LS_Coeff*A)
 
-        # Delete the temporary mo-matrices
-        for mat_id in temp_matrices:
-            util.delmat(eb, mat_id)
+
+            if RunType == 1:
+
+                Imp = (LS_Coeff*A+LambdaList[i]*Distance)
+
+
+            if RunType == 2:
+
+                Imp = (LS_Coeff*A+LambdaList[i]*Distance
+                      +AlphaList[i]*pow(Distance, 2))
+
+
+
+            if RunType == 3:
+
+                Imp = (LS_Coeff*A+LambdaList[i]*Distance
+                      +AlphaList[i]*pow(Distance, 2)
+                      +GammaList[i]*pow(Distance, 3))
+
+
+            Imp = np.exp(Imp)
+            util.set_matrix_numpy(eb, imp_list[i], Imp)
+
+        del Distance, A, Imp
+
+    @_m.logbook_trace("Check Convergence")
+    def Check_Convergence(self, eb, NoSeg, out_list, Distance_flat, AvgDistMod, AvgDistModSq, AvgDistModCu, df, RunType):
+
+        util = _m.Modeller().tool("translink.emme.util")
+        SumTrip = 0
+
+        for i in range (NoSeg):
+
+
+            TDMat = util.get_matrix_numpy(eb, out_list[i]).flatten()
+            AvgDistMod[i]   = np.sum(np.multiply(Distance_flat,TDMat))/np.sum(TDMat)
+            AvgDistModSq[i] = np.sum(np.multiply(np.power(Distance_flat,2),TDMat))/np.sum(TDMat)
+            AvgDistModCu[i] = np.sum(np.multiply(np.power(Distance_flat,3),TDMat))/np.sum(TDMat)
+            SumTrip += TDMat
+
+        df['AvgDistMod']   = AvgDistMod
+        df['AvgDistModSq'] = AvgDistModSq
+        df['AvgDistModCu'] = AvgDistModCu
+        AvgDistTot = np.sum(np.multiply(Distance_flat,SumTrip))/np.sum(SumTrip)
+
+
+        # Check convergence
+        Df_DistRat = pd.DataFrame({'AvgDistRat' :   abs(df['AvgDistMod']/df['avgTL'] - 1),
+                                   'AvgDistsqdRat': abs(df['AvgDistModSq']/df['avgTLsqd'] - 1),
+                                   'AvgDistcubRat': abs(df['AvgDistModCu']/df['avgTLcub'] - 1)})
+
+        if RunType == 1:
+
+            MaxValue = np.max(abs(df['AvgDistMod']/df['avgTL'] - 1))
+
+        if RunType == 2:
+
+            MaxValue = max(np.max(abs(df['AvgDistMod']/df['avgTL'] - 1)),
+                           np.max(abs(df['AvgDistModSq']/df['avgTLsqd'] - 1)))
+
+
+        if RunType == 3:
+
+            MaxValue = max(np.max(abs(df['AvgDistMod']/df['avgTL'] - 1)),
+                           np.max(abs(df['AvgDistModSq']/df['avgTLsqd'] - 1)),
+                           np.max(abs(df['AvgDistModCu']/df['avgTLcub'] - 1)))
+
+        print MaxValue
+        return AvgDistTot, MaxValue, df
+
