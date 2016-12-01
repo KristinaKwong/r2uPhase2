@@ -151,16 +151,6 @@ class TransitAssignment(_m.Tool()):
             report={}
             _m.logbook_level(_m.LogbookLevel.NONE)
             self.calc_network_costs(sc, period_length, i)
-            # Initialize Values for first cycle and use updated values from previous cycles later on
-            if util.get_cycle(eb) >= 1:  # TODO: Change to util.get_cycle(eb) == 1
-                # Calculate headway fraction
-
-                # Intial Assignment of Parameters
-                util.emme_segment_calc(sc, "@ivttfac", "1")
-                util.emme_segment_calc(sc, "@hdwyeff", "@hfrac")
-                util.emme_segment_calc(sc, "@hdwyfac", "1")
-                util.emme_segment_calc(sc, "@crowdingfactor", "0")
-                util.emme_segment_calc(sc, "us1", "0")  # dwell time
 
             # LOOP FOR CROWDING AND CAPACITY CONSTRAINT
             for iteration in xrange(1, self.max_iterations+1):
@@ -456,8 +446,6 @@ class TransitAssignment(_m.Tool()):
         util.emme_tline_calc(sc, "@hfrac",  "6.5 + 0.10000*(hdw - 20)", sel_line="hdw=20,30 and mode=sfrhl")
         util.emme_tline_calc(sc, "@hfrac",  "7.5 + 0.03333*(hdw - 30)", sel_line="hdw=30,99 and mode=sfrhl")
 
-        util.emme_segment_calc(sc, "@hdwyeff", "@hfrac")
-
         # TODO: By Vehicle type or mode
         util.emme_tline_calc(sc, "@dwtboard", str(self.dwt_board_factor_bus), sel_line="mode=bg")
         util.emme_tline_calc(sc, "@dwtalight", str(self.dwt_alight_factor_bus), sel_line="mode=bg")
@@ -490,6 +478,14 @@ class TransitAssignment(_m.Tool()):
                                      "%s*(@wcefareboundary.eq.45)" %(self.wce_fare_zone13[i], self.wce_fare_zone34[i], self.wce_fare_zone45[i]),
                                      sel_link="all", sel_line="mode=r")
 
+
+        # Intial Assignment of Parameters
+        util.emme_segment_calc(sc, "us1", "0")  # dwell time
+        util.emme_segment_calc(sc, "@crowdingfactor", "0")
+        util.emme_segment_calc(sc, "@ivttfac", "1+@crowdingfactor")
+        util.emme_segment_calc(sc, "@hdwyfac", "1")
+        util.emme_segment_calc(sc, "@hdwyeff", "@hdwyfac*@hfrac")
+
     def averaging_transit_volumes(self, sc, iteration):
         util = _m.Modeller().tool("translink.emme.util")
         # MSA on Boardings and transit Volumes
@@ -514,7 +510,7 @@ class TransitAssignment(_m.Tool()):
                                                        self.max_stand_weight, self.min_stand_weight, self.power_stand_weight)
 
         util.emme_segment_calc(sc, "@crowdingfactor", crowd_spec)
-        util.emme_segment_calc(sc, "@ivttfac", "1+ @crowdingfactor")
+        util.emme_segment_calc(sc, "@ivttfac", "1+@crowdingfactor")
 
     def effective_headway_calc(self, sc):
         util = _m.Modeller().tool("translink.emme.util")
