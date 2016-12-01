@@ -96,38 +96,40 @@ class HbWork(_m.Tool()):
         # Generate Dataframe
         Df = {}
         MaxPark = 10.0
-        VOC = util.get_matrix_numpy(eb, 'ms100')
-        Occ = util.get_matrix_numpy(eb, 'ms115')
-        Df['ParkCost'] = util.get_matrix_numpy(eb, 'mo60')  # 2 hour parking
+        VOC = util.get_matrix_numpy(eb, 'autoOpCost')
+        Occ = util.get_matrix_numpy(eb, 'HOVOccHBshop')
+        Df['ParkCost'] = util.get_matrix_numpy(eb, 'prk2hr')  # 2 hour parking
         Df['ParkCost'][Df['ParkCost']>MaxPark] = MaxPark
         Df['ParkCost'] = Df['ParkCost'].reshape(1, NoTAZ) + np.zeros((NoTAZ, 1))
 
-        Df['AutoDisSOV'] = util.get_matrix_numpy(eb, 'mf5130')
-        Df['AutoTimSOV'] = util.get_matrix_numpy(eb, 'mf5131')
-        Df['AutoCosSOV'] = Df['AutoDisSOV']*VOC + util.get_matrix_numpy(eb, 'mf5132') + Df['ParkCost']
+        Df['AutoDisSOV'] = util.get_matrix_numpy(eb, 'HbShBlSovDist')
+        Df['AutoTimSOV'] = util.get_matrix_numpy(eb, 'HbShBlSovTime')
+        Df['AutoCosSOV'] = Df['AutoDisSOV']*VOC + util.get_matrix_numpy(eb, 'HbShBlSovToll') + Df['ParkCost']
 
-        Df['AutoDisHOV'] = util.get_matrix_numpy(eb, 'mf5136')
-        Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'mf5137')
-        Df['AutoCosHOV'] = Df['AutoDisHOV']*VOC + util.get_matrix_numpy(eb, 'mf5138') + Df['ParkCost']
+        Df['AutoDisHOV'] = util.get_matrix_numpy(eb, 'HbShBlHovDist')
+        Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'HbShBlHovTime')
+        Df['AutoCosHOV'] = Df['AutoDisHOV']*VOC + util.get_matrix_numpy(eb, 'HbShBlHovToll') + Df['ParkCost']
 
         # Utilities
         # SOV
+        # SOV Utility across all incomes
         Df['GeUtl'] = ( 0
                       + p15*Df['AutoTimSOV'])
 
-
+        # Check Availability conditions
         Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisSOV'], Df['GeUtl'], AvailDict)
-
+        # Add Income parameters
         DfU['SOVI1']  = Df['GeUtl'] + p12*Df['AutoCosSOV']
         DfU['SOVI2']  = Df['GeUtl'] + p12*Df['AutoCosSOV']
         DfU['SOVI3']  = Df['GeUtl'] + p14*Df['AutoCosSOV']
 
         # HOV2+
+        # HOV2+ Utility across all incomes
         Df['GeUtl'] = ( p2
                       + p15*Df['AutoTimHOV'])
-
+        # Check Availability conditions
         Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisHOV'], Df['GeUtl'], AvailDict)
-
+        # Add Income parameters
         DfU['HV2+I1']  = Df['GeUtl'] + p12*Df['AutoCosHOV']/Occ
         DfU['HV2+I2']  = Df['GeUtl'] + p12*Df['AutoCosHOV']/Occ
         DfU['HV2+I3']  = Df['GeUtl'] + p14*Df['AutoCosHOV']/Occ
@@ -139,42 +141,44 @@ class HbWork(_m.Tool()):
         # Generate Dataframe
         Df = {}
         Tiny=0.000001
-        Df['BusIVT'] = util.get_matrix_numpy(eb, 'mf5330')
-        Df['BusWat'] = util.get_matrix_numpy(eb, 'mf5331')
-        Df['BusAux'] = util.get_matrix_numpy(eb, 'mf5332')
-        Df['BusBrd'] = util.get_matrix_numpy(eb, 'mf5333')
-        Df['BusFar'] = util.get_matrix_numpy(eb, 'mf5334')
-        Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] + Df['BusBrd']
+        Df['BusIVT'] = util.get_matrix_numpy(eb, 'HbShBlBusIvtt')
+        Df['BusWat'] = util.get_matrix_numpy(eb, 'HbShBlBusWait')
+        Df['BusAux'] = util.get_matrix_numpy(eb, 'HbShBlBusAux')
+        Df['BusBrd'] = util.get_matrix_numpy(eb, 'HbShBlBusBoard')
+        Df['BusFar'] = util.get_matrix_numpy(eb, 'HbShBlBusFare')
+        Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] + Df['BusBrd'] # Total Bus Travel Time
 
-        Df['RalIVR'] = util.get_matrix_numpy(eb, 'mf5530')
-        Df['RalIVB'] = util.get_matrix_numpy(eb, 'mf5531')
-        Df['RalWat'] = util.get_matrix_numpy(eb, 'mf5532')
-        Df['RalAux'] = util.get_matrix_numpy(eb, 'mf5533')
-        Df['RalBrd'] = util.get_matrix_numpy(eb, 'mf5534')
-        Df['RalFar'] = util.get_matrix_numpy(eb, 'mf5535')
-        Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] + Df['RalBrd']
-        Df['RalIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Tiny)
-        Df['RalIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Tiny)
+        Df['RalIVR'] = util.get_matrix_numpy(eb, 'HbShBlRailIvtt')
+        Df['RalIVB'] = util.get_matrix_numpy(eb, 'HbShBlRailIvttBus')
+        Df['RalWat'] = util.get_matrix_numpy(eb, 'HbShBlRailWait')
+        Df['RalAux'] = util.get_matrix_numpy(eb, 'HbShBlRailAux')
+        Df['RalBrd'] = util.get_matrix_numpy(eb, 'HbShBlRailBoard')
+        Df['RalFar'] = util.get_matrix_numpy(eb, 'HbShBlRailFare')
+        Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] + Df['RalBrd'] # Total Bus Travel Time
+        Df['RalIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Bus IVT to Total Time
+        Df['RalIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Rail IVT to Total Time
+
 
         Df['IntZnl'] = np.identity(NoTAZ)
 
         # Utilities
         # Bus Utility
-
+        # Bus Utility across all incomes
         Df['GeUtl'] = ( p4
                       + p15*Df['BusIVT']
                       + p17*Df['BusWat']
                       + p18*Df['BusAux']
                       + p19*(Df['BusBrd'])
 
-
+        # Check Availability conditions
         Df['GeUtl'] = MChM.BusAvail(Df, Df['GeUtl'], AvailDict)
-
+        # Add Income parameters
         DfU['BusI1'] = Df['GeUtl'] + p12*Df['BusFar']
         DfU['BusI2'] = Df['GeUtl'] + p12*Df['BusFar']
         DfU['BusI3'] = Df['GeUtl'] + p14*Df['BusFar']
 
         # Rail Utility
+        # Rail Utility across all incomes
         Df['GeUtl'] = ( p4*Df['RalIBR']
                       + p6*Df['RalIRR']
                       + p15*Df['RalIVB']
@@ -183,9 +187,9 @@ class HbWork(_m.Tool()):
                       + p18*Df['RalAux']
                       + p19*(Df['RalBrd'])
 
-
+        # Check Availability conditions
         Df['GeUtl'] = MChM.RailAvail(Df, Df['GeUtl'],AvailDict)
-
+        # Add Income parameters
         DfU['RalI1'] = Df['GeUtl'] + p12*Df['RalFar']
         DfU['RalI2'] = Df['GeUtl'] + p12*Df['RalFar']
         DfU['RalI3'] = Df['GeUtl'] + p14*Df['RalFar']
@@ -195,19 +199,19 @@ class HbWork(_m.Tool()):
 #        ##############################################################################
 
         Df = {}
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'mf5130')
+        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbShBlSovDist')
 
-        Df['PopEmpDen'] = util.get_matrix_numpy(eb, 'mo200') + util.get_matrix_numpy(eb, 'mo201')
+        Df['PopEmpDen'] = util.get_matrix_numpy(eb, 'popdens') + util.get_matrix_numpy(eb, 'empdens') # Pop + Emp Density
         Df['PopEmpDen'] = Df['PopEmpDen'].reshape(NoTAZ, 1) + np.zeros(1, NoTAZ)
         Df['PopEmpDen'][Df['PopEmpDen']<1.0] = 1.0
-        Df['PopEmpDen'] = np.log(Df['PopEmpDen'])
-        Df['BikScr'] = util.get_matrix_numpy(eb, 'mf90')
+        Df['PopEmpDen'] = np.log(Df['PopEmpDen']) # Log Pop+Emp Density
+        Df['BikScr'] = util.get_matrix_numpy(eb, 'bikeskim')
 
         # Walk Utility
         DfU['Walk'] = ( p10
                       + p20*Df['AutoDis']
                       + p701*Df['PopEmpDen'])
-
+        # Check Availability conditions
         DfU['Walk'] = MChM.WalkAvail(Df['AutoDis'], DfU['Walk'], AvailDict)
 
         # Bike Utility
@@ -216,7 +220,7 @@ class HbWork(_m.Tool()):
                       + p701*Df['PopEmpDen']
                       + p870*Df['BikScr'])
 
-
+        # Check Availability conditions
         DfU['Bike'] = MChM.BikeAvail(Df['AutoDis'], DfU['Bike'], AvailDict)
 
         del Df
@@ -229,15 +233,15 @@ class HbWork(_m.Tool()):
         # Low Income
         ############
 
-        ## Add SOV Availability Term
+        ## Add SOV Availability car share term for households with zero vehicles
 
-        CarShare = util.get_matrix_numpy(eb, 'mo71').reshape(NoTAZ,1) + np.zeros((1, NoTAZ))
+        CarShare = util.get_matrix_numpy(eb, 'cs500').reshape(NoTAZ,1) + np.zeros((1, NoTAZ))
         LrgU     = -99999.0
         ## Low Income Zero Autos
         Dict = {
                'SOV'  : [np.where(CarShare>0, DfU['SOVI1'], LrgU)],
                'HOV'  : [DfU['HV2+I1']],
-               'WTra' : [DfU['BusI1'] + p164, DfU['RalI1'] + p164],
+               'WTra' : [DfU['BusI1'] + p164, DfU['RalI1'] + p164],  # Zero car households additional transit bias term
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
 
@@ -245,8 +249,8 @@ class HbWork(_m.Tool()):
 
         ## Low Income One Auto
         Dict = {
-               'SOV'  : [DfU['SOVI1'] + p160],
-               'HOV'  : [DfU['HV2+I1'] + p162],
+               'SOV'  : [DfU['SOVI1'] + p160], # One car households additional SOV bias term
+               'HOV'  : [DfU['HV2+I1'] + p162], # One car households additional HOV bias term
                'WTra' : [DfU['BusI1'], DfU['RalI1']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
@@ -254,8 +258,8 @@ class HbWork(_m.Tool()):
 
         ## Low Income Two Autos
         Dict = {
-               'SOV'  : [DfU['SOVI1'] + p161],
-               'HOV'  : [DfU['HV2+I1'] + p163],
+               'SOV'  : [DfU['SOVI1'] + p161], # One car households additional SOV bias term
+               'HOV'  : [DfU['HV2+I1'] + p163], # One car households additional HOV bias term
                'WTra' : [DfU['BusI1'], DfU['RalI1']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
@@ -331,29 +335,29 @@ class HbWork(_m.Tool()):
        ##############################################################################
 
         Logsum =  [
-                  "mf9030", "mf9031", "mf9032",
-                  "mf9033", "mf9034", "mf9035",
-                  "mf9036", "mf9037", "mf9038"
+                  "HbShLSI1A0", "HbShLSI1A1", "HbShLSI1A2",
+                  "HbShLSI2A0", "HbShLSI2A1", "HbShLSI2A2",
+                  "HbShLSI3A0", "HbShLSI3A1", "HbShLSI3A2",
                    ]
 
         imp_list = [
-                  "mf9100", "mf9101", "mf9102",
-                  "mf9103", "mf9104", "mf9105",
-                  "mf9106", "mf9107", "mf9108"
+                  "P-AFrictionFact1", "P-AFrictionFact2", "P-AFrictionFact3",
+                  "P-AFrictionFact4", "P-AFrictionFact5", "P-AFrictionFact6",
+                  "P-AFrictionFact7", "P-AFrictionFact8", "P-AFrictionFact9"
                    ]
 
         mo_list =  [
-                    "mo2040", "mo2043", "mo2046",
-                    "mo2041", "mo2044", "mo2047",
-                    "mo2042", "mo2045", "mo2048"
+                    "hbshopInc1Au0prd", "hbshopInc1Au1prd", "hbshopInc1Au2prd",
+                    "hbshopInc2Au0prd", "hbshopInc2Au1prd", "hbshopInc2Au2prd",
+                    "hbshopInc3Au0prd", "hbshopInc3Au1prd", "hbshopInc3Au2prd"
                    ]
 
-        md_list =  ["md2040"]
+        md_list =  ["hbshopatr"]
 
         out_list = [
-                    "mf3350", "mf30351", "mf3352",
-                    "mf3353", "mf30354", "mf3355",
-                    "mf3356", "mf30357", "mf3358"
+                    "HbShP-AI1A0", "HbShP-AI1A1", "HbShP-AI1A2",
+                    "HbShP-AI2A0", "HbShP-AI2A1", "HbShP-AI2A2",
+                    "HbShP-AI3A0", "HbShP-AI3A1", "HbShP-AI3A2"
                    ]
 
         LS_Coeff = 0.5
@@ -370,39 +374,42 @@ class HbWork(_m.Tool()):
                       -0.0004, -0.0004, -0.0004,
                       -0.0004, -0.0004, -0.0004]
 
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, "mf5130")
-        MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list, 60)
+        Dist_Iter = int(util.get_matrix_numpy(eb, 'IterDist'))
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, "HbShBlSovDist")
+        MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list, Dist_Iter)
 
 
 #       ##############################################################################
 #        ##       Calculate Demand
 #       ##############################################################################
 
-        I1A0_Dict = self.Calc_Demand(I1A0_Dict, util.get_matrix_numpy(eb,"mf9510"))
-        I1A1_Dict = self.Calc_Demand(I1A1_Dict, util.get_matrix_numpy(eb,"mf9511"))
-        I1A2_Dict = self.Calc_Demand(I1A2_Dict, util.get_matrix_numpy(eb,"mf9512"))
-        I2A0_Dict = self.Calc_Demand(I2A0_Dict, util.get_matrix_numpy(eb,"mf9513"))
-        I2A1_Dict = self.Calc_Demand(I2A1_Dict, util.get_matrix_numpy(eb,"mf9514"))
-        I2A2_Dict = self.Calc_Demand(I2A2_Dict, util.get_matrix_numpy(eb,"mf9515"))
-        I3A0_Dict = self.Calc_Demand(I3A0_Dict, util.get_matrix_numpy(eb,"mf9516"))
-        I3A1_Dict = self.Calc_Demand(I3A1_Dict, util.get_matrix_numpy(eb,"mf9517"))
-        I3A2_Dict = self.Calc_Demand(I3A2_Dict, util.get_matrix_numpy(eb,"mf9518"))
+        I1A0_Dict = self.Calc_Demand(I1A0_Dict, util.get_matrix_numpy(eb,"HbShP-AI1A0"))
+        I1A1_Dict = self.Calc_Demand(I1A1_Dict, util.get_matrix_numpy(eb,"HbShP-AI1A1"))
+        I1A2_Dict = self.Calc_Demand(I1A2_Dict, util.get_matrix_numpy(eb,"HbShP-AI1A2"))
+        I2A0_Dict = self.Calc_Demand(I2A0_Dict, util.get_matrix_numpy(eb,"HbShP-AI2A0"))
+        I2A1_Dict = self.Calc_Demand(I2A1_Dict, util.get_matrix_numpy(eb,"HbShP-AI2A1"))
+        I2A2_Dict = self.Calc_Demand(I2A2_Dict, util.get_matrix_numpy(eb,"HbShP-AI2A2"))
+        I3A0_Dict = self.Calc_Demand(I3A0_Dict, util.get_matrix_numpy(eb,"HbShP-AI3A0"))
+        I3A1_Dict = self.Calc_Demand(I3A1_Dict, util.get_matrix_numpy(eb,"HbShP-AI3A1"))
+        I3A2_Dict = self.Calc_Demand(I3A2_Dict, util.get_matrix_numpy(eb,"HbShP-AI3A2"))
 
+        # SOV Trips
         SOVI1 = I1A0_Dict['SOV'][0] + I1A1_Dict['SOV'][0] + I1A2_Dict['SOV'][0]
         SOVI2 = I2A0_Dict['SOV'][0] + I2A1_Dict['SOV'][0] + I2A2_Dict['SOV'][0]
         SOVI3 = I3A0_Dict['SOV'][0] + I3A1_Dict['SOV'][0] + I3A2_Dict['SOV'][0]
 
+        # HOV Trips
         HV2+I1 = I1A0_Dict['HOV'][0] + I1A1_Dict['HOV'][0] + I1A2_Dict['HOV'][0]
         HV2+I2 = I2A0_Dict['HOV'][0] + I2A1_Dict['HOV'][0] + I2A2_Dict['HOV'][0]
         HV2+I3 = I3A0_Dict['HOV'][0] + I3A1_Dict['HOV'][0] + I3A2_Dict['HOV'][0]
-
+        # Bus/Rail Trips
         Bus  =  I1A0_Dict['WTra'][0] + I1A1_Dict['WTra'][0] + I1A2_Dict['WTra'][0]
         Bus +=  I2A0_Dict['WTra'][0] + I2A1_Dict['WTra'][0] + I2A2_Dict['WTra'][0]
         Bus +=  I3A0_Dict['WTra'][0] + I3A1_Dict['WTra'][0] + I3A2_Dict['WTra'][0]
         Rail =  I1A0_Dict['WTra'][1] + I1A1_Dict['WTra'][1] + I1A2_Dict['WTra'][1]
         Rail += I2A0_Dict['WTra'][1] + I2A1_Dict['WTra'][1] + I2A2_Dict['WTra'][1]
         Rail += I3A0_Dict['WTra'][1] + I3A1_Dict['WTra'][1] + I3A2_Dict['WTra'][1]
-
+        # Active Trips
         Walk =  I1A0_Dict['Acti'][0] + I1A1_Dict['Acti'][0] + I1A2_Dict['Acti'][0]
         Walk += I2A0_Dict['Acti'][0] + I2A1_Dict['Acti'][0] + I2A2_Dict['Acti'][0]
         Walk += I3A0_Dict['Acti'][0] + I3A1_Dict['Acti'][0] + I3A2_Dict['Acti'][0]
@@ -418,16 +425,16 @@ class HbWork(_m.Tool()):
 #       ##############################################################################
 #        ##       Set Demand Matrices
 #       ##############################################################################
-        util.set_matrix_numpy(eb, "mf3000", SOVI1)
-        util.set_matrix_numpy(eb, "mf3001", SOVI2)
-        util.set_matrix_numpy(eb, "mf3002", SOVI3)
-        util.set_matrix_numpy(eb, "mf3005", HV2I1)
-        util.set_matrix_numpy(eb, "mf3006", HV2I2)
-        util.set_matrix_numpy(eb, "mf3007", HV2I3)
-        util.set_matrix_numpy(eb, "mf3015", Bus)
-        util.set_matrix_numpy(eb, "mf3020", Rail)
-        util.set_matrix_numpy(eb, "mf3030", Walk)
-        util.set_matrix_numpy(eb, "mf3035", Bike)
+        util.set_matrix_numpy(eb, "HbShSOVI1PerTrips", SOVI1)
+        util.set_matrix_numpy(eb, "HbShSOVI2PerTrips", SOVI2)
+        util.set_matrix_numpy(eb, "HbShSOVI3PerTrips", SOVI3)
+        util.set_matrix_numpy(eb, "HbShHV2+I1PerTrips", HV2I1)
+        util.set_matrix_numpy(eb, "HbShHV2+I2PerTrips", HV2I2)
+        util.set_matrix_numpy(eb, "HbShHV2+I3PerTrips", HV2I3)
+        util.set_matrix_numpy(eb, "HbShBusPerTrips", Bus)
+        util.set_matrix_numpy(eb, "HbShRailPerTrips", Rail)
+        util.set_matrix_numpy(eb, "HbShWalkPerTrips", Walk)
+        util.set_matrix_numpy(eb, "HbShBikePerTrips", Bike)
 
 
     def Calc_Prob(self, eb, Dict, Logsum, Th):
