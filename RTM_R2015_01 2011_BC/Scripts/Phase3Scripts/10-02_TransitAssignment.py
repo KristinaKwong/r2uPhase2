@@ -137,9 +137,6 @@ class TransitAssignment(_m.Tool()):
         if run_crowding+run_capacity_constraint ==0:
             self.max_iterations=2
 
-        # TODO: Select final option and remove this variable
-        select_hfrac = 2 # 1 - RTM effective headway fractions, 2 -Non-Linear curves by frequency of service
-
         demand_bus_list = ["mf314", "mf334", "mf354"]
         demand_rail_list = ["mf315", "mf335", "mf355"]
         demand_wce_list = ["mf316", "mf336", "mf356"]
@@ -153,24 +150,19 @@ class TransitAssignment(_m.Tool()):
             print "Scenario: "+sc.title+" ("+sc.id+")"
             report={}
             _m.logbook_level(_m.LogbookLevel.NONE)
-            util.emme_segment_calc(sc, "@hdwyeff", "hdw*@hfrac")
+            self.calc_network_costs(sc)
             # Initialize Values for first cycle and use updated values from previous cycles later on
             if util.get_cycle(eb) >= 1:  # TODO: Change to util.get_cycle(eb) == 1
                 # Calculate headway fraction
-                self.headway_fraction_calc(sc, select_hfrac)
 
                 # Intial Assignment of Parameters
                 util.emme_segment_calc(sc, "@ivttfac", "1")
-                util.emme_segment_calc(sc, "@hdwyeff", "hdw*@hfrac")
+                util.emme_segment_calc(sc, "@hdwyeff", "@hfrac")
                 util.emme_segment_calc(sc, "@hdwyfac", "1")
                 util.emme_segment_calc(sc, "@crowdingfactor", "0")
                 util.emme_segment_calc(sc, "us1", "0")  # dwell time
                 util.emme_tline_calc(sc, "@seatcapacity", "%s*vcaps*60/hdw" % period_length)
                 util.emme_tline_calc(sc, "@totcapacity", "%s*vcapt*60/hdw" % period_length)
-
-                # TODO: By Vehicle type or mode
-                util.emme_tline_calc(sc, "@dwtboard", str(self.dwt_board_factor_bus), sel_line="mode=bg")
-                util.emme_tline_calc(sc, "@dwtalight", str(self.dwt_alight_factor_bus), sel_line="mode=bg")
 
                 # Fare Calculations
 
@@ -466,59 +458,28 @@ class TransitAssignment(_m.Tool()):
         ]
         return spec
 
-    def headway_fraction_calc(self, sc, select_hfrac):
-        if select_hfrac ==1:
-            ## Option 1: Calculate headway fraction based on following factors:
-            ##        "l" rail=0.8,
-            ##        "b" bus=1.2,
-            ##        "s" seabus=0.67,
-            ##        "g" BRT=1.1,
-            ##        "f" LRT=1.1,
-            ##        "h" Gondola=0.8,
-            ##        "r" WCE=0.8
-            util.emme_segment_calc(sc, "@hfrac", "1.2*0.5", "all", "mode=b")
-            util.emme_segment_calc(sc, "@hfrac", "1.1*0.5", "all", "mode=gf")
-            util.emme_segment_calc(sc, "@hfrac", "0.67*0.5", "all", "mode=s")
-            util.emme_segment_calc(sc, "@hfrac", "0.8*0.5", "all", "mode=rlh")
+    def calc_network_costs(self, sc, select_hfrac):
+        util = _m.Modeller().tool("translink.emme.util")
 
-        if select_hfrac == 2:
-            ## Option 2: Calculate headway fraction based on service frequency
-            # Bus Modes
-            slope_bus_seg1 = 0.5  #slope for 1st segment (high frequency) bus
-            slope_bus_seg2 = 0.40000 # slope for 2nd segemnt (med frequency)  bus
-            slope_bus_seg3 = 0.35000 # slope for 3rd segment (low frequency)  bus
-            slope_bus_seg4 = 0.08333 # slope for 4th segment (very low freq)  bus
-            len_bus_seg1 = 10  # length for 1st segment, bus
-            len_bus_seg2 = 10 # length for 2nd segment, bus
-            len_bus_seg3 = 10 # length for 3rd segment, bus
-            wait_bus_seg1 = len_bus_seg1*slope_bus_seg1   # wait at end of 1st segment, bus
-            wait_bus_seg2 = wait_bus_seg1+len_bus_seg2*slope_bus_seg2 # wait at end of 2nd segment, bus
-            wait_bus_seg3 = wait_bus_seg2+len_bus_seg3*slope_bus_seg3  # wait at end of 3rd segment, bus
-            # TODO: Check applicable Modes
-            util.emme_segment_calc(sc, "@hfrac", "((%s*hdw).min.(%s+%s*(hdw-%s)).min."
-                                                       "(%s+ %s*(hdw-%s-%s)).min.(%s+%s*(hdw-%s-%s-%s)))/hdw" %(slope_bus_seg1,
-                                                        wait_bus_seg1,slope_bus_seg2,len_bus_seg1,
-                                                        wait_bus_seg2,slope_bus_seg3, len_bus_seg2,len_bus_seg1,
-                                                        wait_bus_seg3,slope_bus_seg4, len_bus_seg3,len_bus_seg2,len_bus_seg1),
-                                                        "all", "mode=bg")
-            # Rail Modes
-            slope_rail_seg1 = 0.50000  # slope for 1st segment (high frequency) rail
-            slope_rail_seg2 = 0.15000  # slope for 2nd segemnt (med frequency)  rail
-            slope_rail_seg3 = 0.10000  # slope for 3rd segment (low frequency)  rail
-            slope_rail_seg4 = 0.03333  # slope for 4th segment (very low freq)  rail
-            len_rail_seg1 = 10  # length for 1st segment, rail
-            len_rail_seg2 = 10  # length for 2nd segment, rail
-            len_rail_seg3 = 10  # length for 3rd segment, rail
-            wait_rail_seg1 = len_rail_seg1 * slope_rail_seg1  # wait at end of 1st segment, rail
-            wait_rail_seg2 = wait_rail_seg1 + len_rail_seg2 * slope_rail_seg2  # wait at end of 2nd segment, rail
-            wait_rail_seg3 = wait_rail_seg2 + len_rail_seg3 * slope_rail_seg3  # wait at end of 3rd segment, rail
-            # TODO: Check applicable Modes
-            util.emme_segment_calc(sc, "@hfrac", "((%s*hdw).min.(%s+%s*(hdw-%s)).min."
-                                                       "(%s+%s*(hdw-%s-%s)).min.(%s+%s*(hdw-%s-%s-%s)))/hdw" % (slope_rail_seg1,
-                                                        wait_rail_seg1, slope_rail_seg2, len_rail_seg1,
-                                                        wait_rail_seg2, slope_rail_seg3, len_rail_seg2,len_rail_seg1,
-                                                        wait_rail_seg3, slope_rail_seg4, len_rail_seg3,len_rail_seg2, len_rail_seg1),
-                                                        "all", "mode=sfrhl")
+        ## Calculate headway fraction based on service frequency
+        # Bus Modes
+        # TODO: Check applicable Modes
+        util.emme_tline_calc(sc, "@hfrac",    "0 + 0.50000*(hdw)", sel_line="hdw=0,10 and mode=bg")
+        util.emme_tline_calc(sc, "@hfrac",    "5 + 0.40000*(hdw - 10)", sel_line="hdw=10,20 and mode=bg")
+        util.emme_tline_calc(sc, "@hfrac",    "9 + 0.35000*(hdw - 20)", sel_line="hdw=20,30 and mode=bg")
+        util.emme_tline_calc(sc, "@hfrac", "12.5 + 0.08333*(hdw - 30)", sel_line="hdw=30,99 and mode=bg")
+
+        # Rail Modes
+        util.emme_tline_calc(sc, "@hfrac",    "0 + 0.50000*(hdw)", sel_line="hdw=0,10 and mode=sfrhl")
+        util.emme_tline_calc(sc, "@hfrac",    "5 + 0.15000*(hdw - 10)", sel_line="hdw=10,20 and mode=sfrhl")
+        util.emme_tline_calc(sc, "@hfrac",  "6.5 + 0.10000*(hdw - 20)", sel_line="hdw=20,30 and mode=sfrhl")
+        util.emme_tline_calc(sc, "@hfrac",  "7.5 + 0.03333*(hdw - 30)", sel_line="hdw=30,99 and mode=sfrhl")
+
+        util.emme_segment_calc(sc, "@hdwyeff", "@hfrac")
+
+        # TODO: By Vehicle type or mode
+        util.emme_tline_calc(sc, "@dwtboard", str(self.dwt_board_factor_bus), sel_line="mode=bg")
+        util.emme_tline_calc(sc, "@dwtalight", str(self.dwt_alight_factor_bus), sel_line="mode=bg")
 
     def averaging_transit_volumes(self, sc, iteration):
         util = _m.Modeller().tool("translink.emme.util")
@@ -551,7 +512,7 @@ class TransitAssignment(_m.Tool()):
         # [(Boardings/max(Total Capacity - Transit Volume + Boardings,1)).min.3.0].max.1
         hdwy_spec = "((@boardavg/((@totcapacity-@voltravg+@boardavg).max.1)).min.(3.0)).max.1"
         util.emme_segment_calc(sc, "@hdwyfac", hdwy_spec)
-        util.emme_segment_calc(sc, "@hdwyeff", "hdw*@hdwyfac*@hfrac")
+        util.emme_segment_calc(sc, "@hdwyeff", "@hdwyfac*@hfrac")
 
     def dwell_time_calc(self, sc, period_length):
         util = _m.Modeller().tool("translink.emme.util")
