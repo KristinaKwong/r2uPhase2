@@ -486,6 +486,13 @@ class TransitAssignment(_m.Tool()):
         util.emme_segment_calc(sc, "@hdwyfac", "1")
         util.emme_segment_calc(sc, "@hdwyeff", "@hdwyfac*@hfrac")
 
+        # Initialize volume averaging parameters
+        util.emme_segment_calc(sc, "@boardavg", "0")
+        util.emme_segment_calc(sc, "@alightavg", "0")
+        util.emme_segment_calc(sc, "@voltravg", "0")
+        util.emme_segment_calc(sc, "@pseat", "0")
+        util.emme_segment_calc(sc, "@pstand", "0")
+
     def averaging_transit_volumes(self, sc, iteration):
         util = _m.Modeller().tool("translink.emme.util")
         # MSA on Boardings and transit Volumes
