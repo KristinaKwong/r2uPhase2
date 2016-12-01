@@ -206,7 +206,6 @@ class InputSettings(_m.Tool()):
         create_attr("LINK", "@tkpen", "Truck Penalty", 0, False, scen)
 
         # Add all required extra attibutes used in Transit Assignment
-        create_attr("TRANSIT_LINE", "@ivttp", "Bus IVTT Penalty", 0, False, scen)
         create_attr("TRANSIT_LINE", "@seatcapacity", "Seated Line Capacity for time period", 0, False, scen)
         create_attr("TRANSIT_LINE", "@totcapacity", "Total Line Capacity for time period", 0, False, scen)
         create_attr("TRANSIT_LINE", "@dwtboard",  "Dwell Time Boarding Factor", 0, False, scen)
@@ -216,7 +215,6 @@ class InputSettings(_m.Tool()):
         create_attr("TRANSIT_SEGMENT", "@hdwyfac", "Effective Headway Multiplier",1, False, scen)
         create_attr("TRANSIT_SEGMENT", "@hdwyeff",  "Effective Headway", 0, False, scen)
         create_attr("TRANSIT_SEGMENT", "@ivttfac",  "IVTT Perception Factor",1, False, scen)
-        create_attr("TRANSIT_SEGMENT", "@ivttp_ratype0",  "IVTT Perception Factor for Rail-Type0",1, False, scen)
         create_attr("TRANSIT_SEGMENT", "@crowdingfactor",  "Crowding Perception IVTT Factor", 0, False, scen)
         create_attr("TRANSIT_SEGMENT", "@pseat", "Number of Seated Passengers", 0, False, scen)
         create_attr("TRANSIT_SEGMENT", "@pstand", "Number of Standing Passengers", 0, False, scen)

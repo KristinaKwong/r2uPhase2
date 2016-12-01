@@ -97,7 +97,6 @@ class AutoAssignment(_m.Tool()):
         assign_traffic = _m.Modeller().tool("inro.emme.traffic_assignment.sola_traffic_assignment")
 
         self.calc_network_costs(scenario)
-        self.calc_transit_costs(scenario)
         self.init_matrices(scenario.emmebank)
 
         # First assignment to generate toll skims
@@ -309,50 +308,6 @@ class AutoAssignment(_m.Tool()):
         util.emme_link_calc(scenario, "@lgvoc", "length * %s + 2 * @tolls" % (lgv_voc))
         util.emme_link_calc(scenario, "@hgvoc", "length * %s + 3 * @tolls + @tkpen" % (hgv_voc))
 
-    @_m.logbook_trace("Calculate Fixed Transit Line Costs")
-    def calc_transit_costs(self, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
-
-        #TODO Move the headway calculations to the transit assignment module
-        # KB: why are the transit heady calculations in the traffic assignment tool ??????
-
-        # Calculate effective headway based on
-        # 0-10 minutes 0.5
-        # 10-20 minutes 0.4
-        # 20-30 minutes 0.3
-        # > 30 minutes 0.1
-        util.emme_tline_calc(scenario, "ut2", "hdw*0.5", sel_line="hdw=0,10")
-        util.emme_tline_calc(scenario, "ut2", "5 +  (hdw-10)*0.4", sel_line="hdw=10,20")
-        util.emme_tline_calc(scenario, "ut2", "9 +  (hdw-20)*0.3", sel_line="hdw=20,30")
-        util.emme_tline_calc(scenario, "ut2", "12 + (hdw-30)*0.1", sel_line="hdw=30,999")
-
-        #TODO confirm this is the correct approach with INRO
-        # doing this explicitly now.  Need to double the headway to use 0.5 headway fraction in assignment
-        # for stops with only one service this will return to the effective headway as calculated above
-        # for stops with multiple services, this will assume a random arrival of vehicles at the stops
-        # it may make more sense to
-        util.emme_tline_calc(scenario, "ut2", "ut2*2")
-
-        ## Calculate perception of headways based on following factors:
-        ##        "l" rail=0.8,
-        ##        "b" bus=1.2,
-        ##        "s" seabus=0.67,
-        ##        "g" BRT=1.1,
-        ##        "f" LRT=1.1,
-        ##        "h" Gondola=0.8,
-        ##        "r" WCE=0.8
-        util.emme_tline_calc(scenario, "ut1", "ut2*1.2",  sel_line="mode=b")
-        util.emme_tline_calc(scenario, "ut1", "ut2*0.8",  sel_line="mode=l")
-        util.emme_tline_calc(scenario, "ut1", "ut2*0.67", sel_line="mode=s")
-        util.emme_tline_calc(scenario, "ut1", "ut2*1.1",  sel_line="mode=f")
-        util.emme_tline_calc(scenario, "ut1", "ut2*1.1",  sel_line="mode=g")
-        util.emme_tline_calc(scenario, "ut1", "ut2*0.8",  sel_line="mode=h")
-        util.emme_tline_calc(scenario, "ut1", "ut2*0.8",  sel_line="mode=r")
-
-        ## Calculate in vehicle traval time perception factors
-        util.emme_tline_calc(scenario, "@ivttp", "1")
-        util.emme_tline_calc(scenario, "@ivttp", "3.5", sel_line="mode=b")
-        util.emme_tline_calc(scenario, "@ivttp", "3.5", sel_line="mode=g")
 
     def init_matrices(self, eb):
         util = _m.Modeller().tool("translink.emme.util")

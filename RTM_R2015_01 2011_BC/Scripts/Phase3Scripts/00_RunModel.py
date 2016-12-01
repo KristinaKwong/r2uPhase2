@@ -18,6 +18,8 @@ class FullModelRun(_m.Tool()):
     geographics_file = _m.Attribute(_m.InstanceType)
     max_distribution_iterations = _m.Attribute(int)
     max_assignment_iterations = _m.Attribute(int)
+    run_congested_transit = _m.Attribute(bool)
+    run_capacited_transit = _m.Attribute(bool)
     num_processors = _m.Attribute(int)
 
     tool_run_msg = _m.Attribute(unicode)
@@ -27,6 +29,8 @@ class FullModelRun(_m.Tool()):
         self.global_iterations = 6
         self.max_distribution_iterations = 60
         self.max_assignment_iterations = 200
+        self.run_congested_transit = False
+        self.run_capacited_transit = False
         self.num_processors = multiprocessing.cpu_count()
 
     def page(self):
@@ -87,6 +91,9 @@ class FullModelRun(_m.Tool()):
                              "considered converged.  If this is not "
                              "the case run again with more iterations.")
 
+        pb.add_checkbox("run_congested_transit", label="Run Congested Transit Assignment")
+        pb.add_checkbox("run_capacited_transit", label="Run Capacited Transit Assignment")
+
         pb.add_text_box(tool_attribute_name="num_processors",
                         size="3",
                         title="Number of processors on machine running model:",
@@ -99,7 +106,8 @@ class FullModelRun(_m.Tool()):
         try:
             self.__call__(self.horizon_year, self.global_iterations, self.master_scen, self.demographics_file,
                  self.geographics_file, self.max_distribution_iterations,
-                 self.max_assignment_iterations, self.num_processors)
+                 self.max_assignment_iterations, self.run_congested_transit, self.run_capacited_transit,
+                 self.num_processors)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
@@ -107,14 +115,18 @@ class FullModelRun(_m.Tool()):
     @_m.logbook_trace("Full Model Run")
     def __call__(self, horizon_year, global_iterations, master_scen, demographics_file,
                     geographics_file, max_distribution_iterations,
-                    max_assignment_iterations, num_processors):
+                    max_assignment_iterations, run_congested_transit, run_capacited_transit, num_processors):
         eb = master_scen.emmebank
         util = _m.Modeller().tool("translink.emme.util")
         self.initoptions(eb=eb, horizon_year=horizon_year, global_iterations=global_iterations,
                         max_distribution_iterations=max_distribution_iterations,
-                        max_assignment_iterations=max_assignment_iterations, num_processors=num_processors)
+                        max_assignment_iterations=max_assignment_iterations,
+                        run_congested_transit=run_congested_transit, run_capacited_transit=run_capacited_transit,
+                        num_processors=num_processors)
 
         self.stage0(eb, master_scen=master_scen, demographics_file=demographics_file, geographics_file=geographics_file)
+
+        self.stage1(eb)
 
     def stage0(self, eb, master_scen, demographics_file, geographics_file):
         util = _m.Modeller().tool("translink.emme.util")
@@ -126,8 +138,23 @@ class FullModelRun(_m.Tool()):
         data_import(eb, demographics_file=demographics_file, geographics_file=geographics_file)
         data_generate(eb)
 
+    def stage1(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
+        workers_and_income = _m.Modeller().tool("translink.RTM3.stage1.workinc")
+        vehicle_availability = _m.Modeller().tool("translink.RTM3.stage1.vam")
+        trip_productions = _m.Modeller().tool("translink.RTM3.stage1.prds")
+        trip_attractions = _m.Modeller().tool("translink.RTM3.stage1.atrs")
+
+        workers_and_income(eb)
+        vehicle_availability(eb)
+        trip_productions(eb)
+        trip_attractions(eb)
+
+
     def initoptions(self, eb, horizon_year, global_iterations,
-                    max_distribution_iterations, max_assignment_iterations, num_processors):
+                    max_distribution_iterations, max_assignment_iterations,
+                    run_congested_transit, run_capacited_transit,
+                    num_processors):
 
         util = _m.Modeller().tool("translink.emme.util")
         # model business
@@ -150,3 +177,5 @@ class FullModelRun(_m.Tool()):
         util.initmat(eb, "ms42", "ConBestRel", "ConvergenceBestRelative", 0.01)
         util.initmat(eb, "ms43", "ConNorm", "ConvergenceNormalized", 0.005)
         util.initmat(eb, "ms44", "AutoOcc", "Standard HOV Occupancy", 2.4)
+        util.initmat(eb, "ms45", "tranCongest", "Run Congested Transit Assignment", int(run_congested_transit))
+        util.initmat(eb, "ms46", "tranCapac", "Run Capacitated Transit Assignment", int(run_capacited_transit))

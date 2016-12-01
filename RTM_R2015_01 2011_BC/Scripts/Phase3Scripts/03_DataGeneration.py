@@ -42,12 +42,16 @@ class DataGeneration(_m.Tool()):
         self.matrix_batchins(eb)
         self.calc_density(eb)
 
-        # Run Initial Assignment to generate skims from seed demands
-        auto_assign = _m.Modeller().tool("translink.emme.stage3.step6.autoassignment")
         am_scen = eb.scenario(int(eb.matrix("ms2").data))
         md_scen = eb.scenario(int(eb.matrix("ms3").data))
         pm_scen = eb.scenario(int(eb.matrix("ms4").data))
+
+        # Run Initial Assignment to generate skims from seed demands
+        auto_assign = _m.Modeller().tool("translink.RTM3.stage3.autoassignment")
         auto_assign(am_scen, md_scen, pm_scen)
+
+        transit_assign = _m.Modeller().tool("translink.RTM3.stage3.transitassignment")
+        transit_assign(eb, am_scen, md_scen, pm_scen)
 
         # note transit_uni_accessibility has to run before other accessibilities
         # this is where the data table is started
@@ -123,10 +127,10 @@ class DataGeneration(_m.Tool()):
     	ij_dist = pd.merge(ij_cbd, ij_tc, how='left', left_on=['i'], right_on=['i'])
 
     	# write to emmebank
-    	util.set_matrix_numpy(eb, 'modistCbd', ij_dist['dist_cbd'].reshape(ij_dist['dist_cbd'].shape[0], 1))
-    	util.set_matrix_numpy(eb, 'modistCbdLn', ij_dist['dist_cbd_ln'].reshape(ij_dist['dist_cbd_ln'].shape[0], 1))
-    	util.set_matrix_numpy(eb, 'modistTc', ij_dist['dist_tc'].reshape(ij_dist['dist_tc'].shape[0], 1))
-    	util.set_matrix_numpy(eb, 'modistTcLn', ij_dist['dist_tc_ln'].reshape(ij_dist['dist_tc_ln'].shape[0], 1))
+    	util.set_matrix_numpy(eb, 'modistCbd', ij_dist['dist_cbd'].values)
+    	util.set_matrix_numpy(eb, 'modistCbdLn', ij_dist['dist_cbd_ln'].values)
+    	util.set_matrix_numpy(eb, 'modistTc', ij_dist['dist_tc'].values)
+    	util.set_matrix_numpy(eb, 'modistTcLn', ij_dist['dist_tc_ln'].values)
 
     	# write data to sqlite database
     	db_loc = util.get_eb_path(eb)
@@ -154,16 +158,13 @@ class DataGeneration(_m.Tool()):
     	time_cut_uni = 30
 
     	# get zone numbers
-    	index = util.get_matrix_numpy(eb, "mozoneindex")
-    	index = index.reshape(index.shape[0])
+    	index = util.get_matrix_numpy(eb, "mozoneindex", reshape=False)
 
     	# get employment data
-    	emp = util.get_matrix_numpy(eb, "moTotEmp")
-    	emp = emp.reshape(emp.shape[0])
+    	emp = util.get_matrix_numpy(eb, "moTotEmp", reshape=False)
 
     	# get post sec FTE enrolment
-    	ps = util.get_matrix_numpy(eb, "moEnrolPsFte")
-    	ps = ps.reshape(ps.shape[0])
+    	ps = util.get_matrix_numpy(eb, "moEnrolPsFte", reshape=False)
 
     	# merge employment and zone number
     	emp = pd.DataFrame({"taz": index, "emp": emp, "postsec" : ps}, columns=["taz","emp", "postsec"])
@@ -258,9 +259,8 @@ class DataGeneration(_m.Tool()):
     	ij_acc['transit_acc_ln'] = np.log(ij_acc['transit_acc'] + log_trans_const)
 
     	# write data back to emmebank
-    	# note have to reshape to work with util helper
-    	util.set_matrix_numpy(eb, 'motransitAcc', ij_acc['transit_acc'].reshape(ij_acc['transit_acc'].shape[0], 1))
-    	util.set_matrix_numpy(eb, 'motransitAccLn', ij_acc['transit_acc_ln'].reshape(ij_acc['transit_acc_ln'].shape[0], 1))
+    	util.set_matrix_numpy(eb, 'motransitAcc', ij_acc['transit_acc'].values)
+    	util.set_matrix_numpy(eb, 'motransitAccLn', ij_acc['transit_acc_ln'].values)
 
 
     	#######################################################################
@@ -285,9 +285,9 @@ class DataGeneration(_m.Tool()):
     	ij_acc_u['uni_acc_ln'] = np.log(ij_acc_u['uni_acc'] + log_trans_const)
 
 
-    	# note have to reshape to work with util helper
-    	util.set_matrix_numpy(eb, 'mouniAcc', ij_acc_u['uni_acc'].reshape(ij_acc_u['uni_acc'].shape[0], 1))
-    	util.set_matrix_numpy(eb, 'mouniAccLn', ij_acc_u['uni_acc_ln'].reshape(ij_acc_u['uni_acc_ln'].shape[0], 1))
+    	# write data back to emmebank
+    	util.set_matrix_numpy(eb, 'mouniAcc', ij_acc_u['uni_acc'].values)
+    	util.set_matrix_numpy(eb, 'mouniAccLn', ij_acc_u['uni_acc_ln'].values)
 
 
     	#######################################################################
@@ -323,12 +323,10 @@ class DataGeneration(_m.Tool()):
     	mat_pm = 'mfPmSovNwkTime'
 
     	# get zone numbers
-    	index = util.get_matrix_numpy(eb, "mozoneindex")
-    	index = index.reshape(index.shape[0])
+    	index = util.get_matrix_numpy(eb, "mozoneindex", reshape=False)
 
     	# get employment data
-    	emp = util.get_matrix_numpy(eb, "moTotEmp")
-    	emp = emp.reshape(emp.shape[0])
+    	emp = util.get_matrix_numpy(eb, "moTotEmp", reshape=False)
 
     	# merge employment and zone number
     	emp = pd.DataFrame({"taz": index, "emp": emp}, columns=["taz","emp"])
@@ -364,9 +362,8 @@ class DataGeneration(_m.Tool()):
     	ij_acc['auto_acc_ln'] = np.log(ij_acc['auto_acc'] + log_trans_const)
 
     	# write data back to emmebank
-    	# note have to reshape to work with util helper
-    	util.set_matrix_numpy(eb, 'moautoAcc', ij_acc['auto_acc'].reshape(ij_acc['auto_acc'].shape[0], 1))
-    	util.set_matrix_numpy(eb, 'moautoAccLn', ij_acc['auto_acc_ln'].reshape(ij_acc['auto_acc_ln'].shape[0], 1))
+    	util.set_matrix_numpy(eb, 'moautoAcc', ij_acc['auto_acc'].values)
+    	util.set_matrix_numpy(eb, 'moautoAccLn', ij_acc['auto_acc_ln'].values)
 
 
     	#######################################################################
@@ -393,11 +390,11 @@ class DataGeneration(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
 
         # get data from emmebank
-        zones = util.get_matrix_numpy(eb, "mozoneindex")
-        totpop = util.get_matrix_numpy(eb, "moTotPop")
-        totemp = util.get_matrix_numpy(eb, "moTotEmp")
+        zones = util.get_matrix_numpy(eb, "mozoneindex", reshape=False)
+        totpop = util.get_matrix_numpy(eb, "moTotPop", reshape=False)
+        totemp = util.get_matrix_numpy(eb, "moTotEmp", reshape=False)
         combined = totpop + totemp
-        area = util.get_matrix_numpy(eb, "moareahc")
+        area = util.get_matrix_numpy(eb, "moareahc", reshape=False)
 
         # calculate densities
         # handling divide by zero error and setting to 0
@@ -444,24 +441,14 @@ class DataGeneration(_m.Tool()):
         util.set_matrix_numpy(eb, 'moempdensln',empdensln)
         util.set_matrix_numpy(eb, 'mocombinedensln',combinedensln)
 
-        # reshape to create pandas dataframe
-        zo = zones.reshape(zones.shape[0])
-
-        em = empdens.reshape(empdens.shape[0])
-        po = popdens.reshape(popdens.shape[0])
-        co = combinedens.reshape(combinedens.shape[0])
-
-        el = empdensln.reshape(empdensln.shape[0])
-        pl = popdensln.reshape(popdensln.shape[0])
-        cl = combinedensln.reshape(combinedensln.shape[0])
-
-        df = pd.DataFrame({'TAZ1700': zo,
-               'popdens': po,
-               'empdens': em,
-               'combinedens' : co,
-               'popdensln': pl,
-               'empdensln': el,
-               'combinedensln' : cl },
+        # create pandas df to build sqilite table
+        df = pd.DataFrame({'TAZ1700': zones,
+               'popdens': popdens,
+               'empdens': empdens,
+               'combinedens' : combinedens,
+               'popdensln': popdensln,
+               'empdensln': empdensln,
+               'combinedensln' : combinedensln },
                columns=['TAZ1700','popdens','empdens','combinedens', 'popdensln','empdensln','combinedensln'])
 
         # write data to rtm sqlite database
