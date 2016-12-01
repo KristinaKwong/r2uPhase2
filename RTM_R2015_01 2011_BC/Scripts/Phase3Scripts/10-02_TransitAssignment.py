@@ -224,9 +224,9 @@ class TransitAssignment(_m.Tool()):
 
                 # Update Dwell time
                 self.dwell_time_calc(sc, period_length)
-
             # Restore writing to Logbook
             _m.logbook_level(self.previous_level)
+
             # Write Logbook entries for crowding and Headway
             _m.logbook_write("Crowding and Headway report for Scenario: "+sc.id, attributes=report, value=sc.title)
 
@@ -235,6 +235,13 @@ class TransitAssignment(_m.Tool()):
             self.skim_rail(sc)
             if sc is not scenariomd:
                 self.skim_wce(sc)
+
+            if sc is scenarioam:
+                self.collect_skims(sc, "AM")
+            if sc is scenariomd:
+                self.collect_skims(sc, "MD")
+            if sc is scenariopm:
+                self.collect_skims(sc, "PM")
 
     def get_common_transit_assignment_spec(self, modes, demand):
         spec = {
@@ -766,6 +773,51 @@ class TransitAssignment(_m.Tool()):
         specs.append(util.matrix_spec(result, expression1))
         specs.append(util.matrix_spec(result, expression2))
         util.compute_matrix(specs, scenarionumber)
+
+    @_m.logbook_trace("Move Skims to Time of Day Locations")
+    def collect_skims(self, sc, tod):
+        util = _m.Modeller().tool("translink.emme.util")
+
+        if tod == "AM":
+            bus_skims =  ["mf5200", "mf5201", "mf5202", "mf5203", "mf5204"]
+            rail_skims = ["mf5400", "mf5401", "mf5402", "mf5403", "mf5404", "mf5405"]
+            wce_skims =  ["mf5600", "mf5601", "mf5602", "mf5603", "mf5604", "mf5605", "mf5606"]
+        if tod == "MD":
+            bus_skims =  ["mf5210", "mf5211", "mf5212", "mf5213", "mf5214"]
+            rail_skims = ["mf5410", "mf5411", "mf5412", "mf5413", "mf5414", "mf5415"]
+            wce_skims =  None
+        if tod == "PM":
+            bus_skims =  ["mf5220", "mf5221", "mf5222", "mf5223", "mf5224"]
+            rail_skims = ["mf5420", "mf5421", "mf5422", "mf5423", "mf5424", "mf5425"]
+            wce_skims =  ["mf5620", "mf5621", "mf5622", "mf5623", "mf5624", "mf5625", "mf5626"]
+
+        specs = []
+        # Bus Skims
+        specs.append(util.matrix_spec(bus_skims[0], "mf9961"))
+        specs.append(util.matrix_spec(bus_skims[1], "mf9960"))
+        specs.append(util.matrix_spec(bus_skims[2], "mf9962"))
+        specs.append(util.matrix_spec(bus_skims[3], "mf9963"))
+        specs.append(util.matrix_spec(bus_skims[4], "mf9966"))
+
+        # Rail Skims
+        specs.append(util.matrix_spec(rail_skims[0], "mf9974"))
+        specs.append(util.matrix_spec(rail_skims[1], "mf9973"))
+        specs.append(util.matrix_spec(rail_skims[2], "mf9972"))
+        specs.append(util.matrix_spec(rail_skims[3], "mf9971"))
+        specs.append(util.matrix_spec(rail_skims[4], "mf9970"))
+        specs.append(util.matrix_spec(rail_skims[5], "mf9977"))
+
+        # WCE Skims
+        if wce_skims is not None:
+            specs.append(util.matrix_spec(wce_skims[0], "mf9985"))
+            specs.append(util.matrix_spec(wce_skims[1], "mf9984"))
+            specs.append(util.matrix_spec(wce_skims[2], "mf9983"))
+            specs.append(util.matrix_spec(wce_skims[3], "mf9982"))
+            specs.append(util.matrix_spec(wce_skims[4], "mf9981"))
+            specs.append(util.matrix_spec(wce_skims[5], "mf9980"))
+            specs.append(util.matrix_spec(wce_skims[6], "mf9989"))
+
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Initialize Skim Matrices")
     def matrix_batchins(self, eb):
