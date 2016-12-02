@@ -434,7 +434,7 @@ class ModeChoiceGenDf(_m.Tool()):
 
 #        # Blend Factors
         BlendDict = {    #AM,   PM,        AM,   PM,
-         'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
+         'hbwo':{'PA': hbwo_fct_wce[0], 'AP':hbwo_fct_wce[1],
                  'Mat':['HbWBlWceIvtt', 'HbWBlWceIvttRail', 'HbWBlWceIvttBus', 'HbWBlWceWait', 'HbWBlWceAux', 'HbWBlWceBoards', 'HbWBlWceFare']},  # Where Blended Matrices get stored in same order as above
                     }
 

@@ -37,7 +37,7 @@ class HbWork(_m.Tool()):
     @_m.logbook_trace("Run Home Base Work")
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
-        MChM = _m.Modeller().tool("translink.emme.modechoicemethods")
+        MChM = _m.Modeller().tool("translink.RTM3.testtdmc.ModeChoiceUtils")
         input_path = util.get_input_path(eb)
         self.matrix_batchins(eb)
         NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
@@ -47,15 +47,15 @@ class HbWork(_m.Tool()):
 #        ##############################################################################
 
         AvailDict = {
-                     'AutDist ': 0.0,
-                     'WlkDist ': 5.0,
-                     'BikDist ': 20.0,
-                     'TranIVT ': 1.0,
-                     'TranWat ': 20.0,
-                     'TranAux ': 30.0,
-                     'WCEWat ' : 30.0,
-                     'WCEAux ' : 40.0,
-                     'TranBrd ': 4.0,
+                     'AutDist': 0.0,
+                     'WlkDist': 5.0,
+                     'BikDist': 20.0,
+                     'TranIVT': 1.0,
+                     'TranWat': 20.0,
+                     'TranAux': 30.0,
+                     'WCEWat' : 30.0,
+                     'WCEAux' : 40.0,
+                     'TranBrd': 4.0,
                      'BRTotLow': 10.0,
                      'BRTotHig': 120.0,
                      'WCTotLow': 30.0,
@@ -115,8 +115,8 @@ class HbWork(_m.Tool()):
         # Generate Dataframe
         Df = {}
         MaxPark = 10.0
-        VOC = util.get_matrix_numpy(eb, 'autoOpCost') # Veh Op Cost
-        Occ = util.get_matrix_numpy(eb, 'HOV3OccHbw') # Occupancy
+        VOC = float(util.get_matrix_numpy(eb, 'autoOpCost')) # Veh Op Cost
+        Occ = float(util.get_matrix_numpy(eb, 'HOVOccHbw')) # Occupancy
         Df['ParkCost'] = util.get_matrix_numpy(eb, 'prk8hr') # 8hr Parking
         Df['ParkCost'][Df['ParkCost']>MaxPark] = MaxPark # set parking>$10 to $10
         Df['ParkCost'] = Df['ParkCost'].reshape(1, NoTAZ) + np.zeros((NoTAZ, 1)) # Broadcast parking from vector to matrix
@@ -325,6 +325,7 @@ class HbWork(_m.Tool()):
         Df['AutoDisSqd'] = Df['AutoDis']* Df['AutoDis'] # Distance-squared
         Df['LogAutoDis'] = np.log(Df['AutoDis'] + Tiny) #log-distance
 
+
         # Utilities
         # PR Bus Utility
         # PR Bus Common Utility for all incomes
@@ -333,8 +334,9 @@ class HbWork(_m.Tool()):
                       + p151*Df['BAuTim']
                       + p152*Df['BusIVT']
                       + p17*Df['BusWat']
-                      + p18*(Df['BusAux'] + Df['BAuTrm'])
-                      + p19*['BusBrd']
+                      + p18*Df['BusAux']
+                      + p18*Df['BAuTrm']
+                      + p19*Df['BusBrd']
                       + p991*Df['AutoDis']
                       + p992*Df['AutoDisSqd']
                       + p993*Df['LogAutoDis'])
@@ -411,7 +413,7 @@ class HbWork(_m.Tool()):
         Df['PopSen'] = util.get_matrix_numpy(eb, 'Pop55t64') + util.get_matrix_numpy(eb, 'Pop65Up') #Senior Proportion
         Df['PopTot'] = util.get_matrix_numpy(eb, 'TotEmp')
         Df['PopSPr'] = np.log(Df['PopSen']/(Df['PopTot'] + Tiny) + 0.0001)
-        Df['PopSPr'] = npDf['PopSPr'].reshape(NoTAZ, 1) + np.zeros(1, NoTAZ)
+        Df['PopSPr'] = Df['PopSPr'].reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
 
         Df['BikScr'] = util.get_matrix_numpy(eb, 'bikeskim') # Bike Score
 
@@ -419,7 +421,7 @@ class HbWork(_m.Tool()):
         DfU['Walk'] = ( p10
                       + p20*Df['AutoDis']
                       + p850*Df['IntrCBD']
-                      + p701*Df['PopDen']
+                      + p701*Df['PopEmpDen']
                       + p505*Df['PopSPr'])
         # Check availability conditions else add high negative utility (-99999)
         DfU['Walk'] = MChM.WalkAvail(Df['AutoDis'], DfU['Walk'], AvailDict)
@@ -434,9 +436,9 @@ class HbWork(_m.Tool()):
 
         del Df
 
-#        ##############################################################################
-#        ##       Calculate Probabilities
-#        ##############################################################################
+        ##############################################################################
+        ##       Calculate Probabilities
+        ##############################################################################
 
         ############
         # Low Income
@@ -546,7 +548,7 @@ class HbWork(_m.Tool()):
         I3A2_Dict = self.Calc_Prob(eb, Dict, "HbWLSI3A2", thet)
 
         del DfU, Dict
-
+#
        ##############################################################################
         ##       Trip Distribution
        ##############################################################################
@@ -592,7 +594,7 @@ class HbWork(_m.Tool()):
                       -0.0004, -0.0004, -0.0004]
 
         Dist_Iter = int(util.get_matrix_numpy(eb, 'IterDist'))
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, "HbWBlSovDist")
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "HbWBlSovDist"))
         MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list, Dist_Iter)
 
 
@@ -686,8 +688,8 @@ class HbWork(_m.Tool()):
         Dfmerge['RAuI2'] = RAuI2.flatten()
         Dfmerge['RAuI3'] = RAuI3.flatten()
 
-        DfmergedAuto = Dfmerge.groupby(['Or', 'BL']).sum().reset_index()
-        DfmergedTran = Dfmerge.groupby(['BL', 'De']).sum().reset_index()
+        DfmergedAuto = Dfmerge.groupby(['i', 'BL']).sum().reset_index()
+        DfmergedTran = Dfmerge.groupby(['BL', 'j']).sum().reset_index()
         DfAuto, DfTran = self.splitpnr(DfmergedAuto, DfmergedTran, DfInt)
         SOVI1 += DfAuto['RAuI1'].reshape(NoTAZ, NoTAZ)
         SOVI2 += DfAuto['RAuI2'].reshape(NoTAZ, NoTAZ)
@@ -703,8 +705,8 @@ class HbWork(_m.Tool()):
         Dfmerge['WAuI2'] = WAuI2.flatten()
         Dfmerge['WAuI3'] = WAuI3.flatten()
 
-        DfmergedAuto = Dfmerge.groupby(['Or', 'BL']).sum().reset_index()
-        DfmergedTran = Dfmerge.groupby(['BL', 'De']).sum().reset_index()
+        DfmergedAuto = Dfmerge.groupby(['i', 'BL']).sum().reset_index()
+        DfmergedTran = Dfmerge.groupby(['BL', 'j']).sum().reset_index()
         DfAuto, DfTran = self.splitpnr(DfmergedAuto, DfmergedTran, DfInt)
         SOVI1 += DfAuto['WAuI1'].reshape(NoTAZ, NoTAZ)
         SOVI2 += DfAuto['WAuI2'].reshape(NoTAZ, NoTAZ)

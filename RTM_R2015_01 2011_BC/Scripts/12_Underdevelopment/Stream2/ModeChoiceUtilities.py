@@ -208,7 +208,7 @@ class ModeChoiceUtilities(_m.Tool()):
                          Utility , LrgU)
 
     @_m.logbook_trace("Impedance Calc")
-    def ImpCalc(self, eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, Distance, RunType):
+    def ImpCalc(self, eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, Distance):
 
         util = _m.Modeller().tool("translink.emme.util")
         input_path = util.get_input_path(eb)
@@ -217,28 +217,9 @@ class ModeChoiceUtilities(_m.Tool()):
 
             A = util.get_matrix_numpy(eb, Logsum[i])
 
-            if RunType == 0:
-
-                Imp = (LS_Coeff*A)
-
-
-            if RunType == 1:
-
-                Imp = (LS_Coeff*A+LambdaList[i]*Distance)
-
-
-            if RunType == 2:
-
-                Imp = (LS_Coeff*A+LambdaList[i]*Distance
-                      +AlphaList[i]*pow(Distance, 2))
-
-
-
-            if RunType == 3:
-
-                Imp = (LS_Coeff*A+LambdaList[i]*Distance
-                      +AlphaList[i]*pow(Distance, 2)
-                      +GammaList[i]*pow(Distance, 3))
+            Imp = (LS_Coeff*A+LambdaList[i]*Distance
+                  +AlphaList[i]*pow(Distance, 2)
+                  +GammaList[i]*pow(Distance, 3))
 
 
             Imp = np.exp(Imp)

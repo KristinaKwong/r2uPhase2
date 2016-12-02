@@ -37,7 +37,7 @@ class HbWork(_m.Tool()):
     @_m.logbook_trace("Run Home Base Work")
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
-        MChM = _m.Modeller().tool("translink.emme.modechoicemethods")
+        MChM = _m.Modeller().tool("translink.RTM3.testtdmc.ModeChoiceUtils")
         input_path = util.get_input_path(eb)
         self.matrix_batchins(eb)
         NoTAZ = len(util.get_matrix_numpy(eb, "mo51"))
@@ -47,15 +47,15 @@ class HbWork(_m.Tool()):
 #        ##############################################################################
 
         AvailDict = {
-                     'AutDist ': 0.0,
-                     'WlkDist ': 5.0,
-                     'BikDist ': 10.0,
-                     'TranIVT ': 1.0,
-                     'TranWat ': 20.0,
-                     'TranAux ': 30.0,
-                     'WCEWat ' : 30.0,
-                     'WCEAux ' : 40.0,
-                     'TranBrd ': 4.0,
+                     'AutDist': 0.0,
+                     'WlkDist': 5.0,
+                     'BikDist': 10.0,
+                     'TranIVT': 1.0,
+                     'TranWat': 20.0,
+                     'TranAux': 30.0,
+                     'WCEWat' : 30.0,
+                     'WCEAux' : 40.0,
+                     'TranBrd': 4.0,
                      'BRTotLow': 10.0,
                      'BRTotHig': 120.0,
                      'WCTotLow': 30.0,
@@ -168,7 +168,7 @@ class HbWork(_m.Tool()):
                       + p15*Df['BusIVT']
                       + p17*Df['BusWat']
                       + p18*Df['BusAux']
-                      + p19*(Df['BusBrd'])
+                      + p19*Df['BusBrd'])
 
         # Check Availability conditions
         Df['GeUtl'] = MChM.BusAvail(Df, Df['GeUtl'], AvailDict)
@@ -185,7 +185,7 @@ class HbWork(_m.Tool()):
                       + p15*Df['RalIVR']
                       + p17*Df['RalWat']
                       + p18*Df['RalAux']
-                      + p19*(Df['RalBrd'])
+                      + p19*Df['RalBrd'])
 
         # Check Availability conditions
         Df['GeUtl'] = MChM.RailAvail(Df, Df['GeUtl'],AvailDict)
@@ -202,7 +202,7 @@ class HbWork(_m.Tool()):
         Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbShBlSovDist')
 
         Df['PopEmpDen'] = util.get_matrix_numpy(eb, 'popdens') + util.get_matrix_numpy(eb, 'empdens') # Pop + Emp Density
-        Df['PopEmpDen'] = Df['PopEmpDen'].reshape(NoTAZ, 1) + np.zeros(1, NoTAZ)
+        Df['PopEmpDen'] = Df['PopEmpDen'].reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
         Df['PopEmpDen'][Df['PopEmpDen']<1.0] = 1.0
         Df['PopEmpDen'] = np.log(Df['PopEmpDen']) # Log Pop+Emp Density
         Df['BikScr'] = util.get_matrix_numpy(eb, 'bikeskim')
@@ -329,10 +329,10 @@ class HbWork(_m.Tool()):
         I3A2_Dict = self.Calc_Prob(eb, Dict, "HbShLSI3A2", thet)
 
         del DfU, Dict
-
-       ##############################################################################
-        ##       Trip Distribution
-       ##############################################################################
+#
+#       ##############################################################################
+#        ##       Trip Distribution
+#       ##############################################################################
 
         Logsum =  [
                   "HbShLSI1A0", "HbShLSI1A1", "HbShLSI1A2",
@@ -375,8 +375,8 @@ class HbWork(_m.Tool()):
                       -0.0004, -0.0004, -0.0004]
 
         Dist_Iter = int(util.get_matrix_numpy(eb, 'IterDist'))
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, "HbShBlSovDist")
-        MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list, Dist_Iter)
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "HbShBlSovDist"))
+        MChM.one_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list, Dist_Iter)
 
 
 #       ##############################################################################
@@ -399,9 +399,9 @@ class HbWork(_m.Tool()):
         SOVI3 = I3A0_Dict['SOV'][0] + I3A1_Dict['SOV'][0] + I3A2_Dict['SOV'][0]
 
         # HOV Trips
-        HV2+I1 = I1A0_Dict['HOV'][0] + I1A1_Dict['HOV'][0] + I1A2_Dict['HOV'][0]
-        HV2+I2 = I2A0_Dict['HOV'][0] + I2A1_Dict['HOV'][0] + I2A2_Dict['HOV'][0]
-        HV2+I3 = I3A0_Dict['HOV'][0] + I3A1_Dict['HOV'][0] + I3A2_Dict['HOV'][0]
+        HOVI1 = I1A0_Dict['HOV'][0] + I1A1_Dict['HOV'][0] + I1A2_Dict['HOV'][0]
+        HOVI2 = I2A0_Dict['HOV'][0] + I2A1_Dict['HOV'][0] + I2A2_Dict['HOV'][0]
+        HOVI3 = I3A0_Dict['HOV'][0] + I3A1_Dict['HOV'][0] + I3A2_Dict['HOV'][0]
         # Bus/Rail Trips
         Bus  =  I1A0_Dict['WTra'][0] + I1A1_Dict['WTra'][0] + I1A2_Dict['WTra'][0]
         Bus +=  I2A0_Dict['WTra'][0] + I2A1_Dict['WTra'][0] + I2A2_Dict['WTra'][0]
@@ -428,9 +428,9 @@ class HbWork(_m.Tool()):
         util.set_matrix_numpy(eb, "HbShSOVI1PerTrips", SOVI1)
         util.set_matrix_numpy(eb, "HbShSOVI2PerTrips", SOVI2)
         util.set_matrix_numpy(eb, "HbShSOVI3PerTrips", SOVI3)
-        util.set_matrix_numpy(eb, "HbShHV2+I1PerTrips", HV2I1)
-        util.set_matrix_numpy(eb, "HbShHV2+I2PerTrips", HV2I2)
-        util.set_matrix_numpy(eb, "HbShHV2+I3PerTrips", HV2I3)
+        util.set_matrix_numpy(eb, "HbShHV2+I1PerTrips", HOVI1)
+        util.set_matrix_numpy(eb, "HbShHV2+I2PerTrips", HOVI2)
+        util.set_matrix_numpy(eb, "HbShHV2+I3PerTrips", HOVI3)
         util.set_matrix_numpy(eb, "HbShBusPerTrips", Bus)
         util.set_matrix_numpy(eb, "HbShRailPerTrips", Rail)
         util.set_matrix_numpy(eb, "HbShWalkPerTrips", Walk)

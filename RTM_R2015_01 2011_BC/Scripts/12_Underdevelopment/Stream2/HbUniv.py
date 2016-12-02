@@ -37,7 +37,7 @@ class HbWork(_m.Tool()):
     @_m.logbook_trace("Run Home Base University")
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
-        MChM = _m.Modeller().tool("translink.emme.modechoicemethods")
+        MChM = _m.Modeller().tool("translink.RTM3.testtdmc.ModeChoiceUtils")
         input_path = util.get_input_path(eb)
         self.matrix_batchins(eb)
         NoTAZ = len(util.get_matrix_numpy(eb, "mo51"))
@@ -47,15 +47,15 @@ class HbWork(_m.Tool()):
 #        ##############################################################################
 
         AvailDict = {
-                     'AutDist ': 0.0,
-                     'WlkDist ': 5.0,
-                     'BikDist ': 20.0,
-                     'TranIVT ': 1.0,
-                     'TranWat ': 20.0,
-                     'TranAux ': 40.0,
-                     'WCEWat ' : 30.0,
-                     'WCEAux ' : 40.0,
-                     'TranBrd ': 4.0,
+                     'AutDist': 0.0,
+                     'WlkDist': 5.0,
+                     'BikDist': 20.0,
+                     'TranIVT': 1.0,
+                     'TranWat': 20.0,
+                     'TranAux': 40.0,
+                     'WCEWat' : 30.0,
+                     'WCEAux' : 40.0,
+                     'TranBrd': 4.0,
                      'BRTotLow': 10.0,
                      'BRTotHig': 120.0,
                      'WCTotLow': 30.0,
@@ -66,19 +66,19 @@ class HbWork(_m.Tool()):
         # Declare Utilities Data Frame
         DfU = {}
         # Add Coefficients
-		p2   = -2.778773
-		p4   =  4.232185
-		p6   =  5.306844
-		p10  =  5.459996
-		p11  = -0.798531
-		p12  = -0.620939
-		p15  = -0.070561
-		p17  = -0.148509
-		p18  = -0.103273
-		p19  = -0.824006
-		p20  = -3.055662
-		p21  = -1.189485
-		thet =  0.296057
+        p2   = -2.778773
+        p4   =  4.232185
+        p6   =  5.306844
+        p10  =  5.459996
+        p11  = -0.798531
+        p12  = -0.620939
+        p15  = -0.070561
+        p17  = -0.148509
+        p18  = -0.103273
+        p19  = -0.824006
+        p20  = -3.055662
+        p21  = -1.189485
+        thet =  0.296057
 
 #        ##############################################################################
 #        ##       Auto Modes
@@ -88,13 +88,13 @@ class HbWork(_m.Tool()):
         MaxPark = 10.0
         VOC = util.get_matrix_numpy(eb, 'autoOpCost')
 
-		##
+        ##
         Occ = util.get_matrix_numpy(eb, 'HOVOccHbu')
         Df['ParkCost'] = util.get_matrix_numpy(eb, 'mo61') # 8 hr parking
         Df['ParkCost'][Df['ParkCost']>MaxPark] = MaxPark
         Df['ParkCost'] = Df['ParkCost'].reshape(1, NoTAZ) + np.zeros((NoTAZ, 1))
 
-		##
+        ##
         Df['AutoDisSOV'] = util.get_matrix_numpy(eb, 'HbUBlSovDist')
         Df['AutoTimSOV'] = util.get_matrix_numpy(eb, 'HbUBlSovTime')
         Df['AutoCosSOV'] = Df['AutoDisSOV']*VOC + util.get_matrix_numpy(eb, 'HbUBlSovToll') + Df['ParkCost']
@@ -109,23 +109,22 @@ class HbWork(_m.Tool()):
         Df['GeUtl'] = (0
                       + p15*Df['AutoTimSOV']
                       + p12*Df['AutoCosSOV'])
-
         # Check SOV Availability
-		Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisSOV'], Df['GeUtl'], AvailDict)
+        Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisSOV'], Df['GeUtl'], AvailDict)
 
-		DfU['SOV'] = Df['GeUtl']
+        DfU['SOV'] = Df['GeUtl']
 
-        ## 	HOV - 2 and more persons
+        ##     HOV - 2 and more persons
         # HOV
         # HOV Utility for all incomes
 
-        Df['GeUtl'] = (p2
+        Df['GeUtl'] = ( p2
                       + p15*Df['AutoTimHOV']
-                      + p12*Df['AutoCosHOV]/Occ
+                      + p12*Df['AutoCosHOV']/Occ)
 
         # Check HOV Availability
-		Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisHOV'], Df['GeUtl'], AvailDict)
-		DfU['HOV'] = Df['GeUtl']
+        Df['GeUtl'] = MChM.AutoAvail(Df['AutoDisHOV'], Df['GeUtl'], AvailDict)
+        DfU['HOV']  = Df['GeUtl']
 
 #        ##############################################################################
 #        ##       Walk to Transit Modes
@@ -133,9 +132,9 @@ class HbWork(_m.Tool()):
         # Generate Dataframe
         Df = {}
         Tiny=0.000001
-		##
-		##	Bus and rail related variables for University purpose
-		##
+        ##
+        ##    Bus and rail related variables for University purpose
+        ##
         Df['BusIVT'] = util.get_matrix_numpy(eb, 'HbUBlBusIvtt')
         Df['BusWat'] = util.get_matrix_numpy(eb, 'HbUBlBusWait')
         Df['BusAux'] = util.get_matrix_numpy(eb, 'HbUBlBusAux')
@@ -170,11 +169,11 @@ class HbWork(_m.Tool()):
         Df['GeUtl'] = MChM.BusAvail(Df, Df['GeUtl'], AvailDict)
         DfU['Bus'] = Df['GeUtl']
 
-        # 	Rail Utility
-		##
+        #     Rail Utility
+        ##
         Df['GeUtl'] = ( p4*Df['RalIBR']
                       + p6*Df['RalIRR']
-					  + p12*Df['RalFar']
+                      + p12*Df['RalFar']
                       + p15*Df['RalIVB']
                       + p15*Df['RalIVR']
                       + p17*Df['RalWat']
@@ -183,16 +182,16 @@ class HbWork(_m.Tool()):
 
         # Check Rail Availability
         Df['GeUtl'] = MChM.RailAvail(Df, Df['GeUtl'],AvailDict)
-        DfU['Ral'] = (Df['GeUtl']
+        DfU['Ral'] = Df['GeUtl']
 
 #        ##############################################################################
 #        ##
-#        ##		Active Modes
-#        ##		rs: HbU SOV distance is used.
+#        ##        Active Modes
+#        ##        rs: HbU SOV distance is used.
 #        ##
 #        ##############################################################################
 
-		Df = {}
+        Df = {}
         Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbUBlSovDist')
 
         # Walk Utility
@@ -226,8 +225,7 @@ class HbWork(_m.Tool()):
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
 
-       Prob_Dict = self.Calc_Prob(eb, Dict, "HbULS", thet)
-
+        Prob_Dict = self.Calc_Prob(eb, Dict, "HbULS", thet)
         del DfU, Dict
 
        ##############################################################################
@@ -253,7 +251,7 @@ class HbWork(_m.Tool()):
         GammaList =  [-0.0004]
 
         Dist_Iter = int(util.get_matrix_numpy(eb, 'IterDist'))
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, "HbUBlSovDist")
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "HbUBlSovDist"))
         MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list, Dist_Iter)
 
 
