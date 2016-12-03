@@ -41,7 +41,8 @@ class HbWork(_m.Tool()):
         input_path = util.get_input_path(eb)
         self.matrix_batchins(eb)
         NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
-
+        VOC = float(util.get_matrix_numpy(eb, 'autoOpCost')) # Veh Op Cost
+        Occ = float(util.get_matrix_numpy(eb, 'HOVOccHbw')) # Occupancy
 #        ##############################################################################
 #        ##       Define Availability conditions
 #        ##############################################################################
@@ -107,337 +108,115 @@ class HbWork(_m.Tool()):
         p995 =  -0.001334
         p996 =   0.615975
         thet =   0.596401
-
+        Tiny=0.000001
 
 #        ##############################################################################
 #        ##       Auto Modes
 #        ##############################################################################
         # Generate Dataframe
-        Df = {}
-        MaxPark = 10.0
-        VOC = float(util.get_matrix_numpy(eb, 'autoOpCost')) # Veh Op Cost
-        Occ = float(util.get_matrix_numpy(eb, 'HOVOccHbw')) # Occupancy
-        Df['ParkCost'] = util.get_matrix_numpy(eb, 'prk8hr') # 8hr Parking
-        Df['ParkCost'][Df['ParkCost']>MaxPark] = MaxPark # set parking>$10 to $10
-        Df['ParkCost'] = Df['ParkCost'].reshape(1, NoTAZ) + np.zeros((NoTAZ, 1)) # Broadcast parking from vector to matrix
+        Df = util.get_pd_ij_df(eb)
 
-        Df['AutoAccess'] = util.get_matrix_numpy(eb, 'autoAccLn').reshape(NoTAZ,1) + np.zeros((1, NoTAZ)) # Broadcast Log accessibility from vector to matrix
+        ParkCost = eb.matrix('prk8hr').get_numpy_data() # 8hr Parking
+        ParkCost = ParkCost.reshape(1, NoTAZ) + np.zeros((NoTAZ, 1)) # Broadcast parking from vector to matrix
+        Df['ParkCost'] = ParkCost.flatten()
 
-        Df['AutoDisSOV'] = util.get_matrix_numpy(eb, 'HbWBlSovDist') #SOV Distance
-        Df['AutoTimSOV'] = util.get_matrix_numpy(eb, 'HbWBlSovTime') #SOV Time
-        Df['AutoCosSOV'] = Df['AutoDisSOV']*VOC + util.get_matrix_numpy(eb, 'mf5102') + Df['ParkCost'] #SOV Cost (per km + Toll + Parking)
-
-        Df['AutoDisHOV'] = util.get_matrix_numpy(eb, 'mf5106') #HOV Distance
-        Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'mf5107') #hOV Time
-        Df['AutoCosHOV'] = Df['AutoDisHOV']*VOC + util.get_matrix_numpy(eb, 'HbWBlHovToll') + Df['ParkCost'] #HOV Cost (per km + Toll + Parking)
-
-        # Utilities
-        # SOV Common Utility for all incomes
-        Df['GeUtl'] = ( 0
-                      + p151*Df['AutoTimSOV']
-                      + p601*Df['AutoAccess'])
-
-        Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisSOV'], Df['GeUtl'], AvailDict) #Check Availability condition if mode not available then set to high negative utility (-9999)
-        # Add Income Parameters
-        DfU['SOVI1']  = Df['GeUtl'] + p12*Df['AutoCosSOV']
-        DfU['SOVI2']  = Df['GeUtl'] + p13*Df['AutoCosSOV']
-        DfU['SOVI3']  = Df['GeUtl'] + p14*Df['AutoCosSOV']
-
-        # HOV2
-        # HOV Common Utility for all incomes
-        Df['GeUtl'] = ( p2
-                      + p151*Df['AutoTimHOV']
-                      + p601*Df['AutoAccess'])
-
-        Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisHOV'], Df['GeUtl'], AvailDict) #Check Availability condition if mode not available then set to high negative utility (-9999)
-        # Add Income Parameters
-        DfU['HV2I1']  = Df['GeUtl'] + p12*Df['AutoCosHOV']/2.0
-        DfU['HV2I2']  = Df['GeUtl'] + p13*Df['AutoCosHOV']/2.0
-        DfU['HV2I3']  = Df['GeUtl'] + p14*Df['AutoCosHOV']/2.0
-
-        # HOV3
-        # HOV Common Utility for all incomes
-        Df['GeUtl'] = ( p3
-                      + p151*Df['AutoTimHOV']
-                      + p601*Df['AutoAccess'])
-
-        Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisHOV'], Df['GeUtl'], AvailDict) #Check Availability condition if mode not available then set to high negative utility (-9999)
-        # Add Income Parameters
-        DfU['HV3I1']  = Df['GeUtl'] + p12*Df['AutoCosHOV']/Occ
-        DfU['HV3I2']  = Df['GeUtl'] + p13*Df['AutoCosHOV']/Occ
-        DfU['HV3I3']  = Df['GeUtl'] + p14*Df['AutoCosHOV']/Occ
+        AutoAccess = eb.matrix('autoAccLn').get_numpy_data() # 8hr Parking
+        AutoAccess = AutoAccess.reshape(NoTAZ,1) + np.zeros((1, NoTAZ)) # Broadcast Log accessibility from vector to matrix
+        Df['AutoAccess'] = AutoAccess.flatten()
 
 
-#        ##############################################################################
-#        ##       Walk to Transit Modes
-#        ##############################################################################
-        # Generate Dataframe
-        Df = {}
-        Tiny=0.000001
-        Df['BusIVT'] = util.get_matrix_numpy(eb, 'HbWBlBusIvtt') #In vehicle Bus time
-        Df['BusWat'] = util.get_matrix_numpy(eb, 'HbWBlBusWait') #Wait Bus time
-        Df['BusAux'] = util.get_matrix_numpy(eb, 'HbWBlBusAux') #Walk Time
-        Df['BusBrd'] = util.get_matrix_numpy(eb, 'HbWBlBusBoard') #Boarding time
-        Df['BusFar'] = util.get_matrix_numpy(eb, 'HbWBlBusFare') #Fare
+        Df['AutoDisSOV'] = util.get_matrix_numpy(eb, 'HbWBlSovDist').flatten() #SOV Distance
+        Df['AutoTimSOV'] = util.get_matrix_numpy(eb, 'HbWBlSovTime').flatten() #SOV Time
+        AutoCosSOV = util.get_matrix_numpy(eb, 'mf5102').flatten()
+        Df['AutoCosSOV'] = AutoCosSOV + Df['AutoDisSOV']*VOC + Df['ParkCost']
+
+
+        Df['AutoDisHOV'] = util.get_matrix_numpy(eb, 'mf5106').flatten() #HOV Distance
+        Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'mf5107').flatten() #hOV Time
+        AutoCosHOV = util.get_matrix_numpy(eb, 'mf5108').flatten()
+        Df['AutoCosHOV'] = AutoCosHOV + Df['AutoDisHOV']*VOC + Df['ParkCost']
+
+        Df['BusIVT'] = util.get_matrix_numpy(eb, 'HbWBlBusIvtt').flatten() #In vehicle Bus time
+        Df['BusWat'] = util.get_matrix_numpy(eb, 'HbWBlBusWait').flatten() #Wait Bus time
+        Df['BusAux'] = util.get_matrix_numpy(eb, 'HbWBlBusAux').flatten() #Walk Time
+        Df['BusBrd'] = util.get_matrix_numpy(eb, 'HbWBlBusBoard').flatten() #Boarding time
+        Df['BusFar'] = util.get_matrix_numpy(eb, 'HbWBlBusFare').flatten() #Fare
         Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] + Df['BusBrd'] #Total travel Time
 
-        Df['RalIVR'] = util.get_matrix_numpy(eb, 'HbWBlRailIvtt') #In vehicle Rail time on rail
-        Df['RalIVB'] = util.get_matrix_numpy(eb, 'HbWBlRailIvttBus') #In vehicle Rail time on bus
-        Df['RalWat'] = util.get_matrix_numpy(eb, 'HbWBlRailWait') # Wait Rail Time
-        Df['RalAux'] = util.get_matrix_numpy(eb, 'HbWBlRailAux') # Auxiliary Time
-        Df['RalBrd'] = util.get_matrix_numpy(eb, 'HbWBlRailBoard')
-        Df['RalFar'] = util.get_matrix_numpy(eb, 'HbWBlRailFare')
-        Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] + Df['RalBrd'] #Total travel Time
-        Df['RalIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) #Ratio of IVT on Bus to total IVTT
-        Df['RalIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) #Ratio of IVT on Rail to total IVTT
+        Df['RalIVR'] = util.get_matrix_numpy(eb, 'HbWBlRailIvtt').flatten() #In vehicle Rail time on rail
+        Df['RalIVB'] = util.get_matrix_numpy(eb, 'HbWBlRailIvttBus').flatten() #In vehicle Rail time on bus
+        Df['RalWat'] = util.get_matrix_numpy(eb, 'HbWBlRailWait').flatten() # Wait Rail Time
+        Df['RalAux'] = util.get_matrix_numpy(eb, 'HbWBlRailAux').flatten() # Auxiliary Time
+        Df['RalBrd'] = util.get_matrix_numpy(eb, 'HbWBlRailBoard').flatten()
+        Df['RalFar'] = util.get_matrix_numpy(eb, 'HbWBlRailFare').flatten()
 
-        Df['WCEIVW'] = util.get_matrix_numpy(eb, 'HbWBlWceIvtt') #In vehicle Rail time on wce
-        Df['WCEIVR'] = util.get_matrix_numpy(eb, 'HbWBlWceIvttRail') #In vehicle Rail time on rail
-        Df['WCEIVB'] = util.get_matrix_numpy(eb, 'HbWBlWceIvttBus') #In vehicle Rail time on bus
-        Df['WCEWat'] = util.get_matrix_numpy(eb, 'HbWBlWceWait') # wait time
-        Df['WCEAux'] = util.get_matrix_numpy(eb, 'HbWBlWceAux') # walk time
-        Df['WCEBrd'] = util.get_matrix_numpy(eb, 'HbWBlWceBoards') # board time
-        Df['WCEFar'] = util.get_matrix_numpy(eb, 'HbWBlWceFare') # wce fare
-        Df['WCETot'] = Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW'] + Df['WCEWat'] + Df['WCEAux'] + Df['WCEBrd'] #Total travel Time
-        Df['WCEIBR'] = Df['WCEIVB']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW'] + Tiny) #Ratio of IVT on Bus to total IVTT
-        Df['WCEIRR'] = Df['WCEIVR']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW'] + Tiny) #Ratio of IVT on Rail to total IVTT
-        Df['WCEIWR'] = Df['WCEIVW']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW'] + Tiny) #Ratio of IVT on WCE to total IVTT
 
-        Df['TranAccess'] = util.get_matrix_numpy(eb, 'transitAccLn').reshape(NoTAZ,1) + np.zeros((1, NoTAZ)) # Log transit accessiblity broadcast
-        Df['IntZnl'] = np.identity(NoTAZ) # Intra-zonal matrix
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbWBlSovDist') # Distance
-        Df['AutoDisSqd'] = Df['AutoDis']* Df['AutoDis'] #Distance squared
-        Df['LogAutoDis'] = np.log(Df['AutoDis'] + Tiny) # Log Distance
+        Df['WCEIVW'] = util.get_matrix_numpy(eb, 'HbWBlWceIvtt').flatten() #In vehicle Rail time on wce
+        Df['WCEIVR'] = util.get_matrix_numpy(eb, 'HbWBlWceIvttRail').flatten() #In vehicle Rail time on rail
+        Df['WCEIVB'] = util.get_matrix_numpy(eb, 'HbWBlWceIvttBus').flatten() #In vehicle Rail time on bus
+        Df['WCEWat'] = util.get_matrix_numpy(eb, 'HbWBlWceWait').flatten() # wait time
+        Df['WCEAux'] = util.get_matrix_numpy(eb, 'HbWBlWceAux').flatten() # walk time
+        Df['WCEBrd'] = util.get_matrix_numpy(eb, 'HbWBlWceBoards').flatten() # board time
+        Df['WCEFar'] = util.get_matrix_numpy(eb, 'HbWBlWceFare').flatten() # wce fare
 
-        # Utilities
-        # Bus Utility
-        # Bus Common Utility for all incomes
-        Df['GeUtl'] = ( p4
-                      + p152*Df['BusIVT']
-                      + p17*Df['BusWat']
-                      + p18*Df['BusAux']
-                      + p19*(Df['BusBrd'])
-                      + p991*Df['AutoDis']
-                      + p992*Df['AutoDisSqd']
-                      + p993*Df['LogAutoDis']
-                      + p602*Df['TranAccess'])
+        TranAccess = eb.matrix('transitAccLn').get_numpy_data() # 8hr Parking
+        TranAccess = TranAccess.reshape(NoTAZ,1) + np.zeros((1, NoTAZ)) # Broadcast Log accessibility from vector to matrix
+        Df['TranAccess'] = TranAccess.flatten()
 
-        # Check availability conditions else add high negative utility (-99999)
-        Df['GeUtl'] = MChM.BusAvail(Df, Df['GeUtl'], AvailDict)
-        # Add Income Parameters
-        DfU['BusI1'] = Df['GeUtl'] + p12*Df['BusFar']
-        DfU['BusI2'] = Df['GeUtl'] + p13*Df['BusFar']
-        DfU['BusI3'] = Df['GeUtl'] + p14*Df['BusFar']
+        Df['PRBAuDis'] = util.get_matrix_numpy(eb, 'HbWBlBAuPRDist').flatten() #Bus PR Drive Distance
+        Df['PRBAuTim'] = util.get_matrix_numpy(eb, 'HbWBlBAuPRTime').flatten() # Bus PR Drive Time
+        Df['PRBAuCos'] = Df['PRBAuDis']*VOC + util.get_matrix_numpy(eb, 'HbWBlBAuPRToll').flatten() + util.get_matrix_numpy(eb, 'HbWBAuPrkCst').flatten() # Bus PR Drive Cost
+        Df['PRBAuTrm'] = util.get_matrix_numpy(eb, 'HbWBAuTrmTim').flatten() #Bus PR Terminal Time
+        Df['PRBusIVT'] = util.get_matrix_numpy(eb, 'HbWBlBAuBusIvtt').flatten() #Bus IVTT
+        Df['PRBusWat'] = util.get_matrix_numpy(eb, 'HbWBlBAuBusWait').flatten() #Bus Wait Time
+        Df['PRBusAux'] = util.get_matrix_numpy(eb, 'HbWBlBAuBusAux').flatten() # Bus Walk Time
+        Df['PRBusBrd'] = util.get_matrix_numpy(eb, 'HbWBlBAuBusBoard').flatten() # Bus Boarding Time
+        Df['PRBusFar'] = util.get_matrix_numpy(eb, 'HbWBlBAuBusFare').flatten() # Bus Fare
 
-        # Rail Utility
-        # Rail Common Utility for all incomes
-        Df['GeUtl'] = ( p4*Df['RalIBR']
-                      + p6*Df['RalIRR']
-                      + p152*Df['RalIVB']
-                      + p153*Df['RalIVR']
-                      + p17*Df['RalWat']
-                      + p18*Df['RalAux']
-                      + p19*Df['RalBrd']
-                      + p991*Df['AutoDis']
-                      + p992*Df['AutoDisSqd']
-                      + p993*Df['LogAutoDis']
-                      + p603*Df['TranAccess'])
+        Df['PRRAuDis'] = util.get_matrix_numpy(eb, 'HbWBlRAuPRDist').flatten() #Rail PR Drive Distance
+        Df['PRRAuTim'] = util.get_matrix_numpy(eb, 'HbWBlRAuPRTime').flatten() #Rail PR Drive Time
+        Df['PRRAuCos'] = Df['PRRAuDis']*VOC + util.get_matrix_numpy(eb, 'HbWBlRAuPRToll').flatten() + util.get_matrix_numpy(eb, 'HbWRAuPrkCst').flatten() # Rail PR Drive Cost
+        Df['PRRAuTrm'] = util.get_matrix_numpy(eb, 'HbWRAuTrmTim').flatten() #Rail PR Terminal Time
+        Df['PRRalIVR'] = util.get_matrix_numpy(eb, 'HbWBlRAuRailIvtt').flatten() #IVT on Rail
+        Df['PRRalIVB'] = util.get_matrix_numpy(eb, 'HbWBlRAuRailIvttBus').flatten() #IVT on Bus
+        Df['PRRalWat'] = util.get_matrix_numpy(eb, 'HbWBlRAuRailWait').flatten() #Rail Wait Time
+        Df['PRRalAux'] = util.get_matrix_numpy(eb, 'HbWBlRAuRailAux').flatten() #Rail Walk Time
+        Df['PRRalBrd'] = util.get_matrix_numpy(eb, 'HbWBlRAuRailBoard').flatten() #Rail Board Time
+        Df['PRRalFar'] = util.get_matrix_numpy(eb, 'HbWBlRAuRailFare').flatten() #Rail Fare
 
-        # Check availability conditions else add high negative utility (-99999)
-        Df['GeUtl'] = MChM.RailAvail(Df, Df['GeUtl'],AvailDict)
-        # Add Income Parameters
-        DfU['RalI1'] = Df['GeUtl'] + p12*Df['RalFar']
-        DfU['RalI2'] = Df['GeUtl'] + p13*Df['RalFar']
-        DfU['RalI3'] = Df['GeUtl'] + p14*Df['RalFar']
 
-        # WCE Utility
-        # WCE Common Utility for all incomes
-        Df['GeUtl'] = ( p4*Df['WCEIBR']
-                      + p6*Df['WCEIRR']
-                      + p8*Df['WCEIWR']
-                      + p152*Df['WCEIVB']
-                      + p153*Df['WCEIVR']
-                      + p153*Df['WCEIVW']
-                      + p17*Df['WCEWat']
-                      + p18*Df['WCEAux']
-                      + p19*Df['WCEBrd']
-                      + p994*Df['AutoDis']
-                      + p995*Df['AutoDisSqd']
-                      + p996*Df['LogAutoDis']
-                      + p603*Df['TranAccess'])
-        # Check availability conditions else add high negative utility (-99999)
-        Df['GeUtl'] = MChM.WCEAvail(Df, Df['GeUtl'], AvailDict)
-        # Add Income Parameters
-        DfU['WCEI1'] = Df['GeUtl'] + p12*Df['WCEFar']
-        DfU['WCEI2'] = Df['GeUtl'] + p13*Df['WCEFar']
-        DfU['WCEI3'] = Df['GeUtl'] + p14*Df['WCEFar']
+        Df['PRWAuDis'] = util.get_matrix_numpy(eb, 'HbWBlWAuPRDist').flatten() #WCE PR Drive Distance
+        Df['PRWAuTim'] = util.get_matrix_numpy(eb, 'HbWBlWAuPRTime').flatten() #WCE PR Drive Time
+        Df['PRWAuCos'] = Df['PRWAuDis']*VOC + util.get_matrix_numpy(eb, 'HbWBlWAuPRToll').flatten() + util.get_matrix_numpy(eb, 'HbWWAuPrkCst').flatten() # WCE PR Drive Cost
+        Df['PRWAuTrm'] = util.get_matrix_numpy(eb, 'HbWWAuTrmTim').flatten() #WCE PR Terminal Time
+        Df['PRWCEIVW'] = util.get_matrix_numpy(eb, 'HbWBlWAuWceIvtt').flatten() #IVT on WCE
+        Df['PRWCEIVR'] = util.get_matrix_numpy(eb, 'HbWBlWAuWceIvttRail').flatten() #IVT on Rail
+        Df['PRWCEIVB'] = util.get_matrix_numpy(eb, 'HbWBlWAuWceIvttBus').flatten() #IVT on Bus
+        Df['PRWCEWat'] = util.get_matrix_numpy(eb, 'HbWBlWAuWceWait').flatten() #WCE Wait Time
+        Df['PRWCEAux'] = util.get_matrix_numpy(eb, 'HbWBlWAuWceAux').flatten()  #WCE Walk Time
+        Df['PRWCEBrd'] = util.get_matrix_numpy(eb, 'HbWBlWAuWceBoards').flatten() #WCE Board Time
+        Df['PRWCEFar'] = util.get_matrix_numpy(eb, 'HbWBlWAuWceFare').flatten() #WCE Fare
 
 
 
-#        ##############################################################################
-#        ##       Drive to Transit Modes
-#        ##############################################################################
-        # Generate Dataframe
-        Df = {}
-        Df['BAuDis'] = util.get_matrix_numpy(eb, 'HbWBlBAuPRDist') #Bus PR Drive Distance
-        Df['BAuTim'] = util.get_matrix_numpy(eb, 'HbWBlBAuPRTime') # Bus PR Drive Time
-        Df['BAuCos'] = Df['BAuDis']*VOC + util.get_matrix_numpy(eb, 'HbWBlBAuPRToll') + util.get_matrix_numpy(eb, 'HbWBAuPrkCst') # Bus PR Drive Cost
-        Df['BAuTrm'] = util.get_matrix_numpy(eb, 'HbWBAuTrmTim') #Bus PR Terminal Time
-        Df['BusIVT'] = util.get_matrix_numpy(eb, 'HbWBlBAuBusIvtt') #Bus IVTT
-        Df['BusWat'] = util.get_matrix_numpy(eb, 'HbWBlBAuBusWait') #Bus Wait Time
-        Df['BusAux'] = util.get_matrix_numpy(eb, 'HbWBlBAuBusAux') # Bus Walk Time
-        Df['BusBrd'] = util.get_matrix_numpy(eb, 'HbWBlBAuBusBoard') # Bus Boarding Time
-        Df['BusFar'] = util.get_matrix_numpy(eb, 'HbWBlBAuBusFare') # Bus Fare
-        Df['BAuTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] + Df['BusBrd'] + Df['BAuTim'] # Total Travel Time
-        Df['BAuIBR'] = Df['BusIVT']/(Df['BusIVT'] + Df['BAuTim'] + Tiny) # Ratio of Time on Bus to total travel time
+        IntraCBD = util.get_matrix_numpy(eb, 'd_cbd') #Intra-CBD
+        IntraCBD = IntraCBD.reshape(NoTAZ, 1)*IntraCBD.reshape(1, NoTAZ) #Broadcast intra-CBD
+        Df['IntraCBD'] = IntraCBD.flatten()
 
+        PopEmpDen = util.get_matrix_numpy(eb, 'popdens') + util.get_matrix_numpy(eb, 'empdens') #Pop+Emp Density at Prod and Attr Zones
+        PopEmpDen = PopEmpDen.reshape(NoTAZ, 1) + PopEmpDen.reshape(1, NoTAZ) #Broadcast Density
+        PopEmpDen[PopEmpDen<1.0] = 1.0 #Control density to a minimum of 1 to avoid negative
+        PopEmpDen = np.log(PopEmpDen) #Log Density
+        Df['PopEmpDen'] = PopEmpDen.flatten()
 
-        Df['RAuDis'] = util.get_matrix_numpy(eb, 'HbWBlRAuPRDist') #Rail PR Drive Distance
-        Df['RAuTim'] = util.get_matrix_numpy(eb, 'HbWBlRAuPRTime') #Rail PR Drive Time
-        Df['RAuCos'] = Df['RAuDis']*VOC + util.get_matrix_numpy(eb, 'HbWBlRAuPRToll') + util.get_matrix_numpy(eb, 'HbWRAuPrkCst') # Rail PR Drive Cost
-        Df['RAuTrm'] = util.get_matrix_numpy(eb, 'HbWRAuTrmTim') #Rail PR Terminal Time
-        Df['RalIVR'] = util.get_matrix_numpy(eb, 'HbWBlRAuRailIvtt') #IVT on Rail
-        Df['RalIVB'] = util.get_matrix_numpy(eb, 'HbWBlRAuRailIvttBus') #IVT on Bus
-        Df['RalWat'] = util.get_matrix_numpy(eb, 'HbWBlRAuRailWait') #Rail Wait Time
-        Df['RalAux'] = util.get_matrix_numpy(eb, 'HbWBlRAuRailAux') #Rail Walk Time
-        Df['RalBrd'] = util.get_matrix_numpy(eb, 'HbWBlRAuRailBoard') #Rail Board Time
-        Df['RalFar'] = util.get_matrix_numpy(eb, 'HbWBlRAuRailFare') #Rail Fare
-        Df['RAuTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] + Df['RalBrd'] +  Df['RAuTim'] # Total Travel Time
-        Df['RAuIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Df['RAuTim'] + Tiny) # Ratio of Time on Bus to total travel time
-        Df['RAuIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Df['RAuTim'] + Tiny) # Ratio of Time on Rail to total travel time
+        PopSen = util.get_matrix_numpy(eb, 'Pop55t64') + util.get_matrix_numpy(eb, 'Pop65Up') #Senior Proportion
+        PopTot = util.get_matrix_numpy(eb, 'TotEmp')
+        PopSPr = np.log(PopSen/(PopTot + Tiny) + 0.0001)
+        PopSPr = PopSPr.reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
+        Df['PopSPr'] = PopSPr.flatten()
+        Df['BikScr'] = util.get_matrix_numpy(eb, 'bikeskim').flatten() # Bike Score
 
-
-        Df['WAuDis'] = util.get_matrix_numpy(eb, 'HbWBlWAuPRDist') #WCE PR Drive Distance
-        Df['WAuTim'] = util.get_matrix_numpy(eb, 'HbWBlWAuPRTime') #WCE PR Drive Time
-        Df['WAuCos'] = Df['WAuDis']*VOC + util.get_matrix_numpy(eb, 'HbWBlWAuPRToll') + util.get_matrix_numpy(eb, 'HbWWAuPrkCst') # WCE PR Drive Cost
-        Df['WAuTrm'] = util.get_matrix_numpy(eb, 'HbWWAuTrmTim') #WCE PR Terminal Time
-        Df['WCEIVW'] = util.get_matrix_numpy(eb, 'HbWBlWAuWceIvtt') #IVT on WCE
-        Df['WCEIVR'] = util.get_matrix_numpy(eb, 'HbWBlWAuWceIvttRail') #IVT on Rail
-        Df['WCEIVB'] = util.get_matrix_numpy(eb, 'HbWBlWAuWceIvttBus') #IVT on Bus
-        Df['WCEWat'] = util.get_matrix_numpy(eb, 'HbWBlWAuWceWait') #WCE Wait Time
-        Df['WCEAux'] = util.get_matrix_numpy(eb, 'HbWBlWAuWceAux')  #WCE Walk Time
-        Df['WCEBrd'] = util.get_matrix_numpy(eb, 'HbWBlWAuWceBoards') #WCE Board Time
-        Df['WCEFar'] = util.get_matrix_numpy(eb, 'HbWBlWAuWceFare') #WCE Fare
-        Df['WAuTot'] = Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW'] + Df['WCEWat'] + Df['WCEAux'] + Df['WCEBrd'] + Df['WAuTim'] # Total Travel Time
-        Df['WAuIBR'] = Df['WCEIVB']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW']+ Df['WAuTim'] + Tiny) # Ratio of Time on Bus to total travel time
-        Df['WAuIRR'] = Df['WCEIVR']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW']+ Df['WAuTim'] + Tiny) # Ratio of Time on Rail to total travel time
-        Df['WAuIWR'] = Df['WCEIVW']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW']+ Df['WAuTim'] + Tiny) # Ratio of Time on WCE to total travel time
-
-        Df['IntZnl'] = np.identity(NoTAZ) # Intra-zonal
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbWBlSovDist') # Distance
-        Df['AutoDisSqd'] = Df['AutoDis']* Df['AutoDis'] # Distance-squared
-        Df['LogAutoDis'] = np.log(Df['AutoDis'] + Tiny) #log-distance
-
-
-        # Utilities
-        # PR Bus Utility
-        # PR Bus Common Utility for all incomes
-        Df['GeUtl'] = ( p5
-                      + p4*Df['BAuIBR']
-                      + p151*Df['BAuTim']
-                      + p152*Df['BusIVT']
-                      + p17*Df['BusWat']
-                      + p18*Df['BusAux']
-                      + p18*Df['BAuTrm']
-                      + p19*Df['BusBrd']
-                      + p991*Df['AutoDis']
-                      + p992*Df['AutoDisSqd']
-                      + p993*Df['LogAutoDis'])
-
-        # Check availability conditions else add high negative utility (-99999)
-        Df['GeUtl'] = MChM.BAuAvail(Df, Df['GeUtl'], AvailDict)
-        # Add Income Parameters
-        DfU['BAuI1'] = Df['GeUtl'] + p12*(Df['BusFar'] + Df['BAuCos'])
-        DfU['BAuI2'] = Df['GeUtl'] + p13*(Df['BusFar'] + Df['BAuCos'])
-        DfU['BAuI3'] = Df['GeUtl'] + p14*(Df['BusFar'] + Df['BAuCos'])
-
-        # Rail Utility
-        # PR Rail Utility
-        # PR Rail Common Utility for all incomes
-        Df['GeUtl'] = ( p7
-                      + p4*Df['RAuIBR']
-                      + p6*Df['RAuIRR']
-                      + p151*Df['RAuTim']
-                      + p152*Df['RalIVB']
-                      + p153*Df['RalIVR']
-                      + p17*Df['RalWat']
-                      + p18*(Df['RalAux'] + Df['RAuTrm'])
-                      + p19*Df['RalBrd']
-                      + p994*Df['AutoDis']
-                      + p995*Df['AutoDisSqd']
-                      + p996*Df['LogAutoDis'])
-
-        # Check availability conditions else add high negative utility (-99999)
-        Df['GeUtl'] = MChM.RAuAvail(Df, Df['GeUtl'], AvailDict)
-        # Add Income Parameters
-        DfU['RAuI1'] = Df['GeUtl'] + p12*(Df['RalFar'] + Df['RAuCos'])
-        DfU['RAuI2'] = Df['GeUtl'] + p13*(Df['RalFar'] + Df['RAuCos'])
-        DfU['RAuI3'] = Df['GeUtl'] + p14*(Df['RalFar'] + Df['RAuCos'])
-
-        # Utilities
-        # PR WCE Utility
-        # PR WCE Common Utility for all incomes
-        DfU['GeUtl'] = ( p9
-                       + p4*Df['WAuIBR']
-                       + p6*Df['WAuIRR']
-                       + p8*Df['WAuIWR']
-                       + p151*Df['WAuTim']
-                       + p152*Df['WCEIVB']
-                       + p153*Df['WCEIVR']
-                       + p153*Df['WCEWat']
-                       + p17*Df['RalWat']
-                       + p18*(Df['WCEAux'] + Df['WAuTrm'])
-                       + p19*Df['WCEBrd']
-                       + p994*Df['AutoDis']
-                       + p995*Df['AutoDisSqd']
-                       + p996*Df['LogAutoDis'])
-
-        # Check availability conditions else add high negative utility (-99999)
-        Df['GeUtl'] = MChM.WAuAvail(Df, DfU['GeUtl'],AvailDict)
-        # Add Income Parameters
-        DfU['WAuI1'] = Df['GeUtl'] + p12*(Df['WCEFar'] + Df['WAuCos'])
-        DfU['WAuI2'] = Df['GeUtl'] + p13*(Df['WCEFar'] + Df['WAuCos'])
-        DfU['WAuI3'] = Df['GeUtl'] + p14*(Df['WCEFar'] + Df['WAuCos'])
-
-#        ##############################################################################
-#        ##       Active Modes
-#        ##############################################################################
-
-        Df = {}
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbWBlSovDist') #Distance
-        Df['IntrCBD'] = util.get_matrix_numpy(eb, 'd_cbd') #Intra-CBD
-        Df['IntrCBD'] = Df['IntrCBD'].reshape(NoTAZ, 1)*Df['IntrCBD'].reshape(1, NoTAZ) #Broadcast intra-CBD
-
-        Df['PopEmpDen'] = util.get_matrix_numpy(eb, 'popdens') + util.get_matrix_numpy(eb, 'empdens') #Pop+Emp Density at Prod and Attr Zones
-        Df['PopEmpDen'] = Df['PopEmpDen'].reshape(NoTAZ, 1) + Df['PopEmpDen'].reshape(1, NoTAZ) #Broadcast Density
-        Df['PopEmpDen'][Df['PopEmpDen']<1.0] = 1.0 #Control density to a minimum of 1 to avoid negative
-        Df['PopEmpDen'] = np.log(Df['PopEmpDen']) #Log Density
-
-        Df['PopSen'] = util.get_matrix_numpy(eb, 'Pop55t64') + util.get_matrix_numpy(eb, 'Pop65Up') #Senior Proportion
-        Df['PopTot'] = util.get_matrix_numpy(eb, 'TotEmp')
-        Df['PopSPr'] = np.log(Df['PopSen']/(Df['PopTot'] + Tiny) + 0.0001)
-        Df['PopSPr'] = Df['PopSPr'].reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
-
-        Df['BikScr'] = util.get_matrix_numpy(eb, 'bikeskim') # Bike Score
-
-        # Walk Utility
-        DfU['Walk'] = ( p10
-                      + p20*Df['AutoDis']
-                      + p850*Df['IntrCBD']
-                      + p701*Df['PopEmpDen']
-                      + p505*Df['PopSPr'])
-        # Check availability conditions else add high negative utility (-99999)
-        DfU['Walk'] = MChM.WalkAvail(Df['AutoDis'], DfU['Walk'], AvailDict)
-
-        # Bike Utility
-        DfU['Bike'] = ( p11
-                      + p21*Df['AutoDis']
-                      + p870*Df['BikScr']
-                      + p506*Df['PopSPr'])
-        # Check availability conditions else add high negative utility (-99999)
-        DfU['Bike'] = MChM.BikeAvail(Df['AutoDis'], DfU['Bike'], AvailDict)
-
-        del Df
+        Df[500000:550000].to_csv("F:/Scratch/MC_Df.csv")
 
         ##############################################################################
         ##       Calculate Probabilities
