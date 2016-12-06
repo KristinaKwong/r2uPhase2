@@ -42,9 +42,6 @@ class SocioEconomicSegmentation(_m.Tool()):
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
 
-        ##Batchin File
-        self.Init_Matrices(eb)
-
         ##Generate Dataframe (Df for short hand) used for Worker-Income Segmentation
         df = self.Generate_Data_Frame(eb)
 
@@ -83,7 +80,6 @@ class SocioEconomicSegmentation(_m.Tool()):
         LDistTC_NCBD = LDistTC*NCBD
 
         ##Coefficients:
-        ##TODO: Figure out a more efficient way to transfer this from Mohammed's estimation files
         ##Bias Terms
         Bias_W0I1 =  0.0000
         Bias_W0I2 = -0.5543
@@ -457,7 +453,6 @@ class SocioEconomicSegmentation(_m.Tool()):
         Mat_Index = 1020 # Location where matrix storage starts
 
 
-        # TODO read in this data by name
         HH1 = eb.matrix("moHh1p").get_numpy_data()
         HH1_Dict = {
                     'HH1W0' : [[Util_HH1W0I1, Util_HH1W0I2, Util_HH1W0I3],
@@ -468,7 +463,6 @@ class SocioEconomicSegmentation(_m.Tool()):
         HH1_Dict, counter = self.Calc_Prob_Segments(eb, HH1_Dict, HH1, Mat_Index)
         Mat_Index += counter
 
-        # TODO read in this data by name
         HH2 = eb.matrix("moHh2p").get_numpy_data()
         HH2_Dict = {
                     'HH2W0' : [[Util_HH2W0I1, Util_HH2W0I2, Util_HH2W0I3],
@@ -481,7 +475,6 @@ class SocioEconomicSegmentation(_m.Tool()):
         HH2_Dict, counter = self.Calc_Prob_Segments(eb, HH2_Dict, HH2, Mat_Index)
         Mat_Index += counter
 
-        # TODO read in this data by name
         HH3 = eb.matrix("moHh3p").get_numpy_data()
         HH3_Dict = {
                     'HH3W0' : [[Util_HH3W0I1, Util_HH3W0I2, Util_HH3W0I3],
@@ -496,7 +489,6 @@ class SocioEconomicSegmentation(_m.Tool()):
         HH3_Dict, counter = self.Calc_Prob_Segments(eb, HH3_Dict, HH3, Mat_Index)
         Mat_Index += counter
 
-        # TODO read in this data by name
         HH4 = eb.matrix("moHh4pUp").get_numpy_data()
         HH4_Dict = {
                     'HH4W0' : [[Util_HH4W0I1, Util_HH4W0I2, Util_HH4W0I3],
@@ -555,7 +547,7 @@ class SocioEconomicSegmentation(_m.Tool()):
         counter = 0
         for key in Seg_Dict:
             for nest_len in range (len(Seg_Dict[key])):
-                eb.matrix("mo"+str(HH_Dict[key][1][nest_len])).set_numpy_data(Seg_Dict[key][nest_len])
+                # eb.matrix("mo"+str(HH_Dict[key][1][nest_len])).set_numpy_data(Seg_Dict[key][nest_len])
                 counter = counter + 1
         return (Seg_Dict, counter)
 
@@ -610,48 +602,3 @@ class SocioEconomicSegmentation(_m.Tool()):
     	conn.close()
 
         return(df)
-
-    @_m.logbook_trace("Init_Matrices")
-    def Init_Matrices(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
-
-        ##HHxWorkersxIncome
-        util.initmat(eb, "mo1020", "H1W0I1", "Segment_H1W0I1", 0)
-        util.initmat(eb, "mo1021", "H1W0I2", "Segment_H1W0I2", 0)
-        util.initmat(eb, "mo1022", "H1W0I3", "Segment_H1W0I3", 0)
-        util.initmat(eb, "mo1023", "H1W1I1", "Segment_H1W1I1", 0)
-        util.initmat(eb, "mo1024", "H1W1I2", "Segment_H1W1I2", 0)
-        util.initmat(eb, "mo1025", "H1W1I3", "Segment_H1W1I3", 0)
-        util.initmat(eb, "mo1026", "H2W0I1", "Segment_H2W0I1", 0)
-        util.initmat(eb, "mo1027", "H2W0I2", "Segment_H2W0I2", 0)
-        util.initmat(eb, "mo1028", "H2W0I3", "Segment_H2W0I3", 0)
-        util.initmat(eb, "mo1029", "H2W1I1", "Segment_H2W1I1", 0)
-        util.initmat(eb, "mo1030", "H2W1I2", "Segment_H2W1I2", 0)
-        util.initmat(eb, "mo1031", "H2W1I3", "Segment_H2W1I3", 0)
-        util.initmat(eb, "mo1032", "H2W2I1", "Segment_H2W2I1", 0)
-        util.initmat(eb, "mo1033", "H2W2I2", "Segment_H2W2I2", 0)
-        util.initmat(eb, "mo1034", "H2W2I3", "Segment_H2W2I3", 0)
-        util.initmat(eb, "mo1035", "H3W0I1", "Segment_H3W0I1", 0)
-        util.initmat(eb, "mo1036", "H3W0I2", "Segment_H3W0I2", 0)
-        util.initmat(eb, "mo1037", "H3W0I3", "Segment_H3W0I3", 0)
-        util.initmat(eb, "mo1038", "H3W1I1", "Segment_H3W1I1", 0)
-        util.initmat(eb, "mo1039", "H3W1I2", "Segment_H3W1I2", 0)
-        util.initmat(eb, "mo1040", "H3W1I3", "Segment_H3W1I3", 0)
-        util.initmat(eb, "mo1041", "H3W2I1", "Segment_H3W2I1", 0)
-        util.initmat(eb, "mo1042", "H3W2I2", "Segment_H3W2I2", 0)
-        util.initmat(eb, "mo1043", "H3W2I3", "Segment_H3W2I3", 0)
-        util.initmat(eb, "mo1044", "H3W3I1", "Segment_H3W3I1", 0)
-        util.initmat(eb, "mo1045", "H3W3I2", "Segment_H3W3I2", 0)
-        util.initmat(eb, "mo1046", "H3W3I3", "Segment_H3W3I3", 0)
-        util.initmat(eb, "mo1047", "H4W0I1", "Segment_H4W0I1", 0)
-        util.initmat(eb, "mo1048", "H4W0I2", "Segment_H4W0I2", 0)
-        util.initmat(eb, "mo1049", "H4W0I3", "Segment_H4W0I3", 0)
-        util.initmat(eb, "mo1050", "H4W1I1", "Segment_H4W1I1", 0)
-        util.initmat(eb, "mo1051", "H4W1I2", "Segment_H4W1I2", 0)
-        util.initmat(eb, "mo1052", "H4W1I3", "Segment_H4W1I3", 0)
-        util.initmat(eb, "mo1053", "H4W2I1", "Segment_H4W2I1", 0)
-        util.initmat(eb, "mo1054", "H4W2I2", "Segment_H4W2I2", 0)
-        util.initmat(eb, "mo1055", "H4W2I3", "Segment_H4W2I3", 0)
-        util.initmat(eb, "mo1056", "H4W3I1", "Segment_H4W3I1", 0)
-        util.initmat(eb, "mo1057", "H4W3I2", "Segment_H4W3I2", 0)
-        util.initmat(eb, "mo1058", "H4W3I3", "Segment_H4W3I3", 0)
