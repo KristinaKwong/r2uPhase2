@@ -68,27 +68,28 @@ class HbWork(_m.Tool()):
 
         # Add Coefficients
 
-        p2   = -1.629845
-        p4   =  1.015371
-        p6   =  2.125109
-        p10  = -0.254472
-        p11  = -5.823884
-        p12  = -0.696618
-        p14  = -0.285214
-        p15  = -0.069414
-        p17  = -0.157412
-        p18  = -0.166942
-        p19  = -0.679105
-        p20  = -2.672878
-        p21  = -1.738592
-        p160 =  2.617800
-        p161 =  3.446040
-        p162 =  3.067046
-        p163 =  3.247404
-        p164 =  0.954408
-        p701 =  0.953901
-        p870 =  0.435314
-        thet =  0.369560
+        p2   =  0.651542
+        p4   =  7.472637
+        p6   =  8.593067
+        p10  =  7.111678
+        p11  =  1.562356
+        p12  = -0.706036
+        p14  = -0.310116
+        p15  = -0.081328
+        p17  = -0.139302
+        p18  = -0.179677
+        p19  = -0.741140
+        p20  = -2.911105
+        p21  = -1.981457
+        p160 =  7.477510
+        p161 =  9.651366
+        p162 =  5.286841
+        p163 =  7.572595
+        p164 =  2.300508
+        p701 =  0.882130
+        p870 =  0.432030
+        thet =  0.343018
+
 
 #        ##############################################################################
 #        ##       Auto Modes
@@ -99,7 +100,6 @@ class HbWork(_m.Tool()):
         VOC = util.get_matrix_numpy(eb, 'autoOpCost')
         Occ = util.get_matrix_numpy(eb, 'HOVOccHBshop')
         Df['ParkCost'] = util.get_matrix_numpy(eb, 'prk2hr')  # 2 hour parking
-        Df['ParkCost'][Df['ParkCost']>MaxPark] = MaxPark
         Df['ParkCost'] = Df['ParkCost'].reshape(1, NoTAZ) + np.zeros((NoTAZ, 1))
 
         Df['AutoDisSOV'] = util.get_matrix_numpy(eb, 'HbShBlSovDist')
@@ -130,9 +130,9 @@ class HbWork(_m.Tool()):
         # Check Availability conditions
         Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisHOV'], Df['GeUtl'], AvailDict)
         # Add Income parameters
-        DfU['HV2+I1']  = Df['GeUtl'] + p12*Df['AutoCosHOV']/Occ
-        DfU['HV2+I2']  = Df['GeUtl'] + p12*Df['AutoCosHOV']/Occ
-        DfU['HV2+I3']  = Df['GeUtl'] + p14*Df['AutoCosHOV']/Occ
+        DfU['HOVI1']  = Df['GeUtl'] + p12*Df['AutoCosHOV']/Occ
+        DfU['HOVI2']  = Df['GeUtl'] + p12*Df['AutoCosHOV']/Occ
+        DfU['HOVI3']  = Df['GeUtl'] + p14*Df['AutoCosHOV']/Occ
 
 
 #        ##############################################################################
@@ -201,10 +201,8 @@ class HbWork(_m.Tool()):
         Df = {}
         Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbShBlSovDist')
 
-        Df['PopEmpDen'] = util.get_matrix_numpy(eb, 'popdens') + util.get_matrix_numpy(eb, 'empdens') # Pop + Emp Density
+        Df['PopEmpDen'] = util.get_matrix_numpy(eb, 'combinedensln')
         Df['PopEmpDen'] = Df['PopEmpDen'].reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
-        Df['PopEmpDen'][Df['PopEmpDen']<1.0] = 1.0
-        Df['PopEmpDen'] = np.log(Df['PopEmpDen']) # Log Pop+Emp Density
         Df['BikScr'] = util.get_matrix_numpy(eb, 'bikeskim')
 
         # Walk Utility
@@ -240,7 +238,7 @@ class HbWork(_m.Tool()):
         ## Low Income Zero Autos
         Dict = {
                'SOV'  : [np.where(CarShare>0, DfU['SOVI1'], LrgU)],
-               'HOV'  : [DfU['HV2+I1']],
+               'HOV'  : [DfU['HOVI1']],
                'WTra' : [DfU['BusI1'] + p164, DfU['RalI1'] + p164],  # Zero car households additional transit bias term
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
@@ -250,7 +248,7 @@ class HbWork(_m.Tool()):
         ## Low Income One Auto
         Dict = {
                'SOV'  : [DfU['SOVI1'] + p160], # One car households additional SOV bias term
-               'HOV'  : [DfU['HV2+I1'] + p162], # One car households additional HOV bias term
+               'HOV'  : [DfU['HOVI1'] + p162], # One car households additional HOV bias term
                'WTra' : [DfU['BusI1'], DfU['RalI1']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
@@ -259,7 +257,7 @@ class HbWork(_m.Tool()):
         ## Low Income Two Autos
         Dict = {
                'SOV'  : [DfU['SOVI1'] + p161], # One car households additional SOV bias term
-               'HOV'  : [DfU['HV2+I1'] + p163], # One car households additional HOV bias term
+               'HOV'  : [DfU['HOVI1'] + p163], # One car households additional HOV bias term
                'WTra' : [DfU['BusI1'], DfU['RalI1']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
@@ -272,7 +270,7 @@ class HbWork(_m.Tool()):
         ## Med Income Zero Autos
         Dict = {
                'SOV'  : [np.where(CarShare>0, DfU['SOVI2'], LrgU)],
-               'HOV'  : [DfU['HV2+I2']],
+               'HOV'  : [DfU['HOVI2']],
                'WTra' : [DfU['BusI2'] + p164, DfU['RalI2'] + p164],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
@@ -282,7 +280,7 @@ class HbWork(_m.Tool()):
         ## Med Income One Auto
         Dict = {
                'SOV'  : [DfU['SOVI2'] + p160],
-               'HOV'  : [DfU['HV2+I2'] + p162],
+               'HOV'  : [DfU['HOVI2'] + p162],
                'WTra' : [DfU['BusI2'], DfU['RalI2']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
@@ -291,7 +289,7 @@ class HbWork(_m.Tool()):
         ## Med Income Two Autos
         Dict = {
                'SOV'  : [DfU['SOVI2'] + p161],
-               'HOV'  : [DfU['HV2+I2'] + p163],
+               'HOV'  : [DfU['HOVI2'] + p163],
                'WTra' : [DfU['BusI2'], DfU['RalI2']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
@@ -304,7 +302,7 @@ class HbWork(_m.Tool()):
         ## High Income Zero Autos
         Dict = {
                'SOV'  : [np.where(CarShare>0, DfU['SOVI3'], LrgU)],
-               'HOV'  : [DfU['HV2+I3']],
+               'HOV'  : [DfU['HOVI3']],
                'WTra' : [DfU['BusI3'] + p164, DfU['RalI3'] + p164],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
@@ -313,7 +311,7 @@ class HbWork(_m.Tool()):
         ## High Income One Auto
         Dict = {
                'SOV'  : [DfU['SOVI3'] + p160],
-               'HOV'  : [DfU['HV2+I3'] + p162],
+               'HOV'  : [DfU['HOVI3'] + p162],
                'WTra' : [DfU['BusI3'], DfU['RalI3']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
@@ -322,7 +320,7 @@ class HbWork(_m.Tool()):
         ## High Income Two Autos
         Dict = {
                'SOV'  : [DfU['SOVI3'] + p161],
-               'HOV'  : [DfU['HV2+I3'] + p163],
+               'HOV'  : [DfU['HOVI3'] + p163],
                'WTra' : [DfU['BusI3'], DfU['RalI3']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
@@ -376,7 +374,7 @@ class HbWork(_m.Tool()):
 
         Dist_Iter = int(util.get_matrix_numpy(eb, 'IterDist'))
         MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "HbShBlSovDist"))
-        MChM.one_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list, Dist_Iter)
+        MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list, Dist_Iter)
 
 
 #       ##############################################################################
@@ -440,19 +438,22 @@ class HbWork(_m.Tool()):
     def Calc_Prob(self, eb, Dict, Logsum, Th):
         util = _m.Modeller().tool("translink.emme.util")
 
-        Tiny =  0.000000001
+        Tiny=0.000001
         L_Nst = {key:sum(np.exp(nest))
                       for key,nest in Dict.items()}
 
         U_Nst  = {key:pow(nest,Th)
                       for key,nest in L_Nst.items()}
 
+        L_Nst = {key:np.where(value == 0, Tiny, value)
+                      for key,value in L_Nst.items()}
+
         F_Utl = sum(U_Nst.values())
         F_Utl = np.where(F_Utl ==0, Tiny, F_Utl)
         util.set_matrix_numpy(eb, Logsum, np.log(F_Utl))
 
-        Prob_Dict = {key:np.where(L_Nst[key] == 0, 0, np.exp(nest)/L_Nst[key])*U_Nst[key]/F_Utl
-                        for key, nest in Dict.items()}
+        Prob_Dict = {key:np.exp(nest)/L_Nst[key]*U_Nst[key]/F_Utl
+                         for key, nest in Dict.items()}
         return Prob_Dict
 
     def Calc_Demand(self, Dict, Dem):

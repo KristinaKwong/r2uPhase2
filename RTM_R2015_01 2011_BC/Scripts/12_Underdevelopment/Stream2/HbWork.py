@@ -66,48 +66,47 @@ class HbWork(_m.Tool()):
         # Declare Utilities Data Frame
         DfU = {}
         # Add Coefficients
-        p2   =  -2.857353
-        p3   =  -4.645513
-        p4   =  -0.579405
-        p5   =  -5.308139
-        p6   =   1.223910
-        p7   =  -3.368593
-        p8   =   1.957539
-        p9   =  -3.223163
-        p10  =   1.936110
-        p11  =  -3.033976
-        p12  =  -0.275638
-        p13  =  -0.178191
-        p14  =  -0.150122
-        p17  =  -0.154180
-        p18  =  -0.101158
-        p19  =  -0.499461
-        p20  =  -1.468654
-        p21  =  -0.426471
-        p151 =  -0.072255
-        p152 =  -0.079392
-        p153 =  -0.072918
-        p160 =   1.993120
-        p161 =   2.516637
-        p162 =   1.189023
-        p163 =   1.705081
-        p164 =   0.577858
-        p505 =  -0.355604
-        p506 =  -0.398646
-        p601 =   0.107310
-        p602 =   0.119214
-        p603 =   0.067335
-        p701 =   0.251807
-        p850 =   1.688004
-        p870 =   0.710729
-        p991 =  -0.115479
-        p992 =   0.001068
-        p993 =   1.863282
-        p994 =   0.126964
-        p995 =  -0.001334
-        p996 =   0.615975
-        thet =   0.596401
 
+        p2   =  0.165342
+        p3   = -1.631934
+        p4   =  1.073040
+        p5   = -4.263437
+        p6   =  2.703188
+        p7   = -2.317327
+        p8   =  3.380394
+        p9   = -2.365022
+        p10  =  5.328974
+        p11  =  0.124672
+        p12  = -0.268663
+        p13  = -0.189000
+        p14  = -0.160833
+        p17  = -0.141318
+        p18  = -0.101003
+        p19  = -0.591656
+        p20  = -1.483697
+        p21  = -0.444447
+        p151 = -0.075147
+        p152 = -0.087667
+        p153 = -0.083120
+        p160 =  4.420636
+        p161 =  6.444305
+        p162 =  1.244796
+        p163 =  2.494739
+        p164 =  1.326848
+        p505 = -0.217369
+        p506 = -0.307408
+        p602 =  0.165480
+        p603 =  0.122307
+        p701 =  0.152645
+        p850 =  1.711530
+        p870 =  0.602662
+        p991 = -0.114845
+        p992 =  0.001120
+        p993 =  2.196992
+        p994 =  0.104691
+        p995 = -0.001051
+        p996 =  1.041571
+        thet =  0.578051
 
 #        ##############################################################################
 #        ##       Auto Modes
@@ -121,21 +120,19 @@ class HbWork(_m.Tool()):
         Df['ParkCost'][Df['ParkCost']>MaxPark] = MaxPark # set parking>$10 to $10
         Df['ParkCost'] = Df['ParkCost'].reshape(1, NoTAZ) + np.zeros((NoTAZ, 1)) # Broadcast parking from vector to matrix
 
-        Df['AutoAccess'] = util.get_matrix_numpy(eb, 'autoAccLn').reshape(NoTAZ,1) + np.zeros((1, NoTAZ)) # Broadcast Log accessibility from vector to matrix
-
         Df['AutoDisSOV'] = util.get_matrix_numpy(eb, 'HbWBlSovDist') #SOV Distance
         Df['AutoTimSOV'] = util.get_matrix_numpy(eb, 'HbWBlSovTime') #SOV Time
-        Df['AutoCosSOV'] = Df['AutoDisSOV']*VOC + util.get_matrix_numpy(eb, 'mf5102') + Df['ParkCost'] #SOV Cost (per km + Toll + Parking)
+        Df['AutoCosSOV'] = Df['AutoDisSOV']*VOC + util.get_matrix_numpy(eb, 'HbWBlSovToll') + Df['ParkCost'] #SOV Cost (per km + Toll + Parking)
 
-        Df['AutoDisHOV'] = util.get_matrix_numpy(eb, 'mf5106') #HOV Distance
-        Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'mf5107') #hOV Time
+        Df['AutoDisHOV'] = util.get_matrix_numpy(eb, 'HbWBlHovDist') #HOV Distance
+        Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'HbWBlHovTime') #hOV Time
         Df['AutoCosHOV'] = Df['AutoDisHOV']*VOC + util.get_matrix_numpy(eb, 'HbWBlHovToll') + Df['ParkCost'] #HOV Cost (per km + Toll + Parking)
 
         # Utilities
         # SOV Common Utility for all incomes
         Df['GeUtl'] = ( 0
-                      + p151*Df['AutoTimSOV']
-                      + p601*Df['AutoAccess'])
+                      + p151*Df['AutoTimSOV'])
+
 
         Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisSOV'], Df['GeUtl'], AvailDict) #Check Availability condition if mode not available then set to high negative utility (-9999)
         # Add Income Parameters
@@ -146,8 +143,8 @@ class HbWork(_m.Tool()):
         # HOV2
         # HOV Common Utility for all incomes
         Df['GeUtl'] = ( p2
-                      + p151*Df['AutoTimHOV']
-                      + p601*Df['AutoAccess'])
+                      + p151*Df['AutoTimHOV'])
+
 
         Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisHOV'], Df['GeUtl'], AvailDict) #Check Availability condition if mode not available then set to high negative utility (-9999)
         # Add Income Parameters
@@ -158,8 +155,7 @@ class HbWork(_m.Tool()):
         # HOV3
         # HOV Common Utility for all incomes
         Df['GeUtl'] = ( p3
-                      + p151*Df['AutoTimHOV']
-                      + p601*Df['AutoAccess'])
+                      + p151*Df['AutoTimHOV'])
 
         Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisHOV'], Df['GeUtl'], AvailDict) #Check Availability condition if mode not available then set to high negative utility (-9999)
         # Add Income Parameters
@@ -272,8 +268,6 @@ class HbWork(_m.Tool()):
         DfU['WCEI2'] = Df['GeUtl'] + p13*Df['WCEFar']
         DfU['WCEI3'] = Df['GeUtl'] + p14*Df['WCEFar']
 
-
-
 #        ##############################################################################
 #        ##       Drive to Transit Modes
 #        ##############################################################################
@@ -384,8 +378,8 @@ class HbWork(_m.Tool()):
                        + p151*Df['WAuTim']
                        + p152*Df['WCEIVB']
                        + p153*Df['WCEIVR']
-                       + p153*Df['WCEWat']
-                       + p17*Df['RalWat']
+                       + p153*Df['WCEIVW']
+                       + p17*Df['WCEWat']
                        + p18*(Df['WCEAux'] + Df['WAuTrm'])
                        + p19*Df['WCEBrd']
                        + p994*Df['AutoDis']
@@ -408,14 +402,12 @@ class HbWork(_m.Tool()):
         Df['IntrCBD'] = util.get_matrix_numpy(eb, 'd_cbd') #Intra-CBD
         Df['IntrCBD'] = Df['IntrCBD'].reshape(NoTAZ, 1)*Df['IntrCBD'].reshape(1, NoTAZ) #Broadcast intra-CBD
 
-        Df['PopEmpDen'] = util.get_matrix_numpy(eb, 'popdens') + util.get_matrix_numpy(eb, 'empdens') #Pop+Emp Density at Prod and Attr Zones
-        Df['PopEmpDen'] = Df['PopEmpDen'].reshape(NoTAZ, 1) + Df['PopEmpDen'].reshape(1, NoTAZ) #Broadcast Density
-        Df['PopEmpDen'][Df['PopEmpDen']<1.0] = 1.0 #Control density to a minimum of 1 to avoid negative
-        Df['PopEmpDen'] = np.log(Df['PopEmpDen']) #Log Density
+        Df['PopEmpDenPA'] = util.get_matrix_numpy(eb, 'combinedens')#Pop+Emp Density at Prod and Attr Zones
+        Df['PopEmpDenPA'] = Df['PopEmpDenPA'].reshape(NoTAZ, 1) + Df['PopEmpDenPA'].reshape(1, NoTAZ) #Broadcast Density
 
         Df['PopSen'] = util.get_matrix_numpy(eb, 'Pop55t64') + util.get_matrix_numpy(eb, 'Pop65Up') #Senior Proportion
         Df['PopTot'] = util.get_matrix_numpy(eb, 'TotEmp')
-        Df['PopSPr'] = np.log(Df['PopSen']/(Df['PopTot'] + Tiny) + 0.0001)
+        Df['PopSPr'] = np.log(Df['PopSen']/(Df['PopTot'] + Tiny) + Tiny)
         Df['PopSPr'] = Df['PopSPr'].reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
 
         Df['BikScr'] = util.get_matrix_numpy(eb, 'bikeskim') # Bike Score
@@ -424,7 +416,7 @@ class HbWork(_m.Tool()):
         DfU['Walk'] = ( p10
                       + p20*Df['AutoDis']
                       + p850*Df['IntrCBD']
-                      + p701*Df['PopEmpDen']
+                      + p701*Df['PopEmpDenPA']
                       + p505*Df['PopSPr'])
         # Check availability conditions else add high negative utility (-99999)
         DfU['Walk'] = MChM.WalkAvail(Df['AutoDis'], DfU['Walk'], AvailDict)
@@ -459,8 +451,6 @@ class HbWork(_m.Tool()):
                'DTra' : [DfU['BAuI1'], DfU['RAuI1'], DfU['WAuI1']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
-
-        I1A0_Dict = self.Calc_Prob(eb, Dict, "HbWLSI1A0", thet)
 
         ## Low Income One Auto
         Dict = {
@@ -668,8 +658,8 @@ class HbWork(_m.Tool()):
         DfInt = util.get_pd_ij_df(eb)
 
         # Bus
-        Dfmerge = util.get_pd_ij_df(eb)
-        Dfmerge['BL'] = BLBsWk
+        Dfmerge = util.get_pd_ij_df(eb) # pandas Dataframe
+        Dfmerge['BL'] = BLBsWk # best bus lot
         Dfmerge['BAuI1'] = BAuI1.flatten()
         Dfmerge['BAuI2'] = BAuI2.flatten()
         Dfmerge['BAuI3'] = BAuI3.flatten()
@@ -739,19 +729,22 @@ class HbWork(_m.Tool()):
     def Calc_Prob(self, eb, Dict, Logsum, Th):
         util = _m.Modeller().tool("translink.emme.util")
 
-        Tiny =  0.000000001
+        Tiny=0.000001
         L_Nst = {key:sum(np.exp(nest))
                       for key,nest in Dict.items()}
 
         U_Nst  = {key:pow(nest,Th)
                       for key,nest in L_Nst.items()}
 
+        L_Nst = {key:np.where(value == 0, Tiny, value)
+                      for key,value in L_Nst.items()}
+
         F_Utl = sum(U_Nst.values())
         F_Utl = np.where(F_Utl ==0, Tiny, F_Utl)
         util.set_matrix_numpy(eb, Logsum, np.log(F_Utl))
 
-        Prob_Dict = {key:np.where(L_Nst[key] == 0, 0, np.exp(nest)/L_Nst[key])*U_Nst[key]/F_Utl
-                        for key, nest in Dict.items()}
+        Prob_Dict = {key:np.exp(nest)/L_Nst[key]*U_Nst[key]/F_Utl
+                         for key, nest in Dict.items()}
         return Prob_Dict
 
     def Calc_Demand(self, Dict, Dem):

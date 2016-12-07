@@ -11,15 +11,15 @@ import numpy as np
 import pandas as pd
 import traceback as _traceback
 
-class HbWork(_m.Tool()):
+class Non_hbwork(_m.Tool()):
 
     ##Global attribute for Tool Run Message (successful/not successful)
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
-        pb.title = "Home Base University"
-        pb.description = "Calculate home base University person trips by mode and time of day"
+        pb.title = "Non-home base Other"
+        pb.description = "Calculate non-home base other trips by mode and time of day"
         pb.branding_text = "TransLink"
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
@@ -34,7 +34,7 @@ class HbWork(_m.Tool()):
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    @_m.logbook_trace("Run Home Base University")
+    @_m.logbook_trace("Run Non-home base other")
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
         MChM = _m.Modeller().tool("translink.RTM3.testtdmc.ModeChoiceUtils")
@@ -49,10 +49,10 @@ class HbWork(_m.Tool()):
         AvailDict = {
                      'AutDist': 0.0,
                      'WlkDist': 5.0,
-                     'BikDist': 20.0,
+                     'BikDist': 10.0,
                      'TranIVT': 1.0,
                      'TranWat': 20.0,
-                     'TranAux': 40.0,
+                     'TranAux': 30.0,
                      'WCEWat' : 30.0,
                      'WCEAux' : 40.0,
                      'TranBrd': 4.0,
@@ -65,21 +65,24 @@ class HbWork(_m.Tool()):
 
         # Declare Utilities Data Frame
         DfU = {}
+
         # Add Coefficients
 
-        p2   = -2.778773
-        p4   =  4.232185
-        p6   =  5.306844
-        p10  =  5.459996
-        p11  = -0.798531
-        p12  = -0.620939
-        p15  = -0.070561
-        p17  = -0.148509
-        p18  = -0.103273
-        p19  = -0.824006
-        p20  = -3.055662
-        p21  = -1.189485
-        thet =  0.296057
+        p4   =  -2.215763
+        p6   =  -1.388479
+        p10  =  -2.591491
+        p11  =  -7.296778
+        p12  =  -0.609932
+        p15  =  -0.037342
+        p17  =  -0.102264
+        p18  =  -0.064987
+        p19  =  -0.591899
+        p20  =  -1.491104
+        p21  =  -0.610183
+        p700 =   0.246500
+        p701 =   0.450339
+        p870 =   0.849681
+        thet =   0.669384
 
 #        ##############################################################################
 #        ##       Auto Modes
@@ -87,45 +90,26 @@ class HbWork(_m.Tool()):
         # Generate Dataframe
         Df = {}
         MaxPark = 10.0
-        VOC = util.get_matrix_numpy(eb, 'autoOpCost')
 
-        ##
-        Occ = util.get_matrix_numpy(eb, 'HOVOccHbu')
-        Df['ParkCost'] = util.get_matrix_numpy(eb, 'prk8hr') # 8 hr parking
-        Df['ParkCost'][Df['ParkCost']>MaxPark] = MaxPark
+        VOC = util.get_matrix_numpy(eb, 'autoOpCost')
+        Occ = util.get_matrix_numpy(eb, 'HOVOccNHBo')
+        Df['ParkCost'] = util.get_matrix_numpy(eb, 'prk2hr')  # 2 hour parking
+
         Df['ParkCost'] = Df['ParkCost'].reshape(1, NoTAZ) + np.zeros((NoTAZ, 1))
 
-        ##
-        Df['AutoDisSOV'] = util.get_matrix_numpy(eb, 'HbUBlSovDist')
-        Df['AutoTimSOV'] = util.get_matrix_numpy(eb, 'HbUBlSovTime')
-        Df['AutoCosSOV'] = Df['AutoDisSOV']*VOC + util.get_matrix_numpy(eb, 'HbUBlSovToll') + Df['ParkCost']
 
-        Df['AutoDisHOV'] = util.get_matrix_numpy(eb, 'HbUBlHovDist')
-        Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'HbUBlHovTime')
-        Df['AutoCosHOV'] = Df['AutoDisHOV']*VOC + util.get_matrix_numpy(eb, 'HbUBlHovToll') + Df['ParkCost']
+        Df['AutoDisHOV'] = util.get_matrix_numpy(eb, 'NHbOBlHovDist')
+        Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'NHbOBlHovTime')
+        Df['AutoCosHOV'] = Df['AutoDisHOV']*VOC + util.get_matrix_numpy(eb, 'NHbOBlHovToll') + Df['ParkCost']
 
-        # Utilities
-        # SOV
-        # SOV Utility for all incomes
-        Df['GeUtl'] = (0
-                      + p15*Df['AutoTimSOV']
-                      + p12*Df['AutoCosSOV'])
-        # Check SOV Availability
-        Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisSOV'], Df['GeUtl'], AvailDict)
-
-        DfU['SOV'] = Df['GeUtl']
-
-        ##     HOV - 2 and more persons
-        # HOV
-        # HOV Utility for all incomes
-
-        Df['GeUtl'] = ( p2
-                      + p15*Df['AutoTimHOV']
-                      + p12*Df['AutoCosHOV']/Occ)
-
-        # Check HOV Availability
-        Df['GeUtl'] = MChM.AutoAvail(Df['AutoDisHOV'], Df['GeUtl'], AvailDict)
-        DfU['HOV']  = Df['GeUtl']
+        # Auto Utility across all incomes
+        Df['GeUtl'] = ( 0.0
+                      + p12*Df['AutoCosHOV']/Occ
+                      + p15*Df['AutoTimHOV'])
+        # Check Availability conditions
+        Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisHOV'], Df['GeUtl'], AvailDict)
+        # Add Income parameters
+        DfU['Auto'] = Df['GeUtl']
 
 #        ##############################################################################
 #        ##       Walk to Transit Modes
@@ -133,79 +117,81 @@ class HbWork(_m.Tool()):
         # Generate Dataframe
         Df = {}
         Tiny=0.000001
-        ##
-        ##    Bus and rail related variables for University purpose
-        ##
-        Df['BusIVT'] = util.get_matrix_numpy(eb, 'HbUBlBusIvtt')
-        Df['BusWat'] = util.get_matrix_numpy(eb, 'HbUBlBusWait')
-        Df['BusAux'] = util.get_matrix_numpy(eb, 'HbUBlBusAux')
-        Df['BusBrd'] = util.get_matrix_numpy(eb, 'HbUBlBusBoard')
-        Df['BusFar'] = util.get_matrix_numpy(eb, 'HbUBlBusFare')
-        Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] + Df['BusBrd'] # Bus Total Travel Time
+        Df['BusIVT'] = util.get_matrix_numpy(eb, 'NHbOBlBusIvtt')
+        Df['BusWat'] = util.get_matrix_numpy(eb, 'NHbOBlBusWait')
+        Df['BusAux'] = util.get_matrix_numpy(eb, 'NHbOBlBusAux')
+        Df['BusBrd'] = util.get_matrix_numpy(eb, 'NHbOBlBusBoard')
+        Df['BusFar'] = util.get_matrix_numpy(eb, 'NHbOBlBusFare')
+        Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] + Df['BusBrd'] # Total Bus Travel Time
 
-        Df['RalIVR'] = util.get_matrix_numpy(eb, 'HbUBlRailIvtt')
-        Df['RalIVB'] = util.get_matrix_numpy(eb, 'HbUBlRailIvttBus')
-        Df['RalWat'] = util.get_matrix_numpy(eb, 'HbUBlRailWait')
-        Df['RalAux'] = util.get_matrix_numpy(eb, 'HbUBlRailAux')
-        Df['RalBrd'] = util.get_matrix_numpy(eb, 'HbUBlRailBoard')
-        Df['RalFar'] = util.get_matrix_numpy(eb, 'HbUBlRailFare')
-
-        Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] + Df['RalBrd'] # Bus Total Travel Time
+        Df['RalIVR'] = util.get_matrix_numpy(eb, 'NHbOBlRailIvtt')
+        Df['RalIVB'] = util.get_matrix_numpy(eb, 'NHbOBlRailIvttBus')
+        Df['RalWat'] = util.get_matrix_numpy(eb, 'NHbOBlRailWait')
+        Df['RalAux'] = util.get_matrix_numpy(eb, 'NHbOBlRailAux')
+        Df['RalBrd'] = util.get_matrix_numpy(eb, 'NHbOBlRailBoard')
+        Df['RalFar'] = util.get_matrix_numpy(eb, 'NHbOBlRailFare')
+        Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] + Df['RalBrd'] # Total Bus Travel Time
         Df['RalIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Bus IVT to Total Time
         Df['RalIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Rail IVT to Total Time
 
         Df['IntZnl'] = np.identity(NoTAZ)
+        Df['PopEmpDen'] = util.get_matrix_numpy(eb, 'combinedensln')
+        Df['PopEmpDen'] = Df['PopEmpDen'].reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
 
         # Utilities
         # Bus Utility
-        # Bus Utility for all incomes
+        # Bus Utility across all incomes
         Df['GeUtl'] = ( p4
-                      + p12*(Df['BusFar'])*0.1
+                      + p12*Df['BusFar']
                       + p15*Df['BusIVT']
                       + p17*Df['BusWat']
                       + p18*Df['BusAux']
-                      + p19*Df['BusBrd'])
-        # Check Bus Availability
+                      + p19*Df['BusBrd']
+                      + p700*Df['PopEmpDen'])
+
+        # Check Availability conditions
         Df['GeUtl'] = MChM.BusAvail(Df, Df['GeUtl'], AvailDict)
         DfU['Bus'] = Df['GeUtl']
 
-        #     Rail Utility
-        ##
+        # Rail Utility
+        # Rail Utility across all incomes
         Df['GeUtl'] = ( p4*Df['RalIBR']
                       + p6*Df['RalIRR']
-                      + p12*(Df['RalFar'])*0.1
+                      + p12*Df['RalFar']
                       + p15*Df['RalIVB']
                       + p15*Df['RalIVR']
                       + p17*Df['RalWat']
                       + p18*Df['RalAux']
-                      + p19*Df['RalBrd'])
-
-        # Check Rail Availability
+                      + p19*Df['RalBrd']
+                      + p700*Df['PopEmpDen'])
+        # Check Availability conditions
         Df['GeUtl'] = MChM.RailAvail(Df, Df['GeUtl'],AvailDict)
         DfU['Ral'] = Df['GeUtl']
 
 #        ##############################################################################
-#        ##
-#        ##        Active Modes
-#        ##        rs: HbU SOV distance is used.
-#        ##
+#        ##       Active Modes
 #        ##############################################################################
 
         Df = {}
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbUBlSovDist')
+        Df['AutoDis'] = util.get_matrix_numpy(eb, 'NHbOBlSovDist')
+
+        Df['PopEmpDenPA'] = util.get_matrix_numpy(eb, 'combinedens')#Pop+Emp Density at Prod and Attr Zones
+        Df['PopEmpDenPA'] = Df['PopEmpDenPA'].reshape(NoTAZ, 1) + Df['PopEmpDenPA'].reshape(1, NoTAZ) #Broadcast Density
+
+        Df['BikScr'] = util.get_matrix_numpy(eb, 'bikeskim') # Bike Score
 
         # Walk Utility
         DfU['Walk'] = ( p10
-                      + p20*Df['AutoDis'])
-
-        # Check Walk Availability
+                      + p20*Df['AutoDis']
+                      + p701*Df['PopEmpDenPA'])
+        # Check Availability conditions
         DfU['Walk'] = MChM.WalkAvail(Df['AutoDis'], DfU['Walk'], AvailDict)
 
         # Bike Utility
         DfU['Bike'] = ( p11
-                      + p21*Df['AutoDis'])
-
-        # Check Bike Availability
+                      + p21*Df['AutoDis']
+                      + p870*Df['BikScr'])
+        # Check Availability conditions
         DfU['Bike'] = MChM.BikeAvail(Df['AutoDis'], DfU['Bike'], AvailDict)
 
         del Df
@@ -213,34 +199,30 @@ class HbWork(_m.Tool()):
 #        ##############################################################################
 #        ##       Calculate Probabilities
 #        ##############################################################################
-        ## Add SOV Availability Term
 
-        CarShare = util.get_matrix_numpy(eb, 'cs500').reshape(NoTAZ,1) + np.zeros((1, NoTAZ))
-        LrgU     = -99999.0
-        ## Low Income Zero Autos
+        # All Incomes All Autos
         Dict = {
-               'SOV'  : [DfU['SOV']],
-               'HOV'  : [DfU['HOV']],
+               'Auto'  : [DfU['Auto']],
                'WTra' : [DfU['Bus'], DfU['Ral']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
 
-        Prob_Dict = self.Calc_Prob(eb, Dict, "HbULS", thet)
+        Prob_Dict = self.Calc_Prob(eb, Dict, "NHbOLS", thet)
         del DfU, Dict
-
+#
        ##############################################################################
         ##       Trip Distribution
        ##############################################################################
 
-        Logsum =  ["HbULS"]
+        Logsum =  ["NHbOLS"]
 
         imp_list = ["P-AFrictionFact1"]
 
-        mo_list =  ["hbuprd"]
+        mo_list =  ["nhboprd"]
 
-        md_list =  ["hbuatr"]
+        md_list =  ["nhboatr"]
 
-        out_list = ["HbUP-A"]
+        out_list = ["NHbOP-A"]
 
         LS_Coeff = 0.5
 
@@ -251,7 +233,7 @@ class HbWork(_m.Tool()):
         GammaList =  [-0.0004]
 
         Dist_Iter = int(util.get_matrix_numpy(eb, 'IterDist'))
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "HbUBlSovDist"))
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "NHbOBlSovDist"))
         MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list, Dist_Iter)
 
 
@@ -259,12 +241,10 @@ class HbWork(_m.Tool()):
 #        ##       Calculate Demand
 #       ##############################################################################
 
-        Demand_Dict = self.Calc_Demand(Prob_Dict, util.get_matrix_numpy(eb,"HbUP-A"))
+        Demand_Dict = self.Calc_Demand(Prob_Dict, util.get_matrix_numpy(eb,"NHbOP-A"))
 
 
-        SOV =   Demand_Dict['SOV'][0]
-
-        HOV =   Demand_Dict['HOV'][0]
+        Auto =   Demand_Dict['Auto'][0]
 
         Bus  =  Demand_Dict['WTra'][0]
 
@@ -281,17 +261,17 @@ class HbWork(_m.Tool()):
 #       ##############################################################################
 #        ##       Set Demand Matrices
 #       ##############################################################################
-        util.set_matrix_numpy(eb, "HbUSOVPerTrips", SOV)
-        util.set_matrix_numpy(eb, "HbUHV2+PerTrips", HOV)
-        util.set_matrix_numpy(eb, "HbUBusPerTrips", Bus)
-        util.set_matrix_numpy(eb, "HbURailPerTrips", Rail)
-        util.set_matrix_numpy(eb, "HbUWalkPerTrips", Walk)
-        util.set_matrix_numpy(eb, "HbUBikePerTrips", Bike)
+
+        util.set_matrix_numpy(eb, "NHbOHV2+PerTrips", Auto)
+        util.set_matrix_numpy(eb, "NHbOBusPerTrips", Bus)
+        util.set_matrix_numpy(eb, "NHbORailPerTrips", Rail)
+        util.set_matrix_numpy(eb, "NHbOWalkPerTrips", Walk)
+        util.set_matrix_numpy(eb, "NHbOBikePerTrips", Bike)
 
     def Calc_Prob(self, eb, Dict, Logsum, Th):
         util = _m.Modeller().tool("translink.emme.util")
 
-        Tiny=0.000001
+        Tiny =  0.000000001
         L_Nst = {key:sum(np.exp(nest))
                       for key,nest in Dict.items()}
 
@@ -334,18 +314,18 @@ class HbWork(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
 
         ## Initialze Logsum Matrices
-        util.initmat(eb, "mf9010", "HbULS", " HbU LogSum ", 0)
+        util.initmat(eb, "mf9080", "NHbOLS", " NHbO LogSum", 0)
 
         ## Initialze Friction Factor Matrices
         util.initmat(eb, "mf9100", "P-AFrictionFact1", "Trip Distribution Friction Factor 1", 0)
 
         ## Initialize P-A Trip Tables by mode
-        util.initmat(eb, "mf3100", "HbUSOVPerTrips", "HbU SOV Per-Trips", 0)
-        util.initmat(eb, "mf3105", "HbUHV2+PerTrips", "HbU HV2+ Per-Trips", 0)
-        util.initmat(eb, "mf3115", "HbUBusPerTrips", "HbU Bus Per-Trips", 0)
-        util.initmat(eb, "mf3120", "HbURailPerTrips", "HbU Rail Per-Trips", 0)
-        util.initmat(eb, "mf3130", "HbUWalkPerTrips", "HbU Walk Per-Trips", 0)
-        util.initmat(eb, "mf3135", "HbUBikePerTrips", "HbU Bike Per-Trips", 0)
+        util.initmat(eb, "mf3800", "NHbOSOVPerTrips",  "NHbO SOV Per-Trips", 0)
+        util.initmat(eb, "mf3805", "NHbOHV2+PerTrips", "NHbO HV2+ Per-Trips", 0)
+        util.initmat(eb, "mf3815", "NHbOBusPerTrips",  "NHbO Bus Per-Trips", 0)
+        util.initmat(eb, "mf3820", "NHbORailPerTrips", "NHbO Rail Per-Trips", 0)
+        util.initmat(eb, "mf3830", "NHbOWalkPerTrips", "NHbO Walk Per-Trips", 0)
+        util.initmat(eb, "mf3835", "NHbOBikePerTrips", "NHbO Bike Per-Trips", 0)
 
         ## Initialize P-A Trip Tables from trip distribution
-        util.initmat(eb, "mf3150", "HbUP-A", " HbU P-A Trips ", 0)
+        util.initmat(eb, "mf3850", "NHbOP-A", " NHbO P-A Trips ", 0)

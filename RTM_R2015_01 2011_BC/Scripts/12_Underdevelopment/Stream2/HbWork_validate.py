@@ -216,7 +216,7 @@ class HbWork(_m.Tool()):
         Df['PopSPr'] = PopSPr.flatten()
         Df['BikScr'] = util.get_matrix_numpy(eb, 'bikeskim').flatten() # Bike Score
 
-        Df[500000:550000].to_csv("F:/Scratch/MC_Df.csv")
+        Df[400000:450000].to_csv("F:/Scratch/MC_Df.csv")
 
         ##############################################################################
         ##       Calculate Probabilities
