@@ -253,6 +253,7 @@ class TripAttractions(_m.Tool()):
 
         # write to EMMEbank
         util.set_matrix_numpy(eb, 'mohbuprd', prd_df['hbu'].values)
+        util.set_matrix_numpy(eb, 'mdhbuatr', df['hbu'].values)
         util.set_matrix_numpy(eb, 'mdhbwatr', df['hbw'].values)
         util.set_matrix_numpy(eb, 'mdhbescatr', df['hbesc'].values)
         util.set_matrix_numpy(eb, 'mdhbpbatr', df['hbpb'].values)

@@ -156,18 +156,26 @@ class DataGeneration(_m.Tool()):
     	pm_weight = 0.39
     	time_cut = 30
     	time_cut_uni = 30
+        time_cut_soc = 60
+        floor = 0.000001
 
-    	# get zone numbers
-    	index = util.get_matrix_numpy(eb, "mozoneindex", reshape=False)
+        emp_sql = """
+        SELECT
+            ti.TAZ1741 as taz
+            ,IFNULL(d.EMP_Total, 0) as emp
+            ,IFNULL(d.PostSecFTE, 0) as postsec
+            ,IFNULL(d.EMP_AccomFood_InfoCult, 0) as emp_soc
+        FROM taz_index ti
+            LEFT JOIN demographics d on d.TAZ1700 = ti.TAZ1741
+        ORDER BY
+            ti.TAZ1741
+        """
 
-    	# get employment data
-    	emp = util.get_matrix_numpy(eb, "moTotEmp", reshape=False)
-
-    	# get post sec FTE enrolment
-    	ps = util.get_matrix_numpy(eb, "moEnrolPsFte", reshape=False)
-
-    	# merge employment and zone number
-    	emp = pd.DataFrame({"taz": index, "emp": emp, "postsec" : ps}, columns=["taz","emp", "postsec"])
+        db_loc = util.get_eb_path(eb)
+        db_path = os.path.join(db_loc, 'rtm.db')
+        conn = sqlite3.connect(db_path)
+        emp = pd.read_sql(emp_sql, conn)
+        conn.close()
 
     	# create a long matrix of zone interchanges and join employment data to it
     	ij = util.get_pd_ij_df(eb)
@@ -241,9 +249,9 @@ class DataGeneration(_m.Tool()):
     	#######################################################################
 
     	# calculate weighted accessibilities
-    	ij['transit_acc'] = np.where(ij['AmTransitTime'] <= time_cut, ij['emp'] * am_weight, 0) \
-    	+ np.where(ij['MdTransitTime'] <= time_cut, ij['emp'] * md_weight, 0)  \
-    	+ np.where(ij['PmTransitTime'] <= time_cut, ij['emp'] * pm_weight, 0)
+    	ij['transit_acc'] = np.where(ij['AmTransitTime'].between(floor, time_cut), ij['emp'] * am_weight, 0) \
+    	+ np.where(ij['MdTransitTime'].between(floor, time_cut), ij['emp'] * md_weight, 0)  \
+    	+ np.where(ij['PmTransitTime'].between(floor, time_cut), ij['emp'] * pm_weight, 0)
 
     	#aggregate to the origin zone
     	ij_acc = ij['transit_acc'].groupby(ij['i'])
@@ -268,7 +276,7 @@ class DataGeneration(_m.Tool()):
     	#######################################################################
 
     	# calculate accessibilities
-    	ij['uni_acc'] = np.where(ij['MdTransitTime'] <= time_cut_uni, ij['postsec'], 0)
+    	ij['uni_acc'] = np.where(ij['MdTransitTime'].between(floor, time_cut_uni), ij['postsec'], 0)
 
     	#aggregate to the origin zone
     	ij_acc_u = ij['uni_acc'].groupby(ij['i'])
@@ -291,13 +299,42 @@ class DataGeneration(_m.Tool()):
 
 
     	#######################################################################
+    	# Calculate and set social accessibilities
+    	#######################################################################
+
+    	# calculate weighted accessibilities
+    	ij['soc_acc'] = np.where(ij['AmTransitTime'].between(floor, time_cut_soc), ij['emp_soc'] * am_weight, 0) \
+    	+ np.where(ij['MdTransitTime'].between(floor, time_cut_soc), ij['emp_soc'] * md_weight, 0)  \
+    	+ np.where(ij['PmTransitTime'].between(floor, time_cut_soc), ij['emp_soc'] * pm_weight, 0)
+
+    	#aggregate to the origin zone
+    	ij_acc_s = ij['soc_acc'].groupby(ij['i'])
+    	ij_acc_s = ij_acc_s.sum()
+    	ij_acc_s = ij_acc_s.reset_index()
+
+    	# log transform, floor output at 0
+    	if ij_acc_s['soc_acc'].min() < 1:
+    		log_trans_const = 1 - ij_acc_s['soc_acc'].min()
+    	else:
+    		log_trans_const = 0
+
+    	ij_acc_s['soc_acc_ln'] = np.log(ij_acc_s['soc_acc'] + log_trans_const)
+
+    	# write data back to emmebank
+    	util.set_matrix_numpy(eb, 'mosocAcc', ij_acc_s['soc_acc'].values)
+    	util.set_matrix_numpy(eb, 'mosocAccLn', ij_acc_s['soc_acc_ln'].values)
+
+    	#######################################################################
     	# Write everything to sqlite database
     	#######################################################################
 
     	# create index column for table.  name denotes full index
     	ij_acc.rename(columns={'i' : 'TAZ1741'}, inplace=True)
-    	# merge both accessibility dataframes and drop addition taz column (i)
+    	# merge accessibility dataframes and drop addition taz column (i)
     	ij_acc = pd.merge(ij_acc, ij_acc_u, how='left', left_on=['TAZ1741'], right_on=['i'])
+    	ij_acc.drop('i', axis=1, inplace=True)
+    	# merge accessibility dataframes and drop addition taz column (i)
+    	ij_acc = pd.merge(ij_acc, ij_acc_s, how='left', left_on=['TAZ1741'], right_on=['i'])
     	ij_acc.drop('i', axis=1, inplace=True)
 
     	# establish connection to db and write out data
@@ -485,12 +522,14 @@ class DataGeneration(_m.Tool()):
         util.initmat(eb, "mo212", "distCbd", "Distance to CBD", 0)
         util.initmat(eb, "mo213", "distTc", "Distance to Town Centre", 0)
         util.initmat(eb, "mo214", "uniAcc", "University Accessibility", 0)
+        util.initmat(eb, "mo215", "socAcc", "Social Recreational Accessibility", 0)
 
         util.initmat(eb, "mo220", "autoAccLn", "Log Auto Accessibility", 0)
         util.initmat(eb, "mo221", "transitAccLn", "Log Transit Accessibility", 0)
         util.initmat(eb, "mo222", "distCbdLn", "Log Distance to CBD", 0)
         util.initmat(eb, "mo223", "distTcLn", "Log Distance to Town Centre", 0)
         util.initmat(eb, "mo224", "uniAccLn", "Log University Accessibility", 0)
+        util.initmat(eb, "mo225", "socAccLn", "Log Social Recreational Accessibility", 0)
 
 
         ########################################################################
