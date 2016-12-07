@@ -223,6 +223,7 @@ class DataImport(_m.Tool()):
         pnr_file = os.path.join(file_loc, 'taz1700_pnr.csv')
         dummy_file = os.path.join(file_loc,'taz1700_dummies.csv')
         ensem_file = os.path.join(proj_path, "BaseNetworks", "taz1700_ensembles.csv")
+        time_slicing_file = os.path.join(file_loc,'time_slicing.csv')
 
         # import raw data to mo's in emmebank
         util.read_csv_momd(eb, demo_file)
@@ -251,9 +252,13 @@ class DataImport(_m.Tool()):
         df = pd.read_csv(dummy_file, skiprows = 3)
         df.to_sql(name='dummies', con=conn, flavor='sqlite', index=False, if_exists='replace')
 
+        # ensembles
         df = pd.read_csv(ensem_file, skiprows = 3)
         df.to_sql(name='ensembles', con=conn, flavor='sqlite', index=False, if_exists='replace')
 
+        # time_slicing
+        df = pd.read_csv(time_slicing_file, skiprows = 0)
+        df.to_sql(name='timeSlicingFactors', con=conn, flavor='sqlite', index=False, if_exists='replace')
 
         conn.close()
 
