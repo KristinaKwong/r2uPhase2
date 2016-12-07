@@ -170,7 +170,7 @@ class VehicleAvailability(_m.Tool()):
         db_loc = util.get_eb_path(eb)
         db_path = os.path.join(db_loc, 'rtm.db')
         conn = sqlite3.connect(db_path)
-        df.to_sql(name='HhWkInAu', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='segmentedHouseholds', con=conn, flavor='sqlite', index=False, if_exists='replace')
         conn.close()
 
 
@@ -190,7 +190,7 @@ class VehicleAvailability(_m.Tool()):
             ,CASE WHEN HHInc = 1 THEN 1 ELSE 0 END dLowInc
             ,CASE WHEN HHInc = 3 THEN 1 ELSE 0 END dHighInc
 
-        FROM HhWkIn
+        FROM segmentedHouseholds
 
         ORDER BY
             TAZ1741

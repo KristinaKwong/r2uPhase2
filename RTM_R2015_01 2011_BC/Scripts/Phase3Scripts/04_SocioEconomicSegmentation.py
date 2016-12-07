@@ -523,7 +523,7 @@ class SocioEconomicSegmentation(_m.Tool()):
         db_loc = util.get_eb_path(eb)
         db_path = os.path.join(db_loc, 'rtm.db')
         conn = sqlite3.connect(db_path)
-        output_df.to_sql(name='HhWkIn', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        output_df.to_sql(name='segmentedHouseholds', con=conn, flavor='sqlite', index=False, if_exists='replace')
         conn.close()
 
 
