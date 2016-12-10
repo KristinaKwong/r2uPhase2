@@ -37,7 +37,7 @@ class HbSchool(_m.Tool()):
     @_m.logbook_trace("Run Home Base School")
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
-        MChM = _m.Modeller().tool("translink.RTM3.testtdmc.ModeChoiceUtils")
+        MChM = _m.Modeller().tool("translink.RTM3.stage2.mcutil")
         input_path = util.get_input_path(eb)
         self.matrix_batchins(eb)
         NoTAZ = len(util.get_matrix_numpy(eb, "mo51"))
@@ -68,20 +68,19 @@ class HbSchool(_m.Tool()):
 
         # Add Coefficients
 
-        p2   = -20.242759
-        p4   = -18.940425
-        p6   = -20.136158
-        p11  =  -3.758208
-        p12  =  -1.630150
-        p20  =  -7.296188
-        p21  =  -6.664596
-        p162 =   4.456847
-        p163 =  10.673441
-        p701 =   0.751139
-        p702 =   0.774884
-        p900 =   1.424131
-        thet =   0.122610
-
+        p2   = -20.901791
+        p4   = -20.403288
+        p6   = -21.598306
+        p11  =  -3.754238
+        p12  =  -1.186709
+        p20  =  -7.485208
+        p21  =  -6.852784
+        p162 =   4.587799
+        p163 =  10.988392
+        p701 =   0.756436
+        p702 =   0.779609
+        p900 =   1.464167
+        thet =   0.119236
 
 #        ##############################################################################
 #        ##       Auto Modes

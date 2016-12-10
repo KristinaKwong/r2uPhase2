@@ -9,6 +9,7 @@ import csv
 import os
 import numpy as np
 import pandas as pd
+import sqlite3
 import traceback as _traceback
 
 class HbWork(_m.Tool()):
@@ -37,7 +38,7 @@ class HbWork(_m.Tool()):
     @_m.logbook_trace("Run Home Base Work")
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
-        MChM = _m.Modeller().tool("translink.RTM3.testtdmc.ModeChoiceUtils")
+        MChM = _m.Modeller().tool("translink.RTM3.stage2.mcutil")
         input_path = util.get_input_path(eb)
         self.matrix_batchins(eb)
         NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
@@ -402,7 +403,7 @@ class HbWork(_m.Tool()):
         Df['IntrCBD'] = util.get_matrix_numpy(eb, 'd_cbd') #Intra-CBD
         Df['IntrCBD'] = Df['IntrCBD'].reshape(NoTAZ, 1)*Df['IntrCBD'].reshape(1, NoTAZ) #Broadcast intra-CBD
 
-        Df['PopEmpDenPA'] = util.get_matrix_numpy(eb, 'combinedens')#Pop+Emp Density at Prod and Attr Zones
+        Df['PopEmpDenPA'] = util.get_matrix_numpy(eb, 'combinedensln')#Pop+Emp Density at Prod and Attr Zones
         Df['PopEmpDenPA'] = Df['PopEmpDenPA'].reshape(NoTAZ, 1) + Df['PopEmpDenPA'].reshape(1, NoTAZ) #Broadcast Density
 
         Df['PopSen'] = util.get_matrix_numpy(eb, 'Pop55t64') + util.get_matrix_numpy(eb, 'Pop65Up') #Senior Proportion
@@ -451,6 +452,7 @@ class HbWork(_m.Tool()):
                'DTra' : [DfU['BAuI1'], DfU['RAuI1'], DfU['WAuI1']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
+        I1A0_Dict = self.Calc_Prob(eb, Dict, "HbWLSI1A0", thet)
 
         ## Low Income One Auto
         Dict = {
@@ -541,6 +543,7 @@ class HbWork(_m.Tool()):
         I3A2_Dict = self.Calc_Prob(eb, Dict, "HbWLSI3A2", thet)
 
         del DfU, Dict
+
 #
        ##############################################################################
         ##       Trip Distribution
@@ -589,7 +592,6 @@ class HbWork(_m.Tool()):
         Dist_Iter = int(util.get_matrix_numpy(eb, 'IterDist'))
         MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "HbWBlSovDist"))
         MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list, Dist_Iter)
-
 
 #       ##############################################################################
 #        ##       Calculate Demand
@@ -649,15 +651,35 @@ class HbWork(_m.Tool()):
         del I3A0_Dict, I3A1_Dict, I3A2_Dict
 
 #       ##############################################################################
-#        ##       Split Park and Ride to Auto and Transit Legs
+#        ##       Get Time Slice Factors
 #       ##############################################################################
+
+        db_loc = util.get_eb_path(eb)
+        db_path = os.path.join(db_loc, 'rtm.db')
+        conn = sqlite3.connect(db_path)
+        ts_df = pd.read_sql("SELECT * from timeSlicingFactors", conn)
+        conn.close()
+        # Subset Time Slice Factor Dataframes by purpose
+        hbw_ts = ts_df.loc[ts_df['purpose'] == 'hbw']
+
+        # Subset Time Slice Factor Dataframes by mode
+        Auto_AM_Fct, Auto_MD_Fct, Auto_PM_Fct = self.get_ts_factor(hbw_ts.loc[ts_df['mode'] == 'Auto']) # Auto Factors
+        Tran_AM_Fct, Tran_MD_Fct, Tran_PM_Fct = self.get_ts_factor(hbw_ts.loc[ts_df['mode'] == 'Transit']) # Transit Factors
+        Acti_AM_Fct, Acti_MD_Fct, Acti_PM_Fct = self.get_ts_factor(hbw_ts.loc[ts_df['mode'] == 'Active']) # Active Factors
+        WCE_AM_Fct, WCE_PM_Fct = self.get_ts_factor_wce(hbw_ts.loc[ts_df['mode'] == 'WCE']) # WCE Factors
+
+        del ts_df, hbw_ts
+
+#       #########################################################################################
+#        ##       Split Park and Ride to Auto and Transit Legs
+#       ##########################################################################################
         ## General Setup
         BLBsWk = util.get_matrix_numpy(eb, "buspr-lotChceWkAMPA").flatten() #Best Lot Bus Work
         BLRlWk = util.get_matrix_numpy(eb, "railpr-lotChceWkAMPA").flatten() #Best Lot Rail Work
         BLWcWk = util.get_matrix_numpy(eb, "wcepr-lotChceWkAMPA").flatten() #Best Lot WCE Work
         DfInt = util.get_pd_ij_df(eb)
 
-        # Bus
+        ## Bus
         Dfmerge = util.get_pd_ij_df(eb) # pandas Dataframe
         Dfmerge['BL'] = BLBsWk # best bus lot
         Dfmerge['BAuI1'] = BAuI1.flatten()
@@ -667,14 +689,16 @@ class HbWork(_m.Tool()):
         DfmergedAuto = Dfmerge.groupby(['i', 'BL']).sum().reset_index()
         DfmergedTran = Dfmerge.groupby(['BL', 'j']).sum().reset_index()
         DfAuto, DfTran = self.splitpnr(DfmergedAuto, DfmergedTran, DfInt)
-        SOVI1 += DfAuto['BAuI1'].reshape(NoTAZ, NoTAZ)
-        SOVI2 += DfAuto['BAuI2'].reshape(NoTAZ, NoTAZ)
-        SOVI3 += DfAuto['BAuI3'].reshape(NoTAZ, NoTAZ)
-        Bus   += DfTran['BAuI1'].reshape(NoTAZ, NoTAZ)
-        Bus   += DfTran['BAuI2'].reshape(NoTAZ, NoTAZ)
-        Bus   += DfTran['BAuI3'].reshape(NoTAZ, NoTAZ)
 
-        # Rail
+# Store park and ride Demands separately for time slicing
+        SOV_BAu_I1 = DfAuto['BAuI1'].reshape(NoTAZ, NoTAZ)  # low income SOV trips to PnR Zones
+        SOV_BAu_I2 = DfAuto['BAuI2'].reshape(NoTAZ, NoTAZ)  # med income SOV trips to PnR Zones
+        SOV_BAu_I3 = DfAuto['BAuI3'].reshape(NoTAZ, NoTAZ)  # high income SOV trips to PnR Zones
+        Bus_BAu    = (DfTran['BAuI1'].reshape(NoTAZ, NoTAZ) # bus trips from PnR zone to destination
+                     +DfTran['BAuI2'].reshape(NoTAZ, NoTAZ)
+                     +DfTran['BAuI3'].reshape(NoTAZ, NoTAZ))
+
+        ## Rail
         Dfmerge = util.get_pd_ij_df(eb)
         Dfmerge['BL'] = BLRlWk
         Dfmerge['RAuI1'] = RAuI1.flatten()
@@ -684,14 +708,14 @@ class HbWork(_m.Tool()):
         DfmergedAuto = Dfmerge.groupby(['i', 'BL']).sum().reset_index()
         DfmergedTran = Dfmerge.groupby(['BL', 'j']).sum().reset_index()
         DfAuto, DfTran = self.splitpnr(DfmergedAuto, DfmergedTran, DfInt)
-        SOVI1 += DfAuto['RAuI1'].reshape(NoTAZ, NoTAZ)
-        SOVI2 += DfAuto['RAuI2'].reshape(NoTAZ, NoTAZ)
-        SOVI3 += DfAuto['RAuI3'].reshape(NoTAZ, NoTAZ)
-        Rail  += DfTran['RAuI1'].reshape(NoTAZ, NoTAZ)
-        Rail  += DfTran['RAuI2'].reshape(NoTAZ, NoTAZ)
-        Rail  += DfTran['RAuI3'].reshape(NoTAZ, NoTAZ)
 
-        #WCE
+        SOV_RAu_I1 = DfAuto['RAuI1'].reshape(NoTAZ, NoTAZ) # low income SOV trips to PnR Zones
+        SOV_RAu_I2 = DfAuto['RAuI2'].reshape(NoTAZ, NoTAZ) # med income SOV trips to PnR Zones
+        SOV_RAu_I3 = DfAuto['RAuI3'].reshape(NoTAZ, NoTAZ) # high income SOV trips to PnR Zones
+        Ral_RAu    = (DfTran['RAuI1'].reshape(NoTAZ, NoTAZ)# rail trips from PnR zone to destination
+                     +DfTran['RAuI2'].reshape(NoTAZ, NoTAZ)
+                     +DfTran['RAuI3'].reshape(NoTAZ, NoTAZ))
+        ##WCE
         Dfmerge = util.get_pd_ij_df(eb)
         Dfmerge['BL'] = BLWcWk
         Dfmerge['WAuI1'] = WAuI1.flatten()
@@ -701,16 +725,267 @@ class HbWork(_m.Tool()):
         DfmergedAuto = Dfmerge.groupby(['i', 'BL']).sum().reset_index()
         DfmergedTran = Dfmerge.groupby(['BL', 'j']).sum().reset_index()
         DfAuto, DfTran = self.splitpnr(DfmergedAuto, DfmergedTran, DfInt)
-        SOVI1 += DfAuto['WAuI1'].reshape(NoTAZ, NoTAZ)
-        SOVI2 += DfAuto['WAuI2'].reshape(NoTAZ, NoTAZ)
-        SOVI3 += DfAuto['WAuI3'].reshape(NoTAZ, NoTAZ)
-        WCE   += DfTran['WAuI1'].reshape(NoTAZ, NoTAZ)
-        WCE   += DfTran['WAuI2'].reshape(NoTAZ, NoTAZ)
-        WCE   += DfTran['WAuI3'].reshape(NoTAZ, NoTAZ)
 
-#       ##############################################################################
-#        ##       Set Demand Matrices
-#       ##############################################################################
+        SOV_WAu_I1 = DfAuto['WAuI1'].reshape(NoTAZ, NoTAZ) # low income SOV trips to PnR Zones
+        SOV_WAu_I2 = DfAuto['WAuI2'].reshape(NoTAZ, NoTAZ) # med income SOV trips to PnR Zones
+        SOV_WAu_I3 = DfAuto['WAuI3'].reshape(NoTAZ, NoTAZ) # high income SOV trips to PnR Zones
+        WCE_WAu    = (DfTran['WAuI1'].reshape(NoTAZ, NoTAZ)# rail trips from PnR zone to destination
+                     +DfTran['WAuI2'].reshape(NoTAZ, NoTAZ)
+                     +DfTran['WAuI3'].reshape(NoTAZ, NoTAZ))
+
+        del Dfmerge, DfmergedAuto, DfmergedTran
+        del DfAuto, DfTran
+
+      ##########################################################################################
+       ##       Calculate peak hour O-D person trips and final 24 hour P-A Trips
+      ##########################################################################################
+      ## SOV Trips      #SOV*PA_Factor + SOV_transpose*AP_Factor
+        SOVI1_AM = SOVI1*Auto_AM_Fct[0] + SOVI1.transpose()*Auto_AM_Fct[1]  # Low Income
+        SOVI1_MD = SOVI1*Auto_MD_Fct[0] + SOVI1.transpose()*Auto_MD_Fct[1]
+        SOVI1_PM = SOVI1*Auto_PM_Fct[0] + SOVI1.transpose()*Auto_PM_Fct[1]
+
+        SOVI2_AM = SOVI2*Auto_AM_Fct[0] + SOVI2.transpose()*Auto_AM_Fct[1]  # Med Income
+        SOVI2_MD = SOVI2*Auto_MD_Fct[0] + SOVI2.transpose()*Auto_MD_Fct[1]
+        SOVI2_PM = SOVI2*Auto_PM_Fct[0] + SOVI2.transpose()*Auto_PM_Fct[1]
+
+        SOVI3_AM = SOVI3*Auto_AM_Fct[0] + SOVI3.transpose()*Auto_AM_Fct[1]  # High Income
+        SOVI3_MD = SOVI3*Auto_MD_Fct[0] + SOVI3.transpose()*Auto_MD_Fct[1]
+        SOVI3_PM = SOVI3*Auto_PM_Fct[0] + SOVI3.transpose()*Auto_PM_Fct[1]
+
+        ## HOV2 Trips
+        HV2I1_AM = HV2I1*Auto_AM_Fct[0] + HV2I1.transpose()*Auto_AM_Fct[1] # Low Income
+        HV2I1_MD = HV2I1*Auto_MD_Fct[0] + HV2I1.transpose()*Auto_MD_Fct[1]
+        HV2I1_PM = HV2I1*Auto_PM_Fct[0] + HV2I1.transpose()*Auto_PM_Fct[1]
+
+        HV2I2_AM = HV2I2*Auto_AM_Fct[0] + HV2I2.transpose()*Auto_AM_Fct[1] # Med Income
+        HV2I2_MD = HV2I2*Auto_MD_Fct[0] + HV2I2.transpose()*Auto_MD_Fct[1]
+        HV2I2_PM = HV2I2*Auto_PM_Fct[0] + HV2I2.transpose()*Auto_PM_Fct[1]
+
+        HV2I3_AM = HV2I3*Auto_AM_Fct[0] + HV2I3.transpose()*Auto_AM_Fct[1] # High Income
+        HV2I3_MD = HV2I3*Auto_MD_Fct[0] + HV2I3.transpose()*Auto_MD_Fct[1]
+        HV2I3_PM = HV2I3*Auto_PM_Fct[0] + HV2I3.transpose()*Auto_PM_Fct[1]
+
+        ## HOV3 Trips
+        HV3I1_AM = HV3I1*Auto_AM_Fct[0] + HV3I1.transpose()*Auto_AM_Fct[1]# Low Income
+        HV3I1_MD = HV3I1*Auto_MD_Fct[0] + HV3I1.transpose()*Auto_MD_Fct[1]
+        HV3I1_PM = HV3I1*Auto_PM_Fct[0] + HV3I1.transpose()*Auto_PM_Fct[1]
+
+        HV3I2_AM = HV3I2*Auto_AM_Fct[0] + HV3I2.transpose()*Auto_AM_Fct[1]# Med Income
+        HV3I2_MD = HV3I2*Auto_MD_Fct[0] + HV3I2.transpose()*Auto_MD_Fct[1]
+        HV3I2_PM = HV3I2*Auto_PM_Fct[0] + HV3I2.transpose()*Auto_PM_Fct[1]
+
+        HV3I3_AM = HV3I3*Auto_AM_Fct[0] + HV3I3.transpose()*Auto_AM_Fct[1]# High Income
+        HV3I3_MD = HV3I3*Auto_MD_Fct[0] + HV3I3.transpose()*Auto_MD_Fct[1]
+        HV3I3_PM = HV3I3*Auto_PM_Fct[0] + HV3I3.transpose()*Auto_PM_Fct[1]
+
+        ## Transit Trips
+        Bus_AM = Bus*Tran_AM_Fct[0] + Bus.transpose()*Tran_AM_Fct[1]
+        Bus_MD = Bus*Tran_MD_Fct[0] + Bus.transpose()*Tran_MD_Fct[1]
+        Bus_PM = Bus*Tran_PM_Fct[0] + Bus.transpose()*Tran_PM_Fct[1]
+
+        Rail_AM = Rail*Tran_AM_Fct[0] + Rail.transpose()*Tran_AM_Fct[1]
+        Rail_MD = Rail*Tran_MD_Fct[0] + Rail.transpose()*Tran_MD_Fct[1]
+        Rail_PM = Rail*Tran_PM_Fct[0] + Rail.transpose()*Tran_PM_Fct[1]
+
+        WCE_AM = WCE*WCE_AM_Fct  # no MD for WCE
+        WCE_PM = WCE.transpose()*WCE_PM_Fct
+
+        ## Active Trips
+        Walk_AM = Walk*Acti_AM_Fct[0] + Walk.transpose()*Acti_AM_Fct[1]
+        Walk_MD = Walk*Acti_MD_Fct[0] + Walk.transpose()*Acti_MD_Fct[1]
+        Walk_PM = Walk*Acti_PM_Fct[0] + Walk.transpose()*Acti_PM_Fct[1]
+
+        Bike_AM = Bike*Acti_AM_Fct[0] + Bike.transpose()*Acti_AM_Fct[1]
+        Bike_MD = Bike*Acti_MD_Fct[0] + Bike.transpose()*Acti_MD_Fct[1]
+        Bike_PM = Bike*Acti_PM_Fct[0] + Bike.transpose()*Acti_PM_Fct[1]
+
+        ## Park and Ride Trips
+
+        # Bus PnR Trips Auto leg by income and TOD
+        SOV_BAu_I1_AM = SOV_BAu_I1*Auto_AM_Fct[0] + SOV_BAu_I1.transpose()*Auto_AM_Fct[1]
+        SOV_BAu_I1_MD = SOV_BAu_I1*Auto_MD_Fct[0] + SOV_BAu_I1.transpose()*Auto_MD_Fct[1]
+        SOV_BAu_I1_PM = SOV_BAu_I1*Auto_PM_Fct[0] + SOV_BAu_I1.transpose()*Auto_PM_Fct[1]
+
+        SOV_BAu_I2_AM = SOV_BAu_I2*Auto_AM_Fct[0] + SOV_BAu_I2.transpose()*Auto_AM_Fct[1]
+        SOV_BAu_I2_MD = SOV_BAu_I2*Auto_MD_Fct[0] + SOV_BAu_I2.transpose()*Auto_MD_Fct[1]
+        SOV_BAu_I2_PM = SOV_BAu_I2*Auto_PM_Fct[0] + SOV_BAu_I2.transpose()*Auto_PM_Fct[1]
+
+        SOV_BAu_I3_AM = SOV_BAu_I3*Auto_AM_Fct[0] + SOV_BAu_I3.transpose()*Auto_AM_Fct[1]
+        SOV_BAu_I3_MD = SOV_BAu_I3*Auto_MD_Fct[0] + SOV_BAu_I3.transpose()*Auto_MD_Fct[1]
+        SOV_BAu_I3_PM = SOV_BAu_I3*Auto_PM_Fct[0] + SOV_BAu_I3.transpose()*Auto_PM_Fct[1]
+
+        # Bus PnR Trips Transit leg
+        Bus_BAu_AM = Bus_BAu*Auto_AM_Fct[0] + Bus_BAu.transpose()*Auto_AM_Fct[1]
+        Bus_BAu_MD = Bus_BAu*Auto_MD_Fct[0] + Bus_BAu.transpose()*Auto_MD_Fct[1]
+        Bus_BAu_PM = Bus_BAu*Auto_PM_Fct[0] + Bus_BAu.transpose()*Auto_PM_Fct[1]
+
+        # Rail PnR Trips Auto Leg by income and TOD
+        SOV_RAu_I1_AM = SOV_RAu_I1*Auto_AM_Fct[0] + SOV_RAu_I1.transpose()*Auto_AM_Fct[1]
+        SOV_RAu_I1_MD = SOV_RAu_I1*Auto_MD_Fct[0] + SOV_RAu_I1.transpose()*Auto_MD_Fct[1]
+        SOV_RAu_I1_PM = SOV_RAu_I1*Auto_PM_Fct[0] + SOV_RAu_I1.transpose()*Auto_PM_Fct[1]
+
+        SOV_RAu_I2_AM = SOV_RAu_I2*Auto_AM_Fct[0] + SOV_RAu_I2.transpose()*Auto_AM_Fct[1]
+        SOV_RAu_I2_MD = SOV_RAu_I2*Auto_MD_Fct[0] + SOV_RAu_I2.transpose()*Auto_MD_Fct[1]
+        SOV_RAu_I2_PM = SOV_RAu_I2*Auto_PM_Fct[0] + SOV_RAu_I2.transpose()*Auto_PM_Fct[1]
+
+        SOV_RAu_I3_AM = SOV_RAu_I3*Auto_AM_Fct[0] + SOV_RAu_I3.transpose()*Auto_AM_Fct[1]
+        SOV_RAu_I3_MD = SOV_RAu_I3*Auto_MD_Fct[0] + SOV_RAu_I3.transpose()*Auto_MD_Fct[1]
+        SOV_RAu_I3_PM = SOV_RAu_I3*Auto_PM_Fct[0] + SOV_RAu_I3.transpose()*Auto_PM_Fct[1]
+
+        # Rail PnR Transit Leg
+        Ral_RAu_AM = Ral_RAu*Auto_AM_Fct[0] + Ral_RAu.transpose()*Auto_AM_Fct[1]
+        Ral_RAu_MD = Ral_RAu*Auto_MD_Fct[0] + Ral_RAu.transpose()*Auto_MD_Fct[1]
+        Ral_RAu_PM = Ral_RAu*Auto_PM_Fct[0] + Ral_RAu.transpose()*Auto_PM_Fct[1]
+
+
+        # WCW PnR Trips Auto Leg by income and TOD
+        SOV_WAu_I1_AM = SOV_WAu_I1*WCE_AM_Fct
+        SOV_WAu_I1_PM = SOV_WAu_I1.transpose()*WCE_PM_Fct
+
+        SOV_WAu_I2_AM = SOV_WAu_I2*WCE_AM_Fct
+        SOV_WAu_I2_PM = SOV_WAu_I2.transpose()*WCE_PM_Fct
+
+        SOV_WAu_I3_AM = SOV_WAu_I3*WCE_AM_Fct
+        SOV_WAu_I3_PM = SOV_WAu_I3.transpose()*WCE_PM_Fct
+
+        # WCW PnR Trips Transit Leg
+        WCE_WAu_AM = WCE_WAu*WCE_AM_Fct
+        WCE_WAu_PM = WCE_WAu.transpose()*WCE_PM_Fct
+
+        # Put everything together
+        # 24 Hour P-A Trips
+        # Add PnR legs
+        SOVI1 = SOVI1 + SOV_BAu_I1 + SOV_RAu_I1 + SOV_WAu_I1
+        SOVI2 = SOVI2 + SOV_BAu_I2 + SOV_RAu_I2 + SOV_WAu_I2
+        SOVI3 = SOVI3 + SOV_BAu_I3 + SOV_RAu_I3 + SOV_WAu_I3
+        # Add PnR legs
+        Bus =  Bus +  Bus_BAu
+        Rail = Rail + Ral_RAu
+        WCE = WCE + WCE_WAu
+
+        del SOV_BAu_I1, SOV_RAu_I1, SOV_WAu_I1
+        del SOV_BAu_I2, SOV_RAu_I2, SOV_WAu_I2
+        del SOV_BAu_I3, SOV_RAu_I3, SOV_WAu_I3
+        del Bus_BAu, Ral_RAu, WCE_WAu
+
+        # Peak Hour Person Trips
+        SOVI1_AM = SOVI1_AM + SOV_BAu_I1_AM + SOV_RAu_I1_AM + SOV_WAu_I1_AM
+        SOVI1_MD = SOVI1_MD + SOV_BAu_I1_MD + SOV_RAu_I1_MD
+        SOVI1_PM = SOVI1_PM + SOV_BAu_I1_PM + SOV_RAu_I1_PM + SOV_WAu_I1_PM
+
+        del SOV_BAu_I1_AM, SOV_RAu_I1_AM, SOV_WAu_I1_AM
+        del SOV_BAu_I1_MD, SOV_RAu_I1_MD
+        del SOV_BAu_I1_PM, SOV_RAu_I1_PM, SOV_WAu_I1_PM
+
+        SOVI2_AM = SOVI2_AM + SOV_BAu_I2_AM + SOV_RAu_I2_AM + SOV_WAu_I2_AM
+        SOVI2_MD = SOVI2_MD + SOV_BAu_I2_MD + SOV_RAu_I2_MD
+        SOVI2_PM = SOVI2_PM + SOV_BAu_I2_PM + SOV_RAu_I2_PM + SOV_WAu_I2_PM
+
+        del SOV_BAu_I2_AM, SOV_RAu_I2_AM, SOV_WAu_I2_AM
+        del SOV_BAu_I2_MD, SOV_RAu_I2_MD
+        del SOV_BAu_I2_PM, SOV_RAu_I2_PM, SOV_WAu_I2_PM
+
+
+        SOVI3_AM = SOVI3_AM + SOV_BAu_I3_AM + SOV_RAu_I3_AM + SOV_WAu_I3_AM
+        SOVI3_MD = SOVI3_MD + SOV_BAu_I3_MD + SOV_RAu_I3_MD
+        SOVI3_PM = SOVI3_PM + SOV_BAu_I3_PM + SOV_RAu_I3_PM + SOV_WAu_I3_PM
+
+        del SOV_BAu_I3_AM, SOV_RAu_I3_AM, SOV_WAu_I3_AM
+        del SOV_BAu_I3_MD, SOV_RAu_I3_MD
+        del SOV_BAu_I3_PM, SOV_RAu_I3_PM, SOV_WAu_I3_PM
+
+        HOVI1_AM = HV2I1_AM + HV3I1_AM
+        HOVI1_MD = HV2I1_MD + HV3I1_MD
+        HOVI1_PM = HV2I1_PM + HV3I1_PM
+
+        HOVI2_AM = HV2I2_AM + HV3I2_AM
+        HOVI2_MD = HV2I2_MD + HV3I2_MD
+        HOVI2_PM = HV2I2_PM + HV3I2_PM
+
+        HOVI3_AM = HV2I3_AM + HV3I3_AM
+        HOVI3_MD = HV2I3_MD + HV3I3_MD
+        HOVI3_PM = HV2I3_PM + HV3I3_PM
+
+        Bus_AM   += Bus_BAu_AM
+        Bus_MD   += Bus_BAu_MD
+        Bus_PM   += Bus_BAu_PM
+        del Bus_BAu_AM, Bus_BAu_MD, Bus_BAu_PM
+
+
+        Rail_AM  += Ral_RAu_AM
+        Rail_MD  += Ral_RAu_MD
+        Rail_PM  += Ral_RAu_PM
+        del Ral_RAu_AM, Ral_RAu_MD, Ral_RAu_PM
+
+        WCE_AM   += WCE_WAu_AM
+        WCE_PM   += WCE_WAu_PM
+
+        del WCE_WAu_AM, WCE_WAu_PM
+
+        # Convert HOV to Auto Drivers
+        # HOV2
+        AuDr_HV2I1_AM = HV2I1_AM/2.0
+        AuDr_HV2I1_MD = HV2I1_MD/2.0
+        AuDr_HV2I1_PM = HV2I1_PM/2.0
+
+        AuDr_HV2I2_AM = HV2I2_AM/2.0
+        AuDr_HV2I2_MD = HV2I2_MD/2.0
+        AuDr_HV2I2_PM = HV2I2_PM/2.0
+
+        AuDr_HV2I3_AM = HV2I3_AM/2.0
+        AuDr_HV2I3_MD = HV2I3_MD/2.0
+        AuDr_HV2I3_PM = HV2I3_PM/2.0
+
+        # HOV3+
+        AuDr_HV3I1_AM = HV3I1_AM/Occ
+        AuDr_HV3I1_MD = HV3I1_MD/Occ
+        AuDr_HV3I1_PM = HV3I1_PM/Occ
+
+        AuDr_HV3I2_AM = HV3I2_AM/Occ
+        AuDr_HV3I2_MD = HV3I2_MD/Occ
+        AuDr_HV3I2_PM = HV3I2_PM/Occ
+
+        AuDr_HV3I3_AM = HV3I3_AM/Occ
+        AuDr_HV3I3_MD = HV3I3_MD/Occ
+        AuDr_HV3I3_PM = HV3I3_PM/Occ
+
+        # Add HOV2 and HOV3
+        AuDr_HOVI1_AM = AuDr_HV2I1_AM + AuDr_HV3I1_AM
+        AuDr_HOVI1_MD = AuDr_HV2I1_MD + AuDr_HV3I1_MD
+        AuDr_HOVI1_PM = AuDr_HV2I1_PM + AuDr_HV3I1_PM
+
+        AuDr_HOVI2_AM = AuDr_HV2I2_AM + AuDr_HV3I2_AM
+        AuDr_HOVI2_MD = AuDr_HV2I2_MD + AuDr_HV3I2_MD
+        AuDr_HOVI2_PM = AuDr_HV2I2_PM + AuDr_HV3I2_PM
+
+        AuDr_HOVI3_AM = AuDr_HV2I3_AM + AuDr_HV3I3_AM
+        AuDr_HOVI3_MD = AuDr_HV2I3_MD + AuDr_HV3I3_MD
+        AuDr_HOVI3_PM = AuDr_HV2I3_PM + AuDr_HV3I3_PM
+
+        # clean memory
+
+        del HV2I1_AM, HV2I1_MD, HV2I1_PM
+        del HV2I2_AM, HV2I2_MD, HV2I2_PM
+        del HV2I3_AM, HV2I3_MD, HV2I3_PM
+
+        del HV3I1_AM, HV3I1_MD, HV3I1_PM
+        del HV3I2_AM, HV3I2_MD, HV3I2_PM
+        del HV3I3_AM, HV3I3_MD, HV3I3_PM
+
+        del AuDr_HV2I1_AM, AuDr_HV2I1_MD, AuDr_HV2I1_PM
+        del AuDr_HV2I2_AM, AuDr_HV2I2_MD, AuDr_HV2I2_PM
+        del AuDr_HV2I3_AM, AuDr_HV2I3_MD, AuDr_HV2I3_PM
+
+        del AuDr_HV3I1_AM, AuDr_HV3I1_MD, AuDr_HV3I1_PM
+        del AuDr_HV3I2_AM, AuDr_HV3I2_MD, AuDr_HV3I2_PM
+        del AuDr_HV3I3_AM, AuDr_HV3I3_MD, AuDr_HV3I3_PM
+
+        ##############################################################################
+            ##       Set Demand Matrices
+        ##############################################################################
+
+        # 24 hours
+
         util.set_matrix_numpy(eb, "HbWSOVI1PerTrips", SOVI1)
         util.set_matrix_numpy(eb, "HbWSOVI2PerTrips", SOVI2)
         util.set_matrix_numpy(eb, "HbWSOVI3PerTrips", SOVI3)
@@ -725,6 +1000,95 @@ class HbWork(_m.Tool()):
         util.set_matrix_numpy(eb, "HbWWCEPerTrips", WCE)
         util.set_matrix_numpy(eb, "HbWWalkPerTrips", Walk)
         util.set_matrix_numpy(eb, "HbWBikePerTrips", Bike)
+
+       # Auto-person
+
+       # SOV
+       # AM
+        self.set_pkhr_mats(eb, SOVI1_AM, "SOV_pertrp_VOT_3_Am")
+        self.set_pkhr_mats(eb, SOVI2_AM, "SOV_pertrp_VOT_4_Am")
+        self.set_pkhr_mats(eb, SOVI3_AM, "SOV_pertrp_VOT_4_Am")
+        # MD
+        self.set_pkhr_mats(eb, SOVI1_MD, "SOV_pertrp_VOT_3_Md")
+        self.set_pkhr_mats(eb, SOVI2_MD, "SOV_pertrp_VOT_4_Md")
+        self.set_pkhr_mats(eb, SOVI3_MD, "SOV_pertrp_VOT_4_Md")
+        # PM
+        self.set_pkhr_mats(eb, SOVI1_PM, "SOV_pertrp_VOT_3_Pm")
+        self.set_pkhr_mats(eb, SOVI2_PM, "SOV_pertrp_VOT_4_Pm")
+        self.set_pkhr_mats(eb, SOVI3_PM, "SOV_pertrp_VOT_4_Pm")
+
+        # HOV
+        # AM
+        self.set_pkhr_mats(eb, HOVI1_AM, "HOV_pertrp_VOT_3_Am")
+        self.set_pkhr_mats(eb, HOVI2_AM, "HOV_pertrp_VOT_4_Am")
+        self.set_pkhr_mats(eb, HOVI3_AM, "HOV_pertrp_VOT_4_Am")
+        # MD
+        self.set_pkhr_mats(eb, HOVI1_MD, "HOV_pertrp_VOT_3_Md")
+        self.set_pkhr_mats(eb, HOVI2_MD, "HOV_pertrp_VOT_4_Md")
+        self.set_pkhr_mats(eb, HOVI3_MD, "HOV_pertrp_VOT_4_Md")
+        # PM
+        self.set_pkhr_mats(eb, HOVI1_PM, "HOV_pertrp_VOT_3_Pm")
+        self.set_pkhr_mats(eb, HOVI2_PM, "HOV_pertrp_VOT_4_Pm")
+        self.set_pkhr_mats(eb, HOVI3_PM, "HOV_pertrp_VOT_4_Pm")
+
+        # Transit
+        # AM
+        self.set_pkhr_mats(eb, Bus_AM, "Bus_pertrp_Am")
+        self.set_pkhr_mats(eb, Rail_AM, "Rail_pertrp_Am")
+        self.set_pkhr_mats(eb, WCE_AM, "WCE_pertrp_Am")
+        # MD
+        self.set_pkhr_mats(eb, Bus_MD, "Bus_pertrp_Md")
+        self.set_pkhr_mats(eb, Rail_MD, "Rail_pertrp_Md")
+
+        # PM
+        self.set_pkhr_mats(eb, Bus_PM, "Bus_pertrp_Pm")
+        self.set_pkhr_mats(eb, Rail_PM, "Rail_pertrp_Pm")
+        self.set_pkhr_mats(eb, WCE_PM, "WCE_pertrp_Pm")
+
+        # Active
+        # AM
+        self.set_pkhr_mats(eb, Walk_AM, "Wk_pertrp_Am")
+        self.set_pkhr_mats(eb, Bike_AM, "Bk_pertrp_Am")
+
+        # MD
+        self.set_pkhr_mats(eb, Walk_MD, "Wk_pertrp_Md")
+        self.set_pkhr_mats(eb, Bike_MD, "Bk_pertrp_Md")
+
+        # PM
+        self.set_pkhr_mats(eb, Walk_PM, "Wk_pertrp_Pm")
+        self.set_pkhr_mats(eb, Bike_PM, "Bk_pertrp_Pm")
+
+        # Auto-driver
+
+        # SOV
+        # AM
+        self.set_pkhr_mats(eb, SOVI1_AM, "SOV_drvtrp_VOT_3_Am")
+        self.set_pkhr_mats(eb, SOVI2_AM, "SOV_drvtrp_VOT_4_Am")
+        self.set_pkhr_mats(eb, SOVI3_AM, "SOV_drvtrp_VOT_4_Am")
+        # MD
+        self.set_pkhr_mats(eb, SOVI1_MD, "SOV_drvtrp_VOT_3_Md")
+        self.set_pkhr_mats(eb, SOVI2_MD, "SOV_drvtrp_VOT_4_Md")
+        self.set_pkhr_mats(eb, SOVI3_MD, "SOV_drvtrp_VOT_4_Md")
+        # PM
+        self.set_pkhr_mats(eb, SOVI1_PM, "SOV_drvtrp_VOT_3_Pm")
+        self.set_pkhr_mats(eb, SOVI2_PM, "SOV_drvtrp_VOT_4_Pm")
+        self.set_pkhr_mats(eb, SOVI3_PM, "SOV_drvtrp_VOT_4_Pm")
+
+        # HOV
+        # AM
+        self.set_pkhr_mats(eb, AuDr_HOVI1_AM, "HOV_drvtrp_VOT_3_Am")
+        self.set_pkhr_mats(eb, AuDr_HOVI2_AM, "HOV_drvtrp_VOT_4_Am")
+        self.set_pkhr_mats(eb, AuDr_HOVI3_AM, "HOV_drvtrp_VOT_4_Am")
+        # MD
+        self.set_pkhr_mats(eb, AuDr_HOVI1_MD, "HOV_drvtrp_VOT_3_Md")
+        self.set_pkhr_mats(eb, AuDr_HOVI2_MD, "HOV_drvtrp_VOT_4_Md")
+        self.set_pkhr_mats(eb, AuDr_HOVI3_MD, "HOV_drvtrp_VOT_4_Md")
+        # PM
+        self.set_pkhr_mats(eb, AuDr_HOVI1_PM, "HOV_drvtrp_VOT_3_Pm")
+        self.set_pkhr_mats(eb, AuDr_HOVI2_PM, "HOV_drvtrp_VOT_4_Pm")
+        self.set_pkhr_mats(eb, AuDr_HOVI3_PM, "HOV_drvtrp_VOT_4_Pm")
+
+
 
     def Calc_Prob(self, eb, Dict, Logsum, Th):
         util = _m.Modeller().tool("translink.emme.util")
@@ -753,7 +1117,7 @@ class HbWork(_m.Tool()):
         Seg_Dict = {key:Dem*nest_len
                     for key, nest_len in Dict.items()}
         return Seg_Dict
-    @_m.logbook_trace("PnR")
+
     def splitpnr (self, DfmergedAuto, DfmergedTran, DfInt):
 
         DfAuto = pd.DataFrame()
@@ -766,6 +1130,38 @@ class HbWork(_m.Tool()):
         DfTran = DfTran.fillna(0)
 
         return (DfAuto, DfTran)
+
+    def get_ts_factor (self, ts_df):
+
+
+        AM_Ts_List = [float(ts_df .loc[(ts_df['peakperiod'] == 'AM') & (ts_df['direction'] == 'PtoA'), 'shares']),
+                      float(ts_df .loc[(ts_df['peakperiod'] == 'AM') & (ts_df['direction'] == 'AtoP'), 'shares'])]
+
+        MD_Ts_List = [float(ts_df .loc[(ts_df['peakperiod'] == 'MD') & (ts_df['direction'] == 'PtoA'), 'shares']),
+                      float(ts_df .loc[(ts_df['peakperiod'] == 'MD') & (ts_df['direction'] == 'AtoP'), 'shares'])]
+
+        PM_Ts_List = [float(ts_df .loc[(ts_df['peakperiod'] == 'PM') & (ts_df['direction'] == 'PtoA'), 'shares']),
+                      float(ts_df .loc[(ts_df['peakperiod'] == 'PM') & (ts_df['direction'] == 'AtoP'), 'shares'])]
+
+
+        return (AM_Ts_List, MD_Ts_List, PM_Ts_List)
+
+
+    def get_ts_factor_wce (self, ts_df):
+
+
+        AM_Ts_List = float(ts_df .loc[(ts_df['peakperiod'] == 'AM') & (ts_df['direction'] == 'PtoA'), 'shares'])
+        PM_Ts_List = float(ts_df .loc[(ts_df['peakperiod'] == 'PM') & (ts_df['direction'] == 'AtoP'), 'shares'])
+
+        return (AM_Ts_List, PM_Ts_List)
+
+    def set_pkhr_mats(self, eb, MatVal, MatID):
+
+        util = _m.Modeller().tool("translink.emme.util")
+        Value = util.get_matrix_numpy(eb, MatID)
+        Value += MatVal
+        util.set_matrix_numpy(eb, MatID, Value)
+
 
     @_m.logbook_trace("Initialize Matrices")
     def matrix_batchins(self, eb):
@@ -791,8 +1187,8 @@ class HbWork(_m.Tool()):
         util.initmat(eb, "mf9106", "P-AFrictionFact7", "Trip Distribution Friction Factor 7", 0)
         util.initmat(eb, "mf9107", "P-AFrictionFact8", "Trip Distribution Friction Factor 8", 0)
         util.initmat(eb, "mf9108", "P-AFrictionFact9", "Trip Distribution Friction Factor 9", 0)
-
-        ## Initialize P-A Trip Tables by mode
+#
+#        ## Initialize P-A Trip Tables by mode
         util.initmat(eb, "mf3000", "HbWSOVI1PerTrips", "HbW SOV Low Income Per-Trips", 0)
         util.initmat(eb, "mf3001", "HbWSOVI2PerTrips", "HbW SOV Med Income Per-Trips", 0)
         util.initmat(eb, "mf3002", "HbWSOVI3PerTrips", "HbW SOV High Income Per-Trips", 0)
@@ -807,8 +1203,8 @@ class HbWork(_m.Tool()):
         util.initmat(eb, "mf3025", "HbWWCEPerTrips", "HbW WCE Per-Trips", 0)
         util.initmat(eb, "mf3030", "HbWWalkPerTrips", "HbW Walk Per-Trips", 0)
         util.initmat(eb, "mf3035", "HbWBikePerTrips", "HbW Bike Per-Trips", 0)
-
-        ## Initialize P-A Trip Tables from trip distribution
+#
+#        ## Initialize P-A Trip Tables from trip distribution
         util.initmat(eb, "mf3050", "HbWP-AI1A0", " HbW P-A Trips I1 A0", 0)
         util.initmat(eb, "mf3051", "HbWP-AI1A1", " HbW P-A Trips I1 A1", 0)
         util.initmat(eb, "mf3052", "HbWP-AI1A2", " HbW P-A Trips I1 A2", 0)
@@ -818,3 +1214,91 @@ class HbWork(_m.Tool()):
         util.initmat(eb, "mf3056", "HbWP-AI3A0", " HbW P-A Trips I1 A0", 0)
         util.initmat(eb, "mf3057", "HbWP-AI3A1", " HbW P-A Trips I1 A1", 0)
         util.initmat(eb, "mf3058", "HbWP-AI3A2", " HbW P-A Trips I1 A2", 0)
+
+       #Temporary Location for peak hour matrices
+        util.initmat(eb, "mf200", "SOV_pertrp_VOT_1_Am", "SOV per-trips VOT 1 AM", 0)
+        util.initmat(eb, "mf201", "SOV_pertrp_VOT_2_Am", "SOV per-trips VOT 2 AM", 0)
+        util.initmat(eb, "mf202", "SOV_pertrp_VOT_3_Am", "SOV per-trips VOT 3 AM", 0)
+        util.initmat(eb, "mf203", "SOV_pertrp_VOT_4_Am", "SOV per-trips VOT 4 AM", 0)
+        util.initmat(eb, "mf206", "HOV_pertrp_VOT_1_Am", "HOV per-trips VOT 1 AM", 0)
+        util.initmat(eb, "mf207", "HOV_pertrp_VOT_2_Am", "HOV per-trips VOT 2 AM", 0)
+        util.initmat(eb, "mf208", "HOV_pertrp_VOT_3_Am", "HOV per-trips VOT 3 AM", 0)
+        util.initmat(eb, "mf209", "HOV_pertrp_VOT_4_Am", "HOV per-trips VOT 4 AM", 0)
+        util.initmat(eb, "mf212", "Bus_pertrp_Am", "Bus per-trips AM", 0)
+        util.initmat(eb, "mf213", "Rail_pertrp_Am", "Rail per-trips AM", 0)
+        util.initmat(eb, "mf214", "WCE_pertrp_Am", "WCE per-trips AM", 0)
+        util.initmat(eb, "mf215", "Wk_pertrp_Am", "Walk per-trips AM", 0)
+        util.initmat(eb, "mf216", "Bk_pertrp_Am", "Bike per-trips AM", 0)
+        util.initmat(eb, "mf230", "SOV_pertrp_VOT_1_Md", "SOV per-trips VOT 1 MD", 0)
+        util.initmat(eb, "mf231", "SOV_pertrp_VOT_2_Md", "SOV per-trips VOT 2 MD", 0)
+        util.initmat(eb, "mf232", "SOV_pertrp_VOT_3_Md", "SOV per-trips VOT 3 MD", 0)
+        util.initmat(eb, "mf233", "SOV_pertrp_VOT_4_Md", "SOV per-trips VOT 4 MD", 0)
+        util.initmat(eb, "mf236", "HOV_pertrp_VOT_1_Md", "HOV per-trips VOT 1 MD", 0)
+        util.initmat(eb, "mf237", "HOV_pertrp_VOT_2_Md", "HOV per-trips VOT 2 MD", 0)
+        util.initmat(eb, "mf238", "HOV_pertrp_VOT_3_Md", "HOV per-trips VOT 3 MD", 0)
+        util.initmat(eb, "mf239", "HOV_pertrp_VOT_4_Md", "HOV per-trips VOT 4 MD", 0)
+        util.initmat(eb, "mf242", "Bus_pertrp_Md", "Bus per-trips MD", 0)
+        util.initmat(eb, "mf243", "Rail_pertrp_Md", "Rail per-trips MD", 0)
+        util.initmat(eb, "mf244", "WCE_pertrp_Md", "WCE per-trips MD", 0)
+        util.initmat(eb, "mf245", "Wk_pertrp_Md", "Walk per-trips MD", 0)
+        util.initmat(eb, "mf246", "Bk_pertrp_Md", "Bike per-trips MD", 0)
+        util.initmat(eb, "mf260", "SOV_pertrp_VOT_1_Pm", "SOV per-trips VOT 1 PM", 0)
+        util.initmat(eb, "mf261", "SOV_pertrp_VOT_2_Pm", "SOV per-trips VOT 2 PM", 0)
+        util.initmat(eb, "mf262", "SOV_pertrp_VOT_3_Pm", "SOV per-trips VOT 3 PM", 0)
+        util.initmat(eb, "mf263", "SOV_pertrp_VOT_4_Pm", "SOV per-trips VOT 4 PM", 0)
+        util.initmat(eb, "mf266", "HOV_pertrp_VOT_1_Pm", "HOV per-trips VOT 1 PM", 0)
+        util.initmat(eb, "mf267", "HOV_pertrp_VOT_2_Pm", "HOV per-trips VOT 2 PM", 0)
+        util.initmat(eb, "mf268", "HOV_pertrp_VOT_3_Pm", "HOV per-trips VOT 3 PM", 0)
+        util.initmat(eb, "mf269", "HOV_pertrp_VOT_4_Pm", "HOV per-trips VOT 4 PM", 0)
+        util.initmat(eb, "mf272", "Bus_pertrp_Pm", "Bus per-trips PM", 0)
+        util.initmat(eb, "mf273", "Rail_pertrp_Pm", "Rail per-trips PM", 0)
+        util.initmat(eb, "mf274", "WCE_pertrp_Pm", "WCE per-trips PM", 0)
+        util.initmat(eb, "mf275", "Wk_pertrp_Pm", "Walk per-trips PM", 0)
+        util.initmat(eb, "mf276", "Bk_pertrp_Pm", "Bike per-trips PM", 0)
+        util.initmat(eb, "mf300", "SOV_drvtrp_VOT_1_Am", "SOV drv-trips VOT 1 AM", 0)
+        util.initmat(eb, "mf301", "SOV_drvtrp_VOT_2_Am", "SOV drv-trips VOT 2 AM", 0)
+        util.initmat(eb, "mf302", "SOV_drvtrp_VOT_3_Am", "SOV drv-trips VOT 3 AM", 0)
+        util.initmat(eb, "mf303", "SOV_drvtrp_VOT_4_Am", "SOV drv-trips VOT 4 AM", 0)
+        util.initmat(eb, "mf306", "HOV_drvtrp_VOT_1_Am", "HOV drv-trips VOT 1 AM", 0)
+        util.initmat(eb, "mf307", "HOV_drvtrp_VOT_2_Am", "HOV drv-trips VOT 2 AM", 0)
+        util.initmat(eb, "mf308", "HOV_drvtrp_VOT_3_Am", "HOV drv-trips VOT 3 AM", 0)
+        util.initmat(eb, "mf309", "HOV_drvtrp_VOT_4_Am", "HOV drv-trips VOT 4 AM", 0)
+        util.initmat(eb, "mf320", "SOV_drvtrp_VOT_1_Md", "SOV drv-trips VOT 1 MD", 0)
+        util.initmat(eb, "mf321", "SOV_drvtrp_VOT_2_Md", "SOV drv-trips VOT 2 MD", 0)
+        util.initmat(eb, "mf322", "SOV_drvtrp_VOT_3_Md", "SOV drv-trips VOT 3 MD", 0)
+        util.initmat(eb, "mf323", "SOV_drvtrp_VOT_4_Md", "SOV drv-trips VOT 4 MD", 0)
+        util.initmat(eb, "mf326", "HOV_drvtrp_VOT_1_Md", "HOV drv-trips VOT 1 MD", 0)
+        util.initmat(eb, "mf327", "HOV_drvtrp_VOT_2_Md", "HOV drv-trips VOT 2 MD", 0)
+        util.initmat(eb, "mf328", "HOV_drvtrp_VOT_3_Md", "HOV drv-trips VOT 3 MD", 0)
+        util.initmat(eb, "mf329", "HOV_drvtrp_VOT_4_Md", "HOV drv-trips VOT 4 MD", 0)
+        util.initmat(eb, "mf340", "SOV_drvtrp_VOT_1_Pm", "SOV drv-trips VOT 1 PM", 0)
+        util.initmat(eb, "mf341", "SOV_drvtrp_VOT_2_Pm", "SOV drv-trips VOT 2 PM", 0)
+        util.initmat(eb, "mf342", "SOV_drvtrp_VOT_3_Pm", "SOV drv-trips VOT 3 PM", 0)
+        util.initmat(eb, "mf343", "SOV_drvtrp_VOT_4_Pm", "SOV drv-trips VOT 4 PM", 0)
+        util.initmat(eb, "mf346", "HOV_drvtrp_VOT_1_Pm", "HOV drv-trips VOT 1 PM", 0)
+        util.initmat(eb, "mf347", "HOV_drvtrp_VOT_2_Pm", "HOV drv-trips VOT 2 PM", 0)
+        util.initmat(eb, "mf348", "HOV_drvtrp_VOT_3_Pm", "HOV drv-trips VOT 3 PM", 0)
+        util.initmat(eb, "mf349", "HOV_drvtrp_VOT_4_Pm", "HOV drv-trips VOT 4 PM", 0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

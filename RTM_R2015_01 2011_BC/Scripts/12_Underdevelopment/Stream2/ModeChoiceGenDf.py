@@ -58,9 +58,6 @@ class ModeChoiceGenDf(_m.Tool()):
         BLWcNw = util.get_matrix_numpy(eb, "wcepr-lotChceNWkAMPA").flatten() #Best Lot WCE Non-Work
         NoTAZ  = len(util.get_matrix_numpy(eb, "zoneindex")) # Number of TAZs in Model
 
-
-
-
         hbwo_fct = self.get_fact(eb, [["HbWBl_AM_P-A", "HbWBl_MD_P-A", "HbWBl_PM_P-A"],
                                 ["HbWBl_AM_A-P", "HbWBl_MD_A-P", "HbWBl_PM_A-P"]])
 
@@ -93,19 +90,24 @@ class ModeChoiceGenDf(_m.Tool()):
 
 
         ##############################################################################
-        ##       Auto Skims work SOV
+        ##       Auto Skims SOV VOT 1 NHBO, HbSch, HbU, HbShopLow, HbPBLow
         ##############################################################################
         # Initialize Time Distance and Toll Skim Dictionaries
+        # VOT 1 NHBO, HbSch, HbU, HbShopLow, HbPBLow
         TimeDict, DistDict, TollDict = {}, {}, {}
+
         # Generate Skim Dictionaries
-        #                                 AM    ,    MD   ,     PM
-        self.GenSkimDict(eb, DistDict, ["AmSovWkDist", "MdSovWkDist", "PmSovWkDist"]) # Distance
-        self.GenSkimDict(eb, TimeDict, ["AmSovWkTime", "MdSovWkTime", "PmSovWkTime"]) # Time
-        self.GenSkimDict(eb, TollDict, ["AmSovWkToll", "MdSovWkToll", "PmSovWkToll"]) # Toll
+            #                                 AM    ,       MD   ,            PM
+        self.GenSkimDict(eb, DistDict, ["AmSovDistVOT1", "MdSovDistVOT1", "PmSovDistVOT1"]) # Distance
+        self.GenSkimDict(eb, TimeDict, ["AmSovTimeVOT1", "MdSovTimeVOT1", "PmSovTimeVOT1"]) # Time
+        self.GenSkimDict(eb, TollDict, ["AmSovTollVOT1", "MdSovTollVOT1", "PmSovTollVOT1"]) # Toll
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
-        BlendDict = {'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlSovDist', 'HbWBlSovTime', 'HbWBlSovToll']}, # Home-base work
-                     'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlSovDist', 'NHbWBlSovTime', 'NHbWBlSovToll']}} # Non-home base work
+        BlendDict = {'nhbo':{'PA':nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlSovDist', 'NHbOBlSovTime', 'NHbOBlSovToll']}, # non-home base other
+                     'hbun':{'PA':hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['HbUBlSovDist',  'HbUBlSovTime', 'HbUBlSovToll']}, # home-base uni
+                     'hbsc':{'PA':hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlSovDist', 'HbScBlSovTime', 'HbScBlSovToll']}, # home-base school
+                     'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlSovDist_I1', 'HbShBlSovTime_I1', 'HbShBlSovToll_I1']}, # home-base shopping low
+                     'hbpb':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlSovDist_I1', 'HbPbBlSovTime_I1', 'HbPbBlSovToll_I1']}} # home-base personal business low
 
         for keys, values in BlendDict.items():
             Df = {}
@@ -113,14 +115,103 @@ class ModeChoiceGenDf(_m.Tool()):
             Df['AutoDis'] = self.calc_blend(values, DistDict)
             Df['AutoTim'] = self.calc_blend(values, TimeDict)
             Df['AutoTol'] = self.calc_blend(values, TollDict)
+
         # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoDis'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
             util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'])
 
+        #
         ##############################################################################
+        ##       Auto Skims SOV VOT 2 HbShopMed, HbPBMed, HbEsc, HbSocLow, HbPB High
+        ##############################################################################
+
+        TimeDict, DistDict, TollDict = {}, {}, {}
+            #                                 AM    ,       MD   ,            PM
+        self.GenSkimDict(eb, DistDict, ["AmSovDistVOT2", "MdSovDistVOT2", "PmSovDistVOT2"]) # Distance
+        self.GenSkimDict(eb, TimeDict, ["AmSovTimeVOT2", "MdSovTimeVOT2", "PmSovTimeVOT2"]) # Time
+        self.GenSkimDict(eb, TollDict, ["AmSovTollVOT2", "MdSovTollVOT2", "PmSovTollVOT2"]) # Toll
+
+        # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
+        BlendDict = {'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlSovDist_I2', 'HbShBlSovTime_I2', 'HbShBlSovToll_I2']}, # home-base shopping med
+                     'hbpbm':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlSovDist_I2', 'HbPbBlSovTime_I2', 'HbPbBlSovToll_I2']}, # home-base personal business med
+                     'hbes':{'PA':hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlSovDist', 'HbEsBlSovTime', 'HbEsBlSovToll']}, # home-base escorting
+                     'hbso':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlSovDist_I1', 'HbSoBlSovTime_I1', 'HbSoBlSovToll_I1']}, # home-base social low
+                     'hbpbh':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbSoBlSovDist_I3', 'HbSoBlSovTime_I3', 'HbSoBlSovToll_I3']}} # home-base personal business high
+
+        for keys, values in BlendDict.items():
+            Df = {}
+            # Calculate blended skim
+            Df['AutoDis'] = self.calc_blend(values, DistDict)
+            Df['AutoTim'] = self.calc_blend(values, TimeDict)
+            Df['AutoTol'] = self.calc_blend(values, TollDict)
+
+           # Put results back in the Emmebank
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoDis'])
+            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
+            util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'])
+
+        ##############################################################################
+        ##       Auto Skims SOV VOT 3 HbShopHigh, HbW Low, HbSocMed
+        ##############################################################################
+
+        TimeDict, DistDict, TollDict = {}, {}, {}
+            #                                 AM    ,       MD   ,            PM
+        self.GenSkimDict(eb, DistDict, ["AmSovDistVOT3", "MdSovDistVOT3", "PmSovDistVOT3"]) # Distance
+        self.GenSkimDict(eb, TimeDict, ["AmSovTimeVOT3", "MdSovTimeVOT3", "PmSovTimeVOT3"]) # Time
+        self.GenSkimDict(eb, TollDict, ["AmSovTollVOT3", "MdSovTollVOT3", "PmSovTollVOT3"]) # Toll
+
+        # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
+        BlendDict = {'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlSovDist_I3', 'HbShBlSovTime_I3', 'HbShBlSovToll_I3']}, # home-base shopping high
+                     'hbwo':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlSovDist_I1', 'HbWBlSovTime_I1', 'HbWBlSovToll_I1']}, # home-base work low
+                     'hbso':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlSovDist_I2', 'HbSoBlSovTime_I2', 'HbSoBlSovToll_I2']}} # home-base social med
+
+        for keys, values in BlendDict.items():
+
+            Df = {}
+            # Calculate blended skim
+            Df['AutoDis'] = self.calc_blend(values, DistDict)
+            Df['AutoTim'] = self.calc_blend(values, TimeDict)
+            Df['AutoTol'] = self.calc_blend(values, TollDict)
+
+           # Put results back in the Emmebank
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoDis'])
+            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
+            util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'])
+
+        #################################################################################
+        ##       Auto Skims SOV VOT 4 HbSoc High, NHbW, HbW Med, HbW High + Park and Ride
+        #################################################################################
+
+        TimeDict, DistDict, TollDict = {}, {}, {}
+            #                                 AM    ,       MD   ,            PM
+        self.GenSkimDict(eb, DistDict, ["AmSovDistVOT4", "MdSovDistVOT4", "PmSovDistVOT4"]) # Distance
+        self.GenSkimDict(eb, TimeDict, ["AmSovTimeVOT4", "MdSovTimeVOT4", "PmSovTimeVOT4"]) # Time
+        self.GenSkimDict(eb, TollDict, ["AmSovTollVOT4", "MdSovTollVOT4", "PmSovTollVOT4"]) # Toll
+
+        # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
+        BlendDict = {
+                     'hbso':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlSovDist_I3', 'HbSoBlSovTime_I3', 'HbSoBlSovToll_I3']}, # home-base social high
+                     'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlHovDist', 'NHbWBlHovTime', 'NHbWBlHovToll']}, # non-home base work
+                     'hbwom':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlSovDist_I2', 'HbWBlSovTime_I2', 'HbWBlSovToll_I2']}, # home-base work med
+                     'hbwom':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlSovDist_I3', 'HbWBlSovTime_I3', 'HbWBlSovToll_I3']}} # home-base work med
+
+        for keys, values in BlendDict.items():
+
+            Df = {}
+            # Calculate blended skim
+            Df['AutoDis'] = self.calc_blend(values, DistDict)
+            Df['AutoTim'] = self.calc_blend(values, TimeDict)
+            Df['AutoTol'] = self.calc_blend(values, TollDict)
+
+           # Put results back in the Emmebank
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoDis'])
+            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
+            util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'])
+
+
         ##       Park and Ride Home-base work Auto-leg
-        ##############################################################################
+
 
         # Blend Factors                AM , MD  , PM           AM  ,MD , PM    Where Blended Matrices get stored in same order as above
         BlendDictPR = {'hbwprb':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
@@ -160,98 +251,126 @@ class ModeChoiceGenDf(_m.Tool()):
         del Df, Dfmerge, Df_Auto_Leg, TimeDict, DistDict, TollDict
 
         ##############################################################################
-        ##       Auto Skims work HOV
+        ##       Auto Skims HOV VOT 1 NHBO, HbSch, HbU, HbShopLow, HbPBLow
         ##############################################################################
         # Initialize Time Distance and Toll Skim Dictionaries
+        # VOT 1 NHBO, HbSch, HbU, HbShopLow, HbPBLow
         TimeDict, DistDict, TollDict = {}, {}, {}
+
         # Generate Skim Dictionaries
-        #                                 AM    ,    MD   ,     PM
-        self.GenSkimDict(eb, DistDict, ["AmHovWkDist", "MdHovWkDist", "PmHovWkDist"]) # Distance
-        self.GenSkimDict(eb, TimeDict, ["AmHovWkTime", "MdHovWkTime", "PmHovWkTime"]) # Time
-        self.GenSkimDict(eb, TollDict, ["AmHovWkToll", "MdHovWkToll", "PmHovWkToll"]) # Toll
+            #                                 AM    ,       MD   ,            PM
+        self.GenSkimDict(eb, DistDict, ["AmHovDistVOT1", "MdHovDistVOT1", "PmHovDistVOT1"]) # Distance
+        self.GenSkimDict(eb, TimeDict, ["AmHovTimeVOT1", "MdHovTimeVOT1", "PmHovTimeVOT1"]) # Time
+        self.GenSkimDict(eb, TollDict, ["AmHovTollVOT1", "MdHovTollVOT1", "PmHovTollVOT1"]) # Toll
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
-        BlendDict = {'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovDist', 'HbWBlHovTime', 'HbWBlHovToll']}, # Home-base work
-                     'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlHovDist', 'NHbWBlHovTime', 'NHbWBlHovToll']}} # Non-home base work
+        BlendDict = {'nhbo':{'PA':nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlHovDist', 'NHbOBlHovTime', 'NHbOBlHovToll']}, # non-home base other
+                     'hbun':{'PA':hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['HbUBlHovDist',  'HbUBlHovTime', 'HbUBlHovToll']}, # home-base uni
+                     'hbsc':{'PA':hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlHovDist', 'HbScBlHovTime', 'HbScBlHovToll']}, # home-base school
+                     'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovDist_I1', 'HbShBlHovTime_I1', 'HbShBlHovToll_I1']}, # home-base shopping low
+                     'hbpb':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovDist_I1', 'HbPbBlHovTime_I1', 'HbPbBlHovToll_I1']}} # home-base personal business low
 
         for keys, values in BlendDict.items():
+
             Df = {}
             # Calculate blended skim
             Df['AutoDis'] = self.calc_blend(values, DistDict)
             Df['AutoTim'] = self.calc_blend(values, TimeDict)
             Df['AutoTol'] = self.calc_blend(values, TollDict)
+
         # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoDis'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
             util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'])
 
-        del Df, TimeDict, DistDict, TollDict
-
-        ##############################################################################
-        ##       Auto Skims Non-work SOV
-        ##############################################################################
-        # Initialize Time Distance and Toll Skim Dictionaries
-        TimeDict, DistDict, TollDict = {}, {}, {}
-        # Generate Skim Dictionaries
-        #                                 AM    ,    MD   ,     PM
-        self.GenSkimDict(eb, DistDict, ["AmSovNwkDist", "MdSovNwkDist", "PmSovNwkDist"]) # Distance
-        self.GenSkimDict(eb, TimeDict, ["AmSovNwkTime", "MdSovNwkTime", "PmSovNwkTime"]) # Time
-        self.GenSkimDict(eb, TollDict, ["AmSovNwkToll", "MdSovNwkToll", "PmSovNwkToll"]) # Toll
         #
-        # Blend Factors            AM , MD  , PM           AM  ,MD , PM     Where Blended Matrices get stored in same order as above
-        BlendDict = {
-                     'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['HbUBlSovDist', 'HbUBlSovTime', 'HbUBlSovToll']}, # Home-base university
-                     'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlSovDist', 'HbScBlSovTime', 'HbScBlSovToll']}, # Home-base school
-                     'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlSovDist', 'HbShBlSovTime', 'HbShBlSovToll']}, # Home-base shopping
-                     'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlSovDist', 'HbPbBlSovTime', 'HbPbBlSovToll']}, # Home-base personal business
-                     'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlSovDist', 'HbSoBlSovTime', 'HbSoBlSovToll']}, # Home-base social
-                     'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlSovDist', 'HbEsBlSovTime', 'HbEsBlSovToll']}, # Home-base escorting
-                     'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlSovDist', 'NHbOBlSovTime', 'NHbOBlSovToll']}} # non-home base other
+        ##############################################################################
+        ##       Auto Skims HOV VOT 2 HbShopMed, HbPBMed, HbEsc, HbSocLow, HbPB High
+        ##############################################################################
+
+        TimeDict, DistDict, TollDict = {}, {}, {}
+            #                                 AM    ,       MD   ,            PM
+        self.GenSkimDict(eb, DistDict, ["AmHovDistVOT2", "MdHovDistVOT2", "PmHovDistVOT2"]) # Distance
+        self.GenSkimDict(eb, TimeDict, ["AmHovTimeVOT2", "MdHovTimeVOT2", "PmHovTimeVOT2"]) # Time
+        self.GenSkimDict(eb, TollDict, ["AmHovTollVOT2", "MdHovTollVOT2", "PmHovTollVOT2"]) # Toll
+
+        # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
+        BlendDict = {'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovDist_I2', 'HbShBlHovTime_I2', 'HbShBlHovToll_I2']}, # home-base shopping med
+                     'hbpbm':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovDist_I2', 'HbPbBlHovTime_I2', 'HbPbBlHovToll_I2']}, # home-base personal business med
+                     'hbes':{'PA':hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlHovDist', 'HbEsBlHovTime', 'HbEsBlHovToll']}, # home-base escorting
+                     'hbso':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovDist_I1', 'HbSoBlHovTime_I1', 'HbSoBlHovToll_I1']}, # home-base social low
+                     'hbpbh':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbSoBlHovDist_I3', 'HbSoBlHovTime_I3', 'HbSoBlHovToll_I3']}} # home-base personal business high
 
         for keys, values in BlendDict.items():
-            # Calculate blended skim
+
             Df = {}
+            # Calculate blended skim
             Df['AutoDis'] = self.calc_blend(values, DistDict)
             Df['AutoTim'] = self.calc_blend(values, TimeDict)
             Df['AutoTol'] = self.calc_blend(values, TollDict)
-            # Put results back in the Emmebank
+
+           # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoDis'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
             util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'])
 
         ##############################################################################
-        ##       Auto Skims Non-work HOV
+        ##       Auto Skims Hov VOT 3 HbShopHigh, HbW Low, HbSocMed
         ##############################################################################
-        # Initialize Time Distance and Toll Skim Dictionaries
+
         TimeDict, DistDict, TollDict = {}, {}, {}
-        # Generate Skim Dictionaries
-        #                                 AM    ,    MD   ,     PM
-        self.GenSkimDict(eb, DistDict, ["AmHovNwkDist", "MdHovNwkDist", "PmHovNwkDist"]) # Distance
-        self.GenSkimDict(eb, TimeDict, ["AmHovNwkTime", "MdHovNwkTime", "PmHovNwkTime"]) # Time
-        self.GenSkimDict(eb, TollDict, ["AmHovNwkToll", "MdHovNwkToll", "PmHovNwkToll"]) # Toll
-        #
-        # Blend Factors            AM , MD  , PM           AM  ,MD , PM     Where Blended Matrices get stored in same order as above
-        BlendDict = {
-                     'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['HbUBlHovDist', 'HbUBlHovTime', 'HbUBlHovToll']}, # Home-base university
-                     'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlHovDist', 'HbScBlHovTime', 'HbScBlHovToll']}, # Home-base school
-                     'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovDist', 'HbShBlHovTime', 'HbShBlHovToll']}, # Home-base shopping
-                     'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovDist', 'HbPbBlHovTime', 'HbPbBlHovToll']}, # Home-base personal business
-                     'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovDist', 'HbSoBlHovTime', 'HbSoBlHovToll']}, # Home-base social
-                     'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlHovDist', 'HbEsBlHovTime', 'HbEsBlHovToll']}, # Home-base escorting
-                     'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlHovDist', 'NHbOBlHovTime', 'NHbOBlHovToll']}} # non-home base other
+            #                                 AM    ,       MD   ,            PM
+        self.GenSkimDict(eb, DistDict, ["AmHovDistVOT3", "MdHovDistVOT3", "PmHovDistVOT3"]) # Distance
+        self.GenSkimDict(eb, TimeDict, ["AmHovTimeVOT3", "MdHovTimeVOT3", "PmHovTimeVOT3"]) # Time
+        self.GenSkimDict(eb, TollDict, ["AmHovTollVOT3", "MdHovTollVOT3", "PmHovTollVOT3"]) # Toll
+
+        # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
+        BlendDict = {'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovDist_I3', 'HbShBlHovTime_I3', 'HbShBlHovToll_I3']}, # home-base shopping high
+                     'hbwo':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovDist_I1', 'HbWBlHovTime_I1', 'HbWBlHovToll_I1']}, # home-base work low
+                     'hbso':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovDist_I2', 'HbSoBlHovTime_I2', 'HbSoBlHovToll_I2']}} # home-base social med
 
         for keys, values in BlendDict.items():
-            # Calculate blended skim
+
             Df = {}
+            # Calculate blended skim
             Df['AutoDis'] = self.calc_blend(values, DistDict)
             Df['AutoTim'] = self.calc_blend(values, TimeDict)
             Df['AutoTol'] = self.calc_blend(values, TollDict)
-            # Put results back in the Emmebank
+
+           # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoDis'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
             util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'])
-        # delete data generated to free up memory
-        del Df, TimeDict, DistDict, TollDict
+
+        #################################################################################
+        ##       Auto Skims Hov VOT 4 HbSoc High, NHbW, HbW Med, HbW High + Park and Ride
+        #################################################################################
+
+        TimeDict, DistDict, TollDict = {}, {}, {}
+            #                                 AM    ,       MD   ,            PM
+        self.GenSkimDict(eb, DistDict, ["AmHovDistVOT4", "MdHovDistVOT4", "PmHovDistVOT4"]) # Distance
+        self.GenSkimDict(eb, TimeDict, ["AmHovTimeVOT4", "MdHovTimeVOT4", "PmHovTimeVOT4"]) # Time
+        self.GenSkimDict(eb, TollDict, ["AmHovTollVOT4", "MdHovTollVOT4", "PmHovTollVOT4"]) # Toll
+
+        # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
+        BlendDict = {
+                     'hbso':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovDist_I3', 'HbSoBlHovTime_I3', 'HbSoBlHovToll_I3']}, # home-base social high
+                     'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlHovDist', 'NHbWBlHovTime', 'NHbWBlHovToll']}, # non-home base work
+                     'hbwom':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovDist_I2', 'HbWBlHovTime_I2', 'HbWBlHovToll_I2']}, # home-base work med
+                     'hbwom':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovDist_I3', 'HbWBlHovTime_I3', 'HbWBlHovToll_I3']}} # home-base work med
+
+        for keys, values in BlendDict.items():
+
+            Df = {}
+            # Calculate blended skim
+            Df['AutoDis'] = self.calc_blend(values, DistDict)
+            Df['AutoTim'] = self.calc_blend(values, TimeDict)
+            Df['AutoTol'] = self.calc_blend(values, TollDict)
+
+           # Put results back in the Emmebank
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoDis'])
+            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
+            util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'])
 
 #       ##############################################################################
 #       ##       Bus Skims
@@ -274,7 +393,7 @@ class ModeChoiceGenDf(_m.Tool()):
          'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['HbUBlBusIvtt', 'HbUBlBusWait', 'HbUBlBusAux', 'HbUBlBusBoard', 'HbUBlBusFare']},  # Home-base university
          'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlBusIvtt', 'HbScBlBusWait', 'HbScBlBusAux', 'HbScBlBusBoard', 'HbScBlBusFare']},  # Home-base school
          'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlBusIvtt', 'HbShBlBusWait', 'HbShBlBusAux', 'HbShBlBusBoard', 'HbShBlBusFare']},  # Home-base shopping
-         'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlBusIvtt', 'HbPbBlBusWait', 'HbPbBlBusAux', 'HbPbBlBusBoard', 'HbPbBlBusFare']},  # Home-base personal business
+         'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlBusIvtt', 'HbPbBlBusWait', 'HbPbBlBusAux', 'HbPbBlBusBoard', 'HbPbBlBusFare']},  # Home-base pb
          'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlBusIvtt', 'HbSoBlBusWait', 'HbSoBlBusAux', 'HbSoBlBusBoard', 'HbSoBlBusFare']},  # Home-base social
          'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlBusIvtt', 'HbEsBlBusWait', 'HbEsBlBusAux', 'HbEsBlBusBoard', 'HbEsBlBusFare']},  # Home-base escorting
          'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlBusIvtt', 'NHbWBlBusWait', 'NHbWBlBusAux', 'NHbWBlBusBoard', 'NHbWBlBusFare']},  # Non-home base work
@@ -657,16 +776,16 @@ class ModeChoiceGenDf(_m.Tool()):
     def WceGT(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
         # [AM,MD,PM]
-        transit_mats = {"wceIVT" : ["mf5600",  "mf5610", "mf5620"],
-                        "wceWait" : ["mf5603",  "mf5613", "mf5623"],
-                        "railIVT" : ["mf5601",  "mf5611", "mf5621"],
-                        "busIVT" : ["mf5602",  "mf5612", "mf5622"],
-                        "auxTransit" : ["mf5604",  "mf5614", "mf5624"],
-                        "boardings" : ["mf5605",  "mf5615", "mf5625"],
-                        "wceFare" : ["mf5606",  "mf5616", "mf5626"]}
+        transit_mats = {"wceIVT" : ["AmWceIvtt",  "MdWceIvtt", "PmWceIvtt"],
+                        "wceWait" : ["AmWceWait",  "MdWceWait", "PmWceWait"],
+                        "railIVT" : ["AmWceIvttRail",  "MdWceIvttRail", "PmWceIvttRail"],
+                        "busIVT" : ["AmWceIvttBus",  "MdWceIvttBus", "PmWceIvttBus"],
+                        "auxTransit" : ["AmWceAux",  "MdWceAux", "PmWceAux"],
+                        "boardings" : ["AmWceBoards",  "MdWceBoards", "PmWceBoards"],
+                        "wceFare" : ["AmWceFare",  "MdWceFare", "PmWceFare"]}
 
         # [Work, non-work]
-        vot_mats = ['VotWkWce', 'VotWkWce']
+        vot_mats = ['VotWce', 'VotWce']
 
         # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
         result_mats = [["mf6030",  "mf6075", "mf6115"],["mf6160",  "mf6200", "mf6240"]]
@@ -705,15 +824,15 @@ class ModeChoiceGenDf(_m.Tool()):
     def RailGT(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
         # [AM,MD,PM]
-        transit_mats = {"railIVT" : ["mf5400",  "mf5410", "mf5420"],
-                        "railWait" : ["mf5402",  "mf5412", "mf5422"],
-                        "busIVT" : ["mf5401",  "mf5411", "mf5421"],
-                        "auxTransit" : ["mf5403", "mf5413", "mf5423"],
-                        "boardings" : ["mf5404", "mf5414", "mf5424"],
-                        "railFare" : ["mf5405",  "mf5415", "mf5425"]}
+        transit_mats = {"railIVT" :    ["AmRailIvtt",    "MdRailIvtt", "PmRailIvtt"],
+                        "railWait" :   ["AmRailWait",    "MdRailWait", "PmRailWait"],
+                        "busIVT" :     ["AmRailIvttBus", "MdRailIvttBus", "PmRailIvttBus"],
+                        "auxTransit" : ["AmRailAux",     "MdRailAux", "PmRailAux"],
+                        "boardings" :  ["AmRailBoard",   "MdRailBoard", "PmRailBoard"],
+                        "railFare" :   ["AmRailFare",    "MdRailFare", "PmRailFare"]}
 
         # [Work, non-work]
-        vot_mats = ['VotWkRail', 'VotWkRail']
+        vot_mats = ['VotRail', 'VotRail']
 
         # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
         result_mats = [["mf6015", "mf6060", "mf6100"],['mf6145','mf6185','mf6225']]
@@ -756,7 +875,7 @@ class ModeChoiceGenDf(_m.Tool()):
                         "busFare" : ["mf5204",  "mf5214", "mf5224"]}
 
         # [Work, non-work]
-        vot_mats = ['VotWkBus', 'VotWkBus']
+        vot_mats = ['VotBus', 'VotBus']
 
         # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
         result_mats = [["mf6005", "mf6050", "mf6090"],['mf6135','mf6175','mf6215']]
@@ -796,7 +915,7 @@ class ModeChoiceGenDf(_m.Tool()):
                     "autodist" : ["mf5000", "mf5020", "mf5040"]}
 
         # [Work, non-work]
-        vot_mat = 'VotWkMedIncSov'
+        vot_mat = 'AutoVOT4'
 
         # [AMWk, MDWk, PMWk]
         result_mats = ["mf6003", "mf6048", "mf6088"]

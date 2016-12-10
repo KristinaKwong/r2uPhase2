@@ -37,7 +37,7 @@ class HbWork(_m.Tool()):
     @_m.logbook_trace("Run Home Base Work")
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
-        MChM = _m.Modeller().tool("translink.RTM3.testtdmc.ModeChoiceUtils")
+        MChM = _m.Modeller().tool("translink.RTM3.stage2.mcutil")
         input_path = util.get_input_path(eb)
         self.matrix_batchins(eb)
         NoTAZ = len(util.get_matrix_numpy(eb, "mo51"))

@@ -37,7 +37,7 @@ class HbSoc(_m.Tool()):
     @_m.logbook_trace("Run Home Base Social Recreation")
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
-        MChM = _m.Modeller().tool("translink.RTM3.testtdmc.ModeChoiceUtils")
+        MChM = _m.Modeller().tool("translink.RTM3.stage2.mcutil")
         input_path = util.get_input_path(eb)
         self.matrix_batchins(eb)
         NoTAZ = len(util.get_matrix_numpy(eb, "mo51"))
@@ -158,7 +158,7 @@ class HbSoc(_m.Tool()):
         Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] + Df['RalBrd'] # Total Bus Travel Time
         Df['RalIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Bus IVT to Total Time
         Df['RalIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Rail IVT to Total Time
-
+        Df['SocAccess'] = util.get_matrix_numpy(eb, 'socAccLn').reshape(NoTAZ,1) + np.zeros((1, NoTAZ)) # Log transit accessiblity broadcast
 
         Df['IntZnl'] = np.identity(NoTAZ)
 
@@ -169,7 +169,8 @@ class HbSoc(_m.Tool()):
                       + p15*Df['BusIVT']
                       + p17*Df['BusWat']
                       + p18*Df['BusAux']
-                      + p19*Df['BusBrd'])
+                      + p19*Df['BusBrd']
+                      + p602*Df['SocAccess'])
 
         # Check Availability conditions
         Df['GeUtl'] = MChM.BusAvail(Df, Df['GeUtl'], AvailDict)
@@ -186,7 +187,8 @@ class HbSoc(_m.Tool()):
                       + p15*Df['RalIVR']
                       + p17*Df['RalWat']
                       + p18*Df['RalAux']
-                      + p19*Df['RalBrd'])
+                      + p19*Df['RalBrd']
+                      + p602*Df['SocAccess'])
 
         # Check Availability conditions
         Df['GeUtl'] = MChM.RailAvail(Df, Df['GeUtl'],AvailDict)
