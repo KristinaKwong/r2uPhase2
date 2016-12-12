@@ -103,37 +103,75 @@ class HbPersonalBusiness(_m.Tool()):
 
         Df['ParkCost'] = Df['ParkCost'].reshape(1, NoTAZ) + np.zeros((NoTAZ, 1))
 
-        Df['AutoDisSOV'] = util.get_matrix_numpy(eb, 'HbPbBlSovDist')
-        Df['AutoTimSOV'] = util.get_matrix_numpy(eb, 'HbPbBlSovTime')
-        Df['AutoCosSOV'] = Df['AutoDisSOV']*VOC + util.get_matrix_numpy(eb, 'HbPbBlSovToll') + Df['ParkCost']
+        # Get SOV Skims by income
+        # Low Income
+        Df['AutoDisSOV1'] = util.get_matrix_numpy(eb, 'HbPbBlSovDist_I1') #SOV Distance
+        Df['AutoTimSOV1'] = util.get_matrix_numpy(eb, 'HbPbBlSovTime_I1') #SOV Time
+        Df['AutoCosSOV1'] = Df['AutoDisSOV1']*VOC + util.get_matrix_numpy(eb, 'HbPbBlSovToll_I1') + Df['ParkCost'] #SOV Cost (per km + Toll + Parking)
 
-        Df['AutoDisHOV'] = util.get_matrix_numpy(eb, 'HbPbBlHovDist')
-        Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'HbPbBlHovTime')
-        Df['AutoCosHOV'] = Df['AutoDisHOV']*VOC + util.get_matrix_numpy(eb, 'HbPbBlHovToll') + Df['ParkCost']
+        # Med Income
+        Df['AutoDisSOV2'] = util.get_matrix_numpy(eb, 'HbPbBlSovDist_I2') #SOV Distance
+        Df['AutoTimSOV2'] = util.get_matrix_numpy(eb, 'HbPbBlSovTime_I2') #SOV Time
+        Df['AutoCosSOV2'] = Df['AutoDisSOV2']*VOC + util.get_matrix_numpy(eb, 'HbPbBlSovToll_I2') + Df['ParkCost'] #SOV Cost (per km + Toll + Parking)
+
+        # High Income
+        Df['AutoDisSOV3'] = util.get_matrix_numpy(eb, 'HbPbBlSovDist_I3') #SOV Distance
+        Df['AutoTimSOV3'] = util.get_matrix_numpy(eb, 'HbPbBlSovTime_I3') #SOV Time
+        Df['AutoCosSOV3'] = Df['AutoDisSOV3']*VOC + util.get_matrix_numpy(eb, 'HbPbBlSovToll_I3') + Df['ParkCost'] #SOV Cost (per km + Toll + Parking)
+
+        # Get HOV Skims by income
+        # Low Income
+        Df['AutoDiPbOV1'] = util.get_matrix_numpy(eb, 'HbPbBlHovDist_I1') #HOV Distance
+        Df['AutoTimHOV1'] = util.get_matrix_numpy(eb, 'HbPbBlHovTime_I1') #HOV Time
+        Df['AutoCoPbOV1'] = Df['AutoDiPbOV1']*VOC + util.get_matrix_numpy(eb, 'HbPbBlHovToll_I1') + Df['ParkCost'] #HOV Cost (per km + Toll + Parking)
+
+        # Med Income
+        Df['AutoDiPbOV2'] = util.get_matrix_numpy(eb, 'HbPbBlHovDist_I2') #HOV Distance
+        Df['AutoTimHOV2'] = util.get_matrix_numpy(eb, 'HbPbBlHovTime_I2') #HOV Time
+        Df['AutoCoPbOV2'] = Df['AutoDiPbOV2']*VOC + util.get_matrix_numpy(eb, 'HbPbBlHovToll_I2') + Df['ParkCost'] #HOV Cost (per km + Toll + Parking)
+
+        # High Income
+        Df['AutoDiPbOV3'] = util.get_matrix_numpy(eb, 'HbPbBlHovDist_I3') #HOV Distance
+        Df['AutoTimHOV3'] = util.get_matrix_numpy(eb, 'HbPbBlHovTime_I3') #HOV Time
+        Df['AutoCoPbOV3'] = Df['AutoDiPbOV3']*VOC + util.get_matrix_numpy(eb, 'HbPbBlHovToll_I3') + Df['ParkCost'] #HOV Cost (per km + Toll + Parking)
 
         # Utilities
         # SOV
-        # SOV Utility across all incomes
-        Df['GeUtl'] = ( 0
-                      + p15*Df['AutoTimSOV'])
 
-        # Check Availability conditions
-        Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisSOV'], Df['GeUtl'], AvailDict)
-        # Add Income parameters
-        DfU['SOVI1']  = Df['GeUtl'] + p12*Df['AutoCosSOV']
-        DfU['SOVI2']  = Df['GeUtl'] + p13*Df['AutoCosSOV']
-        DfU['SOVI3']  = Df['GeUtl'] + p14*Df['AutoCosSOV']
+        Df['SOVI1'] = ( 0
+                      + p15*Df['AutoTimSOV1']
+                      + p12*Df['AutoCosSOV1'])
+        Df['SOVI2'] = ( 0
+                      + p15*Df['AutoTimSOV2']
+                      + p13*Df['AutoCosSOV2'])
+        Df['SOVI3'] = ( 0
+                      + p15*Df['AutoTimSOV3']
+                      + p14*Df['AutoCosSOV3'])
 
-        # HOV2+
-        # HOV2+ Utility across all incomes
-        Df['GeUtl'] = ( p2
-                      + p15*Df['AutoTimHOV'])
-        # Check Availability conditions
-        Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisHOV'], Df['GeUtl'], AvailDict)
-        # Add Income parameters
-        DfU['HOVI1']  = Df['GeUtl'] + p12*Df['AutoCosHOV']/Occ
-        DfU['HOVI2']  = Df['GeUtl'] + p13*Df['AutoCosHOV']/Occ
-        DfU['HOVI3']  = Df['GeUtl'] + p14*Df['AutoCosHOV']/Occ
+
+        DfU['SOVI1']  = MChM.AutoAvail(Df['AutoDisSOV1'], Df['SOVI1'], AvailDict) #Check Availability condition if mode not available then set to high negative utility (-99999)
+        DfU['SOVI2']  = MChM.AutoAvail(Df['AutoDisSOV2'], Df['SOVI2'], AvailDict)
+        DfU['SOVI3']  = MChM.AutoAvail(Df['AutoDisSOV3'], Df['SOVI3'], AvailDict)
+
+        # HOV
+
+        Df['HOVI1'] = ( p2
+                      + p15*Df['AutoTimHOV1']
+                      + p12*Df['AutoCosHOV1']/Occ)
+
+
+        Df['HOVI2'] = ( p2
+                      + p15*Df['AutoTimHOV2']
+                      + p13*Df['AutoCosHOV2']/Occ)
+
+
+        Df['HOVI3'] = ( p2
+                      + p15*Df['AutoTimHOV3']
+                      + p14*Df['AutoCosHOV3']/Occ)
+
+        DfU['HOVI1']  = MChM.AutoAvail(Df['AutoDisHOV1'], Df['HOVI1'], AvailDict) #Check Availability condition if mode not available then set to high negative utility (-99999)
+        DfU['HOVI2']  = MChM.AutoAvail(Df['AutoDisHOV2'], Df['HOVI2'], AvailDict)
+        DfU['HOVI3']  = MChM.AutoAvail(Df['AutoDisHOV3'], Df['HOVI3'], AvailDict)
 
 
 #        ##############################################################################
@@ -203,7 +241,7 @@ class HbPersonalBusiness(_m.Tool()):
 #        ##############################################################################
 
         Df = {}
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbPbBlSovDist')
+        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbPbBlSovDist_I2')
 
         Df['PopEmpDen'] = util.get_matrix_numpy(eb, 'combinedensln')
         Df['PopEmpDen'] = Df['PopEmpDen'].reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
@@ -376,7 +414,7 @@ class HbPersonalBusiness(_m.Tool()):
                       -0.0004, -0.0004, -0.0004]
 
         Dist_Iter = int(util.get_matrix_numpy(eb, 'IterDist'))
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "HbPbBlSovDist"))
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "HbPbBlSovDist_I2"))
         MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list, Dist_Iter)
 
 
@@ -514,9 +552,9 @@ class HbPersonalBusiness(_m.Tool()):
         util.set_matrix_numpy(eb, "HbPbSOVI1PerTrips", SOVI1)
         util.set_matrix_numpy(eb, "HbPbSOVI2PerTrips", SOVI2)
         util.set_matrix_numpy(eb, "HbPbSOVI3PerTrips", SOVI3)
-        util.set_matrix_numpy(eb, "HbPbHV2+I1PerTrips", HOVI1)
-        util.set_matrix_numpy(eb, "HbPbHV2+I2PerTrips", HOVI2)
-        util.set_matrix_numpy(eb, "HbPbHV2+I3PerTrips", HOVI3)
+        util.set_matrix_numpy(eb, "HbPbHOVI1PerTrips", HOVI1)
+        util.set_matrix_numpy(eb, "HbPbHOVI2PerTrips", HOVI2)
+        util.set_matrix_numpy(eb, "HbPbHOVI3PerTrips", HOVI3)
         util.set_matrix_numpy(eb, "HbPbBusPerTrips", Bus)
         util.set_matrix_numpy(eb, "HbPbRailPerTrips", Rail)
         util.set_matrix_numpy(eb, "HbPbWalkPerTrips", Walk)
@@ -705,9 +743,9 @@ class HbPersonalBusiness(_m.Tool()):
         util.initmat(eb, "mf3400", "HbPbSOVI1PerTrips", "HbPb SOV Low Income Per-Trips", 0)
         util.initmat(eb, "mf3401", "HbPbSOVI2PerTrips", "HbPb SOV Med Income Per-Trips", 0)
         util.initmat(eb, "mf3402", "HbPbSOVI3PerTrips", "HbPb SOV High Income Per-Trips", 0)
-        util.initmat(eb, "mf3405", "HbPbHV2+I1PerTrips", "HbPb HV2+ Low Income Per-Trips", 0)
-        util.initmat(eb, "mf3406", "HbPbHV2+I2PerTrips", "HbPb HV2+ Med Income Per-Trips", 0)
-        util.initmat(eb, "mf3407", "HbPbHV2+I3PerTrips", "HbPb HV2+ High Income Per-Trips", 0)
+        util.initmat(eb, "mf3405", "HbPbHOVI1PerTrips", "HbPb HOV Low Income Per-Trips", 0)
+        util.initmat(eb, "mf3406", "HbPbHOVI2PerTrips", "HbPb HOV Med Income Per-Trips", 0)
+        util.initmat(eb, "mf3407", "HbPbHOVI3PerTrips", "HbPb HOV High Income Per-Trips", 0)
         util.initmat(eb, "mf3415", "HbPbBusPerTrips", "HbPb Bus Per-Trips", 0)
         util.initmat(eb, "mf3420", "HbPbRailPerTrips", "HbPb Rail Per-Trips", 0)
         util.initmat(eb, "mf3430", "HbPbWalkPerTrips", "HbPb Walk Per-Trips", 0)

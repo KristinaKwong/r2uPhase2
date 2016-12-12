@@ -85,7 +85,7 @@ class HbEscorting(_m.Tool()):
         MaxPark = 10.0
         VOT = 8.0
         VOC = util.get_matrix_numpy(eb, 'autoOpCost')
-        Occ = util.get_matrix_numpy(eb, 'HOVOccHbesc')
+        Occ = util.get_matrix_numpy(eb, 'AutoOccHbesc') # Occupancy across SOV and HOV
 
         Df['AutoDisHOV'] = util.get_matrix_numpy(eb, 'HbEsBlHovDist')
         Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'HbEsBlHovTime')
@@ -332,6 +332,21 @@ class HbEscorting(_m.Tool()):
       ##########################################################################################
        ##       Calculate peak hour O-D person trips and final 24 hour P-A Trips
       ##########################################################################################
+
+        # Get split between SOV and HOV trips
+        SOV_Split =  util.get_matrix_numpy(eb, 'sov_pct_Hbesc')
+        # HOV-specific occumancy
+        HOcc = util.get_matrix_numpy(eb, 'HOVOccHbesc')
+
+        SOVI1 = AutoI1*SOV_Split
+        HOVI1 = AutoI1 - SOVI1
+
+        SOVI2 = AutoI2*SOV_Split
+        HOVI2 = AutoI2 - SOVI2
+
+        SOVI3 = AutoI3*SOV_Split
+        HOVI3 = AutoI3 - SOVI3
+
       ## SOV Trips      #SOV*PA_Factor + SOV_transpose*AP_Factor
         SOVI1_AM = SOVI1*Auto_AM_Fct[0] + SOVI1.transpose()*Auto_AM_Fct[1]  # Low Income
         SOVI1_MD = SOVI1*Auto_MD_Fct[0] + SOVI1.transpose()*Auto_MD_Fct[1]
@@ -382,25 +397,30 @@ class HbEscorting(_m.Tool()):
 
         # Convert HOV to Auto Drivers
 
-        AuDr_HOVI1_AM = HOVI1_AM/Occ
-        AuDr_HOVI1_MD = HOVI1_MD/Occ
-        AuDr_HOVI1_PM = HOVI1_PM/Occ
+        AuDr_HOVI1_AM = HOVI1_AM/HOcc
+        AuDr_HOVI1_MD = HOVI1_MD/HOcc
+        AuDr_HOVI1_PM = HOVI1_PM/HOcc
 
-        AuDr_HOVI2_AM = HOVI2_AM/Occ
-        AuDr_HOVI2_MD = HOVI2_MD/Occ
-        AuDr_HOVI2_PM = HOVI2_PM/Occ
+        AuDr_HOVI2_AM = HOVI2_AM/HOcc
+        AuDr_HOVI2_MD = HOVI2_MD/HOcc
+        AuDr_HOVI2_PM = HOVI2_PM/HOcc
 
-        AuDr_HOVI3_AM = HOVI3_AM/Occ
-        AuDr_HOVI3_MD = HOVI3_MD/Occ
-        AuDr_HOVI3_PM = HOVI3_PM/Occ
+        AuDr_HOVI3_AM = HOVI3_AM/HOcc
+        AuDr_HOVI3_MD = HOVI3_MD/HOcc
+        AuDr_HOVI3_PM = HOVI3_PM/HOcc
 
 
 #       ##############################################################################
 #        ##       Set Demand Matrices
 #       ##############################################################################
-        util.set_matrix_numpy(eb, "HbEsSOVI1PerTrips", AutoI1)
-        util.set_matrix_numpy(eb, "HbEsSOVI2PerTrips", AutoI2)
-        util.set_matrix_numpy(eb, "HbEsSOVI3PerTrips", AutoI3)
+        util.set_matrix_numpy(eb, "HbEsSOVI1PerTrips", SOVI1)
+        util.set_matrix_numpy(eb, "HbEsSOVI2PerTrips", SOVI2)
+        util.set_matrix_numpy(eb, "HbEsSOVI3PerTrips", SOVI3)
+        util.set_matrix_numpy(eb, "HbEsSOVI1PerTrips", HOVI1)
+        util.set_matrix_numpy(eb, "HbEsSOVI2PerTrips", HOVI2)
+        util.set_matrix_numpy(eb, "HbEsSOVI3PerTrips", HOVI3)
+
+
         util.set_matrix_numpy(eb, "HbEsBusPerTrips", Bus)
         util.set_matrix_numpy(eb, "HbEsRailPerTrips", Rail)
         util.set_matrix_numpy(eb, "HbEsWalkPerTrips", Walk)
@@ -578,9 +598,9 @@ class HbEscorting(_m.Tool()):
         util.initmat(eb, "mf3600", "HbEsSOVI1PerTrips", "HbEs SOV Low Income Per-Trips", 0)
         util.initmat(eb, "mf3601", "HbEsSOVI2PerTrips", "HbEs SOV Med Income Per-Trips", 0)
         util.initmat(eb, "mf3602", "HbEsSOVI3PerTrips", "HbEs SOV High Income Per-Trips", 0)
-        util.initmat(eb, "mf3605", "HbEsHV2+I1PerTrips", "HbEs HV2+ Low Income Per-Trips", 0)
-        util.initmat(eb, "mf3606", "HbEsHV2+I2PerTrips", "HbEs HV2+ Med Income Per-Trips", 0)
-        util.initmat(eb, "mf3607", "HbEsHV2+I3PerTrips", "HbEs HV2+ High Income Per-Trips", 0)
+        util.initmat(eb, "mf3605", "HbEsHOVI1PerTrips", "HbEs HOV Low Income Per-Trips", 0)
+        util.initmat(eb, "mf3606", "HbEsHOVI2PerTrips", "HbEs HOV Med Income Per-Trips", 0)
+        util.initmat(eb, "mf3607", "HbEsHOVI3PerTrips", "HbEs HOV High Income Per-Trips", 0)
         util.initmat(eb, "mf3615", "HbEsBusPerTrips", "HbEs Bus Per-Trips", 0)
         util.initmat(eb, "mf3620", "HbEsRailPerTrips", "HbEs Rail Per-Trips", 0)
         util.initmat(eb, "mf3630", "HbEsWalkPerTrips", "HbEs Walk Per-Trips", 0)

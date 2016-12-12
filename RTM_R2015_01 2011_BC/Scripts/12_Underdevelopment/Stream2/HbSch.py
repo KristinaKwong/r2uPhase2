@@ -401,9 +401,9 @@ class HbSchool(_m.Tool()):
 #       ##############################################################################
 #        ##       Set Demand Matrices
 #       ##############################################################################
-        util.set_matrix_numpy(eb, "HbScHV2+I1PerTrips", HOVI1)
-        util.set_matrix_numpy(eb, "HbScHV2+I2PerTrips", HOVI2)
-        util.set_matrix_numpy(eb, "HbScHV2+I3PerTrips", HOVI3)
+        util.set_matrix_numpy(eb, "HbScHOVI1PerTrips", HOVI1)
+        util.set_matrix_numpy(eb, "HbScHOVI2PerTrips", HOVI2)
+        util.set_matrix_numpy(eb, "HbScHOVI3PerTrips", HOVI3)
         util.set_matrix_numpy(eb, "HbScBusPerTrips", Bus)
         util.set_matrix_numpy(eb, "HbScRailPerTrips", Rail)
         util.set_matrix_numpy(eb, "HbScWalkPerTrips", Walk)
@@ -561,9 +561,9 @@ class HbSchool(_m.Tool()):
         util.initmat(eb, "mf9108", "P-AFrictionFact9", "Trip Distribution Friction Factor 9", 0)
 
         ## Initialize P-A Trip Tables by mode
-        util.initmat(eb, "mf3205", "HbScHV2+I1PerTrips", "HbSc HV2+ Low Income Per-Trips", 0)
-        util.initmat(eb, "mf3206", "HbScHV2+I2PerTrips", "HbSc HV2+ Med Income Per-Trips", 0)
-        util.initmat(eb, "mf3207", "HbScHV2+I3PerTrips", "HbSc HV2+ High Income Per-Trips", 0)
+        util.initmat(eb, "mf3205", "HbScHOVI1PerTrips", "HbSc HV2+ Low Income Per-Trips", 0)
+        util.initmat(eb, "mf3206", "HbScHOVI2PerTrips", "HbSc HV2+ Med Income Per-Trips", 0)
+        util.initmat(eb, "mf3207", "HbScHOVI3PerTrips", "HbSc HV2+ High Income Per-Trips", 0)
         util.initmat(eb, "mf3215", "HbScBusPerTrips", "HbSc Bus Per-Trips", 0)
         util.initmat(eb, "mf3220", "HbScRailPerTrips", "HbSc Rail Per-Trips", 0)
         util.initmat(eb, "mf3230", "HbScWalkPerTrips", "HbSc Walk Per-Trips", 0)

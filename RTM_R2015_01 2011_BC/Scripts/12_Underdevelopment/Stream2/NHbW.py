@@ -345,7 +345,7 @@ class Non_hbwork(_m.Tool()):
         # 24 hour trips
 
         util.set_matrix_numpy(eb, "NHbWSOVPerTrips", SOV)
-        util.set_matrix_numpy(eb, "NHbWHV2+PerTrips", HOV)
+        util.set_matrix_numpy(eb, "NHbWHOVPerTrips", HOV)
         util.set_matrix_numpy(eb, "NHbWBusPerTrips", Bus)
         util.set_matrix_numpy(eb, "NHbWRailPerTrips", Rail)
         util.set_matrix_numpy(eb, "NHbWWalkPerTrips", Walk)
@@ -494,7 +494,7 @@ class Non_hbwork(_m.Tool()):
 
         ## Initialize P-A Trip Tables by mode
         util.initmat(eb, "mf3700", "NHbWSOVPerTrips", "NHbW SOV Per-Trips", 0)
-        util.initmat(eb, "mf3705", "NHbWHV2+PerTrips", "NHbW HV2+ Per-Trips", 0)
+        util.initmat(eb, "mf3705", "NHbWHOVPerTrips", "NHbW HOV Per-Trips", 0)
         util.initmat(eb, "mf3715", "NHbWBusPerTrips", "NHbW Bus Per-Trips", 0)
         util.initmat(eb, "mf3720", "NHbWRailPerTrips", "NHbW Rail Per-Trips", 0)
         util.initmat(eb, "mf3730", "NHbWWalkPerTrips", "NHbW Walk Per-Trips", 0)

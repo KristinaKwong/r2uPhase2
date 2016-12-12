@@ -92,7 +92,7 @@ class Non_hbwork(_m.Tool()):
         MaxPark = 10.0
 
         VOC = util.get_matrix_numpy(eb, 'autoOpCost')
-        Occ = util.get_matrix_numpy(eb, 'HOVOccNHBo')
+        Occ = util.get_matrix_numpy(eb, 'AutoOccNHBo') # Occupancy across SOV and HOV
         Df['ParkCost'] = util.get_matrix_numpy(eb, 'prk2hr')  # 2 hour parking
 
         Df['ParkCost'] = Df['ParkCost'].reshape(1, NoTAZ) + np.zeros((NoTAZ, 1))
@@ -280,7 +280,16 @@ class Non_hbwork(_m.Tool()):
       ##########################################################################################
        ##       Calculate peak hour O-D person trips and final 24 hour P-A Trips
       ##########################################################################################
-      ## SOV Trips      #SOV*PA_Factor + SOV_transpose*AP_Factor
+
+        # Get split between SOV and HOV trips
+        SOV_Split =  util.get_matrix_numpy(eb, 'sov_pct_NHBo')
+        # HOV-specific occumancy
+        HOcc = util.get_matrix_numpy(eb, 'HOVOccNHBo')
+
+        SOV = Auto*SOV_Split
+        HOV = Auto - SOV
+
+      ## SOV Trips      #SOV*PA_Factor
         SOV_AM = SOV*Auto_AM_Fct[0]
         SOV_MD = SOV*Auto_MD_Fct[0]
         SOV_PM = SOV*Auto_PM_Fct[0]
@@ -311,9 +320,9 @@ class Non_hbwork(_m.Tool()):
 
         # Convert HOV to Auto Drivers
         # HOV2
-        AuDr_HOV_AM = HOV_AM/Occ
-        AuDr_HOV_MD = HOV_MD/Occ
-        AuDr_HOV_PM = HOV_PM/Occ
+        AuDr_HOV_AM = HOV_AM/HOcc
+        AuDr_HOV_MD = HOV_MD/HOcc
+        AuDr_HOV_PM = HOV_PM/HOcc
 
 
 #       ##############################################################################
@@ -321,7 +330,8 @@ class Non_hbwork(_m.Tool()):
 #       ##############################################################################
         # 24 hour trips
 
-        util.set_matrix_numpy(eb, "NHbOHV2+PerTrips", Auto)
+        util.set_matrix_numpy(eb, "NHbOSOVPerTrips", SOV)
+        util.set_matrix_numpy(eb, "NHbOHOVPerTrips", HOV)
         util.set_matrix_numpy(eb, "NHbOBusPerTrips", Bus)
         util.set_matrix_numpy(eb, "NHbORailPerTrips", Rail)
         util.set_matrix_numpy(eb, "NHbOWalkPerTrips", Walk)
@@ -471,7 +481,7 @@ class Non_hbwork(_m.Tool()):
 
         ## Initialize P-A Trip Tables by mode
         util.initmat(eb, "mf3800", "NHbOSOVPerTrips",  "NHbO SOV Per-Trips", 0)
-        util.initmat(eb, "mf3805", "NHbOHV2+PerTrips", "NHbO HV2+ Per-Trips", 0)
+        util.initmat(eb, "mf3805", "NHbOHOVPerTrips", "NHbO HOV Per-Trips", 0)
         util.initmat(eb, "mf3815", "NHbOBusPerTrips",  "NHbO Bus Per-Trips", 0)
         util.initmat(eb, "mf3820", "NHbORailPerTrips", "NHbO Rail Per-Trips", 0)
         util.initmat(eb, "mf3830", "NHbOWalkPerTrips", "NHbO Walk Per-Trips", 0)

@@ -342,7 +342,7 @@ class HbWork(_m.Tool()):
         # 24 hour trips
 
         util.set_matrix_numpy(eb, "HbUSOVPerTrips", SOV)
-        util.set_matrix_numpy(eb, "HbUHV2+PerTrips", HOV)
+        util.set_matrix_numpy(eb, "HbUHOVPerTrips", HOV)
         util.set_matrix_numpy(eb, "HbUBusPerTrips", Bus)
         util.set_matrix_numpy(eb, "HbURailPerTrips", Rail)
         util.set_matrix_numpy(eb, "HbUWalkPerTrips", Walk)
@@ -492,7 +492,7 @@ class HbWork(_m.Tool()):
 
         ## Initialize P-A Trip Tables by mode
         util.initmat(eb, "mf3100", "HbUSOVPerTrips", "HbU SOV Per-Trips", 0)
-        util.initmat(eb, "mf3105", "HbUHV2+PerTrips", "HbU HV2+ Per-Trips", 0)
+        util.initmat(eb, "mf3105", "HbUHOVPerTrips", "HbU HOV Per-Trips", 0)
         util.initmat(eb, "mf3115", "HbUBusPerTrips", "HbU Bus Per-Trips", 0)
         util.initmat(eb, "mf3120", "HbURailPerTrips", "HbU Rail Per-Trips", 0)
         util.initmat(eb, "mf3130", "HbUWalkPerTrips", "HbU Walk Per-Trips", 0)

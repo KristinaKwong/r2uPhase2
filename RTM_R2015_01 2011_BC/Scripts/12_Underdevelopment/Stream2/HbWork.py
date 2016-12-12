@@ -121,48 +121,105 @@ class HbWork(_m.Tool()):
         Df['ParkCost'][Df['ParkCost']>MaxPark] = MaxPark # set parking>$10 to $10
         Df['ParkCost'] = Df['ParkCost'].reshape(1, NoTAZ) + np.zeros((NoTAZ, 1)) # Broadcast parking from vector to matrix
 
-        Df['AutoDisSOV'] = util.get_matrix_numpy(eb, 'HbWBlSovDist') #SOV Distance
-        Df['AutoTimSOV'] = util.get_matrix_numpy(eb, 'HbWBlSovTime') #SOV Time
-        Df['AutoCosSOV'] = Df['AutoDisSOV']*VOC + util.get_matrix_numpy(eb, 'HbWBlSovToll') + Df['ParkCost'] #SOV Cost (per km + Toll + Parking)
 
-        Df['AutoDisHOV'] = util.get_matrix_numpy(eb, 'HbWBlHovDist') #HOV Distance
-        Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'HbWBlHovTime') #hOV Time
-        Df['AutoCosHOV'] = Df['AutoDisHOV']*VOC + util.get_matrix_numpy(eb, 'HbWBlHovToll') + Df['ParkCost'] #HOV Cost (per km + Toll + Parking)
+        # Get SOV Skims by income
+        # Low Income
+        Df['AutoDisSOV1'] = util.get_matrix_numpy(eb, 'HbWBlSovDist_I1') #SOV Distance
+        Df['AutoTimSOV1'] = util.get_matrix_numpy(eb, 'HbWBlSovTime_I1') #SOV Time
+        Df['AutoCosSOV1'] = Df['AutoDisSOV1']*VOC + util.get_matrix_numpy(eb, 'HbWBlSovToll_I1') + Df['ParkCost'] #SOV Cost (per km + Toll + Parking)
+
+        # Med Income
+        Df['AutoDisSOV2'] = util.get_matrix_numpy(eb, 'HbWBlSovDist_I2') #SOV Distance
+        Df['AutoTimSOV2'] = util.get_matrix_numpy(eb, 'HbWBlSovTime_I2') #SOV Time
+        Df['AutoCosSOV2'] = Df['AutoDisSOV2']*VOC + util.get_matrix_numpy(eb, 'HbWBlSovToll_I2') + Df['ParkCost'] #SOV Cost (per km + Toll + Parking)
+
+        # High Income
+        Df['AutoDisSOV3'] = util.get_matrix_numpy(eb, 'HbWBlSovDist_I3') #SOV Distance
+        Df['AutoTimSOV3'] = util.get_matrix_numpy(eb, 'HbWBlSovTime_I3') #SOV Time
+        Df['AutoCosSOV3'] = Df['AutoDisSOV3']*VOC + util.get_matrix_numpy(eb, 'HbWBlSovToll_I3') + Df['ParkCost'] #SOV Cost (per km + Toll + Parking)
+
+        # Get HOV Skims by income
+        # Low Income
+        Df['AutoDisHOV1'] = util.get_matrix_numpy(eb, 'HbWBlHovDist_I1') #HOV Distance
+        Df['AutoTimHOV1'] = util.get_matrix_numpy(eb, 'HbWBlHovTime_I1') #HOV Time
+        Df['AutoCosHOV1'] = Df['AutoDisHOV1']*VOC + util.get_matrix_numpy(eb, 'HbWBlHovToll_I1') + Df['ParkCost'] #HOV Cost (per km + Toll + Parking)
+
+        # Med Income
+        Df['AutoDisHOV2'] = util.get_matrix_numpy(eb, 'HbWBlHovDist_I2') #HOV Distance
+        Df['AutoTimHOV2'] = util.get_matrix_numpy(eb, 'HbWBlHovTime_I2') #HOV Time
+        Df['AutoCosHOV2'] = Df['AutoDisHOV2']*VOC + util.get_matrix_numpy(eb, 'HbWBlHovToll_I2') + Df['ParkCost'] #HOV Cost (per km + Toll + Parking)
+
+        # High Income
+        Df['AutoDisHOV3'] = util.get_matrix_numpy(eb, 'HbWBlHovDist_I3') #HOV Distance
+        Df['AutoTimHOV3'] = util.get_matrix_numpy(eb, 'HbWBlHovTime_I3') #HOV Time
+        Df['AutoCosHOV3'] = Df['AutoDisHOV3']*VOC + util.get_matrix_numpy(eb, 'HbWBlHovToll_I3') + Df['ParkCost'] #HOV Cost (per km + Toll + Parking)
 
         # Utilities
-        # SOV Common Utility for all incomes
-        Df['GeUtl'] = ( 0
-                      + p151*Df['AutoTimSOV'])
+        # SOV
+
+        Df['SOVI1'] = ( 0
+                      + p151*Df['AutoTimSOV1']
+                      + p12*Df['AutoCosSOV1'])
 
 
-        Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisSOV'], Df['GeUtl'], AvailDict) #Check Availability condition if mode not available then set to high negative utility (-9999)
-        # Add Income Parameters
-        DfU['SOVI1']  = Df['GeUtl'] + p12*Df['AutoCosSOV']
-        DfU['SOVI2']  = Df['GeUtl'] + p13*Df['AutoCosSOV']
-        DfU['SOVI3']  = Df['GeUtl'] + p14*Df['AutoCosSOV']
+        Df['SOVI2'] = ( 0
+                      + p151*Df['AutoTimSOV2']
+                      + p13*Df['AutoCosSOV2'])
+
+
+        Df['SOVI3'] = ( 0
+                      + p151*Df['AutoTimSOV3']
+                      + p14*Df['AutoCosSOV3'])
+
+
+
+
+        DfU['SOVI1']  = MChM.AutoAvail(Df['AutoDisSOV1'], Df['SOVI1'], AvailDict) #Check Availability condition if mode not available then set to high negative utility (-99999)
+        DfU['SOVI2']  = MChM.AutoAvail(Df['AutoDisSOV2'], Df['SOVI2'], AvailDict)
+        DfU['SOVI3']  = MChM.AutoAvail(Df['AutoDisSOV3'], Df['SOVI3'], AvailDict)
 
         # HOV2
-        # HOV Common Utility for all incomes
-        Df['GeUtl'] = ( p2
-                      + p151*Df['AutoTimHOV'])
+
+        Df['HV2I1'] = ( p2
+                      + p151*Df['AutoTimHOV1']
+                      + p12*Df['AutoCosHOV1']/2.0)
 
 
-        Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisHOV'], Df['GeUtl'], AvailDict) #Check Availability condition if mode not available then set to high negative utility (-9999)
-        # Add Income Parameters
-        DfU['HV2I1']  = Df['GeUtl'] + p12*Df['AutoCosHOV']/2.0
-        DfU['HV2I2']  = Df['GeUtl'] + p13*Df['AutoCosHOV']/2.0
-        DfU['HV2I3']  = Df['GeUtl'] + p14*Df['AutoCosHOV']/2.0
+        Df['HV2I2'] = ( p2
+                      + p151*Df['AutoTimHOV2']
+                      + p13*Df['AutoCosHOV2']/2.0)
+
+
+        Df['HV2I3'] = ( p2
+                      + p151*Df['AutoTimHOV3']
+                      + p14*Df['AutoCosHOV3']/2.0)
+
+
+
+
+        DfU['HV2I1']  = MChM.AutoAvail(Df['AutoDisHOV1'], Df['HV2I1'], AvailDict) #Check Availability condition if mode not available then set to high negative utility (-99999)
+        DfU['HV2I2']  = MChM.AutoAvail(Df['AutoDisHOV2'], Df['HV2I2'], AvailDict)
+        DfU['HV2I3']  = MChM.AutoAvail(Df['AutoDisHOV3'], Df['HV2I3'], AvailDict)
 
         # HOV3
-        # HOV Common Utility for all incomes
-        Df['GeUtl'] = ( p3
-                      + p151*Df['AutoTimHOV'])
 
-        Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisHOV'], Df['GeUtl'], AvailDict) #Check Availability condition if mode not available then set to high negative utility (-9999)
-        # Add Income Parameters
-        DfU['HV3I1']  = Df['GeUtl'] + p12*Df['AutoCosHOV']/Occ
-        DfU['HV3I2']  = Df['GeUtl'] + p13*Df['AutoCosHOV']/Occ
-        DfU['HV3I3']  = Df['GeUtl'] + p14*Df['AutoCosHOV']/Occ
+        Df['HV3I1'] = ( p3
+                      + p151*Df['AutoTimHOV1']
+                      + p12*Df['AutoCosHOV1']/Occ)
+
+
+        Df['HV3I2'] = ( p3
+                      + p151*Df['AutoTimHOV2']
+                      + p13*Df['AutoCosHOV2']/Occ)
+
+
+        Df['HV3I3'] = ( p3
+                      + p151*Df['AutoTimHOV3']
+                      + p14*Df['AutoCosHOV3']/Occ)
+
+        DfU['HV3I1']  = MChM.AutoAvail(Df['AutoDisHOV1'], Df['HV3I1'], AvailDict) #Check Availability condition if mode not available then set to high negative utility (-99999)
+        DfU['HV3I2']  = MChM.AutoAvail(Df['AutoDisHOV2'], Df['HV3I2'], AvailDict)
+        DfU['HV3I3']  = MChM.AutoAvail(Df['AutoDisHOV3'], Df['HV3I3'], AvailDict)
 
 
 #        ##############################################################################
@@ -202,7 +259,7 @@ class HbWork(_m.Tool()):
 
         Df['TranAccess'] = util.get_matrix_numpy(eb, 'transitAccLn').reshape(NoTAZ,1) + np.zeros((1, NoTAZ)) # Log transit accessiblity broadcast
         Df['IntZnl'] = np.identity(NoTAZ) # Intra-zonal matrix
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbWBlSovDist') # Distance
+        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbWBlSovDist_I2') # Distance
         Df['AutoDisSqd'] = Df['AutoDis']* Df['AutoDis'] #Distance squared
         Df['LogAutoDis'] = np.log(Df['AutoDis'] + Tiny) # Log Distance
 
@@ -319,7 +376,7 @@ class HbWork(_m.Tool()):
         Df['WAuIWR'] = Df['WCEIVW']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW']+ Df['WAuTim'] + Tiny) # Ratio of Time on WCE to total travel time
 
         Df['IntZnl'] = np.identity(NoTAZ) # Intra-zonal
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbWBlSovDist') # Distance
+        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbWBlSovDist_I2') # Distance
         Df['AutoDisSqd'] = Df['AutoDis']* Df['AutoDis'] # Distance-squared
         Df['LogAutoDis'] = np.log(Df['AutoDis'] + Tiny) #log-distance
 
@@ -399,7 +456,7 @@ class HbWork(_m.Tool()):
 #        ##############################################################################
 
         Df = {}
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbWBlSovDist') #Distance
+        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbWBlSovDist_I2') #Distance
         Df['IntrCBD'] = util.get_matrix_numpy(eb, 'd_cbd') #Intra-CBD
         Df['IntrCBD'] = Df['IntrCBD'].reshape(NoTAZ, 1)*Df['IntrCBD'].reshape(1, NoTAZ) #Broadcast intra-CBD
 
@@ -590,7 +647,7 @@ class HbWork(_m.Tool()):
                       -0.0004, -0.0004, -0.0004]
 
         Dist_Iter = int(util.get_matrix_numpy(eb, 'IterDist'))
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "HbWBlSovDist"))
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "HbWBlSovDist_I2"))
         MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list, Dist_Iter)
 
 #       ##############################################################################
@@ -1279,26 +1336,3 @@ class HbWork(_m.Tool()):
         util.initmat(eb, "mf347", "HOV_drvtrp_VOT_2_Pm", "HOV drv-trips VOT 2 PM", 0)
         util.initmat(eb, "mf348", "HOV_drvtrp_VOT_3_Pm", "HOV drv-trips VOT 3 PM", 0)
         util.initmat(eb, "mf349", "HOV_drvtrp_VOT_4_Pm", "HOV drv-trips VOT 4 PM", 0)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
