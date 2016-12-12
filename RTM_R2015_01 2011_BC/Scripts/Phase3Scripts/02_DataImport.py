@@ -95,6 +95,8 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms128", "AutoOccNHBo", "Auto Occupancy NHB Other", 2)
         util.initmat(eb, "ms130", "lgvPCE", "Light Truck Passenger Car Equivalent", 1.5)
         util.initmat(eb, "ms131", "hgvPCE", "Heavy Truck Passenger Car Equivalent", 2.5)
+        util.initmat(eb, "ms142", "sov_pct_Hbesc", "SOV proportion of Auto HB Escorting", 0.5)
+        util.initmat(eb, "ms148", "sov_pct_NHBo", "SOV proportion of Auto NHB Other", 0.365)
         util.initmat(eb, "ms150", "nhbwCt2011", "NHBW HH Production Control Total", 596590.636153)
         util.initmat(eb, "ms151", "nhboCt2011", "NHB0 HH Production Control Total", 852928.057776)
         util.initmat(eb, "ms200", "AutoVOT1", "AutoVOT1", 9.2)
