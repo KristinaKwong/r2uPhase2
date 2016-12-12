@@ -96,6 +96,7 @@ class DataImport(_m.Tool()):
 
         util.initmat(eb, "ms150", "nhbwCt2011", "NHBW HH Production Control Total", 596590.636153)
         util.initmat(eb, "ms151", "nhboCt2011", "NHB0 HH Production Control Total", 852928.057776)
+        util.initmat(eb, "ms160", "oneZoneFare", "One Zone Fare - FS-SV", 2.1)
 
         util.initmat(eb, "ms200", "VotWkLowIncSov", "VOTSOV Work Low"      , 6.58)
         util.initmat(eb, "ms201", "VotWkMedIncSov", "VOTSOV Work Med"      , 4.12)
