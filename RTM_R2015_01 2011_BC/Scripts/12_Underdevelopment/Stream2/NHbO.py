@@ -259,14 +259,143 @@ class Non_hbwork(_m.Tool()):
         del Prob_Dict
 
 #       ##############################################################################
+#        ##       Get Time Slice Factors
+#       ##############################################################################
+
+        db_loc = util.get_eb_path(eb)
+        db_path = os.path.join(db_loc, 'rtm.db')
+        conn = sqlite3.connect(db_path)
+        ts_df = pd.read_sql("SELECT * from timeSlicingFactors", conn)
+        conn.close()
+        # Subset Time Slice Factor Dataframes by purpose
+        hbw_ts = ts_df.loc[ts_df['purpose'] == 'nhbo']
+
+        # Subset Time Slice Factor Dataframes by mode
+        Auto_AM_Fct, Auto_MD_Fct, Auto_PM_Fct = self.get_ts_factor(hbw_ts.loc[ts_df['mode'] == 'Auto']) # Auto Factors
+        Tran_AM_Fct, Tran_MD_Fct, Tran_PM_Fct = self.get_ts_factor(hbw_ts.loc[ts_df['mode'] == 'Transit']) # Transit Factors
+        Acti_AM_Fct, Acti_MD_Fct, Acti_PM_Fct = self.get_ts_factor(hbw_ts.loc[ts_df['mode'] == 'Active']) # Active Factors
+
+        del ts_df, hbw_ts
+
+      ##########################################################################################
+       ##       Calculate peak hour O-D person trips and final 24 hour P-A Trips
+      ##########################################################################################
+      ## SOV Trips      #SOV*PA_Factor + SOV_transpose*AP_Factor
+        SOV_AM = SOV*Auto_AM_Fct[0]
+        SOV_MD = SOV*Auto_MD_Fct[0]
+        SOV_PM = SOV*Auto_PM_Fct[0]
+
+        ## HOV Trips
+        HOV_AM = HOV*Auto_AM_Fct[0]
+        HOV_MD = HOV*Auto_MD_Fct[0]
+        HOV_PM = HOV*Auto_PM_Fct[0]
+
+        ## Transit Trips
+        Bus_AM = Bus*Tran_AM_Fct[0]
+        Bus_MD = Bus*Tran_MD_Fct[0]
+        Bus_PM = Bus*Tran_PM_Fct[0]
+
+        Rail_AM = Rail*Tran_AM_Fct[0]
+        Rail_MD = Rail*Tran_MD_Fct[0]
+        Rail_PM = Rail*Tran_PM_Fct[0]
+
+        ## Active Trips
+        Walk_AM = Walk*Acti_AM_Fct[0]
+        Walk_MD = Walk*Acti_MD_Fct[0]
+        Walk_PM = Walk*Acti_PM_Fct[0]
+
+        Bike_AM = Bike*Acti_AM_Fct[0]
+        Bike_MD = Bike*Acti_MD_Fct[0]
+        Bike_PM = Bike*Acti_PM_Fct[0]
+
+
+        # Convert HOV to Auto Drivers
+        # HOV2
+        AuDr_HOV_AM = HOV_AM/Occ
+        AuDr_HOV_MD = HOV_MD/Occ
+        AuDr_HOV_PM = HOV_PM/Occ
+
+
+#       ##############################################################################
 #        ##       Set Demand Matrices
 #       ##############################################################################
+        # 24 hour trips
 
         util.set_matrix_numpy(eb, "NHbOHV2+PerTrips", Auto)
         util.set_matrix_numpy(eb, "NHbOBusPerTrips", Bus)
         util.set_matrix_numpy(eb, "NHbORailPerTrips", Rail)
         util.set_matrix_numpy(eb, "NHbOWalkPerTrips", Walk)
         util.set_matrix_numpy(eb, "NHbOBikePerTrips", Bike)
+
+       # Auto-person
+
+       # SOV
+        # AM
+        self.set_pkhr_mats(eb, SOV_AM, "SOV_pertrp_VOT_1_Am")
+        # MD
+        self.set_pkhr_mats(eb, SOV_MD, "SOV_pertrp_VOT_1_Md")
+
+        # PM
+        self.set_pkhr_mats(eb, SOV_PM, "SOV_pertrp_VOT_1_Pm")
+
+
+        # HOV
+        # AM
+        self.set_pkhr_mats(eb, HOV_AM, "HOV_pertrp_VOT_1_Am")
+
+        # MD
+        self.set_pkhr_mats(eb, HOV_MD, "HOV_pertrp_VOT_1_Md")
+
+        # PM
+        self.set_pkhr_mats(eb, HOV_PM, "HOV_pertrp_VOT_1_Pm")
+
+        # Transit
+        # AM
+        self.set_pkhr_mats(eb, Bus_AM, "Bus_pertrp_Am")
+        self.set_pkhr_mats(eb, Rail_AM, "Rail_pertrp_Am")
+
+        # MD
+        self.set_pkhr_mats(eb, Bus_MD, "Bus_pertrp_Md")
+        self.set_pkhr_mats(eb, Rail_MD, "Rail_pertrp_Md")
+
+        # PM
+        self.set_pkhr_mats(eb, Bus_PM, "Bus_pertrp_Pm")
+        self.set_pkhr_mats(eb, Rail_PM, "Rail_pertrp_Pm")
+
+        # Active
+        # AM
+        self.set_pkhr_mats(eb, Walk_AM, "Wk_pertrp_Am")
+        self.set_pkhr_mats(eb, Bike_AM, "Bk_pertrp_Am")
+
+        # MD
+        self.set_pkhr_mats(eb, Walk_MD, "Wk_pertrp_Md")
+        self.set_pkhr_mats(eb, Bike_MD, "Bk_pertrp_Md")
+
+        # PM
+        self.set_pkhr_mats(eb, Walk_PM, "Wk_pertrp_Pm")
+        self.set_pkhr_mats(eb, Bike_PM, "Bk_pertrp_Pm")
+
+        # Auto-driver
+
+        # SOV
+        # AM
+        self.set_pkhr_mats(eb, SOV_AM, "SOV_drvtrp_VOT_1_Am")
+
+        # MD
+        self.set_pkhr_mats(eb, SOV_MD, "SOV_drvtrp_VOT_1_Md")
+
+        # PM
+        self.set_pkhr_mats(eb, SOV_PM, "SOV_drvtrp_VOT_1_Pm")
+
+        # HOV
+        # AM
+        self.set_pkhr_mats(eb, AuDr_HOV_AM, "HOV_drvtrp_VOT_1_Am")
+
+        # MD
+        self.set_pkhr_mats(eb, AuDr_HOV_MD, "HOV_drvtrp_VOT_1_Md")
+
+        # PM
+        self.set_pkhr_mats(eb, AuDr_HOVI1_PM, "HOV_drvtrp_VOT_1_Pm")
 
     def Calc_Prob(self, eb, Dict, Logsum, Th):
         util = _m.Modeller().tool("translink.emme.util")
@@ -308,6 +437,27 @@ class Non_hbwork(_m.Tool()):
         DfTran = DfTran.fillna(0)
 
         return (DfAuto, DfTran)
+
+    def get_ts_factor (self, ts_df):
+
+        AM_Ts_List = [float(ts_df .loc[(ts_df['peakperiod'] == 'AM') & (ts_df['direction'] == 'PtoA'), 'shares'])]
+
+
+        MD_Ts_List = [float(ts_df .loc[(ts_df['peakperiod'] == 'MD') & (ts_df['direction'] == 'PtoA'), 'shares'])]
+
+
+        PM_Ts_List = [float(ts_df .loc[(ts_df['peakperiod'] == 'PM') & (ts_df['direction'] == 'PtoA'), 'shares'])]
+
+
+        return (AM_Ts_List, MD_Ts_List, PM_Ts_List)
+
+    def set_pkhr_mats(self, eb, MatVal, MatID):
+
+        util = _m.Modeller().tool("translink.emme.util")
+        Value = util.get_matrix_numpy(eb, MatID)
+        Value += MatVal
+        util.set_matrix_numpy(eb, MatID, Value)
+
 
     @_m.logbook_trace("Initialize Matrices")
     def matrix_batchins(self, eb):
