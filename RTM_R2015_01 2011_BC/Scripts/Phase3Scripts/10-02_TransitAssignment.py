@@ -654,26 +654,25 @@ class TransitAssignment(_m.Tool()):
 
         classname = "Bus"
         modelist = self.bus_mode_list
-        Travel_Time_List = ["mf9960", "mf9961", "mf9962", "mf9963", "mf9964", "mf9965", "mf9966"]
 
         spec_as_dict = self.get_matrix_skim_spec(modelist)
-        spec_as_dict["actual_total_waiting_times"] = Travel_Time_List[0]
-        spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = Travel_Time_List[1]
-        spec_as_dict["by_mode_subset"]["actual_aux_transit_times"] = Travel_Time_List[2]
-        spec_as_dict["by_mode_subset"]["avg_boardings"] = Travel_Time_List[3]
-        spec_as_dict["by_mode_subset"]["actual_first_boarding_costs"] = Travel_Time_List[5]
+        spec_as_dict["actual_total_waiting_times"] = "mfBusWait"
+        spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = "mfBusIvtt"
+        spec_as_dict["by_mode_subset"]["actual_aux_transit_times"] = "mfBusAux"
+        spec_as_dict["by_mode_subset"]["avg_boardings"] = "mfBusBoard"
+        spec_as_dict["by_mode_subset"]["actual_first_boarding_costs"] = "mfBusIncFirstCost"
         transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
         # Skim for FareIncrements
         strat_spec = self.get_strategy_skim_spec()
         strat_spec["trip_components"]["in_vehicle"] = "@fareincrement"
         strat_spec["sub_path_combination_operator"]= "+"
-        strat_spec["results"]["strategy_values"] = Travel_Time_List[4]
+        strat_spec["results"]["strategy_values"] = "mfBusIncCst"
         strategy_skim(strat_spec, scenario=scenarionumber, class_name=classname)
 
         # Fare Calculation: Boarding Fare + fare Increment
         specs = []
-        specs.append(util.matrix_spec(Travel_Time_List[6], Travel_Time_List[5] + " + " + Travel_Time_List[4]))
+        specs.append(util.matrix_spec("mfBusFare", "mfBusIncCst + mfBusIncFirstCost"))
         util.compute_matrix(specs, scenarionumber)
 
     def skim_rail(self, scenarionumber):
@@ -683,35 +682,34 @@ class TransitAssignment(_m.Tool()):
 
         classname = "Rail"
         modelist = self.rail_mode_list
-        Travel_Time_List = ["mf9970", "mf9971", "mf9972", "mf9973", "mf9974", "mf9975", "mf9976", "mf9977"]
 
         spec_as_dict = self.get_matrix_skim_spec(modelist)
-        spec_as_dict["by_mode_subset"]["actual_total_boarding_times"] = Travel_Time_List[0]
-        spec_as_dict["by_mode_subset"]["actual_aux_transit_times"] = Travel_Time_List[1]
-        spec_as_dict["actual_total_waiting_times"] = Travel_Time_List[2]
-        spec_as_dict["by_mode_subset"]["actual_first_boarding_costs"] = Travel_Time_List[6]
+        spec_as_dict["by_mode_subset"]["actual_total_boarding_times"] = "mfRailBoard"
+        spec_as_dict["by_mode_subset"]["actual_aux_transit_times"] = "mfRailAux"
+        spec_as_dict["actual_total_waiting_times"] = "mfRailWait"
+        spec_as_dict["by_mode_subset"]["actual_first_boarding_costs"] = "mfRailBrdCst"
         transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
         spec_as_dict = self.get_matrix_skim_spec(modelist)
         spec_as_dict["by_mode_subset"]["modes"] = ["b", "g"]
-        spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = Travel_Time_List[3]
+        spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = "mfRailIvttBus"
         transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
         spec_as_dict = self.get_matrix_skim_spec(modelist)
         spec_as_dict["by_mode_subset"]["modes"] = ["s", "l", "r", "f", "h"]
-        spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = Travel_Time_List[4]
+        spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = "mfRailIvtt"
         transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
         # Skim for Fare Increments: In-vehicle costs
         strat_spec = self.get_strategy_skim_spec()
         strat_spec["trip_components"]["in_vehicle"] = "@fareincrement"
         strat_spec["sub_path_combination_operator"]= "+"
-        strat_spec["results"]["strategy_values"] = Travel_Time_List[5]
+        strat_spec["results"]["strategy_values"] = "mfRailIvCst"
         strategy_skim(strat_spec, scenario=scenarionumber, class_name=classname)
 
         # Fare Calculation: Boarding Fare + fare Increment
         specs = []
-        specs.append(util.matrix_spec(Travel_Time_List[7], Travel_Time_List[5] + " + " + Travel_Time_List[6]))
+        specs.append(util.matrix_spec("mfRailFare", "mfRailIvCst + mfRailBrdCst"))
         util.compute_matrix(specs, scenarionumber)
 
     def skim_wce(self, scenarionumber):
@@ -721,54 +719,52 @@ class TransitAssignment(_m.Tool()):
 
         classname = "WCE"
         modelist = self.wce_mode_list
-        Travel_Time_List = ["mf9980", "mf9981", "mf9982", "mf9983", "mf9984", "mf9985","mf9986", "mf9987", "mf9988", "mf9989"]
 
         spec_as_dict = self.get_matrix_skim_spec(modelist)
-        spec_as_dict["by_mode_subset"]["actual_total_boarding_times"] = Travel_Time_List[0]
-        spec_as_dict["by_mode_subset"]["actual_aux_transit_times"] = Travel_Time_List[1]
-        spec_as_dict["actual_total_waiting_times"] = Travel_Time_List[2]
+        spec_as_dict["by_mode_subset"]["actual_total_boarding_times"] = "mfWceBoard"
+        spec_as_dict["by_mode_subset"]["actual_aux_transit_times"] = "mfWceAux"
+        spec_as_dict["actual_total_waiting_times"] = "mfWceWait"
         transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
         spec_as_dict = self.get_matrix_skim_spec(modelist)
         spec_as_dict["by_mode_subset"]["modes"] = ["b", "g"]
-        spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = Travel_Time_List[3]
+        spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = "mfWceIvttBus"
         transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
         spec_as_dict = self.get_matrix_skim_spec(modelist)
         spec_as_dict["by_mode_subset"]["modes"] = ["s", "l", "f", "h"]
-        spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = Travel_Time_List[4]
+        spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = "mfWceIvttRail"
         transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
         spec_as_dict = self.get_matrix_skim_spec(modelist)
         spec_as_dict["by_mode_subset"]["modes"] = ["r"]
-        spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = Travel_Time_List[5]
+        spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = "mfWceIvtt"
         transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
         # Fare Increments for only bus/skytrain
         strat_spec = self.get_strategy_skim_spec()
         strat_spec["trip_components"]["in_vehicle"] = "@fareboundary"
         strat_spec["sub_path_combination_operator"]= "+"
-        strat_spec["results"]["strategy_values"] = Travel_Time_List[6]
+        strat_spec["results"]["strategy_values"] = "mfWceIvCst"
         strategy_skim(strat_spec, scenario=scenarionumber, class_name=classname)
 
         # Boarding and Alighting Fare Zone for WCE Fare Calculation
         fzone_spec = self.get_strategy_skim_spec()
         fzone_spec["sub_path_combination_operator"] = ".max."
         fzone_spec["trip_components"]["boarding"] = "@farezone"
-        fzone_spec["results"]["strategy_values"] = Travel_Time_List[7]
+        fzone_spec["results"]["strategy_values"] = "mfWceBrdZone"
         strategy_skim(fzone_spec, scenario=scenarionumber, class_name=classname)
 
         fzone_spec2 = self.get_strategy_skim_spec()
         fzone_spec2["sub_path_combination_operator"] = ".max."
         fzone_spec2["trip_components"]["alighting"] = "@farezone"
-        fzone_spec2["results"]["strategy_values"] = Travel_Time_List[8]
+        fzone_spec2["results"]["strategy_values"] = "mfWceAliZone"
         strategy_skim(fzone_spec2, scenario=scenarionumber, class_name=classname)
 
         # TODO : Fare Calculation: Zone to Zone WCE Fare + bus/skytrain fare Increment
         specs = []
-        result = Travel_Time_List[9]
-        expression1 = "abs(%s-%s)-100*(%s*%s.eq.0)" %(Travel_Time_List[8],Travel_Time_List[7],
-                                                      Travel_Time_List[8],Travel_Time_List[7])
+        result = "mfWceFare"
+        expression1 = "abs(mfWceAliZone - mfWceBrdZone)-100*(mfWceAliZone * mfWceBrdZone.eq.0)"
 
         expression2 = "(%s.lt.0)*0 +(%s.eq.0)*%s +(%s.eq.10)*%s + (%s.eq.20)*%s + (%s.eq.30)*%s + (%s.eq.40)*%s " %(
                                                           result, result, self.wce_fare_zone[1],
@@ -783,43 +779,43 @@ class TransitAssignment(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
 
         if tod == "AM":
-            bus_skims =  ["mf5200", "mf5201", "mf5202", "mf5203", "mf5204"]
-            rail_skims = ["mf5400", "mf5401", "mf5402", "mf5403", "mf5404", "mf5405"]
-            wce_skims =  ["mf5600", "mf5601", "mf5602", "mf5603", "mf5604", "mf5605", "mf5606"]
+            bus_skims =  ["mfAmBusIvtt", "mfAmBusWait", "mfAmBusAux", "mfAmBusBoard", "mfAmBusFare"]
+            rail_skims = ["mfAmRailIvtt", "mfAmRailIvttBus", "mfAmRailWait", "mfAmRailAux", "mfAmRailBoard", "mfAmRailFare"]
+            wce_skims =  ["mfAmWceIvtt", "mfAmWceIvttRail", "mfAmWceIvttBus", "mfAmWceWait", "mfAmWceAux", "mfAmWceBoard", "mfAmWceFare"]
         if tod == "MD":
-            bus_skims =  ["mf5210", "mf5211", "mf5212", "mf5213", "mf5214"]
-            rail_skims = ["mf5410", "mf5411", "mf5412", "mf5413", "mf5414", "mf5415"]
+            bus_skims =  ["mfMdBusIvtt", "mfMdBusWait", "mfMdBusAux", "mfMdBusBoard", "mfMdBusFare"]
+            rail_skims = ["mfMdRailIvtt", "mfMdRailIvttBus", "mfMdRailWait", "mfMdRailAux", "mfMdRailBoard", "mfMdRailFare"]
             wce_skims =  None
         if tod == "PM":
-            bus_skims =  ["mf5220", "mf5221", "mf5222", "mf5223", "mf5224"]
-            rail_skims = ["mf5420", "mf5421", "mf5422", "mf5423", "mf5424", "mf5425"]
-            wce_skims =  ["mf5620", "mf5621", "mf5622", "mf5623", "mf5624", "mf5625", "mf5626"]
+            bus_skims =  ["mfPmBusIvtt", "mfPmBusWait", "mfPmBusAux", "mfPmBusBoard", "mfPmBusFare"]
+            rail_skims = ["mfPmRailIvtt", "mfPmRailIvttBus", "mfPmRailWait", "mfPmRailAux", "mfPmRailBoard", "mfPmRailFare"]
+            wce_skims =  ["mfPmWceIvtt", "mfPmWceIvttRail", "mfPmWceIvttBus", "mfPmWceWait", "mfPmWceAux", "mfPmWceBoard", "mfPmWceFare"]
 
         specs = []
         # Bus Skims
-        specs.append(util.matrix_spec(bus_skims[0], "mf9961"))
-        specs.append(util.matrix_spec(bus_skims[1], "mf9960"))
-        specs.append(util.matrix_spec(bus_skims[2], "mf9962"))
-        specs.append(util.matrix_spec(bus_skims[3], "mf9963"))
-        specs.append(util.matrix_spec(bus_skims[4], "mf9966"))
+        specs.append(util.matrix_spec(bus_skims[0], "mfBusIvtt"))
+        specs.append(util.matrix_spec(bus_skims[1], "mfBusWait"))
+        specs.append(util.matrix_spec(bus_skims[2], "mfBusAux"))
+        specs.append(util.matrix_spec(bus_skims[3], "mfBusBoard"))
+        specs.append(util.matrix_spec(bus_skims[4], "mfBusFare"))
 
         # Rail Skims
-        specs.append(util.matrix_spec(rail_skims[0], "mf9974"))
-        specs.append(util.matrix_spec(rail_skims[1], "mf9973"))
-        specs.append(util.matrix_spec(rail_skims[2], "mf9972"))
-        specs.append(util.matrix_spec(rail_skims[3], "mf9971"))
-        specs.append(util.matrix_spec(rail_skims[4], "mf9970"))
-        specs.append(util.matrix_spec(rail_skims[5], "mf9977"))
+        specs.append(util.matrix_spec(rail_skims[0], "mfRailIvtt"))
+        specs.append(util.matrix_spec(rail_skims[1], "mfRailIvttBus"))
+        specs.append(util.matrix_spec(rail_skims[2], "mfRailWait"))
+        specs.append(util.matrix_spec(rail_skims[3], "mfRailAux"))
+        specs.append(util.matrix_spec(rail_skims[4], "mfRailBoard"))
+        specs.append(util.matrix_spec(rail_skims[5], "mfRailFare"))
 
         # WCE Skims
         if wce_skims is not None:
-            specs.append(util.matrix_spec(wce_skims[0], "mf9985"))
-            specs.append(util.matrix_spec(wce_skims[1], "mf9984"))
-            specs.append(util.matrix_spec(wce_skims[2], "mf9983"))
-            specs.append(util.matrix_spec(wce_skims[3], "mf9982"))
-            specs.append(util.matrix_spec(wce_skims[4], "mf9981"))
-            specs.append(util.matrix_spec(wce_skims[5], "mf9980"))
-            specs.append(util.matrix_spec(wce_skims[6], "mf9989"))
+            specs.append(util.matrix_spec(wce_skims[0], "mfWceIvtt"))
+            specs.append(util.matrix_spec(wce_skims[1], "mfWceIvttRail"))
+            specs.append(util.matrix_spec(wce_skims[2], "mfWceIvttBus"))
+            specs.append(util.matrix_spec(wce_skims[3], "mfWceWait"))
+            specs.append(util.matrix_spec(wce_skims[4], "mfWceAux"))
+            specs.append(util.matrix_spec(wce_skims[5], "mfWceBoard"))
+            specs.append(util.matrix_spec(wce_skims[6], "mfWceFare"))
 
         util.compute_matrix(specs)
 
@@ -828,32 +824,32 @@ class TransitAssignment(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
 
         # Bus journey-level assignment
-        util.initmat(eb, "mf9960", "eBsWt", "Interim Skim BusTotalWait", 0)
-        util.initmat(eb, "mf9961", "eBsIv", "Interim Skim BusIVTT", 0)
-        util.initmat(eb, "mf9962", "eBsAx", "Interim Skim BusAux", 0)
-        util.initmat(eb, "mf9963", "eBsBr", "Interim Skim BusAvgBoard", 0)
-        util.initmat(eb, "mf9964", "eBsBrInc", "Interim Skim BusIncrementalCost", 0)
-        util.initmat(eb, "mf9965", "eBsBrCst", "Interim Skim BusFirstBoardCost", 0)
-        util.initmat(eb, "mf9966", "eBsBrFare", "Interim Skim BusTotalFare", 0)
+        util.initmat(eb, "mf9960", "BusWait", "Interim Skim BusTotalWait", 0)
+        util.initmat(eb, "mf9961", "BusIvtt", "Interim Skim BusIVTT", 0)
+        util.initmat(eb, "mf9962", "BusAux",  "Interim Skim BusAux", 0)
+        util.initmat(eb, "mf9963", "BusBoard", "Interim Skim BusAvgBoard", 0)
+        util.initmat(eb, "mf9964", "BusIncCst", "Interim Skim BusIncrementalCost", 0)
+        util.initmat(eb, "mf9965", "BusIncFirstCost", "Interim Skim BusFirstBoardCost", 0)
+        util.initmat(eb, "mf9966", "BusFare", "Interim Skim BusTotalFare", 0)
 
         # Rail journey-level assignment
-        util.initmat(eb, "mf9970", "nRlBr", "Interim-JL Skim RailAvgBoard", 0)
-        util.initmat(eb, "mf9971", "nRlAx", "Interim-JL Skim RailAux", 0)
-        util.initmat(eb, "mf9972", "nRlWt", "Interim-JL Skim RailTotalWait", 0)
-        util.initmat(eb, "mf9973", "nRBIv", "Interim-JL Skim RailBusIVTT", 0)
-        util.initmat(eb, "mf9974", "nRRIv", "Interim-JL Skim RailRailIVTT", 0)
-        util.initmat(eb, "mf9975", "nRlco", "Interim-JL Skim Rail Invehicle Cost", 0)
-        util.initmat(eb, "mf9976", "nRlbo", "Interim-JL Skim Rail Boarding Cost", 0)
-        util.initmat(eb, "mf9977", "nRlfa", "Interim-JL Skim Rail Fare", 0)
+        util.initmat(eb, "mf9970", "RailBoard", "Interim-JL Skim RailAvgBoard", 0)
+        util.initmat(eb, "mf9971", "RailAux", "Interim-JL Skim RailAux", 0)
+        util.initmat(eb, "mf9972", "RailWait", "Interim-JL Skim RailTotalWait", 0)
+        util.initmat(eb, "mf9973", "RailIvttBus", "Interim-JL Skim RailBusIVTT", 0)
+        util.initmat(eb, "mf9974", "RailIvtt", "Interim-JL Skim RailRailIVTT", 0)
+        util.initmat(eb, "mf9975", "RailIvCst", "Interim-JL Skim Rail Invehicle Cost", 0)
+        util.initmat(eb, "mf9976", "RailBrdCst", "Interim-JL Skim Rail Boarding Cost", 0)
+        util.initmat(eb, "mf9977", "RailFare", "Interim-JL Skim Rail Fare", 0)
 
         # WCE journey-level assignment
-        util.initmat(eb, "mf9980", "WClBr", "Interim-JL Skim WCEAvgBoard", 0)
-        util.initmat(eb, "mf9981", "WClAx", "Interim-JL Skim WCEAux", 0)
-        util.initmat(eb, "mf9982", "WClWt", "Interim-JL Skim WCETotalWait", 0)
-        util.initmat(eb, "mf9983", "WCBIv", "Interim-JL Skim WCEBusIVTT", 0)
-        util.initmat(eb, "mf9984", "WCRIv", "Interim-JL Skim WCERailIVTT", 0)
-        util.initmat(eb, "mf9985", "WCWIv", "Interim-JL Skim WCEWCEIVTT", 0)
-        util.initmat(eb, "mf9986", "WClco", "Interim-JL Skim WCE Invehicle Cost", 0)
-        util.initmat(eb, "mf9987", "WClbo", "Interim-JL Skim WCE Boarding Zone", 0)
-        util.initmat(eb, "mf9988", "WClal", "Interim-JL Skim WCE Alighting Zone", 0)
-        util.initmat(eb, "mf9989", "WClfa", "Interim-JL Skim WCE Fare", 0)
+        util.initmat(eb, "mf9980", "WceBoard", "Interim-JL Skim WCEAvgBoard", 0)
+        util.initmat(eb, "mf9981", "WceAux", "Interim-JL Skim WCEAux", 0)
+        util.initmat(eb, "mf9982", "WceWait", "Interim-JL Skim WCETotalWait", 0)
+        util.initmat(eb, "mf9983", "WceIvttBus", "Interim-JL Skim WCEBusIVTT", 0)
+        util.initmat(eb, "mf9984", "WceIvttRail", "Interim-JL Skim WCERailIVTT", 0)
+        util.initmat(eb, "mf9985", "WceIvtt", "Interim-JL Skim WCEWCEIVTT", 0)
+        util.initmat(eb, "mf9986", "WceIvCst", "Interim-JL Skim WCE Invehicle Cost", 0)
+        util.initmat(eb, "mf9987", "WceBrdZone", "Interim-JL Skim WCE Boarding Zone", 0)
+        util.initmat(eb, "mf9988", "WceAliZone", "Interim-JL Skim WCE Alighting Zone", 0)
+        util.initmat(eb, "mf9989", "WceFare", "Interim-JL Skim WCE Fare", 0)

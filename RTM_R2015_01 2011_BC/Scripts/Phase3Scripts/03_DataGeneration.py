@@ -707,85 +707,75 @@ class DataGeneration(_m.Tool()):
         #####################
         # Bus
         #####################
-
         # AM
-        util.initmat(eb, "mf5200", "AmBusIvtt", "Am Bus InVehicle Time", 0)
-        util.initmat(eb, "mf5201", "AmBusWait", "Am Bus Waiting Time", 0)
-        util.initmat(eb, "mf5202", "AmBusAux", "Am Bus Auxillary Time", 0)
-        util.initmat(eb, "mf5203", "AmBusBoard", "Am Bus Boardings", 0)
-        util.initmat(eb, "mf5204", "AmBusFare", "Am Bus Fare", 0)
-
+        util.initmat(eb, "mf5300", "AmBusIvtt", "Am Bus InVehicle Time", 0)
+        util.initmat(eb, "mf5301", "AmBusWait", "Am Bus Waiting Time", 0)
+        util.initmat(eb, "mf5302", "AmBusAux", "Am Bus Auxillary Time", 0)
+        util.initmat(eb, "mf5303", "AmBusBoard", "Am Bus Boardings", 0)
+        util.initmat(eb, "mf5304", "AmBusFare", "Am Bus Fare", 0)
         # MD
-        util.initmat(eb, "mf5210", "MdBusIvtt", "Md Bus InVehicle Time", 0)
-        util.initmat(eb, "mf5211", "MdBusWait", "Md Bus Waiting Time", 0)
-        util.initmat(eb, "mf5212", "MdBusAux", "Md Bus Auxillary Time", 0)
-        util.initmat(eb, "mf5213", "MdBusBoard", "Md Bus Boardings", 0)
-        util.initmat(eb, "mf5214", "MdBusFare", "Md Bus Fare", 0)
-
+        util.initmat(eb, "mf5310", "MdBusIvtt", "Md Bus InVehicle Time", 0)
+        util.initmat(eb, "mf5311", "MdBusWait", "Md Bus Waiting Time", 0)
+        util.initmat(eb, "mf5312", "MdBusAux", "Md Bus Auxillary Time", 0)
+        util.initmat(eb, "mf5313", "MdBusBoard", "Md Bus Boardings", 0)
+        util.initmat(eb, "mf5314", "MdBusFare", "Md Bus Fare", 0)
         # PM
-        util.initmat(eb, "mf5220", "PmBusIvtt", "Pm Bus InVehicle Time", 0)
-        util.initmat(eb, "mf5221", "PmBusWait", "Pm Bus Waiting Time", 0)
-        util.initmat(eb, "mf5222", "PmBusAux", "Pm Bus Auxillary Time", 0)
-        util.initmat(eb, "mf5223", "PmBusBoard", "Pm Bus Boardings", 0)
-        util.initmat(eb, "mf5224", "PmBusFare", "Pm Bus Fare", 0)
-
+        util.initmat(eb, "mf5320", "PmBusIvtt", "Pm Bus InVehicle Time", 0)
+        util.initmat(eb, "mf5321", "PmBusWait", "Pm Bus Waiting Time", 0)
+        util.initmat(eb, "mf5322", "PmBusAux", "Pm Bus Auxillary Time", 0)
+        util.initmat(eb, "mf5323", "PmBusBoard", "Pm Bus Boardings", 0)
+        util.initmat(eb, "mf5324", "PmBusFare", "Pm Bus Fare", 0)
 
         #####################
         # Rail
         #####################
-
         # AM
-        util.initmat(eb, "mf5400", "AmRailIvtt", "Am Rail Invehicle Time", 0)
-        util.initmat(eb, "mf5401", "AmRailIvttBus", "Am Rail Invehicle Time on Bus", 0)
-        util.initmat(eb, "mf5402", "AmRailWait", "Am Rail Waiting Time", 0)
-        util.initmat(eb, "mf5403", "AmRailAux", "Am Rail Auxilliary Time", 0)
-        util.initmat(eb, "mf5405", "AmRailFare", "Am Rail Fare", 0)
-        util.initmat(eb, "mf5404", "AmRailBoard", "Am Rail Boardings", 0)
-
+        util.initmat(eb, "mf5500", "AmRailIvtt", "Am Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5501", "AmRailIvttBus", "Am Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5502", "AmRailWait", "Am Rail Waiting Time", 0)
+        util.initmat(eb, "mf5503", "AmRailAux", "Am Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5504", "AmRailBoard", "Am Rail Boardings", 0)
+        util.initmat(eb, "mf5505", "AmRailFare", "Am Rail Fare", 0)
         # MD
-        util.initmat(eb, "mf5410", "MdRailIvtt", "Md Rail Invehicle Time", 0)
-        util.initmat(eb, "mf5411", "MdRailIvttBus", "Md Rail Invehicle Time on Bus", 0)
-        util.initmat(eb, "mf5412", "MdRailWait", "Md Rail Waiting Time", 0)
-        util.initmat(eb, "mf5413", "MdRailAux", "Md Rail Auxilliary Time", 0)
-        util.initmat(eb, "mf5414", "MdRailBoard", "Md Rail Boardings", 0)
-        util.initmat(eb, "mf5415", "MdRailFare", "Md Rail Fare", 0)
-
+        util.initmat(eb, "mf5510", "MdRailIvtt", "Md Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5511", "MdRailIvttBus", "Md Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5512", "MdRailWait", "Md Rail Waiting Time", 0)
+        util.initmat(eb, "mf5513", "MdRailAux", "Md Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5514", "MdRailBoard", "Md Rail Boardings", 0)
+        util.initmat(eb, "mf5515", "MdRailFare", "Md Rail Fare", 0)
         # PM
-        util.initmat(eb, "mf5420", "PmRailIvtt", "Pm Rail Invehicle Time", 0)
-        util.initmat(eb, "mf5421", "PmRailIvttBus", "Pm Rail Invehicle Time on Bus", 0)
-        util.initmat(eb, "mf5422", "PmRailWait", "Pm Rail Waiting Time", 0)
-        util.initmat(eb, "mf5423", "PmRailAux", "Pm Rail Auxilliary Time", 0)
-        util.initmat(eb, "mf5424", "PmRailBoard", "Pm Rail Boardings", 0)
-        util.initmat(eb, "mf5425", "PmRailFare", "Pm Rail Fare", 0)
-
+        util.initmat(eb, "mf5520", "PmRailIvtt", "Pm Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5521", "PmRailIvttBus", "Pm Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5522", "PmRailWait", "Pm Rail Waiting Time", 0)
+        util.initmat(eb, "mf5523", "PmRailAux", "Pm Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5524", "PmRailBoard", "Pm Rail Boardings", 0)
+        util.initmat(eb, "mf5525", "PmRailFare", "Pm Rail Fare", 0)
 
         #####################
         # WCE
         #####################
-
         # AM
-        util.initmat(eb, "mf5600", "AmWceIvtt", "Am Rail Invehicle Time", 0)
-        util.initmat(eb, "mf5601", "AmWceIvttRail", "Am Rail Invehicle Time on Rail", 0)
-        util.initmat(eb, "mf5602", "AmWceIvttBus", "Am Rail Invehicle Time on Bus", 0)
-        util.initmat(eb, "mf5603", "AmWceWait", "Am Rail Waiting Time", 0)
-        util.initmat(eb, "mf5604", "AmWceAux", "Am Rail Auxilliary Time", 0)
-        util.initmat(eb, "mf5605", "AmWceBoards", "Am Rail Boardings", 0)
-        util.initmat(eb, "mf5606", "AmWceFare", "Am Rail Fare", 0)
-
+        util.initmat(eb, "mf5700", "AmWceIvtt", "Am Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5701", "AmWceIvttRail", "Am Rail Invehicle Time on Rail", 0)
+        util.initmat(eb, "mf5702", "AmWceIvttBus", "Am Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5703", "AmWceWait", "Am Rail Waiting Time", 0)
+        util.initmat(eb, "mf5704", "AmWceAux", "Am Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5705", "AmWceBoard", "Am Rail Boardings", 0)
+        util.initmat(eb, "mf5706", "AmWceFare", "Am Rail Fare", 0)
         # MD
-        util.initmat(eb, "mf5610", "MdWceIvtt", "Md Rail Invehicle Time", 0)
-        util.initmat(eb, "mf5611", "MdWceIvttRail", "Md Rail Invehicle Time on Rail", 0)
-        util.initmat(eb, "mf5612", "MdWceIvttBus", "Md Rail Invehicle Time on Bus", 0)
-        util.initmat(eb, "mf5613", "MdWceWait", "Md Rail Waiting Time", 0)
-        util.initmat(eb, "mf5614", "MdWceAux", "Md Rail Auxilliary Time", 0)
-        util.initmat(eb, "mf5615", "MdWceBoards", "Md Rail Boardings", 0)
-        util.initmat(eb, "mf5616", "MdWceFare", "Md Rail Fare", 0)
-
+        util.initmat(eb, "mf5710", "MdWceIvtt", "Md Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5711", "MdWceIvttRail", "Md Rail Invehicle Time on Rail", 0)
+        util.initmat(eb, "mf5712", "MdWceIvttBus", "Md Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5713", "MdWceWait", "Md Rail Waiting Time", 0)
+        util.initmat(eb, "mf5714", "MdWceAux", "Md Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5715", "MdWceBoard", "Md Rail Boardings", 0)
+        util.initmat(eb, "mf5716", "MdWceFare", "Md Rail Fare", 0)
         # PM
-        util.initmat(eb, "mf5620", "PmWceIvtt", "Pm Rail Invehicle Time", 0)
-        util.initmat(eb, "mf5621", "PmWceIvttRail", "Pm Rail Invehicle Time on Rail", 0)
-        util.initmat(eb, "mf5622", "PmWceIvttBus", "Pm Rail Invehicle Time on Bus", 0)
-        util.initmat(eb, "mf5623", "PmWceWait", "Pm Rail Waiting Time", 0)
-        util.initmat(eb, "mf5624", "PmWceAux", "Pm Rail Auxilliary Time", 0)
-        util.initmat(eb, "mf5625", "PmWceBoards", "Pm Rail Boardings", 0)
-        util.initmat(eb, "mf5626", "PmWceFare", "Pm Rail Fare", 0)
+        util.initmat(eb, "mf5720", "PmWceIvtt", "Pm Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5721", "PmWceIvttRail", "Pm Rail Invehicle Time on Rail", 0)
+        util.initmat(eb, "mf5722", "PmWceIvttBus", "Pm Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5723", "PmWceWait", "Pm Rail Waiting Time", 0)
+        util.initmat(eb, "mf5724", "PmWceAux", "Pm Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5725", "PmWceBoard", "Pm Rail Boardings", 0)
+        util.initmat(eb, "mf5726", "PmWceFare", "Pm Rail Fare", 0)
+
