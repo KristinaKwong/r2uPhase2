@@ -353,6 +353,24 @@ class DataImport(_m.Tool()):
         data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_PM.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
+                        
+        util.delmat(eb, "mf20")
+        util.delmat(eb, "mf21")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_Truck_AM_2011.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+                        
+        util.delmat(eb, "mf40")
+        util.delmat(eb, "mf41")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_Truck_MD_2011.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+                        
+        util.delmat(eb, "mf60")
+        util.delmat(eb, "mf61")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_Truck_PM_2011.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
 
         # Batch in external demand matrices
         util.delmat(eb, "mf70")
