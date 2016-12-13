@@ -58,6 +58,7 @@ class ModeChoiceGenDf(_m.Tool()):
         BLWcNw = util.get_matrix_numpy(eb, "wcepr-lotChceNWkAMPA").flatten() #Best Lot WCE Non-Work
         NoTAZ  = len(util.get_matrix_numpy(eb, "zoneindex")) # Number of TAZs in Model
 
+        # Time component blend factors
         hbwo_fct = self.get_fact(eb, [["HbWBl_AM_P-A", "HbWBl_MD_P-A", "HbWBl_PM_P-A"],
                                 ["HbWBl_AM_A-P", "HbWBl_MD_A-P", "HbWBl_PM_A-P"]])
 
@@ -88,6 +89,37 @@ class ModeChoiceGenDf(_m.Tool()):
         nhbo_fct = self.get_fact(eb, [["NHbOBl_AM_P-A", "NHbOBl_MD_P-A", "NHbOBl_PM_P-A"],
                                  ["Zero", "Zero", "Zero"]])
 
+        # Transit fare blend factors
+        trfr_hbwo_fct = self.get_fact_fare(eb, [["TrFr_HbWBl_AM_P-A", "TrFr_HbWBl_MD_P-A", "TrFr_HbWBl_PM_P-A", "TrFr_HbWBl_OP_P-A"],
+                                ["TrFr_HbWBl_AM_A-P", "TrFr_HbWBl_MD_A-P", "TrFr_HbWBl_PM_A-P", "TrFr_HbWBl_OP_A-P"]])
+
+        trfr_hbun_fct = self.get_fact_fare(eb, [["TrFr_HbUBl_AM_P-A", "TrFr_HbUBl_MD_P-A", "TrFr_HbUBl_PM_P-A", "TrFr_HbUBl_OP_P-A"],
+                                ["TrFr_HbUBl_AM_A-P", "TrFr_HbUBl_MD_A-P", "TrFr_HbUBl_PM_A-P", "TrFr_HbUBl_OP_A-P"]])
+
+        trfr_hbsc_fct = self.get_fact_fare(eb, [["TrFr_HbScBl_AM_P-A", "TrFr_HbScBl_MD_P-A", "TrFr_HbScBl_PM_P-A", "TrFr_HbScBl_OP_P-A"],
+                                ["TrFr_HbScBl_AM_A-P", "TrFr_HbScBl_MD_A-P", "TrFr_HbScBl_PM_A-P", "TrFr_HbScBl_OP_A-P"]])
+
+        trfr_hbsh_fct = self.get_fact_fare(eb, [["TrFr_HbShBl_AM_P-A", "TrFr_HbShBl_MD_P-A", "TrFr_HbShBl_PM_P-A", "TrFr_HbShBl_OP_P-A"],
+                                ["TrFr_HbShBl_AM_A-P", "TrFr_HbShBl_MD_A-P", "TrFr_HbShBl_PM_A-P", "TrFr_HbShBl_OP_A-P"]])
+
+
+        trfr_hbsh_fct = self.get_fact_fare(eb, [["TrFr_HbShBl_AM_P-A", "TrFr_HbShBl_MD_P-A", "TrFr_HbShBl_PM_P-A", "TrFr_HbShBl_OP_P-A"],
+                                ["TrFr_HbShBl_AM_A-P", "TrFr_HbShBl_MD_A-P", "TrFr_HbShBl_PM_A-P", "TrFr_HbShBl_OP_A-P"]])
+
+        trfr_hbpb_fct = self.get_fact_fare(eb, [["TrFr_HbPbBl_AM_P-A", "TrFr_HbPbBl_MD_P-A", "TrFr_HbPbBl_PM_P-A", "TrFr_HbPbBl_OP_P-A"],
+                                ["TrFr_HbPbBl_AM_A-P", "TrFr_HbPbBl_MD_A-P", "TrFr_HbPbBl_PM_A-P", "TrFr_HbPbBl_OP_A-P"]])
+
+        trfr_hbso_fct = self.get_fact_fare(eb, [["TrFr_HbSoBl_AM_P-A", "TrFr_HbSoBl_MD_P-A", "TrFr_HbSoBl_PM_P-A", "TrFr_HbSoBl_OP_P-A"],
+                                ["TrFr_HbSoBl_AM_A-P", "TrFr_HbSoBl_MD_A-P", "TrFr_HbSoBl_PM_A-P", "TrFr_HbSoBl_OP_A-P"]])
+
+        trfr_hbes_fct = self.get_fact_fare(eb, [["TrFr_HbEsBl_AM_P-A", "TrFr_HbEsBl_MD_P-A", "TrFr_HbEsBl_PM_P-A", "TrFr_HbEsBl_OP_P-A"],
+                                ["TrFr_HbEsBl_AM_A-P", "TrFr_HbEsBl_MD_A-P", "TrFr_HbEsBl_PM_A-P", "TrFr_HbEsBl_OP_A-P"]])
+
+        trfr_nhbw_fct = self.get_fact_fare(eb, [["TrFr_NHbWBl_AM_P-A", "TrFr_NHbWBl_MD_P-A", "TrFr_NHbWBl_PM_P-A", "TrFr_NHbWBl_OP_P-A"],
+                                ["Zero", "Zero", "Zero", "Zero"]])
+
+        trfr_nhbo_fct = self.get_fact_fare(eb, [["TrFr_NHbOBl_AM_P-A", "TrFr_NHbOBl_MD_P-A", "TrFr_NHbOBl_PM_P-A", "TrFr_NHbOBl_OP_P-A"],
+                                ["Zero", "Zero", "Zero", "Zero"]])
 
         ##############################################################################
         ##       Auto Skims SOV VOT 1 NHBO, HbSch, HbU, HbShopLow, HbPBLow
@@ -209,9 +241,7 @@ class ModeChoiceGenDf(_m.Tool()):
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
             util.set_matrix_numpy(eb, values['Mat'][2], Df['AutoTol'])
 
-
         ##       Park and Ride Home-base work Auto-leg
-
 
         # Blend Factors                AM , MD  , PM           AM  ,MD , PM    Where Blended Matrices get stored in same order as above
         BlendDictPR = {'hbwprb':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
@@ -384,20 +414,30 @@ class ModeChoiceGenDf(_m.Tool()):
         self.GenSkimDict(eb, BusWatDict, ["AmBusWait", "MdBusWait",  "PmBusWait"]) # Bus Wait
         self.GenSkimDict(eb, BusAuxDict, ["AmBusAux",  "MdBusAux",   "PmBusAux"]) # Bus Aux
         self.GenSkimDict(eb, BusBrdDict, ["AmBusBoard","MdBusBoard", "PmBusBoard"]) # Bus Boarding
-        self.GenSkimDict(eb, BusFarDict, ["AmBusFare", "MdBusFare",  "PmBusFare"]) # Bus Fare
-
+        self.GenSkimDictFare(eb, BusFarDict, ["AmBusFare", "MdBusFare",  "PmBusFare"]) # Bus Fare
 
        # Blend Factors
         BlendDict = {   #AM,   MD,   PM         AM,   MD,   PM         Where Blended Matrices get stored in same order as above
-         'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlBusIvtt', 'HbWBlBusWait', 'HbWBlBusAux', 'HbWBlBusBoard', 'HbWBlBusFare']},  # Home-base work
-         'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['HbUBlBusIvtt', 'HbUBlBusWait', 'HbUBlBusAux', 'HbUBlBusBoard', 'HbUBlBusFare']},  # Home-base university
-         'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlBusIvtt', 'HbScBlBusWait', 'HbScBlBusAux', 'HbScBlBusBoard', 'HbScBlBusFare']},  # Home-base school
-         'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlBusIvtt', 'HbShBlBusWait', 'HbShBlBusAux', 'HbShBlBusBoard', 'HbShBlBusFare']},  # Home-base shopping
-         'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlBusIvtt', 'HbPbBlBusWait', 'HbPbBlBusAux', 'HbPbBlBusBoard', 'HbPbBlBusFare']},  # Home-base pb
-         'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlBusIvtt', 'HbSoBlBusWait', 'HbSoBlBusAux', 'HbSoBlBusBoard', 'HbSoBlBusFare']},  # Home-base social
-         'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlBusIvtt', 'HbEsBlBusWait', 'HbEsBlBusAux', 'HbEsBlBusBoard', 'HbEsBlBusFare']},  # Home-base escorting
-         'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlBusIvtt', 'NHbWBlBusWait', 'NHbWBlBusAux', 'NHbWBlBusBoard', 'NHbWBlBusFare']},  # Non-home base work
-         'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlBusIvtt', 'NHbOBlBusWait', 'NHbOBlBusAux', 'NHbOBlBusBoard', 'NHbOBlBusFare']}}  # Non-home base other
+         'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlBusIvtt', 'HbWBlBusWait', 'HbWBlBusAux', 'HbWBlBusBoard']},  # Home-base work
+         'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['HbUBlBusIvtt', 'HbUBlBusWait', 'HbUBlBusAux', 'HbUBlBusBoard']},  # Home-base university
+         'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlBusIvtt', 'HbScBlBusWait', 'HbScBlBusAux', 'HbScBlBusBoard']},  # Home-base school
+         'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlBusIvtt', 'HbShBlBusWait', 'HbShBlBusAux', 'HbShBlBusBoard']},  # Home-base shopping
+         'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlBusIvtt', 'HbPbBlBusWait', 'HbPbBlBusAux', 'HbPbBlBusBoard']},  # Home-base pb
+         'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlBusIvtt', 'HbSoBlBusWait', 'HbSoBlBusAux', 'HbSoBlBusBoard']},  # Home-base social
+         'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlBusIvtt', 'HbEsBlBusWait', 'HbEsBlBusAux', 'HbEsBlBusBoard']},  # Home-base escorting
+         'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlBusIvtt', 'NHbWBlBusWait', 'NHbWBlBusAux', 'NHbWBlBusBoard']},  # Non-home base work
+         'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlBusIvtt', 'NHbOBlBusWait', 'NHbOBlBusAux', 'NHbOBlBusBoard']}}  # Non-home base other
+
+        BlendFareDict = {
+         'trfrhbwo':{'PA': trfr_hbwo_fct[0], 'AP':trfr_hbwo_fct[1], 'Mat':['HbWBlBusFare']}, # fare blends
+         'trfrhbun':{'PA': trfr_hbun_fct[0], 'AP':trfr_hbun_fct[1], 'Mat':['HbUBlBusFare']},
+         'trfrhbsc':{'PA': trfr_hbsc_fct[0], 'AP':trfr_hbsc_fct[1], 'Mat':['HbScBlBusFare']},
+         'trfrhbsh':{'PA': trfr_hbsh_fct[0], 'AP':trfr_hbsh_fct[1], 'Mat':['HbShBlBusFare']},
+         'trfrhbpb':{'PA': trfr_hbpb_fct[0], 'AP':trfr_hbpb_fct[1], 'Mat':['HbPbBlBusFare']},
+         'trfrhbso':{'PA': trfr_hbso_fct[0], 'AP':trfr_hbso_fct[1], 'Mat':['HbSoBlBusFare']},
+         'trfrhbes':{'PA': trfr_hbes_fct[0], 'AP':trfr_hbes_fct[1], 'Mat':['HbEsBlBusFare']},
+         'trfrnhbw':{'PA': trfr_nhbw_fct[0], 'AP':trfr_nhbw_fct[1], 'Mat':['NHbWBlBusFare']},
+         'trfrnhbo':{'PA': trfr_nhbo_fct[0], 'AP':trfr_nhbo_fct[1], 'Mat':['NHbOBlBusFare']}}
 
         for keys, values in BlendDict.items():
             # Calculate blended skims
@@ -406,13 +446,23 @@ class ModeChoiceGenDf(_m.Tool()):
             Df['BusWat']  = self.calc_blend(values, BusWatDict)
             Df['BusAux']  = self.calc_blend(values, BusAuxDict)
             Df['BusBrd']  = self.calc_blend(values, BusBrdDict)
-            Df['BusFar']  = self.calc_blend(values, BusFarDict)
+
             # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['BusIVT'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['BusWat'])
             util.set_matrix_numpy(eb, values['Mat'][2], Df['BusAux'])
             util.set_matrix_numpy(eb, values['Mat'][3], Df['BusBrd'])
-            util.set_matrix_numpy(eb, values['Mat'][4], Df['BusFar'])
+
+
+        for keys, values in BlendFareDict.items():
+            # Calculate blended fares
+            Df = {}
+            Df['BusFar']  = self.calc_blend(values, BusFarDict)
+            if keys == "trfrhbwo":
+                Temp_Fare = Df['BusFar'].flatten()
+
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['BusFar'])
+
 
        ##############################################################################
        ##       Park and Ride Home-base Work/Uni/Soc Bus-leg
@@ -433,7 +483,7 @@ class ModeChoiceGenDf(_m.Tool()):
             Df_Bus_Leg['BusWat'] = self.calc_blend(values, BusWatDict).flatten()
             Df_Bus_Leg['BusAux'] = self.calc_blend(values, BusAuxDict).flatten()
             Df_Bus_Leg['BusBrd'] = self.calc_blend(values, BusBrdDict).flatten()
-            Df_Bus_Leg['BusFar'] = self.calc_blend(values, BusFarDict).flatten()
+            Df_Bus_Leg['BusFar'] = Temp_Fare
             # Join the two data frames based on skims from the Best Lot to the destination
             Df = pd.merge(Dfmerge, Df_Bus_Leg, left_on = ['BL', 'j'],
                      right_on = ['i', 'j'], how = 'left')
@@ -444,7 +494,7 @@ class ModeChoiceGenDf(_m.Tool()):
             util.set_matrix_numpy(eb, values['Mat'][3], Df['BusBrd'].reshape(NoTAZ,NoTAZ))
             util.set_matrix_numpy(eb, values['Mat'][4], Df['BusFar'].reshape(NoTAZ,NoTAZ))
         # delete data generated to free up memory
-        del Df, Dfmerge, Df_Bus_Leg, BusIVTDict, BusWatDict, BusAuxDict, BusBrdDict, BusFarDict
+        del Df, Dfmerge, Df_Bus_Leg, BusIVTDict, BusWatDict, BusAuxDict, BusBrdDict, BusFarDict, Temp_Fare
 #
 #        ##############################################################################
 #        ##       Rail Skims
@@ -460,28 +510,39 @@ class ModeChoiceGenDf(_m.Tool()):
         self.GenSkimDict(eb, RalWatDict, ["AmRailWait",    "MdRailWait",    "PmRailWait"]) # Rail Wait
         self.GenSkimDict(eb, RalAuxDict, ["AmRailAux",     "MdRailAux",     "PmRailAux"]) # Rail Aux
         self.GenSkimDict(eb, RalBrdDict, ["AmRailBoard",   "MdRailBoard",   "PmRailBoard"]) # Rail Boarding
-        self.GenSkimDict(eb, RalFarDict, ["AmRailFare",    "MdRailFare",    "PmRailFare"]) # Rail Fare
+        self.GenSkimDictFare(eb, RalFarDict, ["AmRailFare",    "MdRailFare",    "PmRailFare"]) # Rail Fare
 
         # Blend Factors
         BlendDict = {  #AM,   MD,   PM         AM,   MD,   PM
          'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
-                 'Mat':['HbWBlRailIvtt', 'HbWBlRailIvttBus', 'HbWBlRailWait', 'HbWBlRailAux', 'HbWBlRailBoard', 'HbWBlRailFare']}, # Where Blended Matrices get stored in same order as above
+                 'Mat':['HbWBlRailIvtt', 'HbWBlRailIvttBus', 'HbWBlRailWait', 'HbWBlRailAux', 'HbWBlRailBoard']}, # Where Blended Matrices get stored in same order as above
          'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1],
-                 'Mat':['HbUBlRailIvtt', 'HbUBlRailIvttBus', 'HbUBlRailWait', 'HbUBlRailAux', 'HbUBlRailBoard', 'HbUBlRailFare']},
+                 'Mat':['HbUBlRailIvtt', 'HbUBlRailIvttBus', 'HbUBlRailWait', 'HbUBlRailAux', 'HbUBlRailBoard']},
          'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1],
-                 'Mat':['HbScBlRailIvtt', 'HbScBlRailIvttBus', 'HbScBlRailWait', 'HbScBlRailAux', 'HbScBlRailBoard', 'HbScBlRailFare']},
+                 'Mat':['HbScBlRailIvtt', 'HbScBlRailIvttBus', 'HbScBlRailWait', 'HbScBlRailAux', 'HbScBlRailBoard']},
          'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1],
-                 'Mat':['HbShBlRailIvtt', 'HbShBlRailIvttBus', 'HbShBlRailWait', 'HbShBlRailAux', 'HbShBlRailBoard', 'HbShBlRailFare']},
+                 'Mat':['HbShBlRailIvtt', 'HbShBlRailIvttBus', 'HbShBlRailWait', 'HbShBlRailAux', 'HbShBlRailBoard']},
          'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1],
-                 'Mat':['HbPbBlRailIvtt', 'HbPbBlRailIvttBus', 'HbPbBlRailWait', 'HbPbBlRailAux', 'HbPbBlRailBoard', 'HbPbBlRailFare']},
+                 'Mat':['HbPbBlRailIvtt', 'HbPbBlRailIvttBus', 'HbPbBlRailWait', 'HbPbBlRailAux', 'HbPbBlRailBoard']},
          'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1],
-                 'Mat':['HbSoBlRailIvtt', 'HbSoBlRailIvttBus', 'HbSoBlRailWait', 'HbSoBlRailAux', 'HbSoBlRailBoard', 'HbSoBlRailFare']},
+                 'Mat':['HbSoBlRailIvtt', 'HbSoBlRailIvttBus', 'HbSoBlRailWait', 'HbSoBlRailAux', 'HbSoBlRailBoard']},
          'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1],
-                 'Mat':['HbEsBlRailIvtt', 'HbEsBlRailIvttBus', 'HbEsBlRailWait', 'HbEsBlRailAux', 'HbEsBlRailBoard', 'HbEsBlRailFare']},
+                 'Mat':['HbEsBlRailIvtt', 'HbEsBlRailIvttBus', 'HbEsBlRailWait', 'HbEsBlRailAux', 'HbEsBlRailBoard']},
          'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1],
-                 'Mat':['NHbWBlRailIvtt', 'NHbWBlRailIvttBus', 'NHbWBlRailWait', 'NHbWBlRailAux', 'NHbWBlRailBoard', 'NHbWBlRailFare']},
+                 'Mat':['NHbWBlRailIvtt', 'NHbWBlRailIvttBus', 'NHbWBlRailWait', 'NHbWBlRailAux', 'NHbWBlRailBoard']},
          'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1],
-                 'Mat':['NHbOBlRailIvtt', 'NHbOBlRailIvttBus', 'NHbOBlRailWait', 'NHbOBlRailAux', 'NHbOBlRailBoard', 'NHbOBlRailFare']}}
+                 'Mat':['NHbOBlRailIvtt', 'NHbOBlRailIvttBus', 'NHbOBlRailWait', 'NHbOBlRailAux', 'NHbOBlRailBoard']}}
+
+        BlendFareDict = {
+         'trfrhbwo':{'PA': trfr_hbwo_fct[0], 'AP':trfr_hbwo_fct[1], 'Mat':['HbWBlRailFare']}, # fare blends
+         'trfrhbun':{'PA': trfr_hbun_fct[0], 'AP':trfr_hbun_fct[1], 'Mat':['HbUBlRailFare']},
+         'trfrhbsc':{'PA': trfr_hbsc_fct[0], 'AP':trfr_hbsc_fct[1], 'Mat':['HbScBlRailFare']},
+         'trfrhbsh':{'PA': trfr_hbsh_fct[0], 'AP':trfr_hbsh_fct[1], 'Mat':['HbShBlRailFare']},
+         'trfrhbpb':{'PA': trfr_hbpb_fct[0], 'AP':trfr_hbpb_fct[1], 'Mat':['HbPbBlRailFare']},
+         'trfrhbso':{'PA': trfr_hbso_fct[0], 'AP':trfr_hbso_fct[1], 'Mat':['HbSoBlRailFare']},
+         'trfrhbes':{'PA': trfr_hbes_fct[0], 'AP':trfr_hbes_fct[1], 'Mat':['HbEsBlRailFare']},
+         'trfrnhbw':{'PA': trfr_nhbw_fct[0], 'AP':trfr_nhbw_fct[1], 'Mat':['NHbWBlRailFare']},
+         'trfrnhbo':{'PA': trfr_nhbo_fct[0], 'AP':trfr_nhbo_fct[1], 'Mat':['NHbOBlRailFare']}}
 
         for keys, values in BlendDict.items():
             # Calculate blended skims
@@ -491,14 +552,22 @@ class ModeChoiceGenDf(_m.Tool()):
             Df['RalWat'] = self.calc_blend(values, RalWatDict)
             Df['RalAux'] = self.calc_blend(values, RalAuxDict)
             Df['RalBrd'] = self.calc_blend(values, RalBrdDict)
-            Df['RalFar'] = self.calc_blend(values, RalFarDict)
             # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['RalIVR'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['RalIVB'])
             util.set_matrix_numpy(eb, values['Mat'][2], Df['RalWat'])
             util.set_matrix_numpy(eb, values['Mat'][3], Df['RalAux'])
             util.set_matrix_numpy(eb, values['Mat'][4], Df['RalBrd'])
-            util.set_matrix_numpy(eb, values['Mat'][5], Df['RalFar'])
+
+        for keys, values in BlendFareDict.items():
+            # Calculate blended fares
+            Df = {}
+            Df['RalFar']  = self.calc_blend(values, RalFarDict)
+            if keys == "trfrhbwo":
+                Temp_Fare = Df['RalFar'].flatten()
+
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['RalFar'])
+
 #       ##############################################################################
 #        ##       Park and Ride Home-base Work/Uni/Soc Rail-leg
 #        ##############################################################################
@@ -520,7 +589,7 @@ class ModeChoiceGenDf(_m.Tool()):
             Df_Rail_Leg['RalWat'] = self.calc_blend(values, RalWatDict).flatten()
             Df_Rail_Leg['RalAux'] = self.calc_blend(values, RalAuxDict).flatten()
             Df_Rail_Leg['RalBrd'] = self.calc_blend(values, RalBrdDict).flatten()
-            Df_Rail_Leg['RalFar'] = self.calc_blend(values, RalFarDict).flatten()
+            Df_Rail_Leg['RalFar'] = Temp_Fare
             # Join the two data frames based on skims from the Best Lot to the destination
             Df = pd.merge(Dfmerge, Df_Rail_Leg, left_on = ['BL', 'j'],
                      right_on = ['i', 'j'], how = 'left')
@@ -532,7 +601,7 @@ class ModeChoiceGenDf(_m.Tool()):
             util.set_matrix_numpy(eb, values['Mat'][4], Df['RalBrd'].reshape(NoTAZ,NoTAZ))
             util.set_matrix_numpy(eb, values['Mat'][5], Df['RalFar'].reshape(NoTAZ,NoTAZ))
         # delete data generated to free up memory
-        del Df, Dfmerge, Df_Rail_Leg, RalIVBDict, RalIVRDict, RalWatDict, RalAuxDict, RalBrdDict, RalFarDict
+        del Df, Dfmerge, Df_Rail_Leg, RalIVBDict, RalIVRDict, RalWatDict, RalAuxDict, RalBrdDict, RalFarDict, Temp_Fare
 #
 #        ##############################################################################
 #        ##       WCE Skims
@@ -627,6 +696,18 @@ class ModeChoiceGenDf(_m.Tool()):
         Dict['AP'] = [AM_Mat.transpose(), MD_Mat.transpose(), PM_Mat.transpose()]
         return (Dict)
 
+    def GenSkimDict_Fare(self, eb, Dict, Mat):
+        util = _m.Modeller().tool("translink.emme.util")
+        NoTAZ  = len(util.get_matrix_numpy(eb, "zoneindex")) # Number of TAZs in Model
+        AM_Mat = util.get_matrix_numpy(eb, Mat[0])
+        MD_Mat = util.get_matrix_numpy(eb, Mat[1])
+        PM_Mat = util.get_matrix_numpy(eb, Mat[2])
+        OP_Mat = util.get_matrix_numpy(eb, "oneZoneFare")
+
+        Dict['PA'] = [AM_Mat, MD_Mat, PM_Mat, OP_Mat]
+        Dict['AP'] = [AM_Mat.transpose(), MD_Mat.transpose(), PM_Mat.transpose(), OP_Mat.transpose()]
+        return (Dict)
+
     def calc_blend(self, Fact, Dict):
         util = _m.Modeller().tool("translink.emme.util")
         Result = util.sumproduct(Fact['PA'], Dict['PA']) + util.sumproduct(Fact['AP'], Dict['AP'])
@@ -648,6 +729,26 @@ class ModeChoiceGenDf(_m.Tool()):
                             float(util.get_matrix_numpy(eb, FactList[1][2]))
                            ])
         return np.array([PA_List, AP_List])
+
+    def get_fact_fare(self, eb, FactList):
+
+        util = _m.Modeller().tool("translink.emme.util")
+        PA_List = np.array([
+                            float(util.get_matrix_numpy(eb, FactList[0][0])),
+                            float(util.get_matrix_numpy(eb, FactList[0][1])),
+                            float(util.get_matrix_numpy(eb, FactList[0][2])),
+                            float(util.get_matrix_numpy(eb, FactList[0][3]))
+                           ])
+
+        AP_List = np.array([
+                            float(util.get_matrix_numpy(eb, FactList[1][0])),
+                            float(util.get_matrix_numpy(eb, FactList[1][1])),
+                            float(util.get_matrix_numpy(eb, FactList[1][2])),
+                            float(util.get_matrix_numpy(eb, FactList[1][3]))
+                           ])
+        return np.array([PA_List, AP_List])
+
+
 
     @_m.logbook_trace("Park & Ride - Choose Best Lot")
     def bestlot(self, eb, year):
@@ -868,11 +969,11 @@ class ModeChoiceGenDf(_m.Tool()):
     def BusGT(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
         # [AM,MD,PM]
-        transit_mats = {"busIVT" : ["mf5200",  "mf5210", "mf5220"],
-                        "busWait" : ["mf5201",  "mf5211", "mf5221"],
-                        "auxTransit" : ["mf5202", "mf5212", "mf5222"],
-                        "boardings" : ["mf5203", "mf5213", "mf5223"],
-                        "busFare" : ["mf5204",  "mf5214", "mf5224"]}
+        transit_mats = {"busIVT" : ["AmBusIvtt",  "MdBusIvtt", "PmBusIvtt"],
+                        "busWait" : ["AmBusWait",  "MdBusWait", "PmBusWait"],
+                        "auxTransit" : ["AmBusAux", "MdBusAux", "PmBusAux"],
+                        "boardings" : ["AmBusBoard", "MdBusBoard", "PmBusBoard"],
+                        "busFare" : ["AmBusFare",  "MdBusFare", "PmBusFare"]}
 
         # [Work, non-work]
         vot_mats = ['VotBus', 'VotBus']
@@ -910,23 +1011,25 @@ class ModeChoiceGenDf(_m.Tool()):
 
         # work trips - not ideal formulation but quick and gets it done
         # [AM,MD,PM]
-        auto_mats = {"autotime" : ["mf5001",  "mf5021", "mf5041"],
-                    "autotoll" : ["mf5002", "mf5022", "mf5042"],
-                    "autodist" : ["mf5000", "mf5020", "mf5040"]}
+        auto_mats = {"autotime" : ["AmSovTimeVOT4",  "MdSovTimeVOT4", "PmSovTimeVOT4"],
+                    "autotoll" : ["AmSovTollVOT4", "MdSovTollVOT4", "PmSovTollVOT4"],
+                    "autodist" : ["AmSovDistVOT4", "MdSovDistVOT4", "PmSovDistVOT4"]}
 
         # [Work, non-work]
         vot_mat = 'AutoVOT4'
+        auto_prcp = 'pr_auto_time_prcp'
 
         # [AMWk, MDWk, PMWk]
         result_mats = ["mf6003", "mf6048", "mf6088"]
 
         specs = []
         for i in range(0,3):
-            expression = ("{autotime} + {termtime}"
+            expression = ("{autotime}*{perception} + {termtime}"
                           " + (({VOC} * {autodist}) + {autotoll} + {lotcost}) * {VOT}"
                           ).format(autotime=auto_mats["autotime"][i],
                                    autotoll=auto_mats["autotoll"][i],
                                    autodist=auto_mats["autodist"][i],
+                                   perception = auto_prcp,
                                    VOT=vot_mat,
                                    VOC="autoOpCost",
                                    lotcost = "mo90'",
@@ -938,23 +1041,24 @@ class ModeChoiceGenDf(_m.Tool()):
 
 
 
-        auto_mats = {"autotime" : ["mf5004",  "mf5024", "mf5044"],
-                    "autotoll" : ["mf5005", "mf5025", "mf5045"],
-                    "autodist" : ["mf5003", "mf5023", "mf5043"] }
+        auto_mats = {"autotime" : ["AmSovTimeVOT3",  "MdSovTimeVOT3", "PmSovTimeVOT3"],
+                    "autotoll" : ["AmSovTollVOT3", "MdSovTollVOT3", "PmSovTollVOT3"],
+                    "autodist" : ["AmSovDistVOT3", "MdSovDistVOT3", "PmSovDistVOT3"]}
 
         # [Work, non-work]
         vot_mat = 'VotNwkMedIncSov'
-
+        auto_prcp = 'pr_auto_time_prcp'
         # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
         result_mats = ['mf6133','mf6173','mf6213']
 
         specs = []
         for i in range(0,3):
-            expression = ("{autotime} + {termtime}"
+            expression = ("{autotime}*{perception} + {termtime}"
                           " + (({VOC} * {autodist}) + {autotoll} + {lotcost}) * {VOT}"
                           ).format(autotime=auto_mats["autotime"][i],
                                    autotoll=auto_mats["autotoll"][i],
                                    autodist=auto_mats["autodist"][i],
+                                   perception = auto_prcp,
                                    VOT=vot_mat,
                                    VOC="autoOpCost",
                                    lotcost = "mo90'",
