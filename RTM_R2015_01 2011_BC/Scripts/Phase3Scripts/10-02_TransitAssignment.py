@@ -150,43 +150,7 @@ class TransitAssignment(_m.Tool()):
             print "Scenario: "+sc.title+" ("+sc.id+")"
             report={}
             _m.logbook_level(_m.LogbookLevel.NONE)
-            self.calc_network_costs(sc)
-            # Initialize Values for first cycle and use updated values from previous cycles later on
-            if util.get_cycle(eb) >= 1:  # TODO: Change to util.get_cycle(eb) == 1
-                # Calculate headway fraction
-
-                # Intial Assignment of Parameters
-                util.emme_segment_calc(sc, "@ivttfac", "1")
-                util.emme_segment_calc(sc, "@hdwyeff", "@hfrac")
-                util.emme_segment_calc(sc, "@hdwyfac", "1")
-                util.emme_segment_calc(sc, "@crowdingfactor", "0")
-                util.emme_segment_calc(sc, "us1", "0")  # dwell time
-                util.emme_tline_calc(sc, "@seatcapacity", "%s*vcaps*60/hdw" % period_length)
-                util.emme_tline_calc(sc, "@totcapacity", "%s*vcapt*60/hdw" % period_length)
-
-                # Fare Calculations
-
-                # Constant Boarding fare For Buses/Skytrain/Seabus by line
-                util.emme_tline_calc(sc, "@linefare", str(self.bus_zone1_fare), sel_line="mode=bgsfhl")
-
-                # Different boarding fares for WCE by node
-                # For First boarding
-                util.emme_node_calc(sc, "@wcestopfare", "%s*(@farezone.eq.10)+%s*(@farezone.eq.30)+"
-                                                "%s*(@farezone.eq.40)+%s*(@farezone.eq.50)"
-                                            %(self.wce_bfare_zone1[i],self.wce_bfare_zone3[i],
-                                              self.wce_bfare_zone4[i], self.wce_bfare_zone5[i]))
-
-                # Transfer from Bus/Skytrain
-                util.emme_node_calc(sc, "@wcexferfare", "(@wcestopfare - %s).max.0" % self.bus_zone1_fare)
-
-                # In-vehicle Cost (@fareincrement)
-                # For Buses/Skytrain/Seabus
-                util.emme_segment_calc(sc, "@fareincrement", "%s*(@fareboundary.eq.1)" %self.bus_zone_increment,
-                                             sel_link="all", sel_line="mode=bgsfhl")
-                # For WCE
-                util.emme_segment_calc(sc, "@fareincrement", "%s*(@wcefareboundary.eq.13) +%s*(@wcefareboundary.eq.34)+"
-                                             "%s*(@wcefareboundary.eq.45)" %(self.wce_fare_zone13[i], self.wce_fare_zone34[i], self.wce_fare_zone45[i]),
-                                             sel_link="all", sel_line="mode=r")
+            self.calc_network_costs(sc, period_length, i)
 
             # LOOP FOR CROWDING AND CAPACITY CONSTRAINT
             for iteration in xrange(1, self.max_iterations+1):
@@ -465,7 +429,7 @@ class TransitAssignment(_m.Tool()):
         ]
         return spec
 
-    def calc_network_costs(self, sc):
+    def calc_network_costs(self, sc, period_length, i):
         util = _m.Modeller().tool("translink.emme.util")
 
         ## Calculate headway fraction based on service frequency
@@ -482,11 +446,52 @@ class TransitAssignment(_m.Tool()):
         util.emme_tline_calc(sc, "@hfrac",  "6.5 + 0.10000*(hdw - 20)", sel_line="hdw=20,30 and mode=sfrhl")
         util.emme_tline_calc(sc, "@hfrac",  "7.5 + 0.03333*(hdw - 30)", sel_line="hdw=30,99 and mode=sfrhl")
 
-        util.emme_segment_calc(sc, "@hdwyeff", "@hfrac")
-
         # TODO: By Vehicle type or mode
         util.emme_tline_calc(sc, "@dwtboard", str(self.dwt_board_factor_bus), sel_line="mode=bg")
         util.emme_tline_calc(sc, "@dwtalight", str(self.dwt_alight_factor_bus), sel_line="mode=bg")
+
+        util.emme_tline_calc(sc, "@seatcapacity", "%s*vcaps*60/hdw" % period_length)
+        util.emme_tline_calc(sc, "@totcapacity",  "%s*vcapt*60/hdw" % period_length)
+
+
+        # Fare Calculations
+
+        # Constant Boarding fare For Buses/Skytrain/Seabus by line
+        util.emme_tline_calc(sc, "@linefare", str(self.bus_zone1_fare), sel_line="mode=bgsfhl")
+
+        # Different boarding fares for WCE by node
+        # For First boarding
+        util.emme_node_calc(sc, "@wcestopfare", "%s*(@farezone.eq.10)+%s*(@farezone.eq.30)+"
+                                        "%s*(@farezone.eq.40)+%s*(@farezone.eq.50)"
+                                    %(self.wce_bfare_zone1[i],self.wce_bfare_zone3[i],
+                                      self.wce_bfare_zone4[i], self.wce_bfare_zone5[i]))
+
+        # Transfer from Bus/Skytrain
+        util.emme_node_calc(sc, "@wcexferfare", "(@wcestopfare - %s).max.0" % self.bus_zone1_fare)
+
+        # In-vehicle Cost (@fareincrement)
+        # For Buses/Skytrain/Seabus
+        util.emme_segment_calc(sc, "@fareincrement", "%s*(@fareboundary.eq.1)" %self.bus_zone_increment,
+                                     sel_link="all", sel_line="mode=bgsfhl")
+        # For WCE
+        util.emme_segment_calc(sc, "@fareincrement", "%s*(@wcefareboundary.eq.13) +%s*(@wcefareboundary.eq.34)+"
+                                     "%s*(@wcefareboundary.eq.45)" %(self.wce_fare_zone13[i], self.wce_fare_zone34[i], self.wce_fare_zone45[i]),
+                                     sel_link="all", sel_line="mode=r")
+
+
+        # Intial Assignment of Parameters
+        util.emme_segment_calc(sc, "us1", "0")  # dwell time
+        util.emme_segment_calc(sc, "@crowdingfactor", "0")
+        util.emme_segment_calc(sc, "@ivttfac", "1+@crowdingfactor")
+        util.emme_segment_calc(sc, "@hdwyfac", "1")
+        util.emme_segment_calc(sc, "@hdwyeff", "@hdwyfac*@hfrac")
+
+        # Initialize volume averaging parameters
+        util.emme_segment_calc(sc, "@boardavg", "0")
+        util.emme_segment_calc(sc, "@alightavg", "0")
+        util.emme_segment_calc(sc, "@voltravg", "0")
+        util.emme_segment_calc(sc, "@pseat", "0")
+        util.emme_segment_calc(sc, "@pstand", "0")
 
     def averaging_transit_volumes(self, sc, iteration):
         util = _m.Modeller().tool("translink.emme.util")
@@ -512,13 +517,12 @@ class TransitAssignment(_m.Tool()):
                                                        self.max_stand_weight, self.min_stand_weight, self.power_stand_weight)
 
         util.emme_segment_calc(sc, "@crowdingfactor", crowd_spec)
-        util.emme_segment_calc(sc, "@ivttfac", "1+ @crowdingfactor")
+        util.emme_segment_calc(sc, "@ivttfac", "1+@crowdingfactor")
 
     def effective_headway_calc(self, sc):
         util = _m.Modeller().tool("translink.emme.util")
         # [(Boardings/max(Total Capacity - Transit Volume + Boardings,1)).min.3.0].max.1
-        hdwy_spec = "((@boardavg/((@totcapacity-@voltravg+@boardavg).max.1)).min.(3.0)).max.1"
-        util.emme_segment_calc(sc, "@hdwyfac", hdwy_spec)
+        util.emme_segment_calc(sc, "@hdwyfac", "((@boardavg/((@totcapacity-@voltravg+@boardavg).max.1)).min.(3.0)).max.1")
         util.emme_segment_calc(sc, "@hdwyeff", "@hdwyfac*@hfrac")
 
     def dwell_time_calc(self, sc, period_length):

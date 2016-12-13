@@ -99,6 +99,9 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms148", "sov_pct_NHBo", "SOV proportion of Auto NHB Other", 0.365)
         util.initmat(eb, "ms150", "nhbwCt2011", "NHBW HH Production Control Total", 596590.636153)
         util.initmat(eb, "ms151", "nhboCt2011", "NHB0 HH Production Control Total", 852928.057776)
+
+        util.initmat(eb, "ms160", "oneZoneFare", "One Zone Fare - FS-SV", 2.1)
+
         util.initmat(eb, "ms200", "AutoVOT1", "AutoVOT1", 9.2)
         util.initmat(eb, "ms201", "AutoVOT2", "AutoVOT2", 7.4)
         util.initmat(eb, "ms202", "AutoVOT3", "AutoVOT3", 3.3)
@@ -106,6 +109,7 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms212", "VotBus", "VOT Work", 3.76)
         util.initmat(eb, "ms213", "VotRail", "VOT Work", 3.76)
         util.initmat(eb, "ms214", "VotWce", "VOT Work", 3.76)
+
         util.initmat(eb, "ms218", "VotLgv", "VOT lgv", 2.03)
         util.initmat(eb, "ms219", "VotHgv", "VOT hgv", 1.43)
         util.initmat(eb, "ms300", "busIVTprcpWk", "bus in-vehicle time perception work", 1.06)
