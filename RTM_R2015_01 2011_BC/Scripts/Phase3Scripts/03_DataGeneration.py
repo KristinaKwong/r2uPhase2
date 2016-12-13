@@ -82,9 +82,9 @@ class DataGeneration(_m.Tool()):
     	# find minimum distance across all times of day
     	ij = util.get_pd_ij_df(eb)
 
-    	ij['distAm'] = util.get_matrix_numpy(eb, "mfAmSovNwkDist").flatten()
-    	ij['distMd'] = util.get_matrix_numpy(eb, "mfMdSovNwkDist").flatten()
-    	ij['distPm'] = util.get_matrix_numpy(eb, "mfPmSovNwkDist").flatten()
+        ij['distAm'] = util.get_matrix_numpy(eb, "mfAmSovDistVOT2").flatten()
+        ij['distMd'] = util.get_matrix_numpy(eb, "mfMdSovDistVOT2").flatten()
+        ij['distPm'] = util.get_matrix_numpy(eb, "mfPmSovDistVOT2").flatten()
     	ij['dist'] = ij[['distAm','distMd','distPm']].min(axis=1)
 
     	# join the dummies to the skims
@@ -355,9 +355,9 @@ class DataGeneration(_m.Tool()):
     	pm_weight = 0.26
     	time_cut = 30
 
-    	mat_am = 'mfAmSovNwkTime'
-    	mat_md = 'mfMdSovNwkTime'
-    	mat_pm = 'mfPmSovNwkTime'
+    	mat_am = "mfAmSovTimeVOT2"
+    	mat_md = "mfMdSovTimeVOT2"
+    	mat_pm = "mfPmSovTimeVOT2"
 
     	# get zone numbers
     	index = util.get_matrix_numpy(eb, "mozoneindex", reshape=False)
