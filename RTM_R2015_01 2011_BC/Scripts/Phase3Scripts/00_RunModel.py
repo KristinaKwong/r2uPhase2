@@ -17,6 +17,7 @@ class FullModelRun(_m.Tool()):
     demographics_file = _m.Attribute(_m.InstanceType)
     geographics_file = _m.Attribute(_m.InstanceType)
     max_distribution_iterations = _m.Attribute(int)
+    distribution_relative_err = _m.Attribute(float)
     max_assignment_iterations = _m.Attribute(int)
     run_congested_transit = _m.Attribute(bool)
     run_capacited_transit = _m.Attribute(bool)
@@ -28,6 +29,7 @@ class FullModelRun(_m.Tool()):
         self.horizon_year = 2011
         self.global_iterations = 6
         self.max_distribution_iterations = 60
+        self.distribution_relative_err = 0.0001
         self.max_assignment_iterations = 200
         self.run_congested_transit = False
         self.run_capacited_transit = False
@@ -80,6 +82,10 @@ class FullModelRun(_m.Tool()):
                              "in the final global iteration in order for the "
                              "model to be considered converged. If this is not "
                              "the case run again with more iterations.")
+                             
+        pb.add_text_box(tool_attribute_name="distribution_relative_err",
+                        size="6",
+                        title="Maximum relative error for the trip distribution sub-model:")
 
         pb.add_text_box(tool_attribute_name="max_assignment_iterations",
                         size="4",
@@ -200,6 +206,7 @@ class FullModelRun(_m.Tool()):
         util.initmat(eb, "ms30", "IterGlobal", "Global Iterations", global_iterations)
         # distribution
         util.initmat(eb, "ms35", "IterDist", "DistributionIterations", max_distribution_iterations)
+        util.initmat(eb, "ms36", "RelErrDist", "Distribution Relative Error", self.distribution_relative_err)
         # auto assignment
         util.initmat(eb, "ms40", "IterAss", "Assignment Iterations", max_assignment_iterations)
         util.initmat(eb, "ms41", "ConRelGap", "ConvergenceRelativeGap", 0.0001)
