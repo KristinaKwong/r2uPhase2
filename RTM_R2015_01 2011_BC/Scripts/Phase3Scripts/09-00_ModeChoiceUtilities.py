@@ -74,9 +74,10 @@ class ModeChoiceUtilities(_m.Tool()):
             util.set_matrix_numpy(eb, output_demands[i], demands[i])
 
     @_m.logbook_trace("Run matrix balancing to multiple productions")
-    def two_dim_matrix_balancing(self, eb, mo_list, md_list, impedance_list, output_list, max_iterations):
+    def two_dim_matrix_balancing(self, eb, mo_list, md_list, impedance_list, output_demands):
         util = _m.Modeller().tool("translink.emme.util")
 
+        max_iterations = int(util.get_matrix_numpy(eb, "msIterDist"))
         # loops through mo_list for any list items that are expressions
         #  (contains "+") adding mo matrices up for aggregation.
         # Performs calulation and saves result in a scratch matrix.
@@ -106,7 +107,7 @@ class ModeChoiceUtilities(_m.Tool()):
 
         #assign values for matrix balancing
         spec_dict_matbal["destination_totals"] = md_list[0]
-        for mo, output, mf in zip(mo_list, output_list, impedance_list):
+        for mo, output, mf in zip(mo_list, output_demands, impedance_list):
             class_spec = {
                 "origin_totals": mo,
                 "od_values_to_balance": mf,
