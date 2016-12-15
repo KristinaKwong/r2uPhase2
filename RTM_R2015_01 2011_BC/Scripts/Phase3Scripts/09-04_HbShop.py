@@ -35,7 +35,7 @@ class HbWork(_m.Tool()):
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    @_m.logbook_trace("Run Home Base Work")
+    @_m.logbook_trace("Run Home Base Shopping")
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
         MChM = _m.Modeller().tool("translink.RTM3.stage2.modechoiceutils")
