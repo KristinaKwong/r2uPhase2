@@ -129,6 +129,10 @@ class FullModelRun(_m.Tool()):
 
         self.stage1(eb)
 
+        self.stage2(eb)
+
+
+
     def stage0(self, eb, master_scen, demographics_file, geographics_file):
         util = _m.Modeller().tool("translink.emme.util")
         create_scenario = _m.Modeller().tool("translink.RTM3.stage0.create_scenarios")
@@ -150,6 +154,30 @@ class FullModelRun(_m.Tool()):
         vehicle_availability(eb)
         trip_productions(eb)
         trip_attractions(eb)
+
+    def stage2(self, eb):
+        util = _m.Modeller().tool("translink.emme.util")
+        blended_skims = _m.Modeller().tool("translink.RTM3.stage2.blendedskims")
+        td_mode_choice_hbw = _m.Modeller().tool("translink.RTM3.stage2.hbwork")
+        td_mode_choice_hbu = _m.Modeller().tool("translink.RTM3.stage2.hbuniv")
+        td_mode_choice_hbsc = _m.Modeller().tool("translink.RTM3.stage2.hbschool")
+        td_mode_choice_hbsh = _m.Modeller().tool("translink.RTM3.stage2.hbshop")
+        td_mode_choice_hbpb = _m.Modeller().tool("translink.RTM3.stage2.hbperbus")
+        td_mode_choice_hbso = _m.Modeller().tool("translink.RTM3.stage2.hbsocial")
+        td_mode_choice_hbes = _m.Modeller().tool("translink.RTM3.stage2.hbescorting")
+        td_mode_choice_nhbw = _m.Modeller().tool("translink.RTM3.stage2.nhbwork")
+        td_mode_choice_nhbo = _m.Modeller().tool("translink.RTM3.stage2.nhbother")
+
+        blended_skims(eb)
+        td_mode_choice_hbw(eb)
+        td_mode_choice_hbu(eb)
+        td_mode_choice_hbsc(eb)
+        td_mode_choice_hbsh(eb)
+        td_mode_choice_hbpb(eb)
+        td_mode_choice_hbso(eb)
+        td_mode_choice_hbes(eb)
+        td_mode_choice_nhbw(eb)
+        td_mode_choice_nhbo(eb)
 
 
     def initoptions(self, eb, horizon_year, global_iterations,

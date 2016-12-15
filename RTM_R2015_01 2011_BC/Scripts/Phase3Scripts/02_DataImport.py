@@ -202,9 +202,9 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms500", "TrFr_HbWBl_AM_P-A", "TrFr HbW Blend AM P-A Factor", 0.419497)
         util.initmat(eb, "ms501", "TrFr_HbWBl_MD_P-A", "TrFr HbW Blend MD P-A Factor", 0.079803)
         util.initmat(eb, "ms502", "TrFr_HbWBl_PM_P-A", "TrFr HbW Blend PM P-A Factor", 0.021515)
-        util.initmat(eb, "ms503", "TrFr_HbWBl_AM_A-P", "TrFr HbW Blend AM A-P Factor", 0.014547)
-        util.initmat(eb, "ms504", "TrFr_HbWBl_MD_A-P", "TrFr HbW Blend MD A-P Factor", 0.005602)
-        util.initmat(eb, "ms505", "TrFr_HbWBl_PM_A-P", "TrFr HbW Blend PM A-P Factor", 0.030851)
+        util.initmat(eb, "ms503", "TrFr_HbWBl_OP_P-A", "TrFr HbW Blend OP P-A Factor", 0.014547)
+        util.initmat(eb, "ms504", "TrFr_HbWBl_AM_A-P", "TrFr HbW Blend AM A-P Factor", 0.005602)
+        util.initmat(eb, "ms505", "TrFr_HbWBl_MD_A-P", "TrFr HbW Blend MD A-P Factor", 0.030851)
         util.initmat(eb, "ms506", "TrFr_HbWBl_PM_A-P", "TrFr HbW Blend PM A-P Factor", 0.310605)
         util.initmat(eb, "ms507", "TrFr_HbWBl_OP_A-P", "TrFr HbW Blend OP A-P Factor", 0.117582)
         util.initmat(eb, "ms510", "TrFr_HbUBl_AM_P-A", "TrFr HbU Blend AM P-A Factor", 0.324712)
@@ -353,19 +353,19 @@ class DataImport(_m.Tool()):
         data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_PM.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
-                        
+
         util.delmat(eb, "mf20")
         util.delmat(eb, "mf21")
         data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_Truck_AM_2011.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
-                        
+
         util.delmat(eb, "mf40")
         util.delmat(eb, "mf41")
         data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_Truck_MD_2011.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
-                        
+
         util.delmat(eb, "mf60")
         util.delmat(eb, "mf61")
         data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_Truck_PM_2011.in")
