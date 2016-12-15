@@ -30,7 +30,7 @@ class ModeChoiceUtilities(_m.Tool()):
 
 
     @_m.logbook_trace("Run origin constrained matrix balancing")
-    def one_dim_matrix_balancing(self, eb, productions_list, impedance_list, output_demands):
+    def one_dim_matrix_balancing(self, eb, mo_list, md_list, impedance_list, output_demands):
         """Perform a singly-constrained matrix balancing to production totals.
 
         Calculate an output demand from an input production total and a utility matrix respecting
@@ -40,7 +40,8 @@ class ModeChoiceUtilities(_m.Tool()):
 
         Arguments:
         eb -- the emmebank to calculate in
-        productions_list -- a list of production totals (moXX)
+        mo_list -- a list of production totals (moXX)
+        md_list -- a list of attraction totals to bias the impedence matrices(mdXX)
         impedance_list -- a list of impendences/utilities to use for balancing (mfXX)
         output_demands -- the list of matrices to hold the output demands (mfXX)
         """
@@ -49,7 +50,7 @@ class ModeChoiceUtilities(_m.Tool()):
         temp_matrices = []
 
         specs = []
-        for i in range(0, len(productions_list)):
+        for i in range(0, len(mo_list)):
             # Initialize a temporary mo to calculate origin totals
             temp_id = eb.available_matrix_identifier("ORIGIN")
             temp_matrices.append(temp_id)
@@ -62,7 +63,7 @@ class ModeChoiceUtilities(_m.Tool()):
 
             # Divide the total impedence into the productions to produce an alpha value
             # Avoid dividing by zero by adding one to origins with utility sum of zero
-            spec = util.matrix_spec(temp_id, "%s/(%s+(%s.eq.0))" % (productions_list[i], temp_id, temp_id))
+            spec = util.matrix_spec(temp_id, "%s/(%s+(%s.eq.0))" % (mo_list[i], temp_id, temp_id))
             specs.append(spec)
 
             # Multiply the alpha value times the impedence to produce an output demand
