@@ -19,7 +19,7 @@ class Non_hbwork(_m.Tool()):
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
-        pb.title = "Non-home base work"
+        pb.title = "Non-home Base work"
         pb.description = "Calculate non-home base work trips by mode and time of day"
         pb.branding_text = "TransLink"
         if self.tool_run_msg:

@@ -19,7 +19,7 @@ class HbWork(_m.Tool()):
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
-        pb.title = "Home Base Work"
+        pb.title = "Home Base Shopping"
         pb.description = "Calculate home base work person trips by mode and time of day"
         pb.branding_text = "TransLink"
         if self.tool_run_msg:
