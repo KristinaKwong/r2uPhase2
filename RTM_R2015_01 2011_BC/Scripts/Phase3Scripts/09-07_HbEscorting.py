@@ -167,7 +167,7 @@ class HbEscorting(_m.Tool()):
 #        ##############################################################################
 
         Df = {}
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbEsBlSovDist')
+        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbWBlSovDist_I1')
 
 
         # Walk Utility
@@ -266,7 +266,7 @@ class HbEscorting(_m.Tool()):
                       -0.0004, -0.0004, -0.0004,
                       -0.0004, -0.0004, -0.0004]
 
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "HbEsBlSovDist"))
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, 'HbWBlSovDist_I1'))
         MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
 
 
@@ -416,9 +416,9 @@ class HbEscorting(_m.Tool()):
         util.set_matrix_numpy(eb, "HbEsSOVI1PerTrips", SOVI1)
         util.set_matrix_numpy(eb, "HbEsSOVI2PerTrips", SOVI2)
         util.set_matrix_numpy(eb, "HbEsSOVI3PerTrips", SOVI3)
-        util.set_matrix_numpy(eb, "HbEsSOVI1PerTrips", HOVI1)
-        util.set_matrix_numpy(eb, "HbEsSOVI2PerTrips", HOVI2)
-        util.set_matrix_numpy(eb, "HbEsSOVI3PerTrips", HOVI3)
+        util.set_matrix_numpy(eb, "HbEsHOVI1PerTrips", HOVI1)
+        util.set_matrix_numpy(eb, "HbEsHOVI2PerTrips", HOVI2)
+        util.set_matrix_numpy(eb, "HbEsHOVI3PerTrips", HOVI3)
 
 
         util.set_matrix_numpy(eb, "HbEsBusPerTrips", Bus)
@@ -616,47 +616,3 @@ class HbEscorting(_m.Tool()):
         util.initmat(eb, "mf3656", "HbEsP-AI3A0", " HbEs P-A Trips I1 A0", 0)
         util.initmat(eb, "mf3657", "HbEsP-AI3A1", " HbEs P-A Trips I1 A1", 0)
         util.initmat(eb, "mf3658", "HbEsP-AI3A2", " HbEs P-A Trips I1 A2", 0)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

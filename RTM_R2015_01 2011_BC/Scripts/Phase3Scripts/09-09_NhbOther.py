@@ -174,9 +174,9 @@ class Non_hbwork(_m.Tool()):
 #        ##############################################################################
 
         Df = {}
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'NHbOBlSovDist')
+        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbWBlSovDist_I1')
 
-        Df['PopEmpDenPA'] = util.get_matrix_numpy(eb, 'combinedens')#Pop+Emp Density at Prod and Attr Zones
+        Df['PopEmpDenPA'] = util.get_matrix_numpy(eb, 'combinedensln')#Pop+Emp Density at Prod and Attr Zones
         Df['PopEmpDenPA'] = Df['PopEmpDenPA'].reshape(NoTAZ, 1) + Df['PopEmpDenPA'].reshape(1, NoTAZ) #Broadcast Density
 
         Df['BikScr'] = util.get_matrix_numpy(eb, 'bikeskim') # Bike Score
@@ -233,8 +233,8 @@ class Non_hbwork(_m.Tool()):
 
         GammaList =  [-0.0004]
 
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "NHbOBlSovDist"))
-        MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, 'HbWBlSovDist_I1'))
+        MChM.one_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
 
 
 #       ##############################################################################
