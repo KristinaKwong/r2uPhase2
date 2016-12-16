@@ -142,13 +142,13 @@ class HbSchool(_m.Tool()):
 
         Df['GenCostBus'] = VOT*Df['GenCostBus']/60.0 + Df['BusFar']
 
-        Df['GenCostRal'] = ( Df['RalIVR']
+        Df['GenCostRal'] = ( Df['RalIVB']
                            + Df['RalIVR']
                            + 2.5*Df['RalWat']
                            + 2.0*Df['RalAux']
                            + 10.0*Df['RalBrd'])
 
-        Df['GenCostRal'] = VOT*Df['GenCostBus']/60.0 + Df['RalFar']
+        Df['GenCostRal'] = VOT*Df['GenCostRal']/60.0 + Df['RalFar']
 
 
         # Utilities
@@ -184,7 +184,7 @@ class HbSchool(_m.Tool()):
         Df['PopEmpDen'] = util.get_matrix_numpy(eb, 'combinedensln')
         Df['PopEmpDen'] = Df['PopEmpDen'].reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
 
-        Df['PopEmpDenPA'] = util.get_matrix_numpy(eb, 'combinedens')#Pop+Emp Density at Prod and Attr Zones
+        Df['PopEmpDenPA'] = util.get_matrix_numpy(eb, 'combinedensln')#Pop+Emp Density at Prod and Attr Zones
         Df['PopEmpDenPA'] = Df['PopEmpDenPA'].reshape(NoTAZ, 1) + Df['PopEmpDenPA'].reshape(1, NoTAZ) #Broadcast Density
 
         # Walk Utility
