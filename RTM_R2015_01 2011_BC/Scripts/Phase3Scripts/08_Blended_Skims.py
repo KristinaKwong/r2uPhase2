@@ -49,6 +49,11 @@ class ModeChoiceGenDf(_m.Tool()):
         self.RailGT(eb)
         self.WceGT(eb)
         self.bestlot(eb, model_year)
+        ## Calculate Accessibilities
+        Acessibilities_Loc = _m.Modeller().tool("translink.RTM3.stage0.data_generate")
+        Acessibilities_Loc.calc_all_accessibilities(eb)
+
+
         ## General Setup
         BLBsWk = util.get_matrix_numpy(eb, "buspr-lotChceWkAMPA").flatten() #Best Lot Bus Work
         BLBsNw = util.get_matrix_numpy(eb, "buspr-lotChceNWkAMPA").flatten() #Best Lot Bus Non-Work
