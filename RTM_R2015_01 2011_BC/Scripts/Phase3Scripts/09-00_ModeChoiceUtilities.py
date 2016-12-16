@@ -30,7 +30,7 @@ class ModeChoiceUtilities(_m.Tool()):
 
 
     @_m.logbook_trace("Run origin constrained matrix balancing")
-    def one_dim_matrix_balancing(self, eb, productions_list, impedance_list, output_demands):
+    def one_dim_matrix_balancing(self, eb, mo_list, md_list, impedance_list, output_demands):
         """Perform a singly-constrained matrix balancing to production totals.
 
         Calculate an output demand from an input production total and a utility matrix respecting
@@ -40,45 +40,45 @@ class ModeChoiceUtilities(_m.Tool()):
 
         Arguments:
         eb -- the emmebank to calculate in
-        productions_list -- a list of production totals (moXX)
+        mo_list -- a list of production totals (moXX)
+        md_list -- a list of attraction totals to bias the impedence matrices(mdXX)
         impedance_list -- a list of impendences/utilities to use for balancing (mfXX)
         output_demands -- the list of matrices to hold the output demands (mfXX)
         """
         util = _m.Modeller().tool("translink.emme.util")
 
-        temp_matrices = []
+        # calculate the impedences weighted by target attractions
+        attractions = util.get_matrix_numpy(eb, md_list[0])
+        weighted_imp = []
+        for i in range(0, len(mo_list)):
+            mf_imp = util.get_matrix_numpy(eb, impedance_list[i])
+            weighted_imp.append(mf_imp * attractions)
 
-        specs = []
-        for i in range(0, len(productions_list)):
-            # Initialize a temporary mo to calculate origin totals
-            temp_id = eb.available_matrix_identifier("ORIGIN")
-            temp_matrices.append(temp_id)
-            util.initmat(eb, temp_id, "scratch", "scratch matrix in one-dimensional balancing", 0)
+        #calculate OD-demands for each production type
+        demands = []
+        for i in range(0, len(weighted_imp)):
+            # sum the weighted impedence matrix across all columns
+            rowsum = np.sum(weighted_imp[i], axis=1)
+            # where the sum of impedence was zero, replace with 1
+            rowsum[rowsum == 0.0] = 1.0
+            # transpose to be a column vector (mo)
+            rowsum = rowsum.reshape(rowsum.shape[0], 1)
+            # calculate singly-constrained demand
+            productions = util.get_matrix_numpy(eb, mo_list[i])
+            demand = productions * weighted_imp[i] / rowsum
 
-            # Calculate the sum of the impedence list to calculate an alpha factor
-            spec = util.matrix_spec(temp_id, impedance_list[i])
-            spec["aggregation"] = {"origins": None, "destinations": "+"}
-            specs.append(spec)
+            demands.append(demand)
 
-            # Divide the total impedence into the productions to produce an alpha value
-            # Avoid dividing by zero by adding one to origins with utility sum of zero
-            spec = util.matrix_spec(temp_id, "%s/(%s+(%s.eq.0))" % (productions_list[i], temp_id, temp_id))
-            specs.append(spec)
-
-            # Multiply the alpha value times the impedence to produce an output demand
-            spec = util.matrix_spec(output_demands[i], "%s * %s" % (temp_id, impedance_list[i]))
-            specs.append(spec)
-
-        util.compute_matrix(specs)
-
-        # Delete the temporary mo-matrices
-        for mat_id in temp_matrices:
-            util.delmat(eb, mat_id)
+        # write the output demands
+        for i in range(0, len(output_demands)):
+            util.set_matrix_numpy(eb, output_demands[i], demands[i])
 
     @_m.logbook_trace("Run matrix balancing to multiple productions")
-    def two_dim_matrix_balancing(self, eb, mo_list, md_list, impedance_list, output_list, max_iterations):
+    def two_dim_matrix_balancing(self, eb, mo_list, md_list, impedance_list, output_demands):
         util = _m.Modeller().tool("translink.emme.util")
 
+        max_iterations = int(util.get_matrix_numpy(eb, "msIterDist"))
+        rel_error = util.get_matrix_numpy(eb, "msRelErrDist")
         # loops through mo_list for any list items that are expressions
         #  (contains "+") adding mo matrices up for aggregation.
         # Performs calulation and saves result in a scratch matrix.
@@ -103,12 +103,12 @@ class ModeChoiceUtilities(_m.Tool()):
             "classes": [],
             "destination_coefficients": None,
             "max_iterations": max_iterations,
-            "max_relative_error": 0.0001
+            "max_relative_error": rel_error
         }
 
         #assign values for matrix balancing
         spec_dict_matbal["destination_totals"] = md_list[0]
-        for mo, output, mf in zip(mo_list, output_list, impedance_list):
+        for mo, output, mf in zip(mo_list, output_demands, impedance_list):
             class_spec = {
                 "origin_totals": mo,
                 "od_values_to_balance": mf,

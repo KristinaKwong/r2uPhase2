@@ -35,7 +35,7 @@ class HbWork(_m.Tool()):
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    @_m.logbook_trace("Run Home Base Work")
+    @_m.logbook_trace("Run Home Base Shopping")
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
         MChM = _m.Modeller().tool("translink.RTM3.stage2.modechoiceutils")
@@ -410,9 +410,8 @@ class HbWork(_m.Tool()):
                       -0.0004, -0.0004, -0.0004,
                       -0.0004, -0.0004, -0.0004]
 
-        Dist_Iter = int(util.get_matrix_numpy(eb, 'IterDist'))
         MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "HbShBlSovDist_I2"))
-        MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list, Dist_Iter)
+        MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
 
 
 #       ##############################################################################

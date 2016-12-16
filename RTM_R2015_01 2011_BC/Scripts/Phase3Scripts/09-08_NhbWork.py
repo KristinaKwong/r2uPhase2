@@ -19,7 +19,7 @@ class Non_hbwork(_m.Tool()):
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
-        pb.title = "Non-home base work"
+        pb.title = "Non-home Base work"
         pb.description = "Calculate non-home base work trips by mode and time of day"
         pb.branding_text = "TransLink"
         if self.tool_run_msg:
@@ -254,9 +254,8 @@ class Non_hbwork(_m.Tool()):
 
         GammaList =  [-0.0004]
 
-        Dist_Iter = int(util.get_matrix_numpy(eb, 'IterDist'))
         MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "NHbWBlSovDist"))
-        MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list, Dist_Iter)
+        MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
 
 
 #       ##############################################################################
