@@ -78,7 +78,7 @@ class ModeChoiceUtilities(_m.Tool()):
         util = _m.Modeller().tool("translink.emme.util")
 
         max_iterations = int(util.get_matrix_numpy(eb, "msIterDist"))
-        rel_error = util.get_matrix_numpy(eb, "msRelErrDist")
+        rel_error = eb.matrix("msRelErrDist").data
         # loops through mo_list for any list items that are expressions
         #  (contains "+") adding mo matrices up for aggregation.
         # Performs calulation and saves result in a scratch matrix.
