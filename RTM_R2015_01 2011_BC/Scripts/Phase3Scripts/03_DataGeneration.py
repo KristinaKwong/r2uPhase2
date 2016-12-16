@@ -53,11 +53,19 @@ class DataGeneration(_m.Tool()):
         transit_assign = _m.Modeller().tool("translink.RTM3.stage3.transitassignment")
         transit_assign(eb, am_scen, md_scen, pm_scen)
 
+        self.calc_all_accessibilities(eb)
+
+
+
+    @_m.logbook_trace("Calculate Accessibilites")
+    def calc_all_accessibilities(self, eb):
         # note transit_uni_accessibility has to run before other accessibilities
         # this is where the data table is started
         self.transit_uni_accessibility(eb)
         self.auto_accessibility(eb)
         self.dist_cbd_tc(eb)
+
+
 
     @_m.logbook_trace("Calculate Minimum Distances to CBD and Towncentre")
     def dist_cbd_tc(self, eb):
@@ -359,14 +367,21 @@ class DataGeneration(_m.Tool()):
     	mat_md = "mfMdSovTimeVOT2"
     	mat_pm = "mfPmSovTimeVOT2"
 
-    	# get zone numbers
-    	index = util.get_matrix_numpy(eb, "mozoneindex", reshape=False)
+        emp_sql = """
+        SELECT
+            ti.TAZ1741 as taz
+            ,IFNULL(d.EMP_Total, 0) as emp
+        FROM taz_index ti
+            LEFT JOIN demographics d on d.TAZ1700 = ti.TAZ1741
+        ORDER BY
+            ti.TAZ1741
+        """
 
-    	# get employment data
-    	emp = util.get_matrix_numpy(eb, "moTotEmp", reshape=False)
-
-    	# merge employment and zone number
-    	emp = pd.DataFrame({"taz": index, "emp": emp}, columns=["taz","emp"])
+        db_loc = util.get_eb_path(eb)
+        db_path = os.path.join(db_loc, 'rtm.db')
+        conn = sqlite3.connect(db_path)
+        emp = pd.read_sql(emp_sql, conn)
+        conn.close()
 
     	# create a long matrix of zone interchanges and join employment data to it
     	ij = util.get_pd_ij_df(eb)
@@ -772,4 +787,3 @@ class DataGeneration(_m.Tool()):
         util.initmat(eb, "mf5724", "PmWceAux", "Pm Rail Auxilliary Time", 0)
         util.initmat(eb, "mf5725", "PmWceBoard", "Pm Rail Boardings", 0)
         util.initmat(eb, "mf5726", "PmWceFare", "Pm Rail Fare", 0)
-
