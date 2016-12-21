@@ -259,7 +259,7 @@ class HbWork(_m.Tool()):
 
         Df['TranAccess'] = util.get_matrix_numpy(eb, 'transitAccLn').reshape(NoTAZ,1) + np.zeros((1, NoTAZ)) # Log transit accessiblity broadcast
         Df['IntZnl'] = np.identity(NoTAZ) # Intra-zonal matrix
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbWBlSovDist_I2') # Distance
+        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbWBlSovDist_I1') # Distance
         Df['AutoDisSqd'] = Df['AutoDis']* Df['AutoDis'] #Distance squared
         Df['LogAutoDis'] = np.log(Df['AutoDis'] + Tiny) # Log Distance
 
@@ -277,7 +277,7 @@ class HbWork(_m.Tool()):
                       + p602*Df['TranAccess'])
 
         # Check availability conditions else add high negative utility (-99999)
-        Df['GeUtl'] = MChM.BusAvail(Df, Df['GeUtl'], AvailDict)
+#        Df['GeUtl'] = MChM.BusAvail(Df, Df['GeUtl'], AvailDict)
         # Add Income Parameters
         DfU['BusI1'] = Df['GeUtl'] + p12*Df['BusFar']
         DfU['BusI2'] = Df['GeUtl'] + p13*Df['BusFar']
@@ -298,7 +298,7 @@ class HbWork(_m.Tool()):
                       + p603*Df['TranAccess'])
 
         # Check availability conditions else add high negative utility (-99999)
-        Df['GeUtl'] = MChM.RailAvail(Df, Df['GeUtl'],AvailDict)
+#        Df['GeUtl'] = MChM.RailAvail(Df, Df['GeUtl'],AvailDict)
         # Add Income Parameters
         DfU['RalI1'] = Df['GeUtl'] + p12*Df['RalFar']
         DfU['RalI2'] = Df['GeUtl'] + p13*Df['RalFar']
@@ -320,7 +320,7 @@ class HbWork(_m.Tool()):
                       + p996*Df['LogAutoDis']
                       + p603*Df['TranAccess'])
         # Check availability conditions else add high negative utility (-99999)
-        Df['GeUtl'] = MChM.WCEAvail(Df, Df['GeUtl'], AvailDict)
+#        Df['GeUtl'] = MChM.WCEAvail(Df, Df['GeUtl'], AvailDict)
         # Add Income Parameters
         DfU['WCEI1'] = Df['GeUtl'] + p12*Df['WCEFar']
         DfU['WCEI2'] = Df['GeUtl'] + p13*Df['WCEFar']
@@ -397,7 +397,7 @@ class HbWork(_m.Tool()):
                       + p993*Df['LogAutoDis'])
 
         # Check availability conditions else add high negative utility (-99999)
-        Df['GeUtl'] = MChM.BAuAvail(Df, Df['GeUtl'], AvailDict)
+#        Df['GeUtl'] = MChM.BAuAvail(Df, Df['GeUtl'], AvailDict)
         # Add Income Parameters
         DfU['BAuI1'] = Df['GeUtl'] + p12*(Df['BusFar'] + Df['BAuCos'])
         DfU['BAuI2'] = Df['GeUtl'] + p13*(Df['BusFar'] + Df['BAuCos'])
@@ -420,7 +420,7 @@ class HbWork(_m.Tool()):
                       + p996*Df['LogAutoDis'])
 
         # Check availability conditions else add high negative utility (-99999)
-        Df['GeUtl'] = MChM.RAuAvail(Df, Df['GeUtl'], AvailDict)
+#        Df['GeUtl'] = MChM.RAuAvail(Df, Df['GeUtl'], AvailDict)
         # Add Income Parameters
         DfU['RAuI1'] = Df['GeUtl'] + p12*(Df['RalFar'] + Df['RAuCos'])
         DfU['RAuI2'] = Df['GeUtl'] + p13*(Df['RalFar'] + Df['RAuCos'])
@@ -429,7 +429,7 @@ class HbWork(_m.Tool()):
         # Utilities
         # PR WCE Utility
         # PR WCE Common Utility for all incomes
-        DfU['GeUtl'] = ( p9
+        Df['GeUtl'] = ( p9
                        + p4*Df['WAuIBR']
                        + p6*Df['WAuIRR']
                        + p8*Df['WAuIWR']
@@ -445,7 +445,7 @@ class HbWork(_m.Tool()):
                        + p996*Df['LogAutoDis'])
 
         # Check availability conditions else add high negative utility (-99999)
-        Df['GeUtl'] = MChM.WAuAvail(Df, DfU['GeUtl'],AvailDict)
+#        Df['GeUtl'] = MChM.WAuAvail(Df, DfU['GeUtl'],AvailDict)
         # Add Income Parameters
         DfU['WAuI1'] = Df['GeUtl'] + p12*(Df['WCEFar'] + Df['WAuCos'])
         DfU['WAuI2'] = Df['GeUtl'] + p13*(Df['WCEFar'] + Df['WAuCos'])
@@ -464,7 +464,7 @@ class HbWork(_m.Tool()):
         Df['PopEmpDenPA'] = Df['PopEmpDenPA'].reshape(NoTAZ, 1) + Df['PopEmpDenPA'].reshape(1, NoTAZ) #Broadcast Density
 
         Df['PopSen'] = util.get_matrix_numpy(eb, 'Pop55t64') + util.get_matrix_numpy(eb, 'Pop65Up') #Senior Proportion
-        Df['PopTot'] = util.get_matrix_numpy(eb, 'TotEmp')
+        Df['PopTot'] = util.get_matrix_numpy(eb, 'TotPop')
         Df['PopSPr'] = np.log(Df['PopSen']/(Df['PopTot'] + Tiny) + Tiny)
         Df['PopSPr'] = Df['PopSPr'].reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
 
@@ -477,7 +477,7 @@ class HbWork(_m.Tool()):
                       + p701*Df['PopEmpDenPA']
                       + p505*Df['PopSPr'])
         # Check availability conditions else add high negative utility (-99999)
-        DfU['Walk'] = MChM.WalkAvail(Df['AutoDis'], DfU['Walk'], AvailDict)
+#        DfU['Walk'] = MChM.WalkAvail(Df['AutoDis'], DfU['Walk'], AvailDict)
 
         # Bike Utility
         DfU['Bike'] = ( p11
@@ -485,7 +485,7 @@ class HbWork(_m.Tool()):
                       + p870*Df['BikScr']
                       + p506*Df['PopSPr'])
         # Check availability conditions else add high negative utility (-99999)
-        DfU['Bike'] = MChM.BikeAvail(Df['AutoDis'], DfU['Bike'], AvailDict)
+#        DfU['Bike'] = MChM.BikeAvail(Df['AutoDis'], DfU['Bike'], AvailDict)
 
         del Df
 
@@ -499,17 +499,44 @@ class HbWork(_m.Tool()):
 
         ## Add SOV Availability Term
 
-        CarShare = util.get_matrix_numpy(eb, 'cs500').reshape(NoTAZ,1) + np.zeros((1, NoTAZ))
+        DfU['CarShare'] = util.get_matrix_numpy(eb, 'cs500').reshape(NoTAZ,1) + np.zeros((1, NoTAZ))
         LrgU     = -99999.0
         ## Low Income Zero Autos
         Dict = {
-               'SOV'  : [np.where(CarShare>0, DfU['SOVI1'], LrgU)],
+               'SOV'  : [np.where(DfU['CarShare']>0, DfU['SOVI1'], LrgU)],
                'HOV'  : [DfU['HV2I1'], DfU['HV3I1']],
-               'WTra' : [DfU['BusI1'] + p164, DfU['RalI1'] + p164, DfU['WCEI1'] + p164], # Add zero vehicle segment bias
+               'WTra' : [DfU['BusI1'] + p164, DfU['RalI1'] + p164, DfU['WCEI1']], # Add zero vehicle segment bias
                'DTra' : [DfU['BAuI1'], DfU['RAuI1'], DfU['WAuI1']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
+
+        Test = util.get_pd_ij_df(eb)
+        Var = DfU['SOVI1']
+        Test['SOV'] = Var.flatten()
+        Test['HOV2'] = DfU['HV2I1'].flatten()
+        Test['HOV3'] = DfU['HV3I1'].flatten()
+        Test['BusI1'] = DfU['BusI1'].flatten() + p164
+        Test['RailI1'] = DfU['RalI1'].flatten() + p164
+        Test['WCEI1'] = DfU['WCEI1'].flatten()
+        Test['BAuI1'] = DfU['BAuI1'].flatten()
+        Test['RAuI1'] = DfU['RAuI1'].flatten()
+        Test['WAuI1'] = DfU['WAuI1'].flatten()
+        Test['Walk'] = DfU['Walk'].flatten()
+        Test['Bike'] = DfU['Bike'].flatten()
+        Test[0:10].to_csv("F:/Scratch/I1A0Vaildate.csv")
         I1A0_Dict = self.Calc_Prob(eb, Dict, "HbWLSI1A0", thet)
+
+        util.set_matrix_numpy(eb, "mf100", I1A0_Dict['SOV'][0])
+        util.set_matrix_numpy(eb, "mf101", I1A0_Dict['HOV'][0])
+        util.set_matrix_numpy(eb, "mf102", I1A0_Dict['HOV'][1])
+        util.set_matrix_numpy(eb, "mf103", I1A0_Dict['WTra'][0])
+        util.set_matrix_numpy(eb, "mf104", I1A0_Dict['WTra'][1])
+        util.set_matrix_numpy(eb, "mf105", I1A0_Dict['WTra'][2])
+        util.set_matrix_numpy(eb, "mf106", I1A0_Dict['DTra'][0])
+        util.set_matrix_numpy(eb, "mf107", I1A0_Dict['DTra'][1])
+        util.set_matrix_numpy(eb, "mf108", I1A0_Dict['DTra'][2])
+        util.set_matrix_numpy(eb, "mf109", I1A0_Dict['Acti'][0])
+        util.set_matrix_numpy(eb, "mf110", I1A0_Dict['Acti'][1])
 
         ## Low Income One Auto
         Dict = {
@@ -537,9 +564,9 @@ class HbWork(_m.Tool()):
 
         ## Med Income Zero Autos
         Dict = {
-               'SOV'  : [np.where(CarShare>0, DfU['SOVI2'], LrgU)],
+               'SOV'  : [np.where(DfU['CarShare']>0, DfU['SOVI2'], LrgU)],
                'HOV'  : [DfU['HV2I2'], DfU['HV3I2']],
-               'WTra' : [DfU['BusI2'] + p164, DfU['RalI2'] + p164, DfU['WCEI2'] + p164],
+               'WTra' : [DfU['BusI2'] + p164, DfU['RalI2'] + p164, DfU['WCEI2']],
                'DTra' : [DfU['BAuI2'], DfU['RAuI2'], DfU['WAuI2']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
@@ -571,9 +598,9 @@ class HbWork(_m.Tool()):
 
         ## High Income Zero Autos
         Dict = {
-               'SOV'  : [np.where(CarShare>0, DfU['SOVI3'], LrgU)],
+               'SOV'  : [np.where(DfU['CarShare']>0, DfU['SOVI3'], LrgU)],
                'HOV'  : [DfU['HV2I3'], DfU['HV3I3']],
-               'WTra' : [DfU['BusI3'] + p164, DfU['RalI3'] + p164, DfU['WCEI3'] + p164],
+               'WTra' : [DfU['BusI3'] + p164, DfU['RalI3'] + p164, DfU['WCEI3']],
                'DTra' : [DfU['BAuI3'], DfU['RAuI3'], DfU['WAuI3']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
@@ -634,17 +661,14 @@ class HbWork(_m.Tool()):
 
         LS_Coeff = 0.5
 
-        LambdaList = [-0.2, -0.2, -0.2,
-                      -0.2, -0.2, -0.2,
-                      -0.2, -0.2, -0.2]
+        LambdaList = [-0.191627,-0.163135,-0.153509,-0.191613,-0.135885,-0.130681,-0.103598,-0.140457,-0.124008]
 
-        AlphaList =  [0.02, 0.02, 0.02,
-                      0.02, 0.02, 0.02,
-                      0.02, 0.02, 0.02]
 
-        GammaList =  [-0.0004, -0.0004, -0.0004,
-                      -0.0004, -0.0004, -0.0004,
-                      -0.0004, -0.0004, -0.0004]
+        AlphaList =  [0.003177,0.001977,0.0018,0.002498,0.001893,0.001562,0.001469,0.002005,0.001664]
+
+
+        GammaList =  [-0.000056,-0.000009,-0.000008,-0.000015,-0.000012,-0.000008,-0.00001,-0.000013,-0.000011]
+
 
         MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "HbWBlSovDist_I1"))
         MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)

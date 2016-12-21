@@ -124,6 +124,25 @@ class ModeChoiceUtilities(_m.Tool()):
 #        for mat_id in temp_matrices:
 #            util.delmat(eb, mat_id)
 
+    @_m.logbook_trace("Impedance Calc")
+    def ImpCalc(self, eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, Distance):
+
+        util = _m.Modeller().tool("translink.emme.util")
+        input_path = util.get_input_path(eb)
+
+        for i in range (len(imp_list)):
+
+            A = util.get_matrix_numpy(eb, Logsum[i])
+
+            Imp = (LS_Coeff*A+LambdaList[i]*Distance
+                  +AlphaList[i]*pow(Distance, 2)
+                  +GammaList[i]*pow(Distance, 3))
+
+
+            Imp = np.exp(Imp)
+            util.set_matrix_numpy(eb, imp_list[i], Imp)
+
+        del Distance, A, Imp
 
     def AutoAvail(self, Distance, Utility, AvailDict):
         LrgU     = -99999.0
@@ -206,69 +225,3 @@ class ModeChoiceUtilities(_m.Tool()):
                         (Df['IntZnl']!=1)                   &
                         (np.logical_and(Df['WAuTot']>=AvailDict['WCTotLow'], Df['WAuTot']<=AvailDict['WCTotHig'])),
                          Utility , LrgU)
-
-    @_m.logbook_trace("Impedance Calc")
-    def ImpCalc(self, eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, Distance):
-
-        util = _m.Modeller().tool("translink.emme.util")
-        input_path = util.get_input_path(eb)
-
-        for i in range (len(imp_list)):
-
-            A = util.get_matrix_numpy(eb, Logsum[i])
-
-            Imp = (LS_Coeff*A+LambdaList[i]*Distance
-                  +AlphaList[i]*pow(Distance, 2)
-                  +GammaList[i]*pow(Distance, 3))
-
-
-            Imp = np.exp(Imp)
-            util.set_matrix_numpy(eb, imp_list[i], Imp)
-
-        del Distance, A, Imp
-
-    @_m.logbook_trace("Check Convergence")
-    def Check_Convergence(self, eb, NoSeg, out_list, Distance_flat, AvgDistMod, AvgDistModSq, AvgDistModCu, df, RunType):
-
-        util = _m.Modeller().tool("translink.emme.util")
-        SumTrip = 0
-
-        for i in range (NoSeg):
-
-
-            TDMat = util.get_matrix_numpy(eb, out_list[i]).flatten()
-            AvgDistMod[i]   = np.sum(np.multiply(Distance_flat,TDMat))/np.sum(TDMat)
-            AvgDistModSq[i] = np.sum(np.multiply(np.power(Distance_flat,2),TDMat))/np.sum(TDMat)
-            AvgDistModCu[i] = np.sum(np.multiply(np.power(Distance_flat,3),TDMat))/np.sum(TDMat)
-            SumTrip += TDMat
-
-        df['AvgDistMod']   = AvgDistMod
-        df['AvgDistModSq'] = AvgDistModSq
-        df['AvgDistModCu'] = AvgDistModCu
-        AvgDistTot = np.sum(np.multiply(Distance_flat,SumTrip))/np.sum(SumTrip)
-
-
-        # Check convergence
-        Df_DistRat = pd.DataFrame({'AvgDistRat' :   abs(df['AvgDistMod']/df['avgTL'] - 1),
-                                   'AvgDistsqdRat': abs(df['AvgDistModSq']/df['avgTLsqd'] - 1),
-                                   'AvgDistcubRat': abs(df['AvgDistModCu']/df['avgTLcub'] - 1)})
-
-        if RunType == 1:
-
-            MaxValue = np.max(abs(df['AvgDistMod']/df['avgTL'] - 1))
-
-        if RunType == 2:
-
-            MaxValue = max(np.max(abs(df['AvgDistMod']/df['avgTL'] - 1)),
-                           np.max(abs(df['AvgDistModSq']/df['avgTLsqd'] - 1)))
-
-
-        if RunType == 3:
-
-            MaxValue = max(np.max(abs(df['AvgDistMod']/df['avgTL'] - 1)),
-                           np.max(abs(df['AvgDistModSq']/df['avgTLsqd'] - 1)),
-                           np.max(abs(df['AvgDistModCu']/df['avgTLcub'] - 1)))
-
-        print MaxValue
-        return AvgDistTot, MaxValue, df
-
