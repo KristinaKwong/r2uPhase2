@@ -510,33 +510,33 @@ class HbWork(_m.Tool()):
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
 
-        Test = util.get_pd_ij_df(eb)
+        #Test = util.get_pd_ij_df(eb)
         Var = DfU['SOVI1']
-        Test['SOV'] = Var.flatten()
-        Test['HOV2'] = DfU['HV2I1'].flatten()
-        Test['HOV3'] = DfU['HV3I1'].flatten()
-        Test['BusI1'] = DfU['BusI1'].flatten() + p164
-        Test['RailI1'] = DfU['RalI1'].flatten() + p164
-        Test['WCEI1'] = DfU['WCEI1'].flatten()
-        Test['BAuI1'] = DfU['BAuI1'].flatten()
-        Test['RAuI1'] = DfU['RAuI1'].flatten()
-        Test['WAuI1'] = DfU['WAuI1'].flatten()
-        Test['Walk'] = DfU['Walk'].flatten()
-        Test['Bike'] = DfU['Bike'].flatten()
-        Test[0:10].to_csv("F:/Scratch/I1A0Vaildate.csv")
+        #Test['SOV'] = Var.flatten()
+        #Test['HOV2'] = DfU['HV2I1'].flatten()
+        #Test['HOV3'] = DfU['HV3I1'].flatten()
+        #Test['BusI1'] = DfU['BusI1'].flatten() + p164
+        #Test['RailI1'] = DfU['RalI1'].flatten() + p164
+        #Test['WCEI1'] = DfU['WCEI1'].flatten()
+        #Test['BAuI1'] = DfU['BAuI1'].flatten()
+        #Test['RAuI1'] = DfU['RAuI1'].flatten()
+        #Test['WAuI1'] = DfU['WAuI1'].flatten()
+        #Test['Walk'] = DfU['Walk'].flatten()
+        #Test['Bike'] = DfU['Bike'].flatten()
+        #Test[0:10].to_csv("F:/Scratch/I1A0Vaildate.csv")
         I1A0_Dict = self.Calc_Prob(eb, Dict, "HbWLSI1A0", thet)
 
-        util.set_matrix_numpy(eb, "mf100", I1A0_Dict['SOV'][0])
-        util.set_matrix_numpy(eb, "mf101", I1A0_Dict['HOV'][0])
-        util.set_matrix_numpy(eb, "mf102", I1A0_Dict['HOV'][1])
-        util.set_matrix_numpy(eb, "mf103", I1A0_Dict['WTra'][0])
-        util.set_matrix_numpy(eb, "mf104", I1A0_Dict['WTra'][1])
-        util.set_matrix_numpy(eb, "mf105", I1A0_Dict['WTra'][2])
-        util.set_matrix_numpy(eb, "mf106", I1A0_Dict['DTra'][0])
-        util.set_matrix_numpy(eb, "mf107", I1A0_Dict['DTra'][1])
-        util.set_matrix_numpy(eb, "mf108", I1A0_Dict['DTra'][2])
-        util.set_matrix_numpy(eb, "mf109", I1A0_Dict['Acti'][0])
-        util.set_matrix_numpy(eb, "mf110", I1A0_Dict['Acti'][1])
+        #util.set_matrix_numpy(eb, "mf100", I1A0_Dict['SOV'][0])
+        #util.set_matrix_numpy(eb, "mf101", I1A0_Dict['HOV'][0])
+        #util.set_matrix_numpy(eb, "mf102", I1A0_Dict['HOV'][1])
+        #util.set_matrix_numpy(eb, "mf103", I1A0_Dict['WTra'][0])
+        #util.set_matrix_numpy(eb, "mf104", I1A0_Dict['WTra'][1])
+        #util.set_matrix_numpy(eb, "mf105", I1A0_Dict['WTra'][2])
+        #util.set_matrix_numpy(eb, "mf106", I1A0_Dict['DTra'][0])
+        #util.set_matrix_numpy(eb, "mf107", I1A0_Dict['DTra'][1])
+        #util.set_matrix_numpy(eb, "mf108", I1A0_Dict['DTra'][2])
+        #util.set_matrix_numpy(eb, "mf109", I1A0_Dict['Acti'][0])
+        #util.set_matrix_numpy(eb, "mf110", I1A0_Dict['Acti'][1])
 
         ## Low Income One Auto
         Dict = {
