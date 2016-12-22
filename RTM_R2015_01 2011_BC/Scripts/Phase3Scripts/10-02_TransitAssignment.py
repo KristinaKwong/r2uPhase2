@@ -567,7 +567,7 @@ class TransitAssignment(_m.Tool()):
             for key in expression:
                 spec = {"type": "NETWORK_CALCULATION",
                         "expression": expression[key][0],
-                        "result": "@result",
+                        "result": None,
                         "selections": {
                             "link": "all",
                             "transit_line": "mode="+modes}}
@@ -610,7 +610,7 @@ class TransitAssignment(_m.Tool()):
             for key in expression:
                 spec = {"type": "NETWORK_CALCULATION",
                         "expression": expression[key][0],
-                        "result": "@result",
+                        "result": None,
                         "selections": {
                             "link": "all",
                             "transit_line": "mode=" + modes}}

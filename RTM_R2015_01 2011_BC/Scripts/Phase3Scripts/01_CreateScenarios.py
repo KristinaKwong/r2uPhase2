@@ -219,7 +219,6 @@ class InputSettings(_m.Tool()):
         create_attr("TRANSIT_SEGMENT", "@boardavg",  "Average Boardings", 0, False, scen)
         create_attr("TRANSIT_SEGMENT", "@voltravg",  "Average Transit Segment Volume", 0, False, scen)
         create_attr("TRANSIT_SEGMENT", "@alightavg", "Average Alightings", 0, False, scen)
-        create_attr("TRANSIT_SEGMENT", "@result", "Save temporary results", 0, False, scen)
         create_attr("TRANSIT_LINE", "@hfrac", "Headway Fraction", 0, False, scen)
         create_attr("TRANSIT_LINE", "@linefare", "Line Fare (zone1) for bus/skytrain ($)", 0, False, scen)
         create_attr("TRANSIT_LINE", "@xferlinefare", "Transfer Line Fare for bus/skytrain ($)", 0, False, scen)
