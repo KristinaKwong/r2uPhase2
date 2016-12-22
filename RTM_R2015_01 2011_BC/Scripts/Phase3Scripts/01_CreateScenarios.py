@@ -214,7 +214,6 @@ class InputSettings(_m.Tool()):
         create_attr("TRANSIT_SEGMENT", "@hdwyfac", "Effective Headway Multiplier",1, False, scen)
         create_attr("TRANSIT_SEGMENT", "@hdwyeff",  "Effective Headway", 0, False, scen)
         create_attr("TRANSIT_SEGMENT", "@ivttfac",  "IVTT Perception Factor",1, False, scen)
-        create_attr("TRANSIT_SEGMENT", "@crowdingfactor",  "Crowding Perception IVTT Factor", 0, False, scen)
         create_attr("TRANSIT_SEGMENT", "@pseat", "Number of Seated Passengers", 0, False, scen)
         create_attr("TRANSIT_SEGMENT", "@pstand", "Number of Standing Passengers", 0, False, scen)
         create_attr("TRANSIT_SEGMENT", "@boardavg",  "Average Boardings", 0, False, scen)

@@ -481,8 +481,7 @@ class TransitAssignment(_m.Tool()):
 
         # Intial Assignment of Parameters
         util.emme_segment_calc(sc, "us1", "0")  # dwell time
-        util.emme_segment_calc(sc, "@crowdingfactor", "0")
-        util.emme_segment_calc(sc, "@ivttfac", "1+@crowdingfactor")
+        util.emme_segment_calc(sc, "@ivttfac", "1")
         util.emme_segment_calc(sc, "@hdwyfac", "1")
         util.emme_segment_calc(sc, "@hdwyeff", "@hdwyfac*@hfrac")
 
@@ -512,12 +511,11 @@ class TransitAssignment(_m.Tool()):
         # In-vehicle Crowding Function
         crowd_spec = ("((((%s + (%s - %s)*(@voltravg/@totcapacity)^%s)* @pseat +"
                       "(%s + (%s - %s)*(@voltravg/@totcapacity)^%s)* @pstand)"
-                      "/(@voltravg +0.01).max.1).min.10)-1")%(self.min_seat_weight, self.max_seat_weight, self.min_seat_weight,
+                      "/(@voltravg +0.01).max.1).min.10)")%(self.min_seat_weight, self.max_seat_weight, self.min_seat_weight,
                                                        self.power_seat_weight, self.min_stand_weight,
                                                        self.max_stand_weight, self.min_stand_weight, self.power_stand_weight)
 
-        util.emme_segment_calc(sc, "@crowdingfactor", crowd_spec)
-        util.emme_segment_calc(sc, "@ivttfac", "1+@crowdingfactor")
+        util.emme_segment_calc(sc, "@ivttfac", crowd_spec)
 
     def effective_headway_calc(self, sc):
         util = _m.Modeller().tool("translink.emme.util")
@@ -558,7 +556,7 @@ class TransitAssignment(_m.Tool()):
             # Standing passenger Kms
             3: ["((@pstand-@totcapacity+@seatcapacity).max.0)*length", "sum"],
             # Standing passenger kms
-            4:["@crowdingfactor", "maximum"],
+            4:["(@ivttfac - 1)", "maximum"],
             # Min Headway factor
             5: ["@hdwyfac", "minimum"],
             #Max Headway Factor
