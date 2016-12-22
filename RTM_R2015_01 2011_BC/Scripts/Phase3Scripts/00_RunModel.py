@@ -134,10 +134,10 @@ class FullModelRun(_m.Tool()):
         self.stage0(eb, master_scen=master_scen, demographics_file=demographics_file, geographics_file=geographics_file)
         self.stage1(eb)
 
-        for cycle in range(0, int(eb.matrix("msIterGlobal").data)):
-            util.initmat(eb, "ms1", "CycleNum", "Current Cycle Number", cycle + 1)
-            self.stage2(eb)
-            self.stage3(eb)
+        for cycle in range(1, int(eb.matrix("msIterGlobal").data) + 1):
+            util.initmat(eb, "ms1", "CycleNum", "Current Cycle Number", cycle)
+            with _m.logbook_trace("Run Cycle %d" % cycle):
+                self.run_one_cycle(eb)
 
     def stage0(self, eb, master_scen, demographics_file, geographics_file):
         util = _m.Modeller().tool("translink.emme.util")
@@ -161,7 +161,7 @@ class FullModelRun(_m.Tool()):
         trip_productions(eb)
         trip_attractions(eb)
 
-    def stage2(self, eb):
+    def run_one_cycle(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
         blended_skims = _m.Modeller().tool("translink.RTM3.stage2.blendedskims")
         td_mode_choice_hbw = _m.Modeller().tool("translink.RTM3.stage2.hbwork")
@@ -185,8 +185,6 @@ class FullModelRun(_m.Tool()):
         td_mode_choice_nhbw(eb)
         td_mode_choice_nhbo(eb)
 
-
-    def stage3(self, eb):
         am_scen = eb.scenario(int(eb.matrix("ms2").data))
         md_scen = eb.scenario(int(eb.matrix("ms3").data))
         pm_scen = eb.scenario(int(eb.matrix("ms4").data))
