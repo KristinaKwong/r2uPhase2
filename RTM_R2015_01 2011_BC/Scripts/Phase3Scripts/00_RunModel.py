@@ -82,7 +82,7 @@ class FullModelRun(_m.Tool()):
                              "in the final global iteration in order for the "
                              "model to be considered converged. If this is not "
                              "the case run again with more iterations.")
-                             
+
         pb.add_text_box(tool_attribute_name="distribution_relative_err",
                         size="6",
                         title="Maximum relative error for the trip distribution sub-model:")
@@ -132,12 +132,12 @@ class FullModelRun(_m.Tool()):
                         num_processors=num_processors)
 
         self.stage0(eb, master_scen=master_scen, demographics_file=demographics_file, geographics_file=geographics_file)
-
         self.stage1(eb)
 
-        self.stage2(eb)
-
-
+        for cycle in range(1, int(eb.matrix("msIterGlobal").data) + 1):
+            util.initmat(eb, "ms1", "CycleNum", "Current Cycle Number", cycle)
+            with _m.logbook_trace("Run Cycle %d" % cycle):
+                self.run_one_cycle(eb)
 
     def stage0(self, eb, master_scen, demographics_file, geographics_file):
         util = _m.Modeller().tool("translink.emme.util")
@@ -161,7 +161,7 @@ class FullModelRun(_m.Tool()):
         trip_productions(eb)
         trip_attractions(eb)
 
-    def stage2(self, eb):
+    def run_one_cycle(self, eb):
         util = _m.Modeller().tool("translink.emme.util")
         blended_skims = _m.Modeller().tool("translink.RTM3.stage2.blendedskims")
         td_mode_choice_hbw = _m.Modeller().tool("translink.RTM3.stage2.hbwork")
@@ -184,6 +184,16 @@ class FullModelRun(_m.Tool()):
         td_mode_choice_hbes(eb)
         td_mode_choice_nhbw(eb)
         td_mode_choice_nhbo(eb)
+
+        am_scen = eb.scenario(int(eb.matrix("ms2").data))
+        md_scen = eb.scenario(int(eb.matrix("ms3").data))
+        pm_scen = eb.scenario(int(eb.matrix("ms4").data))
+
+        auto_assign = _m.Modeller().tool("translink.RTM3.stage3.autoassignment")
+        auto_assign(am_scen, md_scen, pm_scen)
+
+        transit_assign = _m.Modeller().tool("translink.RTM3.stage3.transitassignment")
+        transit_assign(eb, am_scen, md_scen, pm_scen)
 
 
     def initoptions(self, eb, horizon_year, global_iterations,

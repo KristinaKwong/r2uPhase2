@@ -188,7 +188,7 @@ class AutoAssignment(_m.Tool()):
         self.calc_intrazonal_skim(eb, "mfHOVDistVOT4")
         self.calc_intrazonal_skim(eb, "mfLGVDist")
         self.calc_intrazonal_skim(eb, "mfHGVDist")
-        
+
         # Calculate Intrazonal Op Cost
         self.calc_intrazonal_skim(eb, "mfSOVOpCstVOT1")
         self.calc_intrazonal_skim(eb, "mfSOVOpCstVOT2")
@@ -200,7 +200,7 @@ class AutoAssignment(_m.Tool()):
         self.calc_intrazonal_skim(eb, "mfHOVOpCstVOT4")
         self.calc_intrazonal_skim(eb, "mfLGVOpCst")
         self.calc_intrazonal_skim(eb, "mfHGVOpCst")
-        
+
         # Calculate Intrazonal Generalized Cost
         self.calc_intrazonal_skim(eb, "mfSOVGCTimeVOT1")
         self.calc_intrazonal_skim(eb, "mfSOVGCTimeVOT2")

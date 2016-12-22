@@ -509,7 +509,6 @@ class HbWork(_m.Tool()):
                'DTra' : [DfU['BAuI1'], DfU['RAuI1'], DfU['WAuI1']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
-
         I1A0_Dict = self.Calc_Prob(eb, Dict, "HbWLSI1A0", thet)
 
         ## Low Income One Auto
