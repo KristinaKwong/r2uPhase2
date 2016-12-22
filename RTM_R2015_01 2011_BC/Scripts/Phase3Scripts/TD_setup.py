@@ -54,6 +54,9 @@ class TripDistribution(_m.Tool()):
         df_hbu = pd.read_sql("SELECT * from hbu_tl_sum", conn)# home-base uni
         df_hbsc = pd.read_sql("SELECT * from hbsch_tl_auto", conn)# home-base school
         df_hbsh = pd.read_sql("SELECT * from hbshop_tl_auto", conn)# home-base shopping
+        df_hbpb = pd.read_sql("SELECT * from hbpb_tl_auto", conn)# home-base per-business
+        df_hbso = pd.read_sql("SELECT * from hbsoc_tl_auto", conn)# home-base social
+
         conn.close()
        ################################################ Home-base work
 #        L_S_Mats  = ["HbWLSI1A0", "HbWLSI1A1", "HbWLSI1A2", "HbWLSI2A0", "HbWLSI2A1", "HbWLSI2A2", "HbWLSI3A0", "HbWLSI3A1", "HbWLSI3A2"]
@@ -111,30 +114,106 @@ class TripDistribution(_m.Tool()):
 #        Conv_List = [0.05, 0.1]  # Difference used for average trip_length, Ratio for square and cube terms
 #        TD_Calib(eb, df_hbsc, L_S_Mats, imp_list, prod_list, attr_list, P_A_list, Cal_Coef, RunType, Conv_List, "hbsch_tl_auto")
 
-       ################################################ Home-base shopping
+#       ################################################ Home-base shopping
+#
+#        L_S_Mats  = ["HbShLSI1A0", "HbShLSI1A1", "HbShLSI1A2", "HbShLSI2A0", "HbShLSI2A1", "HbShLSI2A2", "HbShLSI3A0", "HbShLSI3A1", "HbShLSI3A2"]
+#
+#
+#        imp_list  = ["P-AFrictionFact1", "P-AFrictionFact2", "P-AFrictionFact3", "P-AFrictionFact4", "P-AFrictionFact5", "P-AFrictionFact6",
+#                     "P-AFrictionFact7", "P-AFrictionFact8", "P-AFrictionFact9"]
+#
+#
+#        prod_list = ["hbshopInc1Au0prd", "hbshopInc1Au1prd", "hbshopInc1Au2prd", "hbshopInc2Au0prd", "hbshopInc2Au1prd", "hbshopInc2Au2prd",
+#                    "hbshopInc3Au0prd", "hbshopInc3Au1prd", "hbshopInc3Au2prd"]
+#
+#
+#        attr_list = ["hbshopatr"]
+#        P_A_list  = ["HbShP-AI1A0", "HbShP-AI1A1", "HbShP-AI1A2", "HbShP-AI2A0", "HbShP-AI2A1", "HbShP-AI2A2",
+#                    "HbShP-AI3A0", "HbShP-AI3A1", "HbShP-AI3A2"]
+#
+#                    #Lambda, Alpha, Gamma
+#        Cal_Coef  = [-0.4, 0.0, 0.0]
+#        RunType   = ["Auto", "Lambda", "Singly-constrained"]
+#
+#                    #Difference, #Ratio
+#        Conv_List = [0.05, 0.1]  # Difference used for average trip_length, Ratio for square and cube terms
+#        TD_Calib(eb, df_hbsh, L_S_Mats, imp_list, prod_list, attr_list, P_A_list, Cal_Coef, RunType, Conv_List, "hbshop_tl_auto")
+#
+#       ################################################ Home-base perbus
+#
+#        L_S_Mats  = [
+#                  "HbPbLSI1A0", "HbPbLSI1A1", "HbPbLSI1A2",
+#                  "HbPbLSI2A0", "HbPbLSI2A1", "HbPbLSI2A2",
+#                  "HbPbLSI3A0", "HbPbLSI3A1", "HbPbLSI3A2",
+#                   ]
+#
+#
+#        imp_list  = [
+#                  "P-AFrictionFact1", "P-AFrictionFact2", "P-AFrictionFact3",
+#                  "P-AFrictionFact4", "P-AFrictionFact5", "P-AFrictionFact6",
+#                  "P-AFrictionFact7", "P-AFrictionFact8", "P-AFrictionFact9"
+#                   ]
+#
+#
+#        prod_list = [
+#                    "hbpbInc1Au0prd", "hbpbInc1Au1prd", "hbpbInc1Au2prd",
+#                    "hbpbInc2Au0prd", "hbpbInc2Au1prd", "hbpbInc2Au2prd",
+#                    "hbpbInc3Au0prd", "hbpbInc3Au1prd", "hbpbInc3Au2prd"
+#                   ]
+#
+#
+#        attr_list = ["hbpbatr"]
+#        P_A_list  = [
+#                    "HbPbP-AI1A0", "HbPbP-AI1A1", "HbPbP-AI1A2",
+#                    "HbPbP-AI2A0", "HbPbP-AI2A1", "HbPbP-AI2A2",
+#                    "HbPbP-AI3A0", "HbPbP-AI3A1", "HbPbP-AI3A2"
+#                   ]
+#
+#                    #Lambda, Alpha, Gamma
+#        Cal_Coef  = [-0.4, 0.0, 0.0]
+#        RunType   = ["Auto", "Lambda", "Singly-constrained"]
+#
+#                    #Difference, #Ratio
+#        Conv_List = [0.05, 0.1]  # Difference used for average trip_length, Ratio for square and cube terms
+#        TD_Calib(eb, df_hbpb, L_S_Mats, imp_list, prod_list, attr_list, P_A_list, Cal_Coef, RunType, Conv_List, "hbpb_tl_auto")
 
-        L_S_Mats  = ["HbShLSI1A0", "HbShLSI1A1", "HbShLSI1A2", "HbShLSI2A0", "HbShLSI2A1", "HbShLSI2A2", "HbShLSI3A0", "HbShLSI3A1", "HbShLSI3A2"]
+       ################################################ Home-base social
+
+        L_S_Mats  = [
+                  "HbSoLSI1A0", "HbSoLSI1A1", "HbSoLSI1A2",
+                  "HbSoLSI2A0", "HbSoLSI2A1", "HbSoLSI2A2",
+                  "HbSoLSI3A0", "HbSoLSI3A1", "HbSoLSI3A2",
+                   ]
 
 
-        imp_list  = ["P-AFrictionFact1", "P-AFrictionFact2", "P-AFrictionFact3", "P-AFrictionFact4", "P-AFrictionFact5", "P-AFrictionFact6",
-                     "P-AFrictionFact7", "P-AFrictionFact8", "P-AFrictionFact9"]
+        imp_list  = [
+                  "P-AFrictionFact1", "P-AFrictionFact2", "P-AFrictionFact3",
+                  "P-AFrictionFact4", "P-AFrictionFact5", "P-AFrictionFact6",
+                  "P-AFrictionFact7", "P-AFrictionFact8", "P-AFrictionFact9"
+                   ]
 
 
-        prod_list = ["hbshopInc1Au0prd", "hbshopInc1Au1prd", "hbshopInc1Au2prd", "hbshopInc2Au0prd", "hbshopInc2Au1prd", "hbshopInc2Au2prd",
-                    "hbshopInc3Au0prd", "hbshopInc3Au1prd", "hbshopInc3Au2prd"]
+        prod_list = [
+                    "hbsocInc1Au0prd", "hbsocInc1Au1prd", "hbsocInc1Au2prd",
+                    "hbsocInc2Au0prd", "hbsocInc2Au1prd", "hbsocInc2Au2prd",
+                    "hbsocInc3Au0prd", "hbsocInc3Au1prd", "hbsocInc3Au2prd"
+                   ]
 
 
-        attr_list = ["hbshopatr"]
-        P_A_list  = ["HbShP-AI1A0", "HbShP-AI1A1", "HbShP-AI1A2", "HbShP-AI2A0", "HbShP-AI2A1", "HbShP-AI2A2",
-                    "HbShP-AI3A0", "HbShP-AI3A1", "HbShP-AI3A2"]
+        attr_list = ["hbsocatr"]
+        P_A_list  = [
+                    "HbSoP-AI1A0", "HbSoP-AI1A1", "HbSoP-AI1A2",
+                    "HbSoP-AI2A0", "HbSoP-AI2A1", "HbSoP-AI2A2",
+                    "HbSoP-AI3A0", "HbSoP-AI3A1", "HbSoP-AI3A2"
+                   ]
 
                     #Lambda, Alpha, Gamma
-        Cal_Coef  = [-0.4, 0.01, -0.0006]
-        RunType   = ["Auto", "Gamma", "Singly-constrained"]
+        Cal_Coef  = [-0.4, 0.0, 0.0]
+        RunType   = ["Auto", "Lambda", "Singly-constrained"]
 
                     #Difference, #Ratio
-        Conv_List = [0.25, 0.1]  # Difference used for average trip_length, Ratio for square and cube terms
-        TD_Calib(eb, df_hbsh, L_S_Mats, imp_list, prod_list, attr_list, P_A_list, Cal_Coef, RunType, Conv_List, "hbshop_tl_auto")
+        Conv_List = [0.05, 0.1]  # Difference used for average trip_length, Ratio for square and cube terms
+        TD_Calib(eb, df_hbso, L_S_Mats, imp_list, prod_list, attr_list, P_A_list, Cal_Coef, RunType, Conv_List, "hbsoc_tl_auto")
 
 
     def create_avgtl_database(self, eb):
