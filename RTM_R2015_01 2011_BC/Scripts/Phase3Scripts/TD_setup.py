@@ -141,48 +141,10 @@ class TripDistribution(_m.Tool()):
 #
 #       ################################################ Home-base perbus
 #
-#        L_S_Mats  = [
-#                  "HbPbLSI1A0", "HbPbLSI1A1", "HbPbLSI1A2",
-#                  "HbPbLSI2A0", "HbPbLSI2A1", "HbPbLSI2A2",
-#                  "HbPbLSI3A0", "HbPbLSI3A1", "HbPbLSI3A2",
-#                   ]
-#
-#
-#        imp_list  = [
-#                  "P-AFrictionFact1", "P-AFrictionFact2", "P-AFrictionFact3",
-#                  "P-AFrictionFact4", "P-AFrictionFact5", "P-AFrictionFact6",
-#                  "P-AFrictionFact7", "P-AFrictionFact8", "P-AFrictionFact9"
-#                   ]
-#
-#
-#        prod_list = [
-#                    "hbpbInc1Au0prd", "hbpbInc1Au1prd", "hbpbInc1Au2prd",
-#                    "hbpbInc2Au0prd", "hbpbInc2Au1prd", "hbpbInc2Au2prd",
-#                    "hbpbInc3Au0prd", "hbpbInc3Au1prd", "hbpbInc3Au2prd"
-#                   ]
-#
-#
-#        attr_list = ["hbpbatr"]
-#        P_A_list  = [
-#                    "HbPbP-AI1A0", "HbPbP-AI1A1", "HbPbP-AI1A2",
-#                    "HbPbP-AI2A0", "HbPbP-AI2A1", "HbPbP-AI2A2",
-#                    "HbPbP-AI3A0", "HbPbP-AI3A1", "HbPbP-AI3A2"
-#                   ]
-#
-#                    #Lambda, Alpha, Gamma
-#        Cal_Coef  = [-0.4, 0.0, 0.0]
-#        RunType   = ["Auto", "Lambda", "Singly-constrained"]
-#
-#                    #Difference, #Ratio
-#        Conv_List = [0.05, 0.1]  # Difference used for average trip_length, Ratio for square and cube terms
-#        TD_Calib(eb, df_hbpb, L_S_Mats, imp_list, prod_list, attr_list, P_A_list, Cal_Coef, RunType, Conv_List, "hbpb_tl_auto")
-
-       ################################################ Home-base social
-
         L_S_Mats  = [
-                  "HbSoLSI1A0", "HbSoLSI1A1", "HbSoLSI1A2",
-                  "HbSoLSI2A0", "HbSoLSI2A1", "HbSoLSI2A2",
-                  "HbSoLSI3A0", "HbSoLSI3A1", "HbSoLSI3A2",
+                  "HbPbLSI1A0", "HbPbLSI1A1", "HbPbLSI1A2",
+                  "HbPbLSI2A0", "HbPbLSI2A1", "HbPbLSI2A2",
+                  "HbPbLSI3A0", "HbPbLSI3A1", "HbPbLSI3A2",
                    ]
 
 
@@ -194,17 +156,17 @@ class TripDistribution(_m.Tool()):
 
 
         prod_list = [
-                    "hbsocInc1Au0prd", "hbsocInc1Au1prd", "hbsocInc1Au2prd",
-                    "hbsocInc2Au0prd", "hbsocInc2Au1prd", "hbsocInc2Au2prd",
-                    "hbsocInc3Au0prd", "hbsocInc3Au1prd", "hbsocInc3Au2prd"
+                    "hbpbInc1Au0prd", "hbpbInc1Au1prd", "hbpbInc1Au2prd",
+                    "hbpbInc2Au0prd", "hbpbInc2Au1prd", "hbpbInc2Au2prd",
+                    "hbpbInc3Au0prd", "hbpbInc3Au1prd", "hbpbInc3Au2prd"
                    ]
 
 
-        attr_list = ["hbsocatr"]
+        attr_list = ["hbpbatr"]
         P_A_list  = [
-                    "HbSoP-AI1A0", "HbSoP-AI1A1", "HbSoP-AI1A2",
-                    "HbSoP-AI2A0", "HbSoP-AI2A1", "HbSoP-AI2A2",
-                    "HbSoP-AI3A0", "HbSoP-AI3A1", "HbSoP-AI3A2"
+                    "HbPbP-AI1A0", "HbPbP-AI1A1", "HbPbP-AI1A2",
+                    "HbPbP-AI2A0", "HbPbP-AI2A1", "HbPbP-AI2A2",
+                    "HbPbP-AI3A0", "HbPbP-AI3A1", "HbPbP-AI3A2"
                    ]
 
                     #Lambda, Alpha, Gamma
@@ -213,7 +175,45 @@ class TripDistribution(_m.Tool()):
 
                     #Difference, #Ratio
         Conv_List = [0.05, 0.1]  # Difference used for average trip_length, Ratio for square and cube terms
-        TD_Calib(eb, df_hbso, L_S_Mats, imp_list, prod_list, attr_list, P_A_list, Cal_Coef, RunType, Conv_List, "hbsoc_tl_auto")
+        TD_Calib(eb, df_hbpb, L_S_Mats, imp_list, prod_list, attr_list, P_A_list, Cal_Coef, RunType, Conv_List, "hbpb_tl_auto")
+
+       ################################################ Home-base social
+
+#        L_S_Mats  = [
+#                  "HbSoLSI1A0", "HbSoLSI1A1", "HbSoLSI1A2",
+#                  "HbSoLSI2A0", "HbSoLSI2A1", "HbSoLSI2A2",
+#                  "HbSoLSI3A0", "HbSoLSI3A1", "HbSoLSI3A2",
+#                   ]
+#
+#
+#        imp_list  = [
+#                  "P-AFrictionFact1", "P-AFrictionFact2", "P-AFrictionFact3",
+#                  "P-AFrictionFact4", "P-AFrictionFact5", "P-AFrictionFact6",
+#                  "P-AFrictionFact7", "P-AFrictionFact8", "P-AFrictionFact9"
+#                   ]
+#
+#
+#        prod_list = [
+#                    "hbsocInc1Au0prd", "hbsocInc1Au1prd", "hbsocInc1Au2prd",
+#                    "hbsocInc2Au0prd", "hbsocInc2Au1prd", "hbsocInc2Au2prd",
+#                    "hbsocInc3Au0prd", "hbsocInc3Au1prd", "hbsocInc3Au2prd"
+#                   ]
+#
+#
+#        attr_list = ["hbsocatr"]
+#        P_A_list  = [
+#                    "HbSoP-AI1A0", "HbSoP-AI1A1", "HbSoP-AI1A2",
+#                    "HbSoP-AI2A0", "HbSoP-AI2A1", "HbSoP-AI2A2",
+#                    "HbSoP-AI3A0", "HbSoP-AI3A1", "HbSoP-AI3A2"
+#                   ]
+#
+#                    #Lambda, Alpha, Gamma
+#        Cal_Coef  = [-0.4, 0.0, 0.0]
+#        RunType   = ["Auto", "Lambda", "Singly-constrained"]
+#
+#                    #Difference, #Ratio
+#        Conv_List = [0.05, 0.1]  # Difference used for average trip_length, Ratio for square and cube terms
+#        TD_Calib(eb, df_hbso, L_S_Mats, imp_list, prod_list, attr_list, P_A_list, Cal_Coef, RunType, Conv_List, "hbsoc_tl_auto")
 
 
     def create_avgtl_database(self, eb):
