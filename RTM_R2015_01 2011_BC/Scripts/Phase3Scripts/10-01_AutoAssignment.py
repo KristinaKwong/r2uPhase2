@@ -64,9 +64,9 @@ class AutoAssignment(_m.Tool()):
 
     @_m.logbook_trace("Auto Traffic Assignment")
     def __call__(self, am_scenario, md_scenario, pm_scenario):
-        am_demands = {"sov":   ["mf300", "mf301", "mf302", "mf303"],
-                      "hov":   ["mf306", "mf307", "mf308", "mf309"],
-                      "truck": ["mf312", "mf313"]}
+        am_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Am", "mfSOV_drvtrp_VOT_2_Am", "mfSOV_drvtrp_VOT_3_Am", "mfSOV_drvtrp_VOT_4_Am"],
+                      "hov":   ["mfHOV_drvtrp_VOT_1_Am", "mfHOV_drvtrp_VOT_2_Am", "mfHOV_drvtrp_VOT_3_Am", "mfHOV_drvtrp_VOT_4_Am"],
+                      "truck": ["mflgvPceAm", "mfhgvPceAm"]}
         self.assign_scen(am_scenario, am_demands)
         am_skims = {"sovVot1":  ["mfAmSovDistVOT1", "mfAmSovTimeVOT1", "mfAmSovTollVOT1"],
                     "sovVot2":  ["mfAmSovDistVOT2", "mfAmSovTimeVOT2", "mfAmSovTollVOT2"],
@@ -80,9 +80,9 @@ class AutoAssignment(_m.Tool()):
                     "hgv":  ["mfAmHgvDist", "mfAmHgvTime", "mfAmHgvToll"]}
         self.store_skims(am_scenario, am_skims)
 
-        md_demands = {"sov":   ["mf320", "mf321", "mf322", "mf323"],
-                      "hov":   ["mf326", "mf327", "mf328", "mf329"],
-                      "truck": ["mf332", "mf333"]}
+        md_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Md", "mfSOV_drvtrp_VOT_2_Md", "mfSOV_drvtrp_VOT_3_Md", "mfSOV_drvtrp_VOT_4_Md"],
+                      "hov":   ["mfHOV_drvtrp_VOT_1_Md", "mfHOV_drvtrp_VOT_2_Md", "mfHOV_drvtrp_VOT_3_Md", "mfHOV_drvtrp_VOT_4_Md"],
+                      "truck": ["mflgvPceMd", "mfhgvPceMd"]}
         self.assign_scen(md_scenario, md_demands)
         md_skims = {"sovVot1":  ["mfMdSovDistVOT1", "mfMdSovTimeVOT1", "mfMdSovTollVOT1"],
                     "sovVot2":  ["mfMdSovDistVOT2", "mfMdSovTimeVOT2", "mfMdSovTollVOT2"],
@@ -95,9 +95,9 @@ class AutoAssignment(_m.Tool()):
                     "lgv":  ["mfMdLgvDist", "mfMdLgvTime", "mfMdLgvToll"],
                     "hgv":  ["mfMdHgvDist", "mfMdHgvTime", "mfMdHgvToll"]}
         self.store_skims(md_scenario, md_skims)
-        pm_demands = {"sov":   ["mf340", "mf341", "mf342", "mf343"],
-                      "hov":   ["mf346", "mf347", "mf348", "mf349"],
-                      "truck": ["mf352", "mf353"]}
+        pm_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Pm", "mfSOV_drvtrp_VOT_2_Pm", "mfSOV_drvtrp_VOT_3_Pm", "mfSOV_drvtrp_VOT_4_Pm"],
+                      "hov":   ["mfHOV_drvtrp_VOT_1_Pm", "mfHOV_drvtrp_VOT_2_Pm", "mfHOV_drvtrp_VOT_3_Pm", "mfHOV_drvtrp_VOT_4_Pm"],
+                      "truck": ["mflgvPcePm", "mfhgvPcePm"]}
         self.assign_scen(pm_scenario, pm_demands)
         pm_skims = {"sovVot1":  ["mfPmSovDistVOT1", "mfPmSovTimeVOT1", "mfPmSovTollVOT1"],
                     "sovVot2":  ["mfPmSovDistVOT2", "mfPmSovTimeVOT2", "mfPmSovTollVOT2"],
