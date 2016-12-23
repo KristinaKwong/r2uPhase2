@@ -41,43 +41,31 @@ class InputSettings(_m.Tool()):
         am_scenid = int(eb.matrix("ms2").data)
         copy_scenario(from_scenario=base_scenario,
                       scenario_id=am_scenid,
-                      scenario_title=base_scenario.title,
+                      scenario_title=base_scenario.title + " AM",
                       overwrite=True)
         amscen = eb.scenario(am_scenid)
 
         self.attribute_code(amscen, "@lanesam", "@vdfam", "@tpfam", "@hdwyam", "@tollam")
-        copy_scenario(from_scenario=amscen,
-                      scenario_id=am_scenid + 30,
-                      scenario_title=amscen.title + ": Final Iteration ",
-                      overwrite=True)
 
         # Copy to new MD Scenarios
         md_scenid = int(eb.matrix("ms3").data)
         copy_scenario(from_scenario=base_scenario,
                       scenario_id=md_scenid,
-                      scenario_title=base_scenario.title,
+                      scenario_title=base_scenario.title + " MD",
                       overwrite=True)
         mdscen = eb.scenario(md_scenid)
 
         self.attribute_code(mdscen, "@lanesmd", "@vdfmd", "@tpfmd", "@hdwymd", "@tollmd")
-        copy_scenario(from_scenario=mdscen,
-                      scenario_id=md_scenid + 30,
-                      scenario_title=mdscen.title + ": Final Iteration ",
-                      overwrite=True)
 
         # Copy to new pm Scenarios
         pm_scenid = int(eb.matrix("ms4").data)
         copy_scenario(from_scenario=base_scenario,
                       scenario_id=pm_scenid,
-                      scenario_title=base_scenario.title,
+                      scenario_title=base_scenario.title + " PM",
                       overwrite=True)
         pmscen = eb.scenario(pm_scenid)
 
         self.attribute_code(pmscen, "@lanespm", "@vdfpm", "@tpfpm", "@hdwypm", "@tollpm")
-        copy_scenario(from_scenario=pmscen,
-                      scenario_id=pm_scenid + 30,
-                      scenario_title=pmscen.title + ": Final Iteration ",
-                      overwrite=True)
 
     def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr, toll_attr):
         net_calc = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
