@@ -399,19 +399,19 @@ class HbSoc(_m.Tool()):
                     "HbSoP-AI3A0", "HbSoP-AI3A1", "HbSoP-AI3A2"
                    ]
 
-        LS_Coeff = 0.5
+        LS_Coeff = 0.8
 
-        LambdaList = [-0.2, -0.2, -0.2,
-                      -0.2, -0.2, -0.2,
-                      -0.2, -0.2, -0.2]
+        LambdaList = [-0.217001,-0.235419,-0.220982,
+                      -0.217001,-0.235419,-0.220982,
+                      -0.217001,-0.235419,-0.220982]
 
-        AlphaList =  [0.02, 0.02, 0.02,
-                      0.02, 0.02, 0.02,
-                      0.02, 0.02, 0.02]
+        AlphaList =  [0.003376, 0.003323, 0.002713,
+                      0.003376, 0.003323, 0.002713,
+                      0.003376, 0.003323, 0.002713]
 
-        GammaList =  [-0.0004, -0.0004, -0.0004,
-                      -0.0004, -0.0004, -0.0004,
-                      -0.0004, -0.0004, -0.0004]
+        GammaList =  [-0.000025, -0.000022, -0.000013,
+                      -0.000025, -0.000022, -0.000013,
+                      -0.000025, -0.000022, -0.000013]
 
         MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, 'HbWBlSovDist_I1'))
         MChM.one_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
@@ -469,14 +469,14 @@ class HbSoc(_m.Tool()):
         ts_df = pd.read_sql("SELECT * from timeSlicingFactors", conn)
         conn.close()
         # Subset Time Slice Factor Dataframes by purpose
-        hbw_ts = ts_df.loc[ts_df['purpose'] == 'hbsoc']
+        hbso_ts = ts_df.loc[ts_df['purpose'] == 'hbsoc']
 
         # Subset Time Slice Factor Dataframes by mode
-        Auto_AM_Fct, Auto_MD_Fct, Auto_PM_Fct = self.get_ts_factor(hbw_ts.loc[ts_df['mode'] == 'Auto']) # Auto Factors
-        Tran_AM_Fct, Tran_MD_Fct, Tran_PM_Fct = self.get_ts_factor(hbw_ts.loc[ts_df['mode'] == 'Transit']) # Transit Factors
-        Acti_AM_Fct, Acti_MD_Fct, Acti_PM_Fct = self.get_ts_factor(hbw_ts.loc[ts_df['mode'] == 'Active']) # Active Factors
+        Auto_AM_Fct, Auto_MD_Fct, Auto_PM_Fct = self.get_ts_factor(hbso_ts.loc[ts_df['mode'] == 'Auto']) # Auto Factors
+        Tran_AM_Fct, Tran_MD_Fct, Tran_PM_Fct = self.get_ts_factor(hbso_ts.loc[ts_df['mode'] == 'Transit']) # Transit Factors
+        Acti_AM_Fct, Acti_MD_Fct, Acti_PM_Fct = self.get_ts_factor(hbso_ts.loc[ts_df['mode'] == 'Active']) # Active Factors
 
-        del ts_df, hbw_ts
+        del ts_df, hbso_ts
 
       ##########################################################################################
        ##       Calculate peak hour O-D person trips and final 24 hour P-A Trips
