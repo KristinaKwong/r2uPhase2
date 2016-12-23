@@ -45,7 +45,7 @@ class ModeChoiceUtilities(_m.Tool()):
         impedance_list -- a list of impendences/utilities to use for balancing (mfXX)
         output_demands -- the list of matrices to hold the output demands (mfXX)
         """
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         # calculate the impedences weighted by target attractions
         attractions = util.get_matrix_numpy(eb, md_list[0])
@@ -75,7 +75,7 @@ class ModeChoiceUtilities(_m.Tool()):
 
     @_m.logbook_trace("Run matrix balancing to multiple productions")
     def two_dim_matrix_balancing(self, eb, mo_list, md_list, impedance_list, output_demands):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         max_iterations = int(util.get_matrix_numpy(eb, "msIterDist"))
         rel_error = eb.matrix("msRelErrDist").data
@@ -127,7 +127,7 @@ class ModeChoiceUtilities(_m.Tool()):
     @_m.logbook_trace("Impedance Calc")
     def ImpCalc(self, eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, Distance):
 
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         input_path = util.get_input_path(eb)
 
         for i in range (len(imp_list)):

@@ -20,7 +20,7 @@ class AsiaPacificTruckModel(_m.Tool()):
 
     @_m.logbook_trace("Asia Pacific Truck Model")
     def __call__(self, eb, Year):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         #Batch input Asia Pacific matrix from TruckBatchFiles (gg ensemble format)
         util.delmat(eb, "mf1017")

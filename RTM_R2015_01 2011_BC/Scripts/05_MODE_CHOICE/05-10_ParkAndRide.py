@@ -45,7 +45,7 @@ class ParkAndRide(_m.Tool()):
 
     @_m.logbook_trace("Calculate P/R impedance and demand for bus and rail", save_arguments=True)
     def __call__(self, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         matrix_txn = _m.Modeller().tool(
             "inro.emme.data.matrix.matrix_transaction")
 
@@ -407,7 +407,7 @@ class ParkAndRide(_m.Tool()):
 
     @_m.logbook_trace("Calculating auto impedance")
     def AutoImpedance(self, asg_type, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         #Calculate auto impedance
         if asg_type < 3:
@@ -427,7 +427,7 @@ class ParkAndRide(_m.Tool()):
 
     @_m.logbook_trace("Calculating transit impedance")
     def TransitImpedance(self, asg_type, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         #Calculate transit impedance
         if asg_type < 3:
@@ -440,7 +440,7 @@ class ParkAndRide(_m.Tool()):
 
     @_m.logbook_trace("Calculating park and ride demand by splitting transit into p/r")
     def PRdemand(self, asg_type, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         eb = scenario.emmebank
 
         triple_index_op = _m.Modeller().tool(
@@ -527,7 +527,7 @@ class ParkAndRide(_m.Tool()):
 
     @_m.logbook_trace("Calculating park and ride utility functions")
     def PRutility(self, asg_type, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         init_matrix = _m.Modeller().tool("inro.emme.data.matrix.init_matrix")
         spec = {
             "expression": "default_expression",
@@ -625,7 +625,7 @@ class ParkAndRide(_m.Tool()):
 
     @_m.logbook_trace("Matrix Batchin")
     def Matrix_Batchins(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         util.initmat(eb, "mf202", "PRaimp", "Auto impedance (input to PR)", 0)
         util.initmat(eb, "mf203", "PRtimp", "Transit impedance (input to PR)", 0)

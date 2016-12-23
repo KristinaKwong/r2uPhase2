@@ -39,7 +39,7 @@ class Assignment(_m.Tool()):
 
     @_m.logbook_trace("06-00 - Assignment")
     def __call__(self, eb, run_detailed_classes, max_iterations):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         amscen1 = int(eb.matrix("ms140").data)
         mdscen1 = int(eb.matrix("ms141").data)
         pmscen1 = int(eb.matrix("ms150").data)

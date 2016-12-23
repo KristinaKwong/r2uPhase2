@@ -32,7 +32,7 @@ class TripProd(_m.Tool()):
 
     @_m.logbook_trace("02-01 - Trip Production")
     def __call__(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         input_path = util.get_input_path(eb)
 
         TripRateFile = os.path.join(input_path, "21_TripRates_ALLPURPOSES.csv")
@@ -70,7 +70,7 @@ class TripProd(_m.Tool()):
     ##    Outputs results matrix to a file
     @_m.logbook_trace("Output Results")
     def Output_Results(self, eb, FirstResultMoNum, TripRateFile, CalibrationFactors):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         output_path = util.get_output_path(eb)
         output_file =    os.path.join(output_path, "02-01_OUTPUT_FILE.txt")
         output_file_gy = os.path.join(output_path, "02-01_OUTPUT_FILE_GY.txt")
@@ -135,7 +135,7 @@ class TripProd(_m.Tool()):
 
     @_m.logbook_trace("Aggregate_Purposes")
     def Aggregate_Purposes(self):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         mo_result_num = 904
         specs = []
@@ -158,7 +158,7 @@ class TripProd(_m.Tool()):
     ##mo899-mo903 - Calculate total number of auto
     @_m.logbook_trace("CalculateNumAutos")
     def CalculateNumAutos(self):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         specs = []
 
@@ -181,7 +181,7 @@ class TripProd(_m.Tool()):
     ##mo161-268 - Aggregate Income Auto Ownership
     @_m.logbook_trace("Aggregation_IncomeOwnership")
     def Aggregation_IncomeOwnership(self):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         mo_result_num = 161
         specs = []
@@ -195,7 +195,7 @@ class TripProd(_m.Tool()):
     ## mo836-mo898 - Aggregation of production to income-ownership splits for each purpose
     @_m.logbook_trace("Aggregation")
     def Aggregation(self):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ## mo836-mo871 - Purpose x AutoOwnership
         specs = []
@@ -234,7 +234,7 @@ class TripProd(_m.Tool()):
 
     @_m.logbook_trace("Calibration")
     def Calibration(self, Calibration_Factors):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         specs = []
         for i in range(1, 432):
@@ -250,7 +250,7 @@ class TripProd(_m.Tool()):
     ##  mo404-mo835 Performs the actual matrix calculation from the LandUse "mo"s with the TripRates for the various trip purposes
     @_m.logbook_trace("Perform Matrix calculations")
     def TripProduction(self, TripRate_Data, FirstResultMoNum):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ## Loop to do the expression calculations
         specs = []
@@ -296,7 +296,7 @@ class TripProd(_m.Tool()):
     ##    Batches in the batchin file
     @_m.logbook_trace("Matrix Batchin")
     def Matrix_Batchins(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         util.initmat(eb, "mo404", "p1010", "Produc WkW0LA0", 0)
         util.initmat(eb, "mo405", "p1110", "Produc WkW1LA0", 0)

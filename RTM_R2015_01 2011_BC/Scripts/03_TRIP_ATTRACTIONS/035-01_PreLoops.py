@@ -34,7 +34,7 @@ class PreLoop(_m.Tool()):
 
     @_m.logbook_trace("035-01 - PRELOOPS")
     def __call__(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         util.initmat(eb, "mf210", "iWkL", "Home-work Low Inc Impedance", 0)
         util.initmat(eb, "mf211", "iWkM", "Home-work Med Inc Impedance", 0)

@@ -39,7 +39,7 @@ class PrImpedance(_m.Tool()):
 	@_m.logbook_trace("Park and Ride Impedance Calculation")
 	def __call__(self, eb):
 
-		util = _m.Modeller().tool("translink.emme.util")
+		util = _m.Modeller().tool("translink.util")
 		input_path = util.get_input_path(eb)
 		pnr_costs = os.path.join(input_path, "pnr_inputs.csv")
 		model_year = int(eb.matrix("ms149").data)
@@ -538,7 +538,7 @@ class PrImpedance(_m.Tool()):
 
 	@_m.logbook_trace("Park and Ride Calculate West Coast Express Generalized Time")
 	def WceGT(self, eb):
-		util = _m.Modeller().tool("translink.emme.util")
+		util = _m.Modeller().tool("translink.util")
 		# [AM,MD,PM]
 		transit_mats = {"wceIVT" : ["mf5052",  "mf5058", "mf5064"],
 						"wceWait" : ["mf5053",  "mf5059", "mf5065"],
@@ -588,7 +588,7 @@ class PrImpedance(_m.Tool()):
 
 	@_m.logbook_trace("Park & Ride Calculate Rail Generatized Time")
 	def RailGT(self, eb):
-		util = _m.Modeller().tool("translink.emme.util")
+		util = _m.Modeller().tool("translink.util")
 		# [AM,MD,PM]
 		transit_mats = {"railIVT" : ["mf5001",  "mf5006", "mf5011"],
 						"railWait" : ["mf5002",  "mf5007", "mf5012"],
@@ -634,7 +634,7 @@ class PrImpedance(_m.Tool()):
 
 	@_m.logbook_trace("Park & Ride Calculate Bus Generalized Time")
 	def BusGT(self, eb):
-		util = _m.Modeller().tool("translink.emme.util")
+		util = _m.Modeller().tool("translink.util")
 		# [AM,MD,PM]
 		transit_mats = {"busIVT" : ["mf107",  "mf112", "mf2107"],
 						"busWait" : ["mf106",  "mf111", "mf2106"],
@@ -676,7 +676,7 @@ class PrImpedance(_m.Tool()):
 
 	@_m.logbook_trace("Park & Ride Calculate Auto Generalized Time")
 	def AutoGT(self, eb):
-		util = _m.Modeller().tool("translink.emme.util")
+		util = _m.Modeller().tool("translink.util")
 
 		# work trips - not ideal formulation but quick and gets it done
 		# [AM,MD,PM]
@@ -737,7 +737,7 @@ class PrImpedance(_m.Tool()):
 
 	@_m.logbook_trace("Park & Ride - Read Input Files")
 	def read_file(self, eb, file):
-		util = _m.Modeller().tool("translink.emme.util")
+		util = _m.Modeller().tool("translink.util")
 		#Read data from file and check number of lines
 		with open(file, "rb") as sourcefile:
 			lines = list(csv.reader(sourcefile, skipinitialspace=True))
@@ -767,7 +767,7 @@ class PrImpedance(_m.Tool()):
 
 	@_m.logbook_trace("Park & Ride Matrix Batchins")
 	def matrix_batchins(self, eb):
-		util = _m.Modeller().tool("translink.emme.util")
+		util = _m.Modeller().tool("translink.util")
 
 		#TODO move the VOT to actual file Batchin -
 		util.initmat(eb,"ms120","votWklow", "work VOT low income in min/$", 6)

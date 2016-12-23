@@ -39,7 +39,7 @@ class TollSkim(_m.Tool()):
         translink_auto_assignment = _m.Modeller().tool(
             "translink.emme.stage3.step6.autoassignment")
 
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         num_processors = int(eb.matrix("ms142").data)
 
         demands_list = [

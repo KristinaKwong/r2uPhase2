@@ -59,7 +59,7 @@ class ExternalTruckModel(_m.Tool()):
 
     @_m.logbook_trace("Import Cascade Cross-Border Matrices")
     def CrossBorder(self, eb, Year):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
         root_directory = util.get_input_path(eb)
@@ -108,7 +108,7 @@ class ExternalTruckModel(_m.Tool()):
 
     @_m.logbook_trace("Trip Generation")
     def TripGeneration(self, Year):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         # Inputs: Regression Functions and directional factors
         # Outputs: 24 hours trip generation - mo4,mo6,md404,md406 (Light From, Heavy From, Light To, Heavy To)
 
@@ -216,7 +216,7 @@ class ExternalTruckModel(_m.Tool()):
 
     @_m.logbook_trace("Adjust Inter Regional mos and mds with Cross-Border mos and mds")
     def AdjustInterCrossBorder(self, matrix1, matrix2, matrix3):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         #   Adjusts Inter-regional mo and md totals by subtracting Cross-border mo/mds with inter-regional zone end
 
         specs = []
@@ -241,7 +241,7 @@ class ExternalTruckModel(_m.Tool()):
 
     @_m.logbook_trace("Trip Distribution")
     def TripDistribution(self):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         ## Distribute External mo and md trips based on 1999 O-D Survey
         # Inputs: mo4, mo6, md404, md406, mf182 (O-D Survey Light Trucks Distribution), mf183 (O-D Survey Heavy Truck Distribution)
         # Outputs: mf184, mf185 (24 hour Light Truck O-D, 24 hour Heavy Truck O-D)
@@ -258,7 +258,7 @@ class ExternalTruckModel(_m.Tool()):
 
     @_m.logbook_trace("Time Slicing")
     def TimeSlicing(self):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         ## Time Slice 24 hour demands to AM and MD peak hour volumes
         # Inputs: mf184, mf185, Time Slice Factors from Screenline volumes
         # Outputs: Light AM, Light MD, Heavy AM, Heavy MD - mf186, mf188, mf187, mf189

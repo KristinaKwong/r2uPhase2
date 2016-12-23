@@ -111,7 +111,7 @@ class TransitAssignment(_m.Tool()):
         self.matrix_batchins(eb)
 
         assign_transit = _m.Modeller().tool("inro.emme.transit_assignment.extended_transit_assignment")
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         run_crowding = 0
         run_capacity_constraint = 0
@@ -656,7 +656,7 @@ class TransitAssignment(_m.Tool()):
     def skim_transit(self, i, scenarionumber, classname):
         transit_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.matrix_results")
         strategy_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.strategy_based_analysis")
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         # Note: could remove the None items from the tmplt
         # TODO: Update Matrices mf 7000+ that are used for fare skims and availability of Modes
@@ -879,7 +879,7 @@ class TransitAssignment(_m.Tool()):
 
     @_m.logbook_trace("Matrix Batchin")
     def matrix_batchins(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         #TODO initialize matrices for bus and rail skims- remove the initialization from auto assignment
         #TODO: Update matrix numbers
         util.initmat(eb, "mf933", "eBsWtA", "Interim Skim BusTotalWaitAM", 0)

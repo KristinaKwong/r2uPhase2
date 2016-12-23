@@ -38,7 +38,7 @@ class TripDistribution(_m.Tool()):
     @_m.logbook_trace("Run Home Base Work")
     def __call__(self, eb):
 
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         TD_Calib = _m.Modeller().tool("translink.RTM3.tripdistcalib")
         input_path = util.get_input_path(eb)
         self.create_avgtl_database(eb)
@@ -218,7 +218,7 @@ class TripDistribution(_m.Tool()):
 
     def create_avgtl_database(self, eb):
 
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         Path = "U:/Projects/Development/Phase 3/TripDistribution/Targets/TripLengths/"
         PurpList = ["hbw", "hbpb", "hbesc", "hbsoc", "hbu", "hbshop", "nhbw", "nhbo", "hbsch"]

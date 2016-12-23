@@ -22,7 +22,7 @@ class RegTruckModel(_m.Tool()):
 
     @_m.logbook_trace("Regional Truck Model")
     def __call__(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         util.delmat(eb, "mf1025")
         util.delmat(eb, "mf1026")
@@ -55,7 +55,7 @@ class RegTruckModel(_m.Tool()):
         :return: None
         """
 
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         specs = []
 
         """

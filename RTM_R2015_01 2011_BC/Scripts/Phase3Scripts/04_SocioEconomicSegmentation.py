@@ -40,7 +40,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Socio Economic Segmentation")
     def __call__(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ##Generate Dataframe (Df for short hand) used for Worker-Income Segmentation
         df = self.Generate_Data_Frame(eb)
@@ -51,7 +51,7 @@ class SocioEconomicSegmentation(_m.Tool()):
     @_m.logbook_trace("Calculate_Worker-Income Segmentation")
     def Calc_Wrkr_Inc(self, df, eb):
 
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         Tiny = 0.000001
 
         ##Variable Vectors
@@ -569,7 +569,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
 
     def Generate_Data_Frame(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
     	sql = """
         SELECT

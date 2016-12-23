@@ -59,7 +59,7 @@ class ModeChoiceHBUni(_m.Tool()):
     @_m.logbook_trace("continue aggregating non work demand, university")
     def aggregate_non_work_demand(self, scenario):
         ## Aggregate nonwork demand in matrices mf568-mf639
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         spec_list = []
         matrixnum = 640
         resultmat = 568
@@ -75,7 +75,7 @@ class ModeChoiceHBUni(_m.Tool()):
 
     @_m.logbook_trace("Calculate_Walk_Utility")
     def calculate_walk(self, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         # Walk utility stored in matrices mf419-mf427
 
         alt_spec_cons = str(0.840580230263)
@@ -124,7 +124,7 @@ class ModeChoiceHBUni(_m.Tool()):
 
     @_m.logbook_trace("Calculate_Rail_Utility")
     def calculate_rail(self, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         # Rail utility stored between matrices mf410-mf418
 
         alt_spec_cons = str(1.97933584013)
@@ -182,7 +182,7 @@ class ModeChoiceHBUni(_m.Tool()):
 
     @_m.logbook_trace("Calculate_Bus_Utility")
     def calculate_bus(self, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         # Bus utility stored between matrices mf401-mf409
 
         alt_spec_cons = str(2.12500836788)
@@ -226,7 +226,7 @@ class ModeChoiceHBUni(_m.Tool()):
 
     @_m.logbook_trace("Calculate_HOV3_Utility")
     def calculate_hov3(self, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         # HOV3 utility stored between matrices mf392-mf400
 
         alt_spec_cons = str(-2.87504697385)
@@ -278,7 +278,7 @@ class ModeChoiceHBUni(_m.Tool()):
 
     @_m.logbook_trace("Calculate_HOV2_Utility")
     def calculate_hov2(self, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         # HOV2 utility stored between matrices mf383-mf391
 
         alt_spec_cons = str(-1.28728366115)
@@ -328,7 +328,7 @@ class ModeChoiceHBUni(_m.Tool()):
 
     @_m.logbook_trace("Calculate_SOV_utility")
     def calculate_sov(self, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         # SOV utility stored between matrices mf374-mf382
 
         high_inc = str(0.294204778843)
@@ -381,7 +381,7 @@ class ModeChoiceHBUni(_m.Tool()):
 
     @_m.logbook_trace("Calculate_MFs_Additional_Attributes")
     def calculate_blends(self, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         specs = []
         specs.append(util.matrix_spec("mf140", "(mf110.eq.1)*(ms51+((mf115.eq.0)*(1-ms51)))"))
@@ -409,7 +409,7 @@ class ModeChoiceHBUni(_m.Tool()):
     #********
     @_m.logbook_trace("Time slice home-base university")
     def time_slice_home_base_university(self, eb, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         #
         #    Preparing expressions for calculation
         #
@@ -519,7 +519,7 @@ class ModeChoiceHBUni(_m.Tool()):
     #    Module - it is identical to matrix-calculation() (rs)
     #********
     def calculate_final_period_demand(self, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         msAutOccWork3Plus = "ms60"
         msAutOccUniv3Plus = "ms61"

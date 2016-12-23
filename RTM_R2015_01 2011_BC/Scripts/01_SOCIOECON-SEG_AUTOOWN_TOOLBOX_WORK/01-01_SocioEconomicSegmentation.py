@@ -39,7 +39,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("01-01 - Socio Economic Segmentation")
     def __call__(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         input_path = util.get_input_path(eb)
         HHWorkerRate = os.path.join(input_path, "12_HH_Worker_Rates.csv")
         IncomeData = os.path.join(input_path, "13_HHWrkrIncome.csv")
@@ -89,7 +89,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Output Results")
     def Output_Results(self, eb, HHWorkerRate, IncomeData, AutoOwnershipCoefficients):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         output_path = util.get_output_path(eb)
         output_file =    os.path.join(output_path, "01-01_OUTPUT_RESULTS.txt")
         output_file_gy = os.path.join(output_path, "01-01_OUTPUT_RESULTS_GY.txt")
@@ -146,7 +146,7 @@ class SocioEconomicSegmentation(_m.Tool()):
     ##     mo389-mo391 - Aggregate Num Workers in each Income Category
     @_m.logbook_trace("Aggregate Number of Worker Income Categories")
     def Aggregate_NumWorkerIncomeCategories(self):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         result_mo_num = 389
         specs = []
@@ -162,7 +162,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Aggregate Income Categories")
     def Aggregate_IncomeCategories(self):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         start_mo_num = 73
         result_mo_num = 365
@@ -206,7 +206,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Aggregate NonWorkers and Workers")
     def Aggregate_NonWorkers_and_Workers(self):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         start_mo_num = 112
         result_mo_num = 269
@@ -251,7 +251,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Calculate Number of Households Per Worker Category Per Income Category")
     def Calculate_IncomeWorkersHousehold(self, IncomeData):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ##Two loops: Go through IncomeData and extract multipliers and multiplies by matrix for HHSize x WorkerNumber
 
@@ -267,7 +267,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Calculate Number of Workers Per Household Category")
     def Calculate_WorkersHousehold(self, HHData):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ##    Dictionary for senior proportion lookup
         sr_prop_flag = {"0": "INCLUDE", "1": "EXCLUDE"}
@@ -291,7 +291,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Calculate Number of Workers")
     def Calculate_Workers(self, HHData):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ##    Dictionary for senior proprtion lookup - set senior proportion constraint
         ## 0 - less than 20% Sr. Proportion
@@ -365,7 +365,7 @@ class SocioEconomicSegmentation(_m.Tool()):
     ## mo716-mo718 - Calculated Number of Auto Per HH Size
     @_m.logbook_trace("Autos_PerHHSize")
     def Autos_PerHHSize(self):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ## Loop each set of Auto Ownership classification and perform summation.
         specs = []
@@ -382,7 +382,7 @@ class SocioEconomicSegmentation(_m.Tool()):
     ##Create mo16, mo18 from existing matrices
     @_m.logbook_trace("InitialMatrixCalculations")
     def InitialMatrixCalculations(self):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         specs = []
 
@@ -393,7 +393,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
     @_m.logbook_trace("Matrix Batchin")
     def Matrix_Batchins(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         util.initmat(eb, "mo54", "s-0--", "Segment W0", 0)
         util.initmat(eb, "mo55", "s-1--", "Segment W1", 0)

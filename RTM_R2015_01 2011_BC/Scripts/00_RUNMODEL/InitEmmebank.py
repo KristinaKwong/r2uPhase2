@@ -107,7 +107,7 @@ class InitEmmebank(_m.Tool()):
 
     @_m.logbook_trace("Creating a base scenario")
     def initscenario(self, eb, scen_id, scen_title):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         mod = _m.Modeller()
         project = mod.desktop.project
         proj_path = os.path.dirname(project.path)
@@ -251,7 +251,7 @@ class InitEmmebank(_m.Tool()):
         ensem.set_data(matData)
 
     def initconstants(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         util.initmat(eb, "ms17", "adcost", "Additional cost", 0)
         util.initmat(eb, "ms18", "MCOpCs", "Mode Choice operating cost per km", 0.18)
@@ -302,7 +302,7 @@ class InitEmmebank(_m.Tool()):
         util.initmat(eb, "ms114", "NoVOT", "No value of time in min/$", 6)
 
     def initdatabase(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         # create vector of zones - should this be done elsewhere?
         util.initmat(eb, "mo51", "zoneindex", "Zone numbers")
@@ -320,7 +320,7 @@ class InitEmmebank(_m.Tool()):
         conn.close()
 
     def initseeds(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         mod = _m.Modeller()
         project = mod.desktop.project

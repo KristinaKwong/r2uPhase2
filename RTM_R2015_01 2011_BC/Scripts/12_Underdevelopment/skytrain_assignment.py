@@ -175,7 +175,7 @@ class Rail_Assignment(_m.Tool()):
 
 
     def matrix_batchins(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ## Initialize new block used for filter
         # just code to create filter for choice set

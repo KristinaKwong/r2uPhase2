@@ -62,7 +62,7 @@ class TransitSkim(_m.Tool()):
     def __call__(self, i, scenarionumber, classname):
         transit_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.matrix_results")
         strategy_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.strategy_based_analysis")
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         # Note: could remove the None items from the tmplt
         # TODO: Update Matrices mf 7000+ that are used for fare skims and availability of Modes

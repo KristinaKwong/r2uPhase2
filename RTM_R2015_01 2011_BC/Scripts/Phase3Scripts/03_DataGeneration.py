@@ -37,7 +37,7 @@ class DataGeneration(_m.Tool()):
 
     @_m.logbook_trace("Model Data Generation")
     def __call__(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         self.matrix_batchins(eb)
         self.calc_density(eb)
@@ -69,7 +69,7 @@ class DataGeneration(_m.Tool()):
 
     @_m.logbook_trace("Calculate Minimum Distances to CBD and Towncentre")
     def dist_cbd_tc(self, eb):
-    	util = _m.Modeller().tool("translink.emme.util")
+    	util = _m.Modeller().tool("translink.util")
 
     	# acquire cbd and TC dummies
     	sql = """
@@ -156,7 +156,7 @@ class DataGeneration(_m.Tool()):
 
     @_m.logbook_trace("Calculate Transit Accessibility")
     def transit_uni_accessibility(self, eb):
-    	util = _m.Modeller().tool("translink.emme.util")
+    	util = _m.Modeller().tool("translink.util")
 
     	# define parameters
     	am_weight = 0.20
@@ -355,7 +355,7 @@ class DataGeneration(_m.Tool()):
 
     @_m.logbook_trace("Calculate Auto Accessibility")
     def auto_accessibility(self, eb):
-    	util = _m.Modeller().tool("translink.emme.util")
+    	util = _m.Modeller().tool("translink.util")
 
     	# define parameters
     	am_weight = 0.29
@@ -439,7 +439,7 @@ class DataGeneration(_m.Tool()):
 
     @_m.logbook_trace("Calculate Densities")
     def calc_density(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         # get data from emmebank
         zones = util.get_matrix_numpy(eb, "mozoneindex", reshape=False)
@@ -513,7 +513,7 @@ class DataGeneration(_m.Tool()):
 
     @_m.logbook_trace("Initial Demand and Skim Matrix Creation")
     def matrix_batchins(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ########################################################################
         # densities

@@ -57,7 +57,7 @@ class FactoredTripAttractions(_m.Tool()):
 
     @_m.logbook_trace("Output Results")
     def Output_Results(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         output_path = util.get_output_path(eb)
         output_file =    os.path.join(output_path, "03-02_OUTPUT_RESULTS.txt")
         output_file_gy = os.path.join(output_path, "03-02_OUTPUT_RESULTS_GY.txt")
@@ -113,7 +113,7 @@ class FactoredTripAttractions(_m.Tool()):
 
     @_m.logbook_trace("Apply_Factors")
     def Apply_Factors(self, purpose_list, purpose_factors):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ## Scaling all the mds to match the "mo" total, except for md46, HBU.
         for i in range(42, 46) + range(47, 53):
@@ -133,7 +133,7 @@ class FactoredTripAttractions(_m.Tool()):
 
     @_m.logbook_trace("Calculate_Factors")
     def Calculate_Factors(self, purpose_list, purpose_factors):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         for i in range(0, 3):
             x = i + 161

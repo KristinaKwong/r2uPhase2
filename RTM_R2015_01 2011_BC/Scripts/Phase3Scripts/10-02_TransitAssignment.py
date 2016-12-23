@@ -127,7 +127,7 @@ class TransitAssignment(_m.Tool()):
 
         self.num_processors = int(eb.matrix("ms12").data)
         assign_transit = _m.Modeller().tool("inro.emme.transit_assignment.extended_transit_assignment")
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         run_crowding = int(eb.matrix("ms45").data)
         run_capacity_constraint = int(eb.matrix("ms46").data)
@@ -179,10 +179,7 @@ class TransitAssignment(_m.Tool()):
                 self.averaging_transit_volumes(sc, iteration)
 
                 # Run Crowding and Headway Reports
-                if iteration==1:
-                    report["  Iter    Mode"] = "     Seat.pass-kms    Stand.pass-kms   Excess.pass-kms  Max.crowd.factor   Min.Hdwy Factor   Max.Hdwy Factor"
-                rep = self.crowding_headway_report(sc, iteration)
-                report.update(rep)
+                self.crowding_headway_report(sc, report, iteration)
 
                 # Update Capacity, Crowding Functions
                 if run_crowding==1:
@@ -435,7 +432,7 @@ class TransitAssignment(_m.Tool()):
         return spec
 
     def calc_network_costs(self, sc, period_length, i):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ## Calculate headway fraction based on service frequency
         # Bus Modes
@@ -498,7 +495,7 @@ class TransitAssignment(_m.Tool()):
         util.emme_segment_calc(sc, "@pstand", "0")
 
     def averaging_transit_volumes(self, sc, iteration):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         # MSA on Boardings and transit Volumes
         msa_factor = 1.0 / iteration
         util.emme_segment_calc(sc, "@boardavg" , "board*%s + @boardavg*(1-%s)" %(msa_factor, msa_factor))
@@ -512,7 +509,7 @@ class TransitAssignment(_m.Tool()):
         util.emme_segment_calc(sc, "@pstand", "(@voltravg - @seatcapacity).max.0")
 
     def crowding_factor_calc(self, sc):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         # In-vehicle Crowding Function
         crowd_spec = ("((((%s + (%s - %s)*(@voltravg/@totcapacity)^%s)* @pseat +"
                       "(%s + (%s - %s)*(@voltravg/@totcapacity)^%s)* @pstand)"
@@ -523,13 +520,13 @@ class TransitAssignment(_m.Tool()):
         util.emme_segment_calc(sc, "@ivttfac", crowd_spec)
 
     def effective_headway_calc(self, sc):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         # [(Boardings/max(Total Capacity - Transit Volume + Boardings,1)).min.3.0].max.1
         util.emme_segment_calc(sc, "@hdwyfac", "((@boardavg/((@totcapacity-@voltravg+@boardavg).max.1)).min.(3.0)).max.1")
         util.emme_segment_calc(sc, "@hdwyeff", "@hdwyfac*@hfrac")
 
     def dwell_time_calc(self, sc, period_length):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         # Fixed dwell time to account for acceleration and deceleration of vehicle
         min_dwell_time = 0.33 # 20 seconds in minutes
         # Zero Passenger - set us1 =0
@@ -544,13 +541,14 @@ class TransitAssignment(_m.Tool()):
         #                                        "(((@dwtboard*@boardavg) + (@dwtalight*@alightavg))*"
         #                                        " hdw/(60*%s)))" %(min_dwell_time,period_length), "all","mode=bg")
 
-    def crowding_headway_report(self, sc, iteration):
+    def crowding_headway_report(self, sc, report, iteration):
         if sc is self.am_scenario or sc is self.pm_scenario:
             summary_mode_list = self.pk_summary_mode_list
         if sc is self.md_scenario:
             summary_mode_list = self.op_summary_mode_list
 
         if iteration==1:
+            report["  Iter    Mode"] = "     Seat.pass-kms    Stand.pass-kms   Excess.pass-kms  Max.crowd.factor   Min.Hdwy Factor   Max.Hdwy Factor"
             print "Iter   Mode     Seat.pass-kms    Stand.pass-kms   Excess.pass-kms  Max.crowd.factor   Min.Hdwy.Factor   Max.Hdwy.Factor"
         networkCalcTool = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         expression = {
@@ -580,7 +578,7 @@ class TransitAssignment(_m.Tool()):
                 rep = rep + ("%s"%(report[expression[key][1]])).rjust(18)
                 result["%4s"%iteration+"%7s"%modes]=rep
             print "%4s"%iteration+"%7s"%modes+rep
-        return result
+        report.update(result)
 
     def ridership_summary(self, sc):
         print "Line     RiderShip"
@@ -651,7 +649,7 @@ class TransitAssignment(_m.Tool()):
         return spec
 
     def skim_bus(self, scenarionumber):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         transit_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.matrix_results")
         strategy_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.strategy_based_analysis")
 
@@ -679,7 +677,7 @@ class TransitAssignment(_m.Tool()):
         util.compute_matrix(specs, scenarionumber)
 
     def skim_rail(self, scenarionumber):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         transit_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.matrix_results")
         strategy_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.strategy_based_analysis")
 
@@ -716,7 +714,7 @@ class TransitAssignment(_m.Tool()):
         util.compute_matrix(specs, scenarionumber)
 
     def skim_wce(self, scenarionumber):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         transit_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.matrix_results")
         strategy_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.strategy_based_analysis")
 
@@ -779,7 +777,7 @@ class TransitAssignment(_m.Tool()):
 
     @_m.logbook_trace("Move Skims to Time of Day Locations")
     def collect_skims(self, sc, tod):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         if tod == "AM":
             bus_skims =  ["mfAmBusIvtt", "mfAmBusWait", "mfAmBusAux", "mfAmBusBoard", "mfAmBusFare"]
@@ -852,7 +850,7 @@ class TransitAssignment(_m.Tool()):
 
     @_m.logbook_trace("Initialize Skim Matrices")
     def matrix_batchins(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         # Bus journey-level assignment
         util.initmat(eb, "mf9960", "BusWait", "Interim Skim BusTotalWait", 0)

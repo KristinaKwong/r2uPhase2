@@ -148,7 +148,7 @@ class AutoAssignment(_m.Tool()):
         self.calc_timedist_skim(eb, "msVotHgv", "mshgvOpCost", "mfHGVGCTime", "mfHGVOpCst", "mfHGVToll", "mfHGVTime", "mfHGVDist")
 
     def calc_timedist_skim(self, eb, vot_mat, voc_mat, gc_mat, opcst_mat, toll_mat, time_mat, dist_mat):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         vot = eb.matrix(vot_mat).data
         voc = eb.matrix(voc_mat).data
@@ -214,7 +214,7 @@ class AutoAssignment(_m.Tool()):
         self.calc_intrazonal_skim(eb, "mfHGVGCTime")
 
     def calc_intrazonal_skim(self, eb, matrix):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         np_mat = util.get_matrix_numpy(eb, matrix)
 
@@ -227,7 +227,7 @@ class AutoAssignment(_m.Tool()):
         util.set_matrix_numpy(eb, matrix, np_mat)
 
     def store_skims(self, scenario, skim_list):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         do_averaging = util.get_cycle(scenario.emmebank) > 1
         specs = []
@@ -395,7 +395,7 @@ class AutoAssignment(_m.Tool()):
 
     @_m.logbook_trace("Calculate Link and Turn Aggregate Volumes")
     def calc_network_volumes(self, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         util.emme_link_calc(scenario, "@wsovl", "@sov1+@sov2+@sov3+@sov4+@sov5+@sov6")
         util.emme_link_calc(scenario, "@whovl", "@hov1+@hov2+@hov3+@hov4+@hov5+@hov6")
@@ -404,7 +404,7 @@ class AutoAssignment(_m.Tool()):
 
     @_m.logbook_trace("Calculate Fixed Network Costs")
     def calc_network_costs(self, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         eb = scenario.emmebank
 
         hov_occupancy = eb.matrix("ms44").data
@@ -421,7 +421,7 @@ class AutoAssignment(_m.Tool()):
         util.emme_link_calc(scenario, "@hgvoc", "length * %s + 3 * @tolls + @tkpen" % (hgv_voc))
 
     def init_matrices(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         util.initmat(eb, "mf9900", "SOVGCTimeVOT1",  "SOV GC Minutes VOT1", 0)
         util.initmat(eb, "mf9901", "SOVGCTimeVOT2",  "SOV GC Minutes VOT2", 0)

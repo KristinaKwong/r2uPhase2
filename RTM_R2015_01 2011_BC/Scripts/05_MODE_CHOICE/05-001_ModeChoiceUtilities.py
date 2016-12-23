@@ -47,7 +47,7 @@ def build_spec(expression=None, result=None, by_value=None, origins=None, destin
 
 @_m.logbook_trace("Calculate demand")
 def calculate_demand(scenario, demand_start, probability_start, result_start, num_segments=9):
-    util = _m.Modeller().tool("translink.emme.util")
+    util = _m.Modeller().tool("translink.util")
     spec_list = []
     # TODO: Update hardcoded 9 to number of passed segments
     for i in range(num_segments):
@@ -59,7 +59,7 @@ def calculate_demand(scenario, demand_start, probability_start, result_start, nu
 
 
 def process_timeslicing_list(eb, scenario, file_names):
-    util = _m.Modeller().tool("translink.emme.util")
+    util = _m.Modeller().tool("translink.util")
     base_folder = os.path.join(util.get_input_path(eb), "TimeSlicingFactors")
     for name in file_names:
         process_matrix_trans(transaction_file=os.path.join(base_folder, name + ".311"),
@@ -67,7 +67,7 @@ def process_timeslicing_list(eb, scenario, file_names):
 
 
 def export_matrices_report(eb, purpose, full_report_matrices):
-    util = _m.Modeller().tool("translink.emme.util")
+    util = _m.Modeller().tool("translink.util")
     rep_folder = util.get_output_path(eb)
     file_name = os.path.join(rep_folder, purpose + "_fullRep.311")
     matrix_list = []
@@ -113,7 +113,7 @@ def calculate_probabilities(scenario, nests, theta, utility_start_id=374, result
     tiny = 0.000001
     # determine the number of temporary matrices required
     num_temps = 2 * len(nests) + 1
-    util = _m.Modeller().tool("translink.emme.util")
+    util = _m.Modeller().tool("translink.util")
 
     with temp_matrices(emmebank, "FULL", num_temps) as temp_mats:
         spec_list = []
@@ -173,7 +173,7 @@ def temp_matrices(emmebank, matrix_type, total=1, default_value=0.0):
 
 # Initialize mf773 - mf842 before slicing demand
 def dmMatInitParts(eb):
-    util = _m.Modeller().tool("translink.emme.util")
+    util = _m.Modeller().tool("translink.util")
 
     util.initmat(eb, "mf773", "f2111", "TimeSlicedDemand OtSvLT1", 0)
     util.initmat(eb, "mf774", "f2112", "TimeSlicedDemand OtSvLT2", 0)
@@ -250,7 +250,7 @@ def dmMatInitParts(eb):
 # Initialize mf441 - mf503 Probabilities
 # Initialize mf640 - mf702 Results
 def dmMatInit_NonWork(eb):
-    util = _m.Modeller().tool("translink.emme.util")
+    util = _m.Modeller().tool("translink.util")
 
     util.initmat(eb, "mf374", "m110", "Util SvLA0", 0)
     util.initmat(eb, "mf375", "m111", "Util SvLA1", 0)
@@ -449,7 +449,7 @@ def dmMatInit_NonWork(eb):
 # Initialize mf505 - mf567 Results
 # Initialize mf568 - mf639 Demand
 def dmMatInit_Work(eb):
-    util = _m.Modeller().tool("translink.emme.util")
+    util = _m.Modeller().tool("translink.util")
 
     util.initmat(eb, "mf374", "m110", "Util SvLA0", 0)
     util.initmat(eb, "mf375", "m111", "Util SvLA1", 0)
@@ -721,7 +721,7 @@ def dmMatInit_Work(eb):
 # Initialize mf710 - mf881 before slicing demand
 # Initialize mf997 - mf998 before slicing demand
 def dmMatInit_Full(eb):
-    util = _m.Modeller().tool("translink.emme.util")
+    util = _m.Modeller().tool("translink.util")
 
     year = util.get_year(eb)
     yr = year[2:]

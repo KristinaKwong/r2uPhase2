@@ -41,7 +41,7 @@ class TripAttractions(_m.Tool()):
 
     @_m.logbook_trace("Trip Attractions")
     def __call__(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ##Batchin File
         self.matrix_batchins(eb)
@@ -57,7 +57,7 @@ class TripAttractions(_m.Tool()):
 
     @_m.logbook_trace("Calculate Trip Attractions")
     def Calculate_Trip_Attractions(self, eb, df, ct_df):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ########################################################################
         # Set Attraction Model Coefficients
@@ -265,7 +265,7 @@ class TripAttractions(_m.Tool()):
 
     @_m.logbook_trace("Generate Dataframes for Trip Attractions")
     def Generate_Trip_Attractions_dfs(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         taz_sql = """
             SELECT
@@ -313,7 +313,7 @@ class TripAttractions(_m.Tool()):
 
     @_m.logbook_trace("Initialize Trip Attraction Matrices")
     def matrix_batchins(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         util.initmat(eb, "md2000", "hbwatr", "hbw Attractions", 0)
         util.initmat(eb, "md2010", "hbescatr", "hbesc Attractions", 0)

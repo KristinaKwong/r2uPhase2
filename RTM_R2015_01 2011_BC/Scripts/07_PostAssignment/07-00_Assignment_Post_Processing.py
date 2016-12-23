@@ -38,7 +38,7 @@ class PostAssignment(_m.Tool()):
 
     @_m.logbook_trace("07-00 - RUN - Post Assignment")
     def __call__(self, eb, stopping_criteria):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         am_scenario_id = int(eb.matrix("ms140").data)
         md_scenario_id = int(eb.matrix("ms141").data)
         pm_scenario_id = int(eb.matrix("ms150").data)
@@ -56,7 +56,7 @@ class PostAssignment(_m.Tool()):
 
     @_m.logbook_trace("Copy Scenario")
     def copy_scenario(self, eb, am_scenario_id, md_scenario_id, pm_scenario_id):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         cycle_number = util.get_cycle(eb)
         # TODO: would be easier to always run on the same scenario
         #       and at the beginning of each iteration
