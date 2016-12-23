@@ -562,9 +562,9 @@ class DataGeneration(_m.Tool()):
         util.initmat(eb, "mf309", "HOV_drvtrp_VOT_4_Am", "HOV drv-trips VOT 4 AM", 0)
         util.initmat(eb, "mf312", "lgvPceAm", "light trucks PCE AM", 0)
         util.initmat(eb, "mf313", "hgvPceAm", "heavy trucks PCE AM", 0)
-        util.initmat(eb, "mf314", "busAm", "Bus Person Trips AM", 0.00001)
-        util.initmat(eb, "mf315", "railAm", "Rail Person Trips AM", 0.00001)
-        util.initmat(eb, "mf316", "WCEAm", "WCE Person Trips AM", 0.00001)
+        util.initmat(eb, "mf212", "busAm", "Bus Person Trips AM", 0.00001)
+        util.initmat(eb, "mf213", "railAm", "Rail Person Trips AM", 0.00001)
+        util.initmat(eb, "mf214", "WCEAm", "WCE Person Trips AM", 0.00001)
 
         # MD
         util.initmat(eb, "mf320", "SOV_drvtrp_VOT_1_Md", "SOV drv-trips VOT 1 MD", 0)
@@ -577,9 +577,9 @@ class DataGeneration(_m.Tool()):
         util.initmat(eb, "mf329", "HOV_drvtrp_VOT_4_Md", "HOV drv-trips VOT 4 MD", 0)
         util.initmat(eb, "mf332", "lgvPceMd", "light trucks PCE MD", 0)
         util.initmat(eb, "mf333", "hgvPceMd", "heavy trucks PCE MD", 0)
-        util.initmat(eb, "mf334", "busMd", "Bus Person Trips MD", 0.00001)
-        util.initmat(eb, "mf335", "railMd", "Rail Person Trips MD", 0.00001)
-        util.initmat(eb, "mf336", "WCEMd", "WCE Person Trips MD", 0.00001)
+        util.initmat(eb, "mf242", "busMd", "Bus Person Trips MD", 0.00001)
+        util.initmat(eb, "mf243", "railMd", "Rail Person Trips MD", 0.00001)
+        util.initmat(eb, "mf244", "WCEMd", "WCE Person Trips MD", 0.00001)
 
         # PM
         util.initmat(eb, "mf340", "SOV_drvtrp_VOT_1_Pm", "SOV drv-trips VOT 1 PM", 0)
@@ -592,9 +592,9 @@ class DataGeneration(_m.Tool()):
         util.initmat(eb, "mf349", "HOV_drvtrp_VOT_4_Pm", "HOV drv-trips VOT 4 PM", 0)
         util.initmat(eb, "mf352", "lgvPcePm", "light trucks PCE PM", 0)
         util.initmat(eb, "mf353", "hgvPcePm", "heavy trucks PCE PM", 0)
-        util.initmat(eb, "mf354", "busPm", "Bus Person Trips PM", 0.00001)
-        util.initmat(eb, "mf355", "railpm", "Rail Person Trips PM", 0.00001)
-        util.initmat(eb, "mf356", "WCEPm", "WCE Person Trips PM", 0.00001)
+        util.initmat(eb, "mf272", "busPm", "Bus Person Trips PM", 0.00001)
+        util.initmat(eb, "mf273", "railpm", "Rail Person Trips PM", 0.00001)
+        util.initmat(eb, "mf274", "WCEPm", "WCE Person Trips PM", 0.00001)
 
         # Move seed demand into Work SOV/HOV Medium Income for AM/MD/PM
         specs = []

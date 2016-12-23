@@ -137,9 +137,9 @@ class TransitAssignment(_m.Tool()):
         if run_crowding+run_capacity_constraint ==0:
             self.max_iterations=2
 
-        demand_bus_list = ["mf314", "mf334", "mf354"]
-        demand_rail_list = ["mf315", "mf335", "mf355"]
-        demand_wce_list = ["mf316", "mf336", "mf356"]
+        demand_bus_list = ["mf212", "mf242", "mf272"]
+        demand_rail_list = ["mf213", "mf243", "mf273"]
+        demand_wce_list = ["mf214", "mf244", "mf274"]
 
         scenario_list = [scenarioam, scenariomd, scenariopm]
         #TODO: Assignments are done for peak hour
