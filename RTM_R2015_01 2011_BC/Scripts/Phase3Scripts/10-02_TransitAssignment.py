@@ -789,31 +789,59 @@ class TransitAssignment(_m.Tool()):
             rail_skims = ["mfPmRailIvtt", "mfPmRailIvttBus", "mfPmRailWait", "mfPmRailAux", "mfPmRailBoard", "mfPmRailFare"]
             wce_skims =  ["mfPmWceIvtt", "mfPmWceIvttRail", "mfPmWceIvttBus", "mfPmWceWait", "mfPmWceAux", "mfPmWceBoard", "mfPmWceFare"]
 
+        do_averaging = util.get_cycle(sc.emmebank) > 1
         specs = []
-        # Bus Skims
-        specs.append(util.matrix_spec(bus_skims[0], "mfBusIvtt"))
-        specs.append(util.matrix_spec(bus_skims[1], "mfBusWait"))
-        specs.append(util.matrix_spec(bus_skims[2], "mfBusAux"))
-        specs.append(util.matrix_spec(bus_skims[3], "mfBusBoard"))
-        specs.append(util.matrix_spec(bus_skims[4], "mfBusFare"))
 
-        # Rail Skims
-        specs.append(util.matrix_spec(rail_skims[0], "mfRailIvtt"))
-        specs.append(util.matrix_spec(rail_skims[1], "mfRailIvttBus"))
-        specs.append(util.matrix_spec(rail_skims[2], "mfRailWait"))
-        specs.append(util.matrix_spec(rail_skims[3], "mfRailAux"))
-        specs.append(util.matrix_spec(rail_skims[4], "mfRailBoard"))
-        specs.append(util.matrix_spec(rail_skims[5], "mfRailFare"))
+        if not do_averaging:
+            # Set Bus Skims
+            specs.append(util.matrix_spec(bus_skims[0], "mfBusIvtt"))
+            specs.append(util.matrix_spec(bus_skims[1], "mfBusWait"))
+            specs.append(util.matrix_spec(bus_skims[2], "mfBusAux"))
+            specs.append(util.matrix_spec(bus_skims[3], "mfBusBoard"))
+            specs.append(util.matrix_spec(bus_skims[4], "mfBusFare"))
 
-        # WCE Skims
-        if wce_skims is not None:
-            specs.append(util.matrix_spec(wce_skims[0], "mfWceIvtt"))
-            specs.append(util.matrix_spec(wce_skims[1], "mfWceIvttRail"))
-            specs.append(util.matrix_spec(wce_skims[2], "mfWceIvttBus"))
-            specs.append(util.matrix_spec(wce_skims[3], "mfWceWait"))
-            specs.append(util.matrix_spec(wce_skims[4], "mfWceAux"))
-            specs.append(util.matrix_spec(wce_skims[5], "mfWceBoard"))
-            specs.append(util.matrix_spec(wce_skims[6], "mfWceFare"))
+            # Set Rail Skims
+            specs.append(util.matrix_spec(rail_skims[0], "mfRailIvtt"))
+            specs.append(util.matrix_spec(rail_skims[1], "mfRailIvttBus"))
+            specs.append(util.matrix_spec(rail_skims[2], "mfRailWait"))
+            specs.append(util.matrix_spec(rail_skims[3], "mfRailAux"))
+            specs.append(util.matrix_spec(rail_skims[4], "mfRailBoard"))
+            specs.append(util.matrix_spec(rail_skims[5], "mfRailFare"))
+
+            # Set WCE Skims
+            if wce_skims is not None:
+                specs.append(util.matrix_spec(wce_skims[0], "mfWceIvtt"))
+                specs.append(util.matrix_spec(wce_skims[1], "mfWceIvttRail"))
+                specs.append(util.matrix_spec(wce_skims[2], "mfWceIvttBus"))
+                specs.append(util.matrix_spec(wce_skims[3], "mfWceWait"))
+                specs.append(util.matrix_spec(wce_skims[4], "mfWceAux"))
+                specs.append(util.matrix_spec(wce_skims[5], "mfWceBoard"))
+                specs.append(util.matrix_spec(wce_skims[6], "mfWceFare"))
+        else:
+            # Average Bus Skims
+            specs.append(util.matrix_spec(bus_skims[0], "0.5*(mfBusIvtt + %s)"  % bus_skims[0]))
+            specs.append(util.matrix_spec(bus_skims[1], "0.5*(mfBusWait + %s)"  % bus_skims[1]))
+            specs.append(util.matrix_spec(bus_skims[2], "0.5*(mfBusAux + %s)"   % bus_skims[2]))
+            specs.append(util.matrix_spec(bus_skims[3], "0.5*(mfBusBoard + %s)" % bus_skims[3]))
+            specs.append(util.matrix_spec(bus_skims[4], "0.5*(mfBusFare + %s)"  % bus_skims[4]))
+
+            # Average Rail Skims
+            specs.append(util.matrix_spec(rail_skims[0], "0.5*(mfRailIvtt + %s)"    % rail_skims[0]))
+            specs.append(util.matrix_spec(rail_skims[1], "0.5*(mfRailIvttBus + %s)" % rail_skims[1]))
+            specs.append(util.matrix_spec(rail_skims[2], "0.5*(mfRailWait + %s)"    % rail_skims[2]))
+            specs.append(util.matrix_spec(rail_skims[3], "0.5*(mfRailAux + %s)"     % rail_skims[3]))
+            specs.append(util.matrix_spec(rail_skims[4], "0.5*(mfRailBoard + %s)"   % rail_skims[4]))
+            specs.append(util.matrix_spec(rail_skims[5], "0.5*(mfRailFare + %s)"    % rail_skims[5]))
+
+            # Average WCE Skims
+            if wce_skims is not None:
+                specs.append(util.matrix_spec(wce_skims[0], "0.5*(mfWceIvtt + %s)"     % wce_skims[0]))
+                specs.append(util.matrix_spec(wce_skims[1], "0.5*(mfWceIvttRail + %s)" % wce_skims[1]))
+                specs.append(util.matrix_spec(wce_skims[2], "0.5*(mfWceIvttBus + %s)"  % wce_skims[2]))
+                specs.append(util.matrix_spec(wce_skims[3], "0.5*(mfWceWait + %s)"     % wce_skims[3]))
+                specs.append(util.matrix_spec(wce_skims[4], "0.5*(mfWceAux + %s)"      % wce_skims[4]))
+                specs.append(util.matrix_spec(wce_skims[5], "0.5*(mfWceBoard + %s)"    % wce_skims[5]))
+                specs.append(util.matrix_spec(wce_skims[6], "0.5*(mfWceFare + %s)"     % wce_skims[6]))
 
         util.compute_matrix(specs)
 
