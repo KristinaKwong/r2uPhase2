@@ -29,7 +29,7 @@ class FullModelRun(_m.Tool()):
         pb.description = "Performs a full model run"
         pb.branding_text = "TransLink"
 
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         input_path = util.get_input_path(_m.Modeller().emmebank)
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
@@ -111,7 +111,7 @@ class FullModelRun(_m.Tool()):
 
     @_m.logbook_trace("Stage 1 - Define Inputs and Run Intial Assignment")
     def stage1(self, eb, master_scen, land_use_file1, land_use_file2):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ## Call Model Tools - Socioeconomic segmentation, trip generation, trip distribution, mode choice, assignment
         land_use = _m.Modeller().tool("translink.emme.stage1.step0.landuse")
@@ -128,7 +128,7 @@ class FullModelRun(_m.Tool()):
 
     @_m.logbook_trace("Run Seed Assignment and Generate Initial Skims")
     def calculate_costs(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         util.initmat(eb, "mf970", "IntZon", "Intrazonal Matrix", 0)
         specs=[]
@@ -174,7 +174,7 @@ class FullModelRun(_m.Tool()):
                 # TODO: - could check and report on convergence
         #         at each iteration (distribution and auto assignment)
         #       - add global convergence measure
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         trip_distribution = _m.Modeller().tool("translink.emme.stage3.step4.tripdistribution")
         mode_choice = _m.Modeller().tool("translink.emme.stage3.step5.modechoice")
         assignment = _m.Modeller().tool("translink.emme.stage3.step6.assignment")

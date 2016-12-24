@@ -41,7 +41,7 @@ class FullModelRun(_m.Tool()):
         pb.description = "Performs a full model run"
         pb.branding_text = "TransLink"
 
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         input_path = util.get_input_path(_m.Modeller().emmebank)
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
@@ -124,7 +124,7 @@ class FullModelRun(_m.Tool()):
                     geographics_file, max_distribution_iterations,
                     max_assignment_iterations, run_congested_transit, run_capacited_transit, num_processors):
         eb = master_scen.emmebank
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         self.initoptions(eb=eb, horizon_year=horizon_year, global_iterations=global_iterations,
                         max_distribution_iterations=max_distribution_iterations,
                         max_assignment_iterations=max_assignment_iterations,
@@ -140,7 +140,7 @@ class FullModelRun(_m.Tool()):
                 self.run_one_cycle(eb)
 
     def stage0(self, eb, master_scen, demographics_file, geographics_file):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         create_scenario = _m.Modeller().tool("translink.RTM3.stage0.create_scenarios")
         data_import = _m.Modeller().tool("translink.RTM3.stage0.data_import")
         data_generate = _m.Modeller().tool("translink.RTM3.stage0.data_generate")
@@ -150,7 +150,7 @@ class FullModelRun(_m.Tool()):
         data_generate(eb)
 
     def stage1(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         workers_and_income = _m.Modeller().tool("translink.RTM3.stage1.workinc")
         vehicle_availability = _m.Modeller().tool("translink.RTM3.stage1.vam")
         trip_productions = _m.Modeller().tool("translink.RTM3.stage1.prds")
@@ -162,7 +162,7 @@ class FullModelRun(_m.Tool()):
         trip_attractions(eb)
 
     def run_one_cycle(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         blended_skims = _m.Modeller().tool("translink.RTM3.stage2.blendedskims")
         td_mode_choice_hbw = _m.Modeller().tool("translink.RTM3.stage2.hbwork")
         td_mode_choice_hbu = _m.Modeller().tool("translink.RTM3.stage2.hbuniv")
@@ -201,7 +201,7 @@ class FullModelRun(_m.Tool()):
                     run_congested_transit, run_capacited_transit,
                     num_processors):
 
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         # model business
         util.initmat(eb, "ms1", "CycleNum", "Current Cycle Number", 0)
         util.initmat(eb, "ms2", "AmScen", "AMScenario", 21000)

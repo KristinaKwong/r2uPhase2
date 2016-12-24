@@ -64,9 +64,9 @@ class AutoAssignment(_m.Tool()):
 
     @_m.logbook_trace("Auto Traffic Assignment")
     def __call__(self, am_scenario, md_scenario, pm_scenario):
-        am_demands = {"sov":   ["mf300", "mf301", "mf302", "mf303"],
-                      "hov":   ["mf306", "mf307", "mf308", "mf309"],
-                      "truck": ["mf312", "mf313"]}
+        am_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Am", "mfSOV_drvtrp_VOT_2_Am", "mfSOV_drvtrp_VOT_3_Am", "mfSOV_drvtrp_VOT_4_Am"],
+                      "hov":   ["mfHOV_drvtrp_VOT_1_Am", "mfHOV_drvtrp_VOT_2_Am", "mfHOV_drvtrp_VOT_3_Am", "mfHOV_drvtrp_VOT_4_Am"],
+                      "truck": ["mflgvPceAm", "mfhgvPceAm"]}
         self.assign_scen(am_scenario, am_demands)
         am_skims = {"sovVot1":  ["mfAmSovDistVOT1", "mfAmSovTimeVOT1", "mfAmSovTollVOT1"],
                     "sovVot2":  ["mfAmSovDistVOT2", "mfAmSovTimeVOT2", "mfAmSovTollVOT2"],
@@ -80,9 +80,9 @@ class AutoAssignment(_m.Tool()):
                     "hgv":  ["mfAmHgvDist", "mfAmHgvTime", "mfAmHgvToll"]}
         self.store_skims(am_scenario, am_skims)
 
-        md_demands = {"sov":   ["mf320", "mf321", "mf322", "mf323"],
-                      "hov":   ["mf326", "mf327", "mf328", "mf329"],
-                      "truck": ["mf332", "mf333"]}
+        md_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Md", "mfSOV_drvtrp_VOT_2_Md", "mfSOV_drvtrp_VOT_3_Md", "mfSOV_drvtrp_VOT_4_Md"],
+                      "hov":   ["mfHOV_drvtrp_VOT_1_Md", "mfHOV_drvtrp_VOT_2_Md", "mfHOV_drvtrp_VOT_3_Md", "mfHOV_drvtrp_VOT_4_Md"],
+                      "truck": ["mflgvPceMd", "mfhgvPceMd"]}
         self.assign_scen(md_scenario, md_demands)
         md_skims = {"sovVot1":  ["mfMdSovDistVOT1", "mfMdSovTimeVOT1", "mfMdSovTollVOT1"],
                     "sovVot2":  ["mfMdSovDistVOT2", "mfMdSovTimeVOT2", "mfMdSovTollVOT2"],
@@ -95,9 +95,9 @@ class AutoAssignment(_m.Tool()):
                     "lgv":  ["mfMdLgvDist", "mfMdLgvTime", "mfMdLgvToll"],
                     "hgv":  ["mfMdHgvDist", "mfMdHgvTime", "mfMdHgvToll"]}
         self.store_skims(md_scenario, md_skims)
-        pm_demands = {"sov":   ["mf340", "mf341", "mf342", "mf343"],
-                      "hov":   ["mf346", "mf347", "mf348", "mf349"],
-                      "truck": ["mf352", "mf353"]}
+        pm_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Pm", "mfSOV_drvtrp_VOT_2_Pm", "mfSOV_drvtrp_VOT_3_Pm", "mfSOV_drvtrp_VOT_4_Pm"],
+                      "hov":   ["mfHOV_drvtrp_VOT_1_Pm", "mfHOV_drvtrp_VOT_2_Pm", "mfHOV_drvtrp_VOT_3_Pm", "mfHOV_drvtrp_VOT_4_Pm"],
+                      "truck": ["mflgvPcePm", "mfhgvPcePm"]}
         self.assign_scen(pm_scenario, pm_demands)
         pm_skims = {"sovVot1":  ["mfPmSovDistVOT1", "mfPmSovTimeVOT1", "mfPmSovTollVOT1"],
                     "sovVot2":  ["mfPmSovDistVOT2", "mfPmSovTimeVOT2", "mfPmSovTollVOT2"],
@@ -148,7 +148,7 @@ class AutoAssignment(_m.Tool()):
         self.calc_timedist_skim(eb, "msVotHgv", "mshgvOpCost", "mfHGVGCTime", "mfHGVOpCst", "mfHGVToll", "mfHGVTime", "mfHGVDist")
 
     def calc_timedist_skim(self, eb, vot_mat, voc_mat, gc_mat, opcst_mat, toll_mat, time_mat, dist_mat):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         vot = eb.matrix(vot_mat).data
         voc = eb.matrix(voc_mat).data
@@ -214,7 +214,7 @@ class AutoAssignment(_m.Tool()):
         self.calc_intrazonal_skim(eb, "mfHGVGCTime")
 
     def calc_intrazonal_skim(self, eb, matrix):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         np_mat = util.get_matrix_numpy(eb, matrix)
 
@@ -227,43 +227,80 @@ class AutoAssignment(_m.Tool()):
         util.set_matrix_numpy(eb, matrix, np_mat)
 
     def store_skims(self, scenario, skim_list):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
+        do_averaging = util.get_cycle(scenario.emmebank) > 1
         specs = []
-        # Set Distance Matrices
-        specs.append(util.matrix_spec(skim_list["sovVot1"][0], "mfSOVDistVOT1"))
-        specs.append(util.matrix_spec(skim_list["sovVot2"][0], "mfSOVDistVOT2"))
-        specs.append(util.matrix_spec(skim_list["sovVot3"][0], "mfSOVDistVOT3"))
-        specs.append(util.matrix_spec(skim_list["sovVot4"][0], "mfSOVDistVOT4"))
-        specs.append(util.matrix_spec(skim_list["hovVot1"][0], "mfHOVDistVOT1"))
-        specs.append(util.matrix_spec(skim_list["hovVot2"][0], "mfHOVDistVOT2"))
-        specs.append(util.matrix_spec(skim_list["hovVot3"][0], "mfHOVDistVOT3"))
-        specs.append(util.matrix_spec(skim_list["hovVot4"][0], "mfHOVDistVOT4"))
-        specs.append(util.matrix_spec(skim_list["lgv"][0], "mfLGVDist"))
-        specs.append(util.matrix_spec(skim_list["hgv"][0], "mfHGVDist"))
-        # Set GC Time Matrices
-        specs.append(util.matrix_spec(skim_list["sovVot1"][1], "mfSOVTimeVOT1"))
-        specs.append(util.matrix_spec(skim_list["sovVot2"][1], "mfSOVTimeVOT2"))
-        specs.append(util.matrix_spec(skim_list["sovVot3"][1], "mfSOVTimeVOT3"))
-        specs.append(util.matrix_spec(skim_list["sovVot4"][1], "mfSOVTimeVOT4"))
-        specs.append(util.matrix_spec(skim_list["hovVot1"][1], "mfHOVTimeVOT1"))
-        specs.append(util.matrix_spec(skim_list["hovVot2"][1], "mfHOVTimeVOT2"))
-        specs.append(util.matrix_spec(skim_list["hovVot3"][1], "mfHOVTimeVOT3"))
-        specs.append(util.matrix_spec(skim_list["hovVot4"][1], "mfHOVTimeVOT4"))
-        specs.append(util.matrix_spec(skim_list["lgv"][1], "mfLGVTime"))
-        specs.append(util.matrix_spec(skim_list["hgv"][1], "mfHGVTime"))
-        # Set GC Toll Matrices
-        specs.append(util.matrix_spec(skim_list["sovVot1"][2], "mfSOVTollVOT1"))
-        specs.append(util.matrix_spec(skim_list["sovVot2"][2], "mfSOVTollVOT2"))
-        specs.append(util.matrix_spec(skim_list["sovVot3"][2], "mfSOVTollVOT3"))
-        specs.append(util.matrix_spec(skim_list["sovVot4"][2], "mfSOVTollVOT4"))
-        specs.append(util.matrix_spec(skim_list["hovVot1"][2], "mfHOVTollVOT1"))
-        specs.append(util.matrix_spec(skim_list["hovVot2"][2], "mfHOVTollVOT2"))
-        specs.append(util.matrix_spec(skim_list["hovVot3"][2], "mfHOVTollVOT3"))
-        specs.append(util.matrix_spec(skim_list["hovVot4"][2], "mfHOVTollVOT4"))
-        specs.append(util.matrix_spec(skim_list["lgv"][2], "mfLGVToll"))
-        specs.append(util.matrix_spec(skim_list["hgv"][2], "mfHGVToll"))
-
+        
+        if not do_averaging:
+            # Set Distance Matrices
+            specs.append(util.matrix_spec(skim_list["sovVot1"][0], "mfSOVDistVOT1"))
+            specs.append(util.matrix_spec(skim_list["sovVot2"][0], "mfSOVDistVOT2"))
+            specs.append(util.matrix_spec(skim_list["sovVot3"][0], "mfSOVDistVOT3"))
+            specs.append(util.matrix_spec(skim_list["sovVot4"][0], "mfSOVDistVOT4"))
+            specs.append(util.matrix_spec(skim_list["hovVot1"][0], "mfHOVDistVOT1"))
+            specs.append(util.matrix_spec(skim_list["hovVot2"][0], "mfHOVDistVOT2"))
+            specs.append(util.matrix_spec(skim_list["hovVot3"][0], "mfHOVDistVOT3"))
+            specs.append(util.matrix_spec(skim_list["hovVot4"][0], "mfHOVDistVOT4"))
+            specs.append(util.matrix_spec(skim_list["lgv"][0], "mfLGVDist"))
+            specs.append(util.matrix_spec(skim_list["hgv"][0], "mfHGVDist"))
+            # Set GC Time Matrices
+            specs.append(util.matrix_spec(skim_list["sovVot1"][1], "mfSOVTimeVOT1"))
+            specs.append(util.matrix_spec(skim_list["sovVot2"][1], "mfSOVTimeVOT2"))
+            specs.append(util.matrix_spec(skim_list["sovVot3"][1], "mfSOVTimeVOT3"))
+            specs.append(util.matrix_spec(skim_list["sovVot4"][1], "mfSOVTimeVOT4"))
+            specs.append(util.matrix_spec(skim_list["hovVot1"][1], "mfHOVTimeVOT1"))
+            specs.append(util.matrix_spec(skim_list["hovVot2"][1], "mfHOVTimeVOT2"))
+            specs.append(util.matrix_spec(skim_list["hovVot3"][1], "mfHOVTimeVOT3"))
+            specs.append(util.matrix_spec(skim_list["hovVot4"][1], "mfHOVTimeVOT4"))
+            specs.append(util.matrix_spec(skim_list["lgv"][1], "mfLGVTime"))
+            specs.append(util.matrix_spec(skim_list["hgv"][1], "mfHGVTime"))
+            # Set GC Toll Matrices
+            specs.append(util.matrix_spec(skim_list["sovVot1"][2], "mfSOVTollVOT1"))
+            specs.append(util.matrix_spec(skim_list["sovVot2"][2], "mfSOVTollVOT2"))
+            specs.append(util.matrix_spec(skim_list["sovVot3"][2], "mfSOVTollVOT3"))
+            specs.append(util.matrix_spec(skim_list["sovVot4"][2], "mfSOVTollVOT4"))
+            specs.append(util.matrix_spec(skim_list["hovVot1"][2], "mfHOVTollVOT1"))
+            specs.append(util.matrix_spec(skim_list["hovVot2"][2], "mfHOVTollVOT2"))
+            specs.append(util.matrix_spec(skim_list["hovVot3"][2], "mfHOVTollVOT3"))
+            specs.append(util.matrix_spec(skim_list["hovVot4"][2], "mfHOVTollVOT4"))
+            specs.append(util.matrix_spec(skim_list["lgv"][2], "mfLGVToll"))
+            specs.append(util.matrix_spec(skim_list["hgv"][2], "mfHGVToll"))
+        else:
+            # Average Distance Matrices
+            specs.append(util.matrix_spec(skim_list["sovVot1"][0], "0.5*(mfSOVDistVOT1 + %s)" % skim_list["sovVot1"][0]))
+            specs.append(util.matrix_spec(skim_list["sovVot2"][0], "0.5*(mfSOVDistVOT2 + %s)" % skim_list["sovVot2"][0]))
+            specs.append(util.matrix_spec(skim_list["sovVot3"][0], "0.5*(mfSOVDistVOT3 + %s)" % skim_list["sovVot3"][0]))
+            specs.append(util.matrix_spec(skim_list["sovVot4"][0], "0.5*(mfSOVDistVOT4 + %s)" % skim_list["sovVot4"][0]))
+            specs.append(util.matrix_spec(skim_list["hovVot1"][0], "0.5*(mfHOVDistVOT1 + %s)" % skim_list["hovVot1"][0]))
+            specs.append(util.matrix_spec(skim_list["hovVot2"][0], "0.5*(mfHOVDistVOT2 + %s)" % skim_list["hovVot2"][0]))
+            specs.append(util.matrix_spec(skim_list["hovVot3"][0], "0.5*(mfHOVDistVOT3 + %s)" % skim_list["hovVot3"][0]))
+            specs.append(util.matrix_spec(skim_list["hovVot4"][0], "0.5*(mfHOVDistVOT4 + %s)" % skim_list["hovVot4"][0]))
+            specs.append(util.matrix_spec(skim_list["lgv"][0], "0.5*(mfLGVDist + %s)" % skim_list["lgv"][0]))
+            specs.append(util.matrix_spec(skim_list["hgv"][0], "0.5*(mfHGVDist + %s)" % skim_list["hgv"][0]))
+            # Average GC Time Matrices
+            specs.append(util.matrix_spec(skim_list["sovVot1"][1], "0.5*(mfSOVTimeVOT1 + %s)" % skim_list["sovVot1"][1]))
+            specs.append(util.matrix_spec(skim_list["sovVot2"][1], "0.5*(mfSOVTimeVOT2 + %s)" % skim_list["sovVot2"][1]))
+            specs.append(util.matrix_spec(skim_list["sovVot3"][1], "0.5*(mfSOVTimeVOT3 + %s)" % skim_list["sovVot3"][1]))
+            specs.append(util.matrix_spec(skim_list["sovVot4"][1], "0.5*(mfSOVTimeVOT4 + %s)" % skim_list["sovVot4"][1]))
+            specs.append(util.matrix_spec(skim_list["hovVot1"][1], "0.5*(mfHOVTimeVOT1 + %s)" % skim_list["hovVot1"][1]))
+            specs.append(util.matrix_spec(skim_list["hovVot2"][1], "0.5*(mfHOVTimeVOT2 + %s)" % skim_list["hovVot2"][1]))
+            specs.append(util.matrix_spec(skim_list["hovVot3"][1], "0.5*(mfHOVTimeVOT3 + %s)" % skim_list["hovVot3"][1]))
+            specs.append(util.matrix_spec(skim_list["hovVot4"][1], "0.5*(mfHOVTimeVOT4 + %s)" % skim_list["hovVot4"][1]))
+            specs.append(util.matrix_spec(skim_list["lgv"][1], "0.5*(mfLGVTime + %s)" % skim_list["lgv"][1]))
+            specs.append(util.matrix_spec(skim_list["hgv"][1], "0.5*(mfHGVTime + %s)" % skim_list["hgv"][1]))
+            # Average GC Toll Matrices
+            specs.append(util.matrix_spec(skim_list["sovVot1"][2], "0.5*(mfSOVTollVOT1 + %s)" % skim_list["sovVot1"][2]))
+            specs.append(util.matrix_spec(skim_list["sovVot2"][2], "0.5*(mfSOVTollVOT2 + %s)" % skim_list["sovVot2"][2]))
+            specs.append(util.matrix_spec(skim_list["sovVot3"][2], "0.5*(mfSOVTollVOT3 + %s)" % skim_list["sovVot3"][2]))
+            specs.append(util.matrix_spec(skim_list["sovVot4"][2], "0.5*(mfSOVTollVOT4 + %s)" % skim_list["sovVot4"][2]))
+            specs.append(util.matrix_spec(skim_list["hovVot1"][2], "0.5*(mfHOVTollVOT1 + %s)" % skim_list["hovVot1"][2]))
+            specs.append(util.matrix_spec(skim_list["hovVot2"][2], "0.5*(mfHOVTollVOT2 + %s)" % skim_list["hovVot2"][2]))
+            specs.append(util.matrix_spec(skim_list["hovVot3"][2], "0.5*(mfHOVTollVOT3 + %s)" % skim_list["hovVot3"][2]))
+            specs.append(util.matrix_spec(skim_list["hovVot4"][2], "0.5*(mfHOVTollVOT4 + %s)" % skim_list["hovVot4"][2]))
+            specs.append(util.matrix_spec(skim_list["lgv"][2], "0.5*(mfLGVToll + %s)" % skim_list["lgv"][2]))
+            specs.append(util.matrix_spec(skim_list["hgv"][2], "0.5*(mfHGVToll + %s)" % skim_list["hgv"][2]))
+            
         util.compute_matrix(specs, scenario)
 
     def add_mode_specification(self, specs, mode, demand, gc_cost, gc_factor, travel_time, link_vol, turn_vol):
@@ -358,7 +395,7 @@ class AutoAssignment(_m.Tool()):
 
     @_m.logbook_trace("Calculate Link and Turn Aggregate Volumes")
     def calc_network_volumes(self, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         util.emme_link_calc(scenario, "@wsovl", "@sov1+@sov2+@sov3+@sov4+@sov5+@sov6")
         util.emme_link_calc(scenario, "@whovl", "@hov1+@hov2+@hov3+@hov4+@hov5+@hov6")
@@ -367,7 +404,7 @@ class AutoAssignment(_m.Tool()):
 
     @_m.logbook_trace("Calculate Fixed Network Costs")
     def calc_network_costs(self, scenario):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         eb = scenario.emmebank
 
         hov_occupancy = eb.matrix("ms44").data
@@ -384,7 +421,7 @@ class AutoAssignment(_m.Tool()):
         util.emme_link_calc(scenario, "@hgvoc", "length * %s + 3 * @tolls + @tkpen" % (hgv_voc))
 
     def init_matrices(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         util.initmat(eb, "mf9900", "SOVGCTimeVOT1",  "SOV GC Minutes VOT1", 0)
         util.initmat(eb, "mf9901", "SOVGCTimeVOT2",  "SOV GC Minutes VOT2", 0)

@@ -62,7 +62,7 @@ Whitespace is ignored.
 
     @_m.logbook_trace("Read settings from settings.csv", save_arguments=True)
     def __call__(self, eb, file_name):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ## Read the settings file
         util.initmat(eb, "ms138", "ConTrn", "Run Congested Transit Assignment", 0)

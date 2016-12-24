@@ -51,7 +51,7 @@ class ModeChoiceHBSchool(_m.Tool()):
     ## Aggregate purpose-level results by mode into matrices mf882 - mf890
     @_m.logbook_trace("Aggregate purpose-level results by mode into matrices mf882 - mf890")
     def Agg_Exp_Demand(self, eb, purp):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         cur_cycle = util.get_cycle(eb)
         file_suffix = "_" + str(cur_cycle) + ".txt"
 
@@ -145,7 +145,7 @@ class ModeChoiceHBSchool(_m.Tool()):
 
     @_m.logbook_trace("Clear Calculation Matrices")
     def Export_Matrix_Batchins(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         util.initmat(eb, "mf882", "Calc1", "Calculation 1", 0)
         util.initmat(eb, "mf883", "Calc2", "Calculation 2", 0)

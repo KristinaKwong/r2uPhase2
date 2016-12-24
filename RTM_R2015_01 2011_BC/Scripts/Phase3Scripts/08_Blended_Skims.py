@@ -37,7 +37,7 @@ class ModeChoiceGenDf(_m.Tool()):
 
     @_m.logbook_trace("Generate Data Frame")
     def __call__(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         input_path = util.get_input_path(eb)
         self.matrix_batchins(eb)
         ## Park and Ride determine best lot
@@ -690,7 +690,7 @@ class ModeChoiceGenDf(_m.Tool()):
 #        ##############################################################################
 
     def GenSkimDict(self, eb, Dict, Mat):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         AM_Mat = util.get_matrix_numpy(eb, Mat[0])
         MD_Mat = util.get_matrix_numpy(eb, Mat[1])
         PM_Mat = util.get_matrix_numpy(eb, Mat[2])
@@ -699,7 +699,7 @@ class ModeChoiceGenDf(_m.Tool()):
         return (Dict)
 
     def GenSkimDictFare(self, eb, Dict, Mat):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         NoTAZ  = len(util.get_matrix_numpy(eb, "zoneindex")) # Number of TAZs in Model
         AM_Mat = util.get_matrix_numpy(eb, Mat[0])
         MD_Mat = util.get_matrix_numpy(eb, Mat[1])
@@ -711,14 +711,14 @@ class ModeChoiceGenDf(_m.Tool()):
         return (Dict)
 
     def calc_blend(self, Fact, Dict):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         Result = util.sumproduct(Fact['PA'], Dict['PA']) + util.sumproduct(Fact['AP'], Dict['AP'])
 
         return Result
 
     def get_fact(self, eb, FactList):
 
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         PA_List = np.array([
                             float(util.get_matrix_numpy(eb, FactList[0][0])),
                             float(util.get_matrix_numpy(eb, FactList[0][1])),
@@ -734,7 +734,7 @@ class ModeChoiceGenDf(_m.Tool()):
 
     def get_fact_fare(self, eb, FactList):
 
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         PA_List = np.array([
                             float(util.get_matrix_numpy(eb, FactList[0][0])),
                             float(util.get_matrix_numpy(eb, FactList[0][1])),
@@ -877,7 +877,7 @@ class ModeChoiceGenDf(_m.Tool()):
 
     @_m.logbook_trace("Park and Ride Calculate West Coast Express Generalized Time")
     def WceGT(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         # [AM,MD,PM]
         transit_mats = {"wceIVT" : ["AmWceIvtt",  "MdWceIvtt", "PmWceIvtt"],
                         "wceWait" : ["AmWceWait",  "MdWceWait", "PmWceWait"],
@@ -925,7 +925,7 @@ class ModeChoiceGenDf(_m.Tool()):
 
     @_m.logbook_trace("Park & Ride Calculate Rail Generatized Time")
     def RailGT(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         # [AM,MD,PM]
         transit_mats = {"railIVT" :    ["AmRailIvtt",    "MdRailIvtt", "PmRailIvtt"],
                         "railWait" :   ["AmRailWait",    "MdRailWait", "PmRailWait"],
@@ -969,7 +969,7 @@ class ModeChoiceGenDf(_m.Tool()):
 
     @_m.logbook_trace("Park & Ride Calculate Bus Generalized Time")
     def BusGT(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         # [AM,MD,PM]
         transit_mats = {"busIVT" : ["AmBusIvtt",  "MdBusIvtt", "PmBusIvtt"],
                         "busWait" : ["AmBusWait",  "MdBusWait", "PmBusWait"],
@@ -1009,7 +1009,7 @@ class ModeChoiceGenDf(_m.Tool()):
 
     @_m.logbook_trace("Park & Ride Calculate Auto Generalized Time")
     def AutoGT(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         # work trips - not ideal formulation but quick and gets it done
         # [AM,MD,PM]
@@ -1072,7 +1072,7 @@ class ModeChoiceGenDf(_m.Tool()):
 
     @_m.logbook_trace("Park & Ride - Read Input Files")
     def read_file(self, eb, file):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         #Read data from file and check number of lines
         with open(file, "rb") as sourcefile:
             lines = list(csv.reader(sourcefile, skipinitialspace=True))
@@ -1099,7 +1099,7 @@ class ModeChoiceGenDf(_m.Tool()):
 
     @_m.logbook_trace("Initialize Matrices")
     def matrix_batchins(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ###################
         # Blended Skims

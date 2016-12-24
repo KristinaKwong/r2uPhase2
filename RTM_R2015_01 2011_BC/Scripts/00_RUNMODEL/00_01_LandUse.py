@@ -50,6 +50,6 @@ class InputLandUse(_m.Tool()):
 
     @_m.logbook_trace("Import land use data", save_arguments=True)
     def __call__(self, eb, file1, file2):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         util.read_csv_momd(eb, file1)
         util.read_csv_momd(eb, file2)

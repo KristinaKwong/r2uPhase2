@@ -40,7 +40,7 @@ class VehicleAvailability(_m.Tool()):
 
     @_m.logbook_trace("Vehicle Availability")
     def __call__(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ##Batchin File
         # self.Init_Matrices(eb)
@@ -54,7 +54,7 @@ class VehicleAvailability(_m.Tool()):
 
     @_m.logbook_trace("Generate Vehicle Availability Dataframe")
     def Run_VAM(self, eb, df):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         p1 = 1.020321178
         p2 = -1.955615736
@@ -177,7 +177,7 @@ class VehicleAvailability(_m.Tool()):
 
     @_m.logbook_trace("Generate Vehicle Availability Dataframe")
     def Generate_Data_Frame(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         hh_sql = """
         SELECT

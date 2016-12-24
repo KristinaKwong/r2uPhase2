@@ -47,7 +47,7 @@ class FullTruckModel(_m.Tool()):
         self.aggregate_demand_pce(eb)
 
     def aggregate_demand_pce(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         util.initmat(eb, "mf1040", "CBLgAp", "CB LgTruck AM PCE", 0)
         util.initmat(eb, "mf1041", "CBHvAp", "CB HvTruck AM PCE", 0)

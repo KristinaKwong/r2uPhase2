@@ -1,7 +1,7 @@
 ##---------------------------------------------------------------------
-##--TransLink Phase 2.2 Regional Transportation Model
+##--TransLink Regional Transportation Model
 ##--
-##--Path: translink.emme.util
+##--Path: translink.util
 ##--Purpose: Model Utility Methods
 ##---------------------------------------------------------------------
 import inro.modeller as _m

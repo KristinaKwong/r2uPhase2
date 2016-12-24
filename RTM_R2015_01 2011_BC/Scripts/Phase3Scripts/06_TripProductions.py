@@ -41,7 +41,7 @@ class TripProductions(_m.Tool()):
 
     @_m.logbook_trace("Trip Productions")
     def __call__(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ##Batchin File
         self.matrix_batchins(eb)
@@ -60,7 +60,7 @@ class TripProductions(_m.Tool()):
 
     @_m.logbook_trace("Calculate Household Level Trip Productions")
     def Calcuate_HH_Level_Trips(self, eb, hh_c_df, hh_nc_df):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         # acquire household level data
         db_loc = util.get_eb_path(eb)
@@ -148,7 +148,7 @@ class TripProductions(_m.Tool()):
 
         @_m.logbook_trace("Import TAZ level Data")
         def Generate_TAZ_Trip_Productions_df(self, eb):
-            util = _m.Modeller().tool("translink.emme.util")
+            util = _m.Modeller().tool("translink.util")
 
             taz_sql = """
             SELECT
@@ -191,7 +191,7 @@ class TripProductions(_m.Tool()):
 
     @_m.logbook_trace("Calculate TAZ Level Trip Productions")
     def Calculate_TAZ_Level_Trips(self, eb, df, nhbw_ct, nhbo_ct):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         # set coefficents
         c_hbu_int = 10.839151
@@ -285,7 +285,7 @@ class TripProductions(_m.Tool()):
 
     @_m.logbook_trace("Generate TAZ Level Trip Production Variables Dataframe")
     def Generate_TAZ_Trip_Productions_df(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         taz_sql = """
         SELECT
@@ -325,7 +325,7 @@ class TripProductions(_m.Tool()):
 
     @_m.logbook_trace("Import and Summarize Household Level Trip Rates")
     def Generate_HH_Trip_Productions_dfs(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         # define Coefficients from model estimation
         hbw_prods = StringIO("""HHWorker,HHInc,hbw_prds
@@ -457,7 +457,7 @@ class TripProductions(_m.Tool()):
 
     @_m.logbook_trace("Initialize Trip Production Matrices")
     def matrix_batchins(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         util.initmat(eb, "mo2000", "hbwInc1Au0prd", "hbwInc1Au0 Productions", 0)
         util.initmat(eb, "mo2001", "hbwInc2Au0prd", "hbwInc2Au0 Productions", 0)

@@ -37,7 +37,7 @@ class HbWork(_m.Tool()):
 
     @_m.logbook_trace("Run Home Base University")
     def __call__(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         MChM = _m.Modeller().tool("translink.RTM3.stage2.modechoiceutils")
         input_path = util.get_input_path(eb)
         self.matrix_batchins(eb)
@@ -421,7 +421,7 @@ class HbWork(_m.Tool()):
 
 
     def Calc_Prob(self, eb, Dict, Logsum, Th):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         Tiny=0.000001
         L_Nst = {key:sum(np.exp(nest))
@@ -442,7 +442,7 @@ class HbWork(_m.Tool()):
         return Prob_Dict
 
     def Calc_Demand(self, Dict, Dem):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         Seg_Dict = {key:Dem*nest_len
                     for key, nest_len in Dict.items()}
@@ -476,14 +476,14 @@ class HbWork(_m.Tool()):
 
     def set_pkhr_mats(self, eb, MatVal, MatID):
 
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         Value = util.get_matrix_numpy(eb, MatID)
         Value += MatVal
         util.set_matrix_numpy(eb, MatID, Value)
 
     @_m.logbook_trace("Initialize Matrices")
     def matrix_batchins(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         ## Initialze Logsum Matrices
         util.initmat(eb, "mf9010", "HbULS", " HbU LogSum ", 0)

@@ -30,7 +30,7 @@ class Trip_Dist_Methods(_m.Tool()):
 
     @_m.logbook_trace("Run Home Base Work")
     def __call__(self, eb, df, L_S_Mats, imp_list, prod_list, attr_list, P_A_list, Cal_Coef, RunType, Conv_List, sql_tab_name):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         input_path = util.get_input_path(eb)
         NoTAZ = len(util.get_matrix_numpy(eb, "mo51"))
         MChM = _m.Modeller().tool("translink.RTM3.stage2.modechoiceutils")
@@ -148,7 +148,7 @@ class Trip_Dist_Methods(_m.Tool()):
     @_m.logbook_trace("Check Convergence")
     def Check_Convergence(self, eb, NoSeg, out_list, Distance_flat, TripKmsModLs, TripKmsModSqLs, TripKmsModCuLs, df, RunType):
 
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         TDTrips = np.empty(NoSeg)
         df['AvgDistMod']   = np.empty(NoSeg)
         df['AvgDistModSq'] = np.empty(NoSeg)
@@ -216,7 +216,7 @@ class Trip_Dist_Methods(_m.Tool()):
     @_m.logbook_trace("Impedance Calc")
     def ImpCalc(self, eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, Distance):
 
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         input_path = util.get_input_path(eb)
 
         for i in range (len(imp_list)):
@@ -235,7 +235,7 @@ class Trip_Dist_Methods(_m.Tool()):
 
     def ImpCalcLogSum(self, eb, imp_list, Logsum, LS_Coeff):
 
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         input_path = util.get_input_path(eb)
 
         for i in range (len(imp_list)):

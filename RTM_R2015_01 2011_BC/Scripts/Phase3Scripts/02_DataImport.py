@@ -33,7 +33,7 @@ class DataImport(_m.Tool()):
         pb.description = "Imports Scalars, Vectors, and Seed Matrices for Model Run"
         pb.branding_text = "TransLink"
 
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         input_path = util.get_input_path(_m.Modeller().emmebank)
 
         pb.add_select_file(tool_attribute_name="demographics_file",
@@ -67,7 +67,7 @@ class DataImport(_m.Tool()):
 
     @_m.logbook_trace("Data Import")
     def __call__(self, eb, demographics_file, geographics_file):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         model_year = int(util.get_year(eb))
 
         self.init_scalars(eb)
@@ -77,7 +77,7 @@ class DataImport(_m.Tool()):
 
     @_m.logbook_trace("Initializing Scalar Matrices")
     def init_scalars(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         util.initmat(eb, "ms100", "autoOpCost", "Auto Operating Cost", 0.18)
         util.initmat(eb, "ms101", "lgvOpCost", "Light Truck Operating Cost", 0.24)
@@ -266,7 +266,7 @@ class DataImport(_m.Tool()):
 
     @_m.logbook_trace("Importing Vector Data from CSV")
     def import_vectors(self, eb, demographics_file, geographics_file):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         mod = _m.Modeller()
         project = mod.desktop.project
@@ -324,7 +324,7 @@ class DataImport(_m.Tool()):
 
     @_m.logbook_trace("Importing Seed Matrices")
     def init_seeds(self, eb, horizon_year):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         model_year = horizon_year
         mod = _m.Modeller()

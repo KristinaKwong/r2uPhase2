@@ -37,7 +37,7 @@ class AutoOwnershipTool(_m.Tool()):
     ## mo404-mo442 - Store utility value while for AutoOwn=0 for various HHSize, NumWorkers, IncomeCat
     @_m.logbook_trace("Calculate AutoOwnership 0 Cars - Utilities")
     def Calculate_AutoOwnership_0Cars(self, AutoOwnCoeff):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         lowinc0 = AutoOwnCoeff.get("lowinc0", [0])[0]
         hiinc0 = AutoOwnCoeff.get("hiinc0", [0])[0]
@@ -121,7 +121,7 @@ class AutoOwnershipTool(_m.Tool()):
     ## mo443-mo481 - Store utility value while for AutoOwn=1 for various HHSize, NumWorkers, IncomeCat
     @_m.logbook_trace("Calculate AutoOwnership 1 Cars - Utilities")
     def Calculate_AutoOwnership_1Cars(self, AutoOwnCoeff):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         bias1 = AutoOwnCoeff.get("1bias", [0])[0]
         lowinc1 = AutoOwnCoeff.get("lowinc1", [0])[0]
@@ -189,7 +189,7 @@ class AutoOwnershipTool(_m.Tool()):
     ## mo482-mo520 - Store utility value while for AutoOwn=2 for various HHSize, NumWorkers, IncomeCat
     @_m.logbook_trace("Calculate AutoOwnership 2 Cars - Utilities")
     def Calculate_AutoOwnership_2Cars(self, AutoOwnCoeff):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         bias2 = AutoOwnCoeff.get("2bias", [0])
         wrkr2_c23 = AutoOwnCoeff.get("wrkr2_c23", [0])
@@ -253,7 +253,7 @@ class AutoOwnershipTool(_m.Tool()):
     ## mo521-mo559 - Store utility value while for AutoOwn=3 for various HHSize, NumWorkers, IncomeCat
     @_m.logbook_trace("Calculate AutoOwnership 3 Cars - Utilities")
     def Calculate_AutoOwnership_3Cars(self, AutoOwnCoeff):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         bias3 = AutoOwnCoeff.get("3bias", [0])
         wrkrs_c3 = AutoOwnCoeff.get("wrkrs_c3", [0])
@@ -324,7 +324,7 @@ class AutoOwnershipTool(_m.Tool()):
     ## mo560-mo715 - Calculated probabilities of having a AutoOwnership 0-3 for HHSize, NumWorkers, IncomeCat
     @_m.logbook_trace("Calculate_Probabilities")
     def Calculate_Probabilities(self, AutoOwnCoeff):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         theta = AutoOwnCoeff.get("theta1", [0])[0]
         utility_mo_num = 404
@@ -353,7 +353,7 @@ class AutoOwnershipTool(_m.Tool()):
     ## mo113-mo268 - Calculated Number of Households Per Worker, Per Income and Per Auto Ownership Category
     @_m.logbook_trace("Calculate AutoOwnership Categories")
     def Calculate_AutoOwnership_PerHH(self):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         specs = []
         count = 0

@@ -39,7 +39,7 @@ class SkimsAccessibilities(_m.Tool()):
 
     @_m.logbook_trace("Weighted Skims")
     def weightedskims(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         cycle_number = util.get_cycle(eb)
         if cycle_number <= 1:
@@ -192,7 +192,7 @@ class SkimsAccessibilities(_m.Tool()):
 
     @_m.logbook_trace("Accessibilities Calculation")
     def accessibilities(self):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         spec_as_dict = {
                 "expression": "EXPRESSION",
@@ -236,7 +236,7 @@ class SkimsAccessibilities(_m.Tool()):
 
     @_m.logbook_trace("Matrix Batchin")
     def Matrix_Batchins(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         util.initmat(eb, "mo47", "AuAc", "Auto Accessibility", 0)
         util.initmat(eb, "mo954", "ReAuAc", "Retail Auto Accessibility", 0)
@@ -256,7 +256,7 @@ class SkimsAccessibilities(_m.Tool()):
     @_m.logbook_trace("Calc_Intrazonals")
     def Calc_Intrazonals(self, expression, matrix_list, Counter, Av_List):
         # find nearest neighbour (NN) based on generalized cost (GC), store components of the NN GC in corresponding intrazonals
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         specs=[]
 

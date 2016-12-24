@@ -48,7 +48,7 @@ class PostAssignment(_m.Tool()):
 
     @_m.logbook_trace("012-00 - RUN - Run Auto Skims")
     def __call__(self, eb, scenarioam, scenariomd, scenariopm, stopping_criteria):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         auto_skim = _m.Modeller().tool("translink.emme.under_dev.autoskim")
         toll_skim = _m.Modeller().tool("translink.emme.under_dev.autotollskim")

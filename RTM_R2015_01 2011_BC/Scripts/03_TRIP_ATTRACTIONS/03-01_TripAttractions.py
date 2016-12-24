@@ -33,7 +33,7 @@ class TripAttractions(_m.Tool()):
 
     @_m.logbook_trace("03-01 - Trip Attractions")
     def __call__(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         input_path = util.get_input_path(eb)
 
         CoefficientsPerGrouping = os.path.join(input_path, "32_COEFFICIENTS.csv")
@@ -55,7 +55,7 @@ class TripAttractions(_m.Tool()):
 
     @_m.logbook_trace("Output Results")
     def Output_Results(self, eb, CoefficientsPerGrouping):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         output_path = util.get_output_path(eb)
         output_file =    os.path.join(output_path, "03-01_OUTPUT_RESULTS.txt")
         output_file_gy = os.path.join(output_path, "03-01_OUTPUT_RESULTS_GY.txt")
@@ -109,7 +109,7 @@ class TripAttractions(_m.Tool()):
 
     @_m.logbook_trace("Calculate_TripRates")
     def Calculate_TripRates(self, coefficients_data):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         #Define Attraction attributes
         Variable_Matrix = [["Contruction/Mfg", "md5"],
@@ -173,7 +173,7 @@ class TripAttractions(_m.Tool()):
     ##    Creates low and high-income households and transposes population and parking matrices
     @_m.logbook_trace("CreateHouseholds_LowHighIncome_TotalPop")
     def CreateHouseholds_LowHighIncome_TotalPop(self):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         specs = []
 
@@ -190,7 +190,7 @@ class TripAttractions(_m.Tool()):
 
     @_m.logbook_trace("Matrix Batchin")
     def Matrix_Batchins(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         year = util.get_year(eb)
         yr = year[2:]

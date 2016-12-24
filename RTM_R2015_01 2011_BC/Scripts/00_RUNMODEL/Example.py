@@ -12,7 +12,7 @@ class Example(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
     # Reserved Variable Names:
-    # util - an instance of the translink.emme.util tool
+    # util - an instance of the translink.util tool
     # specs - a list of matrix specifications
     # eb - an emmebank object, usually produced from the current project: _m.Modeller().emmebank
     def page(self):
@@ -65,7 +65,7 @@ class Example(_m.Tool()):
     @_m.logbook_trace("Example Tool - Major Section")
     def calculation_example(self):
         # CodingStyle: always use the variable util for this tool at the beginning of the method
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         # Single calculation
         # The order of the matrix_spec method is meant to follow the assignemtn operator

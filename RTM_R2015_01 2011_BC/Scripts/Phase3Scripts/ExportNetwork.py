@@ -36,7 +36,7 @@ class ExportNetwork(_m.Tool()):
         self.export(4000)
 
     def export(self, scen_id):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         mod = _m.Modeller()
         eb = mod.emmebank

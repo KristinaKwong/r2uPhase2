@@ -76,7 +76,7 @@ class DemandAdjustment(_m.Tool()):
 
     @_m.logbook_trace("Auto Traffic Assignment")
     def auto_assignment(self, am_adj_scenario, md_adj_scenario, stopping_criteria):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         create_extra = _m.Modeller().tool(
             "inro.emme.data.extra_attribute.create_extra_attribute")
         del_extra = _m.Modeller().tool(
@@ -360,7 +360,7 @@ class DemandAdjustment(_m.Tool()):
 
     @_m.logbook_trace("Matrix Batchin")
     def matrix_batchins(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         year = util.get_year(eb)
         yr = year[2:]

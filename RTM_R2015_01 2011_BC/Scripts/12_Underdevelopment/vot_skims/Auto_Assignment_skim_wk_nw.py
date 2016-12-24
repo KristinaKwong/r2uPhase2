@@ -74,7 +74,7 @@ class AutoAssignment(_m.Tool()):
 
     @_m.logbook_trace("Calculate Truck PCE")
     def calculate_truck_pce(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         specs = []
 
         specs.append(util.matrix_spec("mf1980", "mf980 * 1.5"))
@@ -373,7 +373,7 @@ class AutoAssignment(_m.Tool()):
 
     @_m.logbook_trace("Matrix Batchin")
     def matrix_batchins(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         #TODO initialize matrices for bus and rail skims inside those tools rather then here in auto assignment
         util.initmat(eb, "mf930", "eADANW", "Interim Skim AutoDistanceAM NW", 0)
         util.initmat(eb, "mf931", "eATANW", "Interim Skim AutoTimeAM NW", 0)

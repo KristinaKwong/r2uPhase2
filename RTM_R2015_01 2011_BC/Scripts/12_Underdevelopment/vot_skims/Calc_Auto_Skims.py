@@ -40,7 +40,7 @@ class AutoSkims(_m.Tool()):
 
     @_m.logbook_trace("Weighted Skims")
     def autoskims(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
         VOTNW = str(8.0) # non-Work-purpose VOT
         VOTWK = str(4.0) # Work purpose VOT
         spec_as_dict = {
@@ -132,7 +132,7 @@ class AutoSkims(_m.Tool()):
 
     @_m.logbook_trace("Matrix Batchin")
     def Matrix_Batchins(self, eb):
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
 
         # Added matrices for calculating intra-zonals
@@ -144,7 +144,7 @@ class AutoSkims(_m.Tool()):
     @_m.logbook_trace("Calc_Intrazonals")
     def Calc_Intrazonals(self, expression, matrix_list, Counter, Av_List):
         # find nearest neighbour (NN) based on generalized cost (GC), store components of the NN GC in corresponding intrazonals
-        util = _m.Modeller().tool("translink.emme.util")
+        util = _m.Modeller().tool("translink.util")
 
         specs=[]
 
