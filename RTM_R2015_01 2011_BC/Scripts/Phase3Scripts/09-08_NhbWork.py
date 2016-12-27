@@ -375,16 +375,16 @@ class Non_hbwork(_m.Tool()):
 
         # Transit
         # AM
-        self.set_pkhr_mats(eb, Bus_AM, "Bus_pertrp_Am")
-        self.set_pkhr_mats(eb, Rail_AM, "Rail_pertrp_Am")
+        self.set_pkhr_mats(eb, Bus_AM, "busAm")
+        self.set_pkhr_mats(eb, Rail_AM, "railAm")
 
         # MD
-        self.set_pkhr_mats(eb, Bus_MD, "Bus_pertrp_Md")
-        self.set_pkhr_mats(eb, Rail_MD, "Rail_pertrp_Md")
+        self.set_pkhr_mats(eb, Bus_MD, "busMd")
+        self.set_pkhr_mats(eb, Rail_MD, "railMd")
 
         # PM
-        self.set_pkhr_mats(eb, Bus_PM, "Bus_pertrp_Pm")
-        self.set_pkhr_mats(eb, Rail_PM, "Rail_pertrp_Pm")
+        self.set_pkhr_mats(eb, Bus_PM, "busPm")
+        self.set_pkhr_mats(eb, Rail_PM, "railPm")
 
         # Active
         # AM

@@ -198,7 +198,6 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms481", "NHbOBl_MD_P-A", "NHbO Blend MD P-A Factor", 0.540629)
         util.initmat(eb, "ms482", "NHbOBl_PM_P-A", "NHbO Blend PM P-A Factor", 0.339201)
         util.initmat(eb, "ms490", "Zero", "Zero", 0)
-
         util.initmat(eb, "ms500", "TrFr_HbWBl_AM_P-A", "TrFr HbW Blend AM P-A Factor", 0.419497)
         util.initmat(eb, "ms501", "TrFr_HbWBl_MD_P-A", "TrFr HbW Blend MD P-A Factor", 0.079803)
         util.initmat(eb, "ms502", "TrFr_HbWBl_PM_P-A", "TrFr HbW Blend PM P-A Factor", 0.021515)
@@ -263,6 +262,15 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms581", "TrFr_NHbOBl_MD_P-A", "TrFr NHbO Blend MD P-A Factor", 0.45599)
         util.initmat(eb, "ms582", "TrFr_NHbOBl_PM_P-A", "TrFr NHbO Blend PM P-A Factor", 0.363881)
         util.initmat(eb, "ms583", "TrFr_NHbOBl_OP_P-A", "TrFr NHbO Blend OP P-A Factor", 0.106604)
+        util.initmat(eb, "mf314", "busAm", "Bus Person Trips AM", 0)
+        util.initmat(eb, "mf315", "railAm", "Rail Person Trips AM", 0)
+        util.initmat(eb, "mf316", "WCEAm", "WCE Person Trips AM", 0)
+        util.initmat(eb, "mf334", "busMd", "Bus Person Trips MD", 0)
+        util.initmat(eb, "mf335", "railMd", "Rail Person Trips MD", 0)
+        util.initmat(eb, "mf336", "WCEMd", "WCE Person Trips MD", 0)
+        util.initmat(eb, "mf354", "busPm", "Bus Person Trips PM", 0)
+        util.initmat(eb, "mf355", "railPm", "Rail Person Trips PM", 0)
+        util.initmat(eb, "mf356", "WCEPm", "WCE Person Trips PM", 0)
 
     @_m.logbook_trace("Importing Vector Data from CSV")
     def import_vectors(self, eb, demographics_file, geographics_file):
