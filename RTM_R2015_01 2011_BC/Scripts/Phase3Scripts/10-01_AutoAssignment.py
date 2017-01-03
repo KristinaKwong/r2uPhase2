@@ -64,6 +64,10 @@ class AutoAssignment(_m.Tool()):
 
     @_m.logbook_trace("Auto Traffic Assignment")
     def __call__(self, am_scenario, md_scenario, pm_scenario):
+
+        ## Add External Demand to SOV and HOV VOT3 Segment
+        self.add_external_demand()
+
         am_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Am", "mfSOV_drvtrp_VOT_2_Am", "mfSOV_drvtrp_VOT_3_Am", "mfSOV_drvtrp_VOT_4_Am"],
                       "hov":   ["mfHOV_drvtrp_VOT_1_Am", "mfHOV_drvtrp_VOT_2_Am", "mfHOV_drvtrp_VOT_3_Am", "mfHOV_drvtrp_VOT_4_Am"],
                       "truck": ["mflgvPceAm", "mfhgvPceAm"]}
@@ -110,6 +114,21 @@ class AutoAssignment(_m.Tool()):
                     "lgv":  ["mfPmLgvDist", "mfPmLgvTime", "mfPmLgvToll"],
                     "hgv":  ["mfPmHgvDist", "mfPmHgvTime", "mfPmHgvToll"]}
         self.store_skims(pm_scenario, pm_skims)
+
+    def add_external_demand(self):
+        util = _m.Modeller().tool("translink.util")
+
+        # AM
+        specs.append(util.matrix_spec("SOV_drvtrp_VOT_3_Am", "SOV_drvtrp_VOT_3_Am + extSOVAm"))
+        specs.append(util.matrix_spec("HOV_drvtrp_VOT_3_Am", "SOV_drvtrp_VOT_3_Am + extHOVAm"))
+        # MD
+        specs.append(util.matrix_spec("SOV_drvtrp_VOT_3_Md", "SOV_drvtrp_VOT_3_Md + extSOVMd"))
+        specs.append(util.matrix_spec("HOV_drvtrp_VOT_3_Md", "SOV_drvtrp_VOT_3_Md + extHOVMd"))
+        # PM
+        specs.append(util.matrix_spec("SOV_drvtrp_VOT_3_Pm", "SOV_drvtrp_VOT_3_Pm + extSOVPm"))
+        specs.append(util.matrix_spec("HOV_drvtrp_VOT_3_Pm", "SOV_drvtrp_VOT_3_Pm + extHOVPm"))
+
+        util.compute_matrix(specs)
 
     def assign_scen(self, scenario, demands):
         assign_traffic = _m.Modeller().tool("inro.emme.traffic_assignment.sola_traffic_assignment")
@@ -231,7 +250,7 @@ class AutoAssignment(_m.Tool()):
 
         do_averaging = util.get_cycle(scenario.emmebank) > 1
         specs = []
-        
+
         if not do_averaging:
             # Set Distance Matrices
             specs.append(util.matrix_spec(skim_list["sovVot1"][0], "mfSOVDistVOT1"))
@@ -300,7 +319,7 @@ class AutoAssignment(_m.Tool()):
             specs.append(util.matrix_spec(skim_list["hovVot4"][2], "0.5*(mfHOVTollVOT4 + %s)" % skim_list["hovVot4"][2]))
             specs.append(util.matrix_spec(skim_list["lgv"][2], "0.5*(mfLGVToll + %s)" % skim_list["lgv"][2]))
             specs.append(util.matrix_spec(skim_list["hgv"][2], "0.5*(mfHGVToll + %s)" % skim_list["hgv"][2]))
-            
+
         util.compute_matrix(specs, scenario)
 
     def add_mode_specification(self, specs, mode, demand, gc_cost, gc_factor, travel_time, link_vol, turn_vol):

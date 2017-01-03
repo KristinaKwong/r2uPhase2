@@ -593,16 +593,16 @@ class DataGeneration(_m.Tool()):
         specs = []
         specs.append(util.matrix_spec("mf301", "mf10"))
         specs.append(util.matrix_spec("mf307", "mf11"))
-        specs.append(util.matrix_spec("mf312", "mf20"))
-        specs.append(util.matrix_spec("mf313", "mf21"))
+        specs.append(util.matrix_spec("mf312", "mf20*lgvPCE"))
+        specs.append(util.matrix_spec("mf313", "mf21*hgvPCE"))
         specs.append(util.matrix_spec("mf321", "mf30"))
         specs.append(util.matrix_spec("mf327", "mf31"))
-        specs.append(util.matrix_spec("mf332", "mf40"))
-        specs.append(util.matrix_spec("mf333", "mf41"))
+        specs.append(util.matrix_spec("mf332", "mf40*lgvPCE""))
+        specs.append(util.matrix_spec("mf333", "mf41*hgvPCE""))
         specs.append(util.matrix_spec("mf341", "mf50"))
         specs.append(util.matrix_spec("mf347", "mf51"))
-        specs.append(util.matrix_spec("mf352", "mf60"))
-        specs.append(util.matrix_spec("mf353", "mf61"))
+        specs.append(util.matrix_spec("mf352", "mf60*lgvPCE""))
+        specs.append(util.matrix_spec("mf353", "mf61*hgvPCE""))
         util.compute_matrix(specs)
 
         ########################################################################
