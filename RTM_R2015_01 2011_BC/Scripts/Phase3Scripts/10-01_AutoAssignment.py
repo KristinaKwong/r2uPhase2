@@ -117,16 +117,16 @@ class AutoAssignment(_m.Tool()):
 
     def add_external_demand(self):
         util = _m.Modeller().tool("translink.util")
-
+        specs = []
         # AM
-        specs.append(util.matrix_spec("SOV_drvtrp_VOT_3_Am", "SOV_drvtrp_VOT_3_Am + extSOVAm"))
-        specs.append(util.matrix_spec("HOV_drvtrp_VOT_3_Am", "SOV_drvtrp_VOT_3_Am + extHOVAm"))
+        specs.append(util.matrix_spec("SOV_drvtrp_VOT_3_Am", "SOV_drvtrp_VOT_3_Am + extSovAm"))
+        specs.append(util.matrix_spec("HOV_drvtrp_VOT_3_Am", "HOV_drvtrp_VOT_3_Am + extHovAm"))
         # MD
-        specs.append(util.matrix_spec("SOV_drvtrp_VOT_3_Md", "SOV_drvtrp_VOT_3_Md + extSOVMd"))
-        specs.append(util.matrix_spec("HOV_drvtrp_VOT_3_Md", "SOV_drvtrp_VOT_3_Md + extHOVMd"))
+        specs.append(util.matrix_spec("SOV_drvtrp_VOT_3_Md", "SOV_drvtrp_VOT_3_Md + extSovMd"))
+        specs.append(util.matrix_spec("HOV_drvtrp_VOT_3_Md", "HOV_drvtrp_VOT_3_Md + extHovMd"))
         # PM
-        specs.append(util.matrix_spec("SOV_drvtrp_VOT_3_Pm", "SOV_drvtrp_VOT_3_Pm + extSOVPm"))
-        specs.append(util.matrix_spec("HOV_drvtrp_VOT_3_Pm", "SOV_drvtrp_VOT_3_Pm + extHOVPm"))
+        specs.append(util.matrix_spec("SOV_drvtrp_VOT_3_Pm", "SOV_drvtrp_VOT_3_Pm + extSovPm"))
+        specs.append(util.matrix_spec("HOV_drvtrp_VOT_3_Pm", "HOV_drvtrp_VOT_3_Pm + extHovPm"))
 
         util.compute_matrix(specs)
 
