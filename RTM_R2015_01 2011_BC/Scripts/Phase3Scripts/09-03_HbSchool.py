@@ -342,9 +342,9 @@ class HbSchool(_m.Tool()):
         hbsc_ts = ts_df.loc[ts_df['purpose'] == 'hbsch']
 
         # Subset Time Slice Factor Dataframes by mode
-        Auto_AM_Fct, Auto_MD_Fct, Auto_PM_Fct = self.get_ts_factor(hbsc_ts.loc[ts_df['mode'] == 'Auto']) # Auto Factors
-        Tran_AM_Fct, Tran_MD_Fct, Tran_PM_Fct = self.get_ts_factor(hbsc_ts.loc[ts_df['mode'] == 'Transit']) # Transit Factors
-        Acti_AM_Fct, Acti_MD_Fct, Acti_PM_Fct = self.get_ts_factor(hbsc_ts.loc[ts_df['mode'] == 'Active']) # Active Factors
+        Auto_AM_Fct, Auto_MD_Fct, Auto_PM_Fct = self.get_ts_factor(hbsc_ts.loc[hbsc_ts['mode'] == 'Auto']) # Auto Factors
+        Tran_AM_Fct, Tran_MD_Fct, Tran_PM_Fct = self.get_ts_factor(hbsc_ts.loc[hbsc_ts['mode'] == 'Transit']) # Transit Factors
+        Acti_AM_Fct, Acti_MD_Fct, Acti_PM_Fct = self.get_ts_factor(hbsc_ts.loc[hbsc_ts['mode'] == 'Active']) # Active Factors
 
         del ts_df, hbsc_ts
 
