@@ -714,14 +714,40 @@ class HbWork(_m.Tool()):
         conn.close()
         # Subset Time Slice Factor Dataframes by purpose
         hbw_ts = ts_df.loc[ts_df['purpose'] == 'hbw']
+        hbw_ts_n = hbw_ts.loc[ts_df['geo'] == 'N']
+        hbw_ts_s = hbw_ts.loc[ts_df['geo'] == 'S']
 
-        # Subset Time Slice Factor Dataframes by mode
-        Auto_AM_Fct, Auto_MD_Fct, Auto_PM_Fct = self.get_ts_factor(hbw_ts.loc[ts_df['mode'] == 'Auto']) # Auto Factors
-        Tran_AM_Fct, Tran_MD_Fct, Tran_PM_Fct = self.get_ts_factor(hbw_ts.loc[ts_df['mode'] == 'Transit']) # Transit Factors
-        Acti_AM_Fct, Acti_MD_Fct, Acti_PM_Fct = self.get_ts_factor(hbw_ts.loc[ts_df['mode'] == 'Active']) # Active Factors
-        WCE_AM_Fct, WCE_PM_Fct = self.get_ts_factor_wce(hbw_ts.loc[ts_df['mode'] == 'WCE']) # WCE Factors
+        # Subset Time Slice Factor Dataframes by mode for North of Fraser
+        Auto_AM_Fct_N, Auto_MD_Fct_N, Auto_PM_Fct_N = self.get_ts_factor(hbw_ts_n.loc[hbw_ts_n['mode'] == 'Auto']) # Auto Factors
+        Tran_AM_Fct_N, Tran_MD_Fct_N, Tran_PM_Fct_N = self.get_ts_factor(hbw_ts_n.loc[hbw_ts_n['mode'] == 'Transit']) # Transit Factors
+        Acti_AM_Fct_N, Acti_MD_Fct_N, Acti_PM_Fct_N = self.get_ts_factor(hbw_ts_n.loc[hbw_ts_n['mode'] == 'Active']) # Active Factors
+        WCE_AM_Fct_N, WCE_PM_Fct_N = self.get_ts_factor_wce(hbw_ts_n.loc[hbw_ts_n['mode'] == 'WCE']) # WCE Factors
 
-        del ts_df, hbw_ts
+        # Subset Time Slice Factor Dataframes by mode for South of Fraser
+        Auto_AM_Fct_S, Auto_MD_Fct_S, Auto_PM_Fct_S = self.get_ts_factor(hbw_ts_s.loc[hbw_ts_s['mode'] == 'Auto']) # Auto Factors
+        Tran_AM_Fct_S, Tran_MD_Fct_S, Tran_PM_Fct_S = self.get_ts_factor(hbw_ts_s.loc[hbw_ts_s['mode'] == 'Transit']) # Transit Factors
+        Acti_AM_Fct_S, Acti_MD_Fct_S, Acti_PM_Fct_S = self.get_ts_factor(hbw_ts_s.loc[hbw_ts_s['mode'] == 'Active']) # Active Factors
+        WCE_AM_Fct_S, WCE_PM_Fct_S = self.get_ts_factor_wce(hbw_ts_s.loc[hbw_ts_s['mode'] == 'WCE']) # WCE Factors
+
+        Gy_P = util.get_matrix_numpy(eb, 'gy_ensem')  + np.zeros((1, 1741))
+
+        Auto_AM_Fct = np.array([np.where(Gy_P<8, Auto_AM_Fct_N[0], Auto_AM_Fct_S[0]), np.where(Gy_P<8, Auto_AM_Fct_N[1], Auto_AM_Fct_S[1])])
+        Auto_MD_Fct = np.array([np.where(Gy_P<8, Auto_MD_Fct_N[0], Auto_MD_Fct_S[0]), np.where(Gy_P<8, Auto_MD_Fct_N[1], Auto_MD_Fct_S[1])])
+        Auto_PM_Fct = np.array([np.where(Gy_P<8, Auto_PM_Fct_N[0], Auto_PM_Fct_S[0]), np.where(Gy_P<8, Auto_PM_Fct_N[1], Auto_PM_Fct_S[1])])
+
+        Tran_AM_Fct = np.array([np.where(Gy_P<8, Tran_AM_Fct_N[0], Tran_AM_Fct_S[0]), np.where(Gy_P<8, Tran_AM_Fct_N[1], Tran_AM_Fct_S[1])])
+        Tran_MD_Fct = np.array([np.where(Gy_P<8, Tran_MD_Fct_N[0], Tran_MD_Fct_S[0]), np.where(Gy_P<8, Tran_MD_Fct_N[1], Tran_MD_Fct_S[1])])
+        Tran_PM_Fct = np.array([np.where(Gy_P<8, Tran_PM_Fct_N[0], Tran_PM_Fct_S[0]), np.where(Gy_P<8, Tran_PM_Fct_N[1], Tran_PM_Fct_S[1])])
+
+        Acti_AM_Fct = np.array([np.where(Gy_P<8, Acti_AM_Fct_N[0], Acti_AM_Fct_S[0]), np.where(Gy_P<8, Acti_AM_Fct_N[1], Acti_AM_Fct_S[1])])
+        Acti_MD_Fct = np.array([np.where(Gy_P<8, Acti_MD_Fct_N[0], Acti_MD_Fct_S[0]), np.where(Gy_P<8, Acti_MD_Fct_N[1], Acti_MD_Fct_S[1])])
+        Acti_PM_Fct = np.array([np.where(Gy_P<8, Acti_PM_Fct_N[0], Acti_PM_Fct_S[0]), np.where(Gy_P<8, Acti_PM_Fct_N[1], Acti_PM_Fct_S[1])])
+
+        WCE_AM_Fct = np.where(Gy_P<8, WCE_AM_Fct_N, WCE_AM_Fct_S)
+        WCE_PM_Fct = np.where(Gy_P<8, WCE_PM_Fct_N, WCE_PM_Fct_S)
+
+
+        del ts_df, hbw_ts, hbw_ts_n, hbw_ts_s
 
 #       #########################################################################################
 #        ##       Split Park and Ride to Auto and Transit Legs
