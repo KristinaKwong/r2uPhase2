@@ -145,6 +145,8 @@ class InitEmmebank(_m.Tool()):
         create_attr("NODE", "@farezone", "Fare Zones by Node/Stop", 0, False, scen)
         create_attr("LINK", "@fareboundary", "Fare Zone Boundary for Transit (0,1)", 0, False, scen)
         create_attr("LINK", "@wcefareboundary", "Fare Zone Boundaries for WCE (13,34,45)", 0, False, scen)
+        create_attr("LINK", "@lscid", "Screenline Identifier", 0, False, scen)
+        create_attr("LINK", "@lscstn", "Screenline Station Identifier", 0, False, scen)
         create_attr("LINK", "@lanesam", "AM Number of Lanes", 0, False, scen)
         create_attr("LINK", "@lanesmd", "MD Number of Lanes", 0, False, scen)
         create_attr("LINK", "@lanespm", "PM Number of Lanes", 0, False, scen)
