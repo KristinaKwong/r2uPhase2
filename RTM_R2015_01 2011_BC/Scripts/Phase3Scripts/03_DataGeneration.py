@@ -46,6 +46,9 @@ class DataGeneration(_m.Tool()):
         md_scen = eb.scenario(int(eb.matrix("ms3").data))
         pm_scen = eb.scenario(int(eb.matrix("ms4").data))
 
+        # Run iniitial AON assignment to generate a distance skim
+        self.assignAON(am_scen)
+
         # Run Initial Assignment to generate skims from seed demands
         auto_assign = _m.Modeller().tool("translink.RTM3.stage3.autoassignment")
         auto_assign(am_scen, md_scen, pm_scen)
@@ -510,6 +513,52 @@ class DataGeneration(_m.Tool()):
         df.to_sql(name='densities', con=conn, flavor='sqlite', index=False, if_exists='replace')
         conn.close()
 
+
+    @_m.logbook_trace("All or nothing distance assignment")
+    def assignAON(self, sc):
+        util = _m.Modeller().tool("translink.util")
+        eb = sc.emmebank
+        # calculate initial fixed costs to ul3
+        auto_voc = eb.matrix("msautoOpCost").data
+        util.emme_link_calc(sc, "@sovoc", "length * %s" % (auto_voc))
+        util.initmat(eb, "mf91", "distAON", "All or nothing initial distance skim", )
+        class_spec = []
+        class_spec.append({"mode": "d",
+                "demand": "mf10",
+                "generalized_cost": { "link_costs": "@sovoc", "perception_factor": eb.matrix("msAutoVOT3").data },
+                "results": { "od_travel_times": {"shortest_paths": None},
+                             "link_volumes": None,
+                             "turn_volumes": None },
+                "analysis": {"results": {"od_values": "mfdistAON"}},
+                "path_analysis": {"link_component": "length",
+                                  "operator": "+",
+                                  "path_to_od_composition": { "considered_paths": "ALL", "multiply_path_proportions_by": { "analyzed_demand": False, "path_value": True }},
+                                  "selection_threshold": {"lower": 0.00, "upper": 99999} }
+                })
+
+        assign_traffic = _m.Modeller().tool("inro.emme.traffic_assignment.sola_traffic_assignment")
+        spec = {
+            "type": "SOLA_TRAFFIC_ASSIGNMENT",
+            "background_traffic": {"add_transit_vehicles": True},
+            "classes": class_spec,
+            "stopping_criteria": { "max_iterations"   : 0,
+                                   "relative_gap"     : 0,
+                                   "best_relative_gap": 0,
+                                   "normalized_gap"   : 0},
+            "performance_settings": {"number_of_processors": int(eb.matrix("ms12").data)},
+        }
+        assign_traffic(spec, scenario=sc)
+
+        # Calculate Intrazonal distance
+        np_mat = util.get_matrix_numpy(eb, "mfdistAON")
+
+        # calculate the mimimum non-zero value in each row and set half that
+        # as the intrazonal value
+        for i in xrange(np_mat.shape[0]):
+            np_mat[i][i] = np_mat[i][np_mat[i] > 0].min() * 0.5
+
+        # write the updated matrix back to the emmebank
+        util.set_matrix_numpy(eb, "mfdistAON", np_mat)
 
     @_m.logbook_trace("Initial Demand and Skim Matrix Creation")
     def matrix_batchins(self, eb):
