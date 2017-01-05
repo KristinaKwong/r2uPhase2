@@ -59,14 +59,19 @@ will be created, and the name of the databank to be shown in the project.
 
 The new
 
-![](./InitEmmebank_screen.png)
+![The Initialize Emmebank Tool](./InitEmmebank_screen.png)
 
 # Running the RTM Phase 3 Model
 
-![](./FullModelRun_screen.png)
+![The RTM Phase 3 Model Run Tool](./FullModelRun_screen.png)
 
 # Network Coding
 ## Extra Attributes
+|Time of Day Attribute|Master Scenario Attributes|
+|---------------------|--------------------------|
+|lanes|@lanesam, @lanesmd, @lanespm|
+|vdf|@vdfam, @vdfmd, @vdfpm|
+
 ## Export Network Tool
 
-![](./ExportNetwork_screen.png)
+![The Network Export Tool](./ExportNetwork_screen.png)
