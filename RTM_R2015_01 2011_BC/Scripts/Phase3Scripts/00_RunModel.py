@@ -31,8 +31,8 @@ class FullModelRun(_m.Tool()):
         self.max_distribution_iterations = 60
         self.distribution_relative_err = 0.0001
         self.max_assignment_iterations = 200
-        self.run_congested_transit = False
-        self.run_capacited_transit = False
+        self.run_congested_transit = True
+        self.run_capacited_transit = True
         self.num_processors = multiprocessing.cpu_count()
 
     def page(self):
