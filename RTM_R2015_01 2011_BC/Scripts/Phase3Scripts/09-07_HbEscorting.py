@@ -167,7 +167,7 @@ class HbEscorting(_m.Tool()):
 #        ##############################################################################
 
         Df = {}
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbWBlSovDist_I1')
+        Df['AutoDis'] = util.get_matrix_numpy(eb, 'mfdistAON')
 
 
         # Walk Utility
@@ -266,7 +266,7 @@ class HbEscorting(_m.Tool()):
                       0, 0, 0,
                       0, 0, 0]
 
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, 'HbWBlSovDist_I1'))
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, 'mfdistAON'))
         MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
 
 

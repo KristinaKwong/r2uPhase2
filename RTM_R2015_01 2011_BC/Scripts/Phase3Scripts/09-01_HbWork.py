@@ -259,7 +259,7 @@ class HbWork(_m.Tool()):
 
         Df['TranAccess'] = util.get_matrix_numpy(eb, 'transitAccLn').reshape(NoTAZ,1) + np.zeros((1, NoTAZ)) # Log transit accessiblity broadcast
         Df['IntZnl'] = np.identity(NoTAZ) # Intra-zonal matrix
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbWBlSovDist_I1') # Distance
+        Df['AutoDis'] = util.get_matrix_numpy(eb, 'mfdistAON') # Distance
         Df['AutoDisSqd'] = Df['AutoDis']* Df['AutoDis'] #Distance squared
         Df['LogAutoDis'] = np.log(Df['AutoDis'] + Tiny) # Log Distance
 
@@ -376,7 +376,7 @@ class HbWork(_m.Tool()):
         Df['WAuIWR'] = Df['WCEIVW']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW']+ Df['WAuTim'] + Tiny) # Ratio of Time on WCE to total travel time
 
         Df['IntZnl'] = np.identity(NoTAZ) # Intra-zonal
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbWBlSovDist_I1') # Distance
+        Df['AutoDis'] = util.get_matrix_numpy(eb, 'mfdistAON') # Distance
         Df['AutoDisSqd'] = Df['AutoDis']* Df['AutoDis'] # Distance-squared
         Df['LogAutoDis'] = np.log(Df['AutoDis'] + Tiny) #log-distance
 
@@ -456,7 +456,7 @@ class HbWork(_m.Tool()):
 #        ##############################################################################
 
         Df = {}
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'HbWBlSovDist_I1') #Distance
+        Df['AutoDis'] = util.get_matrix_numpy(eb, 'mfdistAON') #Distance
         Df['IntrCBD'] = util.get_matrix_numpy(eb, 'd_cbd') #Intra-CBD
         Df['IntrCBD'] = Df['IntrCBD'].reshape(NoTAZ, 1)*Df['IntrCBD'].reshape(1, NoTAZ) #Broadcast intra-CBD
 
@@ -477,7 +477,7 @@ class HbWork(_m.Tool()):
                       + p701*Df['PopEmpDenPA']
                       + p505*Df['PopSPr'])
         # Check availability conditions else add high negative utility (-99999)
-#        DfU['Walk'] = MChM.WalkAvail(Df['AutoDis'], DfU['Walk'], AvailDict)
+        DfU['Walk'] = MChM.WalkAvail(Df['AutoDis'], DfU['Walk'], AvailDict)
 
         # Bike Utility
         DfU['Bike'] = ( p11
@@ -485,7 +485,7 @@ class HbWork(_m.Tool()):
                       + p870*Df['BikScr']
                       + p506*Df['PopSPr'])
         # Check availability conditions else add high negative utility (-99999)
-#        DfU['Bike'] = MChM.BikeAvail(Df['AutoDis'], DfU['Bike'], AvailDict)
+        DfU['Bike'] = MChM.BikeAvail(Df['AutoDis'], DfU['Bike'], AvailDict)
 
         del Df
 
@@ -643,7 +643,7 @@ class HbWork(_m.Tool()):
         GammaList =  [-0.000083, -0.000007, -0.000005, -0.00003, -0.000014, -0.000005, -0.000002, -0.000019, -0.000008]
 
 
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "HbWBlSovDist_I1"))
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"))
         MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
 
 #       ##############################################################################

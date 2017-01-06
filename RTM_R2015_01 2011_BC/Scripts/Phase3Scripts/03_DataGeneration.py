@@ -93,9 +93,9 @@ class DataGeneration(_m.Tool()):
     	# find minimum distance across all times of day
     	ij = util.get_pd_ij_df(eb)
 
-        ij['distAm'] = util.get_matrix_numpy(eb, "mfAmSovDistVOT2").flatten()
-        ij['distMd'] = util.get_matrix_numpy(eb, "mfMdSovDistVOT2").flatten()
-        ij['distPm'] = util.get_matrix_numpy(eb, "mfPmSovDistVOT2").flatten()
+        ij['distAm'] = util.get_matrix_numpy(eb, "mfdistAON").flatten()
+        ij['distMd'] = util.get_matrix_numpy(eb, "mfdistAON").flatten()
+        ij['distPm'] = util.get_matrix_numpy(eb, "mfdistAON").flatten()
     	ij['dist'] = ij[['distAm','distMd','distPm']].min(axis=1)
 
     	# join the dummies to the skims
