@@ -64,62 +64,63 @@ class TripAttractions(_m.Tool()):
         ########################################################################
 
         # hbw
-        c_hbw_CM = 1.469787
-        c_hbw_TW = 1.199981
-        c_hbw_BOS = 1.705043
-        c_hbw_FIRE = 1.817108
-        c_hbw_Ret = 0.460385
-        c_hbw_AFIC = 1.30864
-        c_hbw_HEPA = 1.313793
+        c_hbw_CM = 1.46554
+        c_hbw_TW = 1.200569
+        c_hbw_BOS = 1.706288
+        c_hbw_FIRE = 1.830422
+        c_hbw_Ret = 0.474753
+        c_hbw_AFIC = 1.281219
+        c_hbw_HEPA = 1.313943
 
         # hbesc
-        c_hbesc_int = 175.091936
-        c_hbesc_iTWAir = 0.834093
-        c_hbesc_AFIC = 0.29188
-        c_hbesc_Ret = 0.380031
-        c_hbesc_HEPA = 0.233385
-        c_hbesc_EE = 0.541479
-        c_hbesc_SE = 0.373999
-        c_hbesc_PU18 = 0.199857
-        c_hbesc_PO65 = 0.106244
+        c_hbesc_int = 177.36615
+        c_hbesc_iTWAir = 0.836297
+        c_hbesc_AFIC = 0.282015
+        c_hbesc_Ret = 0.375302
+        c_hbesc_HEPA = 0.231174
+        c_hbesc_EE = 0.538922
+        c_hbesc_SE = 0.374291
+        c_hbesc_PU18 = 0.200338
+        c_hbesc_PO65 = 0.106161
 
         # hbpb
-        c_hbpb_Ret = 1.107687
-        c_hbpb_AFIC = 0.204388
-        c_hbpb_HEPA = 0.559522
-        c_hbpb_PoTot = 0.051085
+        c_hbpb_Ret = 1.101548
+        c_hbpb_AFIC = 0.230174
+        c_hbpb_HEPA = 0.529714
+        c_hbpb_PoTot = 0.038902
 
         # hbsch
-        c_hbsch_EE = 1.594793
-        c_hbsch_SE = 1.38254
+        c_hbsch_EE = 1.594941
+        c_hbsch_SE = 1.382499
 
         # hbshop
-        c_hbshop_Ret = 4.745706
+        c_hbshop_Ret = 4.648483
 
         # hbsoc
-        c_hbsoc_int = 163.578617
-        c_hbsoc_AFIC = 1.09016
-        c_hbsoc_Ret = 1.162139
-        c_hbsoc_HEPA = 0.286444
-        c_hbsoc_PoTot = 0.118738
+        c_hbsoc_int = 95.61807
+        c_hbsoc_AFIC = 1.123607
+        c_hbsoc_Ret = 1.16217
+        c_hbsoc_HEPA = 0.285581
+        c_hbsoc_PoTot = 0.129847
+
 
         # nhbw
-        c_nhbw_int = 83.555042
-        c_nhbw_CM = 0.140819
-        c_nhbw_TW = 0.127516
-        c_nhbw_BOS = 0.288404
-        c_nhbw_FIRE = 0.107172
-        c_nhbw_Ret = 1.10755
-        c_nhbw_AFIC = 0.462377
-        c_nhbw_HEPA = 0.396477
+        c_nhbw_int = 62.876453
+        c_nhbw_CM = 0.148109
+        c_nhbw_TW = 0.128277
+        c_nhbw_BOS = 0.295382
+        c_nhbw_FIRE = 0.093031
+        c_nhbw_Ret = 1.127978
+        c_nhbw_AFIC = 0.459119
+        c_nhbw_HEPA = 0.398766
 
         # nhbo
-        c_nhbo_Ret = 2.597305
-        c_nhbo_AFIC = 0.376427
-        c_nhbo_HEPA = 0.30922
-        c_nhbo_PoTot = 0.081749
-        c_nhbo_EE = 0.224262
-        c_nhbo_SE = 0.174664
+        c_nhbo_Ret = 2.606794
+        c_nhbo_AFIC = 0.378311
+        c_nhbo_HEPA = 0.301826
+        c_nhbo_PoTot = 0.077626
+        c_nhbo_EE = 0.223677
+        c_nhbo_SE = 0.183692
 
         # hbu
         c_hbu_iCbdPsfte = 0.365651
@@ -292,7 +293,7 @@ class TripAttractions(_m.Tool()):
                 -- interaction term for escorting to the airport
                 ,IFNULL(d.EMP_TCU_Wholesale * du.airport, 0) as iTWAir
                 ,CASE WHEN IFNULL(du.cbd, 0) = 1 THEN IFNULL(PostSecFTE, 0) ELSE 0 END iCbdPsfte
-                ,CASE WHEN IFNULL(du.cbd, 0) = 0 THEN IFNULL(PostSecFTE, 0) ELSE 0 END iNotCbdPsfte
+                ,CASE WHEN IFNULL(du.cbd, 1) = 0 THEN IFNULL(PostSecFTE, 0) ELSE 0 END iNotCbdPsfte
 
             FROM taz_index ti
                 LEFT JOIN demographics d on d.TAZ1700 = ti.TAZ1741
