@@ -158,7 +158,7 @@ class AutoAssignment(_m.Tool()):
         self.calc_timedist_skim(eb, "msAutoVOT3", "msautoOpCost", "mfSOVGCTimeVOT3", "mfSOVOpCstVOT3", "mfSOVTollVOT3", "mfSOVTimeVOT3", "mfSOVDistVOT3", 1.0)
         self.calc_timedist_skim(eb, "msAutoVOT4", "msautoOpCost", "mfSOVGCTimeVOT4", "mfSOVOpCstVOT4", "mfSOVTollVOT4", "mfSOVTimeVOT4", "mfSOVDistVOT4", 1.0)
 
-        hov_occupancy = eb.matrix("ms44").data
+        hov_occupancy = eb.matrix("msAutoOcc").data
         self.calc_timedist_skim(eb, "msAutoVOT1", "msautoOpCost", "mfHOVGCTimeVOT1", "mfHOVOpCstVOT1", "mfHOVTollVOT1", "mfHOVTimeVOT1", "mfHOVDistVOT1", hov_occupancy)
         self.calc_timedist_skim(eb, "msAutoVOT2", "msautoOpCost", "mfHOVGCTimeVOT2", "mfHOVOpCstVOT2", "mfHOVTollVOT2", "mfHOVTimeVOT2", "mfHOVDistVOT2", hov_occupancy)
         self.calc_timedist_skim(eb, "msAutoVOT3", "msautoOpCost", "mfHOVGCTimeVOT3", "mfHOVOpCstVOT3", "mfHOVTollVOT3", "mfHOVTimeVOT3", "mfHOVDistVOT3", hov_occupancy)
@@ -178,8 +178,8 @@ class AutoAssignment(_m.Tool()):
         toll = util.get_matrix_numpy(eb, toll_mat)
 
         time = gc - (opcst * vot)
+        opcst = opcst * occupancy
         dist = (opcst - toll) / voc
-        opcst = opcst*occupancy
 
         util.set_matrix_numpy(eb, time_mat, time)
         util.set_matrix_numpy(eb, dist_mat, dist)
@@ -429,7 +429,7 @@ class AutoAssignment(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
         eb = scenario.emmebank
 
-        hov_occupancy = eb.matrix("ms44").data
+        hov_occupancy = eb.matrix("msAutoOcc").data
         auto_voc = eb.matrix("msautoOpCost").data
         lgv_voc = eb.matrix("mslgvOpCost").data
         hgv_voc = eb.matrix("mshgvOpCost").data
