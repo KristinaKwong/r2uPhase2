@@ -153,20 +153,21 @@ class AutoAssignment(_m.Tool()):
 
     @_m.logbook_trace("Calculate Time and Distance Skims")
     def calc_timedist_skims(self, eb):
-        self.calc_timedist_skim(eb, "msAutoVOT1", "msautoOpCost", "mfSOVGCTimeVOT1", "mfSOVOpCstVOT1", "mfSOVTollVOT1", "mfSOVTimeVOT1", "mfSOVDistVOT1")
-        self.calc_timedist_skim(eb, "msAutoVOT2", "msautoOpCost", "mfSOVGCTimeVOT2", "mfSOVOpCstVOT2", "mfSOVTollVOT2", "mfSOVTimeVOT2", "mfSOVDistVOT2")
-        self.calc_timedist_skim(eb, "msAutoVOT3", "msautoOpCost", "mfSOVGCTimeVOT3", "mfSOVOpCstVOT3", "mfSOVTollVOT3", "mfSOVTimeVOT3", "mfSOVDistVOT3")
-        self.calc_timedist_skim(eb, "msAutoVOT4", "msautoOpCost", "mfSOVGCTimeVOT4", "mfSOVOpCstVOT4", "mfSOVTollVOT4", "mfSOVTimeVOT4", "mfSOVDistVOT4")
+        self.calc_timedist_skim(eb, "msAutoVOT1", "msautoOpCost", "mfSOVGCTimeVOT1", "mfSOVOpCstVOT1", "mfSOVTollVOT1", "mfSOVTimeVOT1", "mfSOVDistVOT1", 1.0)
+        self.calc_timedist_skim(eb, "msAutoVOT2", "msautoOpCost", "mfSOVGCTimeVOT2", "mfSOVOpCstVOT2", "mfSOVTollVOT2", "mfSOVTimeVOT2", "mfSOVDistVOT2", 1.0)
+        self.calc_timedist_skim(eb, "msAutoVOT3", "msautoOpCost", "mfSOVGCTimeVOT3", "mfSOVOpCstVOT3", "mfSOVTollVOT3", "mfSOVTimeVOT3", "mfSOVDistVOT3", 1.0)
+        self.calc_timedist_skim(eb, "msAutoVOT4", "msautoOpCost", "mfSOVGCTimeVOT4", "mfSOVOpCstVOT4", "mfSOVTollVOT4", "mfSOVTimeVOT4", "mfSOVDistVOT4", 1.0)
 
-        self.calc_timedist_skim(eb, "msAutoVOT1", "msautoOpCost", "mfHOVGCTimeVOT1", "mfHOVOpCstVOT1", "mfHOVTollVOT1", "mfHOVTimeVOT1", "mfHOVDistVOT1")
-        self.calc_timedist_skim(eb, "msAutoVOT2", "msautoOpCost", "mfHOVGCTimeVOT2", "mfHOVOpCstVOT2", "mfHOVTollVOT2", "mfHOVTimeVOT2", "mfHOVDistVOT2")
-        self.calc_timedist_skim(eb, "msAutoVOT3", "msautoOpCost", "mfHOVGCTimeVOT3", "mfHOVOpCstVOT3", "mfHOVTollVOT3", "mfHOVTimeVOT3", "mfHOVDistVOT3")
-        self.calc_timedist_skim(eb, "msAutoVOT4", "msautoOpCost", "mfHOVGCTimeVOT4", "mfHOVOpCstVOT4", "mfHOVTollVOT4", "mfHOVTimeVOT4", "mfHOVDistVOT4")
+        hov_occupancy = eb.matrix("ms44").data
+        self.calc_timedist_skim(eb, "msAutoVOT1", "msautoOpCost", "mfHOVGCTimeVOT1", "mfHOVOpCstVOT1", "mfHOVTollVOT1", "mfHOVTimeVOT1", "mfHOVDistVOT1", hov_occupancy)
+        self.calc_timedist_skim(eb, "msAutoVOT2", "msautoOpCost", "mfHOVGCTimeVOT2", "mfHOVOpCstVOT2", "mfHOVTollVOT2", "mfHOVTimeVOT2", "mfHOVDistVOT2", hov_occupancy)
+        self.calc_timedist_skim(eb, "msAutoVOT3", "msautoOpCost", "mfHOVGCTimeVOT3", "mfHOVOpCstVOT3", "mfHOVTollVOT3", "mfHOVTimeVOT3", "mfHOVDistVOT3", hov_occupancy)
+        self.calc_timedist_skim(eb, "msAutoVOT4", "msautoOpCost", "mfHOVGCTimeVOT4", "mfHOVOpCstVOT4", "mfHOVTollVOT4", "mfHOVTimeVOT4", "mfHOVDistVOT4", hov_occupancy)
 
-        self.calc_timedist_skim(eb, "msVotLgv", "mslgvOpCost", "mfLGVGCTime", "mfLGVOpCst", "mfLGVToll", "mfLGVTime", "mfLGVDist")
-        self.calc_timedist_skim(eb, "msVotHgv", "mshgvOpCost", "mfHGVGCTime", "mfHGVOpCst", "mfHGVToll", "mfHGVTime", "mfHGVDist")
+        self.calc_timedist_skim(eb, "msVotLgv", "mslgvOpCost", "mfLGVGCTime", "mfLGVOpCst", "mfLGVToll", "mfLGVTime", "mfLGVDist", 1.0)
+        self.calc_timedist_skim(eb, "msVotHgv", "mshgvOpCost", "mfHGVGCTime", "mfHGVOpCst", "mfHGVToll", "mfHGVTime", "mfHGVDist", 1.0)
 
-    def calc_timedist_skim(self, eb, vot_mat, voc_mat, gc_mat, opcst_mat, toll_mat, time_mat, dist_mat):
+    def calc_timedist_skim(self, eb, vot_mat, voc_mat, gc_mat, opcst_mat, toll_mat, time_mat, dist_mat, occupancy):
         util = _m.Modeller().tool("translink.util")
 
         vot = eb.matrix(vot_mat).data
@@ -178,9 +179,11 @@ class AutoAssignment(_m.Tool()):
 
         time = gc - (opcst * vot)
         dist = (opcst - toll) / voc
+        opcst = opcst*occupancy
 
         util.set_matrix_numpy(eb, time_mat, time)
         util.set_matrix_numpy(eb, dist_mat, dist)
+        util.set_matrix_numpy(eb, opcst_mat, opcst)
 
     @_m.logbook_trace("Execute Intrazonal Calculation")
     def calc_intrazonal_skims(self, eb):
@@ -435,7 +438,7 @@ class AutoAssignment(_m.Tool()):
         util.emme_link_calc(scenario, "@tkpen", "length * 100", sel_link="mode=n")
         util.emme_link_calc(scenario, "@sovoc", "length * %s + @tolls" % (auto_voc))
         #TODO: investigate why occupancy is only applied to tolls and not to fixed link costs
-        util.emme_link_calc(scenario, "@hovoc", "length * %s + @tolls / %s" % (auto_voc, hov_occupancy))
+        util.emme_link_calc(scenario, "@hovoc", "(length * %s + @tolls) / %s" % (auto_voc, hov_occupancy))
         util.emme_link_calc(scenario, "@lgvoc", "length * %s + 2 * @tolls" % (lgv_voc))
         util.emme_link_calc(scenario, "@hgvoc", "length * %s + 3 * @tolls + @tkpen" % (hgv_voc))
 

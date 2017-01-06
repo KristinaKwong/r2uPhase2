@@ -222,6 +222,6 @@ class FullModelRun(_m.Tool()):
         util.initmat(eb, "ms41", "ConRelGap", "ConvergenceRelativeGap", 0.0001)
         util.initmat(eb, "ms42", "ConBestRel", "ConvergenceBestRelative", 0.01)
         util.initmat(eb, "ms43", "ConNorm", "ConvergenceNormalized", 0.005)
-        util.initmat(eb, "ms44", "AutoOcc", "Standard HOV Occupancy", 2.4)
+        util.initmat(eb, "ms44", "AutoOcc", "Standard HOV Occupancy", 2.25)
         util.initmat(eb, "ms45", "tranCongest", "Run Congested Transit Assignment", int(run_congested_transit))
         util.initmat(eb, "ms46", "tranCapac", "Run Capacitated Transit Assignment", int(run_capacited_transit))
