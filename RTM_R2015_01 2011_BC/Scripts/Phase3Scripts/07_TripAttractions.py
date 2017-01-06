@@ -122,7 +122,8 @@ class TripAttractions(_m.Tool()):
         c_nhbo_SE = 0.174664
 
         # hbu
-        c_hbu_PS = 1.463819
+        c_hbu_iCbdPsfte = 0.365651
+        c_hbu_iNotCbdPsfte = 1.591958
 
         ########################################################################
         # Calculate and Balance Attractions
@@ -216,7 +217,8 @@ class TripAttractions(_m.Tool()):
         df['nhbo'] = df['nhbo'] * scalar
 
         # HBU ##################################################################
-        df['hbu'] = c_hbu_PS * df['PostSecFTE']
+        df['hbu'] = ( c_hbu_iCbdPsfte * df['iCbdPsfte']
+                    + c_hbu_iNotCbdPsfte * df['iNotCbdPsfte'] )
 
         # set control total for hbu in database and get productions to scale
         ct_df_hbu = pd.DataFrame(df['hbu'])
@@ -289,6 +291,8 @@ class TripAttractions(_m.Tool()):
                 ,IFNULL(d.POP_Total, 0) as POP_Total
                 -- interaction term for escorting to the airport
                 ,IFNULL(d.EMP_TCU_Wholesale * du.airport, 0) as iTWAir
+                ,CASE WHEN IFNULL(du.cbd, 0) = 1 THEN IFNULL(PostSecFTE, 0) ELSE 0 END iCbdPsfte
+                ,CASE WHEN IFNULL(du.cbd, 0) = 0 THEN IFNULL(PostSecFTE, 0) ELSE 0 END iNotCbdPsfte
 
             FROM taz_index ti
                 LEFT JOIN demographics d on d.TAZ1700 = ti.TAZ1741
