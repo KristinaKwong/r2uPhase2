@@ -67,11 +67,23 @@ The new
 
 # Network Coding
 ## Extra Attributes
-|Time of Day Attribute|Master Scenario Attributes|
-|---------------------|--------------------------|
-|lanes|@lanesam, @lanesmd, @lanespm|
-|vdf|@vdfam, @vdfmd, @vdfpm|
+
+During a model run, a single master scenario is copied into 3 time of day specific scenarios for assignment.
+The network parameters are coded in extra attributes in the master scenario and copied to the appropriate place
+when the copies are made. A correspondence of from the master scenario to the time of day attributes is presented below.
+
+|Master Scenario Attribute|     Time of Day Attributes    |
+|:-----------------------:|:-------------------------------:|
+|lanes                    |lanesam, lanesmd, lanespm |
+|vdf                      |vdfam, vdfmd, vdfpm       |
+|tpf                      |tpfam, tpfmd, tpfpm       |
+|tolls                    |tollam, tollmd, tollpm    |
+|hdwy                     |hdwyam, hdwymd, hdwypm    |
 
 ## Export Network Tool
+
+Network coding should be done in the master scenarios only, as the time of day specific networks are overwritten
+during each model run. The export network tool is responsible for exporting all required information from a scenario
+for later import into the model run process.
 
 ![The Network Export Tool](./ExportNetwork_screen.png)
