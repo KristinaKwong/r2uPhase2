@@ -428,31 +428,31 @@ class HbEscorting(_m.Tool()):
 
         # SOV
         # AM
-        self.set_pkhr_mats(eb, SOVI1_AM, "SOV_pertrp_VOT_1_Am")
-        self.set_pkhr_mats(eb, SOVI2_AM, "SOV_pertrp_VOT_1_Am")
-        self.set_pkhr_mats(eb, SOVI3_AM, "SOV_pertrp_VOT_1_Am")
+        self.set_pkhr_mats(eb, SOVI1_AM, "SOV_pertrp_VOT_2_Am")
+        self.set_pkhr_mats(eb, SOVI2_AM, "SOV_pertrp_VOT_2_Am")
+        self.set_pkhr_mats(eb, SOVI3_AM, "SOV_pertrp_VOT_2_Am")
         # MD
-        self.set_pkhr_mats(eb, SOVI1_MD, "SOV_pertrp_VOT_1_Md")
-        self.set_pkhr_mats(eb, SOVI2_MD, "SOV_pertrp_VOT_1_Md")
-        self.set_pkhr_mats(eb, SOVI3_MD, "SOV_pertrp_VOT_1_Md")
+        self.set_pkhr_mats(eb, SOVI1_MD, "SOV_pertrp_VOT_2_Md")
+        self.set_pkhr_mats(eb, SOVI2_MD, "SOV_pertrp_VOT_2_Md")
+        self.set_pkhr_mats(eb, SOVI3_MD, "SOV_pertrp_VOT_2_Md")
         # PM
-        self.set_pkhr_mats(eb, SOVI1_PM, "SOV_pertrp_VOT_1_Pm")
-        self.set_pkhr_mats(eb, SOVI2_PM, "SOV_pertrp_VOT_1_Pm")
-        self.set_pkhr_mats(eb, SOVI3_PM, "SOV_pertrp_VOT_1_Pm")
+        self.set_pkhr_mats(eb, SOVI1_PM, "SOV_pertrp_VOT_2_Pm")
+        self.set_pkhr_mats(eb, SOVI2_PM, "SOV_pertrp_VOT_2_Pm")
+        self.set_pkhr_mats(eb, SOVI3_PM, "SOV_pertrp_VOT_2_Pm")
 
         # HOV
         # AM
-        self.set_pkhr_mats(eb, HOVI1_AM, "HOV_pertrp_VOT_1_Am")
-        self.set_pkhr_mats(eb, HOVI2_AM, "HOV_pertrp_VOT_1_Am")
-        self.set_pkhr_mats(eb, HOVI3_AM, "HOV_pertrp_VOT_1_Am")
+        self.set_pkhr_mats(eb, HOVI1_AM, "HOV_pertrp_VOT_2_Am")
+        self.set_pkhr_mats(eb, HOVI2_AM, "HOV_pertrp_VOT_2_Am")
+        self.set_pkhr_mats(eb, HOVI3_AM, "HOV_pertrp_VOT_2_Am")
         # MD
-        self.set_pkhr_mats(eb, HOVI1_MD, "HOV_pertrp_VOT_1_Md")
-        self.set_pkhr_mats(eb, HOVI2_MD, "HOV_pertrp_VOT_1_Md")
-        self.set_pkhr_mats(eb, HOVI3_MD, "HOV_pertrp_VOT_1_Md")
+        self.set_pkhr_mats(eb, HOVI1_MD, "HOV_pertrp_VOT_2_Md")
+        self.set_pkhr_mats(eb, HOVI2_MD, "HOV_pertrp_VOT_2_Md")
+        self.set_pkhr_mats(eb, HOVI3_MD, "HOV_pertrp_VOT_2_Md")
         # PM
-        self.set_pkhr_mats(eb, HOVI1_PM, "HOV_pertrp_VOT_1_Pm")
-        self.set_pkhr_mats(eb, HOVI2_PM, "HOV_pertrp_VOT_1_Pm")
-        self.set_pkhr_mats(eb, HOVI3_PM, "HOV_pertrp_VOT_1_Pm")
+        self.set_pkhr_mats(eb, HOVI1_PM, "HOV_pertrp_VOT_2_Pm")
+        self.set_pkhr_mats(eb, HOVI2_PM, "HOV_pertrp_VOT_2_Pm")
+        self.set_pkhr_mats(eb, HOVI3_PM, "HOV_pertrp_VOT_2_Pm")
 
         # Transit
         # AM
@@ -484,32 +484,32 @@ class HbEscorting(_m.Tool()):
         # Auto-driver
         # SOV
         # AM
-        self.set_pkhr_mats(eb, SOVI1_AM, "SOV_drvtrp_VOT_1_Am")
-        self.set_pkhr_mats(eb, SOVI2_AM, "SOV_drvtrp_VOT_1_Am")
-        self.set_pkhr_mats(eb, SOVI3_AM, "SOV_drvtrp_VOT_1_Am")
+        self.set_pkhr_mats(eb, SOVI1_AM, "SOV_drvtrp_VOT_2_Am")
+        self.set_pkhr_mats(eb, SOVI2_AM, "SOV_drvtrp_VOT_2_Am")
+        self.set_pkhr_mats(eb, SOVI3_AM, "SOV_drvtrp_VOT_2_Am")
         # MD
-        self.set_pkhr_mats(eb, SOVI1_MD, "SOV_drvtrp_VOT_1_Md")
-        self.set_pkhr_mats(eb, SOVI2_MD, "SOV_drvtrp_VOT_1_Md")
-        self.set_pkhr_mats(eb, SOVI3_MD, "SOV_drvtrp_VOT_1_Md")
+        self.set_pkhr_mats(eb, SOVI1_MD, "SOV_drvtrp_VOT_2_Md")
+        self.set_pkhr_mats(eb, SOVI2_MD, "SOV_drvtrp_VOT_2_Md")
+        self.set_pkhr_mats(eb, SOVI3_MD, "SOV_drvtrp_VOT_2_Md")
         # PM
-        self.set_pkhr_mats(eb, SOVI1_PM, "SOV_drvtrp_VOT_1_Pm")
-        self.set_pkhr_mats(eb, SOVI2_PM, "SOV_drvtrp_VOT_1_Pm")
-        self.set_pkhr_mats(eb, SOVI3_PM, "SOV_drvtrp_VOT_1_Pm")
+        self.set_pkhr_mats(eb, SOVI1_PM, "SOV_drvtrp_VOT_2_Pm")
+        self.set_pkhr_mats(eb, SOVI2_PM, "SOV_drvtrp_VOT_2_Pm")
+        self.set_pkhr_mats(eb, SOVI3_PM, "SOV_drvtrp_VOT_2_Pm")
 
 
         # HOV
         # AM
-        self.set_pkhr_mats(eb, AuDr_HOVI1_AM, "HOV_drvtrp_VOT_1_Am")
-        self.set_pkhr_mats(eb, AuDr_HOVI2_AM, "HOV_drvtrp_VOT_1_Am")
-        self.set_pkhr_mats(eb, AuDr_HOVI3_AM, "HOV_drvtrp_VOT_1_Am")
+        self.set_pkhr_mats(eb, AuDr_HOVI1_AM, "HOV_drvtrp_VOT_2_Am")
+        self.set_pkhr_mats(eb, AuDr_HOVI2_AM, "HOV_drvtrp_VOT_2_Am")
+        self.set_pkhr_mats(eb, AuDr_HOVI3_AM, "HOV_drvtrp_VOT_2_Am")
         # MD
-        self.set_pkhr_mats(eb, AuDr_HOVI1_MD, "HOV_drvtrp_VOT_1_Md")
-        self.set_pkhr_mats(eb, AuDr_HOVI2_MD, "HOV_drvtrp_VOT_1_Md")
-        self.set_pkhr_mats(eb, AuDr_HOVI3_MD, "HOV_drvtrp_VOT_1_Md")
+        self.set_pkhr_mats(eb, AuDr_HOVI1_MD, "HOV_drvtrp_VOT_2_Md")
+        self.set_pkhr_mats(eb, AuDr_HOVI2_MD, "HOV_drvtrp_VOT_2_Md")
+        self.set_pkhr_mats(eb, AuDr_HOVI3_MD, "HOV_drvtrp_VOT_2_Md")
         # PM
-        self.set_pkhr_mats(eb, AuDr_HOVI1_PM, "HOV_drvtrp_VOT_1_Pm")
-        self.set_pkhr_mats(eb, AuDr_HOVI2_PM, "HOV_drvtrp_VOT_1_Pm")
-        self.set_pkhr_mats(eb, AuDr_HOVI3_PM, "HOV_drvtrp_VOT_1_Pm")
+        self.set_pkhr_mats(eb, AuDr_HOVI1_PM, "HOV_drvtrp_VOT_2_Pm")
+        self.set_pkhr_mats(eb, AuDr_HOVI2_PM, "HOV_drvtrp_VOT_2_Pm")
+        self.set_pkhr_mats(eb, AuDr_HOVI3_PM, "HOV_drvtrp_VOT_2_Pm")
 
     def Calc_Prob(self, eb, Dict, Logsum, Th):
         util = _m.Modeller().tool("translink.util")
