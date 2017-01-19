@@ -123,8 +123,8 @@ class TripAttractions(_m.Tool()):
         c_nhbo_SE = 0.183692
 
         # hbu
-        c_hbu_iCbdPsfte = 0.365651
-        c_hbu_iNotCbdPsfte = 1.591958
+        c_hbu_iCbdPsfte = 0.293218
+        c_hbu_iNotCbdPsfte = 1.490028
 
         ########################################################################
         # Calculate and Balance Attractions
