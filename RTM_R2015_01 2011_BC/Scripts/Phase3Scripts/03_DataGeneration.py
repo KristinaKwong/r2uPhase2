@@ -93,10 +93,7 @@ class DataGeneration(_m.Tool()):
     	# find minimum distance across all times of day
     	ij = util.get_pd_ij_df(eb)
 
-        ij['distAm'] = util.get_matrix_numpy(eb, "mfdistAON").flatten()
-        ij['distMd'] = util.get_matrix_numpy(eb, "mfdistAON").flatten()
-        ij['distPm'] = util.get_matrix_numpy(eb, "mfdistAON").flatten()
-    	ij['dist'] = ij[['distAm','distMd','distPm']].min(axis=1)
+    	ij['dist'] = util.get_matrix_numpy(eb, "mfdistAON").flatten()
 
     	# join the dummies to the skims
     	ij = pd.merge(ij, df, how='left', left_on=['j'], right_on=['TAZ1741'])
@@ -104,7 +101,7 @@ class DataGeneration(_m.Tool()):
 
     	# cbd min distance calculation
     	ij_cbd = ij[ij.cbd == 1]
-    	ij_cbd = ij['dist'].groupby(ij['i'])
+    	ij_cbd = ij_cbd['dist'].groupby(ij_cbd['i'])
     	ij_cbd = ij_cbd.min()
     	ij_cbd = ij_cbd.reset_index()
     	ij_cbd['dist'] = np.where(ij_cbd['dist'] == 0, 0.5, ij_cbd['dist']) # set a minumimum distance so it isnt nothing
@@ -120,7 +117,7 @@ class DataGeneration(_m.Tool()):
 
     	# tc min distance calculation
     	ij_tc = ij[ij.tc == 1]
-    	ij_tc = ij['dist'].groupby(ij['i'])
+    	ij_tc = ij_tc['dist'].groupby(ij_tc['i'])
     	ij_tc = ij_tc.min()
     	ij_tc = ij_tc.reset_index()
     	ij_tc['dist'] = np.where(ij_tc['dist'] == 0, 0.5, ij_tc['dist']) # set a minumimum distance so it isnt nothing
