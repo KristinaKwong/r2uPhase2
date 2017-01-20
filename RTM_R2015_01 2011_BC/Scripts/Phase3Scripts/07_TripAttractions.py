@@ -64,67 +64,67 @@ class TripAttractions(_m.Tool()):
         ########################################################################
 
         # hbw
-        c_hbw_CM = 1.46554
-        c_hbw_TW = 1.200569
-        c_hbw_BOS = 1.706288
-        c_hbw_FIRE = 1.830422
-        c_hbw_Ret = 0.474753
-        c_hbw_AFIC = 1.281219
-        c_hbw_HEPA = 1.313943
+        c_hbw_CM = 1.463994
+        c_hbw_TW = 1.179233
+        c_hbw_BOS = 1.561658
+        c_hbw_FIRE = 1.621333
+        c_hbw_Ret = 0.587329
+        c_hbw_AFIC = 1.285617
+        c_hbw_HEPA = 1.300219
 
         # hbesc
-        c_hbesc_int = 177.36615
-        c_hbesc_iTWAir = 0.836297
-        c_hbesc_AFIC = 0.282015
-        c_hbesc_Ret = 0.375302
-        c_hbesc_HEPA = 0.231174
-        c_hbesc_EE = 0.538922
-        c_hbesc_SE = 0.374291
-        c_hbesc_PU18 = 0.200338
-        c_hbesc_PO65 = 0.106161
+        c_hbesc_int = 176.886252
+        c_hbesc_iTWAir = 0.836325
+        c_hbesc_AFIC = 0.282008
+        c_hbesc_Ret = 0.376091
+        c_hbesc_HEPA = 0.23081
+        c_hbesc_EE = 0.537972
+        c_hbesc_SE = 0.370144
+        c_hbesc_PU18 = 0.201655
+        c_hbesc_PO65 = 0.106299
 
         # hbpb
-        c_hbpb_Ret = 1.101548
-        c_hbpb_AFIC = 0.230174
-        c_hbpb_HEPA = 0.529714
-        c_hbpb_PoTot = 0.038902
+        c_hbpb_Ret = 1.098472
+        c_hbpb_AFIC = 0.220152
+        c_hbpb_HEPA = 0.501523
+        c_hbpb_PoTot = 0.040811
 
         # hbsch
-        c_hbsch_EE = 1.594941
-        c_hbsch_SE = 1.382499
+        c_hbsch_EE = 1.320513
+        c_hbsch_SE = 1.238657
 
         # hbshop
-        c_hbshop_Ret = 4.648483
+        c_hbshop_Ret = 4.596366
 
         # hbsoc
-        c_hbsoc_int = 95.61807
-        c_hbsoc_AFIC = 1.123607
-        c_hbsoc_Ret = 1.16217
-        c_hbsoc_HEPA = 0.285581
-        c_hbsoc_PoTot = 0.129847
+        c_hbsoc_int = 89.833668
+        c_hbsoc_AFIC = 1.080346
+        c_hbsoc_Ret = 1.17569
+        c_hbsoc_HEPA = 0.270025
+        c_hbsoc_PoTot = 0.131466
 
 
         # nhbw
-        c_nhbw_int = 62.876453
-        c_nhbw_CM = 0.148109
-        c_nhbw_TW = 0.128277
-        c_nhbw_BOS = 0.295382
-        c_nhbw_FIRE = 0.093031
-        c_nhbw_Ret = 1.127978
-        c_nhbw_AFIC = 0.459119
-        c_nhbw_HEPA = 0.398766
+        c_nhbw_int = 62.21822
+        c_nhbw_CM = 0.147559
+        c_nhbw_TW = 0.123596
+        c_nhbw_BOS = 0.286774
+        c_nhbw_FIRE = 0.100723
+        c_nhbw_Ret = 1.132009
+        c_nhbw_AFIC = 0.45005
+        c_nhbw_HEPA = 0.390779
 
         # nhbo
-        c_nhbo_Ret = 2.606794
-        c_nhbo_AFIC = 0.378311
-        c_nhbo_HEPA = 0.301826
-        c_nhbo_PoTot = 0.077626
-        c_nhbo_EE = 0.223677
-        c_nhbo_SE = 0.183692
+        c_nhbo_Ret = 2.581269
+        c_nhbo_AFIC = 0.36586
+        c_nhbo_HEPA = 0.295724
+        c_nhbo_PoTot = 0.076945
+        c_nhbo_EE = 0.208777
+        c_nhbo_SE = 0.177848
 
         # hbu
-        c_hbu_iCbdPsfte = 0.293218
-        c_hbu_iNotCbdPsfte = 1.490028
+        c_hbu_iCbdPsfte = 0.287631
+        c_hbu_iNotCbdPsfte = 1.411431
 
         ########################################################################
         # Calculate and Balance Attractions
