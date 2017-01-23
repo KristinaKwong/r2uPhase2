@@ -163,7 +163,7 @@ class DataGeneration(_m.Tool()):
     	md_weight = 0.41
     	pm_weight = 0.39
     	time_cut = 60
-    	time_cut_uni = 45
+    	time_cut_uni = 30
         time_cut_soc = 60
         floor = 0.000001
 

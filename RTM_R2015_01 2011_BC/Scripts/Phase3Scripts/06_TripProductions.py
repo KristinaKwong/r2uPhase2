@@ -194,9 +194,9 @@ class TripProductions(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
 
         # set coefficents
-        c_hbu_int = 29.489522
-        c_iP1824UnAc = 0.080331
-        c_iP2434UnAc = 0.00926
+        c_hbu_int = 91.022869
+        c_iP1824UnAc = 0.089642
+        c_iP2434UnAc = 0
 
         c_nhbw_int = 11.09161
         c_nhbw_CM = 0.313161
