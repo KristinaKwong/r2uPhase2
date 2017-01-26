@@ -1,3 +1,17 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:768de820eb68d2ac5ec61072c080505a823ea79613d94d6be8e48e80a7986b06
-size 486
+c RTM Base Modes      
+t modes
+a v 'Vehicles  ' 1   1   0.00   0.25   0.00   2.70
+a c 'HOV       ' 4   1
+a d 'SOV       ' 4   1
+a x 'Lgt_Trk   ' 4   1
+a t 'Hvy_Trk   ' 4   1
+a n 'No_Trk    ' 4   1
+a b 'Bus       ' 2   1
+a p 'Pedestrian' 3   1   0.00   0.00   0.00   0.00         4.80
+a l 'LRT       ' 2   1
+a s 'Sea-Bus   ' 2   1
+a a 'Tr-Access ' 3   1   0.00   0.00   0.00   0.00         4.80
+a r 'Comrail   ' 2   1
+a f 'LRT       ' 2   1
+a g 'BRT       ' 2   1
+a h 'Gondola   ' 2   1
