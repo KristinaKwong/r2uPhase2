@@ -270,11 +270,10 @@ class HbSchool(_m.Tool()):
                     "HbScP-AI3A0", "HbScP-AI3A1", "HbScP-AI3A2"
                    ]
 
-        LS_Coeff = 0.8
+        LS_Coeff = 0.2
 
-        LambdaList = [-0.540047, -0.516516, -0.468026,
-                      -0.540047, -0.516516, -0.468026,
-                      -0.540047, -0.516516, -0.468026]
+        LambdaList = [-1.01202,-1.019751,-0.889566,-1.01202,-1.019751,-0.889566,-1.01202,-1.019751,-0.889566]
+
 
 
 
@@ -469,6 +468,68 @@ class HbSchool(_m.Tool()):
         self.set_pkhr_mats(eb, AuDr_HOVI2_PM, "HOV_drvtrp_VOT_1_Pm")
         self.set_pkhr_mats(eb, AuDr_HOVI3_PM, "HOV_drvtrp_VOT_1_Pm")
 
+        ## Dump demands to SQL Database
+        # AM
+        Zone_Index_O = util.get_matrix_numpy(eb, "zoneindex") + np.zeros((1, NoTAZ))
+        Zone_Index_D = Zone_Index_O.transpose()
+
+
+        T_HOV_AM = HOVI1_AM + HOVI2_AM + HOVI3_AM
+
+
+        # MD
+
+        T_HOV_MD = HOVI1_MD + HOVI2_MD + HOVI3_MD
+
+        # PM
+
+        T_HOV_PM = HOVI1_PM + HOVI2_PM + HOVI3_PM
+
+        # Take park and ride out of auto trips
+
+
+
+
+        #
+        df_pkhr_demand = pd.DataFrame()
+
+        Gy_P = util.get_matrix_numpy(eb, 'gy_ensem')  + np.zeros((1, NoTAZ))
+        Gy_A = Gy_P.transpose()
+
+        df_pkhr_demand['Gy_O'] = Gy_P.flatten()
+        df_pkhr_demand['Gy_D'] = Gy_A.flatten()
+        df_pkhr_demand.Gy_O = df_pkhr_demand.Gy_O.astype(int)
+        df_pkhr_demand.Gy_D = df_pkhr_demand.Gy_D.astype(int)
+        mode_list_am_pm = ['hov', 'bus', 'rail', 'walk', 'bike']
+        mode_list_md = ['hov', 'bus', 'rail', 'walk', 'bike']
+
+        AM_Demand_List = [T_HOV_AM, Bus_AM, Rail_AM, Walk_AM, Bike_AM]
+        MD_Demand_List = [T_HOV_MD, Bus_MD, Rail_MD, Walk_MD, Bike_MD]
+        PM_Demand_List = [T_HOV_PM, Bus_PM, Rail_PM, Walk_PM, Bike_PM]
+
+        zero_demand = 0
+        purp = "hbsch"
+
+        df_AM_summary, df_AM_Gy = MChM.PHr_Demand(df_pkhr_demand, purp, "AM", AM_Demand_List, mode_list_am_pm)
+
+
+        df_MD_summary, df_MD_Gy = MChM.PHr_Demand(df_pkhr_demand, purp, "MD", MD_Demand_List, mode_list_md)
+
+        df_PM_summary, df_PM_Gy = MChM.PHr_Demand(df_pkhr_demand, purp, "PM", PM_Demand_List, mode_list_am_pm)
+
+        df_summary = pd.concat([df_AM_summary, df_MD_summary, df_PM_summary])
+        df_gy = pd.concat([df_AM_Gy, df_MD_Gy, df_PM_Gy])
+
+        ## Dump to SQLite DB
+
+        db_loc = util.get_eb_path(eb)
+        db_path = os.path.join(db_loc, 'trip_summaries.db')
+        conn = sqlite3.connect(db_path)
+
+        df_summary.to_sql(name='phr_summary', con=conn, flavor='sqlite', index=False, if_exists='append')
+        df_gy.to_sql(name='phr_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
+        conn.close()        
+        
     def Calc_Prob(self, eb, Dict, Logsum, Th):
         util = _m.Modeller().tool("translink.util")
 

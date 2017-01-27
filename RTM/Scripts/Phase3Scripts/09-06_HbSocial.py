@@ -401,17 +401,13 @@ class HbSoc(_m.Tool()):
 
         LS_Coeff = 0.8
 
-        LambdaList = [-0.217001,-0.235419,-0.220982,
-                      -0.217001,-0.235419,-0.220982,
-                      -0.217001,-0.235419,-0.220982]
+        LambdaList = [-0.217947,-0.252926,-0.251438,-0.217947,-0.252926,-0.251438,-0.217947,-0.252926,-0.251438]
 
-        AlphaList =  [0.003376, 0.003323, 0.002713,
-                      0.003376, 0.003323, 0.002713,
-                      0.003376, 0.003323, 0.002713]
 
-        GammaList =  [-0.000025, -0.000022, -0.000013,
-                      -0.000025, -0.000022, -0.000013,
-                      -0.000025, -0.000022, -0.000013]
+        AlphaList =  [0.003569,0.003985,0.003425,0.003569,0.003985,0.003425,0.003569,0.003985,0.003425]
+
+
+        GammaList =  [-0.000029,-0.000035,-0.000023,-0.000029,-0.000035,-0.000023,-0.000029,-0.000035,-0.000023]
 
         MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, 'mfdistAON'))
         MChM.one_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
@@ -644,6 +640,66 @@ class HbSoc(_m.Tool()):
         self.set_pkhr_mats(eb, AuDr_HOVI2_PM, "HOV_drvtrp_VOT_3_Pm")
         self.set_pkhr_mats(eb, AuDr_HOVI3_PM, "HOV_drvtrp_VOT_4_Pm")
 
+        ## Dump demands to SQL Database
+        # AM
+        Zone_Index_O = util.get_matrix_numpy(eb, "zoneindex") + np.zeros((1, NoTAZ))
+        Zone_Index_D = Zone_Index_O.transpose()
+
+        T_SOV_AM = np.where((Zone_Index_O>9999) & (Zone_Index_D>9999), SOVI1_AM + SOVI2_AM + SOVI3_AM, 0)
+        T_HOV_AM = HOVI1_AM + HOVI2_AM + HOVI3_AM
+
+        # MD
+        T_SOV_MD = np.where((Zone_Index_O>9999) & (Zone_Index_D>9999), SOVI1_MD + SOVI2_MD + SOVI3_MD, 0)
+        T_HOV_MD = HOVI1_MD + HOVI2_MD + HOVI3_MD
+
+        # PM
+        T_SOV_PM = np.where((Zone_Index_O>9999) & (Zone_Index_D>9999), SOVI1_PM + SOVI2_PM + SOVI3_PM, 0)
+        T_HOV_PM = HOVI1_PM + HOVI2_PM + HOVI3_PM
+
+        # Take park and ride out of auto trips
+
+
+
+
+        #
+        df_pkhr_demand = pd.DataFrame()
+
+        Gy_P = util.get_matrix_numpy(eb, 'gy_ensem')  + np.zeros((1, NoTAZ))
+        Gy_A = Gy_P.transpose()
+
+        df_pkhr_demand['Gy_O'] = Gy_P.flatten()
+        df_pkhr_demand['Gy_D'] = Gy_A.flatten()
+        df_pkhr_demand.Gy_O = df_pkhr_demand.Gy_O.astype(int)
+        df_pkhr_demand.Gy_D = df_pkhr_demand.Gy_D.astype(int)
+        mode_list_am_pm = ['sov', 'hov', 'bus', 'rail', 'walk', 'bike']
+        mode_list_md = ['sov', 'hov', 'bus', 'rail', 'walk', 'bike']
+
+        AM_Demand_List = [T_SOV_AM, T_HOV_AM, Bus_AM, Rail_AM, Walk_AM, Bike_AM]
+        MD_Demand_List = [T_SOV_MD, T_HOV_MD, Bus_MD, Rail_MD, Walk_MD, Bike_MD]
+        PM_Demand_List = [T_SOV_PM, T_HOV_PM, Bus_PM, Rail_PM, Walk_PM, Bike_PM]
+
+        zero_demand = 0
+        purp = "hbsoc"
+
+        df_AM_summary, df_AM_Gy = MChM.PHr_Demand(df_pkhr_demand, purp, "AM", AM_Demand_List, mode_list_am_pm)
+
+
+        df_MD_summary, df_MD_Gy = MChM.PHr_Demand(df_pkhr_demand, purp, "MD", MD_Demand_List, mode_list_md)
+
+        df_PM_summary, df_PM_Gy = MChM.PHr_Demand(df_pkhr_demand, purp, "PM", PM_Demand_List, mode_list_am_pm)
+
+        df_summary = pd.concat([df_AM_summary, df_MD_summary, df_PM_summary])
+        df_gy = pd.concat([df_AM_Gy, df_MD_Gy, df_PM_Gy])
+
+        ## Dump to SQLite DB
+
+        db_loc = util.get_eb_path(eb)
+        db_path = os.path.join(db_loc, 'trip_summaries.db')
+        conn = sqlite3.connect(db_path)
+
+        df_summary.to_sql(name='phr_summary', con=conn, flavor='sqlite', index=False, if_exists='append')
+        df_gy.to_sql(name='phr_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
+        conn.close()        
     def Calc_Prob(self, eb, Dict, Logsum, Th):
         util = _m.Modeller().tool("translink.util")
 
