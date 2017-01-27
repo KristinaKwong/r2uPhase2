@@ -9,6 +9,7 @@ import csv
 import os
 import numpy as np
 import pandas as pd
+import sqlite3
 import traceback as _traceback
 
 class ModeChoiceUtilities(_m.Tool()):
@@ -248,3 +249,30 @@ class ModeChoiceUtilities(_m.Tool()):
 
 
         return df_summary, df_gy
+
+
+    def AP_PA_Factor(self, eb, purpose, mode, peakperiod, geo='A',minimum_value=0):
+        util = _m.Modeller().tool("translink.util")
+        sql = "SELECT * from timeSlicingFactors WHERE purpose = '{purp}' and mode = '{mde}' and peakperiod = '{peak}' and geo = '{g}' ".format(purp = purpose,
+                                                                                                                          mde=mode,
+                                                                                                                         peak=peakperiod,
+                                                                                                                         g=geo)
+        db_loc = util.get_eb_path(eb)
+        db_path = os.path.join(db_loc, 'rtm.db')
+        conn = sqlite3.connect(db_path)
+        ts_df = pd.read_sql(sql, conn)
+        conn.close()
+
+        Fct_PA = self.factor_floor(ts_df.loc[(ts_df['direction'] == 'PtoA'), 'shares'].values, minimum_value)
+        Fct_AP = self.factor_floor(ts_df.loc[(ts_df['direction'] == 'AtoP'), 'shares'].values, minimum_value)
+
+        return Fct_PA, Fct_AP
+
+    def factor_floor(self, factor, minimum_value):
+        if len(factor) == 0:
+            # this is to return a numpy float 64 object to ensure numpy error handling
+            x = np.arange(1, dtype=np.float)
+            x[0] = minimum_value
+            return x[0]
+        else:
+            return factor[0]

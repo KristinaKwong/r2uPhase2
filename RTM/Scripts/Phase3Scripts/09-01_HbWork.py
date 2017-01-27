@@ -708,48 +708,81 @@ class HbWork(_m.Tool()):
 #       ##############################################################################
 #        ##       Get Time Slice Factors
 #       ##############################################################################
+        purp = 'hbw'
+        min_val = 0.000143
 
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
-        ts_df = pd.read_sql("SELECT * from timeSlicingFactors", conn)
-        conn.close()
-        # Subset Time Slice Factor Dataframes by purpose
-        hbw_ts = ts_df.loc[ts_df['purpose'] == 'hbw']
-        hbw_ts_n = hbw_ts.loc[ts_df['geo'] == 'N']
-        hbw_ts_s = hbw_ts.loc[ts_df['geo'] == 'S']
 
-        # Subset Time Slice Factor Dataframes by mode for North of Fraser
-        Auto_AM_Fct_N, Auto_MD_Fct_N, Auto_PM_Fct_N = self.get_ts_factor(hbw_ts_n.loc[hbw_ts_n['mode'] == 'Auto']) # Auto Factors
-        Tran_AM_Fct_N, Tran_MD_Fct_N, Tran_PM_Fct_N = self.get_ts_factor(hbw_ts_n.loc[hbw_ts_n['mode'] == 'Transit']) # Transit Factors
-        Acti_AM_Fct_N, Acti_MD_Fct_N, Acti_PM_Fct_N = self.get_ts_factor(hbw_ts_n.loc[hbw_ts_n['mode'] == 'Active']) # Active Factors
-        WCE_AM_Fct_N, WCE_PM_Fct_N = self.get_ts_factor_wce(hbw_ts_n.loc[hbw_ts_n['mode'] == 'WCE']) # WCE Factors
+        Auto_AM_Fct_N_PA, Auto_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Auto',peakperiod='AM', geo='N',minimum_value=min_val)
+        Auto_AM_Fct_N_PA, Auto_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Auto',peakperiod='AM', geo='N',minimum_value=min_val)
+        Auto_MD_Fct_N_PA, Auto_MD_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Auto',peakperiod='MD', geo='N',minimum_value=min_val)
+        Auto_MD_Fct_N_PA, Auto_MD_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Auto',peakperiod='MD', geo='N',minimum_value=min_val)
+        Auto_PM_Fct_N_PA, Auto_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Auto',peakperiod='PM', geo='N',minimum_value=min_val)
+        Auto_PM_Fct_N_PA, Auto_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Auto',peakperiod='PM', geo='N',minimum_value=min_val)
 
-        # Subset Time Slice Factor Dataframes by mode for South of Fraser
-        Auto_AM_Fct_S, Auto_MD_Fct_S, Auto_PM_Fct_S = self.get_ts_factor(hbw_ts_s.loc[hbw_ts_s['mode'] == 'Auto']) # Auto Factors
-        Tran_AM_Fct_S, Tran_MD_Fct_S, Tran_PM_Fct_S = self.get_ts_factor(hbw_ts_s.loc[hbw_ts_s['mode'] == 'Transit']) # Transit Factors
-        Acti_AM_Fct_S, Acti_MD_Fct_S, Acti_PM_Fct_S = self.get_ts_factor(hbw_ts_s.loc[hbw_ts_s['mode'] == 'Active']) # Active Factors
-        WCE_AM_Fct_S, WCE_PM_Fct_S = self.get_ts_factor_wce(hbw_ts_s.loc[hbw_ts_s['mode'] == 'WCE']) # WCE Factors
+        Tran_AM_Fct_N_PA, Tran_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='AM', geo='N',minimum_value=min_val)
+        Tran_AM_Fct_N_PA, Tran_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='AM', geo='N',minimum_value=min_val)
+        Tran_MD_Fct_N_PA, Tran_MD_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='MD', geo='N',minimum_value=min_val)
+        Tran_MD_Fct_N_PA, Tran_MD_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='MD', geo='N',minimum_value=min_val)
+        Tran_PM_Fct_N_PA, Tran_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='PM', geo='N',minimum_value=min_val)
+        Tran_PM_Fct_N_PA, Tran_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='PM', geo='N',minimum_value=min_val)
+
+        Acti_AM_Fct_N_PA, Acti_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='AM', geo='N',minimum_value=min_val)
+        Acti_AM_Fct_N_PA, Acti_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='AM', geo='N',minimum_value=min_val)
+        Acti_MD_Fct_N_PA, Acti_MD_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='MD', geo='N',minimum_value=min_val)
+        Acti_MD_Fct_N_PA, Acti_MD_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='MD', geo='N',minimum_value=min_val)
+        Acti_PM_Fct_N_PA, Acti_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='PM', geo='N',minimum_value=min_val)
+        Acti_PM_Fct_N_PA, Acti_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='PM', geo='N',minimum_value=min_val)
+
+
+        WCE_AM_Fct_N_PA, WCE_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='AM', geo='N',minimum_value=0)
+        WCE_AM_Fct_N_PA, WCE_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='AM', geo='N',minimum_value=0)
+        WCE_PM_Fct_N_PA, WCE_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='PM', geo='N',minimum_value=0)
+        WCE_PM_Fct_N_PA, WCE_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='PM', geo='N',minimum_value=0)
+
+        Auto_AM_Fct_S_PA, Auto_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Auto',peakperiod='AM', geo='S',minimum_value=min_val)
+        Auto_AM_Fct_S_PA, Auto_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Auto',peakperiod='AM', geo='S',minimum_value=min_val)
+        Auto_MD_Fct_S_PA, Auto_MD_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Auto',peakperiod='MD', geo='S',minimum_value=min_val)
+        Auto_MD_Fct_S_PA, Auto_MD_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Auto',peakperiod='MD', geo='S',minimum_value=min_val)
+        Auto_PM_Fct_S_PA, Auto_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Auto',peakperiod='PM', geo='S',minimum_value=min_val)
+        Auto_PM_Fct_S_PA, Auto_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Auto',peakperiod='PM', geo='S',minimum_value=min_val)
+
+        Tran_AM_Fct_S_PA, Tran_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='AM', geo='S',minimum_value=min_val)
+        Tran_AM_Fct_S_PA, Tran_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='AM', geo='S',minimum_value=min_val)
+        Tran_MD_Fct_S_PA, Tran_MD_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='MD', geo='S',minimum_value=min_val)
+        Tran_MD_Fct_S_PA, Tran_MD_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='MD', geo='S',minimum_value=min_val)
+        Tran_PM_Fct_S_PA, Tran_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='PM', geo='S',minimum_value=min_val)
+        Tran_PM_Fct_S_PA, Tran_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='PM', geo='S',minimum_value=min_val)
+
+        Acti_AM_Fct_S_PA, Acti_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='AM', geo='S',minimum_value=min_val)
+        Acti_AM_Fct_S_PA, Acti_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='AM', geo='S',minimum_value=min_val)
+        Acti_MD_Fct_S_PA, Acti_MD_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='MD', geo='S',minimum_value=min_val)
+        Acti_MD_Fct_S_PA, Acti_MD_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='MD', geo='S',minimum_value=min_val)
+        Acti_PM_Fct_S_PA, Acti_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='PM', geo='S',minimum_value=min_val)
+        Acti_PM_Fct_S_PA, Acti_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='PM', geo='S',minimum_value=min_val)
+
+        WCE_AM_Fct_S_PA, WCE_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='AM', geo='S',minimum_value=0)
+        WCE_AM_Fct_S_PA, WCE_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='AM', geo='S',minimum_value=0)
+        WCE_PM_Fct_S_PA, WCE_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='PM', geo='S',minimum_value=0)
+        WCE_PM_Fct_S_PA, WCE_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='PM', geo='S',minimum_value=0)
+
 
         Gy_P = util.get_matrix_numpy(eb, 'gy_ensem')  + np.zeros((1, 1741))
 
-        Auto_AM_Fct = np.array([np.where(Gy_P<8, Auto_AM_Fct_N[0], Auto_AM_Fct_S[0]), np.where(Gy_P<8, Auto_AM_Fct_N[1], Auto_AM_Fct_S[1])])
-        Auto_MD_Fct = np.array([np.where(Gy_P<8, Auto_MD_Fct_N[0], Auto_MD_Fct_S[0]), np.where(Gy_P<8, Auto_MD_Fct_N[1], Auto_MD_Fct_S[1])])
-        Auto_PM_Fct = np.array([np.where(Gy_P<8, Auto_PM_Fct_N[0], Auto_PM_Fct_S[0]), np.where(Gy_P<8, Auto_PM_Fct_N[1], Auto_PM_Fct_S[1])])
+        Auto_AM_Fct = np.array([np.where(Gy_P<8, Auto_AM_Fct_N_PA, Auto_AM_Fct_S_PA), np.where(Gy_P<8, Auto_AM_Fct_N_AP, Auto_AM_Fct_S_AP)])
+        Auto_MD_Fct = np.array([np.where(Gy_P<8, Auto_MD_Fct_N_PA, Auto_MD_Fct_S_PA), np.where(Gy_P<8, Auto_MD_Fct_N_AP, Auto_MD_Fct_S_AP)])
+        Auto_PM_Fct = np.array([np.where(Gy_P<8, Auto_PM_Fct_N_PA, Auto_PM_Fct_S_PA), np.where(Gy_P<8, Auto_PM_Fct_N_AP, Auto_PM_Fct_S_AP)])
 
-        Tran_AM_Fct = np.array([np.where(Gy_P<8, Tran_AM_Fct_N[0], Tran_AM_Fct_S[0]), np.where(Gy_P<8, Tran_AM_Fct_N[1], Tran_AM_Fct_S[1])])
-        Tran_MD_Fct = np.array([np.where(Gy_P<8, Tran_MD_Fct_N[0], Tran_MD_Fct_S[0]), np.where(Gy_P<8, Tran_MD_Fct_N[1], Tran_MD_Fct_S[1])])
-        Tran_PM_Fct = np.array([np.where(Gy_P<8, Tran_PM_Fct_N[0], Tran_PM_Fct_S[0]), np.where(Gy_P<8, Tran_PM_Fct_N[1], Tran_PM_Fct_S[1])])
+        Tran_AM_Fct = np.array([np.where(Gy_P<8, Tran_AM_Fct_N_PA, Tran_AM_Fct_S_PA), np.where(Gy_P<8, Tran_AM_Fct_N_AP, Tran_AM_Fct_S_AP)])
+        Tran_MD_Fct = np.array([np.where(Gy_P<8, Tran_MD_Fct_N_PA, Tran_MD_Fct_S_PA), np.where(Gy_P<8, Tran_MD_Fct_N_AP, Tran_MD_Fct_S_AP)])
+        Tran_PM_Fct = np.array([np.where(Gy_P<8, Tran_PM_Fct_N_PA, Tran_PM_Fct_S_PA), np.where(Gy_P<8, Tran_PM_Fct_N_AP, Tran_PM_Fct_S_AP)])
 
-        Acti_AM_Fct = np.array([np.where(Gy_P<8, Acti_AM_Fct_N[0], Acti_AM_Fct_S[0]), np.where(Gy_P<8, Acti_AM_Fct_N[1], Acti_AM_Fct_S[1])])
-        Acti_MD_Fct = np.array([np.where(Gy_P<8, Acti_MD_Fct_N[0], Acti_MD_Fct_S[0]), np.where(Gy_P<8, Acti_MD_Fct_N[1], Acti_MD_Fct_S[1])])
-        Acti_PM_Fct = np.array([np.where(Gy_P<8, Acti_PM_Fct_N[0], Acti_PM_Fct_S[0]), np.where(Gy_P<8, Acti_PM_Fct_N[1], Acti_PM_Fct_S[1])])
+        Acti_AM_Fct = np.array([np.where(Gy_P<8, Acti_AM_Fct_N_PA, Acti_AM_Fct_S_PA), np.where(Gy_P<8, Acti_AM_Fct_N_AP, Acti_AM_Fct_S_AP)])
+        Acti_MD_Fct = np.array([np.where(Gy_P<8, Acti_MD_Fct_N_PA, Acti_MD_Fct_S_PA), np.where(Gy_P<8, Acti_MD_Fct_N_AP, Acti_MD_Fct_S_AP)])
+        Acti_PM_Fct = np.array([np.where(Gy_P<8, Acti_PM_Fct_N_PA, Acti_PM_Fct_S_PA), np.where(Gy_P<8, Acti_PM_Fct_N_AP, Acti_PM_Fct_S_AP)])
 
-        WCE_AM_Fct = np.where(Gy_P<8, WCE_AM_Fct_N, WCE_AM_Fct_S)
-        WCE_PM_Fct = np.where(Gy_P<8, WCE_PM_Fct_N, WCE_PM_Fct_S)
+        WCE_AM_Fct = np.where(Gy_P<8, WCE_AM_Fct_N_PA, WCE_AM_Fct_S_PA)
+        WCE_PM_Fct = np.where(Gy_P<8, WCE_PM_Fct_N_AP, WCE_PM_Fct_S_AP)
 
-
-        del ts_df, hbw_ts, hbw_ts_n, hbw_ts_s
 
 #       #########################################################################################
 #        ##       Split Park and Ride to Auto and Transit Legs
@@ -1272,29 +1305,6 @@ class HbWork(_m.Tool()):
 
         return (DfAuto, DfTran)
 
-    def get_ts_factor (self, ts_df):
-
-
-        AM_Ts_List = [float(ts_df .loc[(ts_df['peakperiod'] == 'AM') & (ts_df['direction'] == 'PtoA'), 'shares']),
-                      float(ts_df .loc[(ts_df['peakperiod'] == 'AM') & (ts_df['direction'] == 'AtoP'), 'shares'])]
-
-        MD_Ts_List = [float(ts_df .loc[(ts_df['peakperiod'] == 'MD') & (ts_df['direction'] == 'PtoA'), 'shares']),
-                      float(ts_df .loc[(ts_df['peakperiod'] == 'MD') & (ts_df['direction'] == 'AtoP'), 'shares'])]
-
-        PM_Ts_List = [float(ts_df .loc[(ts_df['peakperiod'] == 'PM') & (ts_df['direction'] == 'PtoA'), 'shares']),
-                      float(ts_df .loc[(ts_df['peakperiod'] == 'PM') & (ts_df['direction'] == 'AtoP'), 'shares'])]
-
-
-        return (AM_Ts_List, MD_Ts_List, PM_Ts_List)
-
-
-    def get_ts_factor_wce (self, ts_df):
-
-
-        AM_Ts_List = float(ts_df .loc[(ts_df['peakperiod'] == 'AM') & (ts_df['direction'] == 'PtoA'), 'shares'])
-        PM_Ts_List = float(ts_df .loc[(ts_df['peakperiod'] == 'PM') & (ts_df['direction'] == 'AtoP'), 'shares'])
-
-        return (AM_Ts_List, PM_Ts_List)
 
     def set_pkhr_mats(self, eb, MatVal, MatID):
 
