@@ -195,6 +195,25 @@ class FullModelRun(_m.Tool()):
         transit_assign = _m.Modeller().tool("translink.RTM3.stage3.transitassignment")
         transit_assign(eb, am_scen, md_scen, pm_scen)
 
+        if False:
+            copy_scenario = _m.Modeller().tool("inro.emme.data.scenario.copy_scenario")
+            cyclenum = int(eb.matrix("ms1").data)
+
+            copy_scenario(from_scenario=am_scen,
+                          scenario_id=am_scen.number + cyclenum,
+                          scenario_title=am_scen.title + " " + str(cyclenum),
+                          overwrite=True)
+
+            copy_scenario(from_scenario=md_scen,
+                          scenario_id=md_scen.number + cyclenum,
+                          scenario_title=md_scen.title + " " + str(cyclenum),
+                          overwrite=True)
+
+            copy_scenario(from_scenario=pm_scen,
+                          scenario_id=pm_scen.number + cyclenum,
+                          scenario_title=pm_scen.title + " " + str(cyclenum),
+                          overwrite=True)
+
 
     def initoptions(self, eb, horizon_year, global_iterations,
                     max_distribution_iterations, max_assignment_iterations,
