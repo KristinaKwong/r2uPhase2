@@ -5580,7 +5580,7 @@ a'169W1A' b   1  15.00  35.00 'CoqStn/LougheedStn  '      0      0      0
    326101          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    324605          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    291001        lay=5.00
-a'188NA ' b   1  30.00  23.00 'CoqSouth-CoastMerid '      0      0      0
+a'188NA' b   1  30.00  23.00 'CoqSouth-CoastMerid '      0      0      0
   path=no
    341309          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    341308          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -5622,7 +5622,7 @@ a'188NA ' b   1  30.00  23.00 'CoqSouth-CoastMerid '      0      0      0
    333002          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    333005          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    333007        lay=5.00
-a'188SA ' b   1  30.00  23.00 'CoastMerid-CoqSouth '      0      0      0
+a'188SA' b   1  30.00  23.00 'CoastMerid-CoqSouth '      0      0      0
   path=no
    333007          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    333005          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -11467,7 +11467,7 @@ a'531W1A' b   1  60.00  23.00 'Willowbrook/WR      '      0      0      0
    643904          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    660301          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    660401        lay=5.00
-a'555EA ' b   1  10.00  23.00 'LougheedStn-Langley '      0      0      0
+a'555EA' b   1  10.00  23.00 'LougheedStn-Langley '      0      0      0
   path=no
    276202          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    276204          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -11506,7 +11506,7 @@ a'555EA ' b   1  10.00  23.00 'LougheedStn-Langley '      0      0      0
    681509          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    681512          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    681514        lay=5.00
-a'555WA ' b   1   6.67  23.00 'Langley-LougheedStn '      0      0      0
+a'555WA' b   1   6.67  23.00 'Langley-LougheedStn '      0      0      0
   path=no
    681514          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    681512          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -12415,7 +12415,7 @@ a'701W1A' b   1  15.00  35.00 '701-WB1DD1          '      0      0      0
    320312          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    320307          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    320305        lay=5.00
-a'791EA ' b   1  20.00  23.00 'LougheedStn-MapleRid'      0      0      0
+a'791EA' b   1  20.00  23.00 'LougheedStn-MapleRid'      0      0      0
   path=no
    291001          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    326104          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -12477,7 +12477,7 @@ a'791EA ' b   1  20.00  23.00 'LougheedStn-MapleRid'      0      0      0
    422301          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    422401          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    422402        lay=5.00
-a'791WA ' b   1  20.00  23.00 'MapleRid-LougheedStn'      0      0      0
+a'791WA' b   1  20.00  23.00 'MapleRid-LougheedStn'      0      0      0
   path=no
    422402          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    422401          dwt=+0   ttf=2   us1=0   us2=0   us3=0
@@ -12708,11 +12708,11 @@ a'881E1A' b   1  60.00  23.00 '881-EB1S            '      0      0      0
    131902          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    131903          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    132001        lay=5.00
-a'9900i ' s   4  15.00  20.30 'SeaBus-LQuay/Waterfr'      0      0      0
+a'9900i' s   4  15.00  20.30 'SeaBus-LQuay/Waterfr'      0      0      0
   path=no
    132105      dwt=+10.06  ttf=10   us1=0   us2=0   us3=0
    223401        lay=5.00
-a'9900o ' s   4  15.00  20.30 'SeaBus-Waterfront/LQ'      0      0      0
+a'9900o' s   4  15.00  20.30 'SeaBus-Waterfront/LQ'      0      0      0
   path=no
    223401      dwt=+10.06  ttf=10   us1=0   us2=0   us3=0
    132105        lay=5.00
@@ -12726,7 +12726,7 @@ a'9903iA' r   8  30.00  55.00 'WCE-Mission/Waterfro'      0      0      0
    321001       dwt=+5.15  ttf=10   us1=0   us2=0   us3=0
    311806      dwt=+25.04  ttf=10   us1=0   us2=0   us3=0
    223403        lay=5.00
-a'9910i ' l   5   6.70  60.00 'CL-Richmond Ctr/Vanc'      0      0      0
+a'9910i' l   5   6.70  60.00 'CL-Richmond Ctr/Vanc'      0      0      0
   path=no
    515704       dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
    513601       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
@@ -12743,7 +12743,7 @@ a'9910i ' l   5   6.70  60.00 'CL-Richmond Ctr/Vanc'      0      0      0
    228005       dwt=+1.89  ttf=10   us1=0   us2=0   us3=0
    225501       dwt=+1.54  ttf=10   us1=0   us2=0   us3=0
    223402        lay=3.00
-a'9910o ' l   5   6.70  60.00 'CL-VancCBD/Richmond '      0      0      0
+a'9910o' l   5   6.70  60.00 'CL-VancCBD/Richmond '      0      0      0
   path=no
    223402       dwt=+1.54  ttf=10   us1=0   us2=0   us3=0
    225501       dwt=+1.89  ttf=10   us1=0   us2=0   us3=0
@@ -12760,7 +12760,7 @@ a'9910o ' l   5   6.70  60.00 'CL-VancCBD/Richmond '      0      0      0
    512401       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
    513601       dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
    515704        lay=0.75
-a'9911i ' l   5   6.70  60.00 'CL-YVR/VancCBD      '      0      0      0
+a'9911i' l   5   6.70  60.00 'CL-YVR/VancCBD      '      0      0      0
   path=no
    510201       dwt=+2.42  ttf=10   us1=0   us2=0   us3=0
    510308       dwt=+1.87  ttf=10   us1=0   us2=0   us3=0
@@ -12776,7 +12776,7 @@ a'9911i ' l   5   6.70  60.00 'CL-YVR/VancCBD      '      0      0      0
    228005       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
    225501       dwt=+1.56  ttf=10   us1=0   us2=0   us3=0
    223402        lay=3.00
-a'9911o ' l   5   6.70  60.00 'CL-VancCBD/YVR      '      0      0      0
+a'9911o' l   5   6.70  60.00 'CL-VancCBD/YVR      '      0      0      0
   path=no
    223402       dwt=+1.56  ttf=10   us1=0   us2=0   us3=0
    225501       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
@@ -12792,7 +12792,7 @@ a'9911o ' l   5   6.70  60.00 'CL-VancCBD/YVR      '      0      0      0
    510402       dwt=+1.87  ttf=10   us1=0   us2=0   us3=0
    510308       dwt=+2.42  ttf=10   us1=0   us2=0   us3=0
    510201        lay=0.50
-a'996ei ' l  15   3.00  65.00 'EXPO-KG Blvd/Waterfr'      0      0      0
+a'996ei' l  15   3.00  65.00 'EXPO-KG Blvd/Waterfr'      0      0      0
   path=no
    617301       dwt=+0.88  ttf=10   us1=0   us2=0   us3=0
    614404       dwt=+2.19  ttf=10   us1=0   us2=0   us3=0
@@ -12815,7 +12815,7 @@ a'996ei ' l  15   3.00  65.00 'EXPO-KG Blvd/Waterfr'      0      0      0
    224205       dwt=+1.18  ttf=10   us1=0   us2=0   us3=0
    221903       dwt=+1.88  ttf=10   us1=0   us2=0   us3=0
    223501        lay=1.00
-a'996eo ' l  15   3.00  65.00 'EXPO-Waterfront/KG B'      0      0      0
+a'996eo' l  15   3.00  65.00 'EXPO-Waterfront/KG B'      0      0      0
   path=no
    223501       dwt=+1.68  ttf=10   us1=0   us2=0   us3=0
    221903       dwt=+1.22  ttf=10   us1=0   us2=0   us3=0
@@ -12838,7 +12838,7 @@ a'996eo ' l  15   3.00  65.00 'EXPO-Waterfront/KG B'      0      0      0
    611606       dwt=+2.19  ttf=10   us1=0   us2=0   us3=0
    614404        dwt=+0.9  ttf=10   us1=0   us2=0   us3=0
    617301        lay=1.00
-a'996mi ' l  14   5.50  65.00 'ML-VCC/Waterfront   '      0      0      0
+a'996mi' l  14   5.50  65.00 'ML-VCC/Waterfront   '      0      0      0
   path=no
    254009       dwt=+1.35  ttf=10   us1=0   us2=0   us3=0
    254203       dwt=+2.25  ttf=10   us1=0   us2=0   us3=0
@@ -12871,7 +12871,7 @@ a'996mi ' l  14   5.50  65.00 'ML-VCC/Waterfront   '      0      0      0
    224205       dwt=+1.23  ttf=10   us1=0   us2=0   us3=0
    221903       dwt=+1.68  ttf=10   us1=0   us2=0   us3=0
    223501        lay=0.50
-a'996mo ' l  20   5.50  65.00 'ML-Waterfront/VCC   '      0      0      0
+a'996mo' l  20   5.50  65.00 'ML-Waterfront/VCC   '      0      0      0
   path=no
    223501       dwt=+1.68  ttf=10   us1=0   us2=0   us3=0
    221903       dwt=+1.23  ttf=10   us1=0   us2=0   us3=0
@@ -13044,7 +13044,7 @@ a'C18W1A' b  13  30.00  23.00 'UBC Loop/West Maill '      0      0      0
    210901          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    210903          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    210904        lay=5.00
-a'C1E1A ' b  13  30.00  23.00 'C1-EB1              '      0      0      0
+a'C1E1A' b  13  30.00  23.00 'C1-EB1              '      0      0      0
   path=no
    250810          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    250812          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -13063,7 +13063,7 @@ a'C1E1A ' b  13  30.00  23.00 'C1-EB1              '      0      0      0
    270801          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    271201          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    270703        lay=5.00
-a'C1W1A ' b  13  30.00  23.00 'C1-WB1              '      0      0      0
+a'C1W1A' b  13  30.00  23.00 'C1-WB1              '      0      0      0
   path=no
    270703          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    271201          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -13621,7 +13621,7 @@ a'C29S1A' b  13  15.00  23.00 'C29-SB1CQ           '      0      0      0
    320307          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    320305          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    320306        lay=5.00
-a'C2N1A ' b  13  30.00  23.00 'C2-NB1              '      0      0      0
+a'C2N1A' b  13  30.00  23.00 'C2-NB1              '      0      0      0
   path=no
    270703          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    271201          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -13636,7 +13636,7 @@ a'C2N1A ' b  13  30.00  23.00 'C2-NB1              '      0      0      0
    270902          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    271001          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    271002        lay=5.00
-a'C2S1A ' b  13  60.00  23.00 'C2-SB1              '      0      0      0
+a'C2S1A' b  13  60.00  23.00 'C2-SB1              '      0      0      0
   path=no
    271002          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    271001          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -13938,7 +13938,7 @@ a'C38W2A' b  13  15.00  23.00 'C38-WB1CNT          '      0      0      0
    341307          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    341308          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    341309        lay=5.00
-a'C3E1A ' b  13  15.00  23.00 'C3-EB1              '      0      0      0
+a'C3E1A' b  13  15.00  23.00 'C3-EB1              '      0      0      0
   path=no
    293107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    293108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -13965,7 +13965,7 @@ a'C3E1A ' b  13  15.00  23.00 'C3-EB1              '      0      0      0
    290707          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    291601          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    291602        lay=5.00
-a'C3W1A ' b  13  15.00  23.00 'C3-WB1              '      0      0      0
+a'C3W1A' b  13  15.00  23.00 'C3-WB1              '      0      0      0
   path=no
    291602          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    291601          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -14352,7 +14352,7 @@ a'C49W1A' b  13  60.00  23.00 'C49-WB1AM           '      0      0      0
    422501          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    422403          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    422502        lay=5.00
-a'C4E1A ' b  13  30.00  23.00 'C4-EB1              '      0      0      0
+a'C4E1A' b  13  30.00  23.00 'C4-EB1              '      0      0      0
   path=no
    293107          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    293108          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -14377,7 +14377,7 @@ a'C4E1A ' b  13  30.00  23.00 'C4-EB1              '      0      0      0
    292402          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    292404          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    291804        lay=5.00
-a'C4W1A ' b  13  30.00  23.00 'C4-WB1              '      0      0      0
+a'C4W1A' b  13  30.00  23.00 'C4-WB1              '      0      0      0
   path=no
    291804          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    291803          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -14547,7 +14547,7 @@ a'C53W1A' b  13  30.00  23.00 'C53-WB1             '      0      0      0
    654903          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    654803          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    643903        lay=5.00
-a'C5E1A ' b  13  30.00  23.00 'C5-EB1              '      0      0      0
+a'C5E1A' b  13  30.00  23.00 'C5-EB1              '      0      0      0
   path=no
    284503          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    284502          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -14567,7 +14567,7 @@ a'C5E1A ' b  13  30.00  23.00 'C5-EB1              '      0      0      0
    286603          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    286605          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    286606        lay=5.00
-a'C5W1A ' b  13  15.00  23.00 'C5-WB1              '      0      0      0
+a'C5W1A' b  13  15.00  23.00 'C5-WB1              '      0      0      0
   path=no
    286606          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    286605          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -14771,7 +14771,7 @@ a'C63S1A' b  13  30.00  23.00 'C63-SB1             '      0      0      0
    687701          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    652603          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    688001        lay=5.00
-a'C6N1A ' b  13  30.00  23.00 'C6-NB1              '      0      0      0
+a'C6N1A' b  13  30.00  23.00 'C6-NB1              '      0      0      0
   path=no
    286006          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    285903          dwt=+0   ttf=3   us1=0   us2=0   us3=0
@@ -14782,7 +14782,7 @@ a'C6N1A ' b  13  30.00  23.00 'C6-NB1              '      0      0      0
    283209          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    283601          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    283704        lay=5.00
-a'C6S1A ' b  13  30.00  23.00 'C6-SB1              '      0      0      0
+a'C6S1A' b  13  30.00  23.00 'C6-SB1              '      0      0      0
   path=no
    283704          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    283601          dwt=+0   ttf=2   us1=0   us2=0   us3=0
@@ -15008,7 +15008,7 @@ a'C76W1A' b  13  30.00  23.00 'C76-WB1             '      0      0      0
    542801          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542702        lay=5.00
-a'C7E1A ' b  13  30.00  23.00 'C7-EB1              '      0      0      0
+a'C7E1A' b  13  30.00  23.00 'C7-EB1              '      0      0      0
   path=no
    283704          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    283601          dwt=+0   ttf=2   us1=0   us2=0   us3=0
@@ -15027,7 +15027,7 @@ a'C7E1A ' b  13  30.00  23.00 'C7-EB1              '      0      0      0
    286603          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    286605          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    286606        lay=5.00
-a'C7W1A ' b  13  15.00  23.00 'C7-WB1              '      0      0      0
+a'C7W1A' b  13  15.00  23.00 'C7-WB1              '      0      0      0
   path=no
    286606          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    286605          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -15121,7 +15121,7 @@ a'C88S1A' b  13  60.00  23.00 'C88-SB1             '      0      0      0
    542314          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542315          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    542702        lay=5.00
-a'C8E1A ' b  13  15.00  23.00 'C8-EB1              '      0      0      0
+a'C8E1A' b  13  15.00  23.00 'C8-EB1              '      0      0      0
   path=no
    293403          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    293801          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -15129,7 +15129,7 @@ a'C8E1A ' b  13  15.00  23.00 'C8-EB1              '      0      0      0
    293510          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    293504          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    293105        lay=5.00
-a'C8W1A ' b  13  15.00  23.00 'C8-WB1              '      0      0      0
+a'C8W1A' b  13  15.00  23.00 'C8-WB1              '      0      0      0
   path=no
    293105          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    293504          dwt=+0   ttf=2   us1=0   us2=0   us3=0
@@ -15359,7 +15359,7 @@ a'C98S1A' b  13  30.00  23.00 'C98-SB1             '      0      0      0
    531601          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    531602          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    531603        lay=5.00
-a'C9N1A ' b  13  30.00  23.00 'C9-NB1              '      0      0      0
+a'C9N1A' b  13  30.00  23.00 'C9-NB1              '      0      0      0
   path=no
    293513          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    293504          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -15387,7 +15387,7 @@ a'C9N1A ' b  13  30.00  23.00 'C9-NB1              '      0      0      0
    276516          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    324101          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    276207        lay=5.00
-a'C9S1A ' b  13  30.00  23.00 'C9-SB1              '      0      0      0
+a'C9S1A' b  13  30.00  23.00 'C9-SB1              '      0      0      0
   path=no
    276207          dwt=+0   ttf=3   us1=0   us2=0   us3=0
    324101          dwt=+0   ttf=3   us1=0   us2=0   us3=0
