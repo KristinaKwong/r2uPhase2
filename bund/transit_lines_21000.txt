@@ -12708,11 +12708,11 @@ a'881E1A' b   1  60.00  23.00 '881-EB1S            '      0      0      0
    131902          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    131903          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    132001        lay=5.00
-a'9900i' s   4  15.00  20.30 'SeaBus-LQuay/Waterfr'      0      0      0
+a'9900iA' s   4  15.00  20.30 'SeaBus-LQuay/Waterfr'      0      0      0
   path=no
    132105      dwt=+10.06  ttf=10   us1=0   us2=0   us3=0
    223401        lay=5.00
-a'9900o' s   4  15.00  20.30 'SeaBus-Waterfront/LQ'      0      0      0
+a'9900oA' s   4  15.00  20.30 'SeaBus-Waterfront/LQ'      0      0      0
   path=no
    223401      dwt=+10.06  ttf=10   us1=0   us2=0   us3=0
    132105        lay=5.00
@@ -12726,7 +12726,7 @@ a'9903iA' r   8  30.00  55.00 'WCE-Mission/Waterfro'      0      0      0
    321001       dwt=+5.15  ttf=10   us1=0   us2=0   us3=0
    311806      dwt=+25.04  ttf=10   us1=0   us2=0   us3=0
    223403        lay=5.00
-a'9910i' l   5   6.70  60.00 'CL-Richmond Ctr/Vanc'      0      0      0
+a'9910iA' l   5   6.70  60.00 'CL-Richmond Ctr/Vanc'      0      0      0
   path=no
    515704       dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
    513601       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
@@ -12743,7 +12743,7 @@ a'9910i' l   5   6.70  60.00 'CL-Richmond Ctr/Vanc'      0      0      0
    228005       dwt=+1.89  ttf=10   us1=0   us2=0   us3=0
    225501       dwt=+1.54  ttf=10   us1=0   us2=0   us3=0
    223402        lay=3.00
-a'9910o' l   5   6.70  60.00 'CL-VancCBD/Richmond '      0      0      0
+a'9910oA' l   5   6.70  60.00 'CL-VancCBD/Richmond '      0      0      0
   path=no
    223402       dwt=+1.54  ttf=10   us1=0   us2=0   us3=0
    225501       dwt=+1.89  ttf=10   us1=0   us2=0   us3=0
@@ -12760,7 +12760,7 @@ a'9910o' l   5   6.70  60.00 'CL-VancCBD/Richmond '      0      0      0
    512401       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
    513601       dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
    515704        lay=0.75
-a'9911i' l   5   6.70  60.00 'CL-YVR/VancCBD      '      0      0      0
+a'9911iA' l   5   6.70  60.00 'CL-YVR/VancCBD      '      0      0      0
   path=no
    510201       dwt=+2.42  ttf=10   us1=0   us2=0   us3=0
    510308       dwt=+1.87  ttf=10   us1=0   us2=0   us3=0
@@ -12776,7 +12776,7 @@ a'9911i' l   5   6.70  60.00 'CL-YVR/VancCBD      '      0      0      0
    228005       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
    225501       dwt=+1.56  ttf=10   us1=0   us2=0   us3=0
    223402        lay=3.00
-a'9911o' l   5   6.70  60.00 'CL-VancCBD/YVR      '      0      0      0
+a'9911oA' l   5   6.70  60.00 'CL-VancCBD/YVR      '      0      0      0
   path=no
    223402       dwt=+1.56  ttf=10   us1=0   us2=0   us3=0
    225501       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
@@ -12792,7 +12792,7 @@ a'9911o' l   5   6.70  60.00 'CL-VancCBD/YVR      '      0      0      0
    510402       dwt=+1.87  ttf=10   us1=0   us2=0   us3=0
    510308       dwt=+2.42  ttf=10   us1=0   us2=0   us3=0
    510201        lay=0.50
-a'996ei' l  15   3.00  65.00 'EXPO-KG Blvd/Waterfr'      0      0      0
+a'996eiA' l  15   3.00  65.00 'EXPO-KG Blvd/Waterfr'      0      0      0
   path=no
    617301       dwt=+0.88  ttf=10   us1=0   us2=0   us3=0
    614404       dwt=+2.19  ttf=10   us1=0   us2=0   us3=0
@@ -12815,7 +12815,7 @@ a'996ei' l  15   3.00  65.00 'EXPO-KG Blvd/Waterfr'      0      0      0
    224205       dwt=+1.18  ttf=10   us1=0   us2=0   us3=0
    221903       dwt=+1.88  ttf=10   us1=0   us2=0   us3=0
    223501        lay=1.00
-a'996eo' l  15   3.00  65.00 'EXPO-Waterfront/KG B'      0      0      0
+a'996eoA' l  15   3.00  65.00 'EXPO-Waterfront/KG B'      0      0      0
   path=no
    223501       dwt=+1.68  ttf=10   us1=0   us2=0   us3=0
    221903       dwt=+1.22  ttf=10   us1=0   us2=0   us3=0
@@ -12838,7 +12838,7 @@ a'996eo' l  15   3.00  65.00 'EXPO-Waterfront/KG B'      0      0      0
    611606       dwt=+2.19  ttf=10   us1=0   us2=0   us3=0
    614404        dwt=+0.9  ttf=10   us1=0   us2=0   us3=0
    617301        lay=1.00
-a'996mi' l  14   5.50  65.00 'ML-VCC/Waterfront   '      0      0      0
+a'996miA' l  14   5.50  65.00 'ML-VCC/Waterfront   '      0      0      0
   path=no
    254009       dwt=+1.35  ttf=10   us1=0   us2=0   us3=0
    254203       dwt=+2.25  ttf=10   us1=0   us2=0   us3=0
@@ -12871,7 +12871,7 @@ a'996mi' l  14   5.50  65.00 'ML-VCC/Waterfront   '      0      0      0
    224205       dwt=+1.23  ttf=10   us1=0   us2=0   us3=0
    221903       dwt=+1.68  ttf=10   us1=0   us2=0   us3=0
    223501        lay=0.50
-a'996mo' l  20   5.50  65.00 'ML-Waterfront/VCC   '      0      0      0
+a'996moA' l  20   5.50  65.00 'ML-Waterfront/VCC   '      0      0      0
   path=no
    223501       dwt=+1.68  ttf=10   us1=0   us2=0   us3=0
    221903       dwt=+1.23  ttf=10   us1=0   us2=0   us3=0
