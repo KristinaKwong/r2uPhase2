@@ -39,22 +39,24 @@ class DataGeneration(_m.Tool()):
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.util")
 
-        self.matrix_batchins(eb)
-        self.calc_density(eb)
+        cyclenum = util.get_cycle(eb)
+        if cyclenum == 1:
+            self.matrix_batchins(eb)
+            self.calc_density(eb)
 
-        am_scen = eb.scenario(int(eb.matrix("ms2").data))
-        md_scen = eb.scenario(int(eb.matrix("ms3").data))
-        pm_scen = eb.scenario(int(eb.matrix("ms4").data))
+            am_scen = eb.scenario(int(eb.matrix("ms2").data))
+            md_scen = eb.scenario(int(eb.matrix("ms3").data))
+            pm_scen = eb.scenario(int(eb.matrix("ms4").data))
 
-        # Run iniitial AON assignment to generate a distance skim
-        self.assignAON(am_scen)
+            # Run iniitial AON assignment to generate a distance skim
+            self.assignAON(am_scen)
 
-        # Run Initial Assignment to generate skims from seed demands
-        auto_assign = _m.Modeller().tool("translink.RTM3.stage3.autoassignment")
-        auto_assign(am_scen, md_scen, pm_scen)
+            # Run Initial Assignment to generate skims from seed demands
+            auto_assign = _m.Modeller().tool("translink.RTM3.stage3.autoassignment")
+            auto_assign(am_scen, md_scen, pm_scen)
 
-        transit_assign = _m.Modeller().tool("translink.RTM3.stage3.transitassignment")
-        transit_assign(eb, am_scen, md_scen, pm_scen)
+            transit_assign = _m.Modeller().tool("translink.RTM3.stage3.transitassignment")
+            transit_assign(eb, am_scen, md_scen, pm_scen)
 
         self.calc_all_accessibilities(eb)
 
@@ -163,7 +165,7 @@ class DataGeneration(_m.Tool()):
     	md_weight = 0.41
     	pm_weight = 0.39
     	time_cut = 60
-    	time_cut_uni = 30
+    	time_cut_uni = 45
         time_cut_soc = 60
         floor = 0.000001
 
