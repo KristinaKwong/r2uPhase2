@@ -194,9 +194,11 @@ class TripProductions(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
 
         # set coefficents
-        c_hbu_int = 91.022869
-        c_iP1824UnAc = 0.089642
-        c_iP2434UnAc = 0
+        c_hbu_int = 20.617679
+        c_iPop1824UnAcOth = 0.079319
+        c_iPop1824UnAcVan = 0.086291
+        c_iPop1824UnAcSur = 0.070245
+        c_iP2434UnAc = 0.009762
 
         c_nhbw_int = 11.09161
         c_nhbw_CM = 0.313161
@@ -223,8 +225,10 @@ class TripProductions(_m.Tool()):
         nhbo_ct_2011 = (eb.matrix("msnhboCt2011").data)
 
         # calculate hbu productions
-        df['hbu'] = ( c_hbu_int
-                    + c_iP1824UnAc * df['iPop1824UnAc']
+        df['hbu'] = ( c_hbu_int * df['hbu_intercept']
+                    + c_iPop1824UnAcOth * df['iPop1824UnAcOth']
+                    + c_iPop1824UnAcVan * df['iPop1824UnAcVan']
+                    + c_iPop1824UnAcSur * df['iPop1824UnAcSur']                    
                     + c_iP2434UnAc * df['iPop2534UnAc'] )
 
         # calculate non-home based work productions
@@ -291,7 +295,11 @@ class TripProductions(_m.Tool()):
         SELECT
             ti.TAZ1741
             -- hbu variables
-            ,IFNULL(d.POP_18to24 * a.uni_acc_ln, 0) as iPop1824UnAc
+            --,IFNULL(d.POP_18to24 * a.uni_acc_ln, 0) as iPop1824UnAc
+            ,CASE WHEN IFNULL(d.POP_Total, 0) >  0 THEN 1 ELSE 0 END hbu_intercept
+            ,CASE WHEN IFNULL(e.gy, 0) = 4 THEN IFNULL(d.POP_18to24 * a.uni_acc_ln, 0) ELSE 0 END iPop1824UnAcVan
+            ,CASE WHEN IFNULL(e.gy, 0) = 9 THEN IFNULL(d.POP_18to24 * a.uni_acc_ln, 0) ELSE 0 END iPop1824UnAcSur
+            ,CASE WHEN IFNULL(e.gy, 0) NOT IN (4,9) THEN IFNULL(d.POP_18to24 * a.uni_acc_ln, 0) ELSE 0 END iPop1824UnAcOth
             ,IFNULL(d.POP_25to34 * a.uni_acc_ln, 0) as iPop2534UnAc
             -- employment variables
             ,IFNULL(d.EMP_Construct_Mfg, 0) as EMP_Construct_Mfg
@@ -308,9 +316,11 @@ class TripProductions(_m.Tool()):
             -- household variables
             ,IFNULL(d.HH_Total,0) as HH_Total
 
+
         FROM taz_index ti
             LEFT JOIN demographics d on d.TAZ1700 = ti.TAZ1741
             LEFT JOIN accessibilities a on a.TAZ1741 = ti.TAZ1741
+            LEFT JOIN ensembles e on e.TAZ1700 = ti.TAZ1741
 
         ORDER BY
             ti.TAZ1741
