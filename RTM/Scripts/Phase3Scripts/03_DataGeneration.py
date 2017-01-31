@@ -196,45 +196,45 @@ class DataGeneration(_m.Tool()):
 
     	# get bus skims
     	AmBusIvtt = util.get_matrix_numpy(eb, 'mfAmBusIvtt').flatten()
-    	AmBusWait = util.get_matrix_numpy(eb, 'mfAmBusIvtt').flatten()
-    	AmBusAux = util.get_matrix_numpy(eb, 'mfAmBusIvtt').flatten()
+    	AmBusWait = util.get_matrix_numpy(eb, 'mfAmBusWait').flatten()
+    	AmBusAux = util.get_matrix_numpy(eb, 'mfAmBusAux').flatten()
 
     	MdBusIvtt = util.get_matrix_numpy(eb, 'mfMdBusIvtt').flatten()
-    	MdBusWait = util.get_matrix_numpy(eb, 'mfMdBusIvtt').flatten()
-    	MdBusAux = util.get_matrix_numpy(eb, 'mfMdBusIvtt').flatten()
+    	MdBusWait = util.get_matrix_numpy(eb, 'mfMdBusWait').flatten()
+    	MdBusAux = util.get_matrix_numpy(eb, 'mfMdBusAux').flatten()
 
     	PmBusIvtt = util.get_matrix_numpy(eb, 'mfPmBusIvtt').flatten()
-    	PmBusWait = util.get_matrix_numpy(eb, 'mfPmBusIvtt').flatten()
-    	PmBusAux = util.get_matrix_numpy(eb, 'mfPmBusIvtt').flatten()
+    	PmBusWait = util.get_matrix_numpy(eb, 'mfPmBusWait').flatten()
+    	PmBusAux = util.get_matrix_numpy(eb, 'mfPmBusAux').flatten()
 
     	# get rail skims
     	AmRailIvtt = util.get_matrix_numpy(eb, 'mfAmRailIvtt').flatten()
     	AmRailIvttBus = util.get_matrix_numpy(eb, 'mfAmRailIvttBus').flatten()
-    	AmRailWait = util.get_matrix_numpy(eb, 'mfAmRailIvtt').flatten()
-    	AmRailAux = util.get_matrix_numpy(eb, 'mfAmRailIvtt').flatten()
+    	AmRailWait = util.get_matrix_numpy(eb, 'mfAmRailWait').flatten()
+    	AmRailAux = util.get_matrix_numpy(eb, 'mfAmRailAux').flatten()
 
     	MdRailIvtt = util.get_matrix_numpy(eb, 'mfMdRailIvtt').flatten()
     	MdRailIvttBus = util.get_matrix_numpy(eb, 'mfMdRailIvttBus').flatten()
-    	MdRailWait = util.get_matrix_numpy(eb, 'mfMdRailIvtt').flatten()
-    	MdRailAux = util.get_matrix_numpy(eb, 'mfMdRailIvtt').flatten()
+    	MdRailWait = util.get_matrix_numpy(eb, 'mfMdRailWait').flatten()
+    	MdRailAux = util.get_matrix_numpy(eb, 'mfMdRailAux').flatten()
 
     	PmRailIvtt = util.get_matrix_numpy(eb, 'mfPmRailIvtt').flatten()
     	PmRailIvttBus = util.get_matrix_numpy(eb, 'mfPmRailIvttBus').flatten()
-    	PmRailWait = util.get_matrix_numpy(eb, 'mfPmRailIvtt').flatten()
-    	PmRailAux = util.get_matrix_numpy(eb, 'mfPmRailIvtt').flatten()
+    	PmRailWait = util.get_matrix_numpy(eb, 'mfPmRailWait').flatten()
+    	PmRailAux = util.get_matrix_numpy(eb, 'mfPmRailAux').flatten()
 
     	# get Wce Skims
     	AmWceIvtt = util.get_matrix_numpy(eb, 'mfAmWceIvtt').flatten()
     	AmWceIvttRail = util.get_matrix_numpy(eb, 'mfAmWceIvttRail').flatten()
     	AmWceIvttBus = util.get_matrix_numpy(eb, 'mfAmWceIvttBus').flatten()
-    	AmWceWait = util.get_matrix_numpy(eb, 'mfAmWceIvtt').flatten()
-    	AmWceAux = util.get_matrix_numpy(eb, 'mfAmWceIvtt').flatten()
+    	AmWceWait = util.get_matrix_numpy(eb, 'mfAmWceWait').flatten()
+    	AmWceAux = util.get_matrix_numpy(eb, 'mfAmWceAux').flatten()
 
     	PmWceIvtt = util.get_matrix_numpy(eb, 'mfPmWceIvtt').flatten()
     	PmWceIvttRail = util.get_matrix_numpy(eb, 'mfPmWceIvttRail').flatten()
     	PmWceIvttBus = util.get_matrix_numpy(eb, 'mfPmWceIvttBus').flatten()
-    	PmWceWait = util.get_matrix_numpy(eb, 'mfPmWceIvtt').flatten()
-    	PmWceAux = util.get_matrix_numpy(eb, 'mfPmWceIvtt').flatten()
+    	PmWceWait = util.get_matrix_numpy(eb, 'mfPmWceWait').flatten()
+    	PmWceAux = util.get_matrix_numpy(eb, 'mfPmWceAux').flatten()
 
     	# calculate total travel time by mode and add to ij matrix
     	ij['AmBusTime'] = AmBusIvtt + AmBusWait + AmBusAux
