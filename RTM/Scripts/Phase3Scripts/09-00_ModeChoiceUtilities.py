@@ -79,6 +79,7 @@ class ModeChoiceUtilities(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
 
         max_iterations = int(util.get_matrix_numpy(eb, "msIterDist"))
+
         rel_error = eb.matrix("msRelErrDist").data
         # loops through mo_list for any list items that are expressions
         #  (contains "+") adding mo matrices up for aggregation.
@@ -145,9 +146,9 @@ class ModeChoiceUtilities(_m.Tool()):
 
         del Distance, A, Imp
 
-    def AutoAvail(self, Distance, Utility, AvailDict):
+    def AutoAvail(self, Cost, Utility, AvailDict):
         LrgU     = -99999.0
-        return np.where(Distance>AvailDict['AutDist'], Utility , LrgU)
+        return np.where(Cost>AvailDict['AutCost'], Utility , LrgU)
 
     def WalkAvail(self, Distance, Utility, AvailDict):
         LrgU     = -99999.0
@@ -249,7 +250,6 @@ class ModeChoiceUtilities(_m.Tool()):
 
 
         return df_summary, df_gy
-
 
     def AP_PA_Factor(self, eb, purpose, mode, peakperiod, geo='A',minimum_value=0):
         util = _m.Modeller().tool("translink.util")

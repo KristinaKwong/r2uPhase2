@@ -48,7 +48,7 @@ class HbSchool(_m.Tool()):
 #        ##############################################################################
 
         AvailDict = {
-                     'AutDist': 0.0,
+                     'AutCost': 0.0,
                      'WlkDist': 5.0,
                      'BikDist': 10.0,
                      'TranIVT': 1.0,
@@ -89,21 +89,21 @@ class HbSchool(_m.Tool()):
         # Generate Dataframe
         Df = {}
         MaxPark = 10.0
-        VOC = util.get_matrix_numpy(eb, 'autoOpCost')
+
         Occ = util.get_matrix_numpy(eb, 'HOVOccHBsch')    # Occ=3.02
         VOT = 5.5 # rs: hard coded
 
-        Df['AutoDisHOV'] = util.get_matrix_numpy(eb, 'HbScBlHovDist')
+        Df['AutoCosHOV'] = util.get_matrix_numpy(eb, 'HbScBlHovCost')
         Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'HbScBlHovTime')
-        Df['AutoCosHOV'] = (Df['AutoDisHOV']*VOC + util.get_matrix_numpy(eb, 'HbScBlHovToll'))/(Occ*2.0) # students do not pay any cost adjustment
+        Df['AutoTotCosHOV'] = (Df['AutoCosHOV'])/(Occ*2.0) # students do not pay any cost adjustment
 
         # Utilities
         # HOV2+
         # HOV2+ Utility across all incomes
         Df['GeUtl'] = (p2
-                      + (p12*(VOT*Df['AutoTimHOV']/60+Df['AutoCosHOV'])))
+                      + (p12*(VOT*Df['AutoTimHOV']/60+Df['AutoTotCosHOV'])))
         # Check Availability conditions
-        DfU['HOV']  = MChM.AutoAvail(Df['AutoDisHOV'], Df['GeUtl'], AvailDict)
+        DfU['HOV']  = MChM.AutoAvail(Df['AutoCosHOV'], Df['GeUtl'], AvailDict)
 
 #        ##############################################################################
 #        ##       Walk to Transit Modes
@@ -180,7 +180,7 @@ class HbSchool(_m.Tool()):
 #        ##############################################################################
 
         Df = {}
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'mfdistAON')
+        Df['AutoDis'] = util.get_matrix_numpy(eb, "mfdistAON") # Distance
         Df['PopEmpDen'] = util.get_matrix_numpy(eb, 'combinedensln')
         Df['PopEmpDen'] = Df['PopEmpDen'].reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
 
@@ -285,7 +285,7 @@ class HbSchool(_m.Tool()):
                       0.0, 0.0, 0.0,
                       0.0, 0.0, 0.0]
 
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, 'mfdistAON'))
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"))
         MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
 
 #       ##############################################################################
@@ -631,3 +631,6 @@ class HbSchool(_m.Tool()):
         util.initmat(eb, "mf3256", "HbScP-AI3A0", " HbSc P-A Trips I1 A0", 0)
         util.initmat(eb, "mf3257", "HbScP-AI3A1", " HbSc P-A Trips I1 A1", 0)
         util.initmat(eb, "mf3258", "HbScP-AI3A2", " HbSc P-A Trips I1 A2", 0)
+
+
+

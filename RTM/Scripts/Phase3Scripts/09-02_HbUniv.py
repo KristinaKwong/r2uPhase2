@@ -48,7 +48,7 @@ class HbWork(_m.Tool()):
 #        ##############################################################################
 
         AvailDict = {
-                     'AutDist': 0.0,
+                     'AutCost': 0.0,
                      'WlkDist': 5.0,
                      'BikDist': 20.0,
                      'TranIVT': 1.0,
@@ -88,7 +88,7 @@ class HbWork(_m.Tool()):
         # Generate Dataframe
         Df = {}
         MaxPark = 10.0
-        VOC = util.get_matrix_numpy(eb, 'autoOpCost')
+
 
         ##
         Occ = util.get_matrix_numpy(eb, 'HOVOccHbu')
@@ -97,22 +97,22 @@ class HbWork(_m.Tool()):
         Df['ParkCost'] = Df['ParkCost'].reshape(1, NoTAZ) + np.zeros((NoTAZ, 1))
 
         ##
-        Df['AutoDisSOV'] = util.get_matrix_numpy(eb, 'HbUBlSovDist')
+        Df['AutoCosSOV'] = util.get_matrix_numpy(eb, 'HbUBlSovCost')
         Df['AutoTimSOV'] = util.get_matrix_numpy(eb, 'HbUBlSovTime')
-        Df['AutoCosSOV'] = Df['AutoDisSOV']*VOC + util.get_matrix_numpy(eb, 'HbUBlSovToll') + Df['ParkCost']
+        Df['AutoTotCosSOV'] = Df['AutoCosSOV'] + Df['ParkCost']
 
-        Df['AutoDisHOV'] = util.get_matrix_numpy(eb, 'HbUBlHovDist')
+        Df['AutoCosHOV'] = util.get_matrix_numpy(eb, 'HbUBlHovCost')
         Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'HbUBlHovTime')
-        Df['AutoCosHOV'] = Df['AutoDisHOV']*VOC + util.get_matrix_numpy(eb, 'HbUBlHovToll') + Df['ParkCost']
+        Df['AutoTotCosHOV'] = Df['AutoCosHOV'] + Df['ParkCost']
 
         # Utilities
         # SOV
         # SOV Utility for all incomes
         Df['GeUtl'] = (0
                       + p15*Df['AutoTimSOV']
-                      + p12*Df['AutoCosSOV'])
+                      + p12*Df['AutoTotCosSOV'])
         # Check SOV Availability
-        Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisSOV'], Df['GeUtl'], AvailDict)
+        Df['GeUtl']  = MChM.AutoAvail(Df['AutoCosSOV'], Df['GeUtl'], AvailDict)
 
         DfU['SOV'] = Df['GeUtl']
 
@@ -122,10 +122,10 @@ class HbWork(_m.Tool()):
 
         Df['GeUtl'] = ( p2
                       + p15*Df['AutoTimHOV']
-                      + p12*Df['AutoCosHOV']/Occ)
+                      + p12*Df['AutoTotCosHOV']/Occ)
 
         # Check HOV Availability
-        Df['GeUtl'] = MChM.AutoAvail(Df['AutoDisHOV'], Df['GeUtl'], AvailDict)
+        Df['GeUtl'] = MChM.AutoAvail(Df['AutoCosHOV'], Df['GeUtl'], AvailDict)
         DfU['HOV']  = Df['GeUtl']
 
 #        ##############################################################################
@@ -194,7 +194,7 @@ class HbWork(_m.Tool()):
 #        ##############################################################################
 
         Df = {}
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'mfdistAON')
+        Df['AutoDis'] = util.get_matrix_numpy(eb, "mfdistAON") # Distance
 
         # Walk Utility
         DfU['Walk'] = ( p10
@@ -254,7 +254,8 @@ class HbWork(_m.Tool()):
 
         GammaList =  [-0.000034]
 
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, 'mfdistAON'))
+
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"))
         MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
 
 
@@ -561,3 +562,4 @@ class HbWork(_m.Tool()):
 
         ## Initialize P-A Trip Tables from trip distribution
         util.initmat(eb, "mf3150", "HbUP-A", " HbU P-A Trips ", 0)
+

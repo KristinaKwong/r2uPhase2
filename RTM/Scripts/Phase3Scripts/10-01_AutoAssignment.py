@@ -72,47 +72,47 @@ class AutoAssignment(_m.Tool()):
                       "hov":   ["mfHOV_drvtrp_VOT_1_Am", "mfHOV_drvtrp_VOT_2_Am", "mfHOV_drvtrp_VOT_3_Am", "mfHOV_drvtrp_VOT_4_Am"],
                       "truck": ["mflgvPceAm", "mfhgvPceAm"]}
         self.assign_scen(am_scenario, am_demands)
-        am_skims = {"sovVot1":  ["mfAmSovDistVOT1", "mfAmSovTimeVOT1", "mfAmSovTollVOT1"],
-                    "sovVot2":  ["mfAmSovDistVOT2", "mfAmSovTimeVOT2", "mfAmSovTollVOT2"],
-                    "sovVot3":  ["mfAmSovDistVOT3", "mfAmSovTimeVOT3", "mfAmSovTollVOT3"],
-                    "sovVot4":  ["mfAmSovDistVOT4", "mfAmSovTimeVOT4", "mfAmSovTollVOT4"],
-                    "hovVot1":  ["mfAmHovDistVOT1", "mfAmHovTimeVOT1", "mfAmHovTollVOT1"],
-                    "hovVot2":  ["mfAmHovDistVOT2", "mfAmHovTimeVOT2", "mfAmHovTollVOT2"],
-                    "hovVot3":  ["mfAmHovDistVOT3", "mfAmHovTimeVOT3", "mfAmHovTollVOT3"],
-                    "hovVot4":  ["mfAmHovDistVOT4", "mfAmHovTimeVOT4", "mfAmHovTollVOT4"],
-                    "lgv":  ["mfAmLgvDist", "mfAmLgvTime", "mfAmLgvToll"],
-                    "hgv":  ["mfAmHgvDist", "mfAmHgvTime", "mfAmHgvToll"]}
+        am_skims = {"sovVot1":  ["mfAmSovOpCstVOT1", "mfAmSovTimeVOT1", "mfAmSovTollVOT1"],
+                    "sovVot2":  ["mfAmSovOpCstVOT2", "mfAmSovTimeVOT2", "mfAmSovTollVOT2"],
+                    "sovVot3":  ["mfAmSovOpCstVOT3", "mfAmSovTimeVOT3", "mfAmSovTollVOT3"],
+                    "sovVot4":  ["mfAmSovOpCstVOT4", "mfAmSovTimeVOT4", "mfAmSovTollVOT4"],
+                    "hovVot1":  ["mfAmHovOpCstVOT1", "mfAmHovTimeVOT1", "mfAmHovTollVOT1"],
+                    "hovVot2":  ["mfAmHovOpCstVOT2", "mfAmHovTimeVOT2", "mfAmHovTollVOT2"],
+                    "hovVot3":  ["mfAmHovOpCstVOT3", "mfAmHovTimeVOT3", "mfAmHovTollVOT3"],
+                    "hovVot4":  ["mfAmHovOpCstVOT4", "mfAmHovTimeVOT4", "mfAmHovTollVOT4"],
+                    "lgv":  ["mfAmLgvOpCst", "mfAmLgvTime", "mfAmLgvToll"],
+                    "hgv":  ["mfAmHgvOpCst", "mfAmHgvTime", "mfAmHgvToll"]}
         self.store_skims(am_scenario, am_skims)
 
         md_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Md", "mfSOV_drvtrp_VOT_2_Md", "mfSOV_drvtrp_VOT_3_Md", "mfSOV_drvtrp_VOT_4_Md"],
                       "hov":   ["mfHOV_drvtrp_VOT_1_Md", "mfHOV_drvtrp_VOT_2_Md", "mfHOV_drvtrp_VOT_3_Md", "mfHOV_drvtrp_VOT_4_Md"],
                       "truck": ["mflgvPceMd", "mfhgvPceMd"]}
         self.assign_scen(md_scenario, md_demands)
-        md_skims = {"sovVot1":  ["mfMdSovDistVOT1", "mfMdSovTimeVOT1", "mfMdSovTollVOT1"],
-                    "sovVot2":  ["mfMdSovDistVOT2", "mfMdSovTimeVOT2", "mfMdSovTollVOT2"],
-                    "sovVot3":  ["mfMdSovDistVOT3", "mfMdSovTimeVOT3", "mfMdSovTollVOT3"],
-                    "sovVot4":  ["mfMdSovDistVOT4", "mfMdSovTimeVOT4", "mfMdSovTollVOT4"],
-                    "hovVot1":  ["mfMdHovDistVOT1", "mfMdHovTimeVOT1", "mfMdHovTollVOT1"],
-                    "hovVot2":  ["mfMdHovDistVOT2", "mfMdHovTimeVOT2", "mfMdHovTollVOT2"],
-                    "hovVot3":  ["mfMdHovDistVOT3", "mfMdHovTimeVOT3", "mfMdHovTollVOT3"],
-                    "hovVot4":  ["mfMdHovDistVOT4", "mfMdHovTimeVOT4", "mfMdHovTollVOT4"],
-                    "lgv":  ["mfMdLgvDist", "mfMdLgvTime", "mfMdLgvToll"],
-                    "hgv":  ["mfMdHgvDist", "mfMdHgvTime", "mfMdHgvToll"]}
+        md_skims = {"sovVot1":  ["mfMdSovOpCstVOT1", "mfMdSovTimeVOT1", "mfMdSovTollVOT1"],
+                    "sovVot2":  ["mfMdSovOpCstVOT2", "mfMdSovTimeVOT2", "mfMdSovTollVOT2"],
+                    "sovVot3":  ["mfMdSovOpCstVOT3", "mfMdSovTimeVOT3", "mfMdSovTollVOT3"],
+                    "sovVot4":  ["mfMdSovOpCstVOT4", "mfMdSovTimeVOT4", "mfMdSovTollVOT4"],
+                    "hovVot1":  ["mfMdHovOpCstVOT1", "mfMdHovTimeVOT1", "mfMdHovTollVOT1"],
+                    "hovVot2":  ["mfMdHovOpCstVOT2", "mfMdHovTimeVOT2", "mfMdHovTollVOT2"],
+                    "hovVot3":  ["mfMdHovOpCstVOT3", "mfMdHovTimeVOT3", "mfMdHovTollVOT3"],
+                    "hovVot4":  ["mfMdHovOpCstVOT4", "mfMdHovTimeVOT4", "mfMdHovTollVOT4"],
+                    "lgv":  ["mfMdLgvOpCst", "mfMdLgvTime", "mfMdLgvToll"],
+                    "hgv":  ["mfMdHgvOpCst", "mfMdHgvTime", "mfMdHgvToll"]}
         self.store_skims(md_scenario, md_skims)
         pm_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Pm", "mfSOV_drvtrp_VOT_2_Pm", "mfSOV_drvtrp_VOT_3_Pm", "mfSOV_drvtrp_VOT_4_Pm"],
                       "hov":   ["mfHOV_drvtrp_VOT_1_Pm", "mfHOV_drvtrp_VOT_2_Pm", "mfHOV_drvtrp_VOT_3_Pm", "mfHOV_drvtrp_VOT_4_Pm"],
                       "truck": ["mflgvPcePm", "mfhgvPcePm"]}
         self.assign_scen(pm_scenario, pm_demands)
-        pm_skims = {"sovVot1":  ["mfPmSovDistVOT1", "mfPmSovTimeVOT1", "mfPmSovTollVOT1"],
-                    "sovVot2":  ["mfPmSovDistVOT2", "mfPmSovTimeVOT2", "mfPmSovTollVOT2"],
-                    "sovVot3":  ["mfPmSovDistVOT3", "mfPmSovTimeVOT3", "mfPmSovTollVOT3"],
-                    "sovVot4":  ["mfPmSovDistVOT4", "mfPmSovTimeVOT4", "mfPmSovTollVOT4"],
-                    "hovVot1":  ["mfPmHovDistVOT1", "mfPmHovTimeVOT1", "mfPmHovTollVOT1"],
-                    "hovVot2":  ["mfPmHovDistVOT2", "mfPmHovTimeVOT2", "mfPmHovTollVOT2"],
-                    "hovVot3":  ["mfPmHovDistVOT3", "mfPmHovTimeVOT3", "mfPmHovTollVOT3"],
-                    "hovVot4":  ["mfPmHovDistVOT4", "mfPmHovTimeVOT4", "mfPmHovTollVOT4"],
-                    "lgv":  ["mfPmLgvDist", "mfPmLgvTime", "mfPmLgvToll"],
-                    "hgv":  ["mfPmHgvDist", "mfPmHgvTime", "mfPmHgvToll"]}
+        pm_skims = {"sovVot1":  ["mfPmSovOpCstVOT1", "mfPmSovTimeVOT1", "mfPmSovTollVOT1"],
+                    "sovVot2":  ["mfPmSovOpCstVOT2", "mfPmSovTimeVOT2", "mfPmSovTollVOT2"],
+                    "sovVot3":  ["mfPmSovOpCstVOT3", "mfPmSovTimeVOT3", "mfPmSovTollVOT3"],
+                    "sovVot4":  ["mfPmSovOpCstVOT4", "mfPmSovTimeVOT4", "mfPmSovTollVOT4"],
+                    "hovVot1":  ["mfPmHovOpCstVOT1", "mfPmHovTimeVOT1", "mfPmHovTollVOT1"],
+                    "hovVot2":  ["mfPmHovOpCstVOT2", "mfPmHovTimeVOT2", "mfPmHovTollVOT2"],
+                    "hovVot3":  ["mfPmHovOpCstVOT3", "mfPmHovTimeVOT3", "mfPmHovTollVOT3"],
+                    "hovVot4":  ["mfPmHovOpCstVOT4", "mfPmHovTimeVOT4", "mfPmHovTollVOT4"],
+                    "lgv":  ["mfPmLgvOpCst", "mfPmLgvTime", "mfPmLgvToll"],
+                    "hgv":  ["mfPmHgvOpCst", "mfPmHgvTime", "mfPmHgvToll"]}
         self.store_skims(pm_scenario, pm_skims)
 
     def add_external_demand(self):
@@ -137,9 +137,9 @@ class AutoAssignment(_m.Tool()):
         self.init_matrices(scenario.emmebank)
 
         # First assignment to generate toll skims
-        spec = self.get_class_specs(scenario.emmebank, demands)
-        self.add_toll_path_analysis(spec)
-        assign_traffic(spec, scenario=scenario)
+        #spec = self.get_class_specs(scenario.emmebank, demands)
+        #self.add_toll_path_analysis(spec)
+        #assign_traffic(spec, scenario=scenario)
 
         # Second assignment to generate distance and time skims
         spec = self.get_class_specs(scenario.emmebank, demands)
@@ -256,16 +256,16 @@ class AutoAssignment(_m.Tool()):
 
         if not do_averaging:
             # Set Distance Matrices
-            specs.append(util.matrix_spec(skim_list["sovVot1"][0], "mfSOVDistVOT1"))
-            specs.append(util.matrix_spec(skim_list["sovVot2"][0], "mfSOVDistVOT2"))
-            specs.append(util.matrix_spec(skim_list["sovVot3"][0], "mfSOVDistVOT3"))
-            specs.append(util.matrix_spec(skim_list["sovVot4"][0], "mfSOVDistVOT4"))
-            specs.append(util.matrix_spec(skim_list["hovVot1"][0], "mfHOVDistVOT1"))
-            specs.append(util.matrix_spec(skim_list["hovVot2"][0], "mfHOVDistVOT2"))
-            specs.append(util.matrix_spec(skim_list["hovVot3"][0], "mfHOVDistVOT3"))
-            specs.append(util.matrix_spec(skim_list["hovVot4"][0], "mfHOVDistVOT4"))
-            specs.append(util.matrix_spec(skim_list["lgv"][0], "mfLGVDist"))
-            specs.append(util.matrix_spec(skim_list["hgv"][0], "mfHGVDist"))
+            specs.append(util.matrix_spec(skim_list["sovVot1"][0], "mfSOVOpCstVOT1"))
+            specs.append(util.matrix_spec(skim_list["sovVot2"][0], "mfSOVOpCstVOT2"))
+            specs.append(util.matrix_spec(skim_list["sovVot3"][0], "mfSOVOpCstVOT3"))
+            specs.append(util.matrix_spec(skim_list["sovVot4"][0], "mfSOVOpCstVOT4"))
+            specs.append(util.matrix_spec(skim_list["hovVot1"][0], "mfHOVOpCstVOT1"))
+            specs.append(util.matrix_spec(skim_list["hovVot2"][0], "mfHOVOpCstVOT2"))
+            specs.append(util.matrix_spec(skim_list["hovVot3"][0], "mfHOVOpCstVOT3"))
+            specs.append(util.matrix_spec(skim_list["hovVot4"][0], "mfHOVOpCstVOT4"))
+            specs.append(util.matrix_spec(skim_list["lgv"][0], "mfLGVOpCst"))
+            specs.append(util.matrix_spec(skim_list["hgv"][0], "mfHGVOpCst"))
             # Set GC Time Matrices
             specs.append(util.matrix_spec(skim_list["sovVot1"][1], "mfSOVTimeVOT1"))
             specs.append(util.matrix_spec(skim_list["sovVot2"][1], "mfSOVTimeVOT2"))
@@ -290,16 +290,16 @@ class AutoAssignment(_m.Tool()):
             specs.append(util.matrix_spec(skim_list["hgv"][2], "mfHGVToll"))
         else:
             # Average Distance Matrices
-            specs.append(util.matrix_spec(skim_list["sovVot1"][0], "0.5*(mfSOVDistVOT1 + %s)" % skim_list["sovVot1"][0]))
-            specs.append(util.matrix_spec(skim_list["sovVot2"][0], "0.5*(mfSOVDistVOT2 + %s)" % skim_list["sovVot2"][0]))
-            specs.append(util.matrix_spec(skim_list["sovVot3"][0], "0.5*(mfSOVDistVOT3 + %s)" % skim_list["sovVot3"][0]))
-            specs.append(util.matrix_spec(skim_list["sovVot4"][0], "0.5*(mfSOVDistVOT4 + %s)" % skim_list["sovVot4"][0]))
-            specs.append(util.matrix_spec(skim_list["hovVot1"][0], "0.5*(mfHOVDistVOT1 + %s)" % skim_list["hovVot1"][0]))
-            specs.append(util.matrix_spec(skim_list["hovVot2"][0], "0.5*(mfHOVDistVOT2 + %s)" % skim_list["hovVot2"][0]))
-            specs.append(util.matrix_spec(skim_list["hovVot3"][0], "0.5*(mfHOVDistVOT3 + %s)" % skim_list["hovVot3"][0]))
-            specs.append(util.matrix_spec(skim_list["hovVot4"][0], "0.5*(mfHOVDistVOT4 + %s)" % skim_list["hovVot4"][0]))
-            specs.append(util.matrix_spec(skim_list["lgv"][0], "0.5*(mfLGVDist + %s)" % skim_list["lgv"][0]))
-            specs.append(util.matrix_spec(skim_list["hgv"][0], "0.5*(mfHGVDist + %s)" % skim_list["hgv"][0]))
+            specs.append(util.matrix_spec(skim_list["sovVot1"][0], "0.5*(mfSOVOpCstVOT1 + %s)" % skim_list["sovVot1"][0]))
+            specs.append(util.matrix_spec(skim_list["sovVot2"][0], "0.5*(mfSOVOpCstVOT2 + %s)" % skim_list["sovVot2"][0]))
+            specs.append(util.matrix_spec(skim_list["sovVot3"][0], "0.5*(mfSOVOpCstVOT3 + %s)" % skim_list["sovVot3"][0]))
+            specs.append(util.matrix_spec(skim_list["sovVot4"][0], "0.5*(mfSOVOpCstVOT4 + %s)" % skim_list["sovVot4"][0]))
+            specs.append(util.matrix_spec(skim_list["hovVot1"][0], "0.5*(mfHOVOpCstVOT1 + %s)" % skim_list["hovVot1"][0]))
+            specs.append(util.matrix_spec(skim_list["hovVot2"][0], "0.5*(mfHOVOpCstVOT2 + %s)" % skim_list["hovVot2"][0]))
+            specs.append(util.matrix_spec(skim_list["hovVot3"][0], "0.5*(mfHOVOpCstVOT3 + %s)" % skim_list["hovVot3"][0]))
+            specs.append(util.matrix_spec(skim_list["hovVot4"][0], "0.5*(mfHOVOpCstVOT4 + %s)" % skim_list["hovVot4"][0]))
+            specs.append(util.matrix_spec(skim_list["lgv"][0], "0.5*(mfLGVOpCst + %s)" % skim_list["lgv"][0]))
+            specs.append(util.matrix_spec(skim_list["hgv"][0], "0.5*(mfHGVOpCst + %s)" % skim_list["hgv"][0]))
             # Average GC Time Matrices
             specs.append(util.matrix_spec(skim_list["sovVot1"][1], "0.5*(mfSOVTimeVOT1 + %s)" % skim_list["sovVot1"][1]))
             specs.append(util.matrix_spec(skim_list["sovVot2"][1], "0.5*(mfSOVTimeVOT2 + %s)" % skim_list["sovVot2"][1]))

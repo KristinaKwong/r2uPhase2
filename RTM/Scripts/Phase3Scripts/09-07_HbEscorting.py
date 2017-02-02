@@ -48,7 +48,7 @@ class HbEscorting(_m.Tool()):
 #        ##############################################################################
 
         AvailDict = {
-                     'AutDist': 0.0,
+                     'AutCost': 0.0,
                      'WlkDist': 5.0,
                      'BikDist': 10.0,
                      'TranIVT': 1.0,
@@ -85,13 +85,13 @@ class HbEscorting(_m.Tool()):
         Df = {}
         MaxPark = 10.0
         VOT = 8.0
-        VOC = util.get_matrix_numpy(eb, 'autoOpCost')
+
         Occ = util.get_matrix_numpy(eb, 'AutoOccHbesc') # Occupancy across SOV and HOV
 
-        Df['AutoDisHOV'] = util.get_matrix_numpy(eb, 'HbEsBlHovDist')
+        Df['AutoCosHOV'] = util.get_matrix_numpy(eb, 'HbEsBlHovCost')
         Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'HbEsBlHovTime')
-        Df['AutoCosHOV'] = Df['AutoDisHOV']*VOC + util.get_matrix_numpy(eb, 'HbEsBlHovToll')
-        Df['GenCostAuto']= Df['AutoCosHOV']/Occ + VOT*Df['AutoTimHOV']/60.0
+        Df['AutoTotCosHOV'] = Df['AutoCosHOV']
+        Df['GenCostAuto']= Df['AutoTotCosHOV']/Occ + VOT*Df['AutoTimHOV']/60.0
 
         # Utilities
         # Auto
@@ -167,7 +167,7 @@ class HbEscorting(_m.Tool()):
 #        ##############################################################################
 
         Df = {}
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'mfdistAON')
+        Df['AutoDis'] = util.get_matrix_numpy(eb, "mfdistAON") # Distance
 
 
         # Walk Utility
@@ -262,7 +262,8 @@ class HbEscorting(_m.Tool()):
 
         GammaList =  [-0.000082,-0.000221,-0.000285,-0.000082,-0.000221,-0.000285,-0.000082,-0.000221,-0.000285]
 
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, 'mfdistAON'))
+
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"))
         MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
 
 

@@ -48,7 +48,7 @@ class Non_hbwork(_m.Tool()):
 #        ##############################################################################
 
         AvailDict = {
-                     'AutDist': 0.0,
+                     'AutCost': 0.0,
                      'WlkDist': 5.0,
                      'BikDist': 10.0,
                      'TranIVT': 1.0,
@@ -92,23 +92,22 @@ class Non_hbwork(_m.Tool()):
         Df = {}
         MaxPark = 10.0
 
-        VOC = util.get_matrix_numpy(eb, 'autoOpCost')
         Occ = util.get_matrix_numpy(eb, 'AutoOccNHBo') # Occupancy across SOV and HOV
         Df['ParkCost'] = util.get_matrix_numpy(eb, 'prk2hr')  # 2 hour parking
 
         Df['ParkCost'] = Df['ParkCost'].reshape(1, NoTAZ) + np.zeros((NoTAZ, 1))
 
 
-        Df['AutoDisHOV'] = util.get_matrix_numpy(eb, 'NHbOBlHovDist')
+        Df['AutoCosHOV'] = util.get_matrix_numpy(eb, 'NHbOBlHovCost')
         Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'NHbOBlHovTime')
-        Df['AutoCosHOV'] = Df['AutoDisHOV']*VOC + util.get_matrix_numpy(eb, 'NHbOBlHovToll') + Df['ParkCost']
+        Df['AutoTotCosHOV'] = Df['AutoCosHOV'] + Df['ParkCost']
 
         # Auto Utility across all incomes
         Df['GeUtl'] = ( 0.0
-                      + p12*Df['AutoCosHOV']/Occ
+                      + p12*Df['AutoTotCosHOV']/Occ
                       + p15*Df['AutoTimHOV'])
         # Check Availability conditions
-        Df['GeUtl']  = MChM.AutoAvail(Df['AutoDisHOV'], Df['GeUtl'], AvailDict)
+        Df['GeUtl']  = MChM.AutoAvail(Df['AutoCosHOV'], Df['GeUtl'], AvailDict)
         # Add Income parameters
         DfU['Auto'] = Df['GeUtl']
 
@@ -174,7 +173,7 @@ class Non_hbwork(_m.Tool()):
 #        ##############################################################################
 
         Df = {}
-        Df['AutoDis'] = util.get_matrix_numpy(eb, 'mfdistAON')
+        Df['AutoDis'] = util.get_matrix_numpy(eb, "mfdistAON")
 
         Df['PopEmpDenPA'] = util.get_matrix_numpy(eb, 'combinedensln')#Pop+Emp Density at Prod and Attr Zones
         Df['PopEmpDenPA'] = Df['PopEmpDenPA'].reshape(NoTAZ, 1) + Df['PopEmpDenPA'].reshape(1, NoTAZ) #Broadcast Density
@@ -234,7 +233,7 @@ class Non_hbwork(_m.Tool()):
 
         GammaList =  [-0.000313]
 
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, 'mfdistAON'))
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"))
         MChM.one_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
 
 
