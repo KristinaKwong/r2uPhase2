@@ -127,10 +127,14 @@ class ModeChoiceUtilities(_m.Tool()):
 #            util.delmat(eb, mat_id)
 
     @_m.logbook_trace("Impedance Calc")
-    def ImpCalc(self, eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, Distance):
+    def ImpCalc(self, eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, Distance, Kij, Bridge_Pen, Bridge_Factor):
 
         util = _m.Modeller().tool("translink.util")
         input_path = util.get_input_path(eb)
+
+        Bridge_Pen_Mat = util.get_matrix_numpy(eb, Bridge_Pen)
+
+        Distance = Distance + Bridge_Factor*Bridge_Pen_Mat
 
         for i in range (len(imp_list)):
 
@@ -141,7 +145,7 @@ class ModeChoiceUtilities(_m.Tool()):
                   +GammaList[i]*pow(Distance, 3))
 
 
-            Imp = np.exp(Imp)
+            Imp = (np.exp(Imp))*Kij
             util.set_matrix_numpy(eb, imp_list[i], Imp)
 
         del Distance, A, Imp

@@ -270,9 +270,9 @@ class HbSchool(_m.Tool()):
                     "HbScP-AI3A0", "HbScP-AI3A1", "HbScP-AI3A2"
                    ]
 
-        LS_Coeff = 0.2
+        LS_Coeff = 0.4
 
-        LambdaList = [-1.01202,-1.019751,-0.889566,-1.01202,-1.019751,-0.889566,-1.01202,-1.019751,-0.889566]
+        LambdaList = [-0.939091,-0.943481,-0.841658,-0.939091,-0.943481,-0.841658,-0.939091,-0.943481,-0.841658]
 
 
 
@@ -285,7 +285,11 @@ class HbSchool(_m.Tool()):
                       0.0, 0.0, 0.0,
                       0.0, 0.0, 0.0]
 
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"))
+        Kij = util.get_matrix_numpy(eb, "Kij_hbsch")
+
+        Bridge_Factor = 0.75
+
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"), Kij, "HbScBl_BPen", Bridge_Factor)
         MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
 
 #       ##############################################################################

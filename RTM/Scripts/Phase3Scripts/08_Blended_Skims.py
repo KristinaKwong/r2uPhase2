@@ -399,6 +399,66 @@ class ModeChoiceGenDf(_m.Tool()):
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
 
 #       ##############################################################################
+#       ##       Blended Bridge Crossings
+#       ##############################################################################
+
+        ## Get Birgde Penalties
+        AM_Penalty = util.get_matrix_numpy(eb, "Bridge_pen_AM")
+        PM_Penalty = util.get_matrix_numpy(eb, "Bridge_pen_PM")
+
+        #  Shopping
+        Sh_PA_AM_Fct = util.get_matrix_numpy(eb, "HbShBl_AM_P-A")
+        Sh_PA_PM_Fct = util.get_matrix_numpy(eb, "HbShBl_PM_P-A")
+        Sh_AP_AM_Fct = util.get_matrix_numpy(eb, "HbShBl_AM_A-P")
+        Sh_AP_PM_Fct = util.get_matrix_numpy(eb, "HbShBl_PM_A-P")
+
+        Blend_Dist = Sh_PA_AM_Fct*AM_Penalty + Sh_PA_PM_Fct*PM_Penalty + Sh_AP_AM_Fct*AM_Penalty.transpose() + Sh_AP_PM_Fct*PM_Penalty.transpose()
+        util.set_matrix_numpy(eb, "HbShBl_BPen", Blend_Dist)
+
+        #  Per-business
+        Pb_PA_AM_Fct = util.get_matrix_numpy(eb, "HbPbBl_AM_P-A")
+        Pb_PA_PM_Fct = util.get_matrix_numpy(eb, "HbPbBl_PM_P-A")
+        Pb_AP_AM_Fct = util.get_matrix_numpy(eb, "HbPbBl_AM_A-P")
+        Pb_AP_PM_Fct = util.get_matrix_numpy(eb, "HbPbBl_PM_A-P")
+
+        Blend_Dist = Pb_PA_AM_Fct*AM_Penalty + Pb_PA_PM_Fct*PM_Penalty + Pb_AP_AM_Fct*AM_Penalty.transpose() + Pb_AP_PM_Fct*PM_Penalty.transpose()
+        util.set_matrix_numpy(eb, "HbPbBl_BPen", Blend_Dist)
+
+        #  Social
+        So_PA_AM_Fct = util.get_matrix_numpy(eb, "HbSoBl_AM_P-A")
+        So_PA_PM_Fct = util.get_matrix_numpy(eb, "HbSoBl_PM_P-A")
+        So_AP_AM_Fct = util.get_matrix_numpy(eb, "HbSoBl_AM_A-P")
+        So_AP_PM_Fct = util.get_matrix_numpy(eb, "HbSoBl_PM_A-P")
+
+        Blend_Dist = So_PA_AM_Fct*AM_Penalty + So_PA_PM_Fct*PM_Penalty + So_AP_AM_Fct*AM_Penalty.transpose() + So_AP_PM_Fct*PM_Penalty.transpose()
+        util.set_matrix_numpy(eb, "HbSoBl_BPen", Blend_Dist)
+
+        #  Escort
+        Es_PA_AM_Fct = util.get_matrix_numpy(eb, "HbEsBl_AM_P-A")
+        Es_PA_PM_Fct = util.get_matrix_numpy(eb, "HbEsBl_PM_P-A")
+        Es_AP_AM_Fct = util.get_matrix_numpy(eb, "HbEsBl_AM_A-P")
+        Es_AP_PM_Fct = util.get_matrix_numpy(eb, "HbEsBl_PM_A-P")
+
+        Blend_Dist = Es_PA_AM_Fct*AM_Penalty + Es_PA_PM_Fct*PM_Penalty + Es_AP_AM_Fct*AM_Penalty.transpose() + Es_AP_PM_Fct*PM_Penalty.transpose()
+        util.set_matrix_numpy(eb, "HbEsBl_BPen", Blend_Dist)
+
+        #  School
+        Sc_PA_AM_Fct = util.get_matrix_numpy(eb, "HbScBl_AM_P-A")
+        Sc_PA_PM_Fct = util.get_matrix_numpy(eb, "HbScBl_PM_P-A")
+        Sc_AP_AM_Fct = util.get_matrix_numpy(eb, "HbScBl_AM_A-P")
+        Sc_AP_PM_Fct = util.get_matrix_numpy(eb, "HbScBl_PM_A-P")
+
+        Blend_Dist = Sc_PA_AM_Fct*AM_Penalty + Sc_PA_PM_Fct*PM_Penalty + Sc_AP_AM_Fct*AM_Penalty.transpose() + Sc_AP_PM_Fct*PM_Penalty.transpose()
+        util.set_matrix_numpy(eb, "HbScBl_BPen", Blend_Dist)
+
+        #  NHbO
+        No_PA_AM_Fct = util.get_matrix_numpy(eb, "NHbOBl_AM_P-A")
+        No_PA_PM_Fct = util.get_matrix_numpy(eb, "NHbOBl_PM_P-A")
+
+        Blend_Dist = No_PA_AM_Fct*AM_Penalty + No_PA_PM_Fct*PM_Penalty
+        util.set_matrix_numpy(eb, "NHbOBl_BPen", Blend_Dist)
+
+#       ##############################################################################
 #       ##       Bus Skims
 #       ##############################################################################
 #       # Initialize In-vehicle, Wait, Auxiliary, Boarding and Fare Skim Dictionaries
@@ -1195,6 +1255,15 @@ class ModeChoiceGenDf(_m.Tool()):
         util.initmat(eb, "mf5245", "NHbOBlHovCost", "NHbO Bl Hov Cost", 0)
         util.initmat(eb, "mf5246", "NHbOBlHovTime", "NHbO Bl Hov Time", 0)
         util.initmat(eb, "mf5247", "NHbOBlHovToll", "NHbO Bl Hov Toll", 0)
+
+        # Bridge Crossings
+
+        util.initmat(eb, "mf5139", "HbShBl_BPen", "HbShopping Bridge Penalty", 0)
+        util.initmat(eb, "mf5159", "HbPbBl_BPen", "HbPerBus Bridge Penalty", 0)
+        util.initmat(eb, "mf5179", "HbSoBl_BPen", "HbSocial Bridge Penalty", 0)
+        util.initmat(eb, "mf5249", "NHbOBl_BPen", "NHbO Bridge Penalty", 0)
+        util.initmat(eb, "mf5219", "HbScBl_BPen", "HbSchool Bridge Penalty", 0)
+        util.initmat(eb, "mf5229", "HbEsBl_BPen", "HbEscort Bridge Penalty", 0)
         # Transit
 
         util.initmat(eb, "mf5400", "HbWBlBusIvtt", "HbW Bl Bus InVehicle Time", 0)

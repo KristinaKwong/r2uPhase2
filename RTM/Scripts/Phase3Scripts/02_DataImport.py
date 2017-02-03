@@ -406,3 +406,27 @@ class DataImport(_m.Tool()):
         data_path = os.path.join(proj_path, "BaseNetworks", "bike_score_skim_%s.in" % model_year)
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
+
+		# Batch in bridge penalties and Kij factors used in trip distribution
+		# TODO move the section below to somewhere more logical
+        # bridge penalty factors
+        util.delmat(eb, "mf92")
+        util.delmat(eb, "mf93")
+        data_path = os.path.join(proj_path, "BaseNetworks", "Bridge_Cross_Penalties.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)
+
+        # Kij Factors
+        util.delmat(eb, "mf9200")
+        util.delmat(eb, "mf9201")
+        util.delmat(eb, "mf9202")
+        util.delmat(eb, "mf9203")
+        util.delmat(eb, "mf9204")
+        util.delmat(eb, "mf9205")
+        util.delmat(eb, "mf9206")
+        util.delmat(eb, "mf9207")
+        util.delmat(eb, "mf9208")
+
+        data_path = os.path.join(proj_path, "BaseNetworks", "Kij_Factors.in")
+        mat_transaction(transaction_file = data_path,
+                        throw_on_error = True)

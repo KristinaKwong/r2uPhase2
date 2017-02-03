@@ -402,17 +402,21 @@ class HbPersonalBusiness(_m.Tool()):
 
         LS_Coeff = 0.5
 
-        LambdaList = [-0.287585,-0.263631,-0.272565,-0.287585,-0.263631,-0.272565,-0.287585,-0.263631,-0.272565]
-
-
-        AlphaList =  [0.004415,0.003553,0.003868,0.004415,0.003553,0.003868,0.004415,0.003553,0.003868]
-
-
-        GammaList =  [-0.000039,-0.000026,-0.000033,-0.000039,-0.000026,-0.000033,-0.000039,-0.000026,-0.000033]
+        LambdaList = [-0.27968,-0.255864,-0.266642,-0.27968,-0.255864,-0.266642,-0.27968,-0.255864,-0.266642]
 
 
 
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"))
+        AlphaList =  [0.004358,0.003494,0.003786,0.004358,0.003494,0.003786,0.004358,0.003494,0.003786]
+
+
+
+        GammaList =  [-0.000039,-0.000025,-0.000032,-0.000039,-0.000025,-0.000032,-0.000039,-0.000025,-0.000032]
+
+        Kij = util.get_matrix_numpy(eb, "Kij_hbpb")
+
+        Bridge_Factor = 0.75
+
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"), Kij, "HbPbBl_BPen", Bridge_Factor)
         MChM.one_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
 
 

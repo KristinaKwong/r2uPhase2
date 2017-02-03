@@ -254,16 +254,20 @@ class HbEscorting(_m.Tool()):
 
         LS_Coeff = 0.2
 
-        LambdaList = [-0.468283,-0.451056,-0.443946,-0.468283,-0.451056,-0.443946,-0.468283,-0.451056,-0.443946]
+        LambdaList = [-0.401787,-0.387085,-0.392216,-0.401787,-0.387085,-0.392216,-0.401787,-0.387085,-0.392216]
 
 
-        AlphaList =  [0.005214,0.007362,0.007843,0.005214,0.007362,0.007843,0.005214,0.007362,0.007843]
+
+        AlphaList =  [0,0,0,0,0,0,0,0,0]
 
 
-        GammaList =  [-0.000082,-0.000221,-0.000285,-0.000082,-0.000221,-0.000285,-0.000082,-0.000221,-0.000285]
+        GammaList =  [0,0,0,0,0,0,0,0,0]
 
+        Kij = util.get_matrix_numpy(eb, "Kij_hbesc")
 
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"))
+        Bridge_Factor = 0.5
+
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"), Kij, "HbEsBl_BPen", Bridge_Factor)
         MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
 
 

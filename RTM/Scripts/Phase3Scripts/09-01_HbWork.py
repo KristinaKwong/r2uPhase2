@@ -635,21 +635,21 @@ class HbWork(_m.Tool()):
                     "HbWP-AI3A0", "HbWP-AI3A1", "HbWP-AI3A2"
                    ]
 
-        LS_Coeff = 0.6
+        LS_Coeff = 0.7
 
-        LambdaList = [-0.160759,-0.121065,-0.12007,-0.156707,-0.100025,-0.095754,-0.026353,-0.112699,-0.094177]
-
-
-
-        AlphaList =  [0.004434,0.001463,0.001382,0.003272,0.00174,0.001262,0.000291,0.002222,0.001512]
+        LambdaList = [-0.136788,-0.106412,-0.108585,-0.132524,-0.083195,-0.083053,-0.016664,-0.093216,-0.080829]
 
 
-
-        GammaList =  [-0.000082,-0.000006,-0.000006,-0.000028,-0.000013,-0.000006,-0.000003,-0.000019,-0.000011]
-
+        AlphaList =  [0.003676,0.001342,0.001326,0.002596,0.001501,0.001135,0.000152,0.001884,0.001358]
 
 
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"))
+        GammaList =  [-0.00007,-0.000006,-0.000006,-0.00002,-0.000011,-0.000006,-0.000001,-0.000016,-0.00001]
+
+        Kij = util.get_matrix_numpy(eb, "Kij_hbw")
+
+        Bridge_Factor = 0
+
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"), Kij, "Zero", Bridge_Factor)
 
         MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
 

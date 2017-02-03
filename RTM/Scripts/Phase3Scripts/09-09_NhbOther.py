@@ -226,14 +226,20 @@ class Non_hbwork(_m.Tool()):
 
         LS_Coeff = 0.8
 
-        LambdaList = [-0.260872]
+        LambdaList = [-0.256066]
 
 
-        AlphaList =  [0.007714]
 
-        GammaList =  [-0.000313]
+        AlphaList =  [0.007582]
 
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"))
+
+        GammaList =  [-0.000301]
+
+        Kij = util.get_matrix_numpy(eb, "Kij_nhbo")
+
+        Bridge_Factor = 0.5
+
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"), Kij, "NHbOBl_BPen", Bridge_Factor)
         MChM.one_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
 
 

@@ -401,16 +401,21 @@ class HbSoc(_m.Tool()):
 
         LS_Coeff = 0.8
 
-        LambdaList = [-0.217947,-0.252926,-0.251438,-0.217947,-0.252926,-0.251438,-0.217947,-0.252926,-0.251438]
+        LambdaList = [-0.213941,-0.24621,-0.247044,-0.213941,-0.24621,-0.247044,-0.213941,-0.24621,-0.247044]
 
 
-        AlphaList =  [0.003569,0.003985,0.003425,0.003569,0.003985,0.003425,0.003569,0.003985,0.003425]
+
+        AlphaList =  [0.003977,0.00433,0.003793,0.003977,0.00433,0.003793,0.003977,0.00433,0.003793]
 
 
-        GammaList =  [-0.000029,-0.000035,-0.000023,-0.000029,-0.000035,-0.000023,-0.000029,-0.000035,-0.000023]
 
+        GammaList =  [-0.000045,-0.000052,-0.000037,-0.000045,-0.000052,-0.000037,-0.000045,-0.000052,-0.000037]
 
-        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"))
+        Kij = util.get_matrix_numpy(eb, "Kij_hbsoc")
+
+        Bridge_Factor = 0.75
+
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"), Kij, "HbSoBl_BPen", Bridge_Factor)
         MChM.one_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
 
 #       ##############################################################################
