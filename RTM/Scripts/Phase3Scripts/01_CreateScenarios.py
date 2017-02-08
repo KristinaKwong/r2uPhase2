@@ -68,63 +68,26 @@ class InputSettings(_m.Tool()):
         self.attribute_code(pmscen, "@lanespm", "@vdfpm", "@tpfpm", "@hdwypm", "@tollpm")
 
     def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr, toll_attr):
-        net_calc = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
+        util = _m.Modeller().tool("translink.util")
         create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
         delete_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.delete_extra_attribute")
 
-        lane_spec = {
-            "type": "NETWORK_CALCULATION",
-            "result": "lanes",
-            "expression": lane_attr,
-            "aggregation": None,
-            "selections": {
-                "link": "all"
-            }
-        }
-        net_calc(lane_spec, scen, False)
+        util.emme_link_calc(scen, "lanes", lane_attr)
         delete_attr("@lanesam", scen)
         delete_attr("@lanesmd", scen)
         delete_attr("@lanespm", scen)
 
-        vdf_spec = {
-            "type": "NETWORK_CALCULATION",
-            "result": "vdf",
-            "expression": vdf_attr,
-            "aggregation": None,
-            "selections": {
-                "link": "all"
-            }
-        }
-        net_calc(vdf_spec, scen, False)
+        util.emme_link_calc(scen, "vdf", vdf_attr)
         delete_attr("@vdfam", scen)
         delete_attr("@vdfmd", scen)
         delete_attr("@vdfpm", scen)
 
-        tpf_spec = {
-            "type": "NETWORK_CALCULATION",
-            "result": "tpf",
-            "expression": tpf_attr,
-            "aggregation": None,
-            "selections": {
-                "incoming_link": "all",
-                "outgoing_link": "all"
-            }
-        }
-        net_calc(tpf_spec, scen, False)
+        util.emme_turn_calc(scen, "tpf", tpf_attr)
         delete_attr("@tpfam", scen)
         delete_attr("@tpfmd", scen)
         delete_attr("@tpfpm", scen)
 
-        hdw_spec = {
-            "type": "NETWORK_CALCULATION",
-            "result": "hdw",
-            "expression": hdw_attr,
-            "aggregation": None,
-            "selections": {
-                "transit_line": "all"
-            }
-        }
-        net_calc(hdw_spec, scen, False)
+        util.emme_tline_calc(scen, "hdw", hdw_attr)
 
         mod_calc = _m.Modeller().tool("inro.emme.data.network.base.change_link_modes")
         mod_calc(modes="v",
@@ -140,16 +103,7 @@ class InputSettings(_m.Tool()):
         delete_attr("@hdwypm", scen)
 
         create_attr("LINK", "@tolls", "Link Toll Value ($)", 0, False, scen)
-        toll_spec = {
-            "type": "NETWORK_CALCULATION",
-            "result": "@tolls",
-            "expression": toll_attr,
-            "aggregation": None,
-            "selections": {
-                "link": "all"
-            }
-        }
-        net_calc(toll_spec, scen, False)
+        util.emme_link_calc(scen, "@tolls", toll_attr)
         delete_attr("@tollam", scen)
         delete_attr("@tollmd", scen)
         delete_attr("@tollpm", scen)
