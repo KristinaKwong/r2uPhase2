@@ -873,41 +873,41 @@ class HbWork(_m.Tool()):
        ##       Calculate peak hour O-D person trips and final 24 hour P-A Trips
       ##########################################################################################
       ## SOV Trips      #SOV*PA_Factor + SOV_transpose*AP_Factor
-        SOVI1_AM = SOVI1*Auto_PM_Fct_PA + SOVI1.transpose()*Auto_PM_Fct_AP  # Low Income
+        SOVI1_AM = SOVI1*Auto_AM_Fct_PA + SOVI1.transpose()*Auto_AM_Fct_AP  # Low Income
         SOVI1_MD = SOVI1*Auto_MD_Fct_PA + SOVI1.transpose()*Auto_MD_Fct_AP
         SOVI1_PM = SOVI1*Auto_PM_Fct_PA + SOVI1.transpose()*Auto_PM_Fct_AP
 
-        SOVI2_AM = SOVI2*Auto_PM_Fct_PA + SOVI2.transpose()*Auto_PM_Fct_AP  # Med Income
+        SOVI2_AM = SOVI2*Auto_AM_Fct_PA + SOVI2.transpose()*Auto_AM_Fct_AP  # Med Income
         SOVI2_MD = SOVI2*Auto_MD_Fct_PA + SOVI2.transpose()*Auto_MD_Fct_AP
         SOVI2_PM = SOVI2*Auto_PM_Fct_PA + SOVI2.transpose()*Auto_PM_Fct_AP
 
-        SOVI3_AM = SOVI3*Auto_PM_Fct_PA + SOVI3.transpose()*Auto_PM_Fct_AP  # High Income
+        SOVI3_AM = SOVI3*Auto_AM_Fct_PA + SOVI3.transpose()*Auto_AM_Fct_AP  # High Income
         SOVI3_MD = SOVI3*Auto_MD_Fct_PA + SOVI3.transpose()*Auto_MD_Fct_AP
         SOVI3_PM = SOVI3*Auto_PM_Fct_PA + SOVI3.transpose()*Auto_PM_Fct_AP
 
         ## HOV2 Trips
-        HV2I1_AM = HV2I1*Auto_PM_Fct_PA + HV2I1.transpose()*Auto_PM_Fct_AP # Low Income
+        HV2I1_AM = HV2I1*Auto_AM_Fct_PA + HV2I1.transpose()*Auto_AM_Fct_AP # Low Income
         HV2I1_MD = HV2I1*Auto_MD_Fct_PA + HV2I1.transpose()*Auto_MD_Fct_AP
         HV2I1_PM = HV2I1*Auto_PM_Fct_PA + HV2I1.transpose()*Auto_PM_Fct_AP
 
-        HV2I2_AM = HV2I2*Auto_PM_Fct_PA + HV2I2.transpose()*Auto_PM_Fct_AP # Med Income
+        HV2I2_AM = HV2I2*Auto_AM_Fct_PA + HV2I2.transpose()*Auto_AM_Fct_AP # Med Income
         HV2I2_MD = HV2I2*Auto_MD_Fct_PA + HV2I2.transpose()*Auto_MD_Fct_AP
         HV2I2_PM = HV2I2*Auto_PM_Fct_PA + HV2I2.transpose()*Auto_PM_Fct_AP
 
-        HV2I3_AM = HV2I3*Auto_PM_Fct_PA + HV2I3.transpose()*Auto_PM_Fct_AP # High Income
+        HV2I3_AM = HV2I3*Auto_AM_Fct_PA + HV2I3.transpose()*Auto_AM_Fct_AP # High Income
         HV2I3_MD = HV2I3*Auto_MD_Fct_PA + HV2I3.transpose()*Auto_MD_Fct_AP
         HV2I3_PM = HV2I3*Auto_PM_Fct_PA + HV2I3.transpose()*Auto_PM_Fct_AP
 
         ## HOV3 Trips
-        HV3I1_AM = HV3I1*Auto_PM_Fct_PA + HV3I1.transpose()*Auto_PM_Fct_AP# Low Income
+        HV3I1_AM = HV3I1*Auto_AM_Fct_PA + HV3I1.transpose()*Auto_AM_Fct_AP# Low Income
         HV3I1_MD = HV3I1*Auto_MD_Fct_PA + HV3I1.transpose()*Auto_MD_Fct_AP
         HV3I1_PM = HV3I1*Auto_PM_Fct_PA + HV3I1.transpose()*Auto_PM_Fct_AP
 
-        HV3I2_AM = HV3I2*Auto_PM_Fct_PA + HV3I2.transpose()*Auto_PM_Fct_AP# Med Income
+        HV3I2_AM = HV3I2*Auto_AM_Fct_PA + HV3I2.transpose()*Auto_AM_Fct_AP# Med Income
         HV3I2_MD = HV3I2*Auto_MD_Fct_PA + HV3I2.transpose()*Auto_MD_Fct_AP
         HV3I2_PM = HV3I2*Auto_PM_Fct_PA + HV3I2.transpose()*Auto_PM_Fct_AP
 
-        HV3I3_AM = HV3I3*Auto_PM_Fct_PA + HV3I3.transpose()*Auto_PM_Fct_AP# High Income
+        HV3I3_AM = HV3I3*Auto_AM_Fct_PA + HV3I3.transpose()*Auto_AM_Fct_AP# High Income
         HV3I3_MD = HV3I3*Auto_MD_Fct_PA + HV3I3.transpose()*Auto_MD_Fct_AP
         HV3I3_PM = HV3I3*Auto_PM_Fct_PA + HV3I3.transpose()*Auto_PM_Fct_AP
 
@@ -935,38 +935,38 @@ class HbWork(_m.Tool()):
         ## Park and Ride Trips
 
         # Bus PnR Trips Auto leg by income and TOD
-        SOV_BAu_I1_AM = SOV_BAu_I1*Auto_PM_Fct_PA + SOV_BAu_I1.transpose()*Auto_PM_Fct_AP
+        SOV_BAu_I1_AM = SOV_BAu_I1*Auto_AM_Fct_PA + SOV_BAu_I1.transpose()*Auto_AM_Fct_AP
         SOV_BAu_I1_MD = SOV_BAu_I1*Auto_MD_Fct_PA + SOV_BAu_I1.transpose()*Auto_MD_Fct_AP
         SOV_BAu_I1_PM = SOV_BAu_I1*Auto_PM_Fct_PA + SOV_BAu_I1.transpose()*Auto_PM_Fct_AP
 
-        SOV_BAu_I2_AM = SOV_BAu_I2*Auto_PM_Fct_PA + SOV_BAu_I2.transpose()*Auto_PM_Fct_AP
+        SOV_BAu_I2_AM = SOV_BAu_I2*Auto_AM_Fct_PA + SOV_BAu_I2.transpose()*Auto_AM_Fct_AP
         SOV_BAu_I2_MD = SOV_BAu_I2*Auto_MD_Fct_PA + SOV_BAu_I2.transpose()*Auto_MD_Fct_AP
         SOV_BAu_I2_PM = SOV_BAu_I2*Auto_PM_Fct_PA + SOV_BAu_I2.transpose()*Auto_PM_Fct_AP
 
-        SOV_BAu_I3_AM = SOV_BAu_I3*Auto_PM_Fct_PA + SOV_BAu_I3.transpose()*Auto_PM_Fct_AP
+        SOV_BAu_I3_AM = SOV_BAu_I3*Auto_AM_Fct_PA + SOV_BAu_I3.transpose()*Auto_AM_Fct_AP
         SOV_BAu_I3_MD = SOV_BAu_I3*Auto_MD_Fct_PA + SOV_BAu_I3.transpose()*Auto_MD_Fct_AP
         SOV_BAu_I3_PM = SOV_BAu_I3*Auto_PM_Fct_PA + SOV_BAu_I3.transpose()*Auto_PM_Fct_AP
 
         # Bus PnR Trips Transit leg
-        Bus_BAu_AM = Bus_BAu*Auto_PM_Fct_PA + Bus_BAu.transpose()*Auto_PM_Fct_AP
+        Bus_BAu_AM = Bus_BAu*Auto_AM_Fct_PA + Bus_BAu.transpose()*Auto_AM_Fct_AP
         Bus_BAu_MD = Bus_BAu*Auto_MD_Fct_PA + Bus_BAu.transpose()*Auto_MD_Fct_AP
         Bus_BAu_PM = Bus_BAu*Auto_PM_Fct_PA + Bus_BAu.transpose()*Auto_PM_Fct_AP
 
         # Rail PnR Trips Auto Leg by income and TOD
-        SOV_RAu_I1_AM = SOV_RAu_I1*Auto_PM_Fct_PA + SOV_RAu_I1.transpose()*Auto_PM_Fct_AP
+        SOV_RAu_I1_AM = SOV_RAu_I1*Auto_AM_Fct_PA + SOV_RAu_I1.transpose()*Auto_AM_Fct_AP
         SOV_RAu_I1_MD = SOV_RAu_I1*Auto_MD_Fct_PA + SOV_RAu_I1.transpose()*Auto_MD_Fct_AP
         SOV_RAu_I1_PM = SOV_RAu_I1*Auto_PM_Fct_PA + SOV_RAu_I1.transpose()*Auto_PM_Fct_AP
 
-        SOV_RAu_I2_AM = SOV_RAu_I2*Auto_PM_Fct_PA + SOV_RAu_I2.transpose()*Auto_PM_Fct_AP
+        SOV_RAu_I2_AM = SOV_RAu_I2*Auto_AM_Fct_PA + SOV_RAu_I2.transpose()*Auto_AM_Fct_AP
         SOV_RAu_I2_MD = SOV_RAu_I2*Auto_MD_Fct_PA + SOV_RAu_I2.transpose()*Auto_MD_Fct_AP
         SOV_RAu_I2_PM = SOV_RAu_I2*Auto_PM_Fct_PA + SOV_RAu_I2.transpose()*Auto_PM_Fct_AP
 
-        SOV_RAu_I3_AM = SOV_RAu_I3*Auto_PM_Fct_PA + SOV_RAu_I3.transpose()*Auto_PM_Fct_AP
+        SOV_RAu_I3_AM = SOV_RAu_I3*Auto_AM_Fct_PA + SOV_RAu_I3.transpose()*Auto_AM_Fct_AP
         SOV_RAu_I3_MD = SOV_RAu_I3*Auto_MD_Fct_PA + SOV_RAu_I3.transpose()*Auto_MD_Fct_AP
         SOV_RAu_I3_PM = SOV_RAu_I3*Auto_PM_Fct_PA + SOV_RAu_I3.transpose()*Auto_PM_Fct_AP
 
         # Rail PnR Transit Leg
-        Ral_RAu_AM = Ral_RAu*Auto_PM_Fct_PA + Ral_RAu.transpose()*Auto_PM_Fct_AP
+        Ral_RAu_AM = Ral_RAu*Auto_AM_Fct_PA + Ral_RAu.transpose()*Auto_AM_Fct_AP
         Ral_RAu_MD = Ral_RAu*Auto_MD_Fct_PA + Ral_RAu.transpose()*Auto_MD_Fct_AP
         Ral_RAu_PM = Ral_RAu*Auto_PM_Fct_PA + Ral_RAu.transpose()*Auto_PM_Fct_AP
 
