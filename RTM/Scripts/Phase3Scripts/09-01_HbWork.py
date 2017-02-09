@@ -736,13 +736,13 @@ class HbWork(_m.Tool()):
         df_mats['IX'] = np.where(df_mats['Gb_P']==df_mats['Gb_A'], 'I', 'X')
 
         # Auto factors return a  multi-dimensional array, the other modes return a scalar
-        Auto_AM_Fct_PA = MChM.ts_mat(df_mats, ts_uw, min_val, 'hbw', 'AM', 'PtoA', NoTAZ)
-        Auto_MD_Fct_PA = MChM.ts_mat(df_mats, ts_uw, min_val, 'hbw', 'MD', 'PtoA', NoTAZ)
-        Auto_PM_Fct_PA = MChM.ts_mat(df_mats, ts_uw, min_val, 'hbw', 'PM', 'PtoA', NoTAZ)
+        Auto_AM_Fct_PA = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'AM', 'PtoA', NoTAZ)
+        Auto_MD_Fct_PA = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'MD', 'PtoA', NoTAZ)
+        Auto_PM_Fct_PA = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'PM', 'PtoA', NoTAZ)
 
-        Auto_AM_Fct_AP = MChM.ts_mat(df_mats, ts_uw, min_val, 'hbw', 'AM', 'AtoP', NoTAZ)
-        Auto_MD_Fct_AP = MChM.ts_mat(df_mats, ts_uw, min_val, 'hbw', 'MD', 'AtoP', NoTAZ)
-        Auto_PM_Fct_AP = MChM.ts_mat(df_mats, ts_uw, min_val, 'hbw', 'PM', 'AtoP', NoTAZ)
+        Auto_AM_Fct_AP = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'AM', 'AtoP', NoTAZ)
+        Auto_MD_Fct_AP = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'MD', 'AtoP', NoTAZ)
+        Auto_PM_Fct_AP = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'PM', 'AtoP', NoTAZ)
 
         del df_mats
 
