@@ -517,7 +517,7 @@ class DataGeneration(_m.Tool()):
     def assignAON(self, sc):
         util = _m.Modeller().tool("translink.util")
         eb = sc.emmebank
-        # calculate initial fixed costs to ul3
+        # calculate fixed link opcosts based on SOV travel
         auto_voc = eb.matrix("msautoOpCost").data
         util.emme_link_calc(sc, "@sovoc", "length * %s" % (auto_voc))
         util.initmat(eb, "mf91", "distAON", "All or nothing initial distance skim", )
