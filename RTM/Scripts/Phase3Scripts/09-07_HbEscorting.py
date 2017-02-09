@@ -318,12 +318,32 @@ class HbEscorting(_m.Tool()):
         min_val=0.000143
         purp='hbesc'
 
-        Auto_AM_Fct_PA, Auto_AM_Fct_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Auto',peakperiod='AM', geo='A',minimum_value=min_val)
-        Auto_AM_Fct_PA, Auto_AM_Fct_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Auto',peakperiod='AM', geo='A',minimum_value=min_val)
-        Auto_MD_Fct_PA, Auto_MD_Fct_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Auto',peakperiod='MD', geo='A',minimum_value=min_val)
-        Auto_MD_Fct_PA, Auto_MD_Fct_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Auto',peakperiod='MD', geo='A',minimum_value=min_val)
-        Auto_PM_Fct_PA, Auto_PM_Fct_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Auto',peakperiod='PM', geo='A',minimum_value=min_val)
-        Auto_PM_Fct_PA, Auto_PM_Fct_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Auto',peakperiod='PM', geo='A',minimum_value=min_val)
+        db_loc = util.get_eb_path(eb)
+        db_path = os.path.join(db_loc, 'rtm.db')
+        conn = sqlite3.connect(db_path)
+
+        # setup for hbw auto time slice matrices
+        ij = util.get_pd_ij_df(eb)
+        gb = pd.read_sql("SELECT TAZ1700 as TAZ, gb FROM ensembles", conn)
+        ts_uw = pd.read_sql("SELECT * FROM timeSlicingFactorsGb", conn)
+        conn.close()
+
+        # build basic ij mat with gb for production end and internal or external gb for attraction
+        df_mats = pd.merge(ij, gb, how='left', left_on='i', right_on = 'TAZ')
+        df_mats.drop('TAZ', axis=1, inplace=True)
+        df_mats.rename(columns={'gb': 'Gb_P'}, inplace=True)
+        df_mats = pd.merge(df_mats, gb, how='left', left_on='j', right_on = 'TAZ')
+        df_mats.drop('TAZ', axis=1, inplace=True)
+        df_mats.rename(columns={'gb': 'Gb_A'}, inplace=True)
+        df_mats['IX'] = np.where(df_mats['Gb_P']==df_mats['Gb_A'], 'I', 'X')
+
+        Auto_AM_Fct_PA = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'AM', 'PtoA', NoTAZ)
+        Auto_MD_Fct_PA = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'MD', 'PtoA', NoTAZ)
+        Auto_PM_Fct_PA = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'PM', 'PtoA', NoTAZ)
+
+        Auto_AM_Fct_AP = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'AM', 'AtoP', NoTAZ)
+        Auto_MD_Fct_AP = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'MD', 'AtoP', NoTAZ)
+        Auto_PM_Fct_AP = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'PM', 'AtoP', NoTAZ)
 
         Tran_AM_Fct_PA, Tran_AM_Fct_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='AM', geo='A',minimum_value=min_val)
         Tran_AM_Fct_PA, Tran_AM_Fct_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='AM', geo='A',minimum_value=min_val)
