@@ -9,7 +9,6 @@ import inro.emme as _emme
 import traceback as _traceback
 import os
 import shutil
-import sqlite3
 import pandas as pd
 
 class InitEmmebank(_m.Tool()):
@@ -260,14 +259,10 @@ class InitEmmebank(_m.Tool()):
         # get zone list into numpy
         # update with numpy helper if it's available
         df = pd.DataFrame({"TAZ1741": eb.matrix("mozoneindex").get_numpy_data()})
-        # set location for database creation
-        db_file_path = os.path.join(util.get_eb_path(eb), "rtm.db")
-        # connect to database (created automatically upon connection)
-        conn = sqlite3.connect(db_file_path)
+
+        conn = util.get_rtm_db(eb)
         df.to_sql(name="taz_index", con=conn, flavor="sqlite",index = False, if_exists="replace")
         conn.close()
-
-
 
     def initfunctions(self, eb):
         eb.create_function("fd01", "length * 60 / 40")
