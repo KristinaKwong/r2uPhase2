@@ -9,6 +9,7 @@ import inro.modeller as _m
 import os
 import csv as csv
 
+import sqlite3
 import pandas as pd
 
 class Util(_m.Tool()):
@@ -147,6 +148,10 @@ class Util(_m.Tool()):
         eb -- The emmebank to be queried
         """
         return os.path.join(os.path.dirname(eb.path), "Inputs")
+
+    def get_rtm_db(self, eb):
+        db_file = os.path.join(self.get_eb_path(eb), "rtm.db")
+        return sqlite3.connect(db_file)
 
     @_m.logbook_trace("Export Matrices to CSV file", save_arguments=True)
     def export_csv(self, eb, list_of_matrices, output_file):

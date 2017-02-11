@@ -10,12 +10,17 @@ import os
 
 class ExportNetwork(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
+    scens = _m.Attribute(list)
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
         pb.title = "Translink Utility Toolbox"
         pb.description = "Export an Emme Network"
         pb.branding_text = "TransLink"
+
+        pb.add_select_scenario(tool_attribute_name="scens",
+                        title="Scenarios to Export:",
+                        note="Each scenario will be output as text files.")
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
@@ -24,16 +29,14 @@ class ExportNetwork(_m.Tool()):
 
     def run(self):
         try:
-            self.__call__()
+            self.__call__(self.scens)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    def __call__(self):
-        self.export(1000)
-        self.export(2000)
-        self.export(3000)
-        self.export(4000)
+    def __call__(self, scens):
+        for s in scens:
+            self.export(s.number)
 
     def export(self, scen_id):
         util = _m.Modeller().tool("translink.util")
