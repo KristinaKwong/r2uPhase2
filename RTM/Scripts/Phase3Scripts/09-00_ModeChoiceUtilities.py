@@ -286,4 +286,5 @@ class ModeChoiceUtilities(_m.Tool()):
         dfa = pd.merge(df, fac_sub, how='left', left_on = ['Gb_P','IX'], right_on = ['Gb_P','IX'], suffixes=('','fac'))
         dfa['shares'].fillna(min_val, inplace = True)
         mat = dfa['shares'].values.reshape(notaz,notaz)
+        del dfa
         return mat

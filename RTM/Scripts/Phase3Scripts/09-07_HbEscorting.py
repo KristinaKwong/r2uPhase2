@@ -604,6 +604,8 @@ class HbEscorting(_m.Tool()):
         df_gy.to_sql(name='phr_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
         conn.close()
 
+        del Auto_AM_Fct_PA, Auto_MD_Fct_PA, Auto_PM_Fct_PA, Auto_AM_Fct_AP, Auto_MD_Fct_AP, Auto_PM_Fct_AP
+
     def Calc_Prob(self, eb, Dict, Logsum, Th):
         util = _m.Modeller().tool("translink.util")
 

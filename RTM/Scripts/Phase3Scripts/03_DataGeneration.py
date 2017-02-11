@@ -55,8 +55,8 @@ class DataGeneration(_m.Tool()):
             # auto_assign = _m.Modeller().tool("translink.RTM3.stage3.autoassignment")
             # auto_assign(am_scen, md_scen, pm_scen)
 
-            # transit_assign = _m.Modeller().tool("translink.RTM3.stage3.transitassignment")
-            # transit_assign(eb, am_scen, md_scen, pm_scen)
+            transit_assign = _m.Modeller().tool("translink.RTM3.stage3.transitassignment")
+            transit_assign(eb, am_scen, md_scen, pm_scen)
 
         self.calc_all_accessibilities(eb)
 
