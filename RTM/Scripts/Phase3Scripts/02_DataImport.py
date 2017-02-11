@@ -70,10 +70,13 @@ class DataImport(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
         model_year = int(util.get_year(eb))
 
+        self.matrix_batchins(eb)
         self.init_scalars(eb)
         self.import_vectors(eb, demographics_file, geographics_file)
 
         self.init_seeds(eb, horizon_year=model_year)
+        self.starter_skims(eb)
+
 
     @_m.logbook_trace("Initializing Scalar Matrices")
     def init_scalars(self, eb):
@@ -140,11 +143,11 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms353", "wceTRANSprcpNwk", "wce transfer perception nonwork", 0)
         util.initmat(eb, "ms354", "wceBOARDSprcpNwk", "wce boarding perception nonwork", 0)
 
-##      Park and Ride Drive time perception factor
+        ##      Park and Ride Drive time perception factor
         util.initmat(eb, "ms360", "pr_auto_time_prcp", "Park and Ride Drive time perception factor", 1.2)
 
 
-##      Batch in Blending Factors
+        ##      Batch in Blending Factors
 
         util.initmat(eb, "ms400", "HbWBl_AM_P-A", "HbW Blend AM P-A Factor", 0.391751)
         util.initmat(eb, "ms401", "HbWBl_MD_P-A", "HbW Blend MD P-A Factor", 0.116333)
@@ -436,3 +439,367 @@ class DataImport(_m.Tool()):
         data_path = os.path.join(proj_path, "BaseNetworks", "Kij_Factors.in")
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
+
+    @_m.logbook_trace("Importing Starter Skims for Warm Start")
+    def starter_skims(self, eb):
+
+        util = _m.Modeller().tool("translink.util")
+        NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
+        project = _m.Modeller().desktop.project
+        proj_path = os.path.dirname(project.path)
+
+        skimData = os.path.join(proj_path, "BaseNetworks", "starter_skims.csv.gz")
+        df = pd.read_csv(skimData, compression = 'gzip')
+
+        # Set auto skims based on SOV VOT skims
+        # AM
+        util.set_matrix_numpy(eb, "mfAmSovOpCstVOT1", df['AmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmSovTimeVOT1", df['AmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmSovTollVOT1", df['AmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmSovOpCstVOT2", df['AmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmSovTimeVOT2", df['AmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmSovTollVOT2", df['AmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmSovOpCstVOT3", df['AmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmSovTimeVOT3", df['AmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmSovTollVOT3", df['AmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmSovOpCstVOT4", df['AmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmSovTimeVOT4", df['AmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmSovTollVOT4", df['AmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmHovOpCstVOT1",  df['AmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmHovTimeVOT1",  df['AmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmHovTollVOT1",  df['AmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmHovOpCstVOT2", df['AmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmHovTimeVOT2", df['AmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmHovTollVOT2", df['AmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmHovOpCstVOT3", df['AmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmHovTimeVOT3", df['AmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmHovTollVOT3", df['AmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmHovOpCstVOT4", df['AmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmHovTimeVOT4", df['AmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmHovTollVOT4", df['AmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmLgvOpCst", df['AmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmLgvTime", df['AmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmLgvToll", df['AmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmHgvOpCst", df['AmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmHgvTime", df['AmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmHgvToll", df['AmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        # MD
+        util.set_matrix_numpy(eb, "mfMdSovOpCstVOT1", df['MdAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdSovTimeVOT1", df['MdAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdSovTollVOT1", df['MdAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdSovOpCstVOT2", df['MdAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdSovTimeVOT2", df['MdAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdSovTollVOT2", df['MdAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdSovOpCstVOT3", df['MdAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdSovTimeVOT3", df['MdAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdSovTollVOT3", df['MdAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdSovOpCstVOT4", df['MdAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdSovTimeVOT4", df['MdAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdSovTollVOT4", df['MdAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdHovOpCstVOT1",  df['MdAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdHovTimeVOT1",  df['MdAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdHovTollVOT1",  df['MdAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdHovOpCstVOT2", df['MdAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdHovTimeVOT2", df['MdAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdHovTollVOT2", df['MdAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdHovOpCstVOT3", df['MdAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdHovTimeVOT3", df['MdAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdHovTollVOT3", df['MdAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdHovOpCstVOT4", df['MdAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdHovTimeVOT4", df['MdAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdHovTollVOT4", df['MdAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdLgvOpCst", df['MdAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdLgvTime", df['MdAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdLgvToll", df['MdAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdHgvOpCst", df['MdAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdHgvTime", df['MdAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdHgvToll", df['MdAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        # PM
+        util.set_matrix_numpy(eb, "mfPmSovOpCstVOT1", df['PmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmSovTimeVOT1", df['PmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmSovTollVOT1", df['PmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmSovOpCstVOT2", df['PmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmSovTimeVOT2", df['PmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmSovTollVOT2", df['PmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmSovOpCstVOT3", df['PmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmSovTimeVOT3", df['PmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmSovTollVOT3", df['PmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmSovOpCstVOT4", df['PmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmSovTimeVOT4", df['PmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmSovTollVOT4", df['PmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmHovOpCstVOT1",  df['PmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmHovTimeVOT1",  df['PmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmHovTollVOT1",  df['PmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmHovOpCstVOT2", df['PmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmHovTimeVOT2", df['PmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmHovTollVOT2", df['PmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmHovOpCstVOT3", df['PmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmHovTimeVOT3", df['PmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmHovTollVOT3", df['PmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmHovOpCstVOT4", df['PmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmHovTimeVOT4", df['PmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmHovTollVOT4", df['PmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmLgvOpCst", df['PmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmLgvTime", df['PmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmLgvToll", df['PmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmHgvOpCst", df['PmAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmHgvTime", df['PmAutoTime'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmHgvToll", df['PmAutoToll'].values.reshape(NoTAZ, NoTAZ))
+
+        #####################
+        # Bus
+        #####################
+        # AM
+        util.set_matrix_numpy(eb, "mfAmBusIvtt", df['AmBusIvtt'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmBusWait", df['AmBusWait'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmBusAux",  df['AmBusAux'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmBusBoard", df['AmBusBoard'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmBusFare", df['AmBusFare'].values.reshape(NoTAZ, NoTAZ))
+        # MD
+        util.set_matrix_numpy(eb, "mfMdBusIvtt", df['MdBusIvtt'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdBusWait", df['MdBusWait'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdBusAux",  df['MdBusAux'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdBusBoard", df['MdBusBoard'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdBusFare", df['MdBusFare'].values.reshape(NoTAZ, NoTAZ))
+        # PM
+        util.set_matrix_numpy(eb, "mfPmBusIvtt", df['PmBusIvtt'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmBusWait", df['PmBusWait'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmBusAux",  df['PmBusAux'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmBusBoard", df['PmBusBoard'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmBusFare", df['PmBusFare'].values.reshape(NoTAZ, NoTAZ))
+
+        #####################
+        # Rail
+        #####################
+        # AM
+        util.set_matrix_numpy(eb, "mfAmRailIvtt", df['AmRailIvtt'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmRailIvttBus", df['AmRailIvttBus'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmRailWait", df['AmRailWait'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmRailAux", df['AmRailAux'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmRailBoard", df['AmRailBoard'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmRailFare", df['AmRailFare'].values.reshape(NoTAZ, NoTAZ))
+        # MD
+        util.set_matrix_numpy(eb, "mfMdRailIvtt", df['MdRailIvtt'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdRailIvttBus", df['MdRailIvttBus'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdRailWait", df['MdRailWait'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdRailAux", df['MdRailAux'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdRailBoard", df['MdRailBoard'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdRailFare", df['MdRailFare'].values.reshape(NoTAZ, NoTAZ))
+        # PM
+        util.set_matrix_numpy(eb, "mfPmRailIvtt", df['PmRailIvtt'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmRailIvttBus", df['PmRailIvttBus'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmRailWait", df['PmRailWait'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmRailAux", df['PmRailAux'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmRailBoard", df['PmRailBoard'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmRailFare", df['PmRailFare'].values.reshape(NoTAZ, NoTAZ))
+
+        #####################
+        # WCE
+        #####################
+        # AM
+        util.set_matrix_numpy(eb, "mfAmWceIvtt", df['AmWceIvtt'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmWceIvttRail", df['AmWceIvttRail'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmWceIvttBus", df['AmWceIvttBus'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmWceWait", df['AmWceWait'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmWceAux", df['AmWceAux'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmWceBoard", df['AmWceBoard'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfAmWceFare",  df['AmWceFare'].values.reshape(NoTAZ, NoTAZ))
+        # MD
+        util.set_matrix_numpy(eb, "mfMdWceIvtt", df['MdWceIvtt'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdWceIvttRail", df['MdWceIvttRail'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdWceIvttBus", df['MdWceIvttBus'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdWceWait", df['MdWceWait'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdWceAux", df['MdWceAux'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdWceBoard", df['MdWceBoard'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfMdWceFare",  df['MdWceFare'].values.reshape(NoTAZ, NoTAZ))
+        # PM
+        util.set_matrix_numpy(eb, "mfPmWceIvtt", df['PmWceIvtt'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmWceIvttRail", df['PmWceIvttRail'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmWceIvttBus", df['PmWceIvttBus'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmWceWait", df['PmWceWait'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmWceAux", df['PmWceAux'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmWceBoard", df['PmWceBoard'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfPmWceFare",  df['PmWceFare'].values.reshape(NoTAZ, NoTAZ))
+
+        del df
+
+    @_m.logbook_trace("Matrix Batchins")
+    def matrix_batchins(self, eb):
+        util = _m.Modeller().tool("translink.util")
+
+
+        ########################################################################
+        # skim matrices
+        ########################################################################
+
+        #####################
+        # Auto
+        #####################
+        # AM
+        util.initmat(eb, "mf5000", "AmSovOpCstVOT1", "Am Sov VOT1 Op Cost", 0)
+        util.initmat(eb, "mf5001", "AmSovTimeVOT1", "Am Sov VOT1 Time", 0)
+        util.initmat(eb, "mf5002", "AmSovTollVOT1", "Am Sov VOT1 Toll", 0)
+        util.initmat(eb, "mf5003", "AmSovOpCstVOT2", "Am Sov VOT2 Op Cost", 0)
+        util.initmat(eb, "mf5004", "AmSovTimeVOT2", "Am Sov VOT2 Time", 0)
+        util.initmat(eb, "mf5005", "AmSovTollVOT2", "Am Sov VOT2 Toll", 0)
+        util.initmat(eb, "mf5006", "AmSovOpCstVOT3", "Am Sov VOT3 Op Cost", 0)
+        util.initmat(eb, "mf5007", "AmSovTimeVOT3", "Am Sov VOT3 Time", 0)
+        util.initmat(eb, "mf5008", "AmSovTollVOT3", "Am Sov VOT3 Toll", 0)
+        util.initmat(eb, "mf5009", "AmSovOpCstVOT4", "Am Sov VOT4 Op Cost", 0)
+        util.initmat(eb, "mf5010", "AmSovTimeVOT4", "Am Sov VOT4 Time", 0)
+        util.initmat(eb, "mf5011", "AmSovTollVOT4", "Am Sov VOT4 Toll", 0)
+        util.initmat(eb, "mf5012", "AmHovOpCstVOT1", "Am Hov VOT1 Op Cost", 0)
+        util.initmat(eb, "mf5013", "AmHovTimeVOT1", "Am Hov VOT1 Time", 0)
+        util.initmat(eb, "mf5014", "AmHovTollVOT1", "Am Hov VOT1 Toll", 0)
+        util.initmat(eb, "mf5015", "AmHovOpCstVOT2", "Am Hov VOT2 Op Cost", 0)
+        util.initmat(eb, "mf5016", "AmHovTimeVOT2", "Am Hov VOT2 Time", 0)
+        util.initmat(eb, "mf5017", "AmHovTollVOT2", "Am Hov VOT2 Toll", 0)
+        util.initmat(eb, "mf5018", "AmHovOpCstVOT3", "Am Hov VOT3 Op Cost", 0)
+        util.initmat(eb, "mf5019", "AmHovTimeVOT3", "Am Hov VOT3 Time", 0)
+        util.initmat(eb, "mf5020", "AmHovTollVOT3", "Am Hov VOT3 Toll", 0)
+        util.initmat(eb, "mf5021", "AmHovOpCstVOT4", "Am Hov VOT4 Op Cost", 0)
+        util.initmat(eb, "mf5022", "AmHovTimeVOT4", "Am Hov VOT4 Time", 0)
+        util.initmat(eb, "mf5023", "AmHovTollVOT4", "Am Hov VOT4 Toll", 0)
+        util.initmat(eb, "mf5024", "AmLgvOpCst", "Am LGV Op Cost", 0)
+        util.initmat(eb, "mf5025", "AmLgvTime", "Am LGV Time", 0)
+        util.initmat(eb, "mf5026", "AmLgvToll", "Am LGV Toll", 0)
+        util.initmat(eb, "mf5027", "AmHgvOpCst", "Am HGV Op Cost", 0)
+        util.initmat(eb, "mf5028", "AmHgvTime", "Am HGV Time", 0)
+        util.initmat(eb, "mf5029", "AmHgvToll", "Am HGV Toll", 0)
+        # MD
+        util.initmat(eb, "mf5030", "MdSovOpCstVOT1", "Md Sov VOT1 Op Cost", 0)
+        util.initmat(eb, "mf5031", "MdSovTimeVOT1", "Md Sov VOT1 Time", 0)
+        util.initmat(eb, "mf5032", "MdSovTollVOT1", "Md Sov VOT1 Toll", 0)
+        util.initmat(eb, "mf5033", "MdSovOpCstVOT2", "Md Sov VOT2 Op Cost", 0)
+        util.initmat(eb, "mf5034", "MdSovTimeVOT2", "Md Sov VOT2 Time", 0)
+        util.initmat(eb, "mf5035", "MdSovTollVOT2", "Md Sov VOT2 Toll", 0)
+        util.initmat(eb, "mf5036", "MdSovOpCstVOT3", "Md Sov VOT3 Op Cost", 0)
+        util.initmat(eb, "mf5037", "MdSovTimeVOT3", "Md Sov VOT3 Time", 0)
+        util.initmat(eb, "mf5038", "MdSovTollVOT3", "Md Sov VOT3 Toll", 0)
+        util.initmat(eb, "mf5039", "MdSovOpCstVOT4", "Md Sov VOT4 Op Cost", 0)
+        util.initmat(eb, "mf5040", "MdSovTimeVOT4", "Md Sov VOT4 Time", 0)
+        util.initmat(eb, "mf5041", "MdSovTollVOT4", "Md Sov VOT4 Toll", 0)
+        util.initmat(eb, "mf5042", "MdHovOpCstVOT1", "Md Hov VOT1 Op Cost", 0)
+        util.initmat(eb, "mf5043", "MdHovTimeVOT1", "Md Hov VOT1 Time", 0)
+        util.initmat(eb, "mf5044", "MdHovTollVOT1", "Md Hov VOT1 Toll", 0)
+        util.initmat(eb, "mf5045", "MdHovOpCstVOT2", "Md Hov VOT2 Op Cost", 0)
+        util.initmat(eb, "mf5046", "MdHovTimeVOT2", "Md Hov VOT2 Time", 0)
+        util.initmat(eb, "mf5047", "MdHovTollVOT2", "Md Hov VOT2 Toll", 0)
+        util.initmat(eb, "mf5048", "MdHovOpCstVOT3", "Md Hov VOT3 Op Cost", 0)
+        util.initmat(eb, "mf5049", "MdHovTimeVOT3", "Md Hov VOT3 Time", 0)
+        util.initmat(eb, "mf5050", "MdHovTollVOT3", "Md Hov VOT3 Toll", 0)
+        util.initmat(eb, "mf5051", "MdHovOpCstVOT4", "Md Hov VOT4 Op Cost", 0)
+        util.initmat(eb, "mf5052", "MdHovTimeVOT4", "Md Hov VOT4 Time", 0)
+        util.initmat(eb, "mf5053", "MdHovTollVOT4", "Md Hov VOT4 Toll", 0)
+        util.initmat(eb, "mf5054", "MdLgvOpCst", "Md LGV Op Cost", 0)
+        util.initmat(eb, "mf5055", "MdLgvTime", "Md LGV Time", 0)
+        util.initmat(eb, "mf5056", "MdLgvToll", "Md LGV Toll", 0)
+        util.initmat(eb, "mf5057", "MdHgvOpCst", "Md HGV Op Cost", 0)
+        util.initmat(eb, "mf5058", "MdHgvTime", "Md HGV Time", 0)
+        util.initmat(eb, "mf5059", "MdHgvToll", "Md HGV Toll", 0)
+        # PM
+        util.initmat(eb, "mf5060", "PmSovOpCstVOT1", "Pm Sov VOT1 Op Cost", 0)
+        util.initmat(eb, "mf5061", "PmSovTimeVOT1", "Pm Sov VOT1 Time", 0)
+        util.initmat(eb, "mf5062", "PmSovTollVOT1", "Pm Sov VOT1 Toll", 0)
+        util.initmat(eb, "mf5063", "PmSovOpCstVOT2", "Pm Sov VOT2 Op Cost", 0)
+        util.initmat(eb, "mf5064", "PmSovTimeVOT2", "Pm Sov VOT2 Time", 0)
+        util.initmat(eb, "mf5065", "PmSovTollVOT2", "Pm Sov VOT2 Toll", 0)
+        util.initmat(eb, "mf5066", "PmSovOpCstVOT3", "Pm Sov VOT3 Op Cost", 0)
+        util.initmat(eb, "mf5067", "PmSovTimeVOT3", "Pm Sov VOT3 Time", 0)
+        util.initmat(eb, "mf5068", "PmSovTollVOT3", "Pm Sov VOT3 Toll", 0)
+        util.initmat(eb, "mf5069", "PmSovOpCstVOT4", "Pm Sov VOT4 Op Cost", 0)
+        util.initmat(eb, "mf5070", "PmSovTimeVOT4", "Pm Sov VOT4 Time", 0)
+        util.initmat(eb, "mf5071", "PmSovTollVOT4", "Pm Sov VOT4 Toll", 0)
+        util.initmat(eb, "mf5072", "PmHovOpCstVOT1", "Pm Hov VOT1 Op Cost", 0)
+        util.initmat(eb, "mf5073", "PmHovTimeVOT1", "Pm Hov VOT1 Time", 0)
+        util.initmat(eb, "mf5074", "PmHovTollVOT1", "Pm Hov VOT1 Toll", 0)
+        util.initmat(eb, "mf5075", "PmHovOpCstVOT2", "Pm Hov VOT2 Op Cost", 0)
+        util.initmat(eb, "mf5076", "PmHovTimeVOT2", "Pm Hov VOT2 Time", 0)
+        util.initmat(eb, "mf5077", "PmHovTollVOT2", "Pm Hov VOT2 Toll", 0)
+        util.initmat(eb, "mf5078", "PmHovOpCstVOT3", "Pm Hov VOT3 Op Cost", 0)
+        util.initmat(eb, "mf5079", "PmHovTimeVOT3", "Pm Hov VOT3 Time", 0)
+        util.initmat(eb, "mf5080", "PmHovTollVOT3", "Pm Hov VOT3 Toll", 0)
+        util.initmat(eb, "mf5081", "PmHovOpCstVOT4", "Pm Hov VOT4 Op Cost", 0)
+        util.initmat(eb, "mf5082", "PmHovTimeVOT4", "Pm Hov VOT4 Time", 0)
+        util.initmat(eb, "mf5083", "PmHovTollVOT4", "Pm Hov VOT4 Toll", 0)
+        util.initmat(eb, "mf5084", "PmLgvOpCst", "Pm LGV Op Cost", 0)
+        util.initmat(eb, "mf5085", "PmLgvTime", "Pm LGV Time", 0)
+        util.initmat(eb, "mf5086", "PmLgvToll", "Pm LGV Toll", 0)
+        util.initmat(eb, "mf5087", "PmHgvOpCst", "Pm HGV Op Cost", 0)
+        util.initmat(eb, "mf5088", "PmHgvTime", "Pm HGV Time", 0)
+        util.initmat(eb, "mf5089", "PmHgvToll", "Pm HGV Toll", 0)
+
+        #####################
+        # Bus
+        #####################
+        # AM
+        util.initmat(eb, "mf5300", "AmBusIvtt", "Am Bus InVehicle Time", 0)
+        util.initmat(eb, "mf5301", "AmBusWait", "Am Bus Waiting Time", 0)
+        util.initmat(eb, "mf5302", "AmBusAux", "Am Bus Auxillary Time", 0)
+        util.initmat(eb, "mf5303", "AmBusBoard", "Am Bus Boardings", 0)
+        util.initmat(eb, "mf5304", "AmBusFare", "Am Bus Fare", 0)
+        # MD
+        util.initmat(eb, "mf5310", "MdBusIvtt", "Md Bus InVehicle Time", 0)
+        util.initmat(eb, "mf5311", "MdBusWait", "Md Bus Waiting Time", 0)
+        util.initmat(eb, "mf5312", "MdBusAux", "Md Bus Auxillary Time", 0)
+        util.initmat(eb, "mf5313", "MdBusBoard", "Md Bus Boardings", 0)
+        util.initmat(eb, "mf5314", "MdBusFare", "Md Bus Fare", 0)
+        # PM
+        util.initmat(eb, "mf5320", "PmBusIvtt", "Pm Bus InVehicle Time", 0)
+        util.initmat(eb, "mf5321", "PmBusWait", "Pm Bus Waiting Time", 0)
+        util.initmat(eb, "mf5322", "PmBusAux", "Pm Bus Auxillary Time", 0)
+        util.initmat(eb, "mf5323", "PmBusBoard", "Pm Bus Boardings", 0)
+        util.initmat(eb, "mf5324", "PmBusFare", "Pm Bus Fare", 0)
+
+        #####################
+        # Rail
+        #####################
+        # AM
+        util.initmat(eb, "mf5500", "AmRailIvtt", "Am Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5501", "AmRailIvttBus", "Am Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5502", "AmRailWait", "Am Rail Waiting Time", 0)
+        util.initmat(eb, "mf5503", "AmRailAux", "Am Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5504", "AmRailBoard", "Am Rail Boardings", 0)
+        util.initmat(eb, "mf5505", "AmRailFare", "Am Rail Fare", 0)
+        # MD
+        util.initmat(eb, "mf5510", "MdRailIvtt", "Md Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5511", "MdRailIvttBus", "Md Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5512", "MdRailWait", "Md Rail Waiting Time", 0)
+        util.initmat(eb, "mf5513", "MdRailAux", "Md Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5514", "MdRailBoard", "Md Rail Boardings", 0)
+        util.initmat(eb, "mf5515", "MdRailFare", "Md Rail Fare", 0)
+        # PM
+        util.initmat(eb, "mf5520", "PmRailIvtt", "Pm Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5521", "PmRailIvttBus", "Pm Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5522", "PmRailWait", "Pm Rail Waiting Time", 0)
+        util.initmat(eb, "mf5523", "PmRailAux", "Pm Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5524", "PmRailBoard", "Pm Rail Boardings", 0)
+        util.initmat(eb, "mf5525", "PmRailFare", "Pm Rail Fare", 0)
+
+        #####################
+        # WCE
+        #####################
+        # AM
+        util.initmat(eb, "mf5700", "AmWceIvtt", "Am Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5701", "AmWceIvttRail", "Am Rail Invehicle Time on Rail", 0)
+        util.initmat(eb, "mf5702", "AmWceIvttBus", "Am Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5703", "AmWceWait", "Am Rail Waiting Time", 0)
+        util.initmat(eb, "mf5704", "AmWceAux", "Am Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5705", "AmWceBoard", "Am Rail Boardings", 0)
+        util.initmat(eb, "mf5706", "AmWceFare", "Am Rail Fare", 0)
+        # MD
+        util.initmat(eb, "mf5710", "MdWceIvtt", "Md Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5711", "MdWceIvttRail", "Md Rail Invehicle Time on Rail", 0)
+        util.initmat(eb, "mf5712", "MdWceIvttBus", "Md Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5713", "MdWceWait", "Md Rail Waiting Time", 0)
+        util.initmat(eb, "mf5714", "MdWceAux", "Md Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5715", "MdWceBoard", "Md Rail Boardings", 0)
+        util.initmat(eb, "mf5716", "MdWceFare", "Md Rail Fare", 0)
+        # PM
+        util.initmat(eb, "mf5720", "PmWceIvtt", "Pm Rail Invehicle Time", 0)
+        util.initmat(eb, "mf5721", "PmWceIvttRail", "Pm Rail Invehicle Time on Rail", 0)
+        util.initmat(eb, "mf5722", "PmWceIvttBus", "Pm Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf5723", "PmWceWait", "Pm Rail Waiting Time", 0)
+        util.initmat(eb, "mf5724", "PmWceAux", "Pm Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf5725", "PmWceBoard", "Pm Rail Boardings", 0)
+        util.initmat(eb, "mf5726", "PmWceFare", "Pm Rail Fare", 0)
