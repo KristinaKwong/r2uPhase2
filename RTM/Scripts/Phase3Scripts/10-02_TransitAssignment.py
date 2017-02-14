@@ -248,7 +248,7 @@ class TransitAssignment(_m.Tool()):
             },
             "journey_levels": [],
             "performance_settings": {
-                "number_of_processors": self.num_processors
+                "number_of_processors": 1
             },
             "type": "EXTENDED_TRANSIT_ASSIGNMENT"
         }
