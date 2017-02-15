@@ -727,49 +727,28 @@ class HbWork(_m.Tool()):
         del df_mats
 
         Tran_AM_Fct_N_PA, Tran_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='AM', geo='N',minimum_value=min_val)
-        Tran_AM_Fct_N_PA, Tran_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='AM', geo='N',minimum_value=min_val)
         Tran_MD_Fct_N_PA, Tran_MD_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='MD', geo='N',minimum_value=min_val)
-        Tran_MD_Fct_N_PA, Tran_MD_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='MD', geo='N',minimum_value=min_val)
-        Tran_PM_Fct_N_PA, Tran_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='PM', geo='N',minimum_value=min_val)
         Tran_PM_Fct_N_PA, Tran_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='PM', geo='N',minimum_value=min_val)
 
         Acti_AM_Fct_N_PA, Acti_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='AM', geo='N',minimum_value=min_val)
-        Acti_AM_Fct_N_PA, Acti_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='AM', geo='N',minimum_value=min_val)
-        Acti_MD_Fct_N_PA, Acti_MD_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='MD', geo='N',minimum_value=min_val)
         Acti_MD_Fct_N_PA, Acti_MD_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='MD', geo='N',minimum_value=min_val)
         Acti_PM_Fct_N_PA, Acti_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='PM', geo='N',minimum_value=min_val)
-        Acti_PM_Fct_N_PA, Acti_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='PM', geo='N',minimum_value=min_val)
-
 
         WCE_AM_Fct_N_PA, WCE_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='AM', geo='N',minimum_value=0)
-        WCE_AM_Fct_N_PA, WCE_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='AM', geo='N',minimum_value=0)
-        WCE_PM_Fct_N_PA, WCE_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='PM', geo='N',minimum_value=0)
         WCE_PM_Fct_N_PA, WCE_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='PM', geo='N',minimum_value=0)
 
-
-
-        Tran_AM_Fct_S_PA, Tran_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='AM', geo='S',minimum_value=min_val)
         Tran_AM_Fct_S_PA, Tran_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='AM', geo='S',minimum_value=min_val)
         Tran_MD_Fct_S_PA, Tran_MD_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='MD', geo='S',minimum_value=min_val)
-        Tran_MD_Fct_S_PA, Tran_MD_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='MD', geo='S',minimum_value=min_val)
-        Tran_PM_Fct_S_PA, Tran_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='PM', geo='S',minimum_value=min_val)
         Tran_PM_Fct_S_PA, Tran_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='PM', geo='S',minimum_value=min_val)
 
         Acti_AM_Fct_S_PA, Acti_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='AM', geo='S',minimum_value=min_val)
-        Acti_AM_Fct_S_PA, Acti_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='AM', geo='S',minimum_value=min_val)
         Acti_MD_Fct_S_PA, Acti_MD_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='MD', geo='S',minimum_value=min_val)
-        Acti_MD_Fct_S_PA, Acti_MD_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='MD', geo='S',minimum_value=min_val)
-        Acti_PM_Fct_S_PA, Acti_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='PM', geo='S',minimum_value=min_val)
         Acti_PM_Fct_S_PA, Acti_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='PM', geo='S',minimum_value=min_val)
 
         WCE_AM_Fct_S_PA, WCE_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='AM', geo='S',minimum_value=0)
-        WCE_AM_Fct_S_PA, WCE_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='AM', geo='S',minimum_value=0)
         WCE_PM_Fct_S_PA, WCE_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='PM', geo='S',minimum_value=0)
-        WCE_PM_Fct_S_PA, WCE_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='PM', geo='S',minimum_value=0)
-
 
         Gy_P = util.get_matrix_numpy(eb, 'gy_ensem')  + np.zeros((1, 1741))
-
 
         Tran_AM_Fct = np.array([np.where(Gy_P<8, Tran_AM_Fct_N_PA, Tran_AM_Fct_S_PA), np.where(Gy_P<8, Tran_AM_Fct_N_AP, Tran_AM_Fct_S_AP)])
         Tran_MD_Fct = np.array([np.where(Gy_P<8, Tran_MD_Fct_N_PA, Tran_MD_Fct_S_PA), np.where(Gy_P<8, Tran_MD_Fct_N_AP, Tran_MD_Fct_S_AP)])
