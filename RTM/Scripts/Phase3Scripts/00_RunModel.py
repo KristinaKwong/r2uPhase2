@@ -164,27 +164,12 @@ class FullModelRun(_m.Tool()):
 
     def run_one_cycle(self, eb):
         util = _m.Modeller().tool("translink.util")
-        blended_skims = _m.Modeller().tool("translink.RTM3.stage2.blendedskims")
-        td_mode_choice_hbw = _m.Modeller().tool("translink.RTM3.stage2.hbwork")
-        td_mode_choice_hbu = _m.Modeller().tool("translink.RTM3.stage2.hbuniv")
-        td_mode_choice_hbsc = _m.Modeller().tool("translink.RTM3.stage2.hbschool")
-        td_mode_choice_hbsh = _m.Modeller().tool("translink.RTM3.stage2.hbshop")
-        td_mode_choice_hbpb = _m.Modeller().tool("translink.RTM3.stage2.hbperbus")
-        td_mode_choice_hbso = _m.Modeller().tool("translink.RTM3.stage2.hbsocial")
-        td_mode_choice_hbes = _m.Modeller().tool("translink.RTM3.stage2.hbescorting")
-        td_mode_choice_nhbw = _m.Modeller().tool("translink.RTM3.stage2.nhbwork")
-        td_mode_choice_nhbo = _m.Modeller().tool("translink.RTM3.stage2.nhbother")
 
+        blended_skims = _m.Modeller().tool("translink.RTM3.stage2.blendedskims")
         blended_skims(eb)
-        td_mode_choice_hbw(eb)
-        td_mode_choice_hbu(eb)
-        td_mode_choice_hbsc(eb)
-        td_mode_choice_hbsh(eb)
-        td_mode_choice_hbpb(eb)
-        td_mode_choice_hbso(eb)
-        td_mode_choice_hbes(eb)
-        td_mode_choice_nhbw(eb)
-        td_mode_choice_nhbo(eb)
+
+        mode_choice = _m.Modeller().tool("translink.RTM3.stage2.modechoice")
+        mode_choice(eb)
 
         am_scen = eb.scenario(int(eb.matrix("ms2").data))
         md_scen = eb.scenario(int(eb.matrix("ms3").data))
