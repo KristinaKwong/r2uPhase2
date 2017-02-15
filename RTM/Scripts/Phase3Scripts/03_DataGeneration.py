@@ -8,7 +8,6 @@ import inro.modeller as _m
 
 import traceback as _traceback
 import os
-import sqlite3
 import numpy as np
 import pandas as pd
 
@@ -83,9 +82,7 @@ class DataGeneration(_m.Tool()):
     	FROM taz_index ti
     	LEFT JOIN dummies du on du.TAZ1700 = ti.TAZ1741
     	"""
-    	db_loc = util.get_eb_path(eb)
-    	db_path = os.path.join(db_loc, 'rtm.db')
-    	conn = sqlite3.connect(db_path)
+    	conn = util.get_rtm_db(eb)
     	df = pd.read_sql(sql, conn)
     	conn.close()
 
@@ -143,9 +140,7 @@ class DataGeneration(_m.Tool()):
     	util.set_matrix_numpy(eb, 'modistTcLn', ij_dist['dist_tc_ln'].values)
 
     	# write data to sqlite database
-    	db_loc = util.get_eb_path(eb)
-    	db_path = os.path.join(db_loc, 'rtm.db')
-    	conn = sqlite3.connect(db_path)
+    	conn = util.get_rtm_db(eb)
 
     	# read existing accessibilities table from db and append with this data set
     	df = pd.read_sql("select * from accessibilities", conn)
@@ -181,9 +176,7 @@ class DataGeneration(_m.Tool()):
             ti.TAZ1741
         """
 
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
+        conn = util.get_rtm_db(eb)
         emp = pd.read_sql(emp_sql, conn)
         conn.close()
 
@@ -349,9 +342,7 @@ class DataGeneration(_m.Tool()):
 
     	# establish connection to db and write out data
     	# note, this table is created in transit accessibilities method and expanded with the methods
-    	db_loc = util.get_eb_path(eb)
-    	db_path = os.path.join(db_loc, 'rtm.db')
-    	conn = sqlite3.connect(db_path)
+    	conn = util.get_rtm_db(eb)
     	ij_acc.to_sql(name='accessibilities', con=conn, flavor='sqlite', index=False, if_exists='replace')
     	conn.close()
 
@@ -379,9 +370,7 @@ class DataGeneration(_m.Tool()):
             ti.TAZ1741
         """
 
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
+        conn = util.get_rtm_db(eb)
         emp = pd.read_sql(emp_sql, conn)
         conn.close()
 
@@ -426,9 +415,7 @@ class DataGeneration(_m.Tool()):
 
     	# establish connection to db and write out data
     	# note, this table is created in transit accessibilities method and expanded with the other accessibilities methods
-    	db_loc = util.get_eb_path(eb)
-    	db_path = os.path.join(db_loc, 'rtm.db')
-    	conn = sqlite3.connect(db_path)
+    	conn = util.get_rtm_db(eb)
 
     	# read existing accessibilities table from db and append with this data set
     	df = pd.read_sql("select * from accessibilities", conn)
@@ -506,9 +493,7 @@ class DataGeneration(_m.Tool()):
                columns=['TAZ1700','popdens','empdens','combinedens', 'popdensln','empdensln','combinedensln'])
 
         # write data to rtm sqlite database
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
+        conn = util.get_rtm_db(eb)
         df.to_sql(name='densities', con=conn, flavor='sqlite', index=False, if_exists='replace')
         conn.close()
 

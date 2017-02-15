@@ -454,11 +454,8 @@ class HbSoc(_m.Tool()):
         min_val=0.000143
         purp='hbsoc'
 
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
-
         # setup for hbw auto time slice matrices
+        conn = util.get_rtm_db(eb)
         ij = util.get_pd_ij_df(eb)
         gb = pd.read_sql("SELECT TAZ1700 as TAZ, gb FROM ensembles", conn)
         ts_uw = pd.read_sql("SELECT * FROM timeSlicingFactorsGb", conn)

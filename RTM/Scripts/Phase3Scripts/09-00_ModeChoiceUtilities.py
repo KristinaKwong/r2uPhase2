@@ -9,7 +9,6 @@ import csv
 import os
 import numpy as np
 import pandas as pd
-import sqlite3
 
 class ModeChoiceUtilities(_m.Tool()):
 
@@ -255,9 +254,7 @@ class ModeChoiceUtilities(_m.Tool()):
                                                                                                                           mde=mode,
                                                                                                                          peak=peakperiod,
                                                                                                                          g=geo)
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
+        conn = util.get_rtm_db(eb)
         ts_df = pd.read_sql(sql, conn)
         conn.close()
 

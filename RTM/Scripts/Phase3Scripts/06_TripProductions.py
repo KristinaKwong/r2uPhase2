@@ -7,7 +7,6 @@
 import inro.modeller as _m
 import csv
 import os
-import sqlite3
 import re
 from StringIO import StringIO
 import numpy as np
@@ -63,9 +62,7 @@ class TripProductions(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
 
         # acquire household level data
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
+        conn = util.get_rtm_db(eb)
         hh_df = pd.read_sql("SELECT * FROM segmentedHouseholds", conn)
         conn.close()
 
@@ -105,9 +102,7 @@ class TripProductions(_m.Tool()):
         hh_df = hh_df[['TAZ1741','HHSize','HHWorker','HHInc','HHAuto','CountHHs','hbw','hbesc','hbpb','hbsch','hbshop','hbsoc']]
 
         # write data to sqlite database
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
+        conn = util.get_rtm_db(eb)
         hh_df.to_sql(name='TripsHhPrds', con=conn, flavor='sqlite', index=False, if_exists='replace')
         ct_df.to_sql(name='TripsBalCts', con=conn, flavor='sqlite', index=False, if_exists='replace')
         conn.close()
@@ -178,9 +173,7 @@ class TripProductions(_m.Tool()):
             ORDER BY
                 ti.TAZ1741
             """
-            db_loc = util.get_eb_path(eb)
-            db_path = os.path.join(db_loc, 'rtm.db')
-            conn = sqlite3.connect(db_path)
+            conn = util.get_rtm_db(eb)
             taz_df = pd.read_sql(taz_sql, conn)
             conn.close()
 
@@ -274,9 +267,7 @@ class TripProductions(_m.Tool()):
         # export data to sqlite database
         df = df[['TAZ1741','hbu','nhbw','nhbo']]
 
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
+        conn = util.get_rtm_db(eb)
         df.to_sql(name='TripsTazPrds', con=conn, flavor='sqlite', index=False, if_exists='replace')
         ct_df.to_sql(name='TripsBalCts', con=conn, flavor='sqlite', index=False, if_exists='append')
         conn.close()
@@ -325,9 +316,7 @@ class TripProductions(_m.Tool()):
         ORDER BY
             ti.TAZ1741
         """
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
+        conn = util.get_rtm_db(eb)
         taz_df = pd.read_sql(taz_sql, conn)
         conn.close()
 

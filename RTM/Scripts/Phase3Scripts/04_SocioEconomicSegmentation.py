@@ -7,7 +7,6 @@
 import inro.modeller as _m
 import csv
 import os
-import sqlite3
 import re
 import numpy as np
 import pandas as pd
@@ -520,9 +519,7 @@ class SocioEconomicSegmentation(_m.Tool()):
         # move to long format
         output_df = pd.melt(output_df, id_vars = ['TAZ1741','HHSize','HHWorker'], var_name='HHInc', value_name='CountHHs')
 
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
+        conn = util.get_rtm_db(eb)
         output_df.to_sql(name='segmentedHouseholds', con=conn, flavor='sqlite', index=False, if_exists='replace')
         conn.close()
 
@@ -595,9 +592,7 @@ class SocioEconomicSegmentation(_m.Tool()):
 
         ORDER BY ti.TAZ1741
     	"""
-    	db_loc = util.get_eb_path(eb)
-    	db_path = os.path.join(db_loc, 'rtm.db')
-    	conn = sqlite3.connect(db_path)
+    	conn = util.get_rtm_db(eb)
     	df = pd.read_sql(sql, conn)
     	conn.close()
 

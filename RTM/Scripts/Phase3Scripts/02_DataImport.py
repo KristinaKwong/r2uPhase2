@@ -9,7 +9,6 @@ import inro.modeller as _m
 
 import traceback as _traceback
 import os
-import sqlite3
 import csv as csv
 
 
@@ -283,7 +282,6 @@ class DataImport(_m.Tool()):
 
         # set directory locations for csv files and sqlite db
         file_loc= util.get_input_path(eb)
-        db_loc = util.get_eb_path(eb)
 
         # point to csv input files
         demo_file = demographics_file
@@ -302,8 +300,8 @@ class DataImport(_m.Tool()):
         util.read_csv_momd(eb, dummy_file)
 
         # setup connection to sqlite database
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
+        conn = util.get_rtm_db(eb)
+
         # read csvs and export to sqlite database
 
         # demographics
