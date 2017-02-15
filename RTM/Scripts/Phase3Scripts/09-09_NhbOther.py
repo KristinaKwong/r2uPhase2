@@ -9,7 +9,6 @@ import csv
 import os
 import numpy as np
 import pandas as pd
-import sqlite3
 
 class Non_hbwork(_m.Tool()):
 
@@ -462,11 +461,7 @@ class Non_hbwork(_m.Tool()):
         df_gy = pd.concat([df_AM_Gy, df_MD_Gy, df_PM_Gy])
 
         ## Dump to SQLite DB
-
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'trip_summaries.db')
-        conn = sqlite3.connect(db_path)
-
+        conn = util.get_db_byname(eb, "trip_summaries.db")
         df_summary.to_sql(name='phr_summary', con=conn, flavor='sqlite', index=False, if_exists='append')
         df_gy.to_sql(name='phr_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
         conn.close()

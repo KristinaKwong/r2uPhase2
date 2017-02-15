@@ -153,6 +153,10 @@ class Util(_m.Tool()):
         db_file = os.path.join(self.get_eb_path(eb), "rtm.db")
         return sqlite3.connect(db_file)
 
+    def get_db_byname(self, eb, db_name):
+        db_file = os.path.join(self.get_eb_path(eb), db_name)
+        return sqlite3.connect(db_file)
+
     @_m.logbook_trace("Export Matrices to CSV file", save_arguments=True)
     def export_csv(self, eb, list_of_matrices, output_file):
         """Write individual mo/md matrices including a descriptive header in csv format.
