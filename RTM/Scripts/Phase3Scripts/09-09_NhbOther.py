@@ -1,7 +1,7 @@
 ##---------------------------------------------------------------------
 ##--TransLink Phase 3.0 Regional Transportation Model
 ##--
-##--Path: translink.emme.xxxx
+##--Path: translink.RTM3.stage2.nhbother
 ##--Purpose:
 ##---------------------------------------------------------------------
 import inro.modeller as _m
@@ -10,30 +10,16 @@ import os
 import numpy as np
 import pandas as pd
 import sqlite3
-import traceback as _traceback
 
 class Non_hbwork(_m.Tool()):
-
-    ##Global attribute for Tool Run Message (successful/not successful)
-    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
         pb.title = "Non-home Base Other"
         pb.description = "Calculate non-home base other trips by mode and time of day"
         pb.branding_text = "TransLink"
-        if self.tool_run_msg:
-            pb.add_html(self.tool_run_msg)
-
+        pb.runnable = False
         return pb.render()
-
-    def run(self):
-        self.tool_run_msg = ""
-        try:
-            self.__call__(_m.Modeller().emmebank)
-            self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
-        except Exception, e:
-            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Run Non-home base other")
     def __call__(self, eb):
