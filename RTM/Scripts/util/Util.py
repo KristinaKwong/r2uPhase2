@@ -260,6 +260,21 @@ class Util(_m.Tool()):
 
         mat.set_numpy_data(np_arr)
 
+    def add_matrix_numpy(self, eb, mat_id, np_arr):
+        """Add the numpy array to EMME matrix data. Useful for running sums.
+
+        Data input to Origin (mo) matrices will be reshaped as needed in case
+        the numpy array has additional dimensions.
+
+        Arguments:
+        eb -- the emmebank containing the matrix data
+        mat_id -- a string matrix identifier (msXX, moXX, mdXX, mfXX)
+        np_arr -- the numpy array containing data to be added to the given matrix
+        """
+        mat = self.get_matrix_numpy(eb, mat_id)
+        mat += np_arr
+        self.set_matrix_numpy(eb, mat_id, mat)
+
     def get_pd_ij_df(self, eb):
         index_row = self.get_matrix_numpy(eb, "mozoneindex", reshape=False)
         # create a column version of the row array

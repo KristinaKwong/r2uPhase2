@@ -1138,88 +1138,88 @@ class HbWork(_m.Tool()):
 
        # SOV
        # AM
-        self.set_pkhr_mats(eb, SOVI1_AM, "SOV_pertrp_VOT_3_Am")
-        self.set_pkhr_mats(eb, SOVI2_AM, "SOV_pertrp_VOT_4_Am")
-        self.set_pkhr_mats(eb, SOVI3_AM, "SOV_pertrp_VOT_4_Am")
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_3_Am", SOVI1_AM)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_4_Am", SOVI2_AM)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_4_Am", SOVI3_AM)
         # MD
-        self.set_pkhr_mats(eb, SOVI1_MD, "SOV_pertrp_VOT_3_Md")
-        self.set_pkhr_mats(eb, SOVI2_MD, "SOV_pertrp_VOT_4_Md")
-        self.set_pkhr_mats(eb, SOVI3_MD, "SOV_pertrp_VOT_4_Md")
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_3_Md", SOVI1_MD)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_4_Md", SOVI2_MD)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_4_Md", SOVI3_MD)
         # PM
-        self.set_pkhr_mats(eb, SOVI1_PM, "SOV_pertrp_VOT_3_Pm")
-        self.set_pkhr_mats(eb, SOVI2_PM, "SOV_pertrp_VOT_4_Pm")
-        self.set_pkhr_mats(eb, SOVI3_PM, "SOV_pertrp_VOT_4_Pm")
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_3_Pm", SOVI1_PM)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_4_Pm", SOVI2_PM)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_4_Pm", SOVI3_PM)
 
         # HOV
         # AM
-        self.set_pkhr_mats(eb, HOVI1_AM, "HOV_pertrp_VOT_3_Am")
-        self.set_pkhr_mats(eb, HOVI2_AM, "HOV_pertrp_VOT_4_Am")
-        self.set_pkhr_mats(eb, HOVI3_AM, "HOV_pertrp_VOT_4_Am")
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_3_Am", HOVI1_AM)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_4_Am", HOVI2_AM)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_4_Am", HOVI3_AM)
         # MD
-        self.set_pkhr_mats(eb, HOVI1_MD, "HOV_pertrp_VOT_3_Md")
-        self.set_pkhr_mats(eb, HOVI2_MD, "HOV_pertrp_VOT_4_Md")
-        self.set_pkhr_mats(eb, HOVI3_MD, "HOV_pertrp_VOT_4_Md")
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_3_Md", HOVI1_MD)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_4_Md", HOVI2_MD)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_4_Md", HOVI3_MD)
         # PM
-        self.set_pkhr_mats(eb, HOVI1_PM, "HOV_pertrp_VOT_3_Pm")
-        self.set_pkhr_mats(eb, HOVI2_PM, "HOV_pertrp_VOT_4_Pm")
-        self.set_pkhr_mats(eb, HOVI3_PM, "HOV_pertrp_VOT_4_Pm")
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_3_Pm", HOVI1_PM)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_4_Pm", HOVI2_PM)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_4_Pm", HOVI3_PM)
 
         # Transit
         # AM
-        self.set_pkhr_mats(eb, Bus_AM, "busAm")
-        self.set_pkhr_mats(eb, Rail_AM, "railAm")
-        self.set_pkhr_mats(eb, WCE_AM, "WCEAm")
+        util.add_matrix_numpy(eb, "busAm", Bus_AM)
+        util.add_matrix_numpy(eb, "railAm", Rail_AM)
+        util.add_matrix_numpy(eb, "WCEAm", WCE_AM)
         # MD
-        self.set_pkhr_mats(eb, Bus_MD, "busMd")
-        self.set_pkhr_mats(eb, Rail_MD, "railMd")
+        util.add_matrix_numpy(eb, "busMd", Bus_MD)
+        util.add_matrix_numpy(eb, "railMd", Rail_MD)
 
         # PM
-        self.set_pkhr_mats(eb, Bus_PM, "busPm")
-        self.set_pkhr_mats(eb, Rail_PM, "railPm")
-        self.set_pkhr_mats(eb, WCE_PM, "WCEPm")
+        util.add_matrix_numpy(eb, "busPm", Bus_PM)
+        util.add_matrix_numpy(eb, "railPm", Rail_PM)
+        util.add_matrix_numpy(eb, "WCEPm", WCE_PM)
 
         # Active
         # AM
-        self.set_pkhr_mats(eb, Walk_AM, "Wk_pertrp_Am")
-        self.set_pkhr_mats(eb, Bike_AM, "Bk_pertrp_Am")
+        util.add_matrix_numpy(eb, "Wk_pertrp_Am", Walk_AM)
+        util.add_matrix_numpy(eb, "Bk_pertrp_Am", Bike_AM)
 
         # MD
-        self.set_pkhr_mats(eb, Walk_MD, "Wk_pertrp_Md")
-        self.set_pkhr_mats(eb, Bike_MD, "Bk_pertrp_Md")
+        util.add_matrix_numpy(eb, "Wk_pertrp_Md", Walk_MD)
+        util.add_matrix_numpy(eb, "Bk_pertrp_Md", Bike_MD)
 
         # PM
-        self.set_pkhr_mats(eb, Walk_PM, "Wk_pertrp_Pm")
-        self.set_pkhr_mats(eb, Bike_PM, "Bk_pertrp_Pm")
+        util.add_matrix_numpy(eb, "Wk_pertrp_Pm", Walk_PM)
+        util.add_matrix_numpy(eb, "Bk_pertrp_Pm", Bike_PM)
 
         # Auto-driver
 
         # SOV
         # AM
-        self.set_pkhr_mats(eb, SOVI1_AM, "SOV_drvtrp_VOT_3_Am")
-        self.set_pkhr_mats(eb, SOVI2_AM, "SOV_drvtrp_VOT_4_Am")
-        self.set_pkhr_mats(eb, SOVI3_AM, "SOV_drvtrp_VOT_4_Am")
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Am", SOVI1_AM)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_4_Am", SOVI2_AM)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_4_Am", SOVI3_AM)
         # MD
-        self.set_pkhr_mats(eb, SOVI1_MD, "SOV_drvtrp_VOT_3_Md")
-        self.set_pkhr_mats(eb, SOVI2_MD, "SOV_drvtrp_VOT_4_Md")
-        self.set_pkhr_mats(eb, SOVI3_MD, "SOV_drvtrp_VOT_4_Md")
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Md", SOVI1_MD)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_4_Md", SOVI2_MD)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_4_Md", SOVI3_MD)
         # PM
-        self.set_pkhr_mats(eb, SOVI1_PM, "SOV_drvtrp_VOT_3_Pm")
-        self.set_pkhr_mats(eb, SOVI2_PM, "SOV_drvtrp_VOT_4_Pm")
-        self.set_pkhr_mats(eb, SOVI3_PM, "SOV_drvtrp_VOT_4_Pm")
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Pm", SOVI1_PM)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_4_Pm", SOVI2_PM)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_4_Pm", SOVI3_PM)
 
         # HOV
         # AM
-        self.set_pkhr_mats(eb, AuDr_HOVI1_AM, "HOV_drvtrp_VOT_3_Am")
-        self.set_pkhr_mats(eb, AuDr_HOVI2_AM, "HOV_drvtrp_VOT_4_Am")
-        self.set_pkhr_mats(eb, AuDr_HOVI3_AM, "HOV_drvtrp_VOT_4_Am")
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_3_Am", AuDr_HOVI1_AM)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_4_Am", AuDr_HOVI2_AM)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_4_Am", AuDr_HOVI3_AM)
         # MD
-        self.set_pkhr_mats(eb, AuDr_HOVI1_MD, "HOV_drvtrp_VOT_3_Md")
-        self.set_pkhr_mats(eb, AuDr_HOVI2_MD, "HOV_drvtrp_VOT_4_Md")
-        self.set_pkhr_mats(eb, AuDr_HOVI3_MD, "HOV_drvtrp_VOT_4_Md")
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_3_Md", AuDr_HOVI1_MD)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_4_Md", AuDr_HOVI2_MD)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_4_Md", AuDr_HOVI3_MD)
         # PM
-        self.set_pkhr_mats(eb, AuDr_HOVI1_PM, "HOV_drvtrp_VOT_3_Pm")
-        self.set_pkhr_mats(eb, AuDr_HOVI2_PM, "HOV_drvtrp_VOT_4_Pm")
-        self.set_pkhr_mats(eb, AuDr_HOVI3_PM, "HOV_drvtrp_VOT_4_Pm")
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_3_Pm", AuDr_HOVI1_PM)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_4_Pm", AuDr_HOVI2_PM)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_4_Pm", AuDr_HOVI3_PM)
 
         ## Dump demands to SQL Database
         # AM
@@ -1323,15 +1323,6 @@ class HbWork(_m.Tool()):
         DfTran = DfTran.fillna(0)
 
         return (DfAuto, DfTran)
-
-
-    def set_pkhr_mats(self, eb, MatVal, MatID):
-
-        util = _m.Modeller().tool("translink.util")
-        Value = util.get_matrix_numpy(eb, MatID)
-        Value += MatVal
-        util.set_matrix_numpy(eb, MatID, Value)
-
 
     @_m.logbook_trace("Initialize Matrices")
     def matrix_batchins(self, eb):
