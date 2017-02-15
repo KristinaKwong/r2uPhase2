@@ -5,10 +5,6 @@
 ##--Purpose:
 ##---------------------------------------------------------------------
 import inro.modeller as _m
-import csv
-import os
-import sqlite3
-import re
 import numpy as np
 import pandas as pd
 import traceback as _traceback
@@ -167,9 +163,7 @@ class VehicleAvailability(_m.Tool()):
         # convert to int
         df.HHAuto = df.HHAuto.astype(int)
 
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
+        conn = util.get_rtm_db(eb)
         df.to_sql(name='segmentedHouseholds', con=conn, flavor='sqlite', index=False, if_exists='replace')
         conn.close()
 
@@ -217,10 +211,7 @@ class VehicleAvailability(_m.Tool()):
           LEFT JOIN geographics g on g.TAZ1700 = ti.TAZ1741
         """
 
-
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
+        conn = util.get_rtm_db(eb)
         hh_df = pd.read_sql(hh_sql, conn)
         taz_df = pd.read_sql(taz_sql, conn)
         conn.close()

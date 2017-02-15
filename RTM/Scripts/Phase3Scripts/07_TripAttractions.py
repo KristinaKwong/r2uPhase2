@@ -5,10 +5,6 @@
 ##--Purpose:
 ##---------------------------------------------------------------------
 import inro.modeller as _m
-import csv
-import os
-import sqlite3
-import re
 from StringIO import StringIO
 import numpy as np
 import pandas as pd
@@ -227,9 +223,7 @@ class TripAttractions(_m.Tool()):
         ct_df_hbu.reset_index(inplace=True)
         ct_df_hbu.columns = ['purpose','control_total']
 
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
+        conn = util.get_rtm_db(eb)
         ct_df_hbu.to_sql(name='TripsBalCts', con=conn, flavor='sqlite', index=False, if_exists='append')
         prd_df = pd.read_sql("SELECT * FROM TripsTazPrds", conn)
         conn.close()
@@ -247,9 +241,7 @@ class TripAttractions(_m.Tool()):
         df = df[['TAZ1741','hbw','hbu','hbesc','hbpb','hbsch','hbshop','hbsoc','nhbw','nhbo']]
 
         # Write to sqlite
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
+        conn = util.get_rtm_db(eb)
         df.to_sql(name='TripsTazAtrs', con=conn, flavor='sqlite', index=False, if_exists='replace')
         prd_df.to_sql(name='TripsTazPrds', con=conn, flavor='sqlite', index=False, if_exists='replace')
         conn.close()
@@ -304,9 +296,7 @@ class TripAttractions(_m.Tool()):
             ORDER BY
                 ti.TAZ1741
         """
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
+        conn = util.get_rtm_db(eb)
         taz_df = pd.read_sql(taz_sql, conn)
         ct_df = pd.read_sql('SELECT * FROM TripsBalCts', conn)
         conn.close()

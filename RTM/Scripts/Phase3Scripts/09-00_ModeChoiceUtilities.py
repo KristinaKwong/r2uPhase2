@@ -1,19 +1,15 @@
 ##---------------------------------------------------------------------
 ##--TransLink Phase 3.0 Regional Transportation Model
 ##--
-##--Path: translink.emme.xxxx
+##--Path: translink.RTM3.stage2.modechoiceutils
 ##--Purpose:
 ##---------------------------------------------------------------------
 import inro.modeller as _m
 import csv
-import os
 import numpy as np
 import pandas as pd
-import sqlite3
-import traceback as _traceback
 
 class ModeChoiceUtilities(_m.Tool()):
-    tool_run_msg = ""
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
@@ -21,14 +17,10 @@ class ModeChoiceUtilities(_m.Tool()):
         pb.description = "Trip Distribution Model"
         pb.branding_text = "TransLink"
         pb.runnable = False
-
-        if self.tool_run_msg:
-            pb.add_html(self.tool_run_msg)
-
         return pb.render()
+
     def __call__(self):
         pass
-
 
     @_m.logbook_trace("Run origin constrained matrix balancing")
     def one_dim_matrix_balancing(self, eb, mo_list, md_list, impedance_list, output_demands):
@@ -261,9 +253,7 @@ class ModeChoiceUtilities(_m.Tool()):
                                                                                                                           mde=mode,
                                                                                                                          peak=peakperiod,
                                                                                                                          g=geo)
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'rtm.db')
-        conn = sqlite3.connect(db_path)
+        conn = util.get_rtm_db(eb)
         ts_df = pd.read_sql(sql, conn)
         conn.close()
 

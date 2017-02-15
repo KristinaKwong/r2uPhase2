@@ -153,6 +153,10 @@ class Util(_m.Tool()):
         db_file = os.path.join(self.get_eb_path(eb), "rtm.db")
         return sqlite3.connect(db_file)
 
+    def get_db_byname(self, eb, db_name):
+        db_file = os.path.join(self.get_eb_path(eb), db_name)
+        return sqlite3.connect(db_file)
+
     @_m.logbook_trace("Export Matrices to CSV file", save_arguments=True)
     def export_csv(self, eb, list_of_matrices, output_file):
         """Write individual mo/md matrices including a descriptive header in csv format.
@@ -259,6 +263,21 @@ class Util(_m.Tool()):
                 np_arr = np_arr.reshape(mat.get_numpy_data().shape)
 
         mat.set_numpy_data(np_arr)
+
+    def add_matrix_numpy(self, eb, mat_id, np_arr):
+        """Add the numpy array to EMME matrix data. Useful for running sums.
+
+        Data input to Origin (mo) matrices will be reshaped as needed in case
+        the numpy array has additional dimensions.
+
+        Arguments:
+        eb -- the emmebank containing the matrix data
+        mat_id -- a string matrix identifier (msXX, moXX, mdXX, mfXX)
+        np_arr -- the numpy array containing data to be added to the given matrix
+        """
+        mat = self.get_matrix_numpy(eb, mat_id)
+        mat += np_arr
+        self.set_matrix_numpy(eb, mat_id, mat)
 
     def get_pd_ij_df(self, eb):
         index_row = self.get_matrix_numpy(eb, "mozoneindex", reshape=False)

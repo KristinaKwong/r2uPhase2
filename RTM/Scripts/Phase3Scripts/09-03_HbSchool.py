@@ -1,39 +1,22 @@
 ##---------------------------------------------------------------------
 ##--TransLink Phase 3.0 Regional Transportation Model
 ##--
-##--Path: translink.emme.xxxx
+##--Path: translink.RTM3.stage2.hbschool
 ##--Purpose:
 ##---------------------------------------------------------------------
 import inro.modeller as _m
-import csv
-import os
 import numpy as np
 import pandas as pd
-import sqlite3
-import traceback as _traceback
 
 class HbSchool(_m.Tool()):
-
-    ##Global attribute for Tool Run Message (successful/not successful)
-    tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
         pb.title = "Home Base School"
         pb.description = "Calculate home base School person trips by mode and time of day"
         pb.branding_text = "TransLink"
-        if self.tool_run_msg:
-            pb.add_html(self.tool_run_msg)
-
+        pb.runnable = False
         return pb.render()
-
-    def run(self):
-        self.tool_run_msg = ""
-        try:
-            self.__call__(_m.Modeller().emmebank)
-            self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
-        except Exception, e:
-            self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Run Home Base School")
     def __call__(self, eb):
@@ -429,59 +412,59 @@ class HbSchool(_m.Tool()):
 
         # HOV
         # AM
-        self.set_pkhr_mats(eb, HOVI1_AM, "HOV_pertrp_VOT_1_Am")
-        self.set_pkhr_mats(eb, HOVI2_AM, "HOV_pertrp_VOT_1_Am")
-        self.set_pkhr_mats(eb, HOVI3_AM, "HOV_pertrp_VOT_1_Am")
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_1_Am", HOVI1_AM)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_1_Am", HOVI2_AM)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_1_Am", HOVI3_AM)
         # MD
-        self.set_pkhr_mats(eb, HOVI1_MD, "HOV_pertrp_VOT_1_Md")
-        self.set_pkhr_mats(eb, HOVI2_MD, "HOV_pertrp_VOT_1_Md")
-        self.set_pkhr_mats(eb, HOVI3_MD, "HOV_pertrp_VOT_1_Md")
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_1_Md", HOVI1_MD)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_1_Md", HOVI2_MD)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_1_Md", HOVI3_MD)
         # PM
-        self.set_pkhr_mats(eb, HOVI1_PM, "HOV_pertrp_VOT_1_Pm")
-        self.set_pkhr_mats(eb, HOVI2_PM, "HOV_pertrp_VOT_1_Pm")
-        self.set_pkhr_mats(eb, HOVI3_PM, "HOV_pertrp_VOT_1_Pm")
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_1_Pm", HOVI1_PM)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_1_Pm", HOVI2_PM)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_1_Pm", HOVI3_PM)
 
         # Transit
         # AM
-        self.set_pkhr_mats(eb, Bus_AM, "busAm")
-        self.set_pkhr_mats(eb, Rail_AM, "railAm")
+        util.add_matrix_numpy(eb, "busAm", Bus_AM)
+        util.add_matrix_numpy(eb, "railAm", Rail_AM)
 
         # MD
-        self.set_pkhr_mats(eb, Bus_MD, "busMd")
-        self.set_pkhr_mats(eb, Rail_MD, "railMd")
+        util.add_matrix_numpy(eb, "busMd", Bus_MD)
+        util.add_matrix_numpy(eb, "railMd", Rail_MD)
 
         # PM
-        self.set_pkhr_mats(eb, Bus_PM, "busPm")
-        self.set_pkhr_mats(eb, Rail_PM, "railPm")
+        util.add_matrix_numpy(eb, "busPm", Bus_PM)
+        util.add_matrix_numpy(eb, "railPm", Rail_PM)
 
 
         # Active
         # AM
-        self.set_pkhr_mats(eb, Walk_AM, "Wk_pertrp_Am")
-        self.set_pkhr_mats(eb, Bike_AM, "Bk_pertrp_Am")
+        util.add_matrix_numpy(eb, "Wk_pertrp_Am", Walk_AM)
+        util.add_matrix_numpy(eb, "Bk_pertrp_Am", Bike_AM)
 
         # MD
-        self.set_pkhr_mats(eb, Walk_MD, "Wk_pertrp_Md")
-        self.set_pkhr_mats(eb, Bike_MD, "Bk_pertrp_Md")
+        util.add_matrix_numpy(eb, "Wk_pertrp_Md", Walk_MD)
+        util.add_matrix_numpy(eb, "Bk_pertrp_Md", Bike_MD)
 
         # PM
-        self.set_pkhr_mats(eb, Walk_PM, "Wk_pertrp_Pm")
-        self.set_pkhr_mats(eb, Bike_PM, "Bk_pertrp_Pm")
+        util.add_matrix_numpy(eb, "Wk_pertrp_Pm", Walk_PM)
+        util.add_matrix_numpy(eb, "Bk_pertrp_Pm", Bike_PM)
 
         # Auto-driver
         # HOV
         # AM
-        self.set_pkhr_mats(eb, AuDr_HOVI1_AM, "HOV_drvtrp_VOT_1_Am")
-        self.set_pkhr_mats(eb, AuDr_HOVI2_AM, "HOV_drvtrp_VOT_1_Am")
-        self.set_pkhr_mats(eb, AuDr_HOVI3_AM, "HOV_drvtrp_VOT_1_Am")
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_1_Am", AuDr_HOVI1_AM)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_1_Am", AuDr_HOVI2_AM)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_1_Am", AuDr_HOVI3_AM)
         # MD
-        self.set_pkhr_mats(eb, AuDr_HOVI1_MD, "HOV_drvtrp_VOT_1_Md")
-        self.set_pkhr_mats(eb, AuDr_HOVI2_MD, "HOV_drvtrp_VOT_1_Md")
-        self.set_pkhr_mats(eb, AuDr_HOVI3_MD, "HOV_drvtrp_VOT_1_Md")
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_1_Md", AuDr_HOVI1_MD)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_1_Md", AuDr_HOVI2_MD)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_1_Md", AuDr_HOVI3_MD)
         # PM
-        self.set_pkhr_mats(eb, AuDr_HOVI1_PM, "HOV_drvtrp_VOT_1_Pm")
-        self.set_pkhr_mats(eb, AuDr_HOVI2_PM, "HOV_drvtrp_VOT_1_Pm")
-        self.set_pkhr_mats(eb, AuDr_HOVI3_PM, "HOV_drvtrp_VOT_1_Pm")
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_1_Pm", AuDr_HOVI1_PM)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_1_Pm", AuDr_HOVI2_PM)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_1_Pm", AuDr_HOVI3_PM)
 
         ## Dump demands to SQL Database
         # AM
@@ -536,11 +519,7 @@ class HbSchool(_m.Tool()):
         df_gy = pd.concat([df_AM_Gy, df_MD_Gy, df_PM_Gy])
 
         ## Dump to SQLite DB
-
-        db_loc = util.get_eb_path(eb)
-        db_path = os.path.join(db_loc, 'trip_summaries.db')
-        conn = sqlite3.connect(db_path)
-
+        conn = util.get_db_byname(eb, "trip_summaries.db")
         df_summary.to_sql(name='phr_summary', con=conn, flavor='sqlite', index=False, if_exists='append')
         df_gy.to_sql(name='phr_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
         conn.close()
@@ -585,15 +564,6 @@ class HbSchool(_m.Tool()):
         DfTran = DfTran.fillna(0)
 
         return (DfAuto, DfTran)
-
-
-
-    def set_pkhr_mats(self, eb, MatVal, MatID):
-
-        util = _m.Modeller().tool("translink.util")
-        Value = util.get_matrix_numpy(eb, MatID)
-        Value += MatVal
-        util.set_matrix_numpy(eb, MatID, Value)
 
     @_m.logbook_trace("Initialize Matrices")
     def matrix_batchins(self, eb):
