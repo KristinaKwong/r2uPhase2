@@ -6,12 +6,8 @@
 ##---------------------------------------------------------------------
 
 import inro.modeller as _m
-
 import traceback as _traceback
 import os
-import csv as csv
-
-
 import numpy as np
 import pandas as pd
 

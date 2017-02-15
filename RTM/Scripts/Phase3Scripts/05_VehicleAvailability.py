@@ -5,9 +5,6 @@
 ##--Purpose:
 ##---------------------------------------------------------------------
 import inro.modeller as _m
-import csv
-import os
-import re
 import numpy as np
 import pandas as pd
 import traceback as _traceback

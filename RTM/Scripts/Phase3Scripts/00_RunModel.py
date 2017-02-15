@@ -5,10 +5,8 @@
 ##--Purpose: Full model run
 ##---------------------------------------------------------------------
 import inro.modeller as _m
-import os
 import multiprocessing
 import traceback as _traceback
-
 
 class FullModelRun(_m.Tool()):
     horizon_year = _m.Attribute(int)

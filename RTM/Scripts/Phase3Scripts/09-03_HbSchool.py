@@ -5,8 +5,6 @@
 ##--Purpose:
 ##---------------------------------------------------------------------
 import inro.modeller as _m
-import csv
-import os
 import numpy as np
 import pandas as pd
 
