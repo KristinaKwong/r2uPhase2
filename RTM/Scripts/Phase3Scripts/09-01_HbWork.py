@@ -260,7 +260,7 @@ class HbWork(_m.Tool()):
                       + p602*Df['TranAccess'])
 
         # Check availability conditions else add high negative utility (-99999)
-#        Df['GeUtl'] = MChM.BusAvail(Df, Df['GeUtl'], AvailDict)
+        Df['GeUtl'] = MChM.BusAvail(Df, Df['GeUtl'], AvailDict)
         # Add Income Parameters
         DfU['BusI1'] = Df['GeUtl'] + p12*Df['BusFar']
         DfU['BusI2'] = Df['GeUtl'] + p13*Df['BusFar']
@@ -281,7 +281,7 @@ class HbWork(_m.Tool()):
                       + p603*Df['TranAccess'])
 
         # Check availability conditions else add high negative utility (-99999)
-#        Df['GeUtl'] = MChM.RailAvail(Df, Df['GeUtl'],AvailDict)
+        Df['GeUtl'] = MChM.RailAvail(Df, Df['GeUtl'],AvailDict)
         # Add Income Parameters
         DfU['RalI1'] = Df['GeUtl'] + p12*Df['RalFar']
         DfU['RalI2'] = Df['GeUtl'] + p13*Df['RalFar']
@@ -303,7 +303,7 @@ class HbWork(_m.Tool()):
                       + p996*Df['LogAutoDis']
                       + p603*Df['TranAccess'])
         # Check availability conditions else add high negative utility (-99999)
-#        Df['GeUtl'] = MChM.WCEAvail(Df, Df['GeUtl'], AvailDict)
+        Df['GeUtl'] = MChM.WCEAvail(Df, Df['GeUtl'], AvailDict)
         # Add Income Parameters
         DfU['WCEI1'] = Df['GeUtl'] + p12*Df['WCEFar']
         DfU['WCEI2'] = Df['GeUtl'] + p13*Df['WCEFar']
@@ -380,7 +380,7 @@ class HbWork(_m.Tool()):
                       + p993*Df['LogAutoDis'])
 
         # Check availability conditions else add high negative utility (-99999)
-#        Df['GeUtl'] = MChM.BAuAvail(Df, Df['GeUtl'], AvailDict)
+        Df['GeUtl'] = MChM.BAuAvail(Df, Df['GeUtl'], AvailDict)
         # Add Income Parameters
         DfU['BAuI1'] = Df['GeUtl'] + p12*(Df['BusFar'] + Df['BAuTotCos'])
         DfU['BAuI2'] = Df['GeUtl'] + p13*(Df['BusFar'] + Df['BAuTotCos'])
@@ -403,7 +403,7 @@ class HbWork(_m.Tool()):
                       + p996*Df['LogAutoDis'])
 
         # Check availability conditions else add high negative utility (-99999)
-#        Df['GeUtl'] = MChM.RAuAvail(Df, Df['GeUtl'], AvailDict)
+        Df['GeUtl'] = MChM.RAuAvail(Df, Df['GeUtl'], AvailDict)
         # Add Income Parameters
         DfU['RAuI1'] = Df['GeUtl'] + p12*(Df['RalFar'] + Df['RAuTotCos'])
         DfU['RAuI2'] = Df['GeUtl'] + p13*(Df['RalFar'] + Df['RAuTotCos'])
@@ -428,7 +428,7 @@ class HbWork(_m.Tool()):
                        + p996*Df['LogAutoDis'])
 
         # Check availability conditions else add high negative utility (-99999)
-#        Df['GeUtl'] = MChM.WAuAvail(Df, DfU['GeUtl'],AvailDict)
+        Df['GeUtl'] = MChM.WAuAvail(Df, DfU['GeUtl'],AvailDict)
         # Add Income Parameters
         DfU['WAuI1'] = Df['GeUtl'] + p12*(Df['WCEFar'] + Df['WAuTotCos'])
         DfU['WAuI2'] = Df['GeUtl'] + p13*(Df['WCEFar'] + Df['WAuTotCos'])
@@ -727,49 +727,28 @@ class HbWork(_m.Tool()):
         del df_mats
 
         Tran_AM_Fct_N_PA, Tran_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='AM', geo='N',minimum_value=min_val)
-        Tran_AM_Fct_N_PA, Tran_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='AM', geo='N',minimum_value=min_val)
         Tran_MD_Fct_N_PA, Tran_MD_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='MD', geo='N',minimum_value=min_val)
-        Tran_MD_Fct_N_PA, Tran_MD_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='MD', geo='N',minimum_value=min_val)
-        Tran_PM_Fct_N_PA, Tran_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='PM', geo='N',minimum_value=min_val)
         Tran_PM_Fct_N_PA, Tran_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='PM', geo='N',minimum_value=min_val)
 
         Acti_AM_Fct_N_PA, Acti_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='AM', geo='N',minimum_value=min_val)
-        Acti_AM_Fct_N_PA, Acti_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='AM', geo='N',minimum_value=min_val)
-        Acti_MD_Fct_N_PA, Acti_MD_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='MD', geo='N',minimum_value=min_val)
         Acti_MD_Fct_N_PA, Acti_MD_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='MD', geo='N',minimum_value=min_val)
         Acti_PM_Fct_N_PA, Acti_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='PM', geo='N',minimum_value=min_val)
-        Acti_PM_Fct_N_PA, Acti_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='PM', geo='N',minimum_value=min_val)
-
 
         WCE_AM_Fct_N_PA, WCE_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='AM', geo='N',minimum_value=0)
-        WCE_AM_Fct_N_PA, WCE_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='AM', geo='N',minimum_value=0)
-        WCE_PM_Fct_N_PA, WCE_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='PM', geo='N',minimum_value=0)
         WCE_PM_Fct_N_PA, WCE_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='PM', geo='N',minimum_value=0)
 
-
-
-        Tran_AM_Fct_S_PA, Tran_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='AM', geo='S',minimum_value=min_val)
         Tran_AM_Fct_S_PA, Tran_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='AM', geo='S',minimum_value=min_val)
         Tran_MD_Fct_S_PA, Tran_MD_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='MD', geo='S',minimum_value=min_val)
-        Tran_MD_Fct_S_PA, Tran_MD_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='MD', geo='S',minimum_value=min_val)
-        Tran_PM_Fct_S_PA, Tran_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='PM', geo='S',minimum_value=min_val)
         Tran_PM_Fct_S_PA, Tran_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='PM', geo='S',minimum_value=min_val)
 
         Acti_AM_Fct_S_PA, Acti_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='AM', geo='S',minimum_value=min_val)
-        Acti_AM_Fct_S_PA, Acti_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='AM', geo='S',minimum_value=min_val)
         Acti_MD_Fct_S_PA, Acti_MD_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='MD', geo='S',minimum_value=min_val)
-        Acti_MD_Fct_S_PA, Acti_MD_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='MD', geo='S',minimum_value=min_val)
-        Acti_PM_Fct_S_PA, Acti_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='PM', geo='S',minimum_value=min_val)
         Acti_PM_Fct_S_PA, Acti_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='PM', geo='S',minimum_value=min_val)
 
         WCE_AM_Fct_S_PA, WCE_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='AM', geo='S',minimum_value=0)
-        WCE_AM_Fct_S_PA, WCE_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='AM', geo='S',minimum_value=0)
         WCE_PM_Fct_S_PA, WCE_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='PM', geo='S',minimum_value=0)
-        WCE_PM_Fct_S_PA, WCE_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='PM', geo='S',minimum_value=0)
-
 
         Gy_P = util.get_matrix_numpy(eb, 'gy_ensem')  + np.zeros((1, 1741))
-
 
         Tran_AM_Fct = np.array([np.where(Gy_P<8, Tran_AM_Fct_N_PA, Tran_AM_Fct_S_PA), np.where(Gy_P<8, Tran_AM_Fct_N_AP, Tran_AM_Fct_S_AP)])
         Tran_MD_Fct = np.array([np.where(Gy_P<8, Tran_MD_Fct_N_PA, Tran_MD_Fct_S_PA), np.where(Gy_P<8, Tran_MD_Fct_N_AP, Tran_MD_Fct_S_AP)])

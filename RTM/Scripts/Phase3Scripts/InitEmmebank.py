@@ -146,6 +146,7 @@ class InitEmmebank(_m.Tool()):
         create_attr("LINK", "@wcefareboundary", "Fare Zone Boundaries for WCE (13,34,45)", 0, False, scen)
         create_attr("LINK", "@lscid", "Screenline Identifier", 0, False, scen)
         create_attr("LINK", "@lscstn", "Screenline Station Identifier", 0, False, scen)
+        create_attr("LINK", "@timeseg", "Travel Time Segment Identifier", 0, False, scen)
         create_attr("LINK", "@lanesam", "AM Number of Lanes", 0, False, scen)
         create_attr("LINK", "@lanesmd", "MD Number of Lanes", 0, False, scen)
         create_attr("LINK", "@lanespm", "PM Number of Lanes", 0, False, scen)
@@ -358,16 +359,9 @@ class InitEmmebank(_m.Tool()):
         eb.create_function("fp24", "(.1 + pvolau / 2400) ^ 4")
         eb.create_function("fp32", "(.1 + pvolau / 3200) ^ 4")
 
-
-
-
     def initoptions(self, eb):
-
         util = _m.Modeller().tool("translink.util")
         # model business
         util.initmat(eb, "ms2", "AmScen", "AMScenario", 21000)
         util.initmat(eb, "ms3", "MdScen", "MDScenario", 22000)
         util.initmat(eb, "ms4", "PmScen", "PMScenario", 23000)
-        util.initmat(eb, "ms5", "AmScen_p", "AMScenario_Previous", 21030)
-        util.initmat(eb, "ms6", "MdScen_p", "MDScenario_Previous", 22030)
-        util.initmat(eb, "ms7", "PmScen_p", "PMScenario_Previous", 23030)
