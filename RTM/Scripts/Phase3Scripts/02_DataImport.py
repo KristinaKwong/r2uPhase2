@@ -347,23 +347,7 @@ class DataImport(_m.Tool()):
 
 
         # Batch in starter auto demand used for generating starter skims, demand is aggregated into 4 classes, SOV, HOV, Light Tr, Heavy Tr
-        util.delmat(eb, "mf10")
-        util.delmat(eb, "mf11")
-        data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_AM.in")
-        mat_transaction(transaction_file = data_path,
-                        throw_on_error = True)
 
-        util.delmat(eb, "mf30")
-        util.delmat(eb, "mf31")
-        data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_MD.in")
-        mat_transaction(transaction_file = data_path,
-                        throw_on_error = True)
-
-        util.delmat(eb, "mf50")
-        util.delmat(eb, "mf51")
-        data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_PM.in")
-        mat_transaction(transaction_file = data_path,
-                        throw_on_error = True)
 
         util.delmat(eb, "mf20")
         util.delmat(eb, "mf21")
@@ -540,80 +524,7 @@ class DataImport(_m.Tool()):
         util.set_matrix_numpy(eb, "mfPmHgvTime", df['PmAutoTime'].values.reshape(NoTAZ, NoTAZ))
         util.set_matrix_numpy(eb, "mfPmHgvToll", df['PmAutoToll'].values.reshape(NoTAZ, NoTAZ))
 
-        #####################
-        # Bus
-        #####################
-        # AM
-        util.set_matrix_numpy(eb, "mfAmBusIvtt", df['AmBusIvtt'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfAmBusWait", df['AmBusWait'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfAmBusAux",  df['AmBusAux'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfAmBusBoard", df['AmBusBoard'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfAmBusFare", df['AmBusFare'].values.reshape(NoTAZ, NoTAZ))
-        # MD
-        util.set_matrix_numpy(eb, "mfMdBusIvtt", df['MdBusIvtt'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfMdBusWait", df['MdBusWait'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfMdBusAux",  df['MdBusAux'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfMdBusBoard", df['MdBusBoard'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfMdBusFare", df['MdBusFare'].values.reshape(NoTAZ, NoTAZ))
-        # PM
-        util.set_matrix_numpy(eb, "mfPmBusIvtt", df['PmBusIvtt'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfPmBusWait", df['PmBusWait'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfPmBusAux",  df['PmBusAux'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfPmBusBoard", df['PmBusBoard'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfPmBusFare", df['PmBusFare'].values.reshape(NoTAZ, NoTAZ))
 
-        #####################
-        # Rail
-        #####################
-        # AM
-        util.set_matrix_numpy(eb, "mfAmRailIvtt", df['AmRailIvtt'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfAmRailIvttBus", df['AmRailIvttBus'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfAmRailWait", df['AmRailWait'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfAmRailAux", df['AmRailAux'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfAmRailBoard", df['AmRailBoard'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfAmRailFare", df['AmRailFare'].values.reshape(NoTAZ, NoTAZ))
-        # MD
-        util.set_matrix_numpy(eb, "mfMdRailIvtt", df['MdRailIvtt'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfMdRailIvttBus", df['MdRailIvttBus'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfMdRailWait", df['MdRailWait'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfMdRailAux", df['MdRailAux'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfMdRailBoard", df['MdRailBoard'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfMdRailFare", df['MdRailFare'].values.reshape(NoTAZ, NoTAZ))
-        # PM
-        util.set_matrix_numpy(eb, "mfPmRailIvtt", df['PmRailIvtt'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfPmRailIvttBus", df['PmRailIvttBus'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfPmRailWait", df['PmRailWait'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfPmRailAux", df['PmRailAux'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfPmRailBoard", df['PmRailBoard'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfPmRailFare", df['PmRailFare'].values.reshape(NoTAZ, NoTAZ))
-
-        #####################
-        # WCE
-        #####################
-        # AM
-        util.set_matrix_numpy(eb, "mfAmWceIvtt", df['AmWceIvtt'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfAmWceIvttRail", df['AmWceIvttRail'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfAmWceIvttBus", df['AmWceIvttBus'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfAmWceWait", df['AmWceWait'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfAmWceAux", df['AmWceAux'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfAmWceBoard", df['AmWceBoard'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfAmWceFare",  df['AmWceFare'].values.reshape(NoTAZ, NoTAZ))
-        # MD
-        util.set_matrix_numpy(eb, "mfMdWceIvtt", df['MdWceIvtt'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfMdWceIvttRail", df['MdWceIvttRail'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfMdWceIvttBus", df['MdWceIvttBus'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfMdWceWait", df['MdWceWait'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfMdWceAux", df['MdWceAux'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfMdWceBoard", df['MdWceBoard'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfMdWceFare",  df['MdWceFare'].values.reshape(NoTAZ, NoTAZ))
-        # PM
-        util.set_matrix_numpy(eb, "mfPmWceIvtt", df['PmWceIvtt'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfPmWceIvttRail", df['PmWceIvttRail'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfPmWceIvttBus", df['PmWceIvttBus'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfPmWceWait", df['PmWceWait'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfPmWceAux", df['PmWceAux'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfPmWceBoard", df['PmWceBoard'].values.reshape(NoTAZ, NoTAZ))
-        util.set_matrix_numpy(eb, "mfPmWceFare",  df['PmWceFare'].values.reshape(NoTAZ, NoTAZ))
 
         del df
 

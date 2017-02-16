@@ -48,12 +48,17 @@ class DataGeneration(_m.Tool()):
             # Run iniitial AON assignment to generate a distance skim
             self.assignAON(am_scen)
 
-            # Run Initial Assignment to generate skims from seed demands
-            # auto_assign = _m.Modeller().tool("translink.RTM3.stage3.autoassignment")
-            # auto_assign(am_scen, md_scen, pm_scen)
-
-            # transit_assign = _m.Modeller().tool("translink.RTM3.stage3.transitassignment")
-            # transit_assign(eb, am_scen, md_scen, pm_scen)
+            # record user choices for congested and capacitiated transit
+            run_crowding = int(eb.matrix("ms45").data)
+            run_capacity_constraint = int(eb.matrix("ms46").data)
+            # turn off congested/capacited transit during data generation 0 matrix assignment
+            util.initmat(eb, "ms45", "tranCongest", "Run Congested Transit Assignment", 0)
+            util.initmat(eb, "ms46", "tranCapac", "Run Capacitated Transit Assignment", 0)
+            transit_assign = _m.Modeller().tool("translink.RTM3.stage3.transitassignment")
+            transit_assign(eb, am_scen, md_scen, pm_scen)
+            # reset user choices for congested and capacitiated transit
+            util.initmat(eb, "ms45", "tranCongest", "Run Congested Transit Assignment", int(run_crowding))
+            util.initmat(eb, "ms46", "tranCapac", "Run Capacitated Transit Assignment", int(run_capacity_constraint))
 
         self.calc_all_accessibilities(eb)
 
@@ -501,9 +506,13 @@ class DataGeneration(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
         eb = sc.emmebank
         # calculate fixed link opcosts based on SOV travel
+
+
+
         auto_voc = eb.matrix("msautoOpCost").data
         util.emme_link_calc(sc, "@sovoc", "length * %s" % (auto_voc))
-        util.initmat(eb, "mf91", "distAON", "All or nothing initial distance skim", )
+        util.initmat(eb, "mf10", "seedSovAm", "AM SOV seed demand", 1)
+        util.initmat(eb, "mf91", "distAON", "All or nothing initial distance skim", 0)
         class_spec = []
         class_spec.append({"mode": "d",
                 "demand": "mf10",
@@ -541,6 +550,7 @@ class DataGeneration(_m.Tool()):
 
         # write the updated matrix back to the emmebank
         util.set_matrix_numpy(eb, "mfdistAON", np_mat)
+        util.delmat(eb, 'mf10')
 
     @_m.logbook_trace("Initial Demand and Skim Matrix Creation")
     def matrix_batchins(self, eb):
