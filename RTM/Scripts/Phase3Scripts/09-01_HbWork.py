@@ -428,7 +428,7 @@ class HbWork(_m.Tool()):
                        + p996*Df['LogAutoDis'])
 
         # Check availability conditions else add high negative utility (-99999)
-        Df['GeUtl'] = MChM.WAuAvail(Df, DfU['GeUtl'],AvailDict)
+        Df['GeUtl'] = MChM.WAuAvail(Df, Df['GeUtl'],AvailDict)
         # Add Income Parameters
         DfU['WAuI1'] = Df['GeUtl'] + p12*(Df['WCEFar'] + Df['WAuTotCos'])
         DfU['WAuI2'] = Df['GeUtl'] + p13*(Df['WCEFar'] + Df['WAuTotCos'])
