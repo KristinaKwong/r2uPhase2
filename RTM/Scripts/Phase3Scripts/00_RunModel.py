@@ -210,9 +210,6 @@ class FullModelRun(_m.Tool()):
         util.initmat(eb, "ms2", "AmScen", "AMScenario", 21000)
         util.initmat(eb, "ms3", "MdScen", "MDScenario", 22000)
         util.initmat(eb, "ms4", "PmScen", "PMScenario", 23000)
-        util.initmat(eb, "ms5", "AmScen_p", "AMScenario_Previous", 21030)
-        util.initmat(eb, "ms6", "MdScen_p", "MDScenario_Previous", 22030)
-        util.initmat(eb, "ms7", "PmScen_p", "PMScenario_Previous", 23030)
         util.initmat(eb, "ms10", "Year", "Horizon Year of Run", horizon_year)
         util.initmat(eb, "ms12", "Processors", "Number of Processors for Computer Running Model", num_processors)
         # overall model
