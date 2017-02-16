@@ -1,7 +1,7 @@
 ##---------------------------------------------------------------------
 ##--TransLink Phase 3.0 Regional Transportation Model
 ##--
-##--Path: translink.emme.xxxx
+##--Path: translink.RTM3.stage2.blendedskims
 ##--Purpose:
 ##---------------------------------------------------------------------
 import inro.modeller as _m

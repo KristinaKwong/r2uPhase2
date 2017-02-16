@@ -1,7 +1,7 @@
 ##---------------------------------------------------------------------
-##--TransLink Phase 3 Regional Transportation Model
+##--TransLink Phase 3.0 Regional Transportation Model
 ##--
-##--Path: ?
+##--Path: translink.RTM3.stage0.create_scenarios
 ##--Purpose: create scenarios
 ##---------------------------------------------------------------------
 import inro.modeller as _m

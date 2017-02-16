@@ -1,7 +1,7 @@
 ##---------------------------------------------------------------------
 ##--TransLink Phase 3.0 Regional Transportation Model
 ##--
-##--Path: translink.emme.stage1.step1.segmentation
+##--Path: translink.RTM3.stage1.workinc
 ##--Purpose:
 ##---------------------------------------------------------------------
 import inro.modeller as _m
