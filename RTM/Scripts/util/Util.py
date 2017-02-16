@@ -292,6 +292,28 @@ class Util(_m.Tool()):
         ij["j"] = i.transpose().flatten()
         return ij
 
+    def get_ijensem_df(self, eb, ensem_o, ensem_d=None):
+        if ensem_d is None:
+            ensem_d = ensem_o
+
+        orig_mat = "mo%s_ensem" % ensem_o
+        dest_mat = "mo%s_ensem" % ensem_d
+
+        orig_row = self.get_matrix_numpy(eb, orig_mat, reshape=False)
+        orig_col = orig_row.reshape(orig_row.shape[0], 1)
+
+        dest_row = self.get_matrix_numpy(eb, dest_mat, reshape=False)
+        dest_col = dest_row.reshape(dest_row.shape[0], 1)
+
+        # Note that the destination ensemble is created transposed (swap row and column)
+        orig_full = orig_col + (0 * orig_row)
+        dest_full = dest_row + (0 * dest_col)
+
+        ij = pd.DataFrame()
+        ij[ensem_o + "_i"] = orig_full.flatten()
+        ij[ensem_d + "_j"] = dest_full.flatten()
+        return ij
+
     def sumproduct(self, factors, matrices):
         if (len(factors) != len(matrices)):
             raise Exception("Length of factors and matrices passed to sumproduct must be equal")

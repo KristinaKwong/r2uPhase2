@@ -1,7 +1,7 @@
 ##---------------------------------------------------------------------
 ##--TransLink Phase 3.0 Regional Transportation Model
 ##--
-##--Path:
+##--Path: translink.RTM3.stage1.atrs
 ##--Purpose:
 ##---------------------------------------------------------------------
 import inro.modeller as _m

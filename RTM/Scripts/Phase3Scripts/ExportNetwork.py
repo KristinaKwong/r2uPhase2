@@ -1,5 +1,5 @@
 ##---------------------------------------------------------------------
-##--TransLink Phase 2.2 Regional Transportation Model
+##--TransLink Phase 3.0 Regional Transportation Model
 ##--
 ##--Path: translink.emme.exportnet
 ##--Purpose: export base networks as text files in BaseNetworks folder
