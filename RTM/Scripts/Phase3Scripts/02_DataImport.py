@@ -368,31 +368,6 @@ class DataImport(_m.Tool()):
                         throw_on_error = True)
 
 
-
-		# Batch in bridge penalties and Kij factors used in trip distribution
-		# TODO move the section below to somewhere more logical
-        # bridge penalty factors
-        util.delmat(eb, "mf92")
-        util.delmat(eb, "mf93")
-        data_path = os.path.join(proj_path, "BaseNetworks", "Bridge_Cross_Penalties.in")
-        mat_transaction(transaction_file = data_path,
-                        throw_on_error = True)
-
-        # Kij Factors
-        util.delmat(eb, "mf9200")
-        util.delmat(eb, "mf9201")
-        util.delmat(eb, "mf9202")
-        util.delmat(eb, "mf9203")
-        util.delmat(eb, "mf9204")
-        util.delmat(eb, "mf9205")
-        util.delmat(eb, "mf9206")
-        util.delmat(eb, "mf9207")
-        util.delmat(eb, "mf9208")
-
-        data_path = os.path.join(proj_path, "BaseNetworks", "Kij_Factors.in")
-        mat_transaction(transaction_file = data_path,
-                        throw_on_error = True)
-
     @_m.logbook_trace("Importing Starter Skims for Warm Start")
     def starter_skims(self, eb, horizon_year):
 
@@ -520,6 +495,30 @@ class DataImport(_m.Tool()):
 
         # SET bike score
         util.set_matrix_numpy(eb, "mfbikeskim", df_in['bikeskim'].values.reshape(NoTAZ, NoTAZ))
+
+        del df_in
+
+        # input trip distribution variables
+        dfe = util.get_ijensem_df(eb, ensem_o='gy')
+        distData = os.path.join(proj_path, "BaseNetworks", "dist_factors_gy.csv.gz")
+        dfd = pd.read_csv(distData, compression = 'gzip')
+        df = pd.merge(dfe, dfd, how='left', left_on=['gy_i','gy_j'], right_on = ['gy_i','gy_j'])
+
+        # SET trip distribution variables
+        util.set_matrix_numpy(eb, "mfKij_hbw", df['Kij_hbw'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfKij_hbu", df['Kij_hbu'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfKij_hbsch", df['Kij_hbsch'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfKij_hbshop", df['Kij_hbshop'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfKij_hbpb", df['Kij_hbpb'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfKij_hbsoc", df['Kij_hbsoc'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfKij_hbesc", df['Kij_hbesc'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfKij_nhbw", df['Kij_nhbw'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfKij_nhbo", df['Kij_nhbo'].values.reshape(NoTAZ, NoTAZ))
+
+        util.set_matrix_numpy(eb, "mfBridge_pen_AM", df['Bridge_pen_AM'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfBridge_pen_PM", df['Bridge_pen_PM'].values.reshape(NoTAZ, NoTAZ))
+
+
 
 
     @_m.logbook_trace("Matrix Batchins")
@@ -714,3 +713,17 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "mf81", "extHovPm", "External Demand HOV PM", 0)
 
         util.initmat(eb, "mf90", "bikeskim", "Weighted Average IJ bike score", 0)
+
+        # Trip Distribution Variables
+        util.initmat(eb, "mf9200", "Kij_hbw", "Kij_hbw", 0)
+        util.initmat(eb, "mf9201", "Kij_hbu", "Kij_hbu", 0)
+        util.initmat(eb, "mf9202", "Kij_hbsch", "Kij_hbsch", 0)
+        util.initmat(eb, "mf9203", "Kij_hbshop", "Kij_hbshop", 0)
+        util.initmat(eb, "mf9204", "Kij_hbpb", "Kij_hbpb", 0)
+        util.initmat(eb, "mf9205", "Kij_hbsoc", "Kij_hbsoc", 0)
+        util.initmat(eb, "mf9206", "Kij_hbesc", "Kij_hbesc", 0)
+        util.initmat(eb, "mf9207", "Kij_nhbw", "Kij_nhbw", 0)
+        util.initmat(eb, "mf9208", "Kij_nhbo", "Kij_nhbo", 0)
+
+        util.initmat(eb, "mf92", "Bridge_pen_AM", "Bridge_pen_AM", 0)
+        util.initmat(eb, "mf93", "Bridge_pen_PM", "Bridge_pen_PM", 0)
