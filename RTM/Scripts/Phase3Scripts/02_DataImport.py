@@ -70,7 +70,7 @@ class DataImport(_m.Tool()):
         self.import_vectors(eb, demographics_file, geographics_file)
 
         self.init_seeds(eb, horizon_year=model_year)
-        self.starter_skims(eb)
+        self.starter_skims(eb, horizon_year=model_year)
 
 
     @_m.logbook_trace("Initializing Scalar Matrices")
@@ -367,32 +367,7 @@ class DataImport(_m.Tool()):
         mat_transaction(transaction_file = data_path,
                         throw_on_error = True)
 
-        # Batch in external demand matrices
-        util.delmat(eb, "mf70")
-        util.delmat(eb, "mf71")
-        data_path = os.path.join(proj_path, "BaseNetworks", "External_Demand_AM_%s.in" % model_year)
-        mat_transaction(transaction_file = data_path,
-                        throw_on_error = True)
 
-        util.delmat(eb, "mf75")
-        util.delmat(eb, "mf76")
-        data_path = os.path.join(proj_path, "BaseNetworks", "External_Demand_MD_%s.in" % model_year)
-        mat_transaction(transaction_file = data_path,
-                        throw_on_error = True)
-
-		# TODO update external demand
-		# Note PM external demand is AM transposed multiplied by a factor
-        util.delmat(eb, "mf80")
-        util.delmat(eb, "mf81")
-        data_path = os.path.join(proj_path, "BaseNetworks", "External_Demand_PM_%s.in" % model_year)
-        mat_transaction(transaction_file = data_path,
-                        throw_on_error = True)
-
-
-        util.delmat(eb, "mf90")
-        data_path = os.path.join(proj_path, "BaseNetworks", "bike_score_skim_%s.in" % model_year)
-        mat_transaction(transaction_file = data_path,
-                        throw_on_error = True)
 
 		# Batch in bridge penalties and Kij factors used in trip distribution
 		# TODO move the section below to somewhere more logical
@@ -419,10 +394,11 @@ class DataImport(_m.Tool()):
                         throw_on_error = True)
 
     @_m.logbook_trace("Importing Starter Skims for Warm Start")
-    def starter_skims(self, eb):
+    def starter_skims(self, eb, horizon_year):
 
         util = _m.Modeller().tool("translink.util")
         NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
+        model_year = horizon_year
         project = _m.Modeller().desktop.project
         proj_path = os.path.dirname(project.path)
 
@@ -524,9 +500,27 @@ class DataImport(_m.Tool()):
         util.set_matrix_numpy(eb, "mfPmHgvTime", df['PmAutoTime'].values.reshape(NoTAZ, NoTAZ))
         util.set_matrix_numpy(eb, "mfPmHgvToll", df['PmAutoToll'].values.reshape(NoTAZ, NoTAZ))
 
-
-
         del df
+
+        # input external demand and bike score
+        inData = os.path.join(proj_path, "BaseNetworks", "externals_bikescore_%s.csv.gz" % model_year)
+        df_in = pd.read_csv(inData, compression = 'gzip')
+
+        # SET external demand
+        util.set_matrix_numpy(eb, "mfextSovAm", df_in['extSovAm'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfextHovAm", df_in['extHovAm'].values.reshape(NoTAZ, NoTAZ))
+
+        util.set_matrix_numpy(eb, "mfextSovMd", df_in['extSovMd'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfextHovMd", df_in['extHovMd'].values.reshape(NoTAZ, NoTAZ))
+
+		# TODO update external demand
+		# Note PM external demand is AM transposed multiplied by a factor
+        util.set_matrix_numpy(eb, "mfextSovPm", df_in['extSovPm'].values.reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "mfextHovPm", df_in['extHovPm'].values.reshape(NoTAZ, NoTAZ))
+
+        # SET bike score
+        util.set_matrix_numpy(eb, "mfbikeskim", df_in['bikeskim'].values.reshape(NoTAZ, NoTAZ))
+
 
     @_m.logbook_trace("Matrix Batchins")
     def matrix_batchins(self, eb):
@@ -708,3 +702,15 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "mf5724", "PmWceAux", "Pm Rail Auxilliary Time", 0)
         util.initmat(eb, "mf5725", "PmWceBoard", "Pm Rail Boardings", 0)
         util.initmat(eb, "mf5726", "PmWceFare", "Pm Rail Fare", 0)
+
+        # External Demand and bikescore
+        util.initmat(eb, "mf70", "extSovAm", "External Demand SOV AM", 0)
+        util.initmat(eb, "mf71", "extHovAm", "External Demand HOV AM", 0)
+
+        util.initmat(eb, "mf75", "extSovMd", "External Demand SOV MD", 0)
+        util.initmat(eb, "mf76", "extHovMd", "External Demand HOV MD", 0)
+
+        util.initmat(eb, "mf80", "extSovPm", "External Demand SOV PM", 0)
+        util.initmat(eb, "mf81", "extHovPm", "External Demand HOV PM", 0)
+
+        util.initmat(eb, "mf90", "bikeskim", "Weighted Average IJ bike score", 0)
