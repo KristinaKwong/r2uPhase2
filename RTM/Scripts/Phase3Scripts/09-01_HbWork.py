@@ -260,7 +260,7 @@ class HbWork(_m.Tool()):
                       + p602*Df['TranAccess'])
 
         # Check availability conditions else add high negative utility (-99999)
-#        Df['GeUtl'] = MChM.BusAvail(Df, Df['GeUtl'], AvailDict)
+        Df['GeUtl'] = MChM.BusAvail(Df, Df['GeUtl'], AvailDict)
         # Add Income Parameters
         DfU['BusI1'] = Df['GeUtl'] + p12*Df['BusFar']
         DfU['BusI2'] = Df['GeUtl'] + p13*Df['BusFar']
@@ -281,7 +281,7 @@ class HbWork(_m.Tool()):
                       + p603*Df['TranAccess'])
 
         # Check availability conditions else add high negative utility (-99999)
-#        Df['GeUtl'] = MChM.RailAvail(Df, Df['GeUtl'],AvailDict)
+        Df['GeUtl'] = MChM.RailAvail(Df, Df['GeUtl'],AvailDict)
         # Add Income Parameters
         DfU['RalI1'] = Df['GeUtl'] + p12*Df['RalFar']
         DfU['RalI2'] = Df['GeUtl'] + p13*Df['RalFar']
@@ -303,7 +303,7 @@ class HbWork(_m.Tool()):
                       + p996*Df['LogAutoDis']
                       + p603*Df['TranAccess'])
         # Check availability conditions else add high negative utility (-99999)
-#        Df['GeUtl'] = MChM.WCEAvail(Df, Df['GeUtl'], AvailDict)
+        Df['GeUtl'] = MChM.WCEAvail(Df, Df['GeUtl'], AvailDict)
         # Add Income Parameters
         DfU['WCEI1'] = Df['GeUtl'] + p12*Df['WCEFar']
         DfU['WCEI2'] = Df['GeUtl'] + p13*Df['WCEFar']
@@ -380,7 +380,7 @@ class HbWork(_m.Tool()):
                       + p993*Df['LogAutoDis'])
 
         # Check availability conditions else add high negative utility (-99999)
-#        Df['GeUtl'] = MChM.BAuAvail(Df, Df['GeUtl'], AvailDict)
+        Df['GeUtl'] = MChM.BAuAvail(Df, Df['GeUtl'], AvailDict)
         # Add Income Parameters
         DfU['BAuI1'] = Df['GeUtl'] + p12*(Df['BusFar'] + Df['BAuTotCos'])
         DfU['BAuI2'] = Df['GeUtl'] + p13*(Df['BusFar'] + Df['BAuTotCos'])
@@ -403,7 +403,7 @@ class HbWork(_m.Tool()):
                       + p996*Df['LogAutoDis'])
 
         # Check availability conditions else add high negative utility (-99999)
-#        Df['GeUtl'] = MChM.RAuAvail(Df, Df['GeUtl'], AvailDict)
+        Df['GeUtl'] = MChM.RAuAvail(Df, Df['GeUtl'], AvailDict)
         # Add Income Parameters
         DfU['RAuI1'] = Df['GeUtl'] + p12*(Df['RalFar'] + Df['RAuTotCos'])
         DfU['RAuI2'] = Df['GeUtl'] + p13*(Df['RalFar'] + Df['RAuTotCos'])
@@ -428,7 +428,7 @@ class HbWork(_m.Tool()):
                        + p996*Df['LogAutoDis'])
 
         # Check availability conditions else add high negative utility (-99999)
-#        Df['GeUtl'] = MChM.WAuAvail(Df, DfU['GeUtl'],AvailDict)
+        Df['GeUtl'] = MChM.WAuAvail(Df, DfU['GeUtl'],AvailDict)
         # Add Income Parameters
         DfU['WAuI1'] = Df['GeUtl'] + p12*(Df['WCEFar'] + Df['WAuTotCos'])
         DfU['WAuI2'] = Df['GeUtl'] + p13*(Df['WCEFar'] + Df['WAuTotCos'])
