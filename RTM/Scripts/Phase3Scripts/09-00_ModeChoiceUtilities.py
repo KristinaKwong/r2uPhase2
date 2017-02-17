@@ -273,7 +273,7 @@ class ModeChoiceUtilities(_m.Tool()):
 
     def ts_mat(self, df, factors, min_val, purp, time_period, paap, notaz):
         fac_sub = factors[(factors.purpose == purp) & (factors.peakperiod == time_period) & (factors.direction == paap)]
-        dfa = pd.merge(df, fac_sub, how='left', left_on = ['Gb_P','IX'], right_on = ['Gb_P','IX'], suffixes=('','fac'))
+        dfa = pd.merge(df, fac_sub, how='left', left_on = ['gb_i','IX'], right_on = ['gb_i','IX'], suffixes=('','fac'))
         dfa['shares'].fillna(min_val, inplace = True)
         mat = dfa['shares'].values.reshape(notaz,notaz)
         del dfa

@@ -1,4 +1,4 @@
-purpose,Gb_P,IX,mode,peakperiod,direction,shares
+purpose,gb_i,IX,mode,peakperiod,direction,shares
 hbesc,1,I,Auto,AM,PtoA,0.174374
 hbesc,1,I,Auto,MD,PtoA,0.014473
 hbesc,1,I,Auto,PM,PtoA,0.029611
