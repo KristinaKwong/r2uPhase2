@@ -531,45 +531,54 @@ class HbEscorting(_m.Tool()):
         T_SOV_PM = np.where((Zone_Index_O>9999) & (Zone_Index_D>9999), SOVI1_PM + SOVI2_PM + SOVI3_PM, 0)
         T_HOV_PM = HOVI1_PM + HOVI2_PM + HOVI3_PM
 
-        # Take park and ride out of auto trips
-
-
-
+        # Daily
+        T_SOV = np.where((Zone_Index_O>9999) & (Zone_Index_D>9999), SOVI1 + SOVI2 + SOVI3, 0)
+        T_HOV = HOVI1 + HOVI2 + HOVI3
 
         #
-        df_pkhr_demand = pd.DataFrame()
+        df_demand = pd.DataFrame()
 
         Gy_P = util.get_matrix_numpy(eb, 'gy_ensem')  + np.zeros((1, NoTAZ))
         Gy_A = Gy_P.transpose()
 
-        df_pkhr_demand['Gy_O'] = Gy_P.flatten()
-        df_pkhr_demand['Gy_D'] = Gy_A.flatten()
-        df_pkhr_demand.Gy_O = df_pkhr_demand.Gy_O.astype(int)
-        df_pkhr_demand.Gy_D = df_pkhr_demand.Gy_D.astype(int)
+        df_demand['gy_i'] = Gy_P.flatten()
+        df_demand['gy_j'] = Gy_A.flatten()
+        df_demand.gy_i = df_demand.gy_i.astype(int)
+        df_demand.gy_j = df_demand.gy_j.astype(int)
         mode_list_am_pm = ['sov', 'hov', 'bus', 'rail', 'walk', 'bike']
         mode_list_md = ['sov', 'hov', 'bus', 'rail', 'walk', 'bike']
+        mode_list_daily = ['sov', 'hov', 'bus', 'rail', 'walk', 'bike']
 
         AM_Demand_List = [T_SOV_AM, T_HOV_AM, Bus_AM, Rail_AM, Walk_AM, Bike_AM]
         MD_Demand_List = [T_SOV_MD, T_HOV_MD, Bus_MD, Rail_MD, Walk_MD, Bike_MD]
         PM_Demand_List = [T_SOV_PM, T_HOV_PM, Bus_PM, Rail_PM, Walk_PM, Bike_PM]
+        Daily_Demand_List = [T_SOV, T_HOV, Bus, Rail, Walk, Bike]
 
         zero_demand = 0
         purp = "hbesc"
 
-        df_AM_summary, df_AM_Gy = MChM.PHr_Demand(df_pkhr_demand, purp, "AM", AM_Demand_List, mode_list_am_pm)
+        df_AM_Gy = MChM.Demand_Summary(df_demand, purp, "AM", AM_Demand_List, mode_list_am_pm)
 
+        df_MD_Gy = MChM.Demand_Summary(df_demand, purp, "MD", MD_Demand_List, mode_list_md)
 
-        df_MD_summary, df_MD_Gy = MChM.PHr_Demand(df_pkhr_demand, purp, "MD", MD_Demand_List, mode_list_md)
+        df_PM_Gy = MChM.Demand_Summary(df_demand, purp, "PM", PM_Demand_List, mode_list_am_pm)
 
-        df_PM_summary, df_PM_Gy = MChM.PHr_Demand(df_pkhr_demand, purp, "PM", PM_Demand_List, mode_list_am_pm)
+        df_Daily_Gy = MChM.Demand_Summary(df_demand, purp, "daily", Daily_Demand_List, mode_list_am_pm)
 
-        df_summary = pd.concat([df_AM_summary, df_MD_summary, df_PM_summary])
-        df_gy = pd.concat([df_AM_Gy, df_MD_Gy, df_PM_Gy])
+        df_gy_phr = pd.concat([df_AM_Gy, df_MD_Gy, df_PM_Gy])
+
+        df_gy_phr = df_gy_phr[['gy_i','gy_j','purpose','mode', 'period', 'trips']]
+
+        df_Daily_Gy = df_Daily_Gy[['gy_i','gy_j','purpose','mode', 'period', 'trips']]
+
 
         ## Dump to SQLite DB
         conn = util.get_db_byname(eb, "trip_summaries.db")
-        df_summary.to_sql(name='phr_summary', con=conn, flavor='sqlite', index=False, if_exists='append')
-        df_gy.to_sql(name='phr_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
+
+        df_gy_phr.to_sql(name='phr_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
+
+        df_Daily_Gy.to_sql(name='daily_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
+
         conn.close()
 
     def Calc_Prob(self, eb, Dict, Logsum, Th):
