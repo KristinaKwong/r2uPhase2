@@ -537,6 +537,8 @@ class TransitAssignment(_m.Tool()):
         #                                        " hdw/(60*%s)))" %(min_dwell_time,period_length), "all","mode=bg")
 
     def crowding_headway_report(self, sc, report, iteration):
+        util = _m.Modeller().tool("translink.util")
+
         if sc is self.am_scenario or sc is self.pm_scenario:
             summary_mode_list = self.pk_summary_mode_list
         if sc is self.md_scenario:
@@ -563,13 +565,7 @@ class TransitAssignment(_m.Tool()):
         for modes in summary_mode_list:
             rep = ""
             for key in expression:
-                spec = {"type": "NETWORK_CALCULATION",
-                        "expression": expression[key][0],
-                        "result": None,
-                        "selections": {
-                            "link": "all",
-                            "transit_line": "mode="+modes}}
-                report=networkCalcTool(spec, scenario = sc, full_report = False)
+                report = util.emme_segment_calc(sc, None, expression[key][0], sel_line="mode="+modes)
                 rep = rep + ("%s"%(report[expression[key][1]])).rjust(18)
                 result["%4s"%iteration+"%7s"%modes]=rep
             print "%4s"%iteration+"%7s"%modes+rep
