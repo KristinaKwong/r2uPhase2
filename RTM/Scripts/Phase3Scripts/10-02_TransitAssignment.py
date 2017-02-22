@@ -178,12 +178,6 @@ class TransitAssignment(_m.Tool()):
             # Write Logbook entries for crowding and Headway
             _m.logbook_write("Crowding and Headway report for Scenario: "+sc.id, attributes=report, value=sc.title)
 
-            # Create Skims
-            self.skim_bus(sc)
-            self.skim_rail(sc)
-            if sc is not scenariomd:
-                self.skim_wce(sc)
-
             if sc is scenarioam:
                 self.collect_skims(sc, "AM")
             if sc is scenariomd:
@@ -720,10 +714,16 @@ class TransitAssignment(_m.Tool()):
         specs.append(util.matrix_spec(result, expression2))
         util.compute_matrix(specs, scenarionumber)
 
-    @_m.logbook_trace("Move Skims to Time of Day Locations")
+    @_m.logbook_trace("Generate and Move Skims to Time of Day Locations")
     def collect_skims(self, sc, tod):
         util = _m.Modeller().tool("translink.util")
 
+        # Create Skims
+        self.skim_bus(sc)
+        self.skim_rail(sc)
+        if not tod == "MD":
+            self.skim_wce(sc)
+                
         if tod == "AM":
             bus_skims =  ["mfAmBusIvtt", "mfAmBusWait", "mfAmBusAux", "mfAmBusBoard", "mfAmBusFare"]
             rail_skims = ["mfAmRailIvtt", "mfAmRailIvttBus", "mfAmRailWait", "mfAmRailAux", "mfAmRailBoard", "mfAmRailFare"]
