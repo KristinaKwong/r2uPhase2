@@ -149,8 +149,6 @@ class DataExport(_m.Tool()):
             SELECT
                 m.mode
                 ,m.totMode / p.totTrips AS share
-                ,m.totMode
-                ,p.totTrips
 
             FROM
                (SELECT
