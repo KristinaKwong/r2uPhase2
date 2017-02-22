@@ -547,27 +547,27 @@ class TransitAssignment(_m.Tool()):
         if iteration==1:
             report["  Iter    Mode"] = "     Seat.pass-kms    Stand.pass-kms   Excess.pass-kms  Max.crowd.factor   Min.Hdwy Factor   Max.Hdwy Factor"
             print "Iter   Mode     Seat.pass-kms    Stand.pass-kms   Excess.pass-kms  Max.crowd.factor   Min.Hdwy.Factor   Max.Hdwy.Factor"
-        networkCalcTool = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
-        expression = {
-            # Seating passenger Kms
-            1:[ "@pseat*length", "sum"],
-            # Standing passenger Kms
-            2: ["(@pstand.min.(@totcapacity-@seatcapacity))*length", "sum"],
-            # Standing passenger Kms
-            3: ["((@pstand-@totcapacity+@seatcapacity).max.0)*length", "sum"],
-            # Standing passenger kms
-            4:["(@ivttfac - 1)", "maximum"],
-            # Min Headway factor
-            5: ["@hdwyfac", "minimum"],
-            #Max Headway Factor
-            6: ["@hdwyfac", "maximum"]}
-        result={}
+
         for modes in summary_mode_list:
             rep = ""
-            for key in expression:
-                report = util.emme_segment_calc(sc, None, expression[key][0], sel_line="mode="+modes)
-                rep = rep + ("%s"%(report[expression[key][1]])).rjust(18)
-                result["%4s"%iteration+"%7s"%modes]=rep
+            line_selection = "mode=" + modes
+
+            report = util.emme_segment_calc(sc, None, "@pseat*length", sel_line=line_selection)
+            rep += ("%s"%(report["sum"])).rjust(18)
+
+            report = util.emme_segment_calc(sc, None, "(@pstand.min.(@totcapacity-@seatcapacity))*length", sel_line=line_selection)
+            rep += ("%s"%(report["sum"])).rjust(18)
+
+            report = util.emme_segment_calc(sc, None, "(((@pstand-@totcapacity+@seatcapacity).max.0)*length)", sel_line=line_selection)
+            rep += ("%s"%(report["sum"])).rjust(18)
+
+            report = util.emme_segment_calc(sc, None, "(@ivttfac - 1)", sel_line=line_selection)
+            rep += ("%s"%(report["maximum"])).rjust(18)
+
+            report = util.emme_segment_calc(sc, None, "@hdwyfac", sel_line=line_selection)
+            rep += ("%s"%(report["minimum"])).rjust(18)
+            rep += ("%s"%(report["maximum"])).rjust(18)
+
             print "%4s"%iteration+"%7s"%modes+rep
         report.update(result)
 
