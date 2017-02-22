@@ -163,7 +163,7 @@ class TransitAssignment(_m.Tool()):
                     assign_transit(wce_spec, scenario=sc, add_volumes=True, save_strategies=True, class_name= "WCE")
 
                 # MSA on Boardings and transit Volumes
-                self.averaging_transit_volumes(sc, iteration)
+                self.averaging_transit_volumes(sc, iteration, period_length)
 
                 # Run Crowding and Headway Reports
                 self.crowding_headway_report(sc, report, iteration)
@@ -174,9 +174,6 @@ class TransitAssignment(_m.Tool()):
 
                 if run_capacity_constraint==1:
                     self.effective_headway_calc(sc)
-
-                # Update Dwell time
-                self.dwell_time_calc(sc, period_length)
 
             # Write Logbook entries for crowding and Headway
             _m.logbook_write("Crowding and Headway report for Scenario: "+sc.id, attributes=report, value=sc.title)
@@ -416,6 +413,7 @@ class TransitAssignment(_m.Tool()):
         ]
         return spec
 
+    @_m.logbook_trace("Calculate Initial Transit Network Costs")
     def calc_network_costs(self, sc, period_length, i):
         util = _m.Modeller().tool("translink.util")
 
@@ -480,7 +478,8 @@ class TransitAssignment(_m.Tool()):
         util.emme_segment_calc(sc, "@pstand", "0")
         util.emme_segment_calc(sc, "@ridership", "@boardavg", aggregate="+")
 
-    def averaging_transit_volumes(self, sc, iteration):
+    @_m.logbook_trace("Transit Volume Averaging")
+    def averaging_transit_volumes(self, sc, iteration, period_length):
         util = _m.Modeller().tool("translink.util")
         # MSA on Boardings and transit Volumes
         msa_factor = 1.0 / iteration
@@ -496,6 +495,20 @@ class TransitAssignment(_m.Tool()):
 
         # Update ridership stats
         util.emme_segment_calc(sc, "@ridership", "@boardavg", aggregate="+")
+        
+        # Dwell time calculation
+        min_dwell_time = 0.33 # 20 seconds in minutes
+        # Zero Passenger - set us1 =0
+        # Boarding and Alighting happens simultaneously (appplicable for most bus lines)
+        util.emme_segment_calc(sc, "us1", "(%s*((@boardavg+@alightavg).gt.0) +"
+                                                "(((@dwtboard*@boardavg) .max. (@dwtalight*@alightavg))*"
+                                                " hdw/(60*%s)))" %(min_dwell_time,period_length), "all","mode=bg")
+
+        # Boarding and Alighting happens sequentially
+        # TODO: Identify lines and specify condition
+        #util.emme_segment_calc(sc, "us1", "(%s*((@boardavg+@alightavg).gt.0) +"
+        #                                        "(((@dwtboard*@boardavg) + (@dwtalight*@alightavg))*"
+        #                                        " hdw/(60*%s)))" %(min_dwell_time,period_length), "all","mode=bg")
 
     def crowding_factor_calc(self, sc):
         util = _m.Modeller().tool("translink.util")
@@ -513,22 +526,6 @@ class TransitAssignment(_m.Tool()):
         # [(Boardings/max(Total Capacity - Transit Volume + Boardings,1)).min.3.0].max.1
         util.emme_segment_calc(sc, "@hdwyfac", "((@boardavg/((@totcapacity-@voltravg+@boardavg).max.1)).min.(3.0)).max.1")
         util.emme_segment_calc(sc, "@hdwyeff", "@hdwyfac*@hfrac")
-
-    def dwell_time_calc(self, sc, period_length):
-        util = _m.Modeller().tool("translink.util")
-        # Fixed dwell time to account for acceleration and deceleration of vehicle
-        min_dwell_time = 0.33 # 20 seconds in minutes
-        # Zero Passenger - set us1 =0
-        # Boarding and Alighting happens simultaneously (appplicable for most bus lines)
-        util.emme_segment_calc(sc, "us1", "(%s*((@boardavg+@alightavg).gt.0) +"
-                                                "(((@dwtboard*@boardavg) .max. (@dwtalight*@alightavg))*"
-                                                " hdw/(60*%s)))" %(min_dwell_time,period_length), "all","mode=bg")
-
-        # Boarding and Alighting happens sequentially
-        # TODO: Identify lines and specify condition
-        #util.emme_segment_calc(sc, "us1", "(%s*((@boardavg+@alightavg).gt.0) +"
-        #                                        "(((@dwtboard*@boardavg) + (@dwtalight*@alightavg))*"
-        #                                        " hdw/(60*%s)))" %(min_dwell_time,period_length), "all","mode=bg")
 
     def crowding_headway_report(self, sc, report, iteration):
         util = _m.Modeller().tool("translink.util")
