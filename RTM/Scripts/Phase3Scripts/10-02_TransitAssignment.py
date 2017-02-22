@@ -493,7 +493,7 @@ class TransitAssignment(_m.Tool()):
         # Update @pseat and @pstand
         util.emme_segment_calc(sc, "@pseat", "@voltravg.min.@seatcapacity")
         util.emme_segment_calc(sc, "@pstand", "(@voltravg - @seatcapacity).max.0")
-        
+
         # Update ridership stats
         util.emme_segment_calc(sc, "@ridership", "@boardavg", aggregate="+")
 
@@ -539,7 +539,7 @@ class TransitAssignment(_m.Tool()):
             summary_mode_list = self.op_summary_mode_list
 
         if iteration==1:
-            report["Iter   Mode"] = "     Seat.pass-kms    Stand.pass-kms   Excess.pass-kms  Max.crowd.factor   Min.Hdwy Factor   Max.Hdwy Factor"
+            report["Iter   Mode"] = "     Seat.pass-kms    Stand.pass-kms   Excess.pass-kms  Max.crowd.factor   Min.Hdwy Factor   Max.Hdwy Factor         Min.Dwell         Max.Dwell"
 
         for modes in summary_mode_list:
             rep = ""
@@ -561,38 +561,12 @@ class TransitAssignment(_m.Tool()):
             rep += "%18s" % seg_rep["minimum"]
             rep += "%18s" % seg_rep["maximum"]
 
+            seg_rep = util.emme_segment_calc(sc, None, "us1", sel_line=line_selection)
+            rep += "%18s" % seg_rep["minimum"]
+            rep += "%18s" % seg_rep["maximum"]
+
             iter_label = "%4s%7s" % (iteration, modes)
             report[iter_label] = rep
-
-    def dwell_time_report(self, sc, iteration):
-        if sc is self.am_scenario or sc is self.pm_scenario:
-            summary_mode_list = self.pk_summary_mode_list
-        if sc is self.md_scenario:
-            summary_mode_list = self.op_summary_mode_list
-
-        if iteration == 1:
-            print "Iter   Mode     Min.Dwell     Max.Dwell"
-        networkCalcTool = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
-        expression = {
-            # Min Dwell time
-            1: ["us1", "minimum"],
-            # Max Dwell Time
-            2: ["us1", "maximum"]}
-        result = {}
-        for modes in summary_mode_list:
-            rep = ""
-            for key in expression:
-                spec = {"type": "NETWORK_CALCULATION",
-                        "expression": expression[key][0],
-                        "result": None,
-                        "selections": {
-                            "link": "all",
-                            "transit_line": "mode=" + modes}}
-                report = networkCalcTool(spec, scenario=sc, full_report=False)
-                rep = rep + ("%s" % (report[expression[key][1]])).rjust(14)
-                result["%4s" % iteration + "%7s" % modes] = rep
-            print "%4s" % iteration + "%7s" % modes + rep
-        return result
 
     def get_matrix_skim_spec(self, modes):
         spec = {
