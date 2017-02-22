@@ -323,47 +323,52 @@ class Util(_m.Tool()):
             ret += factors[i] * matrices[i]
         return ret
 
-    def emme_node_calc(self, scen, result, expression, sel_node="all"):
+    def emme_node_calc(self, scen, result, expression, sel_node="all", aggregate=None):
         calc_link = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         spec = { "result": result,
                  "expression": expression,
                  "selections": { "node": sel_node },
+                 "aggregation": aggregate,
                  "type": "NETWORK_CALCULATION"
                }
         return calc_link(spec, scenario=scen)
 
-    def emme_link_calc(self, scen, result, expression, sel_link="all"):
+    def emme_link_calc(self, scen, result, expression, sel_link="all", aggregate=None):
         calc_link = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         spec = { "result": result,
                  "expression": expression,
                  "selections": { "link": sel_link },
+                 "aggregation": aggregate,
                  "type": "NETWORK_CALCULATION"
                }
         return calc_link(spec, scenario=scen)
 
-    def emme_turn_calc(self, scen, result, expression, sel_inlink="all", sel_outlink="all"):
+    def emme_turn_calc(self, scen, result, expression, sel_inlink="all", sel_outlink="all", aggregate=None):
         calc_link = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         spec = { "result": result,
                  "expression": expression,
                  "selections": {"incoming_link": sel_inlink, "outgoing_link": sel_outlink},
+                 "aggregation": aggregate,
                  "type": "NETWORK_CALCULATION"
                }
         return calc_link(spec, scenario=scen)
 
-    def emme_tline_calc(self, scen, result, expression, sel_line="all"):
+    def emme_tline_calc(self, scen, result, expression, sel_line="all", aggregate=None):
         calc_link = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         spec = { "result": result,
                  "expression": expression,
                  "selections": {"transit_line": sel_line},
+                 "aggregation": aggregate,
                  "type": "NETWORK_CALCULATION"
                }
         return calc_link(spec, scenario=scen)
 
-    def emme_segment_calc(self, scen, result, expression, sel_link="all", sel_line="all"):
+    def emme_segment_calc(self, scen, result, expression, sel_link="all", sel_line="all", aggregate=None):
         calc_link = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         spec = { "result": result,
                  "expression": expression,
                  "selections": {"link": sel_link, "transit_line": sel_line},
+                 "aggregation": aggregate,
                  "type": "NETWORK_CALCULATION"
                }
         return calc_link(spec, scenario=scen)
