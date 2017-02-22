@@ -147,7 +147,6 @@ class TransitAssignment(_m.Tool()):
 
         for i, (sc, period_length, demand_bus, demand_rail, demand_wce) in enumerate(zip(scenario_list, period_length_list, demand_bus_list, demand_rail_list, demand_wce_list)):
             self.previous_level = _m.logbook_level()
-            print "Scenario: "+sc.title+" ("+sc.id+")"
             report={}
             _m.logbook_level(_m.LogbookLevel.NONE)
             self.calc_network_costs(sc, period_length, i)
@@ -545,31 +544,29 @@ class TransitAssignment(_m.Tool()):
             summary_mode_list = self.op_summary_mode_list
 
         if iteration==1:
-            report["  Iter    Mode"] = "     Seat.pass-kms    Stand.pass-kms   Excess.pass-kms  Max.crowd.factor   Min.Hdwy Factor   Max.Hdwy Factor"
-            print "Iter   Mode     Seat.pass-kms    Stand.pass-kms   Excess.pass-kms  Max.crowd.factor   Min.Hdwy.Factor   Max.Hdwy.Factor"
+            report["Iter   Mode"] = "     Seat.pass-kms    Stand.pass-kms   Excess.pass-kms  Max.crowd.factor   Min.Hdwy Factor   Max.Hdwy Factor"
 
         for modes in summary_mode_list:
             rep = ""
             line_selection = "mode=" + modes
 
-            report = util.emme_segment_calc(sc, None, "@pseat*length", sel_line=line_selection)
-            rep += "%18s" % report["sum"]
+            seg_rep = util.emme_segment_calc(sc, None, "@pseat*length", sel_line=line_selection)
+            rep += "%18s" % seg_rep["sum"]
 
-            report = util.emme_segment_calc(sc, None, "(@pstand.min.(@totcapacity-@seatcapacity))*length", sel_line=line_selection)
-            rep += "%18s" % report["sum"]
+            seg_rep = util.emme_segment_calc(sc, None, "(@pstand.min.(@totcapacity-@seatcapacity))*length", sel_line=line_selection)
+            rep += "%18s" % seg_rep["sum"]
 
-            report = util.emme_segment_calc(sc, None, "(((@pstand-@totcapacity+@seatcapacity).max.0)*length)", sel_line=line_selection)
-            rep += "%18s" % report["sum"]
+            seg_rep = util.emme_segment_calc(sc, None, "(((@pstand-@totcapacity+@seatcapacity).max.0)*length)", sel_line=line_selection)
+            rep += "%18s" % seg_rep["sum"]
 
-            report = util.emme_segment_calc(sc, None, "(@ivttfac - 1)", sel_line=line_selection)
-            rep += "%18s" % report["maximum"]
+            seg_rep = util.emme_segment_calc(sc, None, "(@ivttfac - 1)", sel_line=line_selection)
+            rep += "%18s" % seg_rep["maximum"]
 
-            report = util.emme_segment_calc(sc, None, "@hdwyfac", sel_line=line_selection)
-            rep += "%18s" % report["minimum"]
-            rep += "%18s" % report["maximum"]
+            seg_rep = util.emme_segment_calc(sc, None, "@hdwyfac", sel_line=line_selection)
+            rep += "%18s" % seg_rep["minimum"]
+            rep += "%18s" % seg_rep["maximum"]
 
             iter_label = "%4s%7s" % (iteration, modes)
-            print iter_label + rep
             report[iter_label] = rep
 
     def ridership_summary(self, sc):
