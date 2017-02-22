@@ -478,6 +478,7 @@ class TransitAssignment(_m.Tool()):
         util.emme_segment_calc(sc, "@voltravg", "0")
         util.emme_segment_calc(sc, "@pseat", "0")
         util.emme_segment_calc(sc, "@pstand", "0")
+        util.emme_segment_calc(sc, "@ridership", "@boardavg", aggregate="+")
 
     def averaging_transit_volumes(self, sc, iteration):
         util = _m.Modeller().tool("translink.util")
@@ -492,6 +493,9 @@ class TransitAssignment(_m.Tool()):
         # Update @pseat and @pstand
         util.emme_segment_calc(sc, "@pseat", "@voltravg.min.@seatcapacity")
         util.emme_segment_calc(sc, "@pstand", "(@voltravg - @seatcapacity).max.0")
+        
+        # Update ridership stats
+        util.emme_segment_calc(sc, "@ridership", "@boardavg", aggregate="+")
 
     def crowding_factor_calc(self, sc):
         util = _m.Modeller().tool("translink.util")
@@ -559,19 +563,6 @@ class TransitAssignment(_m.Tool()):
 
             iter_label = "%4s%7s" % (iteration, modes)
             report[iter_label] = rep
-
-    def ridership_summary(self, sc):
-        print "Line     RiderShip"
-        networkCalcTool = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
-        spec = {"type": "NETWORK_CALCULATION",
-                "expression": "@boardavg",
-                "result" : "@ridership",
-                 "aggregate": "+",
-                "selections": {
-                     "link": "all",
-                     "transit_line": "all"}}
-        report=networkCalcTool(spec, scenario = sc, full_report = False)
-        print report
 
     def dwell_time_report(self, sc, iteration):
         if sc is self.am_scenario or sc is self.pm_scenario:
