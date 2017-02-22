@@ -419,10 +419,10 @@ class AutoAssignment(_m.Tool()):
     def calc_network_volumes(self, scenario):
         util = _m.Modeller().tool("translink.util")
 
-        util.emme_link_calc(scenario, "@wsovl", "@sov1+@sov2+@sov3+@sov4+@sov5+@sov6")
-        util.emme_link_calc(scenario, "@whovl", "@hov1+@hov2+@hov3+@hov4+@hov5+@hov6")
-        util.emme_turn_calc(scenario, "@wsovt", "@tsov1+@tsov2+@tsov3+@tsov4+@tsov5+@tsov6")
-        util.emme_turn_calc(scenario, "@whovt", "@thov1+@thov2+@thov3+@thov4+@thov5+@thov6")
+        util.emme_link_calc(scenario, "@wsovl", "@sov1+@sov2+@sov3+@sov4")
+        util.emme_link_calc(scenario, "@whovl", "@hov1+@hov2+@hov3+@hov4")
+        util.emme_turn_calc(scenario, "@wsovt", "@tsov1+@tsov2+@tsov3+@tsov4")
+        util.emme_turn_calc(scenario, "@whovt", "@thov1+@thov2+@thov3+@thov4")
 
     @_m.logbook_trace("Calculate Fixed Network Costs")
     def calc_network_costs(self, scenario):
