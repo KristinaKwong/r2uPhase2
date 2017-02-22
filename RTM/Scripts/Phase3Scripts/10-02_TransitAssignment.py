@@ -510,6 +510,7 @@ class TransitAssignment(_m.Tool()):
         #                                        "(((@dwtboard*@boardavg) + (@dwtalight*@alightavg))*"
         #                                        " hdw/(60*%s)))" %(min_dwell_time,period_length), "all","mode=bg")
 
+    @_m.logbook_trace("Calculate Crowding Factor")
     def crowding_factor_calc(self, sc):
         util = _m.Modeller().tool("translink.util")
         # In-vehicle Crowding Function
@@ -521,12 +522,14 @@ class TransitAssignment(_m.Tool()):
 
         util.emme_segment_calc(sc, "@ivttfac", crowd_spec)
 
+    @_m.logbook_trace("Calculate Effective Headway for Capacity Constraint")
     def effective_headway_calc(self, sc):
         util = _m.Modeller().tool("translink.util")
         # [(Boardings/max(Total Capacity - Transit Volume + Boardings,1)).min.3.0].max.1
         util.emme_segment_calc(sc, "@hdwyfac", "((@boardavg/((@totcapacity-@voltravg+@boardavg).max.1)).min.(3.0)).max.1")
         util.emme_segment_calc(sc, "@hdwyeff", "@hdwyfac*@hfrac")
 
+    @_m.logbook_trace("Calculate Crowding and Effective Headway report")
     def crowding_headway_report(self, sc, report, iteration):
         util = _m.Modeller().tool("translink.util")
 
