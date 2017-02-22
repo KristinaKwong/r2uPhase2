@@ -553,23 +553,24 @@ class TransitAssignment(_m.Tool()):
             line_selection = "mode=" + modes
 
             report = util.emme_segment_calc(sc, None, "@pseat*length", sel_line=line_selection)
-            rep += ("%s"%(report["sum"])).rjust(18)
+            rep += "%18s" % report["sum"]
 
             report = util.emme_segment_calc(sc, None, "(@pstand.min.(@totcapacity-@seatcapacity))*length", sel_line=line_selection)
-            rep += ("%s"%(report["sum"])).rjust(18)
+            rep += "%18s" % report["sum"]
 
             report = util.emme_segment_calc(sc, None, "(((@pstand-@totcapacity+@seatcapacity).max.0)*length)", sel_line=line_selection)
-            rep += ("%s"%(report["sum"])).rjust(18)
+            rep += "%18s" % report["sum"]
 
             report = util.emme_segment_calc(sc, None, "(@ivttfac - 1)", sel_line=line_selection)
-            rep += ("%s"%(report["maximum"])).rjust(18)
+            rep += "%18s" % report["maximum"]
 
             report = util.emme_segment_calc(sc, None, "@hdwyfac", sel_line=line_selection)
-            rep += ("%s"%(report["minimum"])).rjust(18)
-            rep += ("%s"%(report["maximum"])).rjust(18)
+            rep += "%18s" % report["minimum"]
+            rep += "%18s" % report["maximum"]
 
-            print "%4s"%iteration+"%7s"%modes+rep
-            report["%4s"%iteration+"%7s"%modes] = rep
+            iter_label = "%4s%7s" % (iteration, modes)
+            print iter_label + rep
+            report[iter_label] = rep
 
     def ridership_summary(self, sc):
         print "Line     RiderShip"
