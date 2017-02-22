@@ -569,7 +569,7 @@ class TransitAssignment(_m.Tool()):
             rep += ("%s"%(report["maximum"])).rjust(18)
 
             print "%4s"%iteration+"%7s"%modes+rep
-        report.update(result)
+            report["%4s"%iteration+"%7s"%modes] = rep
 
     def ridership_summary(self, sc):
         print "Line     RiderShip"
