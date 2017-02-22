@@ -146,16 +146,11 @@ class TransitAssignment(_m.Tool()):
         period_length_list = [1, 1, 1]
 
         for i, (sc, period_length, demand_bus, demand_rail, demand_wce) in enumerate(zip(scenario_list, period_length_list, demand_bus_list, demand_rail_list, demand_wce_list)):
-            self.previous_level = _m.logbook_level()
             report={}
-            _m.logbook_level(_m.LogbookLevel.NONE)
             self.calc_network_costs(sc, period_length, i)
 
             # LOOP FOR CROWDING AND CAPACITY CONSTRAINT
             for iteration in xrange(1, self.max_iterations+1):
-                # Restore writing to Logbook
-                _m.logbook_level(self.previous_level)
-
                 # Set Assignment Parameters
                 bus_spec  = self.get_bus_transit_assignment_spec(demand_bus)
                 rail_spec = self.get_rail_transit_assignment_spec(demand_rail)
@@ -166,8 +161,6 @@ class TransitAssignment(_m.Tool()):
                 assign_transit(rail_spec, scenario=sc, add_volumes=True, save_strategies=True, class_name= "Rail")
                 if sc is scenarioam or sc is scenariopm:
                     assign_transit(wce_spec, scenario=sc, add_volumes=True, save_strategies=True, class_name= "WCE")
-
-                _m.logbook_level(_m.LogbookLevel.NONE)
 
                 # MSA on Boardings and transit Volumes
                 self.averaging_transit_volumes(sc, iteration)
@@ -184,8 +177,6 @@ class TransitAssignment(_m.Tool()):
 
                 # Update Dwell time
                 self.dwell_time_calc(sc, period_length)
-            # Restore writing to Logbook
-            _m.logbook_level(self.previous_level)
 
             # Write Logbook entries for crowding and Headway
             _m.logbook_write("Crowding and Headway report for Scenario: "+sc.id, attributes=report, value=sc.title)
