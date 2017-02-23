@@ -459,7 +459,7 @@ class DataExport(_m.Tool()):
             GROUP BY
                 e.gy
         """
-        conn = util.get_db_byname(eb, "rtm.db")
+        conn = util.get_rtm_db(eb)
 
         prDf = pd.read_sql_query(psql, conn)
         prDf = pd.melt(prDf, id_vars = ['gy'], var_name='purpose', value_name='trips')
