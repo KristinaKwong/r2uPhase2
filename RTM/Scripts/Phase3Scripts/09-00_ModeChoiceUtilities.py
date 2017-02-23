@@ -224,28 +224,21 @@ class ModeChoiceUtilities(_m.Tool()):
                         (np.logical_and(Df['WAuTot']>=AvailDict['WCTotLow'], Df['WAuTot']<=AvailDict['WCTotHig'])),
                          Utility , LrgU)
 
-    def PHr_Demand(self, df, purp, period, demand_list, mode_list):
+    def Demand_Summary(self, df, purp, period, demand_list, mode_list):
 
-        df_summary = pd.DataFrame(index = range(0, 1))
 
         for mode in range (len(demand_list)):
 
             df[mode_list[mode]] = demand_list[mode].flatten()
-            df_summary[mode_list[mode]] = df[mode_list[mode]].sum()
 
-        df_summary = pd.melt(df_summary, value_vars =mode_list)
-        df_summary.rename(columns={'variable': 'Mode', 'value': 'Model_Trips'}, inplace=True)
-        df_summary["period"] = period
-        df_summary["purpose"] = purp
 
-        df_gy = df.groupby(['Gy_O', 'Gy_D']).sum().reset_index()
-        df_gy = pd.melt(df_gy, id_vars=['Gy_O', 'Gy_D'] , value_vars =mode_list)
-        df_gy.rename(columns={'variable': 'Mode', 'value': 'Model_Trips'}, inplace=True)
+        df_gy = df.groupby(['gy_i', 'gy_j']).sum().reset_index()
+        df_gy = pd.melt(df_gy, id_vars=['gy_i', 'gy_j'] , value_vars =mode_list)
+        df_gy.rename(columns={'variable': 'mode', 'value': 'trips'}, inplace=True)
         df_gy["period"] = period
         df_gy["purpose"] = purp
 
-
-        return df_summary, df_gy
+        return df_gy
 
     def AP_PA_Factor(self, eb, purpose, mode, peakperiod, geo='A',minimum_value=0):
         util = _m.Modeller().tool("translink.util")
