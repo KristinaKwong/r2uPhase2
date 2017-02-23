@@ -6,6 +6,7 @@
 ##---------------------------------------------------------------------
 import inro.modeller as _m
 import traceback as _traceback
+import os
 
 class FullTruckModel(_m.Tool()):
     Year = _m.Attribute(int)
@@ -35,6 +36,8 @@ class FullTruckModel(_m.Tool()):
 
     @_m.logbook_trace("Full Truck Model Run")
     def __call__(self, eb, Year):
+        self.cross_border(eb, Year)
+
         return
         ExternalModel=_m.Modeller().tool("translink.emme.stage5.step10.externaltruck")
         ExternalModel(eb, Year)
@@ -46,6 +49,23 @@ class FullTruckModel(_m.Tool()):
         RegionalModel(eb)
 
         self.aggregate_demand_pce(eb)
+
+    def cross_border(self, eb, Year):
+        util = _m.Modeller().tool("translink.util")
+
+        process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
+        root_directory = util.get_input_path(eb)
+
+        util.delmat(eb, "mf8000")
+        util.delmat(eb, "mf8001")
+        util.delmat(eb, "mf8002")
+        util.delmat(eb, "mf8003")
+        util.delmat(eb, "mf8010")
+        util.delmat(eb, "mf8011")
+        util.delmat(eb, "mf8012")
+        util.delmat(eb, "mf8013")
+        matrix_file1 = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"CrossBorderv1.txt")
+        process(transaction_file=matrix_file1, throw_on_error=True)
 
     def aggregate_demand_pce(self, eb):
         util = _m.Modeller().tool("translink.util")
