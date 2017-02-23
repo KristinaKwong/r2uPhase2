@@ -48,12 +48,17 @@ class DataGeneration(_m.Tool()):
             # Run iniitial AON assignment to generate a distance skim
             self.assignAON(am_scen)
 
-            # Run Initial Assignment to generate skims from seed demands
-            auto_assign = _m.Modeller().tool("translink.RTM3.stage3.autoassignment")
-            auto_assign(am_scen, md_scen, pm_scen)
-
+            # record user choices for congested and capacitiated transit
+            run_crowding = int(eb.matrix("ms45").data)
+            run_capacity_constraint = int(eb.matrix("ms46").data)
+            # turn off congested/capacited transit during data generation 0 matrix assignment
+            util.initmat(eb, "ms45", "tranCongest", "Run Congested Transit Assignment", 0)
+            util.initmat(eb, "ms46", "tranCapac", "Run Capacitated Transit Assignment", 0)
             transit_assign = _m.Modeller().tool("translink.RTM3.stage3.transitassignment")
             transit_assign(eb, am_scen, md_scen, pm_scen)
+            # reset user choices for congested and capacitiated transit
+            util.initmat(eb, "ms45", "tranCongest", "Run Congested Transit Assignment", int(run_crowding))
+            util.initmat(eb, "ms46", "tranCapac", "Run Capacitated Transit Assignment", int(run_capacity_constraint))
 
         self.calc_all_accessibilities(eb)
 
@@ -501,9 +506,13 @@ class DataGeneration(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
         eb = sc.emmebank
         # calculate fixed link opcosts based on SOV travel
+
+
+
         auto_voc = eb.matrix("msautoOpCost").data
         util.emme_link_calc(sc, "@sovoc", "length * %s" % (auto_voc))
-        util.initmat(eb, "mf91", "distAON", "All or nothing initial distance skim", )
+        util.initmat(eb, "mf10", "seedSovAm", "AM SOV seed demand", 1)
+        util.initmat(eb, "mf91", "distAON", "All or nothing initial distance skim", 0)
         class_spec = []
         class_spec.append({"mode": "d",
                 "demand": "mf10",
@@ -541,6 +550,7 @@ class DataGeneration(_m.Tool()):
 
         # write the updated matrix back to the emmebank
         util.set_matrix_numpy(eb, "mfdistAON", np_mat)
+        util.delmat(eb, 'mf10')
 
     @_m.logbook_trace("Initial Demand and Skim Matrix Creation")
     def matrix_batchins(self, eb):
@@ -594,6 +604,7 @@ class DataGeneration(_m.Tool()):
         util.initmat(eb, "mf312", "lgvPceAm", "light trucks PCE AM", 0)
         util.initmat(eb, "mf313", "hgvPceAm", "heavy trucks PCE AM", 0)
         #TODO: this should initialize the person trips matrices for assignment instead
+        #TODO: move this to where it wants to live - probably blended skims
         # MD
         util.initmat(eb, "mf320", "SOV_drvtrp_VOT_1_Md", "SOV drv-trips VOT 1 MD", 0)
         util.initmat(eb, "mf321", "SOV_drvtrp_VOT_2_Md", "SOV drv-trips VOT 2 MD", 0)
@@ -620,194 +631,13 @@ class DataGeneration(_m.Tool()):
         util.initmat(eb, "mf353", "hgvPcePm", "heavy trucks PCE PM", 0)
         #TODO: this should initialize the person trips matrices for assignment instead
 
+        #TODO Harvey to move with truck model updates
         # Move seed demand into Work SOV/HOV Medium Income for AM/MD/PM
         specs = []
-        specs.append(util.matrix_spec("mf301", "mf10"))
-        specs.append(util.matrix_spec("mf307", "mf11"))
         specs.append(util.matrix_spec("mf312", "mf20*lgvPCE"))
         specs.append(util.matrix_spec("mf313", "mf21*hgvPCE"))
-        specs.append(util.matrix_spec("mf321", "mf30"))
-        specs.append(util.matrix_spec("mf327", "mf31"))
         specs.append(util.matrix_spec("mf332", "mf40*lgvPCE"))
         specs.append(util.matrix_spec("mf333", "mf41*hgvPCE"))
-        specs.append(util.matrix_spec("mf341", "mf50"))
-        specs.append(util.matrix_spec("mf347", "mf51"))
         specs.append(util.matrix_spec("mf352", "mf60*lgvPCE"))
         specs.append(util.matrix_spec("mf353", "mf61*hgvPCE"))
         util.compute_matrix(specs)
-
-        ########################################################################
-        # skim matrices
-        ########################################################################
-
-        #####################
-        # Auto
-        #####################
-        # AM
-        util.initmat(eb, "mf5000", "AmSovOpCstVOT1", "Am Sov VOT1 Op Cost", 0)
-        util.initmat(eb, "mf5001", "AmSovTimeVOT1", "Am Sov VOT1 Time", 0)
-        util.initmat(eb, "mf5002", "AmSovTollVOT1", "Am Sov VOT1 Toll", 0)
-        util.initmat(eb, "mf5003", "AmSovOpCstVOT2", "Am Sov VOT2 Op Cost", 0)
-        util.initmat(eb, "mf5004", "AmSovTimeVOT2", "Am Sov VOT2 Time", 0)
-        util.initmat(eb, "mf5005", "AmSovTollVOT2", "Am Sov VOT2 Toll", 0)
-        util.initmat(eb, "mf5006", "AmSovOpCstVOT3", "Am Sov VOT3 Op Cost", 0)
-        util.initmat(eb, "mf5007", "AmSovTimeVOT3", "Am Sov VOT3 Time", 0)
-        util.initmat(eb, "mf5008", "AmSovTollVOT3", "Am Sov VOT3 Toll", 0)
-        util.initmat(eb, "mf5009", "AmSovOpCstVOT4", "Am Sov VOT4 Op Cost", 0)
-        util.initmat(eb, "mf5010", "AmSovTimeVOT4", "Am Sov VOT4 Time", 0)
-        util.initmat(eb, "mf5011", "AmSovTollVOT4", "Am Sov VOT4 Toll", 0)
-        util.initmat(eb, "mf5012", "AmHovOpCstVOT1", "Am Hov VOT1 Op Cost", 0)
-        util.initmat(eb, "mf5013", "AmHovTimeVOT1", "Am Hov VOT1 Time", 0)
-        util.initmat(eb, "mf5014", "AmHovTollVOT1", "Am Hov VOT1 Toll", 0)
-        util.initmat(eb, "mf5015", "AmHovOpCstVOT2", "Am Hov VOT2 Op Cost", 0)
-        util.initmat(eb, "mf5016", "AmHovTimeVOT2", "Am Hov VOT2 Time", 0)
-        util.initmat(eb, "mf5017", "AmHovTollVOT2", "Am Hov VOT2 Toll", 0)
-        util.initmat(eb, "mf5018", "AmHovOpCstVOT3", "Am Hov VOT3 Op Cost", 0)
-        util.initmat(eb, "mf5019", "AmHovTimeVOT3", "Am Hov VOT3 Time", 0)
-        util.initmat(eb, "mf5020", "AmHovTollVOT3", "Am Hov VOT3 Toll", 0)
-        util.initmat(eb, "mf5021", "AmHovOpCstVOT4", "Am Hov VOT4 Op Cost", 0)
-        util.initmat(eb, "mf5022", "AmHovTimeVOT4", "Am Hov VOT4 Time", 0)
-        util.initmat(eb, "mf5023", "AmHovTollVOT4", "Am Hov VOT4 Toll", 0)
-        util.initmat(eb, "mf5024", "AmLgvOpCst", "Am LGV Op Cost", 0)
-        util.initmat(eb, "mf5025", "AmLgvTime", "Am LGV Time", 0)
-        util.initmat(eb, "mf5026", "AmLgvToll", "Am LGV Toll", 0)
-        util.initmat(eb, "mf5027", "AmHgvOpCst", "Am HGV Op Cost", 0)
-        util.initmat(eb, "mf5028", "AmHgvTime", "Am HGV Time", 0)
-        util.initmat(eb, "mf5029", "AmHgvToll", "Am HGV Toll", 0)
-        # MD
-        util.initmat(eb, "mf5030", "MdSovOpCstVOT1", "Md Sov VOT1 Op Cost", 0)
-        util.initmat(eb, "mf5031", "MdSovTimeVOT1", "Md Sov VOT1 Time", 0)
-        util.initmat(eb, "mf5032", "MdSovTollVOT1", "Md Sov VOT1 Toll", 0)
-        util.initmat(eb, "mf5033", "MdSovOpCstVOT2", "Md Sov VOT2 Op Cost", 0)
-        util.initmat(eb, "mf5034", "MdSovTimeVOT2", "Md Sov VOT2 Time", 0)
-        util.initmat(eb, "mf5035", "MdSovTollVOT2", "Md Sov VOT2 Toll", 0)
-        util.initmat(eb, "mf5036", "MdSovOpCstVOT3", "Md Sov VOT3 Op Cost", 0)
-        util.initmat(eb, "mf5037", "MdSovTimeVOT3", "Md Sov VOT3 Time", 0)
-        util.initmat(eb, "mf5038", "MdSovTollVOT3", "Md Sov VOT3 Toll", 0)
-        util.initmat(eb, "mf5039", "MdSovOpCstVOT4", "Md Sov VOT4 Op Cost", 0)
-        util.initmat(eb, "mf5040", "MdSovTimeVOT4", "Md Sov VOT4 Time", 0)
-        util.initmat(eb, "mf5041", "MdSovTollVOT4", "Md Sov VOT4 Toll", 0)
-        util.initmat(eb, "mf5042", "MdHovOpCstVOT1", "Md Hov VOT1 Op Cost", 0)
-        util.initmat(eb, "mf5043", "MdHovTimeVOT1", "Md Hov VOT1 Time", 0)
-        util.initmat(eb, "mf5044", "MdHovTollVOT1", "Md Hov VOT1 Toll", 0)
-        util.initmat(eb, "mf5045", "MdHovOpCstVOT2", "Md Hov VOT2 Op Cost", 0)
-        util.initmat(eb, "mf5046", "MdHovTimeVOT2", "Md Hov VOT2 Time", 0)
-        util.initmat(eb, "mf5047", "MdHovTollVOT2", "Md Hov VOT2 Toll", 0)
-        util.initmat(eb, "mf5048", "MdHovOpCstVOT3", "Md Hov VOT3 Op Cost", 0)
-        util.initmat(eb, "mf5049", "MdHovTimeVOT3", "Md Hov VOT3 Time", 0)
-        util.initmat(eb, "mf5050", "MdHovTollVOT3", "Md Hov VOT3 Toll", 0)
-        util.initmat(eb, "mf5051", "MdHovOpCstVOT4", "Md Hov VOT4 Op Cost", 0)
-        util.initmat(eb, "mf5052", "MdHovTimeVOT4", "Md Hov VOT4 Time", 0)
-        util.initmat(eb, "mf5053", "MdHovTollVOT4", "Md Hov VOT4 Toll", 0)
-        util.initmat(eb, "mf5054", "MdLgvOpCst", "Md LGV Op Cost", 0)
-        util.initmat(eb, "mf5055", "MdLgvTime", "Md LGV Time", 0)
-        util.initmat(eb, "mf5056", "MdLgvToll", "Md LGV Toll", 0)
-        util.initmat(eb, "mf5057", "MdHgvOpCst", "Md HGV Op Cost", 0)
-        util.initmat(eb, "mf5058", "MdHgvTime", "Md HGV Time", 0)
-        util.initmat(eb, "mf5059", "MdHgvToll", "Md HGV Toll", 0)
-        # PM
-        util.initmat(eb, "mf5060", "PmSovOpCstVOT1", "Pm Sov VOT1 Op Cost", 0)
-        util.initmat(eb, "mf5061", "PmSovTimeVOT1", "Pm Sov VOT1 Time", 0)
-        util.initmat(eb, "mf5062", "PmSovTollVOT1", "Pm Sov VOT1 Toll", 0)
-        util.initmat(eb, "mf5063", "PmSovOpCstVOT2", "Pm Sov VOT2 Op Cost", 0)
-        util.initmat(eb, "mf5064", "PmSovTimeVOT2", "Pm Sov VOT2 Time", 0)
-        util.initmat(eb, "mf5065", "PmSovTollVOT2", "Pm Sov VOT2 Toll", 0)
-        util.initmat(eb, "mf5066", "PmSovOpCstVOT3", "Pm Sov VOT3 Op Cost", 0)
-        util.initmat(eb, "mf5067", "PmSovTimeVOT3", "Pm Sov VOT3 Time", 0)
-        util.initmat(eb, "mf5068", "PmSovTollVOT3", "Pm Sov VOT3 Toll", 0)
-        util.initmat(eb, "mf5069", "PmSovOpCstVOT4", "Pm Sov VOT4 Op Cost", 0)
-        util.initmat(eb, "mf5070", "PmSovTimeVOT4", "Pm Sov VOT4 Time", 0)
-        util.initmat(eb, "mf5071", "PmSovTollVOT4", "Pm Sov VOT4 Toll", 0)
-        util.initmat(eb, "mf5072", "PmHovOpCstVOT1", "Pm Hov VOT1 Op Cost", 0)
-        util.initmat(eb, "mf5073", "PmHovTimeVOT1", "Pm Hov VOT1 Time", 0)
-        util.initmat(eb, "mf5074", "PmHovTollVOT1", "Pm Hov VOT1 Toll", 0)
-        util.initmat(eb, "mf5075", "PmHovOpCstVOT2", "Pm Hov VOT2 Op Cost", 0)
-        util.initmat(eb, "mf5076", "PmHovTimeVOT2", "Pm Hov VOT2 Time", 0)
-        util.initmat(eb, "mf5077", "PmHovTollVOT2", "Pm Hov VOT2 Toll", 0)
-        util.initmat(eb, "mf5078", "PmHovOpCstVOT3", "Pm Hov VOT3 Op Cost", 0)
-        util.initmat(eb, "mf5079", "PmHovTimeVOT3", "Pm Hov VOT3 Time", 0)
-        util.initmat(eb, "mf5080", "PmHovTollVOT3", "Pm Hov VOT3 Toll", 0)
-        util.initmat(eb, "mf5081", "PmHovOpCstVOT4", "Pm Hov VOT4 Op Cost", 0)
-        util.initmat(eb, "mf5082", "PmHovTimeVOT4", "Pm Hov VOT4 Time", 0)
-        util.initmat(eb, "mf5083", "PmHovTollVOT4", "Pm Hov VOT4 Toll", 0)
-        util.initmat(eb, "mf5084", "PmLgvOpCst", "Pm LGV Op Cost", 0)
-        util.initmat(eb, "mf5085", "PmLgvTime", "Pm LGV Time", 0)
-        util.initmat(eb, "mf5086", "PmLgvToll", "Pm LGV Toll", 0)
-        util.initmat(eb, "mf5087", "PmHgvOpCst", "Pm HGV Op Cost", 0)
-        util.initmat(eb, "mf5088", "PmHgvTime", "Pm HGV Time", 0)
-        util.initmat(eb, "mf5089", "PmHgvToll", "Pm HGV Toll", 0)
-
-        #####################
-        # Bus
-        #####################
-        # AM
-        util.initmat(eb, "mf5300", "AmBusIvtt", "Am Bus InVehicle Time", 0)
-        util.initmat(eb, "mf5301", "AmBusWait", "Am Bus Waiting Time", 0)
-        util.initmat(eb, "mf5302", "AmBusAux", "Am Bus Auxillary Time", 0)
-        util.initmat(eb, "mf5303", "AmBusBoard", "Am Bus Boardings", 0)
-        util.initmat(eb, "mf5304", "AmBusFare", "Am Bus Fare", 0)
-        # MD
-        util.initmat(eb, "mf5310", "MdBusIvtt", "Md Bus InVehicle Time", 0)
-        util.initmat(eb, "mf5311", "MdBusWait", "Md Bus Waiting Time", 0)
-        util.initmat(eb, "mf5312", "MdBusAux", "Md Bus Auxillary Time", 0)
-        util.initmat(eb, "mf5313", "MdBusBoard", "Md Bus Boardings", 0)
-        util.initmat(eb, "mf5314", "MdBusFare", "Md Bus Fare", 0)
-        # PM
-        util.initmat(eb, "mf5320", "PmBusIvtt", "Pm Bus InVehicle Time", 0)
-        util.initmat(eb, "mf5321", "PmBusWait", "Pm Bus Waiting Time", 0)
-        util.initmat(eb, "mf5322", "PmBusAux", "Pm Bus Auxillary Time", 0)
-        util.initmat(eb, "mf5323", "PmBusBoard", "Pm Bus Boardings", 0)
-        util.initmat(eb, "mf5324", "PmBusFare", "Pm Bus Fare", 0)
-
-        #####################
-        # Rail
-        #####################
-        # AM
-        util.initmat(eb, "mf5500", "AmRailIvtt", "Am Rail Invehicle Time", 0)
-        util.initmat(eb, "mf5501", "AmRailIvttBus", "Am Rail Invehicle Time on Bus", 0)
-        util.initmat(eb, "mf5502", "AmRailWait", "Am Rail Waiting Time", 0)
-        util.initmat(eb, "mf5503", "AmRailAux", "Am Rail Auxilliary Time", 0)
-        util.initmat(eb, "mf5504", "AmRailBoard", "Am Rail Boardings", 0)
-        util.initmat(eb, "mf5505", "AmRailFare", "Am Rail Fare", 0)
-        # MD
-        util.initmat(eb, "mf5510", "MdRailIvtt", "Md Rail Invehicle Time", 0)
-        util.initmat(eb, "mf5511", "MdRailIvttBus", "Md Rail Invehicle Time on Bus", 0)
-        util.initmat(eb, "mf5512", "MdRailWait", "Md Rail Waiting Time", 0)
-        util.initmat(eb, "mf5513", "MdRailAux", "Md Rail Auxilliary Time", 0)
-        util.initmat(eb, "mf5514", "MdRailBoard", "Md Rail Boardings", 0)
-        util.initmat(eb, "mf5515", "MdRailFare", "Md Rail Fare", 0)
-        # PM
-        util.initmat(eb, "mf5520", "PmRailIvtt", "Pm Rail Invehicle Time", 0)
-        util.initmat(eb, "mf5521", "PmRailIvttBus", "Pm Rail Invehicle Time on Bus", 0)
-        util.initmat(eb, "mf5522", "PmRailWait", "Pm Rail Waiting Time", 0)
-        util.initmat(eb, "mf5523", "PmRailAux", "Pm Rail Auxilliary Time", 0)
-        util.initmat(eb, "mf5524", "PmRailBoard", "Pm Rail Boardings", 0)
-        util.initmat(eb, "mf5525", "PmRailFare", "Pm Rail Fare", 0)
-
-        #####################
-        # WCE
-        #####################
-        # AM
-        util.initmat(eb, "mf5700", "AmWceIvtt", "Am Rail Invehicle Time", 0)
-        util.initmat(eb, "mf5701", "AmWceIvttRail", "Am Rail Invehicle Time on Rail", 0)
-        util.initmat(eb, "mf5702", "AmWceIvttBus", "Am Rail Invehicle Time on Bus", 0)
-        util.initmat(eb, "mf5703", "AmWceWait", "Am Rail Waiting Time", 0)
-        util.initmat(eb, "mf5704", "AmWceAux", "Am Rail Auxilliary Time", 0)
-        util.initmat(eb, "mf5705", "AmWceBoard", "Am Rail Boardings", 0)
-        util.initmat(eb, "mf5706", "AmWceFare", "Am Rail Fare", 0)
-        # MD
-        util.initmat(eb, "mf5710", "MdWceIvtt", "Md Rail Invehicle Time", 0)
-        util.initmat(eb, "mf5711", "MdWceIvttRail", "Md Rail Invehicle Time on Rail", 0)
-        util.initmat(eb, "mf5712", "MdWceIvttBus", "Md Rail Invehicle Time on Bus", 0)
-        util.initmat(eb, "mf5713", "MdWceWait", "Md Rail Waiting Time", 0)
-        util.initmat(eb, "mf5714", "MdWceAux", "Md Rail Auxilliary Time", 0)
-        util.initmat(eb, "mf5715", "MdWceBoard", "Md Rail Boardings", 0)
-        util.initmat(eb, "mf5716", "MdWceFare", "Md Rail Fare", 0)
-        # PM
-        util.initmat(eb, "mf5720", "PmWceIvtt", "Pm Rail Invehicle Time", 0)
-        util.initmat(eb, "mf5721", "PmWceIvttRail", "Pm Rail Invehicle Time on Rail", 0)
-        util.initmat(eb, "mf5722", "PmWceIvttBus", "Pm Rail Invehicle Time on Bus", 0)
-        util.initmat(eb, "mf5723", "PmWceWait", "Pm Rail Waiting Time", 0)
-        util.initmat(eb, "mf5724", "PmWceAux", "Pm Rail Auxilliary Time", 0)
-        util.initmat(eb, "mf5725", "PmWceBoard", "Pm Rail Boardings", 0)
-        util.initmat(eb, "mf5726", "PmWceFare", "Pm Rail Fare", 0)
