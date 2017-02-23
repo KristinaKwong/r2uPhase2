@@ -1,7 +1,7 @@
 ##---------------------------------------------------------------------
-##--TransLink Phase 2.2 Regional Transportation Model
+##--TransLink Phase 3.0 Regional Transportation Model
 ##--
-##--Path: translink.emme.stage5.step10.truckmodel
+##--Path: translink.RTM3.stage2.truckmodel
 ##--Purpose: Run Full truck Model
 ##---------------------------------------------------------------------
 import inro.modeller as _m
@@ -35,6 +35,7 @@ class FullTruckModel(_m.Tool()):
 
     @_m.logbook_trace("Full Truck Model Run")
     def __call__(self, eb, Year):
+        return
         ExternalModel=_m.Modeller().tool("translink.emme.stage5.step10.externaltruck")
         ExternalModel(eb, Year)
 
