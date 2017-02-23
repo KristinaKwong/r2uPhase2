@@ -61,14 +61,6 @@ class ExternalTruckModel(_m.Tool()):
     def CrossBorder(self, eb, Year):
         util = _m.Modeller().tool("translink.util")
 
-        process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
-        root_directory = util.get_input_path(eb)
-
-        util.delmat(eb, "mf1008")
-        util.delmat(eb, "mf1009")
-        matrix_file2 = os.path.join(root_directory, "TruckBatchFiles", "IRBatchIn.txt")
-        process(transaction_file=matrix_file2, throw_on_error=True)
-
         util.initmat(eb, "mo1001", "IRLgPr", "IR LgTruck Productions", 0)
         util.initmat(eb, "mo1002", "IRHvPr", "IR HvTruck Productions", 0)
         util.initmat(eb, "md201",  "IRLgAt", "IR LgTruck Attractions", 0)

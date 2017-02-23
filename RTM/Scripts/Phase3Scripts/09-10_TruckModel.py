@@ -50,6 +50,7 @@ class FullTruckModel(_m.Tool()):
 
         self.aggregate_demand_pce(eb)
 
+    @_m.logbook_trace("Cross Border Demand Market")
     def cross_border(self, eb, Year):
         util = _m.Modeller().tool("translink.util")
 
@@ -66,6 +67,18 @@ class FullTruckModel(_m.Tool()):
         util.delmat(eb, "mf8013")
         matrix_file1 = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"CrossBorderv1.txt")
         process(transaction_file=matrix_file1, throw_on_error=True)
+        
+    @_m.logbook_trace("Inter-Regional Demand Market")
+    def inter_regional(self, eb, Year):
+        util = _m.Modeller().tool("translink.util")
+
+        process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
+        root_directory = util.get_input_path(eb)
+
+        util.delmat(eb, "mf8020")
+        util.delmat(eb, "mf8021")
+        matrix_file2 = os.path.join(root_directory, "TruckBatchFiles", "IRBatchIn.txt")
+        process(transaction_file=matrix_file2, throw_on_error=True)
 
     def aggregate_demand_pce(self, eb):
         util = _m.Modeller().tool("translink.util")

@@ -1,5 +1,5 @@
 t matrices
-a matrix=mf1008  IRLg99   0.0 IR Light Truck 1999 Survey Rat
+a matrix=mf8020  IRLg99   0.0 IR Light Truck 1999 Survey Rat
       1  11030  .0009700
       1  11040  .0002176
       1  11050  .0000624
@@ -11767,7 +11767,7 @@ a matrix=mf1008  IRLg99   0.0 IR Light Truck 1999 Survey Rat
   83010      2  .0049576
   83020      1  .0002611
   83020      2  .0002424
-a matrix=mf1009  IRHv99   0.0 IR Heavy Truck 1999 Survey Rat
+a matrix=mf8021  IRHv99   0.0 IR Heavy Truck 1999 Survey Rat
       1  11010  .0000173
       1  11020  .0000327
       1  11030  .0009900
