@@ -85,6 +85,15 @@ class DataExport(_m.Tool()):
         df.to_sql(name='avgTravelTimes', con=conn, flavor='sqlite', index=False, if_exists='replace')
         conn.close()
 
+        # trip generation
+        p, a = self.prdsAtrs(eb)
+        df = p.append(a)
+
+        conn = util.get_db_byname(eb, "trip_summaries.db")
+        df.to_sql(name='tripGeneration', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        conn.close()
+
+
         # runs last
         if self.export_csvs:
             self.export_text(eb)
@@ -379,3 +388,89 @@ class DataExport(_m.Tool()):
 
         df = df[['period','mode','measure','value']]
         return df
+
+
+
+    def prdsAtrs(self, eb):
+        util = _m.Modeller().tool("translink.util")
+
+        psql = """
+        SELECT
+        h.*
+        ,t.hbu
+        ,t.nhbw
+        ,t.nhbo
+
+        FROM
+              (SELECT
+                e.gy
+                ,SUM(tph.hbw) as hbw
+                ,SUM(tph.hbesc) as hbesc
+                ,SUM(tph.hbpb) as hbpb
+                ,SUM(tph.hbsch) as hbsch
+                ,SUM(tph.hbshop) as hbshop
+                ,SUM(tph.hbsoc) as hbsoc
+
+              FROM TripsHhPrds tph
+                LEFT JOIN ensembles e on e.TAZ1700 = tph.TAZ1741
+
+              WHERE 1=1
+                and tph.TAZ1741 > 1000
+
+              GROUP BY
+                e.gy ) h
+
+        LEFT JOIN
+                  (SELECT
+                    ee.gy
+                    ,SUM(tpt.hbu) as hbu
+                    ,SUM(tpt.nhbw) as nhbw
+                    ,SUM(tpt.nhbo) as nhbo
+
+                  FROM TripsTazPrds tpt
+                    LEFT JOIN ensembles ee on ee.TAZ1700 = tpt.TAZ1741
+
+                  WHERE 1=1
+                    and tpt.TAZ1741 > 1000
+
+                  GROUP BY
+                    ee.gy) t on t.gy = h.gy
+        """
+
+        asql = """
+        SELECT
+            e.gy
+            ,SUM(tat.hbw) as hbw
+            ,SUM(tat.hbesc) as hbesc
+            ,SUM(tat.hbpb) as hbpb
+            ,SUM(tat.hbsch) as hbsch
+            ,SUM(tat.hbshop) as hbshop
+            ,SUM(tat.hbsoc) as hbsoc
+            ,SUM(tat.hbu) as hbu
+            ,SUM(tat.nhbw) as nhbw
+            ,SUM(tat.nhbo) as nhbo
+
+            FROM TripsTazAtrs tat
+                LEFT JOIN ensembles e on e.TAZ1700 = tat.TAZ1741
+
+            WHERE 1=1
+                and tat.TAZ1741 > 1000
+
+            GROUP BY
+                e.gy
+        """
+        conn = util.get_db_byname(eb, "rtm.db")
+
+        prDf = pd.read_sql_query(psql, conn)
+        prDf = pd.melt(prDf, id_vars = ['gy'], var_name='purpose', value_name='trips')
+        prDf['type'] = 'productions'
+        prDf = prDf[['gy','type','purpose','trips']]
+
+        arDf = pd.read_sql(asql, conn)
+        arDf = pd.melt(arDf, id_vars = ['gy'], var_name='purpose', value_name='trips')
+        arDf['type'] = 'attractions'
+        arDf = arDf[['gy','type','purpose','trips']]
+
+        conn.close()
+
+        return prDf, arDf
