@@ -31,10 +31,6 @@ class ExternalTruckModel(_m.Tool()):
     def CrossBorder(self, eb, Year):
         util = _m.Modeller().tool("translink.util")
 
-        util.initmat(eb, "mo1001", "IRLgPr", "IR LgTruck Productions", 0)
-        util.initmat(eb, "mo1002", "IRHvPr", "IR HvTruck Productions", 0)
-        util.initmat(eb, "md201",  "IRLgAt", "IR LgTruck Attractions", 0)
-        util.initmat(eb, "md202",  "IRHvAt", "IR LgTruck Attractions", 0)
         util.initmat(eb, "mo1003",  "IRAdj", "IR Adjustment Calc", 0)
         util.initmat(eb, "md203",   "IRAdj", "IR Adjustment Calc", 0)
         util.initmat(eb, "mf1010", "IRLg24", "IR LgTruck Daily Trips", 0)
@@ -44,56 +40,6 @@ class ExternalTruckModel(_m.Tool()):
         util.initmat(eb, "mf1014", "IRLgMD", "IR LgTruck MD Trips", 0)
         util.initmat(eb, "mf1015", "IRHvMD", "IR HvTruck MD Trips", 0)
 
-    @_m.logbook_trace("Trip Generation")
-    def TripGeneration(self, Year):
-        util = _m.Modeller().tool("translink.util")
-        # Inputs: Regression Functions and directional factors
-        # Outputs: 24 hours trip generation - mo4,mo6,md404,md406 (Light From, Heavy From, Light To, Heavy To)
-
-        matrixlist=["mo1001","mo1002","md201","md202"]
-
-        TruckList=[LightTrucksFrom,HeavyTrucksFrom, LightTrucksTo ,HeavyTrucksTo]
-
-        ExtZoneList=[1,2,8,10,11] #[1: Highway 7, 2: Highway 2, 8: Tsawwassen, 10: HoreshoeBay, 11: Highway 99]
-
-        specs = []
-        for i in range (0, len(matrixlist)):
-            for j in range(0, len(ExtZoneList)):
-                spec = util.matrix_spec(matrixlist[i], str(TruckList[i][j]))
-                if i < 2:
-                    spec["constraint"]["by_zone"] = {"origins": str(ExtZoneList[j]), "destinations": None}
-                else:
-                    spec["constraint"]["by_zone"] = {"origins": None, "destinations": str(ExtZoneList[j])}
-                specs.append(spec)
-        util.compute_matrix(specs)
-
-        self.AdjustInterCrossBorder("mf1001", "mo1001", "md201")
-        self.AdjustInterCrossBorder("mf1004", "mo1002", "md202")
-
-    @_m.logbook_trace("Adjust Inter Regional mos and mds with Cross-Border mos and mds")
-    def AdjustInterCrossBorder(self, matrix1, matrix2, matrix3):
-        util = _m.Modeller().tool("translink.util")
-        #   Adjusts Inter-regional mo and md totals by subtracting Cross-border mo/mds with inter-regional zone end
-
-        specs = []
-
-        spec = util.matrix_spec("mo1003", matrix1)
-        spec["constraint"]["by_zone"] = {"origins": "1;2;8;10;11", "destinations": "*"}
-        spec["aggregation"] = {"origins": None, "destinations": "+"}
-        specs.append(spec)
-
-        spec = util.matrix_spec("md203", matrix1)
-        spec["constraint"]["by_zone"] = {"origins": "*", "destinations": "1;2;8;10;11"}
-        spec["aggregation"] = {"origins": "+", "destinations": None}
-        specs.append(spec)
-
-        spec = util.matrix_spec(matrix2, "((%s-mo1003).max.0)" % matrix2)
-        specs.append(spec)
-
-        spec = util.matrix_spec(matrix3, "((%s-md203).max.0)" % matrix3)
-        specs.append(spec)
-
-        util.compute_matrix(specs)
 
     @_m.logbook_trace("Trip Distribution")
     def TripDistribution(self):

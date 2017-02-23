@@ -38,6 +38,8 @@ class FullTruckModel(_m.Tool()):
     def __call__(self, eb, Year):
         self.cross_border(eb, Year)
 
+        self.inter_regional(eb, Year)
+
         return
         ExternalModel=_m.Modeller().tool("translink.emme.stage5.step10.externaltruck")
         ExternalModel(eb, Year)
@@ -83,6 +85,8 @@ class FullTruckModel(_m.Tool()):
         self.ir_generation(eb, Year)
 
     def ir_generation(self, eb, Year):
+        util = _m.Modeller().tool("translink.util")
+
         ## Regression coefficients:
         # Eastern Gate Heavy Trucks Model (Highway 1 & 7)
         EaHvInt = -553.2835   # Intercept
@@ -179,6 +183,70 @@ class FullTruckModel(_m.Tool()):
                         WestTrucks*(1-IB_Split[2])*TsawassenSplit*Wkd_Factor[2]*(TruckConFact),
                         WestTrucks*(1-IB_Split[2])*(1-TsawassenSplit)*Wkd_Factor[2]*(TruckConFact),
                         NorthLightTrucks*Wkd_Factor[4]]
+
+        # Outputs: 24 hours trip generation - (Light From, Heavy From, Light To, Heavy To)
+        util.initmat(eb, "mo8020", "IRLgPr", "IR LgTruck Productions", 0)
+        util.initmat(eb, "mo8021", "IRHvPr", "IR HvTruck Productions", 0)
+        util.initmat(eb, "md8020", "IRLgAt", "IR LgTruck Attractions", 0)
+        util.initmat(eb, "md8021", "IRHvAt", "IR HvTruck Attractions", 0)
+
+        matrixlist=["mo8020","mo8021","md8020","md8021"]
+
+        TruckList=[LightTrucksFrom,HeavyTrucksFrom, LightTrucksTo ,HeavyTrucksTo]
+
+        ExtZoneList=[1,2,8,10,11] #[1: Highway 7, 2: Highway 2, 8: Tsawwassen, 10: HoreshoeBay, 11: Highway 99]
+
+        specs = []
+        for i in range (0, len(matrixlist)):
+            for j in range(0, len(ExtZoneList)):
+                spec = util.matrix_spec(matrixlist[i], str(TruckList[i][j]))
+                if i < 2:
+                    spec["constraint"]["by_zone"] = {"origins": str(ExtZoneList[j]), "destinations": None}
+                else:
+                    spec["constraint"]["by_zone"] = {"origins": None, "destinations": str(ExtZoneList[j])}
+                specs.append(spec)
+        util.compute_matrix(specs)
+
+        util.initmat(eb, "mo8022",  "IRLgAdj", "IR Lg Adjustment Calc", 0)
+        util.initmat(eb, "md8022",  "IRLgAdj", "IR Lg Adjustment Calc", 0)
+        util.initmat(eb, "mo8023",  "IRHvAdj", "IR Hv Adjustment Calc", 0)
+        util.initmat(eb, "md8023",  "IRHvAdj", "IR Hv Adjustment Calc", 0)
+
+        specs = []
+
+        spec = util.matrix_spec("mo8022", "mf8000")
+        spec["constraint"]["by_zone"] = {"origins": "1;2;8;10;11", "destinations": "*"}
+        spec["aggregation"] = {"origins": None, "destinations": "+"}
+        specs.append(spec)
+
+        spec = util.matrix_spec("mo8023", "mf8010")
+        spec["constraint"]["by_zone"] = {"origins": "1;2;8;10;11", "destinations": "*"}
+        spec["aggregation"] = {"origins": None, "destinations": "+"}
+        specs.append(spec)
+
+        spec = util.matrix_spec("md8022", "mf8000")
+        spec["constraint"]["by_zone"] = {"origins": "*", "destinations": "1;2;8;10;11"}
+        spec["aggregation"] = {"origins": "+", "destinations": None}
+        specs.append(spec)
+
+        spec = util.matrix_spec("md8023", "mf8010")
+        spec["constraint"]["by_zone"] = {"origins": "*", "destinations": "1;2;8;10;11"}
+        spec["aggregation"] = {"origins": "+", "destinations": None}
+        specs.append(spec)
+
+        spec = util.matrix_spec("mo8020", "((mo8020-mo8022).max.0)")
+        specs.append(spec)
+
+        spec = util.matrix_spec("md8020", "((md8020-md8022).max.0)")
+        specs.append(spec)
+
+        spec = util.matrix_spec("mo8021", "((mo8021-mo8023).max.0)")
+        specs.append(spec)
+
+        spec = util.matrix_spec("md8021", "((md8021-md8023).max.0)")
+        specs.append(spec)
+
+        util.compute_matrix(specs)
 
     def aggregate_demand_pce(self, eb):
         util = _m.Modeller().tool("translink.util")
