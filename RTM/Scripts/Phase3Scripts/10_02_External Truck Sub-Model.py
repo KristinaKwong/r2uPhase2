@@ -40,24 +40,6 @@ class ExternalTruckModel(_m.Tool()):
         util.initmat(eb, "mf1014", "IRLgMD", "IR LgTruck MD Trips", 0)
         util.initmat(eb, "mf1015", "IRHvMD", "IR HvTruck MD Trips", 0)
 
-
-    @_m.logbook_trace("Trip Distribution")
-    def TripDistribution(self):
-        util = _m.Modeller().tool("translink.util")
-        ## Distribute External mo and md trips based on 1999 O-D Survey
-        # Inputs: mo4, mo6, md404, md406, mf182 (O-D Survey Light Trucks Distribution), mf183 (O-D Survey Heavy Truck Distribution)
-        # Outputs: mf184, mf185 (24 hour Light Truck O-D, 24 hour Heavy Truck O-D)
-
-        specs = []
-
-        spec = util.matrix_spec("mf1010", "mo1001*mf1008+md201*mf1008")
-        specs.append(spec)
-
-        spec = util.matrix_spec("mf1011", "mo1002*mf1009+md202*mf1009")
-        specs.append(spec)
-
-        util.compute_matrix(specs)
-
     @_m.logbook_trace("Time Slicing")
     def TimeSlicing(self):
         util = _m.Modeller().tool("translink.util")

@@ -83,6 +83,7 @@ class FullTruckModel(_m.Tool()):
         process(transaction_file=matrix_file2, throw_on_error=True)
 
         self.ir_generation(eb, Year)
+        self.ir_distribution(eb)
 
     def ir_generation(self, eb, Year):
         util = _m.Modeller().tool("translink.util")
@@ -244,6 +245,24 @@ class FullTruckModel(_m.Tool()):
         specs.append(spec)
 
         spec = util.matrix_spec("md8021", "((md8021-md8023).max.0)")
+        specs.append(spec)
+
+        util.compute_matrix(specs)
+
+    @_m.logbook_trace("Trip Distribution")
+    def ir_distribution(self):
+        util = _m.Modeller().tool("translink.util")
+
+        ## Distribute External mo and md trips based on 1999 O-D Survey
+        util.initmat(eb, "mf8022", "IRLg24", "IR LgTruck Daily Trips", 0)
+        util.initmat(eb, "mf8023", "IRHv24", "IR HvTruck Daily Trips", 0)
+
+        specs = []
+
+        spec = util.matrix_spec("mf8022", "mo8020*mf8020 + md8020*mf8020")
+        specs.append(spec)
+
+        spec = util.matrix_spec("mf8023", "mo8021*mf8021 + md8021*mf8021")
         specs.append(spec)
 
         util.compute_matrix(specs)
