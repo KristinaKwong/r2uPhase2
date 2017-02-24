@@ -373,6 +373,7 @@ class FullTruckModel(_m.Tool()):
         util.initmat(eb, "ms8052", "RGphPM", "Rg Truck Peak Hour Factor PM", .24100)
 
         self.regional_generation(eb)
+        self.regional_distribution(eb)
 
     def regional_generation(self, eb):
         util = _m.Modeller().tool("translink.util")
@@ -442,6 +443,41 @@ class FullTruckModel(_m.Tool()):
         specs.append(spec)
 
         spec = util.matrix_spec("md8051", "mo8051'")
+        specs.append(spec)
+
+        util.compute_matrix(specs)
+
+    def regional_distribution(self, eb):
+        util = _m.Modeller().tool("translink.util")
+
+        # Trip Distribution - Compute Friction Factors
+        util.initmat(eb, "mf8060", "RGLgFc", "Rg Lg Truck Impedance", 0)
+        util.initmat(eb, "mf8061", "RGHvFc", "Rg Hv Truck Impedance", 0)
+
+        specs = []
+
+        spec = util.matrix_spec("mf8060", "exp(-.09*mfMdSovTimeVOT4)")
+        spec["constraint"]["by_zone"] = {"origins": "gy1-gy14", "destinations": "gy1-gy14"}
+        specs.append(spec)
+
+        spec = util.matrix_spec("mf8060", "exp(-.13*mfMdSovTimeVOT4)")
+        spec["constraint"]["by_zone"] = {"origins": "gy1-gy11", "destinations": "gy1-gy11"}
+        specs.append(spec)
+
+        spec = util.matrix_spec("mf8060", "exp(-.3*mfMdSovTimeVOT4)")
+        spec["constraint"]["by_zone"] = {"origins": "gy1-gy4;gy7", "destinations": "gy1-gy4;gy7"}
+        specs.append(spec)
+
+        spec = util.matrix_spec("mf8061", "exp(-.07*mfMdSovTimeVOT4)")
+        spec["constraint"]["by_zone"] = {"origins": "gy1-gy14", "destinations": "gy1-gy14"}
+        specs.append(spec)
+
+        spec = util.matrix_spec("mf8061", "exp(-.11*mfMdSovTimeVOT4)")
+        spec["constraint"]["by_zone"] = {"origins": "gy3", "destinations": "gy1-gy14"}
+        specs.append(spec)
+
+        spec = util.matrix_spec("mf8061", "exp(-.11*mfMdSovTimeVOT4)")
+        spec["constraint"]["by_zone"] = {"origins": "gy1-gy14", "destinations": "gy3"}
         specs.append(spec)
 
         util.compute_matrix(specs)

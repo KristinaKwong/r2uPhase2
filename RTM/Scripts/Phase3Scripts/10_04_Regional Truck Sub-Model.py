@@ -37,40 +37,6 @@ class RegTruckModel(_m.Tool()):
         specs = []
 
         """
-        Trip Distribution - Compute Friction and Combine Tables
-        """
-        util.initmat(eb, "mf1029", "RGLgFc", "Rg Lg Truck Impedance", 0)
-
-        spec = util.matrix_spec("mf1029", "exp(-.09*mf1024)")
-        spec["constraint"]["by_zone"] = {"origins": "gy1-gy14", "destinations": "gy1-gy14"}
-        specs.append(spec)
-
-        spec = util.matrix_spec("mf1029", "exp(-.13*mf1024)")
-        spec["constraint"]["by_zone"] = {"origins": "gy1-gy11", "destinations": "gy1-gy11"}
-        specs.append(spec)
-
-        spec = util.matrix_spec("mf1029", "exp(-.3*mf1024)")
-        spec["constraint"]["by_zone"] = {"origins": "gy1-gy4;gy7", "destinations": "gy1-gy4;gy7"}
-        specs.append(spec)
-
-        util.initmat(eb, "mf1032", "RGHvFc", "Rg Hv Truck Impedance", 0)
-
-        spec = util.matrix_spec("mf1032", "exp(-.07*mf1024)")
-        spec["constraint"]["by_zone"] = {"origins": "gy1-gy14", "destinations": "gy1-gy14"}
-        specs.append(spec)
-
-        spec = util.matrix_spec("mf1032", "exp(-.11*mf1024)")
-        spec["constraint"]["by_zone"] = {"origins": "gy3", "destinations": "gy1-gy14"}
-        specs.append(spec)
-
-        spec = util.matrix_spec("mf1032", "exp(-.11*mf1024)")
-        spec["constraint"]["by_zone"] = {"origins": "gy1-gy14", "destinations": "gy3"}
-        specs.append(spec)
-
-        util.compute_matrix(specs)
-
-
-        """
         TRIP DISTRIBUTION: BALANCE ij TRIP TOTALS
         and Add Externals and Special Gen Trips to Lt Total
         """
