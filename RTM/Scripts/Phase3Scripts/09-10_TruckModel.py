@@ -41,9 +41,6 @@ class FullTruckModel(_m.Tool()):
         self.inter_regional(eb, Year)
 
         return
-        ExternalModel=_m.Modeller().tool("translink.emme.stage5.step10.externaltruck")
-        ExternalModel(eb, Year)
-
         AsiaPacificModel=_m.Modeller().tool("translink.emme.stage5.step10.asiapacifictruck")
         AsiaPacificModel(eb, Year)
 
