@@ -482,6 +482,46 @@ class FullTruckModel(_m.Tool()):
 
         util.compute_matrix(specs)
 
+        balance_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_balancing")
+
+        util.initmat(eb, "mf8062", "RGLg24", "Rg LgTruck Daily Trips", 0)
+        balance_spec = {
+            "type": "MATRIX_BALANCING",
+            "od_values_to_balance": "mf8060",
+            "results": {
+                "od_balanced_values": "mf8062"
+            },
+            "origin_totals": "mo8050",
+            "destination_totals": "md8050",
+            "constraint": {
+                "by_zone": {
+                    "origins": "gy1-gy14",
+                    "destinations": "gy1-gy14"
+                },
+                "by_value": None
+            },
+        }
+        balance_matrix(balance_spec)
+
+        util.initmat(eb, "mf8063", "RGHv24", "Rg HvTruck Daily Trips", 0)
+        balance_spec = {
+            "type": "MATRIX_BALANCING",
+            "od_values_to_balance": "mf8061",
+            "results": {
+                "od_balanced_values": "mf8063"
+            },
+            "origin_totals": "mo8051",
+            "destination_totals": "md8051",
+            "constraint": {
+                "by_zone": {
+                    "origins": "gy1-gy14",
+                    "destinations": "gy1-gy14"
+                },
+                "by_value": None
+            },
+        }
+        balance_matrix(balance_spec)
+
     def aggregate_demand_pce(self, eb):
         util = _m.Modeller().tool("translink.util")
 

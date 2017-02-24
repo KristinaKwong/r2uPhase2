@@ -40,46 +40,6 @@ class RegTruckModel(_m.Tool()):
         TRIP DISTRIBUTION: BALANCE ij TRIP TOTALS
         and Add Externals and Special Gen Trips to Lt Total
         """
-        balance_matrix = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_balancing")
-
-        util.initmat(eb, "mf1030", "RGLg24", "Rg LgTruck Daily Trips", 0)
-        balance_spec = {
-            "type": "MATRIX_BALANCING",
-            "od_values_to_balance": "mf1029",
-            "results": {
-                "od_balanced_values": "mf1030"
-            },
-            "origin_totals": "mo8050",
-            "destination_totals": "md8050",
-            "constraint": {
-                "by_zone": {
-                    "origins": "gy1-gy14",
-                    "destinations": "gy1-gy14"
-                },
-                "by_value": None
-            },
-        }
-        balance_matrix(balance_spec)
-
-        util.initmat(eb, "mf1033", "RGHv24", "Rg HvTruck Daily Trips", 0)
-        balance_spec = {
-            "type": "MATRIX_BALANCING",
-            "od_values_to_balance": "mf1032",
-            "results": {
-                "od_balanced_values": "mf1033"
-            },
-            "origin_totals": "mo8051",
-            "destination_totals": "md8051",
-            "constraint": {
-                "by_zone": {
-                    "origins": "gy1-gy14",
-                    "destinations": "gy1-gy14"
-                },
-                "by_value": None
-            },
-        }
-        balance_matrix(balance_spec)
-
         specs = []
 
         util.initmat(eb, "mf1031", "RGLgAd", "Rg LgTruck Daily Trips Adj", 0)
