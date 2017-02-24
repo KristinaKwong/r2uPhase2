@@ -385,19 +385,19 @@ class FullTruckModel(_m.Tool()):
         specs = []
 
         # Compute light truck prod/attr (Non-CBD, CBD)
-        spec = util.matrix_spec("mo8050", "((.0714)*md5'+(.138)*md7'+.1539*md8'+.0496*(md6'+md9')+.017*md11'+.0981*md10'+.0077*mo20)*1.0/1+ .00001")
+        spec = util.matrix_spec("mo8050", "((.0714)*mo21+(.138)*mo23+.1539*mo24+.0496*(mo22+mo25)+.017*mo27+.0981*mo26+.0077*mo10)*1.0/1+ .00001")
         spec["constraint"]["by_zone"] = {"origins": "gy1-gy14", "destinations": None}
         specs.append(spec)
 
-        spec = util.matrix_spec("mo8050", "((.016)*md5'+(0.044)*md7'+.0845*md8'+.0163*(md6'+md9')+.0190*md11'+.0645*md10'+.0037*mo20)*1.0/1+ .00001")
+        spec = util.matrix_spec("mo8050", "((.016)*mo21+(0.044)*mo23+.0845*mo24+.0163*(mo22+mo25)+.0190*mo27+.0645*mo26+.0037*mo10)*1.0/1+ .00001")
         spec["constraint"]["by_zone"] = {"origins": "gy2;gy13-gy14", "destinations": None}
         specs.append(spec)
 
-        spec = util.matrix_spec("mo8050", "((.1235)*md5'+(.277)*md7'+.1390*md8'+.0176*(md6'+md9')+.0233*md11'+.1596*md10'+.0216*mo20)*1.0/1+ .00001")
+        spec = util.matrix_spec("mo8050", "((.1235)*mo21+(.277)*mo23+.1390*mo24+.0176*(mo22+mo25)+.0233*mo27+.1596*mo26+.0216*mo10)*1.0/1+ .00001")
         spec["constraint"]["by_zone"] = {"origins": "gy1;gy4;gy11", "destinations": None}
         specs.append(spec)
 
-        spec = util.matrix_spec("mo8050", "(.0378*md12')*1.0/1+ .00001")
+        spec = util.matrix_spec("mo8050", "(.0378*mo20)*1.0/1+ .00001")
         spec["constraint"]["by_zone"] = {"origins": "gy3", "destinations": None}
         specs.append(spec)
 
@@ -413,19 +413,19 @@ class FullTruckModel(_m.Tool()):
         specs.append(spec)
 
         # Compute heavy truck prod/attr (Non-CBD, CBD)
-        spec = util.matrix_spec("mo8051", "((.081708)*md5'+(.049246)*md7'+.03294*md8'+.016721*(md6'+md9')+.002417*md11'+.046216*md10'+.0006*mo20)*1.0/1+ .00001")
+        spec = util.matrix_spec("mo8051", "((.081708)*mo21+(.049246)*mo23+.03294*mo24+.016721*(mo22+mo25)+.002417*mo27+.046216*mo26+.0006*mo10)*1.0/1+ .00001")
         spec["constraint"]["by_zone"] = {"origins": "gy1-gy14", "destinations": None}
         specs.append(spec)
 
-        spec = util.matrix_spec("mo8051", "((.0534886)*md5'+(.0430371)*md7'+.0277756*md8'+.00141249*(md6'+md9')+.00362843*md11'+.02071*md10'+.0006*mo20)*1.0/1+ .00001")
+        spec = util.matrix_spec("mo8051", "((.0534886)*mo21+(.0430371)*mo23+.0277756*mo24+.00141249*(mo22+mo25)+.00362843*mo27+.02071*mo26+.0006*mo10)*1.0/1+ .00001")
         spec["constraint"]["by_zone"] = {"origins": "gy4;gy5", "destinations": None}
         specs.append(spec)
 
-        spec = util.matrix_spec("mo8051", "((.079903)*md5'+(.140189)*md7'+.035748*md8'+.011378*(md6'+md9')+.006965*md11'+.067798*md10'+.0016*mo20)*1.0/1+ .00001")
+        spec = util.matrix_spec("mo8051", "((.079903)*mo21+(.140189)*mo23+.035748*mo24+.011378*(mo22+mo25)+.006965*mo27+.067798*mo26+.0016*mo10)*1.0/1+ .00001")
         spec["constraint"]["by_zone"] = {"origins": "gy6;gy8;gy11;gy12", "destinations": None}
         specs.append(spec)
 
-        spec = util.matrix_spec("mo8051", "(.0059*md12')*1.0/1+ .00001")
+        spec = util.matrix_spec("mo8051", "(.0059*mo20)*1.0/1+ .00001")
         spec["constraint"]["by_zone"] = {"origins": "gy3", "destinations": None}
         specs.append(spec)
 
