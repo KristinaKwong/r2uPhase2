@@ -69,7 +69,6 @@ class DataImport(_m.Tool()):
         self.init_scalars(eb)
         self.import_vectors(eb, demographics_file, geographics_file)
 
-        self.init_seeds(eb, horizon_year=model_year)
         self.starter_skims(eb, horizon_year=model_year)
 
 
@@ -332,41 +331,6 @@ class DataImport(_m.Tool()):
         df.to_sql(name='timeSlicingFactorsGb', con=conn, flavor='sqlite', index=False, if_exists='replace')
 
         conn.close()
-
-    @_m.logbook_trace("Importing Seed Matrices")
-    def init_seeds(self, eb, horizon_year):
-        util = _m.Modeller().tool("translink.util")
-
-        model_year = horizon_year
-        mod = _m.Modeller()
-        project = mod.desktop.project
-        proj_path = os.path.dirname(project.path)
-
-
-        mat_transaction = mod.tool("inro.emme.data.matrix.matrix_transaction")
-
-
-        # Batch in starter auto demand used for generating starter skims, demand is aggregated into 4 classes, SOV, HOV, Light Tr, Heavy Tr
-
-
-        util.delmat(eb, "mf20")
-        util.delmat(eb, "mf21")
-        data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_Truck_AM_2011.in")
-        mat_transaction(transaction_file = data_path,
-                        throw_on_error = True)
-
-        util.delmat(eb, "mf40")
-        util.delmat(eb, "mf41")
-        data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_Truck_MD_2011.in")
-        mat_transaction(transaction_file = data_path,
-                        throw_on_error = True)
-
-        util.delmat(eb, "mf60")
-        util.delmat(eb, "mf61")
-        data_path = os.path.join(proj_path, "BaseNetworks", "Starter_Demand_Truck_PM_2011.in")
-        mat_transaction(transaction_file = data_path,
-                        throw_on_error = True)
-
 
     @_m.logbook_trace("Importing Starter Skims for Warm Start")
     def starter_skims(self, eb, horizon_year):
