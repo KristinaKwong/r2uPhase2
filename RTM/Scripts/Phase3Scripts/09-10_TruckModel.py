@@ -84,6 +84,7 @@ class FullTruckModel(_m.Tool()):
 
         self.ir_generation(eb, Year)
         self.ir_distribution(eb)
+        self.ir_timeslicing(eb)
 
     def ir_generation(self, eb, Year):
         util = _m.Modeller().tool("translink.util")
@@ -250,7 +251,7 @@ class FullTruckModel(_m.Tool()):
         util.compute_matrix(specs)
 
     @_m.logbook_trace("Trip Distribution")
-    def ir_distribution(self):
+    def ir_distribution(self, eb):
         util = _m.Modeller().tool("translink.util")
 
         ## Distribute External mo and md trips based on 1999 O-D Survey
@@ -266,6 +267,46 @@ class FullTruckModel(_m.Tool()):
         specs.append(spec)
 
         util.compute_matrix(specs)
+
+    @_m.logbook_trace("Time Slicing")
+    def ir_timeslicing(self, eb):
+        util = _m.Modeller().tool("translink.util")
+
+        util.initmat(eb, "mf8024", "IRLgAM", "IR LgTruck AM Trips", 0)
+        util.initmat(eb, "mf8025", "IRHvAM", "IR HvTruck AM Trips", 0)
+        util.initmat(eb, "mf8026", "IRLgMD", "IR LgTruck MD Trips", 0)
+        util.initmat(eb, "mf8027", "IRHvMD", "IR HvTruck MD Trips", 0)
+
+        # IB      Light Trucks AM            Light Trucks MD               Heavy Trucks AM         Heavy Trucks MD
+        FactorIB=[[0.05868,0.04086,0.05086],[0.05868,0.09194,0.10426],[0.03811,0.09500,0.02912],[0.07470,0.09866,0.11649]]
+
+        # OB      Light Trucks AM            Light Trucks MD               Heavy Trucks AM         Heavy Trucks MD
+        FactorOB=[[0.03613,0.02054,0.11882],[0.04517,0.1027,0.07505], [0.04328,0.05253,0.10976],[0.08743,0.10507,0.08537]]
+
+
+        ConstraintList=[[1,2],[8,10],[11]]
+
+                    ## LightAM, LightMD,HeavyAM, HeavyMD
+        Matrix_List = ["mf8024", "mf8026", "mf8025", "mf8027"]
+        TripDistList= ["mf8022", "mf8023"]
+
+        for i in range (len(TripDistList)) :
+            for j in range (int((len(FactorIB)/2))):
+                for k in range (len(FactorIB[j])):
+                    spec = util.matrix_spec("", TripDistList[i]+"*"+str(FactorIB[2*i+j][k]))
+                    for l in range (0, len(ConstraintList[k])):
+                        spec["result"] = Matrix_List[2*i+j]
+                        spec["constraint"]["by_zone"] = {"origins": str(ConstraintList[k][l]), "destinations": "*"}
+                        util.compute_matrix(spec)
+
+        for i in range (len(TripDistList)) :
+            for j in range (int((len(FactorIB)/2))):
+                for k in range (len(FactorOB[j])):
+                    spec = util.matrix_spec("", str(TripDistList[i])+"*"+str(FactorOB[2*i+j][k]))
+                    for l in range (0, len(ConstraintList[k])):
+                        spec["result"] = Matrix_List[2*i+j]
+                        spec["constraint"]["by_zone"] = {"origins": "*", "destinations": str(ConstraintList[k][l])}
+                        util.compute_matrix(spec)
 
     def aggregate_demand_pce(self, eb):
         util = _m.Modeller().tool("translink.util")
