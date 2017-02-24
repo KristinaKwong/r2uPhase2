@@ -601,8 +601,6 @@ class DataGeneration(_m.Tool()):
         util.initmat(eb, "mf307", "HOV_drvtrp_VOT_2_Am", "HOV drv-trips VOT 2 AM", 0)
         util.initmat(eb, "mf308", "HOV_drvtrp_VOT_3_Am", "HOV drv-trips VOT 3 AM", 0)
         util.initmat(eb, "mf309", "HOV_drvtrp_VOT_4_Am", "HOV drv-trips VOT 4 AM", 0)
-        util.initmat(eb, "mf312", "lgvPceAm", "light trucks PCE AM", 0)
-        util.initmat(eb, "mf313", "hgvPceAm", "heavy trucks PCE AM", 0)
         #TODO: this should initialize the person trips matrices for assignment instead
         #TODO: move this to where it wants to live - probably blended skims
         # MD
@@ -614,8 +612,6 @@ class DataGeneration(_m.Tool()):
         util.initmat(eb, "mf327", "HOV_drvtrp_VOT_2_Md", "HOV drv-trips VOT 2 MD", 0)
         util.initmat(eb, "mf328", "HOV_drvtrp_VOT_3_Md", "HOV drv-trips VOT 3 MD", 0)
         util.initmat(eb, "mf329", "HOV_drvtrp_VOT_4_Md", "HOV drv-trips VOT 4 MD", 0)
-        util.initmat(eb, "mf332", "lgvPceMd", "light trucks PCE MD", 0)
-        util.initmat(eb, "mf333", "hgvPceMd", "heavy trucks PCE MD", 0)
         #TODO: this should initialize the person trips matrices for assignment instead
 
         # PM
@@ -627,17 +623,4 @@ class DataGeneration(_m.Tool()):
         util.initmat(eb, "mf347", "HOV_drvtrp_VOT_2_Pm", "HOV drv-trips VOT 2 PM", 0)
         util.initmat(eb, "mf348", "HOV_drvtrp_VOT_3_Pm", "HOV drv-trips VOT 3 PM", 0)
         util.initmat(eb, "mf349", "HOV_drvtrp_VOT_4_Pm", "HOV drv-trips VOT 4 PM", 0)
-        util.initmat(eb, "mf352", "lgvPcePm", "light trucks PCE PM", 0)
-        util.initmat(eb, "mf353", "hgvPcePm", "heavy trucks PCE PM", 0)
         #TODO: this should initialize the person trips matrices for assignment instead
-
-        #TODO Harvey to move with truck model updates
-        # Move seed demand into Work SOV/HOV Medium Income for AM/MD/PM
-        specs = []
-        specs.append(util.matrix_spec("mf312", "mf20*lgvPCE"))
-        specs.append(util.matrix_spec("mf313", "mf21*hgvPCE"))
-        specs.append(util.matrix_spec("mf332", "mf40*lgvPCE"))
-        specs.append(util.matrix_spec("mf333", "mf41*hgvPCE"))
-        specs.append(util.matrix_spec("mf352", "mf60*lgvPCE"))
-        specs.append(util.matrix_spec("mf353", "mf61*hgvPCE"))
-        util.compute_matrix(specs)

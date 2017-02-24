@@ -44,8 +44,6 @@ class FullTruckModel(_m.Tool()):
 
         self.regional(eb)
 
-        return
-
         self.aggregate_demand_pce(eb)
 
     @_m.logbook_trace("Cross Border Demand Market")
@@ -548,44 +546,32 @@ class FullTruckModel(_m.Tool()):
     def aggregate_demand_pce(self, eb):
         util = _m.Modeller().tool("translink.util")
 
-        util.initmat(eb, "mf1040", "CBLgAp", "CB LgTruck AM PCE", 0)
-        util.initmat(eb, "mf1041", "CBHvAp", "CB HvTruck AM PCE", 0)
-        util.initmat(eb, "mf1042", "IRLgAp", "IR LgTruck AM PCE", 0)
-        util.initmat(eb, "mf1043", "IRHvAp", "IR HvTruck AM PCE", 0)
-        util.initmat(eb, "mf1044", "APHvAp", "AP HvTruck AM PCE", 0)
-        util.initmat(eb, "mf1045", "RGLgAp", "RG LgTruck AM PCE", 0)
-        util.initmat(eb, "mf1046", "RGHvAp", "RG HvTruck AM PCE", 0)
-        util.initmat(eb, "mf1047", "CBLgMp", "CB LgTruck MD PCE", 0)
-        util.initmat(eb, "mf1048", "CBHvMp", "CB HvTruck MD PCE", 0)
-        util.initmat(eb, "mf1049", "IRLgMp", "IR LgTruck MD PCE", 0)
-        util.initmat(eb, "mf1050", "IRHvMp", "IR HvTruck MD PCE", 0)
-        util.initmat(eb, "mf1051", "APHvMp", "AP HvTruck MD PCE", 0)
-        util.initmat(eb, "mf1052", "RGLgMp", "RG LgTruck MD PCE", 0)
-        util.initmat(eb, "mf1053", "RGHvMp", "RG HvTruck MD PCE", 0)
+        util.initmat(eb, "mf8080", "LGVAM", "LGV Truck Demand AM", 0)
+        util.initmat(eb, "mf8081", "HGVAM", "HGV Truck Demand AM", 0)
+        util.initmat(eb, "mf8082", "LGVMD", "LGV Truck Demand MD", 0)
+        util.initmat(eb, "mf8083", "HGVMD", "HGV Truck Demand MD", 0)
+        util.initmat(eb, "mf8084", "LGVPM", "LGV Truck Demand PM", 0)
+        util.initmat(eb, "mf8085", "HGVPM", "HGV Truck Demand PM", 0)
+
+        util.initmat(eb, "mf312", "lgvPceAm", "light trucks PCE AM", 0)
+        util.initmat(eb, "mf313", "hgvPceAm", "heavy trucks PCE AM", 0)
+        util.initmat(eb, "mf332", "lgvPceMd", "light trucks PCE MD", 0)
+        util.initmat(eb, "mf333", "hgvPceMd", "heavy trucks PCE MD", 0)
+        util.initmat(eb, "mf352", "lgvPcePm", "light trucks PCE PM", 0)
+        util.initmat(eb, "mf353", "hgvPcePm", "heavy trucks PCE PM", 0)
 
         specs = []
-        # AM LGV
-        specs.append(util.matrix_spec("mf1040", "mf1002*ms130"))
-        specs.append(util.matrix_spec("mf1042", "mf1012*ms130"))
-        specs.append(util.matrix_spec("mf1045", "mf1035*ms130"))
-        # AM HGV
-        specs.append(util.matrix_spec("mf1041", "mf1005*ms131"))
-        specs.append(util.matrix_spec("mf1043", "mf1013*ms131"))
-        specs.append(util.matrix_spec("mf1044", "mf1021*ms131"))
-        specs.append(util.matrix_spec("mf1046", "mf1037*ms131"))
-        # MD LGV
-        specs.append(util.matrix_spec("mf1047", "mf1003*ms130"))
-        specs.append(util.matrix_spec("mf1049", "mf1014*ms130"))
-        specs.append(util.matrix_spec("mf1052", "mf1036*ms130"))
-        # MD HGV
-        specs.append(util.matrix_spec("mf1048", "mf1006*ms131"))
-        specs.append(util.matrix_spec("mf1050", "mf1015*ms131"))
-        specs.append(util.matrix_spec("mf1051", "mf1022*ms131"))
-        specs.append(util.matrix_spec("mf1053", "mf1038*ms131"))
+        specs.append(util.matrix_spec("mf8080", "mf8001 + mf8024 + mf8064"))
+        specs.append(util.matrix_spec("mf8081", "mf8011 + mf8025 + mf8067 + mf8041"))
+        specs.append(util.matrix_spec("mf8082", "mf8002 + mf8026 + mf8065"))
+        specs.append(util.matrix_spec("mf8083", "mf8012 + mf8027 + mf8068 + mf8042"))
+        specs.append(util.matrix_spec("mf8084", "mf8003 + mf8028 + mf8066"))
+        specs.append(util.matrix_spec("mf8085", "mf8013 + mf8029 + mf8069 + mf8043"))
 
-        # Aggregate total LGV and HGV vehicle demand
-        specs.append(util.matrix_spec("mf980", "mf1002 + mf1012 + mf1035"))
-        specs.append(util.matrix_spec("mf981", "mf1005 + mf1013 + mf1021 + mf1037"))
-        specs.append(util.matrix_spec("mf982", "mf1003 + mf1014 + mf1036"))
-        specs.append(util.matrix_spec("mf983", "mf1006 + mf1015 + mf1022 + mf1038"))
+        specs.append(util.matrix_spec("mf312", "mf8080 * lgvPCE"))
+        specs.append(util.matrix_spec("mf313", "mf8081 * hgvPCE"))
+        specs.append(util.matrix_spec("mf332", "mf8082 * lgvPCE"))
+        specs.append(util.matrix_spec("mf333", "mf8083 * hgvPCE"))
+        specs.append(util.matrix_spec("mf352", "mf8084 * lgvPCE"))
+        specs.append(util.matrix_spec("mf353", "mf8085 * hgvPCE"))
         util.compute_matrix(specs)
