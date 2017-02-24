@@ -45,11 +45,6 @@ class FullTruckModel(_m.Tool()):
         self.regional(eb)
 
         return
-        AsiaPacificModel=_m.Modeller().tool("translink.emme.stage5.step10.asiapacifictruck")
-        AsiaPacificModel(eb, Year)
-
-        RegionalModel=_m.Modeller().tool("translink.emme.stage5.step10.regionaltruck")
-        RegionalModel(eb)
 
         self.aggregate_demand_pce(eb)
 
@@ -87,6 +82,7 @@ class FullTruckModel(_m.Tool()):
         self.ir_distribution(eb)
         self.ir_timeslicing(eb)
 
+    @_m.logbook_trace("Trip Generation")
     def ir_generation(self, eb, Year):
         util = _m.Modeller().tool("translink.util")
 
@@ -374,7 +370,9 @@ class FullTruckModel(_m.Tool()):
 
         self.regional_generation(eb)
         self.regional_distribution(eb)
+        self.regional_timeslicing(eb)
 
+    @_m.logbook_trace("Trip Generation")
     def regional_generation(self, eb):
         util = _m.Modeller().tool("translink.util")
 
@@ -447,6 +445,7 @@ class FullTruckModel(_m.Tool()):
 
         util.compute_matrix(specs)
 
+    @_m.logbook_trace("Trip Distribution")
     def regional_distribution(self, eb):
         util = _m.Modeller().tool("translink.util")
 
@@ -521,6 +520,30 @@ class FullTruckModel(_m.Tool()):
             },
         }
         balance_matrix(balance_spec)
+
+    @_m.logbook_trace("Time Slicing")
+    def regional_timeslicing(self, eb):
+        util = _m.Modeller().tool("translink.util")
+
+        util.initmat(eb, "mf8064", "RGLgAM", "Rg LgTruck AM Trips", 0)
+        util.initmat(eb, "mf8065", "RGLgMD", "Rg LgTruck MD Trips", 0)
+        util.initmat(eb, "mf8066", "RGLgPM", "Rg LgTruck PM Trips", 0)
+        util.initmat(eb, "mf8067", "RGHvAM", "Rg HvTruck AM Trips", 0)
+        util.initmat(eb, "mf8068", "RGHvMD", "Rg HvTruck MD Trips", 0)
+        util.initmat(eb, "mf8069", "RGHvPM", "Rg HvTruck PM Trips", 0)
+
+        specs = []
+        # Light truck time of day demand
+        specs.append(util.matrix_spec("mf8064", "mf8062*mf8050*ms8050"))
+        specs.append(util.matrix_spec("mf8065", "mf8062*mf8052*ms8051"))
+        specs.append(util.matrix_spec("mf8066", "mf8062*mf8054*ms8052"))
+
+        # Heavy truck time of day demand
+        specs.append(util.matrix_spec("mf8067", "mf8063*mf8051*ms8050"))
+        specs.append(util.matrix_spec("mf8068", "mf8063*mf8053*ms8051"))
+        specs.append(util.matrix_spec("mf8069", "mf8063*mf8055*ms8052"))
+
+        util.compute_matrix(specs)
 
     def aggregate_demand_pce(self, eb):
         util = _m.Modeller().tool("translink.util")
