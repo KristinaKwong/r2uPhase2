@@ -23,30 +23,8 @@ class RegTruckModel(_m.Tool()):
     @_m.logbook_trace("Regional Truck Model")
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.util")
-
-        util.delmat(eb, "mf1025")
-        util.delmat(eb, "mf1026")
-        util.delmat(eb, "mf1027")
-        util.delmat(eb, "mf1028")
-        process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
-        root_directory = util.get_input_path(eb)
-        matrix_file1 = os.path.join(root_directory, "TruckBatchFiles", "RGBatchIn.txt")
-        process(transaction_file=matrix_file1, throw_on_error=True)
-
-        util.initmat(eb, "ms154", "RGphAM", "Rg Truck Peak Hour Factor AM", .26000)
-        util.initmat(eb, "ms155", "RGphMD", "Rg Truck Peak Hour Factor MD", .24100)
         # Run regional truck model Macro
         self.run_regional_truck_model(eb)
-
-        spec = util.matrix_spec("ms151", "mf1031")
-        spec["aggregation"]["origins"] = "+"
-        spec["aggregation"]["destinations"] = "+"
-        util.compute_matrix(spec)
-
-        spec = util.matrix_spec("ms152", "mf1034")
-        spec["aggregation"]["origins"] = "+"
-        spec["aggregation"]["destinations"] = "+"
-        util.compute_matrix(spec)
 
     def run_regional_truck_model(self, eb):
         """

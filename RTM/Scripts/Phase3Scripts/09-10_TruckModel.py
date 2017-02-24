@@ -42,6 +42,8 @@ class FullTruckModel(_m.Tool()):
 
         self.asia_pacific(eb, Year)
 
+        self.regional(eb)
+
         return
         AsiaPacificModel=_m.Modeller().tool("translink.emme.stage5.step10.asiapacifictruck")
         AsiaPacificModel(eb, Year)
@@ -350,6 +352,25 @@ class FullTruckModel(_m.Tool()):
         specs.append(util.matrix_spec("mf8042", "mf8032*mo8030*mo8030'"))
         specs.append(util.matrix_spec("mf8043", "mf8033*mo8030*mo8030'"))
         util.compute_matrix(specs)
+
+    @_m.logbook_trace("Regional Demand Market")
+    def regional(self, eb):
+        util = _m.Modeller().tool("translink.util")
+
+        util.delmat(eb, "mf8050")
+        util.delmat(eb, "mf8051")
+        util.delmat(eb, "mf8052")
+        util.delmat(eb, "mf8053")
+        util.delmat(eb, "mf8054")
+        util.delmat(eb, "mf8055")
+        process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
+        root_directory = util.get_input_path(eb)
+        matrix_file1 = os.path.join(root_directory, "TruckBatchFiles", "RGBatchIn.txt")
+        process(transaction_file=matrix_file1, throw_on_error=True)
+
+        util.initmat(eb, "ms8050", "RGphAM", "Rg Truck Peak Hour Factor AM", .26000)
+        util.initmat(eb, "ms8051", "RGphMD", "Rg Truck Peak Hour Factor MD", .24100)
+        util.initmat(eb, "ms8052", "RGphPM", "Rg Truck Peak Hour Factor PM", .24100)
 
     def aggregate_demand_pce(self, eb):
         util = _m.Modeller().tool("translink.util")
