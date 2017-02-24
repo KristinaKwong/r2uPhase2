@@ -48,21 +48,11 @@ class DataGeneration(_m.Tool()):
             # Run iniitial AON assignment to generate a distance skim
             self.assignAON(am_scen)
 
-            # record user choices for congested and capacitiated transit
-            run_crowding = int(eb.matrix("ms45").data)
-            run_capacity_constraint = int(eb.matrix("ms46").data)
             # turn off congested/capacited transit during data generation 0 matrix assignment
-            util.initmat(eb, "ms45", "tranCongest", "Run Congested Transit Assignment", 0)
-            util.initmat(eb, "ms46", "tranCapac", "Run Capacitated Transit Assignment", 0)
             transit_assign = _m.Modeller().tool("translink.RTM3.stage3.transitassignment")
-            transit_assign(eb, am_scen, md_scen, pm_scen)
-            # reset user choices for congested and capacitiated transit
-            util.initmat(eb, "ms45", "tranCongest", "Run Congested Transit Assignment", int(run_crowding))
-            util.initmat(eb, "ms46", "tranCapac", "Run Capacitated Transit Assignment", int(run_capacity_constraint))
+            transit_assign(eb, am_scen, md_scen, pm_scen, disable_congestion=True)
 
         self.calc_all_accessibilities(eb)
-
-
 
     @_m.logbook_trace("Calculate Accessibilites")
     def calc_all_accessibilities(self, eb):
