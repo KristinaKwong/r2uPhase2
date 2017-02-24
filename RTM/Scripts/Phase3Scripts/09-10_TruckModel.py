@@ -309,6 +309,7 @@ class FullTruckModel(_m.Tool()):
                         spec["constraint"]["by_zone"] = {"origins": "*", "destinations": str(ConstraintList[k][l])}
                         util.compute_matrix(spec)
 
+    @_m.logbook_trace("Asia Pacific Demand Market")
     def asia_pacific(self, eb, Year):
         util = _m.Modeller().tool("translink.util")
 
@@ -321,10 +322,34 @@ class FullTruckModel(_m.Tool()):
         root_directory = util.get_input_path(eb)
         matrix_file = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"AsiaPacificv1.txt")
         process(transaction_file=matrix_file, throw_on_error=True)
-        
-        util.delmat(eb, "md8030")
+
+        util.delmat(eb, "mo8030")
         matrix_file = os.path.join(root_directory, "TruckBatchFiles", "PMVActivity.txt")
         util.read_csv_momd(eb, matrix_file)
+
+        #Distribute Asia Pacific matrix for "Other locations" based on non-retail employment
+        util.initmat(eb, "ms8030", "gg27nonret", "non-retail employment in gg27", 0)
+        util.initmat(eb, "mf8040", "APHv24", "AP HvTrucks Daily Trips", 0)
+        util.initmat(eb, "mf8041", "APHvAM", "AP HvTrucks AM Trips", 0)
+        util.initmat(eb, "mf8042", "APHvMD", "AP HvTrucks MD Trips", 0)
+        util.initmat(eb, "mf8043", "APHvPM", "AP HvTrucks PM Trips", 0)
+
+        specs = []
+
+        spec = util.matrix_spec("ms8030", "(mo20-mo24)*(gy(p).lt.13)")
+        spec["constraint"]["by_zone"] = {"origins": "gg27", "destinations": None}
+        spec["aggregation"] = {"origins": "+", "destinations": None}
+        specs.append(spec)
+
+        spec = util.matrix_spec("mo8030", "(mo20-mo24)/ms8030*(gy(p).lt.13)")
+        spec["constraint"]["by_zone"] = {"origins": "gg27", "destinations": None}
+        specs.append(spec)
+
+        specs.append(util.matrix_spec("mf8040", "mf8030*mo8030*mo8030'"))
+        specs.append(util.matrix_spec("mf8041", "mf8031*mo8030*mo8030'"))
+        specs.append(util.matrix_spec("mf8042", "mf8032*mo8030*mo8030'"))
+        specs.append(util.matrix_spec("mf8043", "mf8033*mo8030*mo8030'"))
+        util.compute_matrix(specs)
 
     def aggregate_demand_pce(self, eb):
         util = _m.Modeller().tool("translink.util")
