@@ -372,6 +372,16 @@ class FullTruckModel(_m.Tool()):
         util.initmat(eb, "ms8051", "RGphMD", "Rg Truck Peak Hour Factor MD", .24100)
         util.initmat(eb, "ms8052", "RGphPM", "Rg Truck Peak Hour Factor PM", .24100)
 
+        self.regional_generation(eb)
+
+    def regional_generation(self, eb):
+        util = _m.Modeller().tool("translink.util")
+
+        util.initmat(eb, "mo8050", "RGLgPr", "Rg Daily LgTruck Trip Prod", 0)
+        util.initmat(eb, "md8050", "RGLgAt", "Rg Daily LgTruck Trip Att", 0)
+        util.initmat(eb, "mo8051", "RGHvPr", "Rg Daily HvTruck Trip Prod", 0)
+        util.initmat(eb, "md8051", "RGHvAt", "Rg Daily HvTruck Trip Att", 0)
+
     def aggregate_demand_pce(self, eb):
         util = _m.Modeller().tool("translink.util")
 
