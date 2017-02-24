@@ -40,6 +40,8 @@ class FullTruckModel(_m.Tool()):
 
         self.inter_regional(eb, Year)
 
+        self.asia_pacific(eb, Year)
+
         return
         AsiaPacificModel=_m.Modeller().tool("translink.emme.stage5.step10.asiapacifictruck")
         AsiaPacificModel(eb, Year)
@@ -306,6 +308,23 @@ class FullTruckModel(_m.Tool()):
                         spec["result"] = Matrix_List[3*i+j]
                         spec["constraint"]["by_zone"] = {"origins": "*", "destinations": str(ConstraintList[k][l])}
                         util.compute_matrix(spec)
+
+    def asia_pacific(self, eb, Year):
+        util = _m.Modeller().tool("translink.util")
+
+        #Batch input Asia Pacific matrix from TruckBatchFiles (gg ensemble format)
+        util.delmat(eb, "mf8030")
+        util.delmat(eb, "mf8031")
+        util.delmat(eb, "mf8032")
+        util.delmat(eb, "mf8033")
+        process = _m.Modeller().tool("inro.emme.data.matrix.matrix_transaction")
+        root_directory = util.get_input_path(eb)
+        matrix_file = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"AsiaPacificv1.txt")
+        process(transaction_file=matrix_file, throw_on_error=True)
+        
+        util.delmat(eb, "md8030")
+        matrix_file = os.path.join(root_directory, "TruckBatchFiles", "PMVActivity.txt")
+        util.read_csv_momd(eb, matrix_file)
 
     def aggregate_demand_pce(self, eb):
         util = _m.Modeller().tool("translink.util")
