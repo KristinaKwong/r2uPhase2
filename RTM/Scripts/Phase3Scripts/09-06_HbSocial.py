@@ -453,19 +453,12 @@ class HbSoc(_m.Tool()):
 
         # setup for hbw auto time slice matrices
         conn = util.get_rtm_db(eb)
-        ij = util.get_pd_ij_df(eb)
-        gb = pd.read_sql("SELECT TAZ1700 as TAZ, gb FROM ensembles", conn)
         ts_uw = pd.read_sql("SELECT * FROM timeSlicingFactorsGb", conn)
         conn.close()
 
         # build basic ij mat with gb for production end and internal or external gb for attraction
-        df_mats = pd.merge(ij, gb, how='left', left_on='i', right_on = 'TAZ')
-        df_mats.drop('TAZ', axis=1, inplace=True)
-        df_mats.rename(columns={'gb': 'Gb_P'}, inplace=True)
-        df_mats = pd.merge(df_mats, gb, how='left', left_on='j', right_on = 'TAZ')
-        df_mats.drop('TAZ', axis=1, inplace=True)
-        df_mats.rename(columns={'gb': 'Gb_A'}, inplace=True)
-        df_mats['IX'] = np.where(df_mats['Gb_P']==df_mats['Gb_A'], 'I', 'X')
+        df_mats = util.get_ijensem_df(eb, ensem_o = 'gb')
+        df_mats['IX'] = np.where(df_mats['gb_i']==df_mats['gb_j'], 'I', 'X')
 
         Auto_AM_Fct_PA = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'AM', 'PtoA', NoTAZ)
         Auto_MD_Fct_PA = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'MD', 'PtoA', NoTAZ)
@@ -714,6 +707,8 @@ class HbSoc(_m.Tool()):
         df_Daily_Gy.to_sql(name='daily_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
 
         conn.close()
+
+        del Auto_AM_Fct_PA, Auto_MD_Fct_PA, Auto_PM_Fct_PA, Auto_AM_Fct_AP, Auto_MD_Fct_AP, Auto_PM_Fct_AP
 
     def Calc_Prob(self, eb, Dict, Logsum, Th):
         util = _m.Modeller().tool("translink.util")

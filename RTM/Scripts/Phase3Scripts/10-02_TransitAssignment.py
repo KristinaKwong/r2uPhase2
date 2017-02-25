@@ -119,7 +119,7 @@ class TransitAssignment(_m.Tool()):
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Transit Assignment")
-    def __call__(self, eb, scenarioam, scenariomd, scenariopm):
+    def __call__(self, eb, scenarioam, scenariomd, scenariopm, disable_congestion=False):
         self.am_scenario = scenarioam
         self.md_scenario = scenariomd
         self.pm_scenario = scenariopm
@@ -129,8 +129,12 @@ class TransitAssignment(_m.Tool()):
         assign_transit = _m.Modeller().tool("inro.emme.transit_assignment.extended_transit_assignment")
         util = _m.Modeller().tool("translink.util")
 
-        run_crowding = int(eb.matrix("ms45").data)
-        run_capacity_constraint = int(eb.matrix("ms46").data)
+        if disable_congestion:
+            run_crowding = 0
+            run_capacity_constraint = 0
+        else:
+            run_crowding = int(eb.matrix("ms45").data)
+            run_capacity_constraint = int(eb.matrix("ms46").data)
 
         # No Crowding and Capacity constraint applied
         # Run 2 iterations only to update dwell times
