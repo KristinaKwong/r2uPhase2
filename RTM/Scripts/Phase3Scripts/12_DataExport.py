@@ -200,6 +200,9 @@ class DataExport(_m.Tool()):
 
     def calc_transit_tt(self, eb):
         util = _m.Modeller().tool("translink.util")
+
+        aonDist = util.get_matrix_numpy(eb, "mfdistAON").flatten()
+
         # get bus skims
         AmBusIvtt = util.get_matrix_numpy(eb, 'mfAmBusIvtt').flatten()
         AmBusWait = util.get_matrix_numpy(eb, 'mfAmBusWait').flatten()
@@ -278,11 +281,30 @@ class DataExport(_m.Tool()):
         avgTtWceAm = (AmWceTime * demand_wce_am).sum() / demand_wce_am.sum()
         avgTtWcePm = (PmWceTime * demand_wce_pm).sum() / demand_wce_pm.sum()
 
+        # travel lengths
+        avgTlBusAm = (aonDist * demand_bus_am).sum() / demand_bus_am.sum()
+        avgTlBusMd = (aonDist * demand_bus_md).sum() / demand_bus_md.sum()
+        avgTlBusPm = (aonDist * demand_bus_pm).sum() / demand_bus_pm.sum()
+
+        avgTlRailAm = (aonDist * demand_rail_am).sum() / demand_rail_am.sum()
+        avgTlRailMd = (aonDist * demand_rail_md).sum() / demand_rail_md.sum()
+        avgTlRailPm = (aonDist * demand_rail_pm).sum() / demand_rail_pm.sum()
+
+        avgTlWceAm = (aonDist * demand_wce_am).sum() / demand_wce_am.sum()
+        avgTlWcePm = (aonDist * demand_wce_pm).sum() / demand_wce_pm.sum()
+
         # build dataframe
-        df = pd.DataFrame({'period' : ['AM','MD','PM', 'AM','MD','PM', 'AM','PM'],
+        df1 = pd.DataFrame({'period' : ['AM','MD','PM', 'AM','MD','PM', 'AM','PM'],
               'mode' : ['bus','bus','bus','rail','rail','rail','wce','wce'],
               'measure': ['mins','mins','mins','mins','mins','mins','mins','mins'],
               'value': [avgTtBusAm, avgTtBusMd, avgTtBusPm, avgTtRailAm, avgTtRailMd, avgTtRailPm, avgTtWceAm, avgTtWcePm]})
+
+        df2 = pd.DataFrame({'period' : ['AM','MD','PM', 'AM','MD','PM', 'AM','PM'],
+              'mode' : ['bus','bus','bus','rail','rail','rail','wce','wce'],
+              'measure': ['kms','kms','kms','kms','kms','kms','kms','kms'],
+              'value': [avgTlBusAm, avgTlBusMd, avgTlBusPm, avgTlRailAm, avgTlRailMd, avgTlRailPm, avgTlWceAm, avgTlWcePm]})
+
+        df = df1.append(df2)
 
         df = df[['period','mode','measure','value']]
         return df
@@ -290,6 +312,9 @@ class DataExport(_m.Tool()):
 
     def calc_auto_tt(self, eb):
         util = _m.Modeller().tool("translink.util")
+
+        aonDist = util.get_matrix_numpy(eb, "mfdistAON").flatten()
+
         #am
         amSovTime1 = util.get_matrix_numpy(eb, "mfAmSovTimeVOT1").flatten()
         amSovTime2 = util.get_matrix_numpy(eb, "mfAmSovTimeVOT2").flatten()
@@ -301,9 +326,14 @@ class DataExport(_m.Tool()):
         amSovDemand3 = util.get_matrix_numpy(eb, "mfSOV_drvtrp_VOT_3_Am").flatten()
         amSovDemand4 = util.get_matrix_numpy(eb, "mfSOV_drvtrp_VOT_4_Am").flatten()
 
+        # calculate average travel time
+        amSovDemandTot = amSovDemand1 + amSovDemand2 + amSovDemand3 + amSovDemand4
         amSovTotTime = amSovTime1 * amSovDemand1 + amSovTime2 * amSovDemand2 + amSovTime3 * amSovDemand3 + amSovTime4 * amSovDemand4
+        avgTtSovAm = amSovTotTime.sum() / amSovDemandTot.sum()
 
-        avgTtSovAm = amSovTotTime.sum() / (amSovDemand1 + amSovDemand2 + amSovDemand3 + amSovDemand4).sum()
+        # calculate average trip Length
+        amSovTotDist = aonDist * amSovDemandTot
+        avgTlSovAm = amSovTotDist.sum() / amSovDemandTot.sum()
 
         # md
         mdSovTime1 = util.get_matrix_numpy(eb, "mfMdSovTimeVOT1").flatten()
@@ -316,9 +346,15 @@ class DataExport(_m.Tool()):
         mdSovDemand3 = util.get_matrix_numpy(eb, "mfSOV_drvtrp_VOT_3_Md").flatten()
         mdSovDemand4 = util.get_matrix_numpy(eb, "mfSOV_drvtrp_VOT_4_Md").flatten()
 
+        # calculate average travel time
+        mdSovDemandTot = mdSovDemand1 + mdSovDemand2 + mdSovDemand3 + mdSovDemand4
         mdSovTotTime = mdSovTime1 * mdSovDemand1 + mdSovTime2 * mdSovDemand2 + mdSovTime3 * mdSovDemand3 + mdSovTime4 * mdSovDemand4
+        avgTtSovMd = mdSovTotTime.sum() / mdSovDemandTot.sum()
 
-        avgTtSovMd = mdSovTotTime.sum() / (mdSovDemand1 + mdSovDemand2 + mdSovDemand3 + mdSovDemand4).sum()
+        # calculate average trip Length
+        mdSovTotDist = aonDist * mdSovDemandTot
+        avgTlSovMd = mdSovTotDist.sum() / mdSovDemandTot.sum()
+
 
         #pm
         pmSovTime1 = util.get_matrix_numpy(eb, "mfPmSovTimeVOT1").flatten()
@@ -331,9 +367,14 @@ class DataExport(_m.Tool()):
         pmSovDemand3 = util.get_matrix_numpy(eb, "mfSOV_drvtrp_VOT_3_Pm").flatten()
         pmSovDemand4 = util.get_matrix_numpy(eb, "mfSOV_drvtrp_VOT_4_Pm").flatten()
 
+		# calculate average travel time
+        pmSovDemandTot = pmSovDemand1 + pmSovDemand2 + pmSovDemand3 + pmSovDemand4
         pmSovTotTime = pmSovTime1 * pmSovDemand1 + pmSovTime2 * pmSovDemand2 + pmSovTime3 * pmSovDemand3 + pmSovTime4 * pmSovDemand4
+        avgTtSovPm = pmSovTotTime.sum() / pmSovDemandTot.sum()
 
-        avgTtSovPm = pmSovTotTime.sum() / (pmSovDemand1 + pmSovDemand2 + pmSovDemand3 + pmSovDemand4).sum()
+        # calculate average trip Length
+        pmSovTotDist = aonDist * pmSovDemandTot
+        avgTlSovPm = pmSovTotDist.sum() / pmSovDemandTot.sum()
 
         #am
         amHovTime1 = util.get_matrix_numpy(eb, "mfAmHovTimeVOT1").flatten()
@@ -346,9 +387,14 @@ class DataExport(_m.Tool()):
         amHovDemand3 = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_3_Am").flatten()
         amHovDemand4 = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_4_Am").flatten()
 
+        # calculate average travel time
+        amHovDemandTot = amHovDemand1 + amHovDemand2 + amHovDemand3 + amHovDemand4
         amHovTotTime = amHovTime1 * amHovDemand1 + amHovTime2 * amHovDemand2 + amHovTime3 * amHovDemand3 + amHovTime4 * amHovDemand4
+        avgTtHovAm = amHovTotTime.sum() / amHovDemandTot.sum()
 
-        avgTtHovAm = amHovTotTime.sum() / (amHovDemand1 + amHovDemand2 + amHovDemand3 + amHovDemand4).sum()
+        # calculate average trip Length
+        amHovTotDist = aonDist * amHovDemandTot
+        avgTlHovAm = amHovTotDist.sum() / amHovDemandTot.sum()
 
         # md
         mdHovTime1 = util.get_matrix_numpy(eb, "mfMdHovTimeVOT1").flatten()
@@ -361,9 +407,14 @@ class DataExport(_m.Tool()):
         mdHovDemand3 = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_3_Md").flatten()
         mdHovDemand4 = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_4_Md").flatten()
 
+		# calculate average travel time
+        mdHovDemandTot = mdHovDemand1 + mdHovDemand2 + mdHovDemand3 + mdHovDemand4
         mdHovTotTime = mdHovTime1 * mdHovDemand1 + mdHovTime2 * mdHovDemand2 + mdHovTime3 * mdHovDemand3 + mdHovTime4 * mdHovDemand4
+        avgTtHovMd = mdHovTotTime.sum() / mdHovDemandTot.sum()
 
-        avgTtHovMd = mdHovTotTime.sum() / (mdHovDemand1 + mdHovDemand2 + mdHovDemand3 + mdHovDemand4).sum()
+        # calculate average trip Length
+        mdHovTotDist = aonDist * mdHovDemandTot
+        avgTlHovMd = mdHovTotDist.sum() / mdHovDemandTot.sum()
 
         #pm
         pmHovTime1 = util.get_matrix_numpy(eb, "mfPmHovTimeVOT1").flatten()
@@ -376,15 +427,26 @@ class DataExport(_m.Tool()):
         pmHovDemand3 = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_3_Pm").flatten()
         pmHovDemand4 = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_4_Pm").flatten()
 
+		# calculate average travel time
+        pmHovDemandTot = pmHovDemand1 + pmHovDemand2 + pmHovDemand3 + pmHovDemand4
         pmHovTotTime = pmHovTime1 * pmHovDemand1 + pmHovTime2 * pmHovDemand2 + pmHovTime3 * pmHovDemand3 + pmHovTime4 * pmHovDemand4
+        avgTtHovPm = pmHovTotTime.sum() / pmHovDemandTot.sum()
 
-        avgTtHovPm = pmHovTotTime.sum() / (pmHovDemand1 + pmHovDemand2 + pmHovDemand3 + pmHovDemand4).sum()
+        # calculate average trip Length
+        pmHovTotDist = aonDist * pmHovDemandTot
+        avgTlHovPm = pmHovTotDist.sum() / pmHovDemandTot.sum()
 
-
-        df = pd.DataFrame({'period' : ['AM','MD','PM', 'AM','MD','PM'],
+        df1 = pd.DataFrame({'period' : ['AM','MD','PM', 'AM','MD','PM'],
               'mode' : ['sov','sov','sov','hov','hov','hov'],
               'measure': ['mins','mins','mins','mins','mins','mins'],
               'value': [avgTtSovAm, avgTtSovMd, avgTtSovPm, avgTtHovAm, avgTtHovMd, avgTtHovPm]})
+
+        df2 = pd.DataFrame({'period' : ['AM','MD','PM', 'AM','MD','PM'],
+              'mode' : ['sov','sov','sov','hov','hov','hov'],
+              'measure': ['kms','kms','kms','kms','kms','kms'],
+              'value': [avgTlSovAm, avgTlSovMd, avgTlSovPm, avgTlHovAm, avgTlHovMd, avgTlHovPm]})
+
+        df = df1.append(df2)
 
         df = df[['period','mode','measure','value']]
         return df
