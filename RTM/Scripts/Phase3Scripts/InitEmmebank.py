@@ -1,7 +1,7 @@
 ##---------------------------------------------------------------------
 ##--TransLink Phase 3.0 Regional Transportation Model
 ##--
-##--Path: translink.emme.initeb
+##--Path: translink.RTM3.init_emmebank
 ##--Purpose: initialize a new emmebank from source text files
 ##---------------------------------------------------------------------
 import inro.modeller as _m
@@ -336,6 +336,33 @@ class InitEmmebank(_m.Tool()):
         eb.create_function("fd87", "length * 60 / 70 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)")
         eb.create_function("fd88", "length * 60 / (80 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5.25)")
         eb.create_function("fd89", "length * 60 / (90 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5.25)")
+
+        # Merge Functions
+        eb.create_function("fd03", "length * 60 / 50 + 0.85 * ((volau + volad) / ( 600*lanes))^5")
+        eb.create_function("fd04", "length * 60 / 60 + 0.85 * ((volau + volad) / ( 600*lanes))^5")
+        eb.create_function("fd05", "length * 60 / 70 + 0.85 * ((volau + volad) / ( 600*lanes))^5")
+        eb.create_function("fd92", "length * 60 / 50 + 0.85 * ((volau + volad) / ( 800*lanes))^5")
+        eb.create_function("fd93", "length * 60 / 60 + 0.85 * ((volau + volad) / ( 800*lanes))^5")
+        eb.create_function("fd94", "length * 60 / 70 + 0.85 * ((volau + volad) / ( 800*lanes))^5")
+        eb.create_function("fd07", "length * 60 / 50 + 0.85 * ((volau + volad) / (1000*lanes))^5")
+        eb.create_function("fd08", "length * 60 / 60 + 0.85 * ((volau + volad) / (1000*lanes))^5")
+        eb.create_function("fd09", "length * 60 / 70 + 0.85 * ((volau + volad) / (1000*lanes))^5")
+        eb.create_function("fd10", "length * 60 / 80 + 0.85 * ((volau + volad) / (1000*lanes))^5")
+        eb.create_function("fd11", "length * 60 / 90 + 0.85 * ((volau + volad) / (1000*lanes))^5")
+        eb.create_function("fd02", "length * 60 / 100+ 0.85 * ((volau + volad) / (1000*lanes))^5")
+        eb.create_function("fd17", "length * 60 / 50 + 0.85 * ((volau + volad) / (1200*lanes))^5")
+        eb.create_function("fd18", "length * 60 / 60 + 0.85 * ((volau + volad) / (1200*lanes))^5")
+        eb.create_function("fd19", "length * 60 / 70 + 0.85 * ((volau + volad) / (1200*lanes))^5")
+        eb.create_function("fd20", "length * 60 / 80 + 0.85 * ((volau + volad) / (1200*lanes))^5")
+        eb.create_function("fd21", "length * 60 / 90 + 0.85 * ((volau + volad) / (1200*lanes))^5")
+        eb.create_function("fd12", "length * 60 / 100+ 0.85 * ((volau + volad) / (1200*lanes))^5")
+        eb.create_function("fd95", "length * 60 / 50 + 0.85 * ((volau + volad) / (1400*lanes))^5")
+        eb.create_function("fd96", "length * 60 / 60 + 0.85 * ((volau + volad) / (1400*lanes))^5")
+        eb.create_function("fd97", "length * 60 / 70 + 0.85 * ((volau + volad) / (1400*lanes))^5")
+        eb.create_function("fd98", "length * 60 / 80 + 0.85 * ((volau + volad) / (1400*lanes))^5")
+        eb.create_function("fd99", "length * 60 / 90 + 0.85 * ((volau + volad) / (1400*lanes))^5")
+        eb.create_function("fd90", "length * 60 / 100+ 0.85 * ((volau + volad) / (1400*lanes))^5")
+
         # Update FT functions to include dwell time (us1) based on boardings and alightings
         eb.create_function("ft01", "timau + us1")
         eb.create_function("ft02", "timau + us1")
