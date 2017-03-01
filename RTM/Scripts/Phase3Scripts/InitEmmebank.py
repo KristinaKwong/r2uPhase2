@@ -106,7 +106,7 @@ class InitEmmebank(_m.Tool()):
         project = mod.desktop.project
         proj_path = os.path.dirname(project.path)
         scen_trans = mod.tool("inro.emme.data.scenario.create_scenario")
-        scen_trans(scenario_id = scen_id, scenario_title = scen_title, emmebank = eb)
+        scen_trans(scenario_id = scen_id, scenario_title = scen_title, emmebank = eb, overwrite=True)
 
         scen = eb.scenario(scen_id)
 
