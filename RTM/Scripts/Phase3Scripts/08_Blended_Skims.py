@@ -124,10 +124,10 @@ class ModeChoiceGenDf(_m.Tool()):
                                 ["Zero", "Zero", "Zero", "Zero"]])
 
         ##############################################################################
-        ##       Auto Skims SOV VOT 1 NHBO, HbSch, HbU, HbShopLow, HbPBLow
+        ##       Auto Skims SOV VOT 1 NHBO, HbSch,HbShopLow
         ##############################################################################
         # Initialize Time Distance and Cost Skim Dictionaries
-        # VOT 1 NHBO, HbSch, HbU, HbShopLow, HbPBLow
+
         TimeDict, CostDict = {}, {}
 
         # Generate Skim Dictionaries
@@ -137,10 +137,8 @@ class ModeChoiceGenDf(_m.Tool()):
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
         BlendDict = {'nhbo':{'PA':nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlSovCost', 'NHbOBlSovTime']}, # non-home base other
-                     'hbun':{'PA':hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['HbUBlSovCost',  'HbUBlSovTime' ]}, # home-base uni
                      'hbsc':{'PA':hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlSovCost', 'HbScBlSovTime']}, # home-base school
-                     'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlSovCost_I1', 'HbShBlSovTime_I1']}, # home-base shopping low
-                     'hbpb':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlSovCost_I1', 'HbPbBlSovTime_I1']}} # home-base personal business low
+                     'hbsh':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbShBlSovCost_I1', 'HbShBlSovTime_I1']}} # home-base shopping low
 
         for keys, values in BlendDict.items():
             Df = {}
@@ -155,9 +153,9 @@ class ModeChoiceGenDf(_m.Tool()):
 
 
         #
-        ##############################################################################
-        ##       Auto Skims SOV VOT 2 HbShopMed, HbPBMed, HbEsc, HbSocLow, HbPB High
-        ##############################################################################
+        ###############################################################################################################
+        ##       Auto Skims SOV VOT 2 HbShopMed, HbSocLow, HbPbLow, HbPBMed, HbEsc, HbUniv, HbWLow, HbPB High, HbSocMed
+        ###############################################################################################################
 
         TimeDict, CostDict = {}, {}
             #                                 AM    ,       MD   ,            PM
@@ -167,10 +165,15 @@ class ModeChoiceGenDf(_m.Tool()):
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
         BlendDict = {'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlSovCost_I2', 'HbShBlSovTime_I2' ]}, # home-base shopping med
+                     'hbsol':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlSovCost_I1', 'HbSoBlSovTime_I1']}, # home-base social low
+                     'hbpbl':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlSovCost_I1', 'HbPbBlSovTime_I1']}, # home-base personal business low
                      'hbpbm':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlSovCost_I2', 'HbPbBlSovTime_I2']}, # home-base personal business med
                      'hbes':{'PA':hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlSovCost', 'HbEsBlSovTime']}, # home-base escorting
-                     'hbso':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlSovCost_I1', 'HbSoBlSovTime_I1' ]}, # home-base social low
-                     'hbpbh':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlSovCost_I3', 'HbPbBlSovTime_I3']}} # home-base personal business high
+                     'hbun':{'PA':hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbUBlSovCost', 'HbUBlSovTime']}, # home-base escorting
+                     'hbwo':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlSovCost_I1', 'HbWBlSovTime_I1' ]}, # home-base work low
+                     'hbpbh':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlSovCost_I3', 'HbPbBlSovTime_I3']}, # home-base personal business high
+                     'hbsom':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlSovCost_I2', 'HbSoBlSovTime_I2']}} # home-base social med
+
 
         for keys, values in BlendDict.items():
             Df = {}
@@ -183,7 +186,7 @@ class ModeChoiceGenDf(_m.Tool()):
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
 
         ##############################################################################
-        ##       Auto Skims SOV VOT 3 HbShopHigh, HbW Low, HbSocMed
+        ##       Auto Skims SOV VOT 3 HbShopHigh, HbW Med, NhBw, HbSoc High
         ##############################################################################
 
         TimeDict, CostDict = {}, {}
@@ -195,8 +198,9 @@ class ModeChoiceGenDf(_m.Tool()):
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
         BlendDict = {'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlSovCost_I3', 'HbShBlSovTime_I3']}, # home-base shopping high
-                     'hbwo':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlSovCost_I1', 'HbWBlSovTime_I1' ]}, # home-base work low
-                     'hbso':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlSovCost_I2', 'HbSoBlSovTime_I2']}} # home-base social med
+                     'hbwo':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlSovCost_I2', 'HbWBlSovTime_I2' ]}, # home-base work med
+                     'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlSovCost', 'NHbWBlSovTime']}, # non-home base work
+                     'hbso':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlSovCost_I3', 'HbSoBlSovTime_I3']}} # home-base social high
 
         for keys, values in BlendDict.items():
 
@@ -210,7 +214,7 @@ class ModeChoiceGenDf(_m.Tool()):
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
 
         #################################################################################
-        ##       Auto Skims SOV VOT 4 HbSoc High, NHbW, HbW Med, HbW High + Park and Ride
+        ##       Auto Skims SOV VOT 4 HbW High + Park and Ride
         #################################################################################
 
         TimeDict, CostDict = {}, {}
@@ -222,9 +226,6 @@ class ModeChoiceGenDf(_m.Tool()):
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
         BlendDict = {
-                     'hbso':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlSovCost_I3', 'HbSoBlSovTime_I3']}, # home-base social high
-                     'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlSovCost', 'NHbWBlSovTime']}, # non-home base work
-                     'hbwom':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlSovCost_I2', 'HbWBlSovTime_I2']}, # home-base work med
                      'hbwoh':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlSovCost_I3', 'HbWBlSovTime_I3']}} # home-base work high
 
         for keys, values in BlendDict.items():
@@ -278,10 +279,10 @@ class ModeChoiceGenDf(_m.Tool()):
         del Df, Dfmerge, Df_Auto_Leg, TimeDict, CostDict
 
         ##############################################################################
-        ##       Auto Skims HOV VOT 1 NHBO, HbSch, HbU, HbShopLow, HbPBLow
+        ##       Auto Skims HOV VOT 1 NHBO, HbSch,HbShopLow
         ##############################################################################
         # Initialize Time and Cost Skim Dictionaries
-        # VOT 1 NHBO, HbSch, HbU, HbShopLow, HbPBLow
+
         TimeDict, CostDict = {}, {}
 
         # Generate Skim Dictionaries
@@ -292,10 +293,8 @@ class ModeChoiceGenDf(_m.Tool()):
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
         BlendDict = {'nhbo':{'PA':nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlHovCost', 'NHbOBlHovTime']}, # non-home base other
-                     'hbun':{'PA':hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['HbUBlHovCost',  'HbUBlHovTime']}, # home-base uni
                      'hbsc':{'PA':hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlHovCost', 'HbScBlHovTime']}, # home-base school
-                     'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovCost_I1', 'HbShBlHovTime_I1']}, # home-base shopping low
-                     'hbpb':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I1', 'HbPbBlHovTime_I1']}} # home-base personal business low
+                     'hbsh':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbShBlHovCost_I1', 'HbShBlHovTime_I1']}} # home-base shopping low
 
         for keys, values in BlendDict.items():
 
@@ -310,9 +309,9 @@ class ModeChoiceGenDf(_m.Tool()):
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
 
         #
-        ##############################################################################
-        ##       Auto Skims HOV VOT 2 HbShopMed, HbPBMed, HbEsc, HbSocLow, HbPB High
-        ##############################################################################
+        ###############################################################################################################
+        ##       Auto Skims SOV VOT 2 HbShopMed, HbSocLow, HbPbLow, HbPBMed, HbEsc, HbUniv, HbWLow, HbPB High, HbSocMed
+        ###############################################################################################################
 
         TimeDict, CostDict = {}, {}
 
@@ -322,11 +321,15 @@ class ModeChoiceGenDf(_m.Tool()):
 
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
-        BlendDict = {'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovCost_I2', 'HbShBlHovTime_I2']}, # home-base shopping med
+        BlendDict = {'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovCost_I2', 'HbShBlHovTime_I2' ]}, # home-base shopping med
+                     'hbsol':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I1', 'HbSoBlHovTime_I1']}, # home-base social low
+                     'hbpbl':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I1', 'HbPbBlHovTime_I1']}, # home-base personal business low
                      'hbpbm':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I2', 'HbPbBlHovTime_I2']}, # home-base personal business med
                      'hbes':{'PA':hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlHovCost', 'HbEsBlHovTime']}, # home-base escorting
-                     'hbso':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I1', 'HbSoBlHovTime_I1']}, # home-base social low
-                     'hbpbh':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I3', 'HbPbBlHovTime_I3']}} # home-base personal business high
+                     'hbun':{'PA':hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbUBlHovCost', 'HbUBlHovTime']}, # home-base escorting
+                     'hbwo':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovCost_I1', 'HbWBlHovTime_I1' ]}, # home-base work low
+                     'hbpbh':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I3', 'HbPbBlHovTime_I3']}, # home-base personal business high
+                     'hbsom':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I2', 'HbSoBlHovTime_I2']}} # home-base social med
 
         for keys, values in BlendDict.items():
 
@@ -353,38 +356,9 @@ class ModeChoiceGenDf(_m.Tool()):
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
         BlendDict = {'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovCost_I3', 'HbShBlHovTime_I3']}, # home-base shopping high
-                     'hbwo':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovCost_I1', 'HbWBlHovTime_I1' ]}, # home-base work low
-                     'hbso':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I2', 'HbSoBlHovTime_I2']}} # home-base social med
-
-        for keys, values in BlendDict.items():
-
-            Df = {}
-            # Calculate blended skim
-            Df['AutoCos'] = self.calc_blend(values, CostDict)
-            Df['AutoTim'] = self.calc_blend(values, TimeDict)
-
-
-           # Put results back in the Emmebank
-            util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoCos'])
-            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
-
-
-        #################################################################################
-        ##       Auto Skims Hov VOT 4 HbSoc High, NHbW, HbW Med, HbW High + Park and Ride
-        #################################################################################
-
-        TimeDict, CostDict = {}, {}
-
-            #                                 AM    ,       MD   ,            PM
-        self.GenSkimDict(eb, CostDict, ["mfAmHovOpCstVOT4", "mfMdHovOpCstVOT4", "mfPmHovOpCstVOT4"]) # Cost
-        self.GenSkimDict(eb, TimeDict, ["AmHovTimeVOT4", "MdHovTimeVOT4", "PmHovTimeVOT4"]) # Time
-
-
-        # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
-        BlendDict = {
-                     'hbso':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I3', 'HbSoBlHovTime_I3']}, # home-base social high
+                     'hbwom':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovCost_I2', 'HbWBlHovTime_I2' ]}, # home-base work med
                      'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlHovCost', 'NHbWBlHovTime']}, # non-home base work
-                     'hbwom':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovCost_I2', 'HbWBlHovTime_I2']}, # home-base work med
+                     'hbso':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I3', 'HbSoBlHovTime_I3']}, # home-base social high
                      'hbwoh':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovCost_I3', 'HbWBlHovTime_I3']}} # home-base work high
 
         for keys, values in BlendDict.items():
@@ -394,9 +368,11 @@ class ModeChoiceGenDf(_m.Tool()):
             Df['AutoCos'] = self.calc_blend(values, CostDict)
             Df['AutoTim'] = self.calc_blend(values, TimeDict)
 
+
            # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoCos'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
+
 
 #       ##############################################################################
 #       ##       Blended Bridge Crossings
