@@ -455,19 +455,12 @@ class HbPersonalBusiness(_m.Tool()):
 
         # setup for hbw auto time slice matrices
         conn = util.get_rtm_db(eb)
-        ij = util.get_pd_ij_df(eb)
-        gb = pd.read_sql("SELECT TAZ1700 as TAZ, gb FROM ensembles", conn)
         ts_uw = pd.read_sql("SELECT * FROM timeSlicingFactorsGb", conn)
         conn.close()
 
         # build basic ij mat with gb for production end and internal or external gb for attraction
-        df_mats = pd.merge(ij, gb, how='left', left_on='i', right_on = 'TAZ')
-        df_mats.drop('TAZ', axis=1, inplace=True)
-        df_mats.rename(columns={'gb': 'Gb_P'}, inplace=True)
-        df_mats = pd.merge(df_mats, gb, how='left', left_on='j', right_on = 'TAZ')
-        df_mats.drop('TAZ', axis=1, inplace=True)
-        df_mats.rename(columns={'gb': 'Gb_A'}, inplace=True)
-        df_mats['IX'] = np.where(df_mats['Gb_P']==df_mats['Gb_A'], 'I', 'X')
+        df_mats = util.get_ijensem_df(eb, ensem_o = 'gb')
+        df_mats['IX'] = np.where(df_mats['gb_i']==df_mats['gb_j'], 'I', 'X')
 
         Auto_AM_Fct_PA = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'AM', 'PtoA', NoTAZ)
         Auto_MD_Fct_PA = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'MD', 'PtoA', NoTAZ)
@@ -667,45 +660,56 @@ class HbPersonalBusiness(_m.Tool()):
         T_HOV_PM = HOVI1_PM + HOVI2_PM + HOVI3_PM
 
         # Take park and ride out of auto trips
-
-
-
+        T_SOV = np.where((Zone_Index_O>9999) & (Zone_Index_D>9999), SOVI1 + SOVI2 + SOVI3, 0)
+        T_HOV = HOVI1 + HOVI2 + HOVI3
 
         #
-        df_pkhr_demand = pd.DataFrame()
+        df_demand = pd.DataFrame()
 
         Gy_P = util.get_matrix_numpy(eb, 'gy_ensem')  + np.zeros((1, NoTAZ))
         Gy_A = Gy_P.transpose()
 
-        df_pkhr_demand['Gy_O'] = Gy_P.flatten()
-        df_pkhr_demand['Gy_D'] = Gy_A.flatten()
-        df_pkhr_demand.Gy_O = df_pkhr_demand.Gy_O.astype(int)
-        df_pkhr_demand.Gy_D = df_pkhr_demand.Gy_D.astype(int)
+        df_demand['gy_i'] = Gy_P.flatten()
+        df_demand['gy_j'] = Gy_A.flatten()
+        df_demand.gy_i = df_demand.gy_i.astype(int)
+        df_demand.gy_j = df_demand.gy_j.astype(int)
         mode_list_am_pm = ['sov', 'hov', 'bus', 'rail', 'walk', 'bike']
         mode_list_md = ['sov', 'hov', 'bus', 'rail', 'walk', 'bike']
+        mode_list_daily = ['sov', 'hov', 'bus', 'rail', 'walk', 'bike']
 
         AM_Demand_List = [T_SOV_AM, T_HOV_AM, Bus_AM, Rail_AM, Walk_AM, Bike_AM]
         MD_Demand_List = [T_SOV_MD, T_HOV_MD, Bus_MD, Rail_MD, Walk_MD, Bike_MD]
         PM_Demand_List = [T_SOV_PM, T_HOV_PM, Bus_PM, Rail_PM, Walk_PM, Bike_PM]
+        Daily_Demand_List = [T_SOV, T_HOV, Bus, Rail, Walk, Bike]
 
         zero_demand = 0
         purp = "hbpb"
 
-        df_AM_summary, df_AM_Gy = MChM.PHr_Demand(df_pkhr_demand, purp, "AM", AM_Demand_List, mode_list_am_pm)
+        df_AM_Gy = MChM.Demand_Summary(df_demand, purp, "AM", AM_Demand_List, mode_list_am_pm)
 
+        df_MD_Gy = MChM.Demand_Summary(df_demand, purp, "MD", MD_Demand_List, mode_list_md)
 
-        df_MD_summary, df_MD_Gy = MChM.PHr_Demand(df_pkhr_demand, purp, "MD", MD_Demand_List, mode_list_md)
+        df_PM_Gy = MChM.Demand_Summary(df_demand, purp, "PM", PM_Demand_List, mode_list_am_pm)
 
-        df_PM_summary, df_PM_Gy = MChM.PHr_Demand(df_pkhr_demand, purp, "PM", PM_Demand_List, mode_list_am_pm)
+        df_Daily_Gy = MChM.Demand_Summary(df_demand, purp, "daily", Daily_Demand_List, mode_list_am_pm)
 
-        df_summary = pd.concat([df_AM_summary, df_MD_summary, df_PM_summary])
-        df_gy = pd.concat([df_AM_Gy, df_MD_Gy, df_PM_Gy])
+        df_gy_phr = pd.concat([df_AM_Gy, df_MD_Gy, df_PM_Gy])
+
+        df_gy_phr = df_gy_phr[['gy_i','gy_j','purpose','mode', 'period', 'trips']]
+
+        df_Daily_Gy = df_Daily_Gy[['gy_i','gy_j','purpose','mode', 'period', 'trips']]
+
 
         ## Dump to SQLite DB
         conn = util.get_db_byname(eb, "trip_summaries.db")
-        df_summary.to_sql(name='phr_summary', con=conn, flavor='sqlite', index=False, if_exists='append')
-        df_gy.to_sql(name='phr_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
+
+        df_gy_phr.to_sql(name='phr_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
+
+        df_Daily_Gy.to_sql(name='daily_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
+
         conn.close()
+
+        del Auto_AM_Fct_PA, Auto_MD_Fct_PA, Auto_PM_Fct_PA, Auto_AM_Fct_AP, Auto_MD_Fct_AP, Auto_PM_Fct_AP
 
     def Calc_Prob(self, eb, Dict, Logsum, Th):
         util = _m.Modeller().tool("translink.util")

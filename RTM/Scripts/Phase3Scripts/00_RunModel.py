@@ -168,6 +168,9 @@ class FullModelRun(_m.Tool()):
 
         mode_choice = _m.Modeller().tool("translink.RTM3.stage2.modechoice")
         mode_choice(eb)
+        
+        truck_model = _m.Modeller().tool("translink.RTM3.stage2.truckmodel")
+        truck_model(eb, self.horizon_year)
 
         am_scen = eb.scenario(int(eb.matrix("ms2").data))
         md_scen = eb.scenario(int(eb.matrix("ms3").data))

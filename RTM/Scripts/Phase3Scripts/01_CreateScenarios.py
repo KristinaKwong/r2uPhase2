@@ -45,7 +45,7 @@ class InputSettings(_m.Tool()):
                       overwrite=True)
         amscen = eb.scenario(am_scenid)
 
-        self.attribute_code(amscen, "@lanesam", "@vdfam", "@tpfam", "@hdwyam", "@tollam", "0.00")
+        self.attribute_code(amscen, "@lanesam", "@vdfam", "@tpfam", "@hdwyam", "@tollam")
 
         # Copy to new MD Scenarios
         md_scenid = int(eb.matrix("ms3").data)
@@ -55,7 +55,7 @@ class InputSettings(_m.Tool()):
                       overwrite=True)
         mdscen = eb.scenario(md_scenid)
 
-        self.attribute_code(mdscen, "@lanesmd", "@vdfmd", "@tpfmd", "@hdwymd", "@tollmd", "0.25")
+        self.attribute_code(mdscen, "@lanesmd", "@vdfmd", "@tpfmd", "@hdwymd", "@tollmd")
 
         # Copy to new pm Scenarios
         pm_scenid = int(eb.matrix("ms4").data)
@@ -65,9 +65,9 @@ class InputSettings(_m.Tool()):
                       overwrite=True)
         pmscen = eb.scenario(pm_scenid)
 
-        self.attribute_code(pmscen, "@lanespm", "@vdfpm", "@tpfpm", "@hdwypm", "@tollpm", "0.00")
+        self.attribute_code(pmscen, "@lanespm", "@vdfpm", "@tpfpm", "@hdwypm", "@tollpm")
 
-    def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr, toll_attr, signal_delay):
+    def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr, toll_attr):
         util = _m.Modeller().tool("translink.util")
         create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
         delete_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.delete_extra_attribute")
@@ -108,23 +108,15 @@ class InputSettings(_m.Tool()):
         delete_attr("@tollmd", scen)
         delete_attr("@tollpm", scen)
 
-        # calculate a fixed signal delay penalty in ul1
-        util.emme_link_calc(scen, "ul1", "0")
-        util.emme_link_calc(scen, "ul1", signal_delay, sel_link="vdf=22,79")
-
         # Add all required extra attibutes used in Auto Assignment
         create_attr("LINK", "@sov1", "SOV Volume VOT1",     0, False, scen)
         create_attr("LINK", "@sov2", "SOV Volume VOT2",     0, False, scen)
         create_attr("LINK", "@sov3", "SOV Volume VOT3",     0, False, scen)
         create_attr("LINK", "@sov4", "SOV Volume VOT4",  0, False, scen)
-        create_attr("LINK", "@sov5", "SOV Volume VOT5",  0, False, scen)
-        create_attr("LINK", "@sov6", "SOV Volume VOT6",  0, False, scen)
         create_attr("LINK", "@hov1", "HOV Volume VOT1",     0, False, scen)
         create_attr("LINK", "@hov2", "HOV Volume VOT2",     0, False, scen)
         create_attr("LINK", "@hov3", "HOV Volume VOT3",     0, False, scen)
         create_attr("LINK", "@hov4", "HOV Volume VOT4",  0, False, scen)
-        create_attr("LINK", "@hov5", "HOV Volume VOT5",  0, False, scen)
-        create_attr("LINK", "@hov6", "HOV Volume VOT6",  0, False, scen)
         create_attr("LINK", "@wsovl", "SOV Link Volume", 0, False, scen)
         create_attr("LINK", "@whovl", "HOV Link Volume", 0, False, scen)
         create_attr("LINK", "@lgvol", "LGV Link Volume", 0, False, scen)
@@ -133,14 +125,10 @@ class InputSettings(_m.Tool()):
         create_attr("TURN", "@tsov2", "SOV Turn Volume VOT2",     0, False, scen)
         create_attr("TURN", "@tsov3", "SOV Turn Volume VOT3",     0, False, scen)
         create_attr("TURN", "@tsov4", "SOV Turn Volume VOT4",  0, False, scen)
-        create_attr("TURN", "@tsov5", "SOV Turn Volume VOT5",  0, False, scen)
-        create_attr("TURN", "@tsov6", "SOV Turn Volume VOT6",  0, False, scen)
         create_attr("TURN", "@thov1", "HOV Turn Volume VOT1",     0, False, scen)
         create_attr("TURN", "@thov2", "HOV Turn Volume VOT2",     0, False, scen)
         create_attr("TURN", "@thov3", "HOV Turn Volume VOT3",     0, False, scen)
         create_attr("TURN", "@thov4", "HOV Turn Volume VOT4",  0, False, scen)
-        create_attr("TURN", "@thov5", "HOV Turn Volume VOT5",  0, False, scen)
-        create_attr("TURN", "@thov6", "HOV Turn Volume VOT6",  0, False, scen)
         create_attr("TURN", "@wsovt", "SOV Turn Volume", 0, False, scen)
         create_attr("TURN", "@whovt", "HOV Turn Volume", 0, False, scen)
         create_attr("TURN", "@lgvtn", "LGV Turn Volume", 0, False, scen)
