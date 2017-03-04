@@ -44,53 +44,54 @@ class HbWork(_m.Tool()):
                      'BRTotHig': 120.0,
                      'WCTotLow': 30.0,
                      'WCTotHig': 130.0,
-                     'PRAutTim': 0.0
+                     'PRAutTim': 0.0,
+                     'br_ratio': 2.0,
+                     'r_time': 20.0,
+                     'brw_ratio': 1.5,
+                     'pr_ratio': 2.0
                     }
 
         # Declare Utilities Data Frame
         DfU = {}
-        # Add Coefficients
 
-        p2   =  0.165342
-        p3   = -1.631934
-        p4   =  1.073040
-        p5   = -4.263437
-        p6   =  2.703188
-        p7   = -2.317327
-        p8   =  3.380394
-        p9   = -2.365022
-        p10  =  5.328974
-        p11  =  0.124672
-        p12  = -0.268663
-        p13  = -0.189000
-        p14  = -0.160833
-        p17  = -0.141318
-        p18  = -0.101003
-        p19  = -0.591656
-        p20  = -1.483697
-        p21  = -0.444447
-        p151 = -0.075147
-        p152 = -0.087667
-        p153 = -0.083120
-        p160 =  4.420636
-        p161 =  6.444305
-        p162 =  1.244796
-        p163 =  2.494739
-        p164 =  1.326848
-        p505 = -0.217369
-        p506 = -0.307408
-        p602 =  0.165480
-        p603 =  0.122307
-        p701 =  0.152645
-        p850 =  1.711530
-        p870 =  0.602662
-        p991 = -0.114845
-        p992 =  0.001120
-        p993 =  2.196992
-        p994 =  0.104691
-        p995 = -0.001051
-        p996 =  1.041571
-        thet =  0.578051
+        # Add Coefficients
+        p2   =  0.957766
+        p3   = -0.839134
+        p4   = -0.164578
+        p5   = -2.027129
+        p6   =  1.657704
+        p7   =  0.725872
+        p8   =  3.203539
+        p9   =  0.117616
+        p10  =  6.743114
+        p11  =  1.342106
+        p12  = -0.256430
+        p13  = -0.183268
+        p14  = -0.158294
+        p17  = -0.147158
+        p18  = -0.101607
+        p19  = -0.656231
+        p20  = -1.511973
+        p21  = -0.431762
+        p151 = -0.048225
+        p152 = -0.059809
+        p153 = -0.047601
+        p160 =  5.479080
+        p161 =  7.505207
+        p162 =  1.589878
+        p163 =  2.837890
+        p164 =  1.213446
+        p505 = -0.196322
+        p506 = -0.334867
+        p602 =  0.351509
+        p603 =  0.321393
+        p701 =  0.115601
+        p850 =  1.616486
+        p870 =  0.550211
+        p991 = -0.135461
+        p992 =  0.001341
+        p993 =  2.122578
+        thet =  0.585846
 
 #        ##############################################################################
 #        ##       Auto Modes
@@ -98,6 +99,7 @@ class HbWork(_m.Tool()):
         # Generate Dataframe
         Df = {}
         MaxPark = 10.0
+        Hov_scale = 0.85
 
         Occ = float(util.get_matrix_numpy(eb, 'HOVOccHbw')) # Occupancy
         Df['ParkCost'] = util.get_matrix_numpy(eb, 'prk8hr') # 8hr Parking
@@ -165,17 +167,17 @@ class HbWork(_m.Tool()):
 
         Df['HV2I1'] = ( p2
                       + p151*Df['AutoTimHOV1']
-                      + p12*Df['AutoTotCosHOV1']/2.0)
+                      + p12*Df['AutoTotCosHOV1']/(pow(2.0, Hov_scale)))
 
 
         Df['HV2I2'] = ( p2
                       + p151*Df['AutoTimHOV2']
-                      + p13*Df['AutoTotCosHOV2']/2.0)
+                      + p13*Df['AutoTotCosHOV2']/(pow(2.0, Hov_scale)))
 
 
         Df['HV2I3'] = ( p2
                       + p151*Df['AutoTimHOV3']
-                      + p14*Df['AutoTotCosHOV3']/2.0)
+                      + p14*Df['AutoTotCosHOV3']/(pow(2.0, Hov_scale)))
 
 
 
@@ -188,17 +190,17 @@ class HbWork(_m.Tool()):
 
         Df['HV3I1'] = ( p3
                       + p151*Df['AutoTimHOV1']
-                      + p12*Df['AutoTotCosHOV1']/Occ)
+                      + p12*Df['AutoTotCosHOV1']/(pow(Occ, Hov_scale)))
 
 
         Df['HV3I2'] = ( p3
                       + p151*Df['AutoTimHOV2']
-                      + p13*Df['AutoTotCosHOV2']/Occ)
+                      + p13*Df['AutoTotCosHOV2']/(pow(Occ, Hov_scale)))
 
 
         Df['HV3I3'] = ( p3
                       + p151*Df['AutoTimHOV3']
-                      + p14*Df['AutoTotCosHOV3']/Occ)
+                      + p14*Df['AutoTotCosHOV3']/(pow(Occ, Hov_scale)))
 
         DfU['HV3I1']  = MChM.AutoAvail(Df['AutoCosHOV1'], Df['HV3I1'], AvailDict) #Check Availability condition if mode not available then set to high negative utility (-99999)
         DfU['HV3I2']  = MChM.AutoAvail(Df['AutoCosHOV2'], Df['HV3I2'], AvailDict)
@@ -216,7 +218,7 @@ class HbWork(_m.Tool()):
         Df['BusAux'] = util.get_matrix_numpy(eb, 'HbWBlBusAux') #Walk Time
         Df['BusBrd'] = util.get_matrix_numpy(eb, 'HbWBlBusBoard') #Boarding time
         Df['BusFar'] = util.get_matrix_numpy(eb, 'HbWBlBusFare') #Fare
-        Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] + Df['BusBrd'] #Total travel Time
+        Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux']  #Total travel Time
 
         Df['RalIVR'] = util.get_matrix_numpy(eb, 'HbWBlRailIvtt') #In vehicle Rail time on rail
         Df['RalIVB'] = util.get_matrix_numpy(eb, 'HbWBlRailIvttBus') #In vehicle Rail time on bus
@@ -224,7 +226,7 @@ class HbWork(_m.Tool()):
         Df['RalAux'] = util.get_matrix_numpy(eb, 'HbWBlRailAux') # Auxiliary Time
         Df['RalBrd'] = util.get_matrix_numpy(eb, 'HbWBlRailBoard')
         Df['RalFar'] = util.get_matrix_numpy(eb, 'HbWBlRailFare')
-        Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] + Df['RalBrd'] #Total travel Time
+        Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux']  #Total travel Time
         Df['RalIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) #Ratio of IVT on Bus to total IVTT
         Df['RalIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) #Ratio of IVT on Rail to total IVTT
 
@@ -235,7 +237,7 @@ class HbWork(_m.Tool()):
         Df['WCEAux'] = util.get_matrix_numpy(eb, 'HbWBlWceAux') # walk time
         Df['WCEBrd'] = util.get_matrix_numpy(eb, 'HbWBlWceBoard') # board time
         Df['WCEFar'] = util.get_matrix_numpy(eb, 'HbWBlWceFare') # wce fare
-        Df['WCETot'] = Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW'] + Df['WCEWat'] + Df['WCEAux'] + Df['WCEBrd'] #Total travel Time
+        Df['WCETot'] = Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW'] + Df['WCEWat'] + Df['WCEAux'] #Total travel Time
         Df['WCEIBR'] = Df['WCEIVB']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW'] + Tiny) #Ratio of IVT on Bus to total IVTT
         Df['WCEIRR'] = Df['WCEIVR']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW'] + Tiny) #Ratio of IVT on Rail to total IVTT
         Df['WCEIWR'] = Df['WCEIVW']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW'] + Tiny) #Ratio of IVT on WCE to total IVTT
@@ -298,9 +300,9 @@ class HbWork(_m.Tool()):
                       + p17*Df['WCEWat']
                       + p18*Df['WCEAux']
                       + p19*Df['WCEBrd']
-                      + p994*Df['AutoDis']
-                      + p995*Df['AutoDisSqd']
-                      + p996*Df['LogAutoDis']
+                      + p991*Df['AutoDis']
+                      + p992*Df['AutoDisSqd']
+                      + p993*Df['LogAutoDis']
                       + p603*Df['TranAccess'])
         # Check availability conditions else add high negative utility (-99999)
         Df['GeUtl'] = MChM.WCEAvail(Df, Df['GeUtl'], AvailDict)
@@ -323,9 +325,11 @@ class HbWork(_m.Tool()):
         Df['BusAux'] = util.get_matrix_numpy(eb, 'HbWBlBAuBusAux') # Bus Walk Time
         Df['BusBrd'] = util.get_matrix_numpy(eb, 'HbWBlBAuBusBoard') # Bus Boarding Time
         Df['BusFar'] = util.get_matrix_numpy(eb, 'HbWBlBAuBusFare') # Bus Fare
-        Df['BAuTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] + Df['BusBrd'] + Df['BAuTim'] # Total Travel Time
+        Df['BusTot'] = util.get_matrix_numpy(eb, 'HbWBlBusIvtt') + util.get_matrix_numpy(eb, 'HbWBlBusWait') + util.get_matrix_numpy(eb, 'HbWBlBusAux')
+        Df['BusIVT'] = util.get_matrix_numpy(eb, 'HbWBlBusIvtt') #In vehicle Bus time
+        Df['BAuTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] + Df['BAuTim'] # Total Travel Time
         Df['BAuIBR'] = Df['BusIVT']/(Df['BusIVT'] + Df['BAuTim'] + Tiny) # Ratio of Time on Bus to total travel time
-
+        Df['WBusFar'] = util.get_matrix_numpy(eb, 'HbWBlBusFare') #Walk to Transit Fare
 
         Df['RAuCos'] = util.get_matrix_numpy(eb, 'HbWBlRAuPRCost') #Rail PR Drive Distance
         Df['RAuTim'] = util.get_matrix_numpy(eb, 'HbWBlRAuPRTime') #Rail PR Drive Time
@@ -337,10 +341,14 @@ class HbWork(_m.Tool()):
         Df['RalAux'] = util.get_matrix_numpy(eb, 'HbWBlRAuRailAux') #Rail Walk Time
         Df['RalBrd'] = util.get_matrix_numpy(eb, 'HbWBlRAuRailBoard') #Rail Board Time
         Df['RalFar'] = util.get_matrix_numpy(eb, 'HbWBlRAuRailFare') #Rail Fare
-        Df['RAuTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] + Df['RalBrd'] +  Df['RAuTim'] # Total Travel Time
+        Df['RAuTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] + Df['RAuTim'] # Total Travel Time
         Df['RAuIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Df['RAuTim'] + Tiny) # Ratio of Time on Bus to total travel time
         Df['RAuIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Df['RAuTim'] + Tiny) # Ratio of Time on Rail to total travel time
 
+        Df['WRalFar'] = util.get_matrix_numpy(eb, 'HbWBlRailFare')
+        Df['WRalIVR'] = util.get_matrix_numpy(eb, 'HbWBlRailIvtt') #In vehicle Rail time on rail
+        Df['RalTot'] = (util.get_matrix_numpy(eb, 'HbWBlRailIvtt') + util.get_matrix_numpy(eb, 'HbWBlRailIvttBus')
+                       + util.get_matrix_numpy(eb, 'HbWBlRailWait') + util.get_matrix_numpy(eb, 'HbWBlRailAux'))
 
         Df['WAuCos'] = util.get_matrix_numpy(eb, 'HbWBlWAuPRCost') #WCE PR Drive Distance
         Df['WAuTim'] = util.get_matrix_numpy(eb, 'HbWBlWAuPRTime') #WCE PR Drive Time
@@ -353,10 +361,21 @@ class HbWork(_m.Tool()):
         Df['WCEAux'] = util.get_matrix_numpy(eb, 'HbWBlWAuWceAux')  #WCE Walk Time
         Df['WCEBrd'] = util.get_matrix_numpy(eb, 'HbWBlWAuWceBoards') #WCE Board Time
         Df['WCEFar'] = util.get_matrix_numpy(eb, 'HbWBlWAuWceFare') #WCE Fare
-        Df['WAuTot'] = Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW'] + Df['WCEWat'] + Df['WCEAux'] + Df['WCEBrd'] + Df['WAuTim'] # Total Travel Time
+        Df['WAuTot'] = Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW'] + Df['WCEWat'] + Df['WCEAux'] + Df['WAuTim'] # Total Travel Time
         Df['WAuIBR'] = Df['WCEIVB']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW']+ Df['WAuTim'] + Tiny) # Ratio of Time on Bus to total travel time
         Df['WAuIRR'] = Df['WCEIVR']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW']+ Df['WAuTim'] + Tiny) # Ratio of Time on Rail to total travel time
         Df['WAuIWR'] = Df['WCEIVW']/(Df['WCEIVB'] + Df['WCEIVR'] + Df['WCEIVW']+ Df['WAuTim'] + Tiny) # Ratio of Time on WCE to total travel time
+
+        Df['WWCEFar'] = util.get_matrix_numpy(eb, 'HbWBlWceFare') # wce fare
+        Df['WWCEIVW'] = util.get_matrix_numpy(eb, 'HbWBlWceIvtt') #In vehicle Rail time on wce
+
+        Df['WCETot'] = (util.get_matrix_numpy(eb, 'HbWBlWceIvtt')
+                       + util.get_matrix_numpy(eb, 'HbWBlWceIvttRail')
+                       + util.get_matrix_numpy(eb, 'HbWBlWceIvttBus')
+                       + util.get_matrix_numpy(eb, 'HbWBlWceWait')
+                       + util.get_matrix_numpy(eb, 'HbWBlWceAux'))
+
+
 
         Df['IntZnl'] = np.identity(NoTAZ) # Intra-zonal
         Df['AutoDis'] = util.get_matrix_numpy(eb, "mfdistAON") # Distance
@@ -398,9 +417,9 @@ class HbWork(_m.Tool()):
                       + p17*Df['RalWat']
                       + p18*(Df['RalAux'] + Df['RAuTrm'])
                       + p19*Df['RalBrd']
-                      + p994*Df['AutoDis']
-                      + p995*Df['AutoDisSqd']
-                      + p996*Df['LogAutoDis'])
+                      + p991*Df['AutoDis']
+                      + p992*Df['AutoDisSqd']
+                      + p993*Df['LogAutoDis'])
 
         # Check availability conditions else add high negative utility (-99999)
         Df['GeUtl'] = MChM.RAuAvail(Df, Df['GeUtl'], AvailDict)
@@ -423,9 +442,9 @@ class HbWork(_m.Tool()):
                        + p17*Df['WCEWat']
                        + p18*(Df['WCEAux'] + Df['WAuTrm'])
                        + p19*Df['WCEBrd']
-                       + p994*Df['AutoDis']
-                       + p995*Df['AutoDisSqd']
-                       + p996*Df['LogAutoDis'])
+                       + p991*Df['AutoDis']
+                       + p992*Df['AutoDisSqd']
+                       + p993*Df['LogAutoDis'])
 
         # Check availability conditions else add high negative utility (-99999)
         Df['GeUtl'] = MChM.WAuAvail(Df, Df['GeUtl'],AvailDict)
@@ -489,7 +508,7 @@ class HbWork(_m.Tool()):
                'SOV'  : [np.where(DfU['CarShare']>0, DfU['SOVI1'], LrgU)],
                'HOV'  : [DfU['HV2I1'], DfU['HV3I1']],
                'WTra' : [DfU['BusI1'] + p164, DfU['RalI1'] + p164, DfU['WCEI1']], # Add zero vehicle segment bias
-               'DTra' : [DfU['BAuI1'], DfU['RAuI1'], DfU['WAuI1']],
+               'DTra' : [DfU['BAuI1'] + LrgU, DfU['RAuI1'] + LrgU, DfU['WAuI1'] +LrgU],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
         I1A0_Dict = self.Calc_Prob(eb, Dict, "HbWLSI1A0", thet)
@@ -523,7 +542,7 @@ class HbWork(_m.Tool()):
                'SOV'  : [np.where(DfU['CarShare']>0, DfU['SOVI2'], LrgU)],
                'HOV'  : [DfU['HV2I2'], DfU['HV3I2']],
                'WTra' : [DfU['BusI2'] + p164, DfU['RalI2'] + p164, DfU['WCEI2']],
-               'DTra' : [DfU['BAuI2'], DfU['RAuI2'], DfU['WAuI2']],
+               'DTra' : [DfU['BAuI2'] + LrgU, DfU['RAuI2'] + LrgU, DfU['WAuI2'] + LrgU],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
         I2A0_Dict = self.Calc_Prob(eb, Dict, "HbWLSI2A0", thet)
@@ -557,7 +576,7 @@ class HbWork(_m.Tool()):
                'SOV'  : [np.where(DfU['CarShare']>0, DfU['SOVI3'], LrgU)],
                'HOV'  : [DfU['HV2I3'], DfU['HV3I3']],
                'WTra' : [DfU['BusI3'] + p164, DfU['RalI3'] + p164, DfU['WCEI3']],
-               'DTra' : [DfU['BAuI3'], DfU['RAuI3'], DfU['WAuI3']],
+               'DTra' : [DfU['BAuI3'] + LrgU, DfU['RAuI3'] + LrgU, DfU['WAuI3'] +LrgU],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
         I3A0_Dict = self.Calc_Prob(eb, Dict, "HbWLSI3A0", thet)
@@ -716,6 +735,12 @@ class HbWork(_m.Tool()):
         Auto_AM_Fct_AP = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'AM', 'AtoP', NoTAZ)
         Auto_MD_Fct_AP = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'MD', 'AtoP', NoTAZ)
         Auto_PM_Fct_AP = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'PM', 'AtoP', NoTAZ)
+
+        # Bus AM, PM Factors
+ #       Bus_AM_Fct_PA = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'AM', 'PtoA', NoTAZ)
+ #       Bus_PM_Fct_PA = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'PM', 'PtoA', NoTAZ)
+ #       Bus_AM_Fct_AP = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'AM', 'AtoP', NoTAZ)
+ #       Bus_PM_Fct_AP = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'PM', 'AtoP', NoTAZ)
 
         del df_mats
 

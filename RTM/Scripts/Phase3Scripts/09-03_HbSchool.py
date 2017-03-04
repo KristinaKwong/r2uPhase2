@@ -44,27 +44,27 @@ class HbSchool(_m.Tool()):
                      'BRTotHig':120.0,
                      'WCTotLow':30.0,
                      'WCTotHig':130.0,
-                     'PRAutTim':0.0
+                     'PRAutTim':0.0,
+                     'br_ratio': 2.0,
+                     'r_time'  : 20.0
                     }
 
         # Declare Utilities Data Frame
         DfU = {}
 
         # Add Coefficients
-
-        p2   = -20.901791
-        p4   = -20.403288
-        p6   = -21.598306
-        p11  =  -3.754238
-        p12  =  -1.186709
-        p20  =  -7.485208
-        p21  =  -6.852784
-        p162 =   4.587799
-        p163 =  10.988392
-        p701 =   0.756436
-        p702 =   0.779609
-        p900 =   1.464167
-        thet =   0.119236
+        p2   = -5.133076
+        p4   = -4.512706
+        p6   = -5.226410
+        p11  = -4.012878
+        p12  = -0.445877
+        p20  = -1.874970
+        p21  = -1.320351
+        p162 =  1.385854
+        p163 =  2.905327
+        p602 =  0.370481
+        p701 =  0.222423
+        thet =  0.500000
 
 #        ##############################################################################
 #        ##       Auto Modes
@@ -72,13 +72,14 @@ class HbSchool(_m.Tool()):
         # Generate Dataframe
         Df = {}
         MaxPark = 10.0
+        Hov_scale = 0.50
 
         Occ = util.get_matrix_numpy(eb, 'HOVOccHBsch')    # Occ=3.02
-        VOT = 5.5 # rs: hard coded
+        VOT = 5.0 # rs: hard coded
 
         Df['AutoCosHOV'] = util.get_matrix_numpy(eb, 'HbScBlHovCost')
         Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'HbScBlHovTime')
-        Df['AutoTotCosHOV'] = (Df['AutoCosHOV'])/(Occ*2.0) # students do not pay any cost adjustment
+        Df['AutoTotCosHOV'] = (Df['AutoCosHOV'])/(pow(Occ,Hov_scale)) # students do not pay any cost adjustment
 
         # Utilities
         # HOV2+
@@ -94,13 +95,15 @@ class HbSchool(_m.Tool()):
         # Generate Dataframe
         Df = {}
         Tiny=0.000001
+        B_IVT_perc = 1.06
+
         Disc_Fare = 0.85 # Student Fare Discount
         Df['BusIVT'] = util.get_matrix_numpy(eb, 'HbScBlBusIvtt')
         Df['BusWat'] = util.get_matrix_numpy(eb, 'HbScBlBusWait')
         Df['BusAux'] = util.get_matrix_numpy(eb, 'HbScBlBusAux')
         Df['BusBrd'] = util.get_matrix_numpy(eb, 'HbScBlBusBoard')
         Df['BusFar'] = util.get_matrix_numpy(eb, 'HbScBlBusFare')
-        Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] + Df['BusBrd'] # Total Bus Travel Time
+        Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux']  # Total Bus Travel Time
         Df['BusFar'] = Df['BusFar'] * Disc_Fare  ## discount fare for students
 
         Df['RalIVR'] = util.get_matrix_numpy(eb, 'HbScBlRailIvtt')
@@ -109,7 +112,7 @@ class HbSchool(_m.Tool()):
         Df['RalAux'] = util.get_matrix_numpy(eb, 'HbScBlRailAux')
         Df['RalBrd'] = util.get_matrix_numpy(eb, 'HbScBlRailBoard')
         Df['RalFar'] = util.get_matrix_numpy(eb, 'HbScBlRailFare')
-        Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] + Df['RalBrd'] # Total Bus Travel Time
+        Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux']  # Total Bus Travel Time
         Df['RalIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Bus IVT to Total Time
         Df['RalIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Rail IVT to Total Time
         Df['RalFar'] = Df['RalFar'] * Disc_Fare  ## discount fare for students
@@ -118,18 +121,18 @@ class HbSchool(_m.Tool()):
         Df['PopEmpDen'] = util.get_matrix_numpy(eb, 'combinedensln')
         Df['PopEmpDen'] = Df['PopEmpDen'].reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
 
-        Df['GenCostBus'] = ( Df['BusIVT']
-                           + 2.5*Df['BusWat']
-                           + 2.0*Df['BusAux']
-                           + 10.0*Df['BusBrd'])
+        Df['GenCostBus'] = ( Df['BusIVT']*B_IVT_perc
+                           + 1.92*Df['BusWat']
+                           + 1.71*Df['BusAux']
+                           + 10.81*Df['BusBrd'])
 
         Df['GenCostBus'] = VOT*Df['GenCostBus']/60.0 + Df['BusFar']
 
-        Df['GenCostRal'] = ( Df['RalIVB']
+        Df['GenCostRal'] = ( Df['RalIVB']*B_IVT_perc
                            + Df['RalIVR']
-                           + 2.5*Df['RalWat']
-                           + 2.0*Df['RalAux']
-                           + 10.0*Df['RalBrd'])
+                           + 2.03*Df['RalWat']
+                           + 1.80*Df['RalAux']
+                           + 11.80*Df['RalBrd'])
 
         Df['GenCostRal'] = VOT*Df['GenCostRal']/60.0 + Df['RalFar']
 
@@ -139,7 +142,7 @@ class HbSchool(_m.Tool()):
 
         Df['GeUtl'] = ( p4
                       + p12*Df['GenCostBus']
-                      + p900*Df['PopEmpDen'])
+                      + p602*Df['PopEmpDen'])
 
         # Check Availability conditions
         Df['GeUtl'] = MChM.BusAvail(Df, Df['GeUtl'],AvailDict)
@@ -151,7 +154,7 @@ class HbSchool(_m.Tool()):
         Df['GeUtl'] = ( p4*Df['RalIBR']
                       + p6*Df['RalIRR']
                       + p12*Df['GenCostRal']
-                      + p900*Df['PopEmpDen'])
+                      + p602*Df['PopEmpDen'])
 
         # Check Availability conditions
         Df['GeUtl'] = MChM.RailAvail(Df, Df['GeUtl'],AvailDict)
@@ -181,7 +184,7 @@ class HbSchool(_m.Tool()):
         # Bike Utility
         DfU['Bike'] = ( p11
                       + p21*Df['AutoDis']
-                      + p702*Df['PopEmpDen'])
+                      + p701*Df['PopEmpDenPA'])
 
         # Check Availability conditions
         DfU['Bike'] = MChM.BikeAvail(Df['AutoDis'], DfU['Bike'], AvailDict)

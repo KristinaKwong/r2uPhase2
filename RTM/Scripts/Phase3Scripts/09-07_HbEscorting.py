@@ -44,22 +44,28 @@ class HbEscorting(_m.Tool()):
                      'BRTotHig': 90.0,
                      'WCTotLow': 30.0,
                      'WCTotHig': 130.0,
-                     'PRAutTim': 0.0
+                     'PRAutTim': 0.0,
+                     'br_ratio': 2.0,
+                     'r_time'  : 20.0
                     }
 
         # Declare Utilities Data Frame
         DfU = {}
 
         # Add Coefficients
-        p4   = -1.987194
-        p6   =  2.380463
-        p10  =  6.591771
-        p11  =  3.899745
-        p14  = -1.037508
-        p20  = -4.538118
-        p160 =  4.350618
-        p161 =  7.482033
-        thet =  0.262525
+
+        p4   =-4.120999
+        p6   =-0.863372
+        p10  = 2.387704
+        p11  =-1.471055
+        p12  =-0.399781
+        p20  =-2.483381
+        p21  =-1.769784
+        p160 = 1.028527
+        p161 = 2.731352
+        p164 = 4.789199
+        thet = 0.500000
+
 
 #        ##############################################################################
 #        ##       Auto Modes
@@ -67,20 +73,21 @@ class HbEscorting(_m.Tool()):
         # Generate Dataframe
         Df = {}
         MaxPark = 10.0
-        VOT = 8.0
+        Hov_scale = 0.70
+        VOT = 10.0
 
         Occ = util.get_matrix_numpy(eb, 'AutoOccHbesc') # Occupancy across SOV and HOV
 
         Df['AutoCosHOV'] = util.get_matrix_numpy(eb, 'HbEsBlHovCost')
         Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'HbEsBlHovTime')
         Df['AutoTotCosHOV'] = Df['AutoCosHOV']
-        Df['GenCostAuto']= Df['AutoTotCosHOV']/Occ + VOT*Df['AutoTimHOV']/60.0
+        Df['GenCostAuto']= Df['AutoTotCosHOV']/(pow(Occ,Hov_scale)) + VOT*Df['AutoTimHOV']/60.0
 
         # Utilities
         # Auto
         # Auto Utility across all incomes
         DfU['Auto'] = ( 0
-                      + p14*Df['GenCostAuto'])
+                      + p12*Df['GenCostAuto'])
 
 
 #        ##############################################################################
@@ -89,12 +96,14 @@ class HbEscorting(_m.Tool()):
         # Generate Dataframe
         Df = {}
         Tiny=0.000001
+        B_IVT_perc = 1.06
+
         Df['BusIVT'] = util.get_matrix_numpy(eb, 'HbEsBlBusIvtt')
         Df['BusWat'] = util.get_matrix_numpy(eb, 'HbEsBlBusWait')
         Df['BusAux'] = util.get_matrix_numpy(eb, 'HbEsBlBusAux')
         Df['BusBrd'] = util.get_matrix_numpy(eb, 'HbEsBlBusBoard')
         Df['BusFar'] = util.get_matrix_numpy(eb, 'HbEsBlBusFare')
-        Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] + Df['BusBrd'] # Total Bus Travel Time
+        Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux']  # Total Bus Travel Time
 
         Df['RalIVR'] = util.get_matrix_numpy(eb, 'HbEsBlRailIvtt')
         Df['RalIVB'] = util.get_matrix_numpy(eb, 'HbEsBlRailIvttBus')
@@ -102,24 +111,24 @@ class HbEscorting(_m.Tool()):
         Df['RalAux'] = util.get_matrix_numpy(eb, 'HbEsBlRailAux')
         Df['RalBrd'] = util.get_matrix_numpy(eb, 'HbEsBlRailBoard')
         Df['RalFar'] = util.get_matrix_numpy(eb, 'HbEsBlRailFare')
-        Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] + Df['RalBrd'] # Total Bus Travel Time
+        Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] # Total Bus Travel Time
         Df['RalIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Bus IVT to Total Time
         Df['RalIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Rail IVT to Total Time
 
         Df['IntZnl'] = np.identity(NoTAZ)
 
-        Df['GenCostBus'] = ( Df['BusIVT']
-                           + 2.5*Df['BusWat']
-                           + 2.0*Df['BusAux']
-                           + 10.0*Df['BusBrd'])
+        Df['GenCostBus'] = ( Df['BusIVT']*B_IVT_perc
+                           + 1.92*Df['BusWat']
+                           + 1.71*Df['BusAux']
+                           + 10.81*Df['BusBrd'])
 
         Df['GenCostBus'] = VOT*Df['GenCostBus']/60.0 + Df['BusFar']
 
         Df['GenCostRal'] = ( Df['RalIVR']
-                           + Df['RalIVB']
-                           + 2.5*Df['RalWat']
-                           + 2.0*Df['RalAux']
-                           + 10.0*Df['RalBrd'])
+                           + Df['RalIVB']*B_IVT_perc
+                           + 2.03*Df['RalWat']
+                           + 1.80*Df['RalAux']
+                           + 11.80*Df['RalBrd'])
 
         Df['GenCostRal'] = VOT*Df['GenCostRal']/60.0 + Df['RalFar']
 
@@ -128,7 +137,7 @@ class HbEscorting(_m.Tool()):
         # Bus Utility
         # Bus Utility across all incomes
         Df['GeUtl'] = ( p4
-                      + p14*Df['GenCostBus'])
+                      + p12*Df['GenCostBus'])
 
         # Check Availability conditions
         Df['GeUtl'] = MChM.BusAvail(Df, Df['GeUtl'], AvailDict)
@@ -139,7 +148,7 @@ class HbEscorting(_m.Tool()):
         # Rail Utility across all incomes
         Df['GeUtl'] = ( p4*Df['RalIBR']
                       + p6*Df['RalIRR']
-                      + p14*Df['GenCostRal'])
+                      + p12*Df['GenCostRal'])
         # Check Availability conditions
         Df['GeUtl'] = MChM.RailAvail(Df, Df['GeUtl'],AvailDict)
         # Add Income parameters
@@ -162,7 +171,7 @@ class HbEscorting(_m.Tool()):
 
         # Bike Utility
         DfU['Bike'] = ( p11
-                      + p20*Df['AutoDis'])
+                      + p21*Df['AutoDis'])
 
         # Check Availability conditions
         DfU['Bike'] = MChM.BikeAvail(Df['AutoDis'], DfU['Bike'], AvailDict)
@@ -180,7 +189,7 @@ class HbEscorting(_m.Tool()):
         ## Zero Autos
         Dict = {
                'Auto'  : [DfU['Auto']],
-               'WTra' : [DfU['Bus'], DfU['Ral']],
+               'WTra' : [DfU['Bus'] + p164, DfU['Ral'] + p164],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
 

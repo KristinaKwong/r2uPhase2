@@ -44,7 +44,9 @@ class Non_hbwork(_m.Tool()):
                      'BRTotHig': 120.0,
                      'WCTotLow': 30.0,
                      'WCTotHig': 130.0,
-                     'PRAutTim': 0.0
+                     'PRAutTim': 0.0,
+                     'br_ratio': 2.0,
+                     'r_time'  : 20.0
                     }
 
         # Declare Utilities Data Frame
@@ -52,21 +54,22 @@ class Non_hbwork(_m.Tool()):
 
         # Add Coefficients
 
-        p4   =  -2.215763
-        p6   =  -1.388479
-        p10  =  -2.591491
-        p11  =  -7.296778
-        p12  =  -0.609932
-        p15  =  -0.037342
-        p17  =  -0.102264
-        p18  =  -0.064987
-        p19  =  -0.591899
-        p20  =  -1.491104
-        p21  =  -0.610183
-        p700 =   0.246500
-        p701 =   0.450339
-        p870 =   0.849681
-        thet =   0.669384
+
+        p4   =   -2.797376
+        p6   =   -1.613582
+        p10  =   -2.436925
+        p11  =   -7.316941
+        p12  =   -0.471434
+        p15  =   -0.049362
+        p17  =   -0.138370
+        p18  =   -0.063832
+        p19  =   -0.307963
+        p20  =   -1.596608
+        p21  =   -0.658804
+        p700 =    0.235778
+        p701 =    0.425751
+        p870 =    0.817462
+        thet =    0.639408
 
 #        ##############################################################################
 #        ##       Auto Modes
@@ -74,6 +77,7 @@ class Non_hbwork(_m.Tool()):
         # Generate Dataframe
         Df = {}
         MaxPark = 10.0
+        Hov_scale = 0.70
 
         Occ = util.get_matrix_numpy(eb, 'AutoOccNHBo') # Occupancy across SOV and HOV
         Df['ParkCost'] = util.get_matrix_numpy(eb, 'prk2hr')  # 2 hour parking
@@ -87,7 +91,7 @@ class Non_hbwork(_m.Tool()):
 
         # Auto Utility across all incomes
         Df['GeUtl'] = ( 0.0
-                      + p12*Df['AutoTotCosHOV']/Occ
+                      + p12*Df['AutoTotCosHOV']/(pow(Occ,Hov_scale))
                       + p15*Df['AutoTimHOV'])
         # Check Availability conditions
         Df['GeUtl']  = MChM.AutoAvail(Df['AutoCosHOV'], Df['GeUtl'], AvailDict)
@@ -100,12 +104,14 @@ class Non_hbwork(_m.Tool()):
         # Generate Dataframe
         Df = {}
         Tiny=0.000001
+        B_IVT_perc = 1.06
+
         Df['BusIVT'] = util.get_matrix_numpy(eb, 'NHbOBlBusIvtt')
         Df['BusWat'] = util.get_matrix_numpy(eb, 'NHbOBlBusWait')
         Df['BusAux'] = util.get_matrix_numpy(eb, 'NHbOBlBusAux')
         Df['BusBrd'] = util.get_matrix_numpy(eb, 'NHbOBlBusBoard')
         Df['BusFar'] = util.get_matrix_numpy(eb, 'NHbOBlBusFare')
-        Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] + Df['BusBrd'] # Total Bus Travel Time
+        Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] # Total Bus Travel Time
 
         Df['RalIVR'] = util.get_matrix_numpy(eb, 'NHbOBlRailIvtt')
         Df['RalIVB'] = util.get_matrix_numpy(eb, 'NHbOBlRailIvttBus')
@@ -113,7 +119,7 @@ class Non_hbwork(_m.Tool()):
         Df['RalAux'] = util.get_matrix_numpy(eb, 'NHbOBlRailAux')
         Df['RalBrd'] = util.get_matrix_numpy(eb, 'NHbOBlRailBoard')
         Df['RalFar'] = util.get_matrix_numpy(eb, 'NHbOBlRailFare')
-        Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] + Df['RalBrd'] # Total Bus Travel Time
+        Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] # Total Bus Travel Time
         Df['RalIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Bus IVT to Total Time
         Df['RalIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Rail IVT to Total Time
 
@@ -126,7 +132,7 @@ class Non_hbwork(_m.Tool()):
         # Bus Utility across all incomes
         Df['GeUtl'] = ( p4
                       + p12*Df['BusFar']
-                      + p15*Df['BusIVT']
+                      + p15*Df['BusIVT']*B_IVT_perc
                       + p17*Df['BusWat']
                       + p18*Df['BusAux']
                       + p19*Df['BusBrd']
@@ -141,7 +147,7 @@ class Non_hbwork(_m.Tool()):
         Df['GeUtl'] = ( p4*Df['RalIBR']
                       + p6*Df['RalIRR']
                       + p12*Df['RalFar']
-                      + p15*Df['RalIVB']
+                      + p15*Df['RalIVB']*B_IVT_perc
                       + p15*Df['RalIVR']
                       + p17*Df['RalWat']
                       + p18*Df['RalAux']

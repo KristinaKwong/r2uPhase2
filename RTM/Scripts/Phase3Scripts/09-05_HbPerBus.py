@@ -44,7 +44,9 @@ class HbPersonalBusiness(_m.Tool()):
                      'BRTotHig': 120.0,
                      'WCTotLow': 30.0,
                      'WCTotHig': 130.0,
-                     'PRAutTim': 0.0
+                     'PRAutTim': 0.0,
+                     'br_ratio': 2.0,
+                     'r_time'  : 20.0
                     }
 
         # Declare Utilities Data Frame
@@ -52,28 +54,28 @@ class HbPersonalBusiness(_m.Tool()):
 
         # Add Coefficients
 
-        p2  =   4.273762
-        p4  =   2.799811
-        p6  =   4.435847
-        p10 =   8.403278
-        p11 =   4.438331
-        p12 =  -0.729930
-        p13 =  -0.557544
-        p14 =  -0.427097
-        p15 =  -0.066912
-        p17 =  -0.084509
-        p18 =  -0.130873
-        p19 =  -1.249354
-        p20 =  -4.020084
-        p21 =  -3.238632
-        p160=  12.961291
-        p161=  15.905761
-        p162=   5.366765
-        p163=   8.927652
-        p164=   2.832292
-        p700=   1.757929
-        p701=   2.160435
-        thet=   0.233511
+        p2   =    6.340926
+        p4   =  -17.900850
+        p6   =  -16.224604
+        p10  =    9.740911
+        p11  =    5.740659
+        p12  =   -0.351170
+        p14  =   -0.278559
+        p15  =   -0.054559
+        p17  =   -0.111134
+        p18  =   -0.118040
+        p19  =   -1.116250
+        p20  =   -2.983967
+        p21  =   -2.273746
+        p160 =   12.428959
+        p161 =   14.755705
+        p162 =    4.080712
+        p163 =    6.736271
+        p164 =    3.231634
+        p602 =    2.172861
+        p701 =    1.233785
+        p994 =    0.192150
+        thet =    0.319341
 
 #        ##############################################################################
 #        ##       Auto Modes
@@ -81,6 +83,7 @@ class HbPersonalBusiness(_m.Tool()):
         # Generate Dataframe
         Df = {}
         MaxPark = 10.0
+        Hov_scale = 0.70
 
         Occ = util.get_matrix_numpy(eb, 'HOVOccHbpb')
         Df['ParkCost'] = util.get_matrix_numpy(eb, 'prk2hr')  # 2 hour parking
@@ -127,7 +130,7 @@ class HbPersonalBusiness(_m.Tool()):
                       + p12*Df['AutoTotCosSOV1'])
         Df['SOVI2'] = ( 0
                       + p15*Df['AutoTimSOV2']
-                      + p13*Df['AutoTotCosSOV2'])
+                      + p12*Df['AutoTotCosSOV2'])
         Df['SOVI3'] = ( 0
                       + p15*Df['AutoTimSOV3']
                       + p14*Df['AutoTotCosSOV3'])
@@ -141,17 +144,17 @@ class HbPersonalBusiness(_m.Tool()):
 
         Df['HOVI1'] = ( p2
                       + p15*Df['AutoTimHOV1']
-                      + p12*Df['AutoTotCosHOV1']/Occ)
+                      + p12*Df['AutoTotCosHOV1']/(pow(Occ,Hov_scale)))
 
 
         Df['HOVI2'] = ( p2
                       + p15*Df['AutoTimHOV2']
-                      + p13*Df['AutoTotCosHOV2']/Occ)
+                      + p12*Df['AutoTotCosHOV2']/(pow(Occ,Hov_scale)))
 
 
         Df['HOVI3'] = ( p2
                       + p15*Df['AutoTimHOV3']
-                      + p14*Df['AutoTotCosHOV3']/Occ)
+                      + p14*Df['AutoTotCosHOV3']/(pow(Occ,Hov_scale)))
 
         DfU['HOVI1']  = MChM.AutoAvail(Df['AutoCosHOV1'], Df['HOVI1'], AvailDict) #Check Availability condition if mode not available then set to high negative utility (-99999)
         DfU['HOVI2']  = MChM.AutoAvail(Df['AutoCosHOV2'], Df['HOVI2'], AvailDict)
@@ -164,12 +167,14 @@ class HbPersonalBusiness(_m.Tool()):
         # Generate Dataframe
         Df = {}
         Tiny=0.000001
+        B_IVT_perc = 1.06
+
         Df['BusIVT'] = util.get_matrix_numpy(eb, 'HbPbBlBusIvtt')
         Df['BusWat'] = util.get_matrix_numpy(eb, 'HbPbBlBusWait')
         Df['BusAux'] = util.get_matrix_numpy(eb, 'HbPbBlBusAux')
         Df['BusBrd'] = util.get_matrix_numpy(eb, 'HbPbBlBusBoard')
         Df['BusFar'] = util.get_matrix_numpy(eb, 'HbPbBlBusFare')
-        Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] + Df['BusBrd'] # Total Bus Travel Time
+        Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux']  # Total Bus Travel Time
 
         Df['RalIVR'] = util.get_matrix_numpy(eb, 'HbPbBlRailIvtt')
         Df['RalIVB'] = util.get_matrix_numpy(eb, 'HbPbBlRailIvttBus')
@@ -177,47 +182,50 @@ class HbPersonalBusiness(_m.Tool()):
         Df['RalAux'] = util.get_matrix_numpy(eb, 'HbPbBlRailAux')
         Df['RalBrd'] = util.get_matrix_numpy(eb, 'HbPbBlRailBoard')
         Df['RalFar'] = util.get_matrix_numpy(eb, 'HbPbBlRailFare')
-        Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] + Df['RalBrd'] # Total Bus Travel Time
+        Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux']  # Total Bus Travel Time
         Df['RalIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Bus IVT to Total Time
         Df['RalIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Rail IVT to Total Time
 
+        Df['AutoDis'] = util.get_matrix_numpy(eb, "mfdistAON") # Distance
+
         Df['IntZnl'] = np.identity(NoTAZ)
-        Df['PopEmpDen'] = util.get_matrix_numpy(eb, 'combinedensln')
-        Df['PopEmpDen'] = Df['PopEmpDen'].reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
+        Df['TranAccess'] = util.get_matrix_numpy(eb, 'transitAccLn').reshape(NoTAZ,1) + np.zeros((1, NoTAZ))
 
 
         # Utilities
         # Bus Utility
         # Bus Utility across all incomes
         Df['GeUtl'] = ( p4
-                      + p15*Df['BusIVT']
+                      + p15*Df['BusIVT']*B_IVT_perc
                       + p17*Df['BusWat']
                       + p18*Df['BusAux']
                       + p19*Df['BusBrd']
-                      + p700*Df['PopEmpDen'])
+                      + p602*Df['TranAccess']
+                      + p994*Df['AutoDis'])
 
         # Check Availability conditions
         Df['GeUtl'] = MChM.BusAvail(Df, Df['GeUtl'], AvailDict)
         # Add Income parameters
         DfU['BusI1'] = Df['GeUtl'] + p12*Df['BusFar']
-        DfU['BusI2'] = Df['GeUtl'] + p13*Df['BusFar']
+        DfU['BusI2'] = Df['GeUtl'] + p12*Df['BusFar']
         DfU['BusI3'] = Df['GeUtl'] + p14*Df['BusFar']
 
         # Rail Utility
         # Rail Utility across all incomes
         Df['GeUtl'] = ( p4*Df['RalIBR']
                       + p6*Df['RalIRR']
-                      + p15*Df['RalIVB']
+                      + p15*Df['RalIVB']*B_IVT_perc
                       + p15*Df['RalIVR']
                       + p17*Df['RalWat']
                       + p18*Df['RalAux']
                       + p19*Df['RalBrd']
-                      + p700*Df['PopEmpDen'])
+                      + p602*Df['TranAccess']
+                      + p994*Df['AutoDis'])
         # Check Availability conditions
         Df['GeUtl'] = MChM.RailAvail(Df, Df['GeUtl'],AvailDict)
         # Add Income parameters
         DfU['RalI1'] = Df['GeUtl'] + p12*Df['RalFar']
-        DfU['RalI2'] = Df['GeUtl'] + p13*Df['RalFar']
+        DfU['RalI2'] = Df['GeUtl'] + p12*Df['RalFar']
         DfU['RalI3'] = Df['GeUtl'] + p14*Df['RalFar']
 
 #        ##############################################################################
@@ -227,20 +235,20 @@ class HbPersonalBusiness(_m.Tool()):
         Df = {}
         Df['AutoDis'] = util.get_matrix_numpy(eb, "mfdistAON") # Distance
 
-        Df['PopEmpDen'] = util.get_matrix_numpy(eb, 'combinedensln')
-        Df['PopEmpDen'] = Df['PopEmpDen'].reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
+        Df['PopEmpDenPA'] = util.get_matrix_numpy(eb, 'combinedens')#Pop+Emp Density at Prod and Attr Zones
+        Df['PopEmpDenPA'] = np.log(Df['PopEmpDenPA'].reshape(NoTAZ, 1) + Df['PopEmpDenPA'].reshape(1, NoTAZ)) #Broadcast Density
 
         # Walk Utility
         DfU['Walk'] = ( p10
                       + p20*Df['AutoDis']
-                      + p701*Df['PopEmpDen'])
+                      + p701*Df['PopEmpDenPA'])
         # Check Availability conditions
         DfU['Walk'] = MChM.WalkAvail(Df['AutoDis'], DfU['Walk'], AvailDict)
 
         # Bike Utility
         DfU['Bike'] = ( p11
                       + p21*Df['AutoDis']
-                      + p701*Df['PopEmpDen'])
+                      + p701*Df['PopEmpDenPA'])
 
 
         # Check Availability conditions
