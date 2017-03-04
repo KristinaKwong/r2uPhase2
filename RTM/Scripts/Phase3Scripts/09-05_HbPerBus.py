@@ -235,7 +235,7 @@ class HbPersonalBusiness(_m.Tool()):
         Df = {}
         Df['AutoDis'] = util.get_matrix_numpy(eb, "mfdistAON") # Distance
 
-        Df['PopEmpDenPA'] = util.get_matrix_numpy(eb, 'combinedens')#Pop+Emp Density at Prod and Attr Zones
+        Df['PopEmpDenPA'] = util.get_matrix_numpy(eb, 'combinedens') + Tiny #Pop+Emp Density at Prod and Attr Zones
         Df['PopEmpDenPA'] = np.log(Df['PopEmpDenPA'].reshape(NoTAZ, 1) + Df['PopEmpDenPA'].reshape(1, NoTAZ)) #Broadcast Density
 
         # Walk Utility
