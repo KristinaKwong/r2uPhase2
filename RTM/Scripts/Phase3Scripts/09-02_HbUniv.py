@@ -244,11 +244,14 @@ class HbWork(_m.Tool()):
 
         LS_Coeff = 0.4
 
-        LambdaList = [-0.107653]
+        LambdaList = [-0.106753]
 
-        AlphaList =  [0.001014]
+
+        AlphaList =  [0.00103]
+
 
         GammaList =  [-0.000005]
+
 
         Kij = util.get_matrix_numpy(eb, "Kij_hbu")
 
@@ -368,23 +371,23 @@ class HbWork(_m.Tool()):
 
        # SOV
         # AM
-        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_1_Am", SOV_AM)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Am", SOV_AM)
         # MD
-        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_1_Md", SOV_MD)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Md", SOV_MD)
 
         # PM
-        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_1_Pm", SOV_PM)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Pm", SOV_PM)
 
 
         # HOV
         # AM
-        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_1_Am", HOV_AM)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Am", HOV_AM)
 
         # MD
-        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_1_Md", HOV_MD)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Md", HOV_MD)
 
         # PM
-        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_1_Pm", HOV_PM)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Pm", HOV_PM)
 
         # Transit
         # AM
@@ -417,23 +420,23 @@ class HbWork(_m.Tool()):
 
         # SOV
         # AM
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Am", SOV_AM)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Am", SOV_AM)
 
         # MD
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Md", SOV_MD)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Md", SOV_MD)
 
         # PM
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Pm", SOV_PM)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Pm", SOV_PM)
 
         # HOV
         # AM
-        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_1_Am", AuDr_HOV_AM)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Am", AuDr_HOV_AM)
 
         # MD
-        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_1_Md", AuDr_HOV_MD)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Md", AuDr_HOV_MD)
 
         # PM
-        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_1_Pm", AuDr_HOV_PM)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Pm", AuDr_HOV_PM)
 
         ## Dump demands to SQL Database
         # AM
@@ -562,4 +565,4 @@ class HbWork(_m.Tool()):
         util.initmat(eb, "mf3135", "HbUBikePerTrips", "HbU Bike Per-Trips", 0)
 
         ## Initialize P-A Trip Tables from trip distribution
-        util.initmat(eb, "mf3150", "HbUP-A", " HbU P-A Trips ", 0)
+#        util.initmat(eb, "mf3150", "HbUP-A", " HbU P-A Trips ", 0)

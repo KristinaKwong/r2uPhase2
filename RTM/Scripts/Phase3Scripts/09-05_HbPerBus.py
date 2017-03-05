@@ -393,15 +393,18 @@ class HbPersonalBusiness(_m.Tool()):
 
         LS_Coeff = 0.5
 
-        LambdaList = [-0.27968,-0.255864,-0.266642,-0.27968,-0.255864,-0.266642,-0.27968,-0.255864,-0.266642]
+        LambdaList = [-0.293972,-0.256702,-0.265041,-0.293972,-0.256702,-0.265041,-0.293972,-0.256702,-0.265041]
 
 
 
-        AlphaList =  [0.004358,0.003494,0.003786,0.004358,0.003494,0.003786,0.004358,0.003494,0.003786]
+
+        AlphaList =  [0.004422,0.003497,0.003786,0.004422,0.003497,0.003786,0.004422,0.003497,0.003786]
 
 
 
-        GammaList =  [-0.000039,-0.000025,-0.000032,-0.000039,-0.000025,-0.000032,-0.000039,-0.000025,-0.000032]
+
+        GammaList =  [-0.000039,-0.000025,-0.000033,-0.000039,-0.000025,-0.000033,-0.000039,-0.000025,-0.000033]
+
 
         Kij = util.get_matrix_numpy(eb, "Kij_hbpb")
 
@@ -568,29 +571,29 @@ class HbPersonalBusiness(_m.Tool()):
 
         # SOV
         # AM
-        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_1_Am", SOVI1_AM)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Am", SOVI1_AM)
         util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Am", SOVI2_AM)
         util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Am", SOVI3_AM)
         # MD
-        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_1_Md", SOVI1_MD)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Md", SOVI1_MD)
         util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Md", SOVI2_MD)
         util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Md", SOVI3_MD)
         # PM
-        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_1_Pm", SOVI1_PM)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Pm", SOVI1_PM)
         util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Pm", SOVI2_PM)
         util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Pm", SOVI3_PM)
 
         # HOV
         # AM
-        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_1_Am", HOVI1_AM)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Am", HOVI1_AM)
         util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Am", HOVI2_AM)
         util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Am", HOVI3_AM)
         # MD
-        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_1_Md", HOVI1_MD)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Md", HOVI1_MD)
         util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Md", HOVI2_MD)
         util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Md", HOVI3_MD)
         # PM
-        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_1_Pm", HOVI1_PM)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Pm", HOVI1_PM)
         util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Pm", HOVI2_PM)
         util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Pm", HOVI3_PM)
 
@@ -624,30 +627,30 @@ class HbPersonalBusiness(_m.Tool()):
         # Auto-driver
         # SOV
         # AM
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Am", SOVI1_AM)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Am", SOVI1_AM)
         util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Am", SOVI2_AM)
         util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Am", SOVI3_AM)
         # MD
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Md", SOVI1_MD)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Md", SOVI1_MD)
         util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Md", SOVI2_MD)
         util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Md", SOVI3_MD)
         # PM
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Pm", SOVI1_PM)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Pm", SOVI1_PM)
         util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Pm", SOVI2_PM)
         util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Pm", SOVI3_PM)
 
 
         # HOV
         # AM
-        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_1_Am", AuDr_HOVI1_AM)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Am", AuDr_HOVI1_AM)
         util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Am", AuDr_HOVI2_AM)
         util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Am", AuDr_HOVI3_AM)
         # MD
-        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_1_Md", AuDr_HOVI1_MD)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Md", AuDr_HOVI1_MD)
         util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Md", AuDr_HOVI2_MD)
         util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Md", AuDr_HOVI3_MD)
         # PM
-        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_1_Pm", AuDr_HOVI1_PM)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Pm", AuDr_HOVI1_PM)
         util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Pm", AuDr_HOVI2_PM)
         util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Pm", AuDr_HOVI3_PM)
 

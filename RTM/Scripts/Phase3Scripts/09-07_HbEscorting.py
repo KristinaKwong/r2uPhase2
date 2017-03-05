@@ -246,7 +246,8 @@ class HbEscorting(_m.Tool()):
 
         LS_Coeff = 0.2
 
-        LambdaList = [-0.401787,-0.387085,-0.392216,-0.401787,-0.387085,-0.392216,-0.401787,-0.387085,-0.392216]
+        LambdaList = [-0.406931,-0.386407,-0.391416,-0.406931,-0.386407,-0.391416,-0.406931,-0.386407,-0.391416]
+
 
 
 
@@ -659,12 +660,12 @@ class HbEscorting(_m.Tool()):
         util.initmat(eb, "mf3635", "HbEsBikePerTrips", "HbEs Bike Per-Trips", 0)
 
         ## Initialize P-A Trip Tables from trip distribution
-        util.initmat(eb, "mf3650", "HbEsP-AI1A0", " HbEs P-A Trips I1 A0", 0)
-        util.initmat(eb, "mf3651", "HbEsP-AI1A1", " HbEs P-A Trips I1 A1", 0)
-        util.initmat(eb, "mf3652", "HbEsP-AI1A2", " HbEs P-A Trips I1 A2", 0)
-        util.initmat(eb, "mf3653", "HbEsP-AI2A0", " HbEs P-A Trips I1 A0", 0)
-        util.initmat(eb, "mf3654", "HbEsP-AI2A1", " HbEs P-A Trips I1 A1", 0)
-        util.initmat(eb, "mf3655", "HbEsP-AI2A2", " HbEs P-A Trips I1 A2", 0)
-        util.initmat(eb, "mf3656", "HbEsP-AI3A0", " HbEs P-A Trips I1 A0", 0)
-        util.initmat(eb, "mf3657", "HbEsP-AI3A1", " HbEs P-A Trips I1 A1", 0)
-        util.initmat(eb, "mf3658", "HbEsP-AI3A2", " HbEs P-A Trips I1 A2", 0)
+#        util.initmat(eb, "mf3650", "HbEsP-AI1A0", " HbEs P-A Trips I1 A0", 0)
+#        util.initmat(eb, "mf3651", "HbEsP-AI1A1", " HbEs P-A Trips I1 A1", 0)
+#        util.initmat(eb, "mf3652", "HbEsP-AI1A2", " HbEs P-A Trips I1 A2", 0)
+#        util.initmat(eb, "mf3653", "HbEsP-AI2A0", " HbEs P-A Trips I1 A0", 0)
+#        util.initmat(eb, "mf3654", "HbEsP-AI2A1", " HbEs P-A Trips I1 A1", 0)
+#        util.initmat(eb, "mf3655", "HbEsP-AI2A2", " HbEs P-A Trips I1 A2", 0)
+#        util.initmat(eb, "mf3656", "HbEsP-AI3A0", " HbEs P-A Trips I1 A0", 0)
+#        util.initmat(eb, "mf3657", "HbEsP-AI3A1", " HbEs P-A Trips I1 A1", 0)
+#        util.initmat(eb, "mf3658", "HbEsP-AI3A2", " HbEs P-A Trips I1 A2", 0)

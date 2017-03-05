@@ -235,17 +235,18 @@ class Non_hbwork(_m.Tool()):
 
         out_list = ["NHbWP-A"]
 
-        LS_Coeff = 0.8
+        LS_Coeff = 0.7
 
-        LambdaList = [-0.071422]
-
-
-
-        AlphaList =  [0.000501]
+        LambdaList = [-0.094648]
 
 
 
-        GammaList =  [-0.000003]
+
+        AlphaList =  [0.0]
+
+
+
+        GammaList =  [0.0]
 
         Kij = util.get_matrix_numpy(eb, "Kij_nhbw")
 
@@ -352,23 +353,23 @@ class Non_hbwork(_m.Tool()):
 
        # SOV
         # AM
-        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_4_Am", SOV_AM)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_3_Am", SOV_AM)
         # MD
-        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_4_Md", SOV_MD)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_3_Md", SOV_MD)
 
         # PM
-        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_4_Pm", SOV_PM)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_3_Pm", SOV_PM)
 
 
         # HOV
         # AM
-        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_4_Am", HOV_AM)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_3_Am", HOV_AM)
 
         # MD
-        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_4_Md", HOV_MD)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_3_Md", HOV_MD)
 
         # PM
-        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_4_Pm", HOV_PM)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_3_Pm", HOV_PM)
 
         # Transit
         # AM
@@ -400,23 +401,23 @@ class Non_hbwork(_m.Tool()):
 
         # SOV
         # AM
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_4_Am", SOV_AM)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Am", SOV_AM)
 
         # MD
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_4_Md", SOV_MD)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Md", SOV_MD)
 
         # PM
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_4_Pm", SOV_PM)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Pm", SOV_PM)
 
         # HOV
         # AM
-        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_4_Am", AuDr_HOV_AM)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_3_Am", AuDr_HOV_AM)
 
         # MD
-        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_4_Md", AuDr_HOV_MD)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_3_Md", AuDr_HOV_MD)
 
         # PM
-        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_4_Pm", AuDr_HOV_PM)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_3_Pm", AuDr_HOV_PM)
 
         ## Dump demands to SQL Database
         # AM

@@ -215,14 +215,17 @@ class Non_hbwork(_m.Tool()):
 
         LS_Coeff = 0.8
 
-        LambdaList = [-0.256066]
+        LambdaList = [-0.273022]
 
 
 
-        AlphaList =  [0.007582]
+
+        AlphaList =  [0.007442]
 
 
-        GammaList =  [-0.000301]
+
+        GammaList =  [-0.000285]
+
 
         Kij = util.get_matrix_numpy(eb, "Kij_nhbo")
 

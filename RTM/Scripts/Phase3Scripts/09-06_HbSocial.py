@@ -368,43 +368,46 @@ class HbSoc(_m.Tool()):
         ##       Trip Distribution
        ##############################################################################
 
-        Logsum =  [
-                  "HbSoLSI1A0", "HbSoLSI1A1", "HbSoLSI1A2",
-                  "HbSoLSI2A0", "HbSoLSI2A1", "HbSoLSI2A2",
-                  "HbSoLSI3A0", "HbSoLSI3A1", "HbSoLSI3A2",
-                   ]
+       Logsum =  [
+                 "HbSoLSI1A0", "HbSoLSI1A1", "HbSoLSI1A2",
+                 "HbSoLSI2A0", "HbSoLSI2A1", "HbSoLSI2A2",
+                 "HbSoLSI3A0", "HbSoLSI3A1", "HbSoLSI3A2",
+                  ]
 
-        imp_list = [
-                  "P-AFrictionFact1", "P-AFrictionFact2", "P-AFrictionFact3",
-                  "P-AFrictionFact4", "P-AFrictionFact5", "P-AFrictionFact6",
-                  "P-AFrictionFact7", "P-AFrictionFact8", "P-AFrictionFact9"
-                   ]
+       imp_list = [
+                 "P-AFrictionFact1", "P-AFrictionFact2", "P-AFrictionFact3",
+                 "P-AFrictionFact4", "P-AFrictionFact5", "P-AFrictionFact6",
+                 "P-AFrictionFact7", "P-AFrictionFact8", "P-AFrictionFact9"
+                  ]
 
-        mo_list =  [
-                    "hbsocInc1Au0prd", "hbsocInc1Au1prd", "hbsocInc1Au2prd",
-                    "hbsocInc2Au0prd", "hbsocInc2Au1prd", "hbsocInc2Au2prd",
-                    "hbsocInc3Au0prd", "hbsocInc3Au1prd", "hbsocInc3Au2prd"
-                   ]
+       mo_list =  [
+                   "hbsocInc1Au0prd", "hbsocInc1Au1prd", "hbsocInc1Au2prd",
+                   "hbsocInc2Au0prd", "hbsocInc2Au1prd", "hbsocInc2Au2prd",
+                   "hbsocInc3Au0prd", "hbsocInc3Au1prd", "hbsocInc3Au2prd"
+                  ]
 
-        md_list =  ["hbsocatr"]
+       md_list =  ["hbsocatr"]
 
-        out_list = [
-                    "HbSoP-AI1A0", "HbSoP-AI1A1", "HbSoP-AI1A2",
-                    "HbSoP-AI2A0", "HbSoP-AI2A1", "HbSoP-AI2A2",
-                    "HbSoP-AI3A0", "HbSoP-AI3A1", "HbSoP-AI3A2"
-                   ]
+       out_list = [
+                   "HbSoP-AI1A0", "HbSoP-AI1A1", "HbSoP-AI1A2",
+                   "HbSoP-AI2A0", "HbSoP-AI2A1", "HbSoP-AI2A2",
+                   "HbSoP-AI3A0", "HbSoP-AI3A1", "HbSoP-AI3A2"
+                  ]
 
-        LS_Coeff = 0.8
+       LS_Coeff = 0.8
 
-        LambdaList = [-0.213941,-0.24621,-0.247044,-0.213941,-0.24621,-0.247044,-0.213941,-0.24621,-0.247044]
-
-
-
-        AlphaList =  [0.003977,0.00433,0.003793,0.003977,0.00433,0.003793,0.003977,0.00433,0.003793]
+       LambdaList = [-0.205104,-0.237037,-0.238268,-0.205104,-0.237037,-0.238268,-0.205104,-0.237037,-0.238268]
 
 
 
-        GammaList =  [-0.000045,-0.000052,-0.000037,-0.000045,-0.000052,-0.000037,-0.000045,-0.000052,-0.000037]
+
+       AlphaList =  [0.003596,0.003915,0.003367,0.003596,0.003915,0.003367,0.003596,0.003915,0.003367]
+
+
+
+
+        GammaList =  [-0.000032,-0.000036,-0.000023,-0.000032,-0.000036,-0.000023,-0.000032,-0.000036,-0.000023]
+
 
         Kij = util.get_matrix_numpy(eb, "Kij_hbsoc")
 
@@ -572,30 +575,30 @@ class HbSoc(_m.Tool()):
         # SOV
         # AM
         util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Am", SOVI1_AM)
-        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_3_Am", SOVI2_AM)
-        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_4_Am", SOVI3_AM)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Am", SOVI2_AM)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_3_Am", SOVI3_AM)
         # MD
         util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Md", SOVI1_MD)
-        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_3_Md", SOVI2_MD)
-        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_4_Md", SOVI3_MD)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Md", SOVI2_MD)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_3_Md", SOVI3_MD)
         # PM
         util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Pm", SOVI1_PM)
-        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_3_Pm", SOVI2_PM)
-        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_4_Pm", SOVI3_PM)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Pm", SOVI2_PM)
+        util.add_matrix_numpy(eb, "SOV_pertrp_VOT_3_Pm", SOVI3_PM)
 
         # HOV
         # AM
         util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Am", HOVI1_AM)
-        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_3_Am", HOVI2_AM)
-        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_4_Am", HOVI3_AM)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Am", HOVI2_AM)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_3_Am", HOVI3_AM)
         # MD
         util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Md", HOVI1_MD)
-        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_3_Md", HOVI2_MD)
-        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_4_Md", HOVI3_MD)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Md", HOVI2_MD)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_3_Md", HOVI3_MD)
         # PM
         util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Pm", HOVI1_PM)
-        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_3_Pm", HOVI2_PM)
-        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_4_Pm", HOVI3_PM)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Pm", HOVI2_PM)
+        util.add_matrix_numpy(eb, "HOV_pertrp_VOT_3_Pm", HOVI3_PM)
 
         # Transit
         # AM
@@ -628,31 +631,31 @@ class HbSoc(_m.Tool()):
         # SOV
         # AM
         util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Am", SOVI1_AM)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Am", SOVI2_AM)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_4_Am", SOVI3_AM)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Am", SOVI2_AM)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Am", SOVI3_AM)
         # MD
         util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Md", SOVI1_MD)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Md", SOVI2_MD)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_4_Md", SOVI3_MD)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Md", SOVI2_MD)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Md", SOVI3_MD)
         # PM
         util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Pm", SOVI1_PM)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Pm", SOVI2_PM)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_4_Pm", SOVI3_PM)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Pm", SOVI2_PM)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Pm", SOVI3_PM)
 
 
         # HOV
         # AM
         util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Am", AuDr_HOVI1_AM)
-        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_3_Am", AuDr_HOVI2_AM)
-        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_4_Am", AuDr_HOVI3_AM)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Am", AuDr_HOVI2_AM)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_3_Am", AuDr_HOVI3_AM)
         # MD
         util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Md", AuDr_HOVI1_MD)
-        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_3_Md", AuDr_HOVI2_MD)
-        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_4_Md", AuDr_HOVI3_MD)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Md", AuDr_HOVI2_MD)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_3_Md", AuDr_HOVI3_MD)
         # PM
         util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Pm", AuDr_HOVI1_PM)
-        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_3_Pm", AuDr_HOVI2_PM)
-        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_4_Pm", AuDr_HOVI3_PM)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Pm", AuDr_HOVI2_PM)
+        util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_3_Pm", AuDr_HOVI3_PM)
 
         ## Dump demands to SQL Database
         # AM
