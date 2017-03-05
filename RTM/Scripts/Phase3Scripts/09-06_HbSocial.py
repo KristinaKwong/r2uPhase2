@@ -368,40 +368,40 @@ class HbSoc(_m.Tool()):
         ##       Trip Distribution
        ##############################################################################
 
-       Logsum =  [
-                 "HbSoLSI1A0", "HbSoLSI1A1", "HbSoLSI1A2",
-                 "HbSoLSI2A0", "HbSoLSI2A1", "HbSoLSI2A2",
-                 "HbSoLSI3A0", "HbSoLSI3A1", "HbSoLSI3A2",
-                  ]
+        Logsum =  [
+                    "HbSoLSI1A0", "HbSoLSI1A1", "HbSoLSI1A2",
+                    "HbSoLSI2A0", "HbSoLSI2A1", "HbSoLSI2A2",
+                    "HbSoLSI3A0", "HbSoLSI3A1", "HbSoLSI3A2",
+                    ]
 
-       imp_list = [
-                 "P-AFrictionFact1", "P-AFrictionFact2", "P-AFrictionFact3",
-                 "P-AFrictionFact4", "P-AFrictionFact5", "P-AFrictionFact6",
-                 "P-AFrictionFact7", "P-AFrictionFact8", "P-AFrictionFact9"
-                  ]
+        imp_list = [
+                    "P-AFrictionFact1", "P-AFrictionFact2", "P-AFrictionFact3",
+                    "P-AFrictionFact4", "P-AFrictionFact5", "P-AFrictionFact6",
+                    "P-AFrictionFact7", "P-AFrictionFact8", "P-AFrictionFact9"
+                    ]
 
-       mo_list =  [
-                   "hbsocInc1Au0prd", "hbsocInc1Au1prd", "hbsocInc1Au2prd",
-                   "hbsocInc2Au0prd", "hbsocInc2Au1prd", "hbsocInc2Au2prd",
-                   "hbsocInc3Au0prd", "hbsocInc3Au1prd", "hbsocInc3Au2prd"
-                  ]
+        mo_list =  [
+                    "hbsocInc1Au0prd", "hbsocInc1Au1prd", "hbsocInc1Au2prd",
+                    "hbsocInc2Au0prd", "hbsocInc2Au1prd", "hbsocInc2Au2prd",
+                    "hbsocInc3Au0prd", "hbsocInc3Au1prd", "hbsocInc3Au2prd"
+                    ]
 
-       md_list =  ["hbsocatr"]
+        md_list =  ["hbsocatr"]
 
-       out_list = [
-                   "HbSoP-AI1A0", "HbSoP-AI1A1", "HbSoP-AI1A2",
-                   "HbSoP-AI2A0", "HbSoP-AI2A1", "HbSoP-AI2A2",
-                   "HbSoP-AI3A0", "HbSoP-AI3A1", "HbSoP-AI3A2"
-                  ]
+        out_list = [
+                    "HbSoP-AI1A0", "HbSoP-AI1A1", "HbSoP-AI1A2",
+                    "HbSoP-AI2A0", "HbSoP-AI2A1", "HbSoP-AI2A2",
+                    "HbSoP-AI3A0", "HbSoP-AI3A1", "HbSoP-AI3A2"
+                    ]
 
-       LS_Coeff = 0.8
+        LS_Coeff = 0.8
 
-       LambdaList = [-0.205104,-0.237037,-0.238268,-0.205104,-0.237037,-0.238268,-0.205104,-0.237037,-0.238268]
-
-
+        LambdaList = [-0.205104,-0.237037,-0.238268,-0.205104,-0.237037,-0.238268,-0.205104,-0.237037,-0.238268]
 
 
-       AlphaList =  [0.003596,0.003915,0.003367,0.003596,0.003915,0.003367,0.003596,0.003915,0.003367]
+
+
+        AlphaList =  [0.003596,0.003915,0.003367,0.003596,0.003915,0.003367,0.003596,0.003915,0.003367]
 
 
 

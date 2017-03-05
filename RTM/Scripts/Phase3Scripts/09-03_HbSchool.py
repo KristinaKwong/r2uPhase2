@@ -275,9 +275,9 @@ class HbSchool(_m.Tool()):
         Kij = util.get_matrix_numpy(eb, "Kij_hbsch")
 
         Bridge_Factor = 0.75
-#
-#        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"), Kij, "HbScBl_BPen", Bridge_Factor)
-#        MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
+
+        MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"), Kij, "HbScBl_BPen", Bridge_Factor)
+        MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
 
 #       ##############################################################################
 #        ##       Calculate Demand
