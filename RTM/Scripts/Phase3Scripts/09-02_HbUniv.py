@@ -565,4 +565,4 @@ class HbWork(_m.Tool()):
         util.initmat(eb, "mf3135", "HbUBikePerTrips", "HbU Bike Per-Trips", 0)
 
         ## Initialize P-A Trip Tables from trip distribution
-#        util.initmat(eb, "mf3150", "HbUP-A", " HbU P-A Trips ", 0)
+        util.initmat(eb, "mf3150", "HbUP-A", " HbU P-A Trips ", 0)
