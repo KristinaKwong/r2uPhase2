@@ -36,6 +36,8 @@ class DataGeneration(_m.Tool()):
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.util")
 
+        model_year = int(util.get_year(eb))
+
         cyclenum = util.get_cycle(eb)
         if cyclenum == 1:
             self.matrix_batchins(eb)
@@ -52,7 +54,11 @@ class DataGeneration(_m.Tool()):
             transit_assign = _m.Modeller().tool("translink.RTM3.stage3.transitassignment")
             transit_assign(eb, am_scen, md_scen, pm_scen, disable_congestion=True)
 
+
         self.calc_all_accessibilities(eb)
+
+        if model_year > 2016 and cyclenum == 1:
+            self.parking_model(eb)
 
     @_m.logbook_trace("Calculate Accessibilites")
     def calc_all_accessibilities(self, eb):
@@ -488,6 +494,151 @@ class DataGeneration(_m.Tool()):
         # write data to rtm sqlite database
         conn = util.get_rtm_db(eb)
         df.to_sql(name='densities', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        conn.close()
+
+    @_m.logbook_trace("Update Parking Rates")
+    def parking_model(self, eb):
+        """ logit model determines free/paid parking zones
+        linear model determines price for paid parking zones
+        """
+        util = _m.Modeller().tool("translink.util")
+
+        # 2hr logit model
+        cl2_intercept = -1.072431
+        cl2_empdensln = 0.936057
+        cl2_distCbdln = -2.004142
+        cl2_d_tc = 1.990859
+        cl2_d_rail = 2.464337
+        cl2_poi = 5.146076
+        cl2_d_dtes = -1.827173
+        # 8hr logit model
+        cl8_intercept = -3.651998
+        cl8_empdensln = 1.196587
+        cl8_distCbdln = -1.237187
+        cl8_d_rail = 2.405598
+        cl8_d_hospital = 2.595522
+        cl8_d_uni_all = 5.820835
+        cl8_d_tc = 0.88389
+        cl8_d_dtes = -1.39608
+        # 2hr lm
+        cr2_intercept = 1.816834
+        cr2_empdens = 0.000493
+        cr2_distCbdln = -0.13643
+        cr2_poi = 0.246914
+        # 8hr lm
+        cr8_intercept = 2.004248
+        cr8_empdens = 0.000301
+        cr8_distCbdln = -0.117159
+        cr8_poi = 0.122456
+
+        sql = """
+        SELECT
+            ti.TAZ1741
+            ,IFNULL(dn.empdensln,0) as empdensLn
+            ,IFNULL(dn.empdens, 0) as empdens
+            ,IFNULL(a.dist_cbd_ln, 0) as distCbdLn
+            ,IFNULL(du.towncentre,0) as d_tc
+            ,IFNULL(g.rail_stn_dummy,0) as d_railStn
+            ,IFNULL(du.airport, 0) as d_air
+            ,IFNULL(du.dtes,0) as d_dtes
+            ,IFNULL(du.ferry,0) as d_ferry
+            ,IFNULL(du.hospital,0) as d_hospital
+            ,CASE WHEN IFNULL(dg.PostSecFTE,0) > 1000 THEN 1
+                  WHEN IFNULL(du.ubc, 0) > 0 THEN 1
+                  WHEN IFNULL(du.sfu, 0) > 0 THEN 1
+                  ELSE 0
+                  END d_uniAll
+            ,CASE WHEN IFNULL(g.parking_two_hr_rate, 0) > 0 THEN 1 ELSE 0 END paid2hr
+            ,CASE WHEN IFNULL(g.parking_eight_hr_rate, 0) > 0 THEN 1 ELSE 0 END paid8hr
+            ,IFNULL(g.parking_two_hr_rate, 0)  park2hrRate
+            ,IFNULL(g.parking_eight_hr_rate, 0) park8hrRate
+
+        FROM taz_index ti
+            LEFT JOIN densities dn on dn.TAZ1700 = ti.TAZ1741
+            LEFT JOIN accessibilities a on a.TAZ1741 = ti.TAZ1741
+            LEFT JOIN dummies du on du.TAZ1700 = ti.TAZ1741
+            LEFT JOIN demographics dg on dg.TAZ1700 = ti.TAZ1741
+            LEFT JOIN geographics g on g.TAZ1700 = ti.TAZ1741
+
+        """
+        conn = util.get_rtm_db(eb)
+        df = pd.read_sql(sql, conn)
+
+        # poi = 'points of interest'
+        df['poi'] = df[['d_uniAll','d_ferry','d_hospital','d_air']].max(axis = 1)
+
+        # classify 2hr paid/free parking
+        df['uF2hr'] = 0
+        df['uP2hr'] = ( cl2_intercept
+                       + cl2_empdensln * df['empdensLn']
+                       + cl2_distCbdln * df['distCbdLn']
+                       + cl2_d_tc * df['d_tc']
+                       + cl2_d_rail * df['d_railStn']
+                       + cl2_poi * df['poi']
+                       + cl2_d_dtes * df['d_dtes'])
+
+        # denominator
+        df['d2hr'] = np.exp(df['uF2hr']) + np.exp(df['uP2hr'])
+        # prob 2 hr paid - free not needed
+        df['pP2hr'] = np.exp(df['uP2hr']) / df['d2hr']
+        # classify by most likely
+        df['paid2hrMod'] = np.where(df['pP2hr'] >= 0.5, 1, 0)
+        # ensure previously paid zones remain paid
+        df['paid2hrFin'] = df[['paid2hr','paid2hrMod']].max(axis=1)
+
+
+        # 8hr logit model
+        df['uF8hr'] = 0
+        df['uP8hr'] = ( cl8_intercept
+                      + cl8_empdensln * df['empdensLn']
+                      + cl8_distCbdln * df['distCbdLn']
+                      + cl8_d_rail * df['d_railStn']
+                      + cl8_d_hospital * df['d_hospital']
+                      + cl8_d_uni_all * df['d_uniAll']
+                      + cl8_d_tc * df['d_tc']
+                      + cl8_d_dtes * df['d_dtes'] )
+        # denominator
+        df['d8hr'] = np.exp(df['uF8hr']) + np.exp(df['uP8hr'])
+        # prob 8 hr paid - free not needed
+        df['pP8hr'] = np.exp(df['uP8hr']) / df['d8hr']
+        # classify by most likely
+        df['paid8hrMod'] = np.where(df['pP8hr'] >= 0.5, 1, 0)
+        # ensure previously paid zones remain paid
+        df['paid8hrFin'] = df[['paid8hr','paid8hrMod']].max(axis=1)
+
+        # 2hr lm
+        df['prk2hrRatePred'] = np.exp(  cr2_intercept
+                                      + cr2_empdens * df['empdens']
+                                      + cr2_distCbdln * df['distCbdLn']
+                                      + cr2_poi * df['poi'] )
+
+        # remove parking rates from free zones
+        df['prk2hrRatePred'] = df['prk2hrRatePred'] * df['paid2hrFin']
+        # floor prediction at observed rate
+        df['prk2hrRateFin'] = df[['park2hrRate','prk2hrRatePred']].max(axis=1)
+
+        # 8hr lm
+        df['prk8hrRatePred'] = np.exp(  cr8_intercept
+                                      + cr8_empdens * df['empdens']
+                                      + cr8_distCbdln * df['distCbdLn']
+                                      + cr8_poi * df['poi'] )
+
+        # remove parking rates from free zones
+        df['prk8hrRatePred'] = df['prk8hrRatePred'] * df['paid8hrFin']
+        # floor prediction at observed rate
+        df['prk8hrRateFin'] = df[['park8hrRate','prk8hrRatePred']].max(axis=1)
+
+        # update emmebank parking values
+        util.set_matrix_numpy(eb, 'moprk2hr', df['prk2hrRateFin'].values)
+        util.set_matrix_numpy(eb, 'moprk8hr', df['prk8hrRateFin'].values)
+
+        # update rtm.db
+        df = df[['TAZ1741','prk2hrRateFin','prk8hrRateFin']]
+        geo = pd.read_sql("SELECT * FROM geographics", conn)
+        df = pd.merge(geo, df, how='inner', left_on = ['TAZ1700'], right_on = ['TAZ1741'])
+        df = df[['TAZ1700','Hectares','prk2hrRateFin','prk8hrRateFin','rail_stn_dummy','car_share_250m','car_share_500m','bike_score_taz']]
+        df.rename(columns={'prk2hrRateFin': 'parking_two_hr_rate', 'prk8hrRateFin': 'parking_eight_hr_rate'}, inplace=True)
+        df.to_sql(name='geographics', con=conn, flavor='sqlite', index=False, if_exists='replace')
         conn.close()
 
 

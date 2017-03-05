@@ -40,7 +40,7 @@ class TransitAssignment(_m.Tool()):
         self.num_processors = 1
         # TODO: Update factors and define by multiple modes or vehicle types
         self.dwt_board_factor_bus = 0.025  # 1.5 sec per boarding
-        self.dwt_alight_factor_bus = 0.0083 # 0.5 sec per boarding
+        self.dwt_alight_factor_bus = 0.0083 # 0.5 sec per alighting
 
         self.bus_mode_list = ["b", "g", "a", "p"]
         self.rail_mode_list= ["b", "f", "g", "l", "s", "h", "a", "p"]
