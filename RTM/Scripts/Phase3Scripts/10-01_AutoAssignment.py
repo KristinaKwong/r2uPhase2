@@ -158,7 +158,7 @@ class AutoAssignment(_m.Tool()):
         hov_occupancy = eb.matrix("msAutoOcc").data
         self.calc_timedist_skim(eb, "msAutoVOT1", "msautoOpCost", "mfHOVGCTimeVOT1", "mfHOVOpCstVOT1", "mfHOVTollVOT1", "mfHOVTimeVOT1", "mfHOVDistVOT1", hov_occupancy)
         self.calc_timedist_skim(eb, "msAutoVOT2", "msautoOpCost", "mfHOVGCTimeVOT2", "mfHOVOpCstVOT2", "mfHOVTollVOT2", "mfHOVTimeVOT2", "mfHOVDistVOT2", hov_occupancy)
-        self.calc_timedist_skim(eb, "msAutoVOT3", "msautoOpCost", "mfHOVGCTimeVOT3", "mfHOVOpCstVOT3", "mfHOVTollVOT3", "mfHOVTimeVOT3", "mfHOVDistVOT3", hov_occupancy)
+        self.calc_timedist_skim(eb, "msAutoVOT5", "msautoOpCost", "mfHOVGCTimeVOT3", "mfHOVOpCstVOT3", "mfHOVTollVOT3", "mfHOVTimeVOT3", "mfHOVDistVOT3", hov_occupancy)
 
 
         self.calc_timedist_skim(eb, "msVotLgv", "mslgvOpCost", "mfLGVGCTime", "mfLGVOpCst", "mfLGVToll", "mfLGVTime", "mfLGVDist", 1.0)
@@ -335,7 +335,7 @@ class AutoAssignment(_m.Tool()):
         # HOV Classes
         self.add_mode_specification(all_classes, "c", demand_matrices["hov"][0], "@hovoc", eb.matrix("msAutoVOT1").data, "mfHOVGCTimeVOT1", "@hov1", "@thov1")
         self.add_mode_specification(all_classes, "c", demand_matrices["hov"][1], "@hovoc", eb.matrix("msAutoVOT2").data, "mfHOVGCTimeVOT2", "@hov2", "@thov2")
-        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][2], "@hovoc", eb.matrix("msAutoVOT3").data, "mfHOVGCTimeVOT3", "@hov3", "@thov3")
+        self.add_mode_specification(all_classes, "c", demand_matrices["hov"][2], "@hovoc", eb.matrix("msAutoVOT5").data, "mfHOVGCTimeVOT3", "@hov3", "@thov3")
 
         # Truck Classes
         self.add_mode_specification(all_classes, "x", demand_matrices["truck"][0], "@lgvoc", eb.matrix("msVotLgv").data, "mfLGVGCTime", "@lgvol", "@lgvtn")
