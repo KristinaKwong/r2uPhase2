@@ -197,12 +197,12 @@ class TransitAssignment(_m.Tool()):
                 "headway_fraction": 1,
                 "effective_headways": "@hdwyeff",
                 "spread_factor": 1,
-                "perception_factor": 2.25
+                "perception_factor": 2.50
             },
             "boarding_time": {
                 "at_nodes": {
                     "penalty": 1,
-                    "perception_factor": 4
+                    "perception_factor":10.00
                 },
                 "on_lines": None
             },
@@ -215,7 +215,7 @@ class TransitAssignment(_m.Tool()):
             },
             "in_vehicle_cost": {"penalty": "@fareincrement","perception_factor": self.cost_perception_factor},
             "aux_transit_time": {
-                "perception_factor": 1.75
+                "perception_factor": 2.00
             },
             "aux_transit_cost": None,
 
@@ -493,7 +493,7 @@ class TransitAssignment(_m.Tool()):
 
         # Update ridership stats
         util.emme_segment_calc(sc, "@ridership", "@boardavg", aggregate="+")
-        
+
         # Dwell time calculation
         min_dwell_time = 0.33 # 20 seconds in minutes
         # Zero Passenger - set us1 =0
@@ -727,7 +727,7 @@ class TransitAssignment(_m.Tool()):
         self.skim_rail(sc)
         if not tod == "MD":
             self.skim_wce(sc)
-                
+
         if tod == "AM":
             bus_skims =  ["mfAmBusIvtt", "mfAmBusWait", "mfAmBusAux", "mfAmBusBoard", "mfAmBusFare"]
             rail_skims = ["mfAmRailIvtt", "mfAmRailIvttBus", "mfAmRailWait", "mfAmRailAux", "mfAmRailBoard", "mfAmRailFare"]
