@@ -211,14 +211,23 @@ class TripProductions(_m.Tool()):
         c_nhbo_PS = 0.040261
         c_nhbo_HHs = 0.175705
 
-        nhbw_ct_2011 = (eb.matrix("msnhbwCt2011").data)
-        nhbo_ct_2011 = (eb.matrix("msnhboCt2011").data)
+        # get the right nhb control total from the eb
+        model_year = int(util.get_year(eb))
+        if model_year > 2030:
+            scen_year = 2045
+        elif model_year > 2015:
+            scen_year = 2030
+        else:
+            scen_year = 2011
+
+        nhbw_ct_sn = (eb.matrix("msnhbwCt{sn}".format(sn=scen_year)).data)
+        nhbo_ct_sn = (eb.matrix("msnhboCt{sn}".format(sn=scen_year)).data)
 
         # calculate hbu productions
         df['hbu'] = ( c_hbu_int * df['hbu_intercept']
                     + c_iPop1824UnAcOth * df['iPop1824UnAcOth']
                     + c_iPop1824UnAcVan * df['iPop1824UnAcVan']
-                    + c_iPop1824UnAcSur * df['iPop1824UnAcSur']                    
+                    + c_iPop1824UnAcSur * df['iPop1824UnAcSur']
                     + c_iP2434UnAc * df['iPop2534UnAc'] )
 
         # calculate non-home based work productions
@@ -250,8 +259,8 @@ class TripProductions(_m.Tool()):
         df['nhbo'] = np.where(df['TAZ1741'] < 1000, 0, df['nhbo'])
 
         # scale based on houseold productions
-        nhbw_scalar = nhbw_ct / nhbw_ct_2011
-        nhbo_scalar = nhbo_ct / nhbo_ct_2011
+        nhbw_scalar = nhbw_ct / nhbw_ct_sn
+        nhbo_scalar = nhbo_ct / nhbo_ct_sn
         df['nhbw'] = df['nhbw'] * nhbw_scalar
         df['nhbo'] = df['nhbo'] * nhbo_scalar
 
