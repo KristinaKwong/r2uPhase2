@@ -724,11 +724,19 @@ class HbWork(_m.Tool()):
         # setup for hbw auto time slice matrices
         conn = util.get_rtm_db(eb)
         ts_uw = pd.read_sql("SELECT * FROM timeSlicingFactorsGb", conn)
+		# bus and rail AM PM factors
+        ts_uw_b = pd.read_sql("SELECT * FROM timeSlicingFactors where mode='Bus' ", conn)
+        ts_uw_r = pd.read_sql("SELECT * FROM timeSlicingFactors where mode='Rail'", conn)
+
         conn.close()
 
         # build basic ij mat with gb for production end and internal or external gb for attraction
         df_mats = util.get_ijensem_df(eb, ensem_o = 'gb')
         df_mats['IX'] = np.where(df_mats['gb_i']==df_mats['gb_j'], 'I', 'X')
+
+        # build basic ij mat with gb for production end
+        df_mats_br = util.get_ijensem_df(eb, ensem_o = 'gb')
+        df_mats_br['IX'] = 'IX'
 
         # Auto factors return a  multi-dimensional array, the other modes return a scalar
         Auto_AM_Fct_PA = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'AM', 'PtoA', NoTAZ)
@@ -739,11 +747,25 @@ class HbWork(_m.Tool()):
         Auto_MD_Fct_AP = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'MD', 'AtoP', NoTAZ)
         Auto_PM_Fct_AP = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'PM', 'AtoP', NoTAZ)
 
+		# Bus Factors for AM and PM
+        Bus_AM_Fct_PA = MChM.ts_mat(df_mats_br, ts_uw_b, min_val, purp, 'AM', 'PtoA', NoTAZ)
+        Bus_PM_Fct_PA = MChM.ts_mat(df_mats_br, ts_uw_b, min_val, purp, 'PM', 'PtoA', NoTAZ)
+
+        Bus_AM_Fct_AP = MChM.ts_mat(df_mats_br, ts_uw_b, min_val, purp, 'AM', 'AtoP', NoTAZ)
+        Bus_PM_Fct_AP = MChM.ts_mat(df_mats_br, ts_uw_b, min_val, purp, 'PM', 'AtoP', NoTAZ)
+
+		# Rail Factors for AM and PM
+        Rail_AM_Fct_PA = MChM.ts_mat(df_mats_br, ts_uw_r, min_val, purp, 'AM', 'PtoA', NoTAZ)
+        Rail_PM_Fct_PA = MChM.ts_mat(df_mats_br, ts_uw_r, min_val, purp, 'PM', 'PtoA', NoTAZ)
+
+        Rail_AM_Fct_AP = MChM.ts_mat(df_mats_br, ts_uw_r, min_val, purp, 'AM', 'AtoP', NoTAZ)
+        Rail_PM_Fct_AP = MChM.ts_mat(df_mats_br, ts_uw_r, min_val, purp, 'PM', 'AtoP', NoTAZ)
+
         del df_mats
 
-        Tran_AM_Fct_N_PA, Tran_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='AM', geo='N',minimum_value=min_val)
+#        Tran_AM_Fct_N_PA, Tran_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='AM', geo='N',minimum_value=min_val)
         Tran_MD_Fct_N_PA, Tran_MD_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='MD', geo='N',minimum_value=min_val)
-        Tran_PM_Fct_N_PA, Tran_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='PM', geo='N',minimum_value=min_val)
+#        Tran_PM_Fct_N_PA, Tran_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='PM', geo='N',minimum_value=min_val)
 
         Acti_AM_Fct_N_PA, Acti_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='AM', geo='N',minimum_value=min_val)
         Acti_MD_Fct_N_PA, Acti_MD_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='MD', geo='N',minimum_value=min_val)
@@ -752,9 +774,9 @@ class HbWork(_m.Tool()):
         WCE_AM_Fct_N_PA, WCE_AM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='AM', geo='N',minimum_value=0)
         WCE_PM_Fct_N_PA, WCE_PM_Fct_N_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='PM', geo='N',minimum_value=0)
 
-        Tran_AM_Fct_S_PA, Tran_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='AM', geo='S',minimum_value=min_val)
+#        Tran_AM_Fct_S_PA, Tran_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='AM', geo='S',minimum_value=min_val)
         Tran_MD_Fct_S_PA, Tran_MD_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='MD', geo='S',minimum_value=min_val)
-        Tran_PM_Fct_S_PA, Tran_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='PM', geo='S',minimum_value=min_val)
+#        Tran_PM_Fct_S_PA, Tran_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Transit',peakperiod='PM', geo='S',minimum_value=min_val)
 
         Acti_AM_Fct_S_PA, Acti_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='AM', geo='S',minimum_value=min_val)
         Acti_MD_Fct_S_PA, Acti_MD_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='MD', geo='S',minimum_value=min_val)
@@ -765,9 +787,9 @@ class HbWork(_m.Tool()):
 
         Gy_P = util.get_matrix_numpy(eb, 'gy_ensem')  + np.zeros((1, 1741))
 
-        Tran_AM_Fct = np.array([np.where(Gy_P<8, Tran_AM_Fct_N_PA, Tran_AM_Fct_S_PA), np.where(Gy_P<8, Tran_AM_Fct_N_AP, Tran_AM_Fct_S_AP)])
+#        Tran_AM_Fct = np.array([np.where(Gy_P<8, Tran_AM_Fct_N_PA, Tran_AM_Fct_S_PA), np.where(Gy_P<8, Tran_AM_Fct_N_AP, Tran_AM_Fct_S_AP)])
         Tran_MD_Fct = np.array([np.where(Gy_P<8, Tran_MD_Fct_N_PA, Tran_MD_Fct_S_PA), np.where(Gy_P<8, Tran_MD_Fct_N_AP, Tran_MD_Fct_S_AP)])
-        Tran_PM_Fct = np.array([np.where(Gy_P<8, Tran_PM_Fct_N_PA, Tran_PM_Fct_S_PA), np.where(Gy_P<8, Tran_PM_Fct_N_AP, Tran_PM_Fct_S_AP)])
+#        Tran_PM_Fct = np.array([np.where(Gy_P<8, Tran_PM_Fct_N_PA, Tran_PM_Fct_S_PA), np.where(Gy_P<8, Tran_PM_Fct_N_AP, Tran_PM_Fct_S_AP)])
 
         Acti_AM_Fct = np.array([np.where(Gy_P<8, Acti_AM_Fct_N_PA, Acti_AM_Fct_S_PA), np.where(Gy_P<8, Acti_AM_Fct_N_AP, Acti_AM_Fct_S_AP)])
         Acti_MD_Fct = np.array([np.where(Gy_P<8, Acti_MD_Fct_N_PA, Acti_MD_Fct_S_PA), np.where(Gy_P<8, Acti_MD_Fct_N_AP, Acti_MD_Fct_S_AP)])
@@ -886,13 +908,13 @@ class HbWork(_m.Tool()):
         HV3I3_PM = HV3I3*Auto_PM_Fct_PA + HV3I3.transpose()*Auto_PM_Fct_AP
 
         ## Transit Trips
-        Bus_AM = Bus*Tran_AM_Fct[0] + Bus.transpose()*Tran_AM_Fct[1]
+        Bus_AM = Bus*Bus_AM_Fct_PA + Bus.transpose()*Bus_AM_Fct_AP
         Bus_MD = Bus*Tran_MD_Fct[0] + Bus.transpose()*Tran_MD_Fct[1]
-        Bus_PM = Bus*Tran_PM_Fct[0] + Bus.transpose()*Tran_PM_Fct[1]
+        Bus_PM = Bus*Bus_PM_Fct_PA + Bus.transpose()*Bus_PM_Fct_AP
 
-        Rail_AM = Rail*Tran_AM_Fct[0] + Rail.transpose()*Tran_AM_Fct[1]
+        Rail_AM = Rail*Rail_AM_Fct_PA + Rail.transpose()*Rail_AM_Fct_AP
         Rail_MD = Rail*Tran_MD_Fct[0] + Rail.transpose()*Tran_MD_Fct[1]
-        Rail_PM = Rail*Tran_PM_Fct[0] + Rail.transpose()*Tran_PM_Fct[1]
+        Rail_PM = Rail*Rail_PM_Fct_PA + Rail.transpose()*Rail_PM_Fct_AP
 
         WCE_AM = WCE*WCE_AM_Fct  # no MD for WCE
         WCE_PM = WCE.transpose()*WCE_PM_Fct
