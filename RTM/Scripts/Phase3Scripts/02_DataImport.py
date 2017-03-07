@@ -94,14 +94,6 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms131", "hgvPCE", "Heavy Truck Passenger Car Equivalent", 2.5)
         util.initmat(eb, "ms142", "sov_pct_Hbesc", "SOV proportion of Auto HB Escorting", 0.288)
         util.initmat(eb, "ms148", "sov_pct_NHBo", "SOV proportion of Auto NHB Other", 0.365)
-        util.initmat(eb, "ms150", "nhbwCt2011", "NHBW HH Production Control Total", 596590.636153)
-        util.initmat(eb, "ms151", "nhboCt2011", "NHB0 HH Production Control Total", 852928.057776)
-
-        util.initmat(eb, "ms152", "nhbwCt2030", "NHBW HH Production Control Total 2030", 756676.525121)
-        util.initmat(eb, "ms153", "nhboCt2030", "NHB0 HH Production Control Total 2030", 1124398.420587)
-
-        util.initmat(eb, "ms154", "nhbwCt2045", "NHBW HH Production Control Total 2045", 848396.270358)
-        util.initmat(eb, "ms155", "nhboCt2045", "NHB0 HH Production Control Total 2045", 1316994.057883)
 
         util.initmat(eb, "ms160", "oneZoneFare", "One Zone Fare - FS-SV", 2.1)
         # Used for SOV and HOV
