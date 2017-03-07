@@ -102,7 +102,22 @@ class DataExport(_m.Tool()):
 
 
     def export_text(self, eb):
-        pass
+        util = _m.Modeller().tool("translink.util")
+        output_loc = util.get_output_path(eb)
+
+        conn = util.get_db_byname(eb, "trip_summaries.db")
+        c = conn.cursor()
+        c.execute("SELECT name FROM sqlite_master WHERE type in ('table', 'view');")
+        tabs = c.fetchall()
+
+        for table in tabs:
+            ot = table[0]
+            sql = "SELECT * FROM {}".format(ot)
+            df = pd.read_sql(sql, conn)
+            fn = os.path.join(output_loc, '{}.csv'.format(ot))
+            df.to_csv(fn, index=False)
+
+        conn.close()
 
     def addViewDailyModeSharebyPurp(self, eb):
         util = _m.Modeller().tool("translink.util")
