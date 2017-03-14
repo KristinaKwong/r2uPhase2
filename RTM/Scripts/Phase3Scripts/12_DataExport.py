@@ -33,9 +33,6 @@ class DataExport(_m.Tool()):
         pb.description = "Exports Results of Model Run"
         pb.branding_text = "TransLink"
 
-        util = _m.Modeller().tool("translink.util")
-        input_path = util.get_input_path(_m.Modeller().emmebank)
-
         with pb.section("Export Format Options"):
             pb.add_checkbox("export_csvs", label="Export CSVs to Output Folder")
 

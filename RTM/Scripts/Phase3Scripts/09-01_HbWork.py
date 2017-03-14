@@ -22,7 +22,7 @@ class HbWork(_m.Tool()):
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.util")
         MChM = _m.Modeller().tool("translink.RTM3.stage2.modechoiceutils")
-        input_path = util.get_input_path(eb)
+
         self.matrix_batchins(eb)
         NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
 
