@@ -168,8 +168,26 @@ class TripAttractions(_m.Tool()):
         df['hbsch'] = ( c_hbsch_EE * df['Elementary_Enrolment']
                       + c_hbsch_SE * df['Secondary_Enrolment'] )
 
-        scalar = ct_df.get_value(index='hbsch', col='control_total')/ df['hbsch'].sum()
-        df['hbsch'] = df['hbsch'] * scalar
+        # write school attraction to EMMEbank md2030
+        util.set_matrix_numpy(eb, 'mdhbschatr', df['hbsch'].values)
+
+        specs = []
+        # production totals by gx
+        spec = util.matrix_spec("md2031", "(mo2030+mo2031+mo2032+mo2033+mo2034+mo2035+mo2036+mo2037+mo2038)*(gx(p).eq.gx(q))")
+        spec["aggregation"] = {"origins": "+", "destinations": None}
+        specs.append(spec)
+        # attraction totals by gx
+        spec = util.matrix_spec("md2032", "(md2030')*(gx(p).eq.gx(q))")
+        spec["aggregation"] = {"origins": "+", "destinations": None}
+        specs.append(spec)
+        # Normalize the attraction totals
+        spec = util.matrix_spec("md2030", "md2030*md2031/md2032")
+        spec["constraint"]["by_zone"] = {"destinations": "gx1-gx15"}
+        specs.append(spec)
+        
+        util.compute_matrix(specs)
+        # feed gx-balanced attractions back to dataframe
+        df['hbsch'] = util.get_matrix_numpy(eb, 'mdhbschatr')
 
         # HBSHOP ###############################################################
         df['hbshop'] = c_hbshop_Ret * df['EMP_Retail']
@@ -309,7 +327,6 @@ class TripAttractions(_m.Tool()):
     @_m.logbook_trace("Initialize Trip Attraction Matrices")
     def matrix_batchins(self, eb):
         util = _m.Modeller().tool("translink.util")
-
         util.initmat(eb, "md2000", "hbwatr", "hbw Attractions", 0)
         util.initmat(eb, "md2010", "hbescatr", "hbesc Attractions", 0)
         util.initmat(eb, "md2020", "hbpbatr", "hbpb Attractions", 0)
@@ -319,3 +336,7 @@ class TripAttractions(_m.Tool()):
         util.initmat(eb, "md2060", "hbuatr", "hbu Attractions", 0)
         util.initmat(eb, "md2070", "nhbwatr", "nhbw Attractions", 0)
         util.initmat(eb, "md2080", "nhboatr", "nhbo Attractions", 0)
+
+        # initialize md2031 - md2032 for school trip attraction adjustment
+        util.initmat(eb, "md2031", "hbschprgx", "hbsch Production Sum by GX", 0)
+        util.initmat(eb, "md2032", "hbschsc", "hbsch Attraction by GX", 0)

@@ -277,6 +277,15 @@ class HbSchool(_m.Tool()):
         Bridge_Factor = 0.75
 
         MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"), Kij, "HbScBl_BPen", Bridge_Factor)
+
+        # Zero out the friction factor for any trips outside of the same school zone (gx ensemble)
+        specs = []
+        for i in range (len(imp_list)):
+            # this is a bit ugly as we need to quote the matrix name in emme due to the - in the names
+            mat_name='mf"'+imp_list[i]+'"'
+            specs.append(util.matrix_spec(mat_name, mat_name+'*(gx(p).eq.gx(q))'))
+        util.compute_matrix(specs)
+
         MChM.two_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
 
 #       ##############################################################################
@@ -636,6 +645,4 @@ class HbSchool(_m.Tool()):
         util.initmat(eb, "mf3256", "HbScP-AI3A0", " HbSc P-A Trips I1 A0", 0)
         util.initmat(eb, "mf3257", "HbScP-AI3A1", " HbSc P-A Trips I1 A1", 0)
         util.initmat(eb, "mf3258", "HbScP-AI3A2", " HbSc P-A Trips I1 A2", 0)
-
-
 
