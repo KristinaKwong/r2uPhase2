@@ -62,7 +62,7 @@ class TransitAssignment(_m.Tool()):
         self.wce_fare_zone34 = [1.69, 0, 1.08]
         self.wce_fare_zone45 = [0, 0, 1.69]
 
-        self.cost_perception_factor = 6 # 1/VOT in min/$, assuming VOT = 10 $/hr
+        self.cost_perception_factor = 4.90
 
         self.run_congested_transit = False
         self.run_capacited_transit = False
@@ -467,6 +467,8 @@ class TransitAssignment(_m.Tool()):
         util.emme_segment_calc(sc, "@ivttfac", "1")
         util.emme_segment_calc(sc, "@hdwyfac", "1")
         util.emme_segment_calc(sc, "@hdwyeff", "@hdwyfac*@hfrac")
+        util.emme_tline_calc(sc, "@ivtp", "0.25", sel_line="mode=bg")
+
 
         # Initialize volume averaging parameters
         util.emme_segment_calc(sc, "@boardavg", "0")
@@ -479,10 +481,12 @@ class TransitAssignment(_m.Tool()):
     @_m.logbook_trace("Transit Volume Averaging")
     def averaging_transit_volumes(self, sc, iteration, period_length):
         util = _m.Modeller().tool("translink.util")
+
         # MSA on Boardings and transit Volumes
         msa_factor = 1.0 / iteration
         util.emme_segment_calc(sc, "@boardavg" , "board*%s + @boardavg*(1-%s)" %(msa_factor, msa_factor))
         util.emme_segment_calc(sc, "@voltravg", "voltr*%s + @voltravg*(1-%s)" % (msa_factor,  msa_factor))
+
 
         # Average Alightings
         util.emme_segment_calc(sc, "@alightavgn" ,"@boardavgn + @voltravg - @voltravgn")
@@ -519,6 +523,7 @@ class TransitAssignment(_m.Tool()):
                                                        self.max_stand_weight, self.min_stand_weight, self.power_stand_weight)
 
         util.emme_segment_calc(sc, "@ivttfac", crowd_spec)
+        util.emme_segment_calc(sc, "@ivttfac", "@ivttfac + @ivtp")
 
     @_m.logbook_trace("Calculate Effective Headway for Capacity Constraint")
     def effective_headway_calc(self, sc):
