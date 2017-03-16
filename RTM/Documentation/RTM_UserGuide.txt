@@ -188,9 +188,17 @@ when the copies are made. A correspondence of from the master scenario to the ti
 
 Network coding should be done in the master scenarios only, as the time of day specific networks are overwritten
 during each model run. The export network tool is responsible for exporting all required information from a scenario
-for later import into the model run process.
+for later import into the model run process. The dropdown area allows multiple scenarios to be exported at the same
 
 ![The Network Export Tool](./ExportNetwork_screen.png)
+
+## Import Network Tool
+
+Additional network scenarios can be imported to the emmebank using the Import Scenarios tool. This tool assumes all required files
+are in the BaseNetworks/ folder. The name of the scenario to be import is a user input.
+
+![The Network Import Tool](./ImportNetwork_screen.png)
+
 
 # Scripts Folder
 

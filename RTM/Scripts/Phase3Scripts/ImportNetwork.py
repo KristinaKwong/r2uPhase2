@@ -15,8 +15,8 @@ class ImportNetwork(_m.Tool()):
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
-        pb.title = "Translink Utility Toolbox"
-        pb.description = "Export an Emme Network"
+        pb.title = "Translink Network Utility"
+        pb.description = "Import an Emme Network"
         pb.branding_text = "TransLink"
 
         pb.add_text_box(tool_attribute_name="scen_id",
