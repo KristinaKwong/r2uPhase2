@@ -98,14 +98,62 @@ sqlite3.DatabaseError: file is encrypted or is not a database
 It is likely that a Modeller instance is running and has locked the toolbox file. Close all Modeller instances and run the
 script again.
 
-## Text Format
+## CSV Text Files
+The csv input files for zone-based data has been introduced to provide a more convenient data format than the EMME batch-transaction files.
+Zone based data intended for an mo or md matrix can now be entered using a format more usable with Excel and other external tools in a column-based format.
+The first four rows are headers providing the following information, examples given are from the demograpics input file:
+
+* The mo or md matrix to store the data in  (mo10)
+* The name for the EMME matrix (TotPop)
+* The description for the EMME matrix (POP_Total)
+* The column name in the SQL database where a copy of the data is kept (POP_Total)
+
+The first column of data is the zone number the data values are intended for.
+
+### Demographics Input File
+The demographics input file contains the following data
+
+|Matrix ID|EMME Name|EMME Description|SQL NAME|Notes     |
+|:-------:|:--------|:---------------|:-------|:---------|
+|mo10     |TotPop     |POP_Total              |POP_Total                   |Total Population                               |
+|mo11     |Pop0t4     |POP_0to4               |POP_0to4                    |Population Ages 0 to 4                         |
+|mo12     |Pop5t12    |POP_5to12              |POP_5to12                   |Population Ages 5 to 12                        |
+|mo13     |Pop13t17   |POP_13to17             |POP_13to17                  |Population Ages 13 to 17                       |
+|mo14     |Pop18t24   |POP_18to24             |POP_18to24                  |Population Ages 18 to 24                       |
+|mo15     |Pop25t34   |POP_25to34             |POP_25to34                  |Population Ages 25 to 34                       |
+|mo16     |Pop35t54   |POP_35to54             |POP_35to54                  |Population Ages 35 to 54                       |
+|mo17     |Pop55t64   |POP_55to64             |POP_55to64                  |Population Ages 55 to 64                       |
+|mo18     |Pop65Up    |POP_65plus             |POP_65plus                  |Population Ages 65 plus                        |
+|mo20     |TotEmp     |EMP_Total              |EMP_Total                   |Total Employment                               |
+|mo21     |EmpConMfg  |Construct_Mfg          |EMP_Construct_Mfg           |Employment: Construction, Manufacturing        |
+|mo22     |EmpFire    |FIRE                   |EMP_FIRE                    |                                               |
+|mo23     |EmpTcuWh   |TCU_Wholesale          |EMP_TCU_Wholesale           |                                               |
+|mo24     |EmpRet     |Retail                 |EMP_Retail                  |                                               |
+|mo25     |EmpBoS     |Business_OtherServices |EMP_Business_OtherServices  |                                               |
+|mo26     |EmpAcFoInCu|AccomFood_InfoCult     |EMP_AccomFood_InfoCult      |                                               |
+|mo27     |EmpHeEdPuAd|Health_Educat_PubAdmin |EMP_Health_Educat_PubAdmin  |                                               |
+|mo30     |EnrolElem  |Elementary_Enrolment   |Elementary_Enrolment        |Elementary School Enrollment                   |
+|mo31     |EnrolSec   |Secondary_Enrolment    |Secondary_Enrolment         |Secondary School Enrollment                    |
+|mo32     |EnrolPsFte |PostSecFTE             |PostSecFTE                  |Post Secondary Full Time Equivalent Enrollment |
+|mo40     |TotHh      |HHOLDS_Total           |HH_Total                    |Total Households                               |
+|mo41     |Hh1p       |HHOLDS_1Person         |HH_1Person                  |1 Person Households                            |
+|mo42     |Hh2p       |HHOLDS_2Person         |HH_2Person                  |2 Person Households                            |
+|mo43     |Hh3p       |HHOLDS_3Person         |HH_3Person                  |3 Person Households                            |
+|mo44     |Hh4pUp     |HHOLDS_4plusPerson     |HH_4plusPerson              |4-plus Person Households                       |
 
 
-### csv files
-### Base Networks Folder
+### Geographics Input File
+The demographics input file contains the following data
 
-
-### Documentation
+|Matrix ID|EMME Name|EMME Description|SQL NAME|Notes     |
+|:-------:|:--------|:----------------|:-------|:-------------|
+|mo50     |areahc   |taz_a_area_hec   |Hectares             |Zone Area in Hectares                      |
+|mo60     |prk2hr   |parkingcost2hr   |parking_two_hr_rate  |Two Hour Parking Rate                      |
+|mo61     |prk8hr   |parkingcost8hr   |parking_eight_hr_rate|Eight Hours Parking Rate                   |
+|mo69     |railStn  |railstationinzone|rail_stn_dummy       |Zone contains a rail station (0/1)         |
+|mo70     |cs250    |car_share_250m   |car_share_250m       |Zone has car share access within 250m (0/1)|
+|mo71     |cs500    |car_share_500m   |car_share_500m       |Zone has car share access within 500m (0/1)|
+|mo80     |bikesc   |bikescore        |bike_score_taz       |Bike Score (0-5)                           |
 
 # Databank Initialization
 
@@ -169,68 +217,107 @@ to read.
 This folder contains the model's main python tool box and associated scripts. Figure XX is a screenshot of the Phase3Scripts folder.
 The following is a brief description of each script in the order of model run.
 
- - InitEmmebank.py - Creates a new databank which contains the building block of the model run:
-                     1) Databank Size
-                     2) Auto and Transit Networks for years 2011, 2015, 2030 and 2045
-                     3) Ensembles
-                     4) Functions: Volume-delay, turn penalties, transit time functions
+### InitEmmebank.py
+Creates a new databank which contains the building blocks of the model run:
 
- - 00_RunModel.py  - This the main model run wrapper and launches the subsequent model scripts. Figure XX is a screenshot of the run page
-		     with required user inputs:
-		     1) Model horizon year (2011, 2015, 2030 or 2045)
-	             2) Base year Network Scenario (1000 - 2011, 2000 - 2015, 3000 - 2030, 4000 - 2045)
-	             3) Global Model Cycles: Default is four cycles
-                     4) Demographics (households, population and employment) and Geographics Inputs (parking, car share zone)
-                     5) Trip Distribution Model Number of Iterations _ Default is 60
-	             6) Assignment Convergence Criteria
- 		     7) Toggles for congested/capacitated Transit Assignment
-	             8) Number of Processors Specification
+1. Databank Size
+2. Auto and Transit Networks for years 2011, 2015, 2030 and 2045
+3. Ensembles
+4. Functions
+   + Volume-delay (vdf)
+   + Turn penalty (tpf)
+   + Transit time (ttf)
+
+### 00_RunModel.py
+This the main model run wrapper and launches the subsequent model scripts. Figure XX is a screenshot of the run page with required user inputs:
+
+1. Model horizon year:
+    + 2011
+    + 2015
+    + 2030
+    + 2045
+2. Base Year Network Scenario:
+    + Scen 1000 - 2011 Base Network
+    + Scen 2000 - 2015 Base Network
+    + Scen 3000 - 2030 Base Network
+    + Scen 4000 - 2045 Base Network
+3. Global Model Cycles
+    + Default: 4
+4. Demographics File
+    + households
+    + population
+    + employment
+5. Geographics File
+    + parking
+    + car share
+    + rail station availability
+6. Trip Distribution Model
+    + Max Iterations Default: 60
+    + Max Relative Difference Default: 0.0001
+7. Assignment Convergence Criteria
+    + Max Iterations Default: 200
+8. Toggles for Congested/Capacitated Transit Assignment
+    + Default: Enable Congested Transit Assignment
+    + Default: Enable Capacited Transit Assignment
+9. Number of Processors Specification
+    + Default: number of CPUs in computer being used
+
+### 01_CreateScenarios.py
+Creates AM, MD and PM network scenarios from main base year scenario. For example, if the user chose scenario 1000,
+this script will create AM, MD and PM scenarios with the correct time of day network attributes (e.g. bus priority
+lanes and headways by time of day.
 
 
- - 01_CreateScenarios.py  - Creates AM, MD and PM network scenarios from main base year scenario. For example, if the user chose scenario 1000,
-                            this script will create AM, MD and PM scenarios with the correct time of day network attributes (e.g. bus priority
-                            lanes and headways by time of day.
+### 02_DataImport.py
+Imports/generates data used in a model run such as:
 
+1. Values of Time
+2. Transit perception Factors
+3. External Demand and Trip Distribution K-Factors
+4. Starter Skims
 
- - 02_DataImport.py  - Imports/generates data used in a model run such as:
-                       1) Values of Time
-                       2) Transit perception Factors
-                       3) External Demand and Trip Distribution K-Factors
-                       4) Starter Skims
+### 03_DataGeneration.py
+Calculates attributes used in a model run such as:
 
- - 03_DataGeneration.py  - Calculates attributes used in a model run such as:
-		           1) Population and employment densities
-                           2) Accessibility variables (e.g. number of jobs accessible from a zone within 30 minutes)
+1. Population and employment densities
+2. Accessibility variables (e.g. number of jobs accessible from a zone within 30 minutes)
 
- - 04_SocioEconomicSegmentation.py and 05_VehicleAvailability.py - These two scripts split household data provided by Metro-Vancouver
-   into segments by household size x number of workers x Income Category x Auto Ownership using a series of econometric logit models.
+### 04_SocioEconomicSegmentation.py and 05_VehicleAvailability.py
+These two scripts split household data provided by Metro-Vancouver into segments by household size x number of workers x Income Category x Auto Ownership using a series of econometric logit models.
 
- - 06_TripProductions.py and 07_TripAttractions.py - This is the trip generation phase of the model. It includes multiplying econometrically
-   estimated, purpose-specific, production/attraction trip rates by houselhold/population and employment segments (depending on the trip purpose).
+### 06_TripProductions.py and 07_TripAttractions.py
+This is the trip generation phase of the model. It includes multiplying econometrically estimated, purpose-specific, production/attraction trip rates by houselhold/population and employment segments (depending on the trip purpose).
 
- - 08_Blended_Skims - Takes AM, MD and PM auto and transit skims and blends them by trip purpose to create 'daily' skims to be used in the trip
-                      distribution and mode choice models
+### 08_Blended_Skims
+Takes AM, MD and PM auto and transit skims and blends them by trip purpose to create 'daily' skims to be used in the trip distribution and mode choice models
 
- - 09-01_HbWork.py - 09-09_NhbOther.py - This series of nine scripts include the trip distribution, mode choice and time of day factoring models for each of the
-                      the nine trip purposes.
+### 09-01_HbWork.py - 09-09_NhbOther.py
+This series of nine scripts include the trip distribution, mode choice and time of day factoring models for each of the the nine trip purposes.
 
- - 09-00_ModeChoiceUtilities.py - Contains various helper functions that get used repeatedly in the trip distribution/mode choice models such as:
-                                  1) trip distribution gravity model
-                                  2) Mode availability conditions
+### 09-00_ModeChoiceUtilities.py
+Contains various helper functions that get used repeatedly in the trip distribution/mode choice models such as:
 
- - 09-10_TruckModel.py - Runs the truck model and generates six origin - destination tables - 2 truck types (light and heavy) x 3 time periods
+1. Trip distribution gravity model
+2. Mode availability conditions
 
- - 10-01_AutoAssignment.py - Runs the auto vehicle traffic assignment for the three time periods
+### 09-10_TruckModel.py
+Runs the truck model and generates six origin - destination tables - 2 truck types (light and heavy) x 3 time periods
 
- - 10-02_TransitAssignment.py - Runs the transit assignment (bus, rail and WCE) for the three time periods
+### 10-01_AutoAssignment.py
+Runs the auto vehicle traffic assignment for the three time periods
+
+### 10-02_TransitAssignment.py
+Runs the transit assignment (bus, rail and WCE) for the three time periods
 
 Other scripts that are included in the Phase3Scripts but not part of a model run:
 
- - 12_DataExport.py - Main model outputs are stored in database format inside the project folder. This tool exports this data to .csv format inside the
-                      Outputs folder. The outputs include:
-                      1) Gy - Gy trip summaries by purpose, mode and time period (AM, MD, PM and Daily). One important thing to note is the Daily trip
-                         summaries are in production - attracion (P-A) format whereas the time of day results are in origin - destination (O-D) format.
-                      2) Network-level summaries: Vehicle volumes by vehicle class, transit volumes, travel time, distance and speed on each link
+### 12_DataExport.py
+Main model outputs are stored in database format inside the project folder. This tool exports this data to .csv format inside the Outputs folder. The outputs include:
 
- - ImportNetwork.py and ExportNetwork.py - These two tools allow the import/export of current/future networks after they've been modified. More details will
-                                           be provided in the following section using examples.
+1. Gy - Gy trip summaries by purpose, mode and time period (AM, MD, PM and Daily). One important thing to note is the Daily trip
+ summaries are in production - attracion (P-A) format whereas the time of day results are in origin - destination (O-D) format.
+2. Network-level summaries: Vehicle volumes by vehicle class, transit volumes, travel time, distance and speed on each link
+
+### ImportNetwork.py and ExportNetwork.py
+These two tools allow the import/export of current/future networks after they've been modified. More details will
+be provided in the following section using examples.
