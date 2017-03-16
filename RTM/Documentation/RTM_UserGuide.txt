@@ -262,7 +262,7 @@ are in the BaseNetworks/ folder. The name of the scenario to be import is a user
 
 # Scripts Folder
 
-The Scripts folder contains the main toolboxes and python codes used for running the model. Figure XX shows the files
+The Scripts folder contains the main toolboxes and python codes used for running the model. Figure <Screennshot of Scripts folder> shows the files
 inside the folder.
 
 ## Util folder
@@ -282,9 +282,9 @@ to read.
 
 ## Phase3Scripts Folder
 
-This folder contains the model's main python tool box and associated scripts. Figure XX is a screenshot of the Phase3Scripts folder.
+This folder contains the model's main python tool box and associated scripts. Figure <Phase3Scripts Screnshot> is a screenshot of the Phase3Scripts folder.
 The following is a brief description of each script in the order of model run. Each of the scripts in this folder has an object reference to the
-Util toolbox as shown in the screenshot (Figure XX) below from the trip productions python script - 06_TripProductions.py.
+Util toolbox as shown in the screenshot (Figure <Screenshot of Util method invoke>) below from the trip productions python script - 06_TripProductions.py.
 
 ### InitEmmebank.py
 Creates a new databank which contains the building blocks of the model run:
@@ -298,7 +298,7 @@ Creates a new databank which contains the building blocks of the model run:
    + Transit time (ttf)
 
 ### 00_RunModel.py
-This the main model run wrapper and launches the subsequent model scripts. Figure XX is a screenshot of the run page with required user inputs:
+This the main model run wrapper and launches the subsequent model scripts. Figure <Screenshot of Run Page> is a screenshot of the run page with required user inputs:
 
 1. Model horizon year:
     + 2011
@@ -431,5 +431,40 @@ Get Method: Array = util.get_matrix_numpy(<Arguments>)
 Set Method: Array = util.set_matrix_numpy(<Arguments>)
 
 For more information on Python Coding Guidelines, refer to Appendix XX of this User Guide.
+
+# Step by Step Guide for Running the Model
+
+This chapter provides a step by step guide for running three models. Two examples will be used:
+
+1) Run a base year 2011 run
+2) Run a future scenario run which includes demographic, auto and transit network changes.
+
+Both examples will start from the point the user receives the model files from TransLink and provides screenshots to help guide the discussion below.
+
+## 2011 Model Run
+
+This sections provides a step by step guide to setting up a base year, 2011, model run.
+
+1) Unzip folder received from TransLink. The folder contents will look as shown in Figure <folder contents>
+2) Run the relocate_tools batch script found inside the Scripts folder
+3) Run RTM.emp to launch the EMME. The Explorer will look similar to Figure <Explorer> with one dummy scenario (Scenario 1)
+4) Launch EMME Modeller and go to 'Translink RTM Phase 3 Model' tool. The model utilities toolbox, 'Translink Utilities' can also be seen at the botton in Figure <toolbox_screenshot>
+5) Launch the Initialize Emmebank tool. Enter a name for the title and folder name of the Emmebank you wish to create and click on the Run button (see Figure <InitEMMEbank>).
+6) Close Modeller, the Explorer will now point to the newly created Emmebank which will include four scenarios, one for each horizon year, and associated networks as shown in Figure <new_explorer>.
+   The newly created Emmebank folder, 2011_Base in this example, will look similar to Figure <new_emmebank_folder>. You'll notice a copy of the Inputs folder that also exists in the
+   RTM -> BaseNetworks directory.
+7) Launch Modeller and run the 'Run RTM3' tool inside the 'Translink RTM Phase 3 Model' toolbox.
+8) Fill out the user inputs as shown in Figure <Run_Model> tool. The user can change the inputs depending on the type of run being undertaken, however since this is a 2011 base year run the inputs
+   will look laregely similar to Figure <Run_Model>.
+9) Click the Run Button
+10) Once a run is completed, run the Data Export tool under the Stage 4 subfolder and check the Export to CSVs toggle  as shown in Figure <dataexport>
+
+Warnings:
+
+1) In the Model horizon years, make sure you only enter 2011, 2030 and 2045 as certain model components such as the truck model, external demand and bike scores were only setup for these years
+2) Make sure the number of processors entered is less than or equal to what the machine supports
+
+
+
 
 
