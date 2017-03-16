@@ -215,7 +215,8 @@ to read.
 ## Phase3Scripts Folder
 
 This folder contains the model's main python tool box and associated scripts. Figure XX is a screenshot of the Phase3Scripts folder.
-The following is a brief description of each script in the order of model run.
+The following is a brief description of each script in the order of model run. Each of the scripts in this folder has an object reference to the
+Util toolbox as shown in the screenshot (Figure XX) below from the trip productions python script - 06_TripProductions.py.
 
 ### InitEmmebank.py
 Creates a new databank which contains the building blocks of the model run:
@@ -321,3 +322,42 @@ Main model outputs are stored in database format inside the project folder. This
 ### ImportNetwork.py and ExportNetwork.py
 These two tools allow the import/export of current/future networks after they've been modified. More details will
 be provided in the following section using examples.
+
+## Notes on the Use of Numpy and Pandas Python Libraries
+Previous versions of the RTM relied largely on INRO's built in matrix calculator method throughout the full model run. In RTM3, most of these calculations are undertaken
+instead using Python's built in Numpy and Pandas Libraries. The latest versions of the EMME software allows easy exchange of data between numpy and the Emmebank. For example,
+if the number of households per zone is stored in Matrix 'mo1'(or 'md1'), the data can be stored in a vectorized Numpy array object of size 1741x1 (number of TAZs in the model) using the
+command: X = emmebank.matrix("mo1").get_numpy_data(), where X is the array object. Once a calculation is completed, the result can be directly stored back into the Emmebank using
+the command: emmebank.matrix("mo2").set_numpy_data(X).
+
+Similar operation can be undertaken on full matrices except the array object would be of size 1741x1741.
+
+
+The example below demonstrates a mode choice utility expression constructed using the matrix calculator and Numpy.
+
+Matrix Calculator:
+
+Utility_Transit = str(Bias) + "+" + str(Time_Coeff) + "*mf100"  + "+" + str(Cost_Coeff) + "*mf101" , where mf100 and mf101 are time and cost coefficients.
+
+Numpy:
+
+Time =  emmebank.matrix("mf100").get_numpy_data()
+Cost =  emmebank.matrix("mf101").get_numpy_data()
+
+Utility_Transit = Bias + Time_Coeff*Time + Cost_Coeff*Cost
+
+Below are a few advantages of using Numpy:
+
+1) Code is succint and easier to read since it does not require string concatenation
+2) Reduces the amount of coding errors
+3) Numpy is flexible and significantly faster than Matrix Calculator. This is specially important for complex models with many TAZs
+4) Direct integration with Python's Pandas library which allows relational database/SQL type operations such as Join and Relate.
+
+Both the 'get' and 'set' Numpy methods are available in the 'Util' toolbox as helper functions. The two examples below show how these are invoked in the RTM:
+
+Get Method: Array = util.get_matrix_numpy(<Arguments>)
+Set Method: Array = util.set_matrix_numpy(<Arguments>)
+
+For more information on Python Coding Guidelines, refer to Appendix XX of this User Guide.
+
+
