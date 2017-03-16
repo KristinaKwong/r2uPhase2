@@ -120,9 +120,7 @@ class ModeChoiceUtilities(_m.Tool()):
 
     @_m.logbook_trace("Impedance Calc")
     def ImpCalc(self, eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, Distance, Kij, Bridge_Pen, Bridge_Factor):
-
         util = _m.Modeller().tool("translink.util")
-        input_path = util.get_input_path(eb)
 
         Bridge_Pen_Mat = util.get_matrix_numpy(eb, Bridge_Pen)
 
