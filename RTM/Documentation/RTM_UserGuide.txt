@@ -170,6 +170,55 @@ The new
 ![The RTM Phase 3 Model Run Tool](./FullModelRun_screen.png)
 
 # Network Coding
+
+## Modes
+
+Modes are represented in the same manner as the Phase 2 model, with the addition of a new primary auto mode (v).
+The primary auto mode and must be coded on any link that is expected to be used by any of the other auto modes.
+
+|Mode|Description|
+|:--:|:----------|
+|v   |Vehicles (Primary Auto Mode)         |
+|c   |High Occupancy Vehicles (HOV)        |
+|d   |Single Occupancy Vehicles (SOV)      |
+|x   |Light Trucks                         |
+|t   |Heavy Trucks                         |
+|n   |Discourage Heavy Vehicle Traffic     |
+|b   |Bus                                  |
+|p   |Pedestrian                           |
+|a   |Auxillary Transit Access             |
+|l   |SkyTrain                             |
+|r   |Commuter Rail (West Coast Express)   |
+|s   |SeaBus                               |
+|h   |Gondola                              |
+
+## Link Types
+
+Links have been classified by their basic role for data summary purposes.
+There is currently no functional differences represented by the link type, but there may be in the future.
+
+|Type|Description|
+|:--:|:----------|
+|1   |Centroid Connector            |
+|2   |Pedestrian Links              |
+|3   |Bowen Island Ferry            |
+|100 |SkyTrain                      |
+|101 |SeaBus                        |
+|102 |West Coast Express            |
+|103 |Gondola                       |
+|200 |Bus Only                      |
+|201 |HOV Lane                      |
+|202 |Commercial Vehicle Access Only|
+|300 |Freeway                       |
+|301 |Highway                       |
+|302 |Arterial                      |
+|303 |Collector                     |
+|304 |Local                         |
+|305 |Ramp                          |
+|306 |Highway Directional Ramp      |
+|307 |Highway Loop Ramp             |
+|310 |Other Roads                   |
+
 ## Extra Attributes
 
 During a model run, a single master scenario is copied into 3 time of day specific scenarios for assignment.
@@ -183,6 +232,17 @@ when the copies are made. A correspondence of from the master scenario to the ti
 |tpf                      |tpfam, tpfmd, tpfpm       |
 |tolls                    |tollam, tollmd, tollpm    |
 |hdwy                     |hdwyam, hdwymd, hdwypm    |
+
+## Network Modification Issues
+
+### Issue 1 - Adding new Links
+When adding new links that connect to a node defined as an intersection, be sure to review the new turns created as EMME will only auto-populate the tpf attribute, and not the time of day extra attributes, this could cause illogical turns to be allowed as the default value of the extra attribute is 0, which would disable all turns from or to the new link.
+
+### Issue 2 - Adding new Intersections
+Similar to Issue 1, when newly defining an intersection, ensure the extra turn attributes are coded to match the automatically set tpf values, otherwise all turns will be disabled at that node (tpf=0)
+
+### Issue 3 - Adding new Transit services
+When adding new itineraries, make sure the extra headway attributes are populated as expected, or the effective headway of 0 will cause these services to be removed when constructing the time of day networks.
 
 ## Export Network Tool
 
