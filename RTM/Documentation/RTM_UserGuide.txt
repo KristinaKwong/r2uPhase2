@@ -143,3 +143,94 @@ during each model run. The export network tool is responsible for exporting all 
 for later import into the model run process.
 
 ![The Network Export Tool](./ExportNetwork_screen.png)
+
+# Scripts Folder
+
+The Scripts folder contains the main toolboxes and python codes used for running the model. Figure XX shows the files
+inside the folder.
+
+## Util folder
+
+The Util folder contains the Util toolbox and associated python script. The Util toolbox contains helper functions that
+get used repeatedly within a model run. These helper functions are usually called from other Python Scripts. Examples include
+helper functions and how to invoke them include the following:
+
+ - Matrix Calculator : util.compute_matrix(<Arguments>)
+
+ - Extra Attribute Calculator: util.emme_link_calc(<Arguments>)
+
+ - Importing Matrix Data in Numpy Array format : util.get_matrix_numpy(<Arguments>)
+
+These helper functions reduce the likelihood of making coding mistakes and make the overall code less repetitive and easier
+to read.
+
+## Phase3Scripts Folder
+
+This folder contains the model's main python tool box and associated scripts. Figure XX is a screenshot of the Phase3Scripts folder.
+The following is a brief description of each script in the order of model run.
+
+ - InitEmmebank.py - Creates a new databank which contains the building block of the model run:
+                     1) Databank Size
+                     2) Auto and Transit Networks for years 2011, 2015, 2030 and 2045
+                     3) Ensembles
+                     4) Functions: Volume-delay, turn penalties, transit time functions
+
+ - 00_RunModel.py  - This the main model run wrapper and launches the subsequent model scripts. Figure XX is a screenshot of the run page
+		     with required user inputs:
+		     1) Model horizon year (2011, 2015, 2030 or 2045)
+	             2) Base year Network Scenario (1000 - 2011, 2000 - 2015, 3000 - 2030, 4000 - 2045)
+	             3) Global Model Cycles: Default is four cycles
+                     4) Demographics (households, population and employment) and Geographics Inputs (parking, car share zone)
+                     5) Trip Distribution Model Number of Iterations _ Default is 60
+	             6) Assignment Convergence Criteria
+ 		     7) Toggles for congested/capacitated Transit Assignment
+	             8) Number of Processors Specification
+
+
+ - 01_CreateScenarios.py  - Creates AM, MD and PM network scenarios from main base year scenario. For example, if the user chose scenario 1000,
+                            this script will create AM, MD and PM scenarios with the correct time of day network attributes (e.g. bus priority
+                            lanes and headways by time of day.
+
+
+ - 02_DataImport.py  - Imports/generates data used in a model run such as:
+                       1) Values of Time
+                       2) Transit perception Factors
+                       3) External Demand and Trip Distribution K-Factors
+                       4) Starter Skims
+
+ - 03_DataGeneration.py  - Calculates attributes used in a model run such as:
+		           1) Population and employment densities
+                           2) Accessibility variables (e.g. number of jobs accessible from a zone within 30 minutes)
+
+ - 04_SocioEconomicSegmentation.py and 05_VehicleAvailability.py - These two scripts split household data provided by Metro-Vancouver
+   into segments by household size x number of workers x Income Category x Auto Ownership using a series of econometric logit models.
+
+ - 06_TripProductions.py and 07_TripAttractions.py - This is the trip generation phase of the model. It includes multiplying econometrically
+   estimated, purpose-specific, production/attraction trip rates by houselhold/population and employment segments (depending on the trip purpose).
+
+ - 08_Blended_Skims - Takes AM, MD and PM auto and transit skims and blends them by trip purpose to create 'daily' skims to be used in the trip
+                      distribution and mode choice models
+
+ - 09-01_HbWork.py - 09-09_NhbOther.py - This series of nine scripts include the trip distribution, mode choice and time of day factoring models for each of the
+                      the nine trip purposes.
+
+ - 09-00_ModeChoiceUtilities.py - Contains various helper functions that get used repeatedly in the trip distribution/mode choice models such as:
+                                  1) trip distribution gravity model
+                                  2) Mode availability conditions
+
+ - 09-10_TruckModel.py - Runs the truck model and generates six origin - destination tables - 2 truck types (light and heavy) x 3 time periods
+
+ - 10-01_AutoAssignment.py - Runs the auto vehicle traffic assignment for the three time periods
+
+ - 10-02_TransitAssignment.py - Runs the transit assignment (bus, rail and WCE) for the three time periods
+
+Other scripts that are included in the Phase3Scripts but not part of a model run:
+
+ - 12_DataExport.py - Main model outputs are stored in database format inside the project folder. This tool exports this data to .csv format inside the
+                      Outputs folder. The outputs include:
+                      1) Gy - Gy trip summaries by purpose, mode and time period (AM, MD, PM and Daily). One important thing to note is the Daily trip
+                         summaries are in production - attracion (P-A) format whereas the time of day results are in origin - destination (O-D) format.
+                      2) Network-level summaries: Vehicle volumes by vehicle class, transit volumes, travel time, distance and speed on each link
+
+ - ImportNetwork.py and ExportNetwork.py - These two tools allow the import/export of current/future networks after they've been modified. More details will
+                                           be provided in the following section using examples.
