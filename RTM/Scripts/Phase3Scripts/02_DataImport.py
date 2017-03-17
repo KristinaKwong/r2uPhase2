@@ -461,6 +461,9 @@ class DataImport(_m.Tool()):
         util.set_matrix_numpy(eb, "mfextSovPm", df_in['extSovPm'].values.reshape(NoTAZ, NoTAZ))
         util.set_matrix_numpy(eb, "mfextHovPm", df_in['extHovPm'].values.reshape(NoTAZ, NoTAZ))
 
+        # SET demand adjust demand
+        util.set_matrix_numpy(eb, "mfMD_Demadj", df_in['md_adj'].values.reshape(NoTAZ, NoTAZ))
+
         # SET bike score
         util.set_matrix_numpy(eb, "mfbikeskim", df_in['bikeskim'].values.reshape(NoTAZ, NoTAZ))
 
@@ -670,7 +673,7 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "mf5725", "PmWceBoard", "Pm Rail Boardings", 0)
         util.initmat(eb, "mf5726", "PmWceFare", "Pm Rail Fare", 0)
 
-        # External Demand and bikescore
+        # External Demand, MD Demand Adjust incremental demand and bikescore
         util.initmat(eb, "mf70", "extSovAm", "External Demand SOV AM", 0)
         util.initmat(eb, "mf71", "extHovAm", "External Demand HOV AM", 0)
 
@@ -681,6 +684,8 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "mf81", "extHovPm", "External Demand HOV PM", 0)
 
         util.initmat(eb, "mf90", "bikeskim", "Weighted Average IJ bike score", 0)
+
+        util.initmat(eb, "mf85", "MD_Demadj", "MD Incr Calibration Matrix", 0)
 
         # Trip Distribution Variables
         util.initmat(eb, "mf9200", "Kij_hbw", "Kij_hbw", 0)

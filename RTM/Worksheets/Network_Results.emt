@@ -1,0 +1,37 @@
+292ED8A4-37FA-4242-AE4E-D78DB768CA1D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
+# Emme table generated on Wed Mar 15 10:52:41 2017
+# File: F:/RTM_Model_Dev_Phase3/model_files_p3/RTM/Worksheets/Network_Results.emt
+#
+[links]
+# String Name: table name that appears in the table header (tr,subst)
+Name = Network_Results
+# String SaveListConfiguration: file name to save current table configuration (subst,nosave)
+SaveListConfiguration : /$SaveListConfiguration
+# Click PrintCurrentListNoSetup: when clicked, current table will be printed without entering setup dialog (nosave)
+PrintCurrentListNoSetup : /$PrintCurrentListNoSetup/$PrintCurrentListNoSetup
+# String ExportCurrentTableToFile: when set to a file name, the current table is exported to it (nosave)
+ExportCurrentTableToFile : /$ExportCurrentTableToFile
+# Click CloseList: when clicked, table will be closed (nosave)
+CloseList : /$CloseList/$CloseList
+# Style Style: style used to generate table entries
+Style = 0x21000000 0x01ffffff 0x00000000 0x00000500
+# String ColumnDef: list column definitions (tr)
+ColumnDef[] = index;link index;6;0;index;0;;0;0
+ColumnDef[] = i;I-node of link;7;0;i;0;;0;0
+ColumnDef[] = j;J-node of link;7;0;j;0;;0;0
+ColumnDef[] = Screenline_ID;;8;3;@lscid;0;;0;0
+ColumnDef[] = Screenline_Station;;8;2;@lscstn;0;;0;0
+ColumnDef[] = SOV;;8;2;@sov1+@sov2+@sov3+@sov4;0;;0;0
+ColumnDef[] = HOV;;8;2;@hov1+@hov2+@hov3+@hov4;0;;0;0
+ColumnDef[] = Light_Trucks;;8;2;@lgvol/1.5;0;;0;0
+ColumnDef[] = Heavy_Trucks;;8;2;@hgvol/2.5;0;;0;0
+ColumnDef[] = Transit_Vehicles;;8;7;volad/2.5;0;;0;0
+ColumnDef[] = Transit_Volume;;8;2;ca_voltr_l;0;;0;0
+ColumnDef[] = Length;;8;2;length;0;;0;0
+ColumnDef[] = Auto_Time;;8;2;timau;0;;0;0
+ColumnDef[] = tolls;Link_Toll_Value;8;7;@tolls;0;;0;0
+ColumnDef[] = speed;auto speed;6;2;speedau;0;;0;0
+ColumnDef[] = modes;link modes;8;0;modes;0;;0;0
+ColumnDef[] = lanes;number of lanes;5;1;lanes;0;;0;0
+ColumnDef[] = vdf;volume-delay function index;4;0;vdf;0;;0;0
+

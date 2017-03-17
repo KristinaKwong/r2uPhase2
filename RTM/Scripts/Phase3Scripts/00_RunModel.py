@@ -25,7 +25,7 @@ class FullModelRun(_m.Tool()):
 
     def __init__(self):
         self.horizon_year = 2011
-        self.global_iterations = 6
+        self.global_iterations = 4
         self.max_distribution_iterations = 60
         self.distribution_relative_err = 0.0001
         self.max_assignment_iterations = 200
@@ -168,7 +168,7 @@ class FullModelRun(_m.Tool()):
 
         mode_choice = _m.Modeller().tool("translink.RTM3.stage2.modechoice")
         mode_choice(eb)
-        
+
         truck_model = _m.Modeller().tool("translink.RTM3.stage2.truckmodel")
         truck_model(eb, self.horizon_year)
 
