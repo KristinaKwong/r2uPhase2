@@ -35,13 +35,13 @@ The model has nine trip purposes:
 8. Non-home-base Work
 9. Non-home-base Other
 
-The model assigns three main peak hour demands assigned onto the network
+The model assigns three main peak hour demands onto the network:
 
 1. AM: 730 - 830
 2. MD: 1200 - 1300
 3. PM: 1630 - 1730
 
-Peak hour trips are calculated in the model, however, they are not assigned onto the network.
+Peak hour active mode trips are calculated in the model, however, they are not assigned onto the network.
 
 This User Guide provides details to the user regarding the various components of the model files delivered by TransLink. It is intended to provide a step - by - step 
 guide on how to setup a model run and details to take into consideration before running the model. This User Guide does not provide technical details about the sub-models
@@ -51,8 +51,8 @@ in the RTM3. These details, such as detailed descriptions of the econometric mod
 # Model Format
 
 The model is now delivered as a collection of plain text files with an initial script to build the emmebank
-in which the model is run. An emme project file (.emp) is provided to reference all required folders and to link
-in an empty, minimally sized databank in the Template/ folder. This is only provided to allow emme modeller tools to
+in which the model is run. An EMME project file (.emp) is provided to reference all required folders and to link
+in an empty, minimally sized databank in the Template/ folder. This is only provided to allow EMME modeller tools to
 run before an RTM phase 3 databank has been initialized.
 
 **RTM Phase 3 Folder Structure**
@@ -72,12 +72,12 @@ Worksheets/
 
 ## RTM.emp
 This file contains all of the project information for the EMME model and allows the software
-to reference all of the distributed folders consistantly.
+to reference all of the distributed folders consistently.
 
 ## BaseNetworks/
 This folder contains all of the files required to build a databank and contains:
 
-* Network batchin files for horizon years 2011, 2015, 2030 and 2045
+* Network batchin files for model years 2011, 2015, 2030 and 2045
 * External demand matrices
 * Definitions of ensembles, modes, transit vehicles
 * Networks: Auto, Transit, Turns for 4 horizon years and 3 time periods
@@ -87,7 +87,7 @@ This folder contains all of the files required to build a databank and contains:
 * Ensembles
 
 ## BaseNetworks/Inputs/
-This folder contains the default model assumptions for each horizon year, a copy
+This folder contains the default model assumptions for each model year, a copy
 of this folder is placed with each databank initialized by the InitEmmebank tool.
 
 * Demographics from metro Vancouver
@@ -113,16 +113,18 @@ Shapefiles used as background boundaries in EMME worksheets are provided here, l
 ## Scripts/
 
 ## Template/
-A minimally dimensioned EMME databank is distributed to allow Modeller tools to run before an RTM databank has been initailized.
+A minimally dimensioned EMME databank is distributed to allow Modeller tools to run before an RTM databank has been initialized.
 No information is held in this template databank, it is provided only to allow Modeller to initialize an RTM databank from the provided text files.
 
 ## Views/
 Definitions for some standard views are provided in the EMME environment. Standard views for the GVRD, FVRD, each GY aggregation and each municiaplity are provided.
+
 ## Worksheets/
+Definitions for standardized worksheets can be saved in this folder.
 
-# Receiving/Relocating an RTM Model
+# Receiving/Relocating a RTM Model
 
-All file references have been updated to be relative to the provided emme project file (RTM.emp). The only exception to this are
+All file references have been updated to be relative to the provided EMME project file (RTM.emp). The only exception to this are
 references to modeller python files in the EMME toolboxes. A batch file has been provided in Scripts/relocate_tools.bat to
 link the toolboxes to the appropriate file if the project is moved.
 
@@ -148,7 +150,7 @@ script again.
 ## CSV Text Files
 The csv input files for zone-based data has been introduced to provide a more convenient data format than the EMME batch-transaction files.
 Zone based data intended for an mo or md matrix can now be entered using a format more usable with Excel and other external tools in a column-based format.
-The first four rows are headers providing the following information, examples given are from the demograpics input file:
+The first four rows are headers providing the following information, examples given are from the demographics input file:
 
 * The mo or md matrix to store the data in  (mo10)
 * The name for the EMME matrix (TotPop)
@@ -204,11 +206,9 @@ The demographics input file contains the following data
 
 # Databank Initialization
 
-Once the text files have been unpacked and the scripts relocated, open the emme modeller toolbox and run the InitEmmebank tool,
+Once the text files have been unpacked and the scripts relocated, open the EMME modeller toolbox and run the InitEmmebank tool,
 this will allow an RTM Phase 3 Databank to be initialized and linked into the current project. The tool requires a folder name which
 will be created, and the name of the databank to be shown in the project.
-
-The new
 
 ![The Initialize Emmebank Tool](./InitEmmebank_screen.png)
 
@@ -222,6 +222,8 @@ The new
 
 Modes are represented in the same manner as the Phase 2 model, with the addition of a new primary auto mode (v).
 The primary auto mode and must be coded on any link that is expected to be used by any of the other auto modes.
+This mode was added to allow the representation of limited access roadways such as bus or commercial vehicle only
+lanes. In previous models the HOV mode was required to be allowed as well.
 
 |Mode|Description|
 |:--:|:----------|
@@ -295,7 +297,7 @@ When adding new itineraries, make sure the extra headway attributes are populate
 
 Network coding should be done in the master scenarios only, as the time of day specific networks are overwritten
 during each model run. The export network tool is responsible for exporting all required information from a scenario
-for later import into the model run process. The dropdown area allows multiple scenarios to be exported at the same
+for later import into the model run process. The dropdown area allows multiple scenarios to be exported at the same time.
 
 ![The Network Export Tool](./ExportNetwork_screen.png)
 
@@ -404,13 +406,13 @@ Calculates attributes used in a model run such as:
 These two scripts split household data provided by Metro-Vancouver into segments by household size x number of workers x Income Category x Auto Ownership using a series of econometric logit models.
 
 ### 06_TripProductions.py and 07_TripAttractions.py
-This is the trip generation phase of the model. It includes multiplying econometrically estimated, purpose-specific, production/attraction trip rates by houselhold/population and employment segments (depending on the trip purpose).
+This is the trip generation phase of the model. It includes multiplying econometrically estimated, purpose-specific, production/attraction trip rates by household/population and employment segments (depending on the trip purpose).
 
 ### 08_Blended_Skims
 Takes AM, MD and PM auto and transit skims and blends them by trip purpose to create 'daily' skims to be used in the trip distribution and mode choice models
 
 ### 09-01_HbWork.py - 09-09_NhbOther.py
-This series of nine scripts include the trip distribution, mode choice and time of day factoring models for each of the the nine trip purposes.
+This series of nine scripts include the trip distribution, mode choice and time of day factoring models for each of the nine trip purposes.
 
 ### 09-00_ModeChoiceUtilities.py
 Contains various helper functions that get used repeatedly in the trip distribution/mode choice models such as:
@@ -469,9 +471,9 @@ Utility_Transit = Bias + Time_Coeff * Time + Cost_Coeff * Cost
 
 Below are a few advantages of using Numpy:
 
-1) Code is succint and easier to read since it does not require string concatenation
+1) Code is succinct and easier to read since it does not require string concatenation
 2) Reduces the amount of coding errors
-3) Numpy is flexible and significantly faster than Matrix Calculator. This is specially important for complex models with many TAZs
+3) Numpy is flexible and significantly faster than Matrix Calculator. This is especially important for complex models with many TAZs
 4) Direct integration with Python's Pandas library which allows relational database/SQL type operations such as Join and Relate.This capability makes the management of complicated RTM submodels,
    such as Park and Ride, much easier.
 
@@ -494,7 +496,7 @@ Both examples provide screenshots to help guide the discussion.
 
 ## 2011 Model Run
 
-This sections provides a step by step guide to launching a base year, 2011, model run assuming no changes to model input data.
+This section provides a step by step guide to launching a base year, 2011, model run assuming no changes to model input data.
 
 1. Unzip folder received from TransLink. The folder contents will look similar to Figure <5_Folder_Contents.png>
 2. Run the relocate_tools batch script found inside the Scripts folder. This script locates the python tools associated with the model run. 
@@ -530,7 +532,7 @@ Only steps requiring changes to the input data are included in this section. The
 1. Revised Land-use data:
     + Generate a demographics file similar in format to the ones located inside the 'BaseNetworks/Inputs' directory (for example the taz1700_demographics_2030.csv file).
     + Very Important: Since this model is largely driven by household trip rates, make sure all appropriate demographic attributes are updated. For example, if the scenario modelled
-   assumes a 20% population increase in Coquitlam, the number of households in that muncipality should also be updated accordingly
+   assumes a 20% population increase in Coquitlam, the number of households in that municipality should also be updated accordingly
 
 2. New Tolled Facility
     + Make a copy of one of the four main scenarios (in this case we assume scenario 3000 is copied to scenario 3001).
@@ -564,7 +566,7 @@ Only steps requiring changes to the input data are included in this section. The
 6. Final Checks before launching the run:
     +  Make sure to add new transit vehicles if required
     +  Make sure the correct seating and total capacities are provided in the transit vehicles table
-    +  Make sure to update the Geographics (or create a new) file located at 'F:\RTM_Model_Dev_Phase3\model_files_p3\RTM\BaseNetworks\Inputs' if needed. For example, in the New Rail Line scenario,
+    +  Make sure to update the Geography (or create a new) file located at 'F:\RTM_Model_Dev_Phase3\model_files_p3\RTM\BaseNetworks\Inputs' if needed. For example, in the New Rail Line scenario,
     the user will need to update the rail station dummy with a value of 1 for TAZs containing those stations.
 
 7. Launch the model run following the steps described in the previous section.
