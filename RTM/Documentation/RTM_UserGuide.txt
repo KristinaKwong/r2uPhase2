@@ -332,9 +332,9 @@ This the main model run wrapper and launches the subsequent model scripts. Figur
     + Default: number of CPUs in computer being used
 
 ### 01_CreateScenarios.py
-Creates AM, MD and PM network scenarios from main base year scenario. For example, if the user chose scenario 1000,
-this script will create AM, MD and PM scenarios with the correct time of day network attributes (e.g. bus priority
-lanes and headways by time of day.
+Creates AM, MD and PM network scenarios from the main base year scenario. For example, if the user chose scenario 1000,
+this script will create AM, MD and PM scenarios - typically scenarios 21000, 22000 and 23000 - with the relevant network attributes (e.g. bus priority
+lanes and headways) by time of day.
 
 
 ### 02_DataImport.py
@@ -443,7 +443,7 @@ Both examples will start from the point the user receives the model files from T
 
 ## 2011 Model Run
 
-This sections provides a step by step guide to setting up a base year, 2011, model run.
+This sections provides a step by step guide to launching a base year, 2011, model run assuming no changes to model input data.
 
 1) Unzip folder received from TransLink. The folder contents will look as shown in Figure <folder contents>
 2) Run the relocate_tools batch script found inside the Scripts folder
@@ -457,14 +457,52 @@ This sections provides a step by step guide to setting up a base year, 2011, mod
 8) Fill out the user inputs as shown in Figure <Run_Model> tool. The user can change the inputs depending on the type of run being undertaken, however since this is a 2011 base year run the inputs
    will look laregely similar to Figure <Run_Model>.
 9) Click the Run Button
-10) Once a run is completed, run the Data Export tool under the Stage 4 subfolder and check the Export to CSVs toggle  as shown in Figure <dataexport>
+10) Once a run is completed, run the Data Export tool under the Stage 4 subfolder and check the Export to CSVs toggle  as shown in Figure <dataexport>. The csv outputs
+are stored in the 'Outputs' folder inside the Emmebank folder.
 
 Warnings:
 
 1) In the Model horizon years, make sure you only enter 2011, 2030 and 2045 as certain model components such as the truck model, external demand and bike scores were only setup for these years
 2) Make sure the number of processors entered is less than or equal to what the machine supports
 
+## 2030 Model Run
+
+This section provides a step by step guide to setting up a horizon year, 2030, model run which includes the following input assumptions:
+
+ - Revised land-use data
+ - New tolled facility
+ - New Rail Line
+ - New Park and Ride lot
+
+Only steps requiring changes to the input data are included in this section. The user can refer to the previous section on how to launch a model run.
+
+1) Revised Land-use data:
+ - Generate a demographics file similar in format to the ones located inside the BaseNetworks - > Inputs directory.
+ - Since this model is largely driven by household trip rates, make sure all appropriate demographic attributes are updated. For example, if the scenario modelled
+   assumes a 20% population increase in Coquitlam, the number of households in that muncipality should also be updated accordingly
+
+2) New Tolled Facility
+ - Make a copy of one of the four main scenarios (in this case we assume scenario 3000 is copied to scenario 3001).
+ - Code the new tolled facility. Make sure to follow the Network Coding Guidelines described in Chapter XX.
+ - Ensure all ramp sections are coded with the correct volume-delay functions and speeds (refer to Network Coding Guidelines described in Chapter XX)
+ - Add the appropriate tolls for each time period
+ - Make sure turn penalty functions are coded properly for each time period and accounting for any turn restrictions
+
+3) New Rail Line
+ - Code the new rail line facility in scenario 3001. Make sure to follow the Network Coding Guidelines described in Chapter XX.
+ - As this is a rail line, we strongly reccomend coding it on separate, rail specific, links with pedestrian links connecting it to the main network.
+ - Make sure to code AM, MD and PM headways
+ - Make sure to allow boardings and alightings at rail station locations
+
+4) New Park and Ride Lot
 
 
+5) Final Checks before launching the run:
 
+ -  Make sure to add new transit vehicles if required
+ -  Make sure the correct seating and total capacities are provided in the transit vehicles table
+ -  Make sure to update the Geographics file if needed. For example, in the New Rail Line scenario, the user will need to update
+    the rail station dummy with a value of 1 for TAZs containing those stations.
+
+6) Launch the model run following the steps described in the previous section.
 
