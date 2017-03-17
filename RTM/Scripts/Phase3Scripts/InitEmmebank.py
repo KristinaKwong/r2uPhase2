@@ -153,6 +153,7 @@ class InitEmmebank(_m.Tool()):
         create_attr("LINK", "@vdfam", "AM Volume Delay Function", 0, False, scen)
         create_attr("LINK", "@vdfmd", "MD Volume Delay Function", 0, False, scen)
         create_attr("LINK", "@vdfpm", "PM Volume Delay Function", 0, False, scen)
+        create_attr("LINK", "@mspeedall", "Merge Speed", 0, False, scen)
         create_attr("LINK", "@tollam", "AM Link Toll Value ($)", 0, False, scen)
         create_attr("LINK", "@tollmd", "MD Link Toll Value ($)", 0, False, scen)
         create_attr("LINK", "@tollpm", "PM Link Toll Value ($)", 0, False, scen)

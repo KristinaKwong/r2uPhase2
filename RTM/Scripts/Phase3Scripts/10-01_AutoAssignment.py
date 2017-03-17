@@ -66,7 +66,7 @@ class AutoAssignment(_m.Tool()):
     def __call__(self, am_scenario, md_scenario, pm_scenario):
 
         ## Add External Demand to SOV and HOV VOT3 Segment and Demand Adjust Inc Demand for MD SOV VOT3 only
-#        self.add_external_demadj_demand()
+        self.add_external_demadj_demand()
 
         ## Set Attribute containing merge speeds into el1
         set_extra_function_parameters = _m.Modeller().tool("inro.emme.traffic_assignment.set_extra_function_parameters")

@@ -97,6 +97,7 @@ class ExportNetwork(_m.Tool()):
         attribute_list = ["@lanesam", "@vdfam", "@tollam",
                           "@lanesmd", "@vdfmd", "@tollmd",
                           "@lanespm", "@vdfpm", "@tollpm",
+                          "@mspeedall",
                           "@tpfam", "@tpfmd", "@tpfpm",
                           "@hdwyam", "@hdwymd", "@hdwypm",
                           "@lscid", "@lscstn", "@timeseg",

@@ -45,7 +45,7 @@ class InputSettings(_m.Tool()):
                       overwrite=True)
         amscen = eb.scenario(am_scenid)
 
-        self.attribute_code(amscen, "@lanesam", "@vdfam", "@tpfam", "@hdwyam", "@tollam", "@mspeedam")
+        self.attribute_code(amscen, "@lanesam", "@vdfam", "@tpfam", "@hdwyam", "@tollam", "@mspeedall")
 
         # Copy to new MD Scenarios
         md_scenid = int(eb.matrix("ms3").data)
@@ -55,7 +55,7 @@ class InputSettings(_m.Tool()):
                       overwrite=True)
         mdscen = eb.scenario(md_scenid)
 
-        self.attribute_code(mdscen, "@lanesmd", "@vdfmd", "@tpfmd", "@hdwymd", "@tollmd", "@mspeedmd")
+        self.attribute_code(mdscen, "@lanesmd", "@vdfmd", "@tpfmd", "@hdwymd", "@tollmd", "@mspeedall")
 
         # Copy to new pm Scenarios
         pm_scenid = int(eb.matrix("ms4").data)
@@ -65,7 +65,7 @@ class InputSettings(_m.Tool()):
                       overwrite=True)
         pmscen = eb.scenario(pm_scenid)
 
-        self.attribute_code(pmscen, "@lanespm", "@vdfpm", "@tpfpm", "@hdwypm", "@tollpm", "@mspeedpm")
+        self.attribute_code(pmscen, "@lanespm", "@vdfpm", "@tpfpm", "@hdwypm", "@tollpm", "@mspeedall")
 
     def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr, toll_attr, mspeed_attr):
         util = _m.Modeller().tool("translink.util")
@@ -110,9 +110,7 @@ class InputSettings(_m.Tool()):
 
         create_attr("LINK", "@mspeed", "merge speed", 0, False, scen)
         util.emme_link_calc(scen, "@mspeed", mspeed_attr)
-        delete_attr("@mspeedam", scen)
-        delete_attr("@mspeedmd", scen)
-        delete_attr("@mspeedpm", scen)
+        delete_attr("@mspeedall", scen)
 
 
         # Add all required extra attibutes used in Auto Assignment
