@@ -1041,7 +1041,7 @@ class ModeChoiceGenDf(_m.Tool()):
     def AutoGT(self, eb):
         util = _m.Modeller().tool("translink.util")
 
-        # work trips - not ideal formulation but quick and gets it done
+        # work trips 
         # [AM,MD,PM]
         auto_mats = {"autotime" : ["AmSovTimeVOT4",  "MdSovTimeVOT4", "PmSovTimeVOT4"],
                     "autocost" : ["mfAmSovOpCstVOT4", "mfMdSovOpCstVOT4", "mfPmSovOpCstVOT4"]}
