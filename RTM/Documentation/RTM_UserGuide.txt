@@ -2,7 +2,7 @@
 
 # Introduction
 
-TransLink’s Regional Transportation Model (RTM) is a comprehensive travel demand forecasting tool for 
+TransLink's Regional Transportation Model (RTM) is a comprehensive travel demand forecasting tool for 
 municipalities and/or districts in the GVRD and FVRD. The RTM estimates the 24-hour demand for various modes which include:
 
 1) Auto: SOV and HOV
