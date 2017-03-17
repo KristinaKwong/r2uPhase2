@@ -1,6 +1,10 @@
 ---
 title: "TransLink Regional Transportation Model Phase 3 Userguide"
-output: pdf_document
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
 ---
 
 # Introduction
@@ -165,40 +169,40 @@ The first column of data is the zone number the data values are intended for.
 ### Demographics Input File
 The demographics input file contains the following data
 
-|Matrix ID|EMME Name|EMME Description|SQL NAME|Notes     |
-|:-------:|:--------|:---------------|:-------|:---------|
-|mo10     |TotPop     |POP_Total              |POP_Total                   |Total Population                               |
-|mo11     |Pop0t4     |POP_0to4               |POP_0to4                    |Population Ages 0 to 4                         |
-|mo12     |Pop5t12    |POP_5to12              |POP_5to12                   |Population Ages 5 to 12                        |
-|mo13     |Pop13t17   |POP_13to17             |POP_13to17                  |Population Ages 13 to 17                       |
-|mo14     |Pop18t24   |POP_18to24             |POP_18to24                  |Population Ages 18 to 24                       |
-|mo15     |Pop25t34   |POP_25to34             |POP_25to34                  |Population Ages 25 to 34                       |
-|mo16     |Pop35t54   |POP_35to54             |POP_35to54                  |Population Ages 35 to 54                       |
-|mo17     |Pop55t64   |POP_55to64             |POP_55to64                  |Population Ages 55 to 64                       |
-|mo18     |Pop65Up    |POP_65plus             |POP_65plus                  |Population Ages 65 plus                        |
-|mo20     |TotEmp     |EMP_Total              |EMP_Total                   |Total Employment                               |
-|mo21     |EmpConMfg  |Construct_Mfg          |EMP_Construct_Mfg           |Employment: Construction, Manufacturing        |
-|mo22     |EmpFire    |FIRE                   |EMP_FIRE                    |                                               |
-|mo23     |EmpTcuWh   |TCU_Wholesale          |EMP_TCU_Wholesale           |                                               |
-|mo24     |EmpRet     |Retail                 |EMP_Retail                  |                                               |
-|mo25     |EmpBoS     |Business_OtherServices |EMP_Business_OtherServices  |                                               |
-|mo26     |EmpAcFoInCu|AccomFood_InfoCult     |EMP_AccomFood_InfoCult      |                                               |
-|mo27     |EmpHeEdPuAd|Health_Educat_PubAdmin |EMP_Health_Educat_PubAdmin  |                                               |
-|mo30     |EnrolElem  |Elementary_Enrolment   |Elementary_Enrolment        |Elementary School Enrollment                   |
-|mo31     |EnrolSec   |Secondary_Enrolment    |Secondary_Enrolment         |Secondary School Enrollment                    |
-|mo32     |EnrolPsFte |PostSecFTE             |PostSecFTE                  |Post Secondary Full Time Equivalent Enrollment |
-|mo40     |TotHh      |HHOLDS_Total           |HH_Total                    |Total Households                               |
-|mo41     |Hh1p       |HHOLDS_1Person         |HH_1Person                  |1 Person Households                            |
-|mo42     |Hh2p       |HHOLDS_2Person         |HH_2Person                  |2 Person Households                            |
-|mo43     |Hh3p       |HHOLDS_3Person         |HH_3Person                  |3 Person Households                            |
-|mo44     |Hh4pUp     |HHOLDS_4plusPerson     |HH_4plusPerson              |4-plus Person Households                       |
+|Matrix ID|EMME Name   |EMME Description   |SQL NAME|Notes     |
+|:-------:|:-------------|:----------------------|:---------------------------|:----------------------------------------------|
+|mo10     |TotPop      |POP_Total              |POP_Total                   |Total Population                               |
+|mo11     |Pop0t4      |POP_0to4               |POP_0to4                    |Population Ages 0 to 4                         |
+|mo12     |Pop5t12     |POP_5to12              |POP_5to12                   |Population Ages 5 to 12                        |
+|mo13     |Pop13t17    |POP_13to17             |POP_13to17                  |Population Ages 13 to 17                       |
+|mo14     |Pop18t24    |POP_18to24             |POP_18to24                  |Population Ages 18 to 24                       |
+|mo15     |Pop25t34    |POP_25to34             |POP_25to34                  |Population Ages 25 to 34                       |
+|mo16     |Pop35t54    |POP_35to54             |POP_35to54                  |Population Ages 35 to 54                       |
+|mo17     |Pop55t64    |POP_55to64             |POP_55to64                  |Population Ages 55 to 64                       |
+|mo18     |Pop65Up     |POP_65plus             |POP_65plus                  |Population Ages 65 plus                        |
+|mo20     |TotEmp      |EMP_Total              |EMP_Total                   |Total Employment                               |
+|mo21     |EmpConMfg   |Construct_Mfg          |EMP_Construct_Mfg           |a                                              |
+|mo22     |EmpFire     |FIRE                   |EMP_FIRE                    |a                                              |
+|mo23     |EmpTcuWh    |TCU_Wholesale          |EMP_TCU_Wholesale           |a                                              |
+|mo24     |EmpRet      |Retail                 |EMP_Retail                  |a                                              |
+|mo25     |EmpBoS      |Business_OtherServices |EMP_Business_OtherServices  |a                                              |
+|mo26     |EmpAcFoInCu |AccomFood_InfoCult     |EMP_AccomFood_InfoCult      |a                                              |
+|mo27     |EmpHeEdPuAd |Health_Educat_PubAdmin |EMP_Health_Educat_PubAdmin  |a                                              |
+|mo30     |EnrolElem   |Elementary_Enrolment   |Elementary_Enrolment        |Elementary School Enrollment                   |
+|mo31     |EnrolSec    |Secondary_Enrolment    |Secondary_Enrolment         |Secondary School Enrollment                    |
+|mo32     |EnrolPsFte  |PostSecFTE             |PostSecFTE                  |Post Secondary Full Time Equivalent Enrollment |
+|mo40     |TotHh       |HHOLDS_Total           |HH_Total                    |Total Households                               |
+|mo41     |Hh1p        |HHOLDS_1Person         |HH_1Person                  |1 Person Households                            |
+|mo42     |Hh2p        |HHOLDS_2Person         |HH_2Person                  |2 Person Households                            |
+|mo43     |Hh3p        |HHOLDS_3Person         |HH_3Person                  |3 Person Households                            |
+|mo44     |Hh4pUp      |HHOLDS_4plusPerson     |HH_4plusPerson              |4-plus Person Households                       |
 
 
 ### Geographics Input File
 The demographics input file contains the following data
 
 |Matrix ID|EMME Name|EMME Description|SQL NAME|Notes     |
-|:-------:|:--------|:----------------|:-------|:-------------|
+|:-------:|:--------|:----------------|:-------|:--------------------|
 |mo50     |areahc   |taz_a_area_hec   |Hectares             |Zone Area in Hectares                      |
 |mo60     |prk2hr   |parkingcost2hr   |parking_two_hr_rate  |Two Hour Parking Rate                      |
 |mo61     |prk8hr   |parkingcost8hr   |parking_eight_hr_rate|Eight Hours Parking Rate                   |
@@ -554,10 +558,10 @@ Only steps requiring changes to the input data are included in this section. The
     + Code the new park and ride in scenario 3001. Make sure to follow the Network Coding Guidelines described in Chapter XX.
     + Make sure the lot number chosen ranges between 100 - 130 and is not one of the existing lots used in the model in the future. Unused lots are usually stored in the North-eastermost portion of the EMME network
    as shown in Figure <13_PnR.png>
-    + Update the 'gn' ensemble in the 'taz1700_ensembles.csv' file inside the 'BaseNetworks\Inputs directory' - the proposed lot, say 129, gets a value of 3, which indicates this is a lot that only exists in the
+    + Update the 'gn' ensemble in the 'taz1700_ensembles.csv' file inside the 'BaseNetworks/Inputs directory' - the proposed lot, say 129, gets a value of 3, which indicates this is a lot that only exists in the
    future
     + Update attributes associated with the lot, such as capacity, cost and terminal time (auxiliary time spent walking inside the parking lot to a bus/rail stop/station). The file is 
-   located at 'BaseNetworks\Inputs\taz1700_pnr.csv'
+   located at 'BaseNetworks/Inputs/taz1700_pnr.csv'
 
 
 5. Export the Network
@@ -569,10 +573,165 @@ Only steps requiring changes to the input data are included in this section. The
 6. Final Checks before launching the run:
     +  Make sure to add new transit vehicles if required
     +  Make sure the correct seating and total capacities are provided in the transit vehicles table
-    +  Make sure to update the Geography (or create a new) file located at 'F:\RTM_Model_Dev_Phase3\model_files_p3\RTM\BaseNetworks\Inputs' if needed. For example, in the New Rail Line scenario,
+    +  Make sure to update the Geography (or create a new) file located at 'F:/RTM_Model_Dev_Phase3/model_files_p3/RTM/BaseNetworks/Inputs' if needed. For example, in the New Rail Line scenario,
     the user will need to update the rail station dummy with a value of 1 for TAZs containing those stations.
 
 7. Launch the model run following the steps described in the previous section.
 8. To summarize Park and Ride results, the user will need to check SOV/HOV and transit peak hour trips that travel from/to zones 100 - 130. These trips are stored in the mf300 series (see Appendix XX
    for details on matrices stored in the databank).          
 
+# Appendix A: Volume Delay Function Definitions
+
+## Special Functions
+$fd01 = length * 60 / 40$
+
+$fd02 = 40 + ((volau + volad) - 100) * 60 / (volau + volad) * ((volau +  volad) .ge. 100)$
+
+## Merge Functions
+$fd03 = length * 60 / el1 + 0.85 * ((volau + volad) / ( 600*lanes))^5$
+
+$fd04 = length * 60 / el1 + 0.85 * ((volau + volad) / ( 800*lanes))^5$
+
+$fd05 = length * 60 / el1 + 0.85 * ((volau + volad) / (1000*lanes))^5$
+
+$fd06 = length * 60 / el1 + 0.85 * ((volau + volad) / (1200*lanes))^5$
+
+$fd07 = length * 60 / el1 + 0.85 * ((volau + volad) / (1400*lanes))^5$
+
+## Controlled Intersection Functions
+$fd22 = 0.25 + length * 60 / 20 + .85 * ((volau + volad) / (400 * lanes)) ^ 4$
+
+$fd23 = 0.25 + length * 60 / 30 + .85 * ((volau + volad) / (400 * lanes)) ^ 4$
+
+$fd24 = 0.25 + length * 60 / 40 + .85 * ((volau + volad) / (400 * lanes)) ^ 4$
+
+$fd25 = 0.25 + length * 60 / 50 + .85 * ((volau + volad) / (400 * lanes)) ^ 4$
+
+$fd26 = 0.25 + length * 60 / 60 + .85 * ((volau + volad) / (400 * lanes)) ^ 4$
+
+$fd27 = 0.25 + length * 60 / 70 + .85 * ((volau + volad) / (400 * lanes)) ^ 4$
+
+$fd28 = 0.25 + length * 60 / 80 + .85 * ((volau + volad) / (400 * lanes)) ^ 4$
+
+$fd29 = 0.25 + length * 60 / 90 + .85 * ((volau + volad) / (400 * lanes)) ^ 4$
+
+$fd30 = 0.25 + length * 60 / 100 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
+
+$fd31 = 0.25 + length * 60 / 110 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
+
+$fd32 = 0.25 + length * 60 / 20 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
+
+$fd33 = 0.25 + length * 60 / 30 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
+
+$fd34 = 0.25 + length * 60 / 40 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
+
+$fd35 = 0.25 + length * 60 / 50 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
+
+$fd36 = 0.25 + length * 60 / 60 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
+
+$fd37 = 0.25 + length * 60 / 70 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
+
+$fd38 = 0.25 + length * 60 / 80 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
+
+$fd39 = 0.25 + length * 60 / 90 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
+
+$fd40 = 0.25 + length * 60 / 100 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
+
+$fd41 = 0.25 + length * 60 / 110 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
+
+$fd42 = 0.25 + length * 60 / 20 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
+
+$fd43 = 0.25 + length * 60 / 30 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
+
+$fd44 = 0.25 + length * 60 / 40 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
+
+$fd45 = 0.25 + length * 60 / 50 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
+
+$fd46 = 0.25 + length * 60 / 60 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
+
+$fd47 = 0.25 + length * 60 / 70 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
+
+$fd48 = 0.25 + length * 60 / 80 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
+
+$fd49 = 0.25 + length * 60 / 90 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
+
+$fd50 = 0.25 + length * 60 / 100 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
+
+$fd51 = 0.25 + length * 60 / 110 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
+
+$fd52 = 0.25 + length * 60 / 20 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
+
+$fd53 = 0.25 + length * 60 / 30 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
+
+$fd54 = 0.25 + length * 60 / 40 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
+
+$fd55 = 0.25 + length * 60 / 50 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
+
+$fd56 = 0.25 + length * 60 / 60 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
+
+$fd57 = 0.25 + length * 60 / 70 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
+
+$fd58 = 0.25 + length * 60 / 80 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
+
+$fd59 = 0.25 + length * 60 / 90 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
+
+$fd60 = 0.25 + length * 60 / 100 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
+
+$fd61 = 0.25 + length * 60 / 110 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
+
+$fd62 = 0.25 + length * 60 / 20 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
+
+$fd63 = 0.25 + length * 60 / 30 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
+
+$fd64 = 0.25 + length * 60 / 40 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
+
+$fd65 = 0.25 + length * 60 / 50 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
+
+$fd66 = 0.25 + length * 60 / 60 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
+
+$fd67 = 0.25 + length * 60 / 70 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
+
+$fd68 = 0.25 + length * 60 / 80 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
+
+$fd69 = 0.25 + length * 60 / 90 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
+
+$fd70 = 0.25 + length * 60 / 100 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
+
+$fd71 = 0.25 + length * 60 / 110 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
+
+$fd72 = 0.25 + length * 60 / 20 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
+
+$fd73 = 0.25 + length * 60 / 30 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
+
+$fd74 = 0.25 + length * 60 / 40 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
+
+$fd75 = 0.25 + length * 60 / 50 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
+
+$fd76 = 0.25 + length * 60 / 60 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
+
+$fd77 = 0.25 + length * 60 / 70 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
+
+$fd78 = 0.25 + length * 60 / 80 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
+
+$fd79 = 0.25 + length * 60 / 90 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
+
+## Free Flow Links
+$fd80 = length * 60 / (100 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ {1.05})) ^ {5.25})$
+
+$fd81 = length * 60 / (110 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ {1.05})) ^ {5.25})$
+
+$fd82 = length * 60 / 20 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)$
+
+$fd83 = length * 60 / 30 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)$
+
+$fd84 = length * 60 / 40 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)$
+
+$fd85 = length * 60 / 50 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)$
+
+$fd86 = length * 60 / 60 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)$
+
+$fd87 = length * 60 / 70 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)$
+
+$fd88 = length * 60 / (80 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ {1.05})) ^ {5.25})$
+
+$fd89 = length * 60 / (90 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ {1.05})) ^ {5.25})$
