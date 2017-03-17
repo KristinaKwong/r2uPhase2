@@ -2,6 +2,39 @@
 
 # Introduction
 
+TransLink’s Regional Transportation Model (RTM) is a comprehensive travel demand forecasting tool for 
+municipalities and/or districts in the GVRD and FVRD. The RTM estimates the 24-hour demand for various modes which include:
+
+1) Auto: SOV and HOV
+2) Walk Access to Transit: Bus, Rail and West Coast Express (WCE)
+3) Drive Access to Transit - Park and Ride: Bus, Rail and WCE
+3) Active: Walk and Bike
+4) Commercial Vehicles: Light trucks and Heavy Trucks
+
+The model has nine trip purposes:
+
+1) Home-base Work
+2) Home-base University
+3) Home-base School
+4) Home-base Shopping
+5) Home-base Personal Business
+6) Home-base Social-Recreational
+7) Home-base Escorting (pick up and drop off)
+8) Non-home-base Work
+9) Non-home-base Other
+
+The model assigns three main peak hour demands assigned onto the network
+
+1) AM: 730 - 830
+2) MD: 1200 - 1300
+3) PM: 1630 - 1730
+
+Peak hour trips are calculated in the model, however, they are not assigned onto the network.
+
+This User Guide provides details to the user regarding the various components of the model files delivered by TransLink. It is intended to provide a step - by - step 
+guide on how to setup a model run and details to take into consideration before running the model. This User Guide does not provide technical details about the sub-models
+in the RTM3. These details, such as detailed descriptions of the econometric models, will be provided in a comprehensive Model Documentation folder later in the year.
+
 
 # Model Format
 
@@ -262,14 +295,16 @@ are in the BaseNetworks/ folder. The name of the scenario to be import is a user
 
 # Scripts Folder
 
-The Scripts folder contains the main toolboxes and python codes used for running the model. Figure <Screennshot of Scripts folder> shows the files
+The Scripts folder contains the main toolboxes and python codes used for running the model. Figure <1_Scripts_folder.png> shows the files
 inside the folder.
 
 ## Util folder
 
 The Util folder contains the Util toolbox and associated python script. The Util toolbox contains helper functions that
-get used repeatedly within a model run. These helper functions are usually called from other Python Scripts. Examples include
-helper functions and how to invoke them include the following:
+get used repeatedly within a model run. These helper functions are usually called from other Python Scripts. The Util method is usually called using the command:
+util = _m.Modeller().tool("translink.util")
+
+Examples of helper functions inside the Util method that get regularly called from the model's main scripts include: 
 
  - Matrix Calculator : util.compute_matrix(<Arguments>)
 
@@ -282,9 +317,9 @@ to read.
 
 ## Phase3Scripts Folder
 
-This folder contains the model's main python tool box and associated scripts. Figure <Phase3Scripts Screnshot> is a screenshot of the Phase3Scripts folder.
-The following is a brief description of each script in the order of model run. Each of the scripts in this folder has an object reference to the
-Util toolbox as shown in the screenshot (Figure <Screenshot of Util method invoke>) below from the trip productions python script - 06_TripProductions.py.
+This folder contains the model's main python tool box and associated scripts. Figure <2_Phase3Scripts.png> is a screenshot of the Phase3Scripts folder.
+The following is a brief description of each script in the order they appear in within the model run page. Each of the scripts in this folder has an object reference to the
+Util toolbox as mentioned in the previous section.
 
 ### InitEmmebank.py
 Creates a new databank which contains the building blocks of the model run:
@@ -298,7 +333,7 @@ Creates a new databank which contains the building blocks of the model run:
    + Transit time (ttf)
 
 ### 00_RunModel.py
-This the main model run wrapper and launches the subsequent model scripts. Figure <Screenshot of Run Page> is a screenshot of the run page with required user inputs:
+This the main model run wrapper and launches the subsequent model scripts. Figure <3_run_model_page.png> is a screenshot of the run page with required user inputs:
 
 1. Model horizon year:
     + 2011
@@ -370,10 +405,10 @@ Contains various helper functions that get used repeatedly in the trip distribut
 2. Mode availability conditions
 
 ### 09-10_TruckModel.py
-Runs the truck model and generates six origin - destination tables - 2 truck types (light and heavy) x 3 time periods
+Runs the truck model and generates six origin - destination tables - 2 truck types (light and heavy) x three time periods
 
 ### 10-01_AutoAssignment.py
-Runs the auto vehicle traffic assignment for the three time periods
+Runs the auto vehicle traffic assignment and generates time and cost skims for the three time periods  
 
 ### 10-02_TransitAssignment.py
 Runs the transit assignment (bus, rail and WCE) for the three time periods
@@ -381,15 +416,15 @@ Runs the transit assignment (bus, rail and WCE) for the three time periods
 Other scripts that are included in the Phase3Scripts but not part of a model run:
 
 ### 12_DataExport.py
-Main model outputs are stored in database format inside the project folder. This tool exports this data to .csv format inside the Outputs folder. The outputs include:
+Main model outputs are stored in a SQLite database inside the project folder as shown in Figure <4_SQLite_tables.png> (see rtm.db and trip_summaries.db). This tool exports the data inside the SQLite database
+to .csv format inside the Outputs folder. The outputs include:
 
-1. Gy - Gy trip summaries by purpose, mode and time period (AM, MD, PM and Daily). One important thing to note is the Daily trip
- summaries are in production - attracion (P-A) format whereas the time of day results are in origin - destination (O-D) format.
-2. Network-level summaries: Vehicle volumes by vehicle class, transit volumes, travel time, distance and speed on each link
+1. Trip summaries by mode, purpose and time of day at the aggregate and gy - gy level. Do note that daily trips at the gy - gy level are in Production - Attraction format whereas peak hour trips are in 
+   Origin - Destination format.
+2. Network Summaries: Including VKT and travel times 
 
 ### ImportNetwork.py and ExportNetwork.py
-These two tools allow the import/export of current/future networks after they've been modified. More details will
-be provided in the following section using examples.
+These two tools allow the import/export of current/future networks after they've been modified. More details are provided in the Step by Step Guide to running the model Chapter.
 
 ## Notes on the Use of Numpy and Pandas Python Libraries
 Previous versions of the RTM relied largely on INRO's built in matrix calculator method throughout the full model run. In RTM3, most of these calculations are undertaken
@@ -398,7 +433,7 @@ if the number of households per zone is stored in Matrix 'mo1'(or 'md1'), the da
 command: X = emmebank.matrix("mo1").get_numpy_data(), where X is the array object. Once a calculation is completed, the result can be directly stored back into the Emmebank using
 the command: emmebank.matrix("mo2").set_numpy_data(X).
 
-Similar operation can be undertaken on full matrices except the array object would be of size 1741x1741.
+Similar operations can be undertaken on full matrices except the array object would be of size 1741x1741.
 
 
 The example below demonstrates a mode choice utility expression constructed using the matrix calculator and Numpy.
@@ -423,7 +458,8 @@ Below are a few advantages of using Numpy:
 1) Code is succint and easier to read since it does not require string concatenation
 2) Reduces the amount of coding errors
 3) Numpy is flexible and significantly faster than Matrix Calculator. This is specially important for complex models with many TAZs
-4) Direct integration with Python's Pandas library which allows relational database/SQL type operations such as Join and Relate.
+4) Direct integration with Python's Pandas library which allows relational database/SQL type operations such as Join and Relate.This capability makes the management of complicated RTM submodels,
+   such as Park and Ride, much easier.
 
 Both the 'get' and 'set' Numpy methods are available in the 'Util' toolbox as helper functions. The two examples below show how these are invoked in the RTM:
 
@@ -434,31 +470,32 @@ For more information on Python Coding Guidelines, refer to Appendix XX of this U
 
 # Step by Step Guide for Running the Model
 
-This chapter provides a step by step guide for running three models. Two examples will be used:
+This chapter provides a step by step guide for running the model. Two examples will be used:
 
 1) Run a base year 2011 run
 2) Run a future scenario run which includes demographic, auto and transit network changes.
 
-Both examples will start from the point the user receives the model files from TransLink and provides screenshots to help guide the discussion below.
+Example 1 starts from the point the user receives the model files from TransLink. Example 2 focuses more on data inputs that need to be updated for running a future scenario.
+Both examples provide screenshots to help guide the discussion.
 
 ## 2011 Model Run
 
 This sections provides a step by step guide to launching a base year, 2011, model run assuming no changes to model input data.
 
-1) Unzip folder received from TransLink. The folder contents will look as shown in Figure <folder contents>
-2) Run the relocate_tools batch script found inside the Scripts folder
-3) Run RTM.emp to launch the EMME. The Explorer will look similar to Figure <Explorer> with one dummy scenario (Scenario 1)
-4) Launch EMME Modeller and go to 'Translink RTM Phase 3 Model' tool. The model utilities toolbox, 'Translink Utilities' can also be seen at the botton in Figure <toolbox_screenshot>
-5) Launch the Initialize Emmebank tool. Enter a name for the title and folder name of the Emmebank you wish to create and click on the Run button (see Figure <InitEMMEbank>).
-6) Close Modeller, the Explorer will now point to the newly created Emmebank which will include four scenarios, one for each horizon year, and associated networks as shown in Figure <new_explorer>.
-   The newly created Emmebank folder, 2011_Base in this example, will look similar to Figure <new_emmebank_folder>. You'll notice a copy of the Inputs folder that also exists in the
-   RTM -> BaseNetworks directory.
+1) Unzip folder received from TransLink. The folder contents will look similar to Figure <5_Folder_Contents.png>
+2) Run the relocate_tools batch script found inside the Scripts folder. This script locates the python tools associated with the model run. 
+3) Run RTM.emp to launch the EMME. The Explorer will look similar to Figure <6_Explorer.png> with one dummy scenario (Scenario 1)
+4) Launch EMME Modeller and go to 'Translink RTM Phase 3 Model' tool. The model utilities toolbox, 'Translink Utilities' can also be seen at the botton in Figure <7_toolboxes.png>
+5) Launch the Initialize Emmebank tool. Enter a name for the title and folder name of the Emmebank you wish to create and click on the Run button (see Figure <8_Init_EMMEbank.png>).
+6) Close Modeller, the Explorer will now point to the newly created Emmebank which will include four scenarios, one for each horizon year, and associated networks as shown in Figure <9_Explorer_2.png>.
+   The newly created Emmebank folder, 2011_Base in this example, will look similar to Figure <10_Emmebank_Folder.png>. You will notice a copy of the Inputs folder that also exists in the
+   'RTM/BaseNetworks' directory.
 7) Launch Modeller and run the 'Run RTM3' tool inside the 'Translink RTM Phase 3 Model' toolbox.
-8) Fill out the user inputs as shown in Figure <Run_Model> tool. The user can change the inputs depending on the type of run being undertaken, however since this is a 2011 base year run the inputs
-   will look laregely similar to Figure <Run_Model>.
+8) Fill out the user inputs as shown in Figure <3_run_model_page.png> tool. The user can change the inputs depending on the type of run being undertaken, however since this is a 2011 base year run the inputs
+   will look laregely similar to the ones shown in the previous figure.
 9) Click the Run Button
-10) Once a run is completed, run the Data Export tool under the Stage 4 subfolder and check the Export to CSVs toggle  as shown in Figure <dataexport>. The csv outputs
-are stored in the 'Outputs' folder inside the Emmebank folder.
+10) Once a run is completed, run the Data Export tool under the Stage 4 subfolder and check the Export to CSVs toggle  as shown in Figure <11_Export.png>. The csv outputs
+are stored in the 'Outputs' folder inside the Emmebank folder as shown in Figure <12_Outputs_Folder.png>.
 
 Warnings:
 
@@ -467,7 +504,7 @@ Warnings:
 
 ## 2030 Model Run
 
-This section provides a step by step guide to setting up a horizon year, 2030, model run which includes the following input assumptions:
+This section provides a step by step guide to setting up a horizon year, 2030, model run which includes the following input assumptions as part of the scenario:
 
  - Revised land-use data
  - New tolled facility
@@ -477,8 +514,8 @@ This section provides a step by step guide to setting up a horizon year, 2030, m
 Only steps requiring changes to the input data are included in this section. The user can refer to the previous section on how to launch a model run.
 
 1) Revised Land-use data:
- - Generate a demographics file similar in format to the ones located inside the BaseNetworks - > Inputs directory.
- - Since this model is largely driven by household trip rates, make sure all appropriate demographic attributes are updated. For example, if the scenario modelled
+ - Generate a demographics file similar in format to the ones located inside the 'BaseNetworks/Inputs' directory (for example the taz1700_demographics_2030.csv file).
+ - Very Important: Since this model is largely driven by household trip rates, make sure all appropriate demographic attributes are updated. For example, if the scenario modelled
    assumes a 20% population increase in Coquitlam, the number of households in that muncipality should also be updated accordingly
 
 2) New Tolled Facility
@@ -490,19 +527,34 @@ Only steps requiring changes to the input data are included in this section. The
 
 3) New Rail Line
  - Code the new rail line facility in scenario 3001. Make sure to follow the Network Coding Guidelines described in Chapter XX.
- - As this is a rail line, we strongly reccomend coding it on separate, rail specific, links with pedestrian links connecting it to the main network.
+ - As this is a rail line, we strongly recommend coding it on separate, rail specific, links with pedestrian links connecting it to the main network.
  - Make sure to code AM, MD and PM headways
  - Make sure to allow boardings and alightings at rail station locations
 
 4) New Park and Ride Lot
+ - Code the new park and ride in scenario 3001. Make sure to follow the Network Coding Guidelines described in Chapter XX.
+ - Make sure the lot number chosen ranges between 100 - 130 and is not one of the existing lots used in the model in the future. Unused lots are usually stored in the North-eastermost portion of the EMME network
+   as shown in Figure <13_PnR.png>
+ - Update the 'gn' ensemble in the 'taz1700_ensembles.csv' file inside the 'BaseNetworks\Inputs directory' - the proposed lot, say 129, gets a value of 3, which indicates this is a lot that only exists in the
+   future
+ - Update attributes associated with the lot, such as capacity, cost and terminal time (auxiliary time spent walking inside the parking lot to a bus/rail stop/station). The file is 
+   located at 'BaseNetworks\Inputs\taz1700_pnr.csv'
 
 
-5) Final Checks before launching the run:
+5) Export the Network
+ - If Scenario 3001 becomes a main future year scenario that needs to be run repeatedly, the user can export the Scenario using the 'Export Networks' tool. The outputs will be stored inside the 
+   BaseNetworks folder as shown in Figure <14_BaseNetworks.png> The text files will be numbered with 3001. Afterwards, the InitEmmebank.py script can be updated to include scenario 3001 as part
+   of the main horizon year networks as shown in Figure <15_InitEmmebank2.png>. 
+
+
+6) Final Checks before launching the run:
 
  -  Make sure to add new transit vehicles if required
  -  Make sure the correct seating and total capacities are provided in the transit vehicles table
- -  Make sure to update the Geographics file if needed. For example, in the New Rail Line scenario, the user will need to update
-    the rail station dummy with a value of 1 for TAZs containing those stations.
+ -  Make sure to update the Geographics (or create a new) file located at 'F:\RTM_Model_Dev_Phase3\model_files_p3\RTM\BaseNetworks\Inputs' if needed. For example, in the New Rail Line scenario,
+    the user will need to update the rail station dummy with a value of 1 for TAZs containing those stations.
 
-6) Launch the model run following the steps described in the previous section.
+7) Launch the model run following the steps described in the previous section.
+8) To summarize Park and Ride results, the user will need to check SOV/HOV and transit peak hour trips that travel from/to zones 100 - 130. These trips are stored in the mf300 series (see Appendix XX
+   for details on matrices stored in the databank).          
 
