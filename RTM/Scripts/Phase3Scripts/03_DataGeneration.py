@@ -648,7 +648,9 @@ class DataGeneration(_m.Tool()):
         eb = sc.emmebank
         # calculate fixed link opcosts based on SOV travel
 
-
+        ## Set Attribute containing merge speeds into el1
+        set_extra_function_parameters = _m.Modeller().tool("inro.emme.traffic_assignment.set_extra_function_parameters")
+        set_extra_function_parameters(el1 = "@mspeed")
 
         auto_voc = eb.matrix("msautoOpCost").data
         util.emme_link_calc(sc, "@sovoc", "length * %s" % (auto_voc))

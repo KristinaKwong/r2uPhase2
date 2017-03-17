@@ -45,7 +45,7 @@ class InputSettings(_m.Tool()):
                       overwrite=True)
         amscen = eb.scenario(am_scenid)
 
-        self.attribute_code(amscen, "@lanesam", "@vdfam", "@tpfam", "@hdwyam", "@tollam")
+        self.attribute_code(amscen, "@lanesam", "@vdfam", "@tpfam", "@hdwyam", "@tollam", "@mspeedam")
 
         # Copy to new MD Scenarios
         md_scenid = int(eb.matrix("ms3").data)
@@ -55,7 +55,7 @@ class InputSettings(_m.Tool()):
                       overwrite=True)
         mdscen = eb.scenario(md_scenid)
 
-        self.attribute_code(mdscen, "@lanesmd", "@vdfmd", "@tpfmd", "@hdwymd", "@tollmd")
+        self.attribute_code(mdscen, "@lanesmd", "@vdfmd", "@tpfmd", "@hdwymd", "@tollmd", "@mspeedmd")
 
         # Copy to new pm Scenarios
         pm_scenid = int(eb.matrix("ms4").data)
@@ -65,9 +65,9 @@ class InputSettings(_m.Tool()):
                       overwrite=True)
         pmscen = eb.scenario(pm_scenid)
 
-        self.attribute_code(pmscen, "@lanespm", "@vdfpm", "@tpfpm", "@hdwypm", "@tollpm")
+        self.attribute_code(pmscen, "@lanespm", "@vdfpm", "@tpfpm", "@hdwypm", "@tollpm", "@mspeedpm")
 
-    def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr, toll_attr):
+    def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr, toll_attr, mspeed_attr):
         util = _m.Modeller().tool("translink.util")
         create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
         delete_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.delete_extra_attribute")
@@ -107,6 +107,13 @@ class InputSettings(_m.Tool()):
         delete_attr("@tollam", scen)
         delete_attr("@tollmd", scen)
         delete_attr("@tollpm", scen)
+
+        create_attr("LINK", "@mspeed", "merge speed", 0, False, scen)
+        util.emme_link_calc(scen, "@mspeed", mspeed_attr)
+        delete_attr("@mspeedam", scen)
+        delete_attr("@mspeedmd", scen)
+        delete_attr("@mspeedpm", scen)
+
 
         # Add all required extra attibutes used in Auto Assignment
         create_attr("LINK", "@sov1", "SOV Volume VOT1",     0, False, scen)
