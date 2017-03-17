@@ -14,7 +14,7 @@ class ExportNetwork(_m.Tool()):
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
-        pb.title = "Translink Utility Toolbox"
+        pb.title = "Translink Network Utility"
         pb.description = "Export an Emme Network"
         pb.branding_text = "TransLink"
 
