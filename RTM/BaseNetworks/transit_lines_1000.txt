@@ -1,5 +1,5 @@
 c Emme Modeller - Transit Line Transaction
-c Scenario 1000:  2011 Base Network
+c Scenario 1001:  vdf_1000
 t lines
 c Transit Lines
 c Line  Mod Veh Headwy Speed Description             Data1  Data2  Data3
