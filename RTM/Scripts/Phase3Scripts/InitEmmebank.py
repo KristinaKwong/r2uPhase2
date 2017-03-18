@@ -147,6 +147,7 @@ class InitEmmebank(_m.Tool()):
         create_attr("LINK", "@lscid", "Screenline Identifier", 0, False, scen)
         create_attr("LINK", "@lscstn", "Screenline Station Identifier", 0, False, scen)
         create_attr("LINK", "@timeseg", "Travel Time Segment Identifier", 0, False, scen)
+        create_attr("LINK", "@posted_speed", "Posted Speed Limit", 0, False, scen)
         create_attr("LINK", "@lanesam", "AM Number of Lanes", 0, False, scen)
         create_attr("LINK", "@lanesmd", "MD Number of Lanes", 0, False, scen)
         create_attr("LINK", "@lanespm", "PM Number of Lanes", 0, False, scen)
