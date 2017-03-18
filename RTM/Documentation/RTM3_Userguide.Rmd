@@ -2,9 +2,15 @@
 title: "TransLink Regional Transportation Model Phase 3 Userguide"
 output:
   pdf_document:
-    toc: true
+    number_sections: yes
+    toc: yes
     toc_depth: 2
-    number_sections: true
+  html_document:
+    toc: yes
+    toc_depth: '2'
+  word_document:
+    toc: yes
+    toc_depth: '2'
 ---
 
 # Introduction
@@ -735,3 +741,41 @@ $fd87 = length * 60 / 70 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.
 $fd88 = length * 60 / (80 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ {1.05})) ^ {5.25})$
 
 $fd89 = length * 60 / (90 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ {1.05})) ^ {5.25})$
+
+# Appendix B: Matrix Ranges
+
+|Type|Matrix Type|Matrix Series|Description|
+|:--:|:------:|:--------:|:-------------------------------------------------------|
+|ms    |Scalar         |1 - 99         |Model Inputs                                                 |
+|ms    |Scalar         |100 - 150      |HOV Occupancy and Passenger Car Equivalents                  |
+|ms    |Scalar         |160            |Transit One Zone Fare                                        |
+|ms    |Scalar         |200 - 299      |Values of Time                                               |
+|ms    |Scalar         |300 - 399      |Transit Perception Factors                                   |
+|ms    |Scalar         |400 - 499      |Blended Skims Factors                                        |
+|ms    |Scalar         |500 - 599      |Transit Fare Blended Skims Factor                            |
+|ms    |Scalar         |8000 - 8099    |Truck Model Scalars                                          |
+|mo    |Origin         |1 - 99         |Model Inputs                                                 |
+|mo    |Origin         |100 - 199      |Geographic and Ensemble Dummies                              |
+|mo    |Origin         |200 - 299      |Urban Form Variables such as densities and accessibilities   |
+|mo    |Origin         |2000 - 2099    |Trip Productions                                             |
+|mo    |Origin         |8000 - 8099    |Truck Model Productions                                      |
+|md    |Destination    |2000 - 2099    |Trip Attractions                                             |
+|md    |Destination    |8000 - 8099    |Truck Model Attractions                                      |
+|mf    |Full           |1 - 99         |Model Inputs                                                 |
+|mf    |Full           |200 - 299      |Person - trips by time of day                                |
+|mf    |Full           |300 - 399      |Assigned trips by time of day (auto driver and transit)      |
+|mf    |Full           |3000 - 3999    |Trip Distribution and Mode Choice Daily Trips by Trip Purpose|
+|mf    |Full           |5000 - 5099    |Auto Assignment Skims by time of day                         |
+|mf    |Full           |5100 - 5299    |Auto Assignment Blended Skims by Trip Purpose                |
+|mf    |Full           |5300 - 5399    |Bus Assignment Skims by time of day                          |
+|mf    |Full           |5400 - 5499    |Bus Assignment Blended Skims by Trip Purpose                 |
+|mf    |Full           |5500 - 5599    |Rail Assignment Skims by time of day                         |
+|mf    |Full           |5600 - 5699    |Rail Assignment Blended Skims by Trip Purpose                |
+|mf    |Full           |5700 - 5799    |WCE Assignment Skims by time of day                          |
+|mf    |Full           |5800 - 5899    |WCE Assignment Blended Skims by Trip Purpose                 |
+|mf    |Full           |6000 - 6999    |Park and Ride Model chosen lot and skims                     |
+|mf    |Full           |8000 - 8099    |Truck Model trips by market sector (daily and by time of day)|
+|mf    |Full           |9000 - 9099    |Mode Choice Logsums by trip purpose                          |
+|mf    |Full           |9100 - 9199    |Trip Distribution Friction Factors scratch matrices          |
+|mf    |Full           |9200 - 9299    |Trip Distribution K-Factors                                  |
+|mf    |Full           |9900 - 9999    |Temporary time of day skims storage                          |
