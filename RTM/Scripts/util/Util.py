@@ -35,19 +35,19 @@ class Util(_m.Tool()):
         self.calc_speed_inner(scen, "@vdfpm")
 
     def calc_speed_inner(self, scen, vdfatt):
-        # move 82-87 to 85
-        self.emme_link_calc(scen, vdfatt, "85", vdfatt + "=82,87")
+        # 3,4,5 to 13
+        self.emme_link_calc(scen, vdfatt, "13", vdfatt + "=3,5")
         
-        # move 80-81 and 88-89 to 88
-        self.emme_link_calc(scen, vdfatt, "88", vdfatt + "=80,81")
-        self.emme_link_calc(scen, vdfatt, "88", vdfatt + "=88,89")
+        self.emme_link_calc(scen, vdfatt, "14", vdfatt + "=92,94")
         
-        self.emme_link_calc(scen, vdfatt, "25", vdfatt + "=22,29")
-        self.emme_link_calc(scen, vdfatt, "35", vdfatt + "=30,39")
-        self.emme_link_calc(scen, vdfatt, "45", vdfatt + "=40,49")
-        self.emme_link_calc(scen, vdfatt, "55", vdfatt + "=50,59")
-        self.emme_link_calc(scen, vdfatt, "65", vdfatt + "=60,69")
-        self.emme_link_calc(scen, vdfatt, "75", vdfatt + "=70,79")
+        self.emme_link_calc(scen, vdfatt, "15", vdfatt + "=7,11")
+        self.emme_link_calc(scen, vdfatt, "15", vdfatt + "=2")
+        
+        self.emme_link_calc(scen, vdfatt, "16", vdfatt + "=17,21")
+        self.emme_link_calc(scen, vdfatt, "16", vdfatt + "=12")
+        
+        self.emme_link_calc(scen, vdfatt, "17", vdfatt + "=95,99")
+        self.emme_link_calc(scen, vdfatt, "17", vdfatt + "=90")
 
     def __call__(self):
         pass
