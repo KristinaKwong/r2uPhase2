@@ -29,56 +29,25 @@ class Util(_m.Tool()):
         self.calc_speed(_m.Modeller().emmebank.scenario(4000))
 
     def calc_speed(self, scen):
-        self.calc_speed_inner(scen, "ul1", "@vdfam")
-        self.calc_speed_inner(scen, "ul2", "@vdfmd")
-        self.calc_speed_inner(scen, "ul3", "@vdfpm")
+        self.calc_speed_inner(scen, "vdf")
+        self.calc_speed_inner(scen, "@vdfam")
+        self.calc_speed_inner(scen, "@vdfmd")
+        self.calc_speed_inner(scen, "@vdfpm")
 
-    def calc_speed_inner(self, scen, res, vdfatt):
-        # init all attribute values to 0
-        self.emme_link_calc(scen, res, "0")
-
-        self.emme_link_calc(scen, res, "40", vdfatt + "=1")
-        self.emme_link_calc(scen, res, "40", vdfatt + "=6")
-
-        self.emme_link_calc(scen, res, "100", vdfatt + "=20,80,10")
-        self.emme_link_calc(scen, res, "110", vdfatt + "=21,81,10")
-        self.emme_link_calc(scen, res, " 20", vdfatt + "=22,82,10")
-        self.emme_link_calc(scen, res, " 30", vdfatt + "=23,83,10")
-        self.emme_link_calc(scen, res, " 40", vdfatt + "=24,84,10")
-        self.emme_link_calc(scen, res, " 50", vdfatt + "=25,85,10")
-        self.emme_link_calc(scen, res, " 60", vdfatt + "=26,86,10")
-        self.emme_link_calc(scen, res, " 70", vdfatt + "=27,87,10")
-        self.emme_link_calc(scen, res, " 80", vdfatt + "=28,88,10")
-        self.emme_link_calc(scen, res, " 90", vdfatt + "=29,89,10")
-
-
-        self.emme_link_calc(scen, res, "50 ", vdfatt + "=03")
-        self.emme_link_calc(scen, res, "60 ", vdfatt + "=04")
-        self.emme_link_calc(scen, res, "70 ", vdfatt + "=05")
-        self.emme_link_calc(scen, res, "50 ", vdfatt + "=92")
-        self.emme_link_calc(scen, res, "60 ", vdfatt + "=93")
-        self.emme_link_calc(scen, res, "70 ", vdfatt + "=94")
-        self.emme_link_calc(scen, res, "50 ", vdfatt + "=07")
-        self.emme_link_calc(scen, res, "60 ", vdfatt + "=08")
-        self.emme_link_calc(scen, res, "70 ", vdfatt + "=09")
-        self.emme_link_calc(scen, res, "80 ", vdfatt + "=10")
-        self.emme_link_calc(scen, res, "90 ", vdfatt + "=11")
-        self.emme_link_calc(scen, res, "100", vdfatt + "=02")
-        self.emme_link_calc(scen, res, "50 ", vdfatt + "=17")
-        self.emme_link_calc(scen, res, "60 ", vdfatt + "=18")
-        self.emme_link_calc(scen, res, "70 ", vdfatt + "=19")
-        self.emme_link_calc(scen, res, "80 ", vdfatt + "=20")
-        self.emme_link_calc(scen, res, "90 ", vdfatt + "=21")
-        self.emme_link_calc(scen, res, "100", vdfatt + "=12")
-        self.emme_link_calc(scen, res, "50 ", vdfatt + "=95")
-        self.emme_link_calc(scen, res, "60 ", vdfatt + "=96")
-        self.emme_link_calc(scen, res, "70 ", vdfatt + "=97")
-        self.emme_link_calc(scen, res, "80 ", vdfatt + "=98")
-        self.emme_link_calc(scen, res, "90 ", vdfatt + "=99")
-        self.emme_link_calc(scen, res, "100", vdfatt + "=90")
-
-        # set the posted speed
-        self.emme_link_calc(scen, "@posted_speed", "ul1")
+    def calc_speed_inner(self, scen, vdfatt):
+        # move 82-87 to 85
+        self.emme_link_calc(scen, vdfatt, "85", vdfatt + "=82,87")
+        
+        # move 80-81 and 88-89 to 88
+        self.emme_link_calc(scen, vdfatt, "88", vdfatt + "=80,81")
+        self.emme_link_calc(scen, vdfatt, "88", vdfatt + "=88,89")
+        
+        self.emme_link_calc(scen, vdfatt, "25", vdfatt + "=22,29")
+        self.emme_link_calc(scen, vdfatt, "35", vdfatt + "=30,39")
+        self.emme_link_calc(scen, vdfatt, "45", vdfatt + "=40,49")
+        self.emme_link_calc(scen, vdfatt, "55", vdfatt + "=50,59")
+        self.emme_link_calc(scen, vdfatt, "65", vdfatt + "=60,69")
+        self.emme_link_calc(scen, vdfatt, "75", vdfatt + "=70,79")
 
     def __call__(self):
         pass
