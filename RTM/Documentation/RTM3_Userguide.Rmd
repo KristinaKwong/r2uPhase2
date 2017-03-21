@@ -327,8 +327,10 @@ are in the BaseNetworks/ folder. The name of the scenario to be import is a user
 
 # Scripts Folder
 
-The Scripts folder contains the main toolboxes and python codes used for running the model. Figure <1_Scripts_folder.png> shows the files
+The Scripts folder contains the main toolboxes and python codes used for running the model. Figure \ref{fig_scripts_folder} shows the files
 inside the folder.
+
+![Contents of the Scripts/ Folder\label{fig_scripts_folder}](./1_Scripts_folder.png)
 
 ## Util folder
 
@@ -349,9 +351,11 @@ to read.
 
 ## Phase3Scripts Folder
 
-This folder contains the model's main python tool box and associated scripts. Figure <2_Phase3Scripts.png> is a screenshot of the Phase3Scripts folder.
+This folder contains the model's main python tool box and associated scripts. Figure \ref{fig_p3scripts_folder} is a screenshot of the Phase3Scripts folder.
 The following is a brief description of each script in the order they appear in within the model run page. Each of the scripts in this folder has an object reference to the
 Util toolbox as mentioned in the previous section.
+
+![Contents of the Phase3Scripts/ Folder\label{fig_p3scripts_folder}](./2_Phase3Scripts.png)
 
 ### InitEmmebank.py
 Creates a new databank which contains the building blocks of the model run:
@@ -365,7 +369,7 @@ Creates a new databank which contains the building blocks of the model run:
    + Transit time (ttf)
 
 ### 00_RunModel.py
-This the main model run wrapper and launches the subsequent model scripts. Figure <3_run_model_page.png> is a screenshot of the run page with required user inputs:
+This the main model run wrapper and launches the subsequent model scripts. Figure \ref{fig_model_run} is a screenshot of the run page with required user inputs:
 
 1. Model horizon year:
     + 2011
@@ -397,6 +401,8 @@ This the main model run wrapper and launches the subsequent model scripts. Figur
     + Default: Enable Capacited Transit Assignment
 9. Number of Processors Specification
     + Default: number of CPUs in computer being used
+
+![Screenshot of Model Run Page\label{fig_model_run}](./3_run_model_page.png)
 
 ### 01_CreateScenarios.py
 Creates AM, MD and PM network scenarios from the main base year scenario. For example, if the user chose scenario 1000,
@@ -448,12 +454,14 @@ Runs the transit assignment (bus, rail and WCE) for the three time periods
 Other scripts that are included in the Phase3Scripts but not part of a model run:
 
 ### 12_DataExport.py
-Main model outputs are stored in a SQLite database inside the project folder as shown in Figure <4_SQLite_tables.png> (see rtm.db and trip_summaries.db). This tool exports the data inside the SQLite database
+Main model outputs are stored in a SQLite database inside the project folder as shown in Figure \ref{fig_sql_tables} (see rtm.db and trip_summaries.db). This tool exports the data inside the SQLite database
 to .csv format inside the Outputs folder. The outputs include:
 
 1. Trip summaries by mode, purpose and time of day at the aggregate and gy - gy level. Do note that daily trips at the gy - gy level are in Production - Attraction format whereas peak hour trips are in 
    Origin - Destination format.
 2. Network Summaries: Including VKT and travel times 
+
+![SQLite Data Tables\label{fig_sql_tables}](./4_SQLite_tables.png)
 
 ### ImportNetwork.py and ExportNetwork.py
 These two tools allow the import/export of current/future networks after they've been modified. More details are provided in the Step by Step Guide to running the model Chapter.
@@ -514,21 +522,30 @@ Both examples provide screenshots to help guide the discussion.
 
 This section provides a step by step guide to launching a base year, 2011, model run assuming no changes to model input data.
 
-1. Unzip folder received from TransLink. The folder contents will look similar to Figure <5_Folder_Contents.png>
+1. Unzip folder received from TransLink. The folder contents will look similar to Figure \ref{fig_rtm_zip}
 2. Run the relocate_tools batch script found inside the Scripts folder. This script locates the python tools associated with the model run. 
-3. Run RTM.emp to launch the EMME. The Explorer will look similar to Figure <6_Explorer.png> with one dummy scenario (Scenario 1)
-4. Launch EMME Modeller and go to 'Translink RTM Phase 3 Model' tool. The model utilities toolbox, 'Translink Utilities' can also be seen at the botton in Figure <7_toolboxes.png>
-5. Launch the Initialize Emmebank tool. Enter a name for the title and folder name of the Emmebank you wish to create and click on the Run button (see Figure <8_Init_EMMEbank.png>).
-6. Close Modeller, the Explorer will now point to the newly created Emmebank which will include four scenarios, one for each horizon year, and associated networks as shown in Figure <9_Explorer_2.png>.
+3. Run RTM.emp to launch the EMME. The Explorer will look similar to Figure \label{fig_rtm_dbank} with one dummy scenario (Scenario 1)
+4. Launch EMME Modeller and go to 'Translink RTM Phase 3 Model' tool. The model utilities toolbox, 'Translink Utilities' can also be seen at the botton in Figure \ref{fig_rtm_tools}
+5. Launch the Initialize Emmebank tool. Enter a name for the title and folder name of the Emmebank you wish to create and click on the Run button (see Figure \ref{fig_rtm_init}.
+6. Close Modeller, the Explorer will now point to the newly created Emmebank which will include four scenarios, one for each horizon year, and associated networks as shown in Figure \ref{fig_post_init}.
    The newly created Emmebank folder, 2011_Base in this example, will look similar to Figure <10_Emmebank_Folder.png>. You will notice a copy of the Inputs folder that also exists in the
    'RTM/BaseNetworks' directory.
 7. Launch Modeller and run the 'Run RTM3' tool inside the 'Translink RTM Phase 3 Model' toolbox.
-8. Fill out the user inputs as shown in Figure <3_run_model_page.png> tool. The user can change the inputs depending on the type of run being undertaken, however since this is a 2011 base year run the inputs
+8. Fill out the user inputs as shown in Figure \ref{fig_model_run} tool. The user can change the inputs depending on the type of run being undertaken, however since this is a 2011 base year run the inputs
    will look laregely similar to the ones shown in the previous figure.
 9. Click the Run Button
-10. Once a run is completed, run the Data Export tool under the Stage 4 subfolder and check the Export to CSVs toggle  as shown in Figure <11_Export.png>. The csv outputs
-are stored in the 'Outputs' folder inside the Emmebank folder as shown in Figure <12_Outputs_Folder.png>.
+10. Once a run is completed, run the Data Export tool under the Stage 4 subfolder and check the Export to CSVs toggle  as shown in Figure \ref{fig_data_export}. The csv outputs
+are stored in the 'Outputs' folder inside the Emmebank folder as shown in Figure \ref{fig_rtm_output}.
 
+![RTM Zip File Contents\label{fig_rtm_zip}](./5_Folder_Contents.png)
+
+![Initial RTM Databank\label{fig_rtm_dbank}](./6_Explorer_1.png)
+![RTM Model Toolbox\label{fig_rtm_tools}](./7_toolboxes.png)
+![RTM Model Initialization\label{fig_rtm_init}](./8_Init_EMMEbank.png)
+![RTM Model After Initialization\label{fig_post_init}](./9_Explorer_2.png)
+![RTM Data Export\label{fig_data_export}](./11_Export.png)
+
+![RTM Output Folder\label{fig_rtm_output}](./12_Outputs_Folder.png)
 Warnings:
 
 1. In the Model horizon years, make sure you only enter 2011, 2030 and 2045 as certain model components such as the truck model, external demand and bike scores were only setup for these years
