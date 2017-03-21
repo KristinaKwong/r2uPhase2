@@ -18,32 +18,9 @@ class Util(_m.Tool()):
         pb.title = "Translink Utility Toolbox"
         pb.description = "Collection of Utility Methods for Model Execution"
         pb.branding_text = "TransLink"
-        pb.runnable = True
+        pb.runnable = False
 
         return pb.render()
-
-    def run(self):
-        self.calc_speed(_m.Modeller().emmebank.scenario(1000))
-        self.calc_speed(_m.Modeller().emmebank.scenario(2000))
-        self.calc_speed(_m.Modeller().emmebank.scenario(3000))
-        self.calc_speed(_m.Modeller().emmebank.scenario(4000))
-
-    def calc_speed(self, scen):
-        self.calc_speed_inner(scen, "vdf")
-        self.calc_speed_inner(scen, "@vdfam")
-        self.calc_speed_inner(scen, "@vdfmd")
-        self.calc_speed_inner(scen, "@vdfpm")
-
-    def calc_speed_inner(self, scen, vdfatt):
-        # Move bowen island ferry
-        self.emme_link_calc(scen, vdfatt, "02", vdfatt + "=6")
-        
-        #Move merge functions to remaining single-digits.
-        self.emme_link_calc(scen, vdfatt, "03", vdfatt + "=13")
-        self.emme_link_calc(scen, vdfatt, "04", vdfatt + "=14")
-        self.emme_link_calc(scen, vdfatt, "05", vdfatt + "=15")
-        self.emme_link_calc(scen, vdfatt, "06", vdfatt + "=16")
-        self.emme_link_calc(scen, vdfatt, "07", vdfatt + "=17")
 
     def __call__(self):
         pass
