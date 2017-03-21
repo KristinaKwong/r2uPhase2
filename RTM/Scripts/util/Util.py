@@ -35,19 +35,15 @@ class Util(_m.Tool()):
         self.calc_speed_inner(scen, "@vdfpm")
 
     def calc_speed_inner(self, scen, vdfatt):
-        # 3,4,5 to 13
-        self.emme_link_calc(scen, vdfatt, "13", vdfatt + "=3,5")
+        # Move bowen island ferry
+        self.emme_link_calc(scen, vdfatt, "02", vdfatt + "=6")
         
-        self.emme_link_calc(scen, vdfatt, "14", vdfatt + "=92,94")
-        
-        self.emme_link_calc(scen, vdfatt, "15", vdfatt + "=7,11")
-        self.emme_link_calc(scen, vdfatt, "15", vdfatt + "=2")
-        
-        self.emme_link_calc(scen, vdfatt, "16", vdfatt + "=17,21")
-        self.emme_link_calc(scen, vdfatt, "16", vdfatt + "=12")
-        
-        self.emme_link_calc(scen, vdfatt, "17", vdfatt + "=95,99")
-        self.emme_link_calc(scen, vdfatt, "17", vdfatt + "=90")
+        #Move merge functions to remaining single-digits.
+        self.emme_link_calc(scen, vdfatt, "03", vdfatt + "=13")
+        self.emme_link_calc(scen, vdfatt, "04", vdfatt + "=14")
+        self.emme_link_calc(scen, vdfatt, "05", vdfatt + "=15")
+        self.emme_link_calc(scen, vdfatt, "06", vdfatt + "=16")
+        self.emme_link_calc(scen, vdfatt, "07", vdfatt + "=17")
 
     def __call__(self):
         pass

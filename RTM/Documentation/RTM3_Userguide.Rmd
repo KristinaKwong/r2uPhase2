@@ -588,6 +588,8 @@ Only steps requiring changes to the input data are included in this section. The
 
 # Appendix A: Volume Delay Function Definitions
 
+el1 is set to the extra attribute @posted_speed
+
 ## Special Functions
 $fd01 = length * 60 / 40$
 
@@ -605,142 +607,22 @@ $fd06 = length * 60 / el1 + 0.85 * ((volau + volad) / (1200*lanes))^5$
 $fd07 = length * 60 / el1 + 0.85 * ((volau + volad) / (1400*lanes))^5$
 
 ## Controlled Intersection Functions
-$fd22 = 0.25 + length * 60 / 20 + .85 * ((volau + volad) / (400 * lanes)) ^ 4$
+$fd25 = 0.25 + length * 60 / el1 + .85 * ((volau + volad) / (400 * lanes)) ^ 4$
 
-$fd23 = 0.25 + length * 60 / 30 + .85 * ((volau + volad) / (400 * lanes)) ^ 4$
+$fd35 = 0.25 + length * 60 / el1 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
 
-$fd24 = 0.25 + length * 60 / 40 + .85 * ((volau + volad) / (400 * lanes)) ^ 4$
+$fd45 = 0.25 + length * 60 / el1 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
 
-$fd25 = 0.25 + length * 60 / 50 + .85 * ((volau + volad) / (400 * lanes)) ^ 4$
+$fd55 = 0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
 
-$fd26 = 0.25 + length * 60 / 60 + .85 * ((volau + volad) / (400 * lanes)) ^ 4$
+$fd65 = 0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
 
-$fd27 = 0.25 + length * 60 / 70 + .85 * ((volau + volad) / (400 * lanes)) ^ 4$
-
-$fd28 = 0.25 + length * 60 / 80 + .85 * ((volau + volad) / (400 * lanes)) ^ 4$
-
-$fd29 = 0.25 + length * 60 / 90 + .85 * ((volau + volad) / (400 * lanes)) ^ 4$
-
-$fd30 = 0.25 + length * 60 / 100 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
-
-$fd31 = 0.25 + length * 60 / 110 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
-
-$fd32 = 0.25 + length * 60 / 20 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
-
-$fd33 = 0.25 + length * 60 / 30 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
-
-$fd34 = 0.25 + length * 60 / 40 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
-
-$fd35 = 0.25 + length * 60 / 50 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
-
-$fd36 = 0.25 + length * 60 / 60 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
-
-$fd37 = 0.25 + length * 60 / 70 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
-
-$fd38 = 0.25 + length * 60 / 80 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
-
-$fd39 = 0.25 + length * 60 / 90 + .85 * ((volau + volad) / (600 * lanes)) ^ 4$
-
-$fd40 = 0.25 + length * 60 / 100 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
-
-$fd41 = 0.25 + length * 60 / 110 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
-
-$fd42 = 0.25 + length * 60 / 20 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
-
-$fd43 = 0.25 + length * 60 / 30 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
-
-$fd44 = 0.25 + length * 60 / 40 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
-
-$fd45 = 0.25 + length * 60 / 50 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
-
-$fd46 = 0.25 + length * 60 / 60 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
-
-$fd47 = 0.25 + length * 60 / 70 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
-
-$fd48 = 0.25 + length * 60 / 80 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
-
-$fd49 = 0.25 + length * 60 / 90 + .85 * ((volau + volad) / (800 * lanes)) ^ 4$
-
-$fd50 = 0.25 + length * 60 / 100 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
-
-$fd51 = 0.25 + length * 60 / 110 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
-
-$fd52 = 0.25 + length * 60 / 20 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
-
-$fd53 = 0.25 + length * 60 / 30 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
-
-$fd54 = 0.25 + length * 60 / 40 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
-
-$fd55 = 0.25 + length * 60 / 50 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
-
-$fd56 = 0.25 + length * 60 / 60 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
-
-$fd57 = 0.25 + length * 60 / 70 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
-
-$fd58 = 0.25 + length * 60 / 80 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
-
-$fd59 = 0.25 + length * 60 / 90 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4$
-
-$fd60 = 0.25 + length * 60 / 100 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
-
-$fd61 = 0.25 + length * 60 / 110 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
-
-$fd62 = 0.25 + length * 60 / 20 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
-
-$fd63 = 0.25 + length * 60 / 30 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
-
-$fd64 = 0.25 + length * 60 / 40 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
-
-$fd65 = 0.25 + length * 60 / 50 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
-
-$fd66 = 0.25 + length * 60 / 60 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
-
-$fd67 = 0.25 + length * 60 / 70 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
-
-$fd68 = 0.25 + length * 60 / 80 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
-
-$fd69 = 0.25 + length * 60 / 90 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
-
-$fd70 = 0.25 + length * 60 / 100 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
-
-$fd71 = 0.25 + length * 60 / 110 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
-
-$fd72 = 0.25 + length * 60 / 20 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
-
-$fd73 = 0.25 + length * 60 / 30 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
-
-$fd74 = 0.25 + length * 60 / 40 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
-
-$fd75 = 0.25 + length * 60 / 50 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
-
-$fd76 = 0.25 + length * 60 / 60 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
-
-$fd77 = 0.25 + length * 60 / 70 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
-
-$fd78 = 0.25 + length * 60 / 80 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
-
-$fd79 = 0.25 + length * 60 / 90 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
+$fd75 = 0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
 
 ## Free Flow Links
-$fd80 = length * 60 / (100 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ {1.05})) ^ {5.25})$
+$fd85 = length * 60 / el1 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)$
 
-$fd81 = length * 60 / (110 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ {1.05})) ^ {5.25})$
-
-$fd82 = length * 60 / 20 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)$
-
-$fd83 = length * 60 / 30 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)$
-
-$fd84 = length * 60 / 40 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)$
-
-$fd85 = length * 60 / 50 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)$
-
-$fd86 = length * 60 / 60 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)$
-
-$fd87 = length * 60 / 70 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)$
-
-$fd88 = length * 60 / (80 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ {1.05})) ^ {5.25})$
-
-$fd89 = length * 60 / (90 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ {1.05})) ^ {5.25})$
+$fd88 = length * 60 / (el1 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ {1.05})) ^ {5.25})$
 
 # Appendix B: Matrix Ranges
 

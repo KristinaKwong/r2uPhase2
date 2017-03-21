@@ -271,7 +271,7 @@ class InitEmmebank(_m.Tool()):
         extra_parameters(emmebank=eb, el1="@posted_speed")
 
         eb.create_function("fd01", "length * 60 / 40")
-        eb.create_function("fd06", "40 + ((volau + volad) - 100) * 60 / (volau + volad) * ((volau +  volad) .ge. 100)")
+        eb.create_function("fd02", "40 + ((volau + volad) - 100) * 60 / (volau + volad) * ((volau +  volad) .ge. 100)")
 
         eb.create_function("fd25", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 400 * lanes)) ^ 4")
         eb.create_function("fd35", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 600 * lanes)) ^ 4")
@@ -284,11 +284,11 @@ class InitEmmebank(_m.Tool()):
         eb.create_function("fd88", "length * 60 / (el1 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5.25)")
 
         # Merge Functions
-        eb.create_function("fd13", "length * 60 / el1 + 0.85 * ((volau + volad) / ( 600*lanes))^5")
-        eb.create_function("fd14", "length * 60 / el1 + 0.85 * ((volau + volad) / ( 800*lanes))^5")
-        eb.create_function("fd15", "length * 60 / el1 + 0.85 * ((volau + volad) / (1000*lanes))^5")
-        eb.create_function("fd16", "length * 60 / el1 + 0.85 * ((volau + volad) / (1200*lanes))^5")
-        eb.create_function("fd17", "length * 60 / el1 + 0.85 * ((volau + volad) / (1400*lanes))^5")
+        eb.create_function("fd03", "length * 60 / el1 + 0.85 * ((volau + volad) / ( 600*lanes))^5")
+        eb.create_function("fd04", "length * 60 / el1 + 0.85 * ((volau + volad) / ( 800*lanes))^5")
+        eb.create_function("fd05", "length * 60 / el1 + 0.85 * ((volau + volad) / (1000*lanes))^5")
+        eb.create_function("fd06", "length * 60 / el1 + 0.85 * ((volau + volad) / (1200*lanes))^5")
+        eb.create_function("fd07", "length * 60 / el1 + 0.85 * ((volau + volad) / (1400*lanes))^5")
 
         # Update FT functions to include dwell time (us1) based on boardings and alightings
         eb.create_function("ft01", "timau + us1")
