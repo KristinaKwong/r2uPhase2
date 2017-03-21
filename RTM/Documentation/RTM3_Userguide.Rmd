@@ -175,7 +175,7 @@ The first column of data is the zone number the data values are intended for.
 ### Demographics Input File
 The demographics input file contains the following data
 
-|Matrix ID|EMME Name   |EMME Description   |SQL NAME|Notes     |
+|Matrix ID|EMME Name    |EMME Description        |SQL NAME                    |Notes                                          |
 |:-------:|:-------------|:----------------------|:---------------------------|:----------------------------------------------|
 |mo10     |TotPop      |POP_Total              |POP_Total                   |Total Population                               |
 |mo11     |Pop0t4      |POP_0to4               |POP_0to4                    |Population Ages 0 to 4                         |
@@ -287,13 +287,16 @@ During a model run, a single master scenario is copied into 3 time of day specif
 The network parameters are coded in extra attributes in the master scenario and copied to the appropriate place
 when the copies are made. A correspondence of from the master scenario to the time of day attributes is presented below.
 
+Note that the posted speed attribute is not coded for each time of day, a single speed is used for all time periods.
+
 |Master Scenario Attribute|     Time of Day Attributes    |
 |:-----------------------:|:-------------------------------:|
-|lanes                    |lanesam, lanesmd, lanespm |
-|vdf                      |vdfam, vdfmd, vdfpm       |
-|tpf                      |tpfam, tpfmd, tpfpm       |
-|tolls                    |tollam, tollmd, tollpm    |
-|hdwy                     |hdwyam, hdwymd, hdwypm    |
+|@posted_speed            |@posted_speed              |
+|lanes                    |@lanesam, @lanesmd, @lanespm |
+|vdf                      |@vdfam, @vdfmd, @vdfpm       |
+|tpf                      |@tpfam, @tpfmd, @tpfpm       |
+|tolls                    |@tollam, @tollmd, @tollpm    |
+|hdwy                     |@hdwyam, @hdwymd, @hdwypm    |
 
 ## Network Modification Issues
 
@@ -620,7 +623,7 @@ $fd65 = 0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4$
 $fd75 = 0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4$
 
 ## Free Flow Links
-$fd85 = length * 60 / el1 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)$
+$fd85 = length * 60 / el1 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ {1.05})) ^ 5)$
 
 $fd88 = length * 60 / (el1 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ {1.05})) ^ {5.25})$
 
