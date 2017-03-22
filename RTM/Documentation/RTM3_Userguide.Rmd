@@ -179,47 +179,47 @@ The first column of data is the zone number the data values are intended for.
 ### Demographics Input File
 The demographics input file contains the following data
 
-|Matrix ID|EMME Name    |EMME Description        |SQL NAME                    |Notes                                          |
-|:-------:|:-------------|:----------------------|:---------------------------|:----------------------------------------------|
-|mo10     |TotPop      |POP_Total              |POP_Total                   |Total Population                               |
-|mo11     |Pop0t4      |POP_0to4               |POP_0to4                    |Population Ages 0 to 4                         |
-|mo12     |Pop5t12     |POP_5to12              |POP_5to12                   |Population Ages 5 to 12                        |
-|mo13     |Pop13t17    |POP_13to17             |POP_13to17                  |Population Ages 13 to 17                       |
-|mo14     |Pop18t24    |POP_18to24             |POP_18to24                  |Population Ages 18 to 24                       |
-|mo15     |Pop25t34    |POP_25to34             |POP_25to34                  |Population Ages 25 to 34                       |
-|mo16     |Pop35t54    |POP_35to54             |POP_35to54                  |Population Ages 35 to 54                       |
-|mo17     |Pop55t64    |POP_55to64             |POP_55to64                  |Population Ages 55 to 64                       |
-|mo18     |Pop65Up     |POP_65plus             |POP_65plus                  |Population Ages 65 plus                        |
-|mo20     |TotEmp      |EMP_Total              |EMP_Total                   |Total Employment                               |
-|mo21     |EmpConMfg   |Construct_Mfg          |EMP_Construct_Mfg           |a                                              |
-|mo22     |EmpFire     |FIRE                   |EMP_FIRE                    |a                                              |
-|mo23     |EmpTcuWh    |TCU_Wholesale          |EMP_TCU_Wholesale           |a                                              |
-|mo24     |EmpRet      |Retail                 |EMP_Retail                  |a                                              |
-|mo25     |EmpBoS      |Business_OtherServices |EMP_Business_OtherServices  |a                                              |
-|mo26     |EmpAcFoInCu |AccomFood_InfoCult     |EMP_AccomFood_InfoCult      |a                                              |
-|mo27     |EmpHeEdPuAd |Health_Educat_PubAdmin |EMP_Health_Educat_PubAdmin  |a                                              |
-|mo30     |EnrolElem   |Elementary_Enrolment   |Elementary_Enrolment        |Elementary School Enrollment                   |
-|mo31     |EnrolSec    |Secondary_Enrolment    |Secondary_Enrolment         |Secondary School Enrollment                    |
-|mo32     |EnrolPsFte  |PostSecFTE             |PostSecFTE                  |Post Secondary Full Time Equivalent Enrollment |
-|mo40     |TotHh       |HHOLDS_Total           |HH_Total                    |Total Households                               |
-|mo41     |Hh1p        |HHOLDS_1Person         |HH_1Person                  |1 Person Households                            |
-|mo42     |Hh2p        |HHOLDS_2Person         |HH_2Person                  |2 Person Households                            |
-|mo43     |Hh3p        |HHOLDS_3Person         |HH_3Person                  |3 Person Households                            |
-|mo44     |Hh4pUp      |HHOLDS_4plusPerson     |HH_4plusPerson              |4-plus Person Households                       |
+|Matrix ID|EMME Name    |SQL NAME                    |Notes                                          |
+|:-------:|:-------------|:---------------------------|:----------------------------------------------|
+|mo10     |TotPop        |POP_Total                   |Total Population                               |
+|mo11     |Pop0t4        |POP_0to4                    |Population Ages 0 to 4                         |
+|mo12     |Pop5t12       |POP_5to12                   |Population Ages 5 to 12                        |
+|mo13     |Pop13t17      |POP_13to17                  |Population Ages 13 to 17                       |
+|mo14     |Pop18t24      |POP_18to24                  |Population Ages 18 to 24                       |
+|mo15     |Pop25t34      |POP_25to34                  |Population Ages 25 to 34                       |
+|mo16     |Pop35t54      |POP_35to54                  |Population Ages 35 to 54                       |
+|mo17     |Pop55t64      |POP_55to64                  |Population Ages 55 to 64                       |
+|mo18     |Pop65Up       |POP_65plus                  |Population Ages 65 plus                        |
+|mo20     |TotEmp        |EMP_Total                   |Total Employment                               |
+|mo21     |EmpConMfg     |EMP_Construct_Mfg           |                                               |
+|mo22     |EmpFire       |EMP_FIRE                    |                                               |
+|mo23     |EmpTcuWh      |EMP_TCU_Wholesale           |                                               |
+|mo24     |EmpRet        |EMP_Retail                  |                                               |
+|mo25     |EmpBoS        |EMP_Business_OtherServices  |                                               |
+|mo26     |EmpAcFoInCu   |EMP_AccomFood_InfoCult      |                                               |
+|mo27     |EmpHeEdPuAd   |EMP_Health_Educat_PubAdmin  |                                               |
+|mo30     |EnrolElem     |Elementary_Enrolment        |Elementary School Enrollment                   |
+|mo31     |EnrolSec      |Secondary_Enrolment         |Secondary School Enrollment                    |
+|mo32     |EnrolPsFte    |PostSecFTE                  |Post Secondary Full Time Equivalent Enrollment |
+|mo40     |TotHh         |HH_Total                    |Total Households                               |
+|mo41     |Hh1p          |HH_1Person                  |1 Person Households                            |
+|mo42     |Hh2p          |HH_2Person                  |2 Person Households                            |
+|mo43     |Hh3p          |HH_3Person                  |3 Person Households                            |
+|mo44     |Hh4pUp        |HH_4plusPerson              |4-plus Person Households                       |
 
 
 ### Geographics Input File
 The demographics input file contains the following data
 
-|Matrix ID|EMME Name|EMME Description|SQL NAME|Notes     |
-|:-------:|:--------|:----------------|:-------|:--------------------|
-|mo50     |areahc   |taz_a_area_hec   |Hectares             |Zone Area in Hectares                      |
-|mo60     |prk2hr   |parkingcost2hr   |parking_two_hr_rate  |Two Hour Parking Rate                      |
-|mo61     |prk8hr   |parkingcost8hr   |parking_eight_hr_rate|Eight Hours Parking Rate                   |
-|mo69     |railStn  |railstationinzone|rail_stn_dummy       |Zone contains a rail station (0/1)         |
-|mo70     |cs250    |car_share_250m   |car_share_250m       |Zone has car share access within 250m (0/1)|
-|mo71     |cs500    |car_share_500m   |car_share_500m       |Zone has car share access within 500m (0/1)|
-|mo80     |bikesc   |bikescore        |bike_score_taz       |Bike Score (0-5)                           |
+|Matrix ID|EMME Name|SQL NAME|Notes     |
+|:-------:|:--------|:-------|:--------------------|
+|mo50     |areahc   |Hectares             |Zone Area in Hectares                      |
+|mo60     |prk2hr   |parking_two_hr_rate  |Two Hour Parking Rate                      |
+|mo61     |prk8hr   |parking_eight_hr_rate|Eight Hours Parking Rate                   |
+|mo69     |railStn  |rail_stn_dummy       |Zone contains a rail station (0/1)         |
+|mo70     |cs250    |car_share_250m       |Zone has car share access within 250m (0/1)|
+|mo71     |cs500    |car_share_500m       |Zone has car share access within 500m (0/1)|
+|mo80     |bikesc   |bike_score_taz       |Bike Score (0-5)                           |
 
 # Databank Initialization
 
