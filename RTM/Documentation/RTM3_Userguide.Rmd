@@ -229,7 +229,7 @@ will be created, and the name of the databank to be shown in the project.
 
 ![The RTM Phase 3 Model Run Tool](./FullModelRun_screen.png)
 
-# Network Coding
+# Network Coding  \label{chap_network_coding}
 
 ## Modes
 
@@ -540,12 +540,17 @@ are stored in the 'Outputs' folder inside the Emmebank folder as shown in Figure
 ![RTM Zip File Contents\label{fig_rtm_zip}](./5_Folder_Contents.png)
 
 ![Initial RTM Databank\label{fig_rtm_dbank}](./6_Explorer_1.png)
+
 ![RTM Model Toolbox\label{fig_rtm_tools}](./7_toolboxes.png)
+
 ![RTM Model Initialization\label{fig_rtm_init}](./8_Init_EMMEbank.png)
+
 ![RTM Model After Initialization\label{fig_post_init}](./9_Explorer_2.png)
-![RTM Data Export\label{fig_data_export}](./11_Export.png)
+
+![RTM Data Export\label{fig_data_export}](./11_Export.png)  
 
 ![RTM Output Folder\label{fig_rtm_output}](./12_Outputs_Folder.png)
+
 Warnings:
 
 1. In the Model horizon years, make sure you only enter 2011, 2030 and 2045 as certain model components such as the truck model, external demand and bike scores were only setup for these years
@@ -569,19 +574,19 @@ Only steps requiring changes to the input data are included in this section. The
 
 2. New Tolled Facility
     + Make a copy of one of the four main scenarios (in this case we assume scenario 3000 is copied to scenario 3001).
-    + Code the new tolled facility. Make sure to follow the Network Coding Guidelines described in Chapter XX.
-    + Ensure all ramp sections are coded with the correct volume-delay functions and speeds (refer to Network Coding Guidelines described in Chapter XX)
+    + Code the new tolled facility. Make sure to follow the Network Coding Guidelines described in Chapter \ref{chap_network_coding}.
+    + Ensure all ramp sections are coded with the correct volume-delay functions and speeds (refer to Network Coding Guidelines described in Chapter \ref{chap_network_coding})
     + Add the appropriate tolls for each time period
     + Make sure turn penalty functions are coded properly for each time period and accounting for any turn restrictions
 
 3. New Rail Line
-    + Code the new rail line facility in scenario 3001. Make sure to follow the Network Coding Guidelines described in Chapter XX.
+    + Code the new rail line facility in scenario 3001. Make sure to follow the Network Coding Guidelines described in Chapter \ref{chap_network_coding}.
     + As this is a rail line, we strongly recommend coding it on separate, rail specific, links with pedestrian links connecting it to the main network.
     + Make sure to code AM, MD and PM headways
     + Make sure to allow boardings and alightings at rail station locations
 
 4. New Park and Ride Lot
-    + Code the new park and ride in scenario 3001. Make sure to follow the Network Coding Guidelines described in Chapter XX.
+    + Code the new park and ride in scenario 3001. Make sure to follow the Network Coding Guidelines described in Chapter \ref{chap_network_coding}.
     + Make sure the lot number chosen ranges between 100 - 130 and is not one of the existing lots used in the model in the future. Unused lots are usually stored in the North-eastermost portion of the EMME network
    as shown in Figure <13_PnR.png>
     + Update the 'gn' ensemble in the 'taz1700_ensembles.csv' file inside the 'BaseNetworks/Inputs directory' - the proposed lot, say 129, gets a value of 3, which indicates this is a lot that only exists in the
