@@ -123,7 +123,7 @@ class TransitAssignment(_m.Tool()):
         self.am_scenario = scenarioam
         self.md_scenario = scenariomd
         self.pm_scenario = scenariopm
-        self.matrix_batchins(eb)
+        self.init_matrices(eb)
 
         self.num_processors = int(eb.matrix("ms12").data)
         assign_transit = _m.Modeller().tool("inro.emme.transit_assignment.extended_transit_assignment")
@@ -188,6 +188,10 @@ class TransitAssignment(_m.Tool()):
                 self.collect_skims(sc, "MD")
             if sc is scenariopm:
                 self.collect_skims(sc, "PM")
+
+        # now that the skims have been written back, delete the temporary matrices
+        for matrix in self.get_temp_matrices():
+            util.delmat(eb, matrix[0])
 
     def get_common_transit_assignment_spec(self, modes, demand):
         spec = {
@@ -803,36 +807,44 @@ class TransitAssignment(_m.Tool()):
         util.compute_matrix(specs)
 
     @_m.logbook_trace("Initialize Skim Matrices")
-    def matrix_batchins(self, eb):
+    def init_matrices(self, eb):
         util = _m.Modeller().tool("translink.util")
 
+        for matrix in self.get_temp_matrices():
+            util.initmat(eb, matrix[0], matrix[1], matrix[2], matrix[3])
+
+    def get_temp_matrices(self):
+        matrices = []
+
         # Bus journey-level assignment
-        util.initmat(eb, "mf9960", "BusWait", "Interim Skim BusTotalWait", 0)
-        util.initmat(eb, "mf9961", "BusIvtt", "Interim Skim BusIVTT", 0)
-        util.initmat(eb, "mf9962", "BusAux",  "Interim Skim BusAux", 0)
-        util.initmat(eb, "mf9963", "BusBoard", "Interim Skim BusAvgBoard", 0)
-        util.initmat(eb, "mf9964", "BusIncCst", "Interim Skim BusIncrementalCost", 0)
-        util.initmat(eb, "mf9965", "BusIncFirstCost", "Interim Skim BusFirstBoardCost", 0)
-        util.initmat(eb, "mf9966", "BusFare", "Interim Skim BusTotalFare", 0)
+        matrices.append(["mf9960", "BusWait", "Interim Skim BusTotalWait", 0])
+        matrices.append(["mf9961", "BusIvtt", "Interim Skim BusIVTT", 0])
+        matrices.append(["mf9962", "BusAux",  "Interim Skim BusAux", 0])
+        matrices.append(["mf9963", "BusBoard", "Interim Skim BusAvgBoard", 0])
+        matrices.append(["mf9964", "BusIncCst", "Interim Skim BusIncrementalCost", 0])
+        matrices.append(["mf9965", "BusIncFirstCost", "Interim Skim BusFirstBoardCost", 0])
+        matrices.append(["mf9966", "BusFare", "Interim Skim BusTotalFare", 0])
 
         # Rail journey-level assignment
-        util.initmat(eb, "mf9970", "RailBoard", "Interim-JL Skim RailAvgBoard", 0)
-        util.initmat(eb, "mf9971", "RailAux", "Interim-JL Skim RailAux", 0)
-        util.initmat(eb, "mf9972", "RailWait", "Interim-JL Skim RailTotalWait", 0)
-        util.initmat(eb, "mf9973", "RailIvttBus", "Interim-JL Skim RailBusIVTT", 0)
-        util.initmat(eb, "mf9974", "RailIvtt", "Interim-JL Skim RailRailIVTT", 0)
-        util.initmat(eb, "mf9975", "RailIvCst", "Interim-JL Skim Rail Invehicle Cost", 0)
-        util.initmat(eb, "mf9976", "RailBrdCst", "Interim-JL Skim Rail Boarding Cost", 0)
-        util.initmat(eb, "mf9977", "RailFare", "Interim-JL Skim Rail Fare", 0)
+        matrices.append(["mf9970", "RailBoard", "Interim-JL Skim RailAvgBoard", 0])
+        matrices.append(["mf9971", "RailAux", "Interim-JL Skim RailAux", 0])
+        matrices.append(["mf9972", "RailWait", "Interim-JL Skim RailTotalWait", 0])
+        matrices.append(["mf9973", "RailIvttBus", "Interim-JL Skim RailBusIVTT", 0])
+        matrices.append(["mf9974", "RailIvtt", "Interim-JL Skim RailRailIVTT", 0])
+        matrices.append(["mf9975", "RailIvCst", "Interim-JL Skim Rail Invehicle Cost", 0])
+        matrices.append(["mf9976", "RailBrdCst", "Interim-JL Skim Rail Boarding Cost", 0])
+        matrices.append(["mf9977", "RailFare", "Interim-JL Skim Rail Fare", 0])
 
         # WCE journey-level assignment
-        util.initmat(eb, "mf9980", "WceBoard", "Interim-JL Skim WCEAvgBoard", 0)
-        util.initmat(eb, "mf9981", "WceAux", "Interim-JL Skim WCEAux", 0)
-        util.initmat(eb, "mf9982", "WceWait", "Interim-JL Skim WCETotalWait", 0)
-        util.initmat(eb, "mf9983", "WceIvttBus", "Interim-JL Skim WCEBusIVTT", 0)
-        util.initmat(eb, "mf9984", "WceIvttRail", "Interim-JL Skim WCERailIVTT", 0)
-        util.initmat(eb, "mf9985", "WceIvtt", "Interim-JL Skim WCEWCEIVTT", 0)
-        util.initmat(eb, "mf9986", "WceIvCst", "Interim-JL Skim WCE Invehicle Cost", 0)
-        util.initmat(eb, "mf9987", "WceBrdZone", "Interim-JL Skim WCE Boarding Zone", 0)
-        util.initmat(eb, "mf9988", "WceAliZone", "Interim-JL Skim WCE Alighting Zone", 0)
-        util.initmat(eb, "mf9989", "WceFare", "Interim-JL Skim WCE Fare", 0)
+        matrices.append(["mf9980", "WceBoard", "Interim-JL Skim WCEAvgBoard", 0])
+        matrices.append(["mf9981", "WceAux", "Interim-JL Skim WCEAux", 0])
+        matrices.append(["mf9982", "WceWait", "Interim-JL Skim WCETotalWait", 0])
+        matrices.append(["mf9983", "WceIvttBus", "Interim-JL Skim WCEBusIVTT", 0])
+        matrices.append(["mf9984", "WceIvttRail", "Interim-JL Skim WCERailIVTT", 0])
+        matrices.append(["mf9985", "WceIvtt", "Interim-JL Skim WCEWCEIVTT", 0])
+        matrices.append(["mf9986", "WceIvCst", "Interim-JL Skim WCE Invehicle Cost", 0])
+        matrices.append(["mf9987", "WceBrdZone", "Interim-JL Skim WCE Boarding Zone", 0])
+        matrices.append(["mf9988", "WceAliZone", "Interim-JL Skim WCE Alighting Zone", 0])
+        matrices.append(["mf9989", "WceFare", "Interim-JL Skim WCE Fare", 0])
+
+        return matrices
