@@ -464,7 +464,7 @@ Runs the transit assignment (bus, rail and WCE) for the three time periods
 Other scripts that are included in the Phase3Scripts but not part of a model run:
 
 ### 12_DataExport.py
-Main model outputs are stored in a SQLite database inside the project folder as shown in Figure <4_SQLite_tables.png> (see rtm.db and trip_summaries.db).
+Main model outputs are stored in a SQLite database inside the project folder as shown in Figure \ref{fig_sql_tables} (see rtm.db and trip_summaries.db).
 This tool exports the data inside the SQLite database to .csv format inside the Outputs folder. The outputs include:
 
 1. Trip summaries by mode, purpose and time of day at the aggregate and gy - gy level. Do note that daily trips at the gy - gy level are in Production - Attraction
@@ -491,7 +491,8 @@ The example below demonstrates a mode choice utility expression constructed usin
 Matrix Calculator:
 
 ```
-Utility_Transit = str(Bias) + "+" + str(Time_Coeff) + "*mf100"  + "+" + str(Cost_Coeff) + "*mf101" , where mf100 and mf101 are time and cost coefficients.
+# mf100 and mf101 are time and cost coefficients.
+Util_Transit = str(Bias) + "+" + str(Time_Coeff) + "*mf100"  + "+" + str(Cost_Coeff) + "*mf101"
 ```
 
 Numpy:
@@ -500,7 +501,7 @@ Numpy:
 Time =  emmebank.matrix("mf100").get_numpy_data()
 Cost =  emmebank.matrix("mf101").get_numpy_data()
 
-Utility_Transit = Bias + Time_Coeff * Time + Cost_Coeff * Cost
+Util_Transit = Bias + Time_Coeff * Time + Cost_Coeff * Cost
 ```
 
 The Numpy expression is explicit and analogous to the Emme macro language - in other words, it does what the modeller is asking it to do.
@@ -536,16 +537,16 @@ This section provides a step by step guide to launching a base year, 2011, model
 
 1.  Unzip folder received from TransLink. The folder contents will look similar to Figure \ref{fig_rtm_zip}
 2.  Run the relocate_tools batch script found inside the Scripts folder. This script locates the python tools associated with the model run.
-3.  Run RTM.emp to launch the EMME. The Explorer will look similar to Figure \label{fig_rtm_dbank} with one dummy scenario (Scenario 1)
+3.  Run RTM.emp to launch EMME. The Explorer will look similar to Figure \ref{fig_rtm_dbank} with one dummy scenario (Scenario 1)
 4.  Launch EMME Modeller and go to 'Translink RTM Phase 3 Model' tool. The model utilities toolbox, 'Translink Utilities' can also be seen at the botton in
     Figure \ref{fig_rtm_tools}
 5.  Launch the Initialize Emmebank tool. Enter a name for the title and folder name of the Emmebank you wish to create and click on the Run button
     (see Figure \ref{fig_rtm_init}).
 6.  Close Modeller, the Explorer will now point to the newly created Emmebank which will include four scenarios, one for each horizon year, and associated networks
-    as shown in Figure \ref{fig_post_init}. The newly created Emmebank folder, 2011_Base in this example, will look similar to Figure <10_Emmebank_Folder.png>.
+    as shown in Figure \ref{fig_post_init}. The newly created Emmebank folder, 2011_Base in this example, will look similar to Figure \ref{fig_emme_folder}.
     You will notice a copy of the Inputs folder that also exists in the 'RTM/BaseNetworks' directory.
 7.  Launch Modeller and run the 'Run RTM3' tool inside the 'Translink RTM Phase 3 Model' toolbox.
-8.  Fill out the user inputs as shown in Figure \ref{fig_model_run} tool. The user can change the inputs depending on the type of run being undertaken,
+8.  Fill out the user inputs as shown in Figure \ref{fig_model_run}. The user can change the inputs depending on the type of run being undertaken,
     however since this is a 2011 base year run the inputs will look laregely similar to the ones shown in the previous figure.
 9.  Click the Run Button
 10. Once a run is completed, run the Data Export tool under the Stage 4 subfolder and check the Export to CSVs toggle  as shown in Figure \ref{fig_data_export}. The csv outputs
@@ -560,6 +561,8 @@ This section provides a step by step guide to launching a base year, 2011, model
 ![RTM Model Initialization\label{fig_rtm_init}](./8_Init_EMMEbank.png)
 
 ![RTM Model After Initialization\label{fig_post_init}](./9_Explorer_2.png)
+
+![RTM Emmebank Folder Contents\label{fig_emme_folder}](./10_Emmebank_Folder.png)
 
 ![RTM Data Export\label{fig_data_export}](./11_Export.png)
 
@@ -620,7 +623,7 @@ Only steps requiring changes to the input data are included in this section. The
 6. Final Checks before launching the run:
     +  Make sure to add new transit vehicles if required
     +  Make sure the correct seating and total capacities are provided in the transit vehicles table
-    +  Make sure to update the Geography (or create a new) file located at 'F:/RTM_Model_Dev_Phase3/model_files_p3/RTM/BaseNetworks/Inputs' if needed. For example, in the New Rail Line scenario,
+    +  Make sure to update the Geography (or create a new) file located at '../RTM/BaseNetworks/Inputs' if needed. For example, in the New Rail Line scenario,
     the user will need to update the rail station dummy with a value of 1 for TAZs containing those stations.
 
 7. Launch the model run following the steps described in the previous section.
