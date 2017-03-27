@@ -3,7 +3,7 @@
 # File: E:/RTM/RTM/RTM.emp
 #
 # String Name: name of preference configuration (tr)
-Name = TL_RTM_Release_2015_01.00 [2011 Base Case]
+Name = TransLink Regional Travel Demand Model Phase 3.0
 # Text Description: description of preference configuration (tr,subst)
 Description = Created on 2013-12-11 at 14:12:34 by AD.
 # String TranslationContext: context for translations of configuration texts (subst)
