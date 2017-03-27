@@ -56,7 +56,7 @@ class FullModelRun(_m.Tool()):
         pb.add_text_box(tool_attribute_name="global_iterations",
                         size="3",
                         title="Global model iterations:",
-                        note="Use 6 iterations in normal operation")
+                        note="Use 4 iterations in normal operation")
 
         pb.add_select_file(tool_attribute_name="demographics_file",
                            window_type="file",
