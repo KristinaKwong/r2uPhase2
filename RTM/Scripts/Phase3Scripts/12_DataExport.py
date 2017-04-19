@@ -555,67 +555,26 @@ class DataExport(_m.Tool()):
     def networkExport(self, eb):
     	util = _m.Modeller().tool("translink.util")
 
-    	# connect to data tables - assumes tables have been manually created
+    	am_scenid = int(eb.matrix("msAmScen").data)
+    	md_scenid = int(eb.matrix("msMdScen").data)
+    	pm_scenid = int(eb.matrix("msPmScen").data)
+
+        # export network data from emmebank to data tables
+        self.exportWorkSheets(am_scenid, 'AM')
+        self.exportWorkSheets(md_scenid, 'MD')
+        self.exportWorkSheets(pm_scenid, 'PM')
+
+    	# connect to data tables
     	project = _m.Modeller().desktop.project
     	db_loc = os.path.dirname(project.path)
     	db_path = os.path.join(db_loc, 'data_tables.db')
     	conn = sqlite3.connect(db_path)
 
-    	am_scenid = int(eb.matrix("msAmScen").data)
-    	md_scenid = int(eb.matrix("msMdScen").data)
-    	pm_scenid = int(eb.matrix("msPmScen").data)
-
-    	# connect to desktop
-    	dt = _d.app.connect()
-    	de = dt.data_explorer()
-    	db = de.active_database()
-
-    	# set AM scenario
-    	# auto
-    	scen = db.scenario_by_number(am_scenid)
-    	de.replace_primary_scenario(scen)
-    	nr = dt.root_worksheet_folder().child_item('Network_Results')
-    	nr = nr.open()
-    	nr.save_as_data_table('Network_Results_AM', overwrite=True)
-    	nr.close()
-    	# transit
-    	nt = dt.root_worksheet_folder().child_item('TransitSegmentResults')
-    	nt = nt.open()
-    	nt.save_as_data_table('Transit_Results_AM', overwrite=True)
-    	nt.close()
-
-    	# set MD scenario
-    	scen = db.scenario_by_number(md_scenid)
-    	de.replace_primary_scenario(scen)
-    	nr = dt.root_worksheet_folder().child_item('Network_Results')
-    	nr = nr.open()
-    	nr.save_as_data_table('Network_Results_MD', overwrite=True)
-    	nr.close()
-    	# transit
-    	nt = dt.root_worksheet_folder().child_item('TransitSegmentResults')
-    	nt = nt.open()
-    	nt.save_as_data_table('Transit_Results_MD', overwrite=True)
-    	nt.close()
-
-    	# set PM scenario
-    	scen = db.scenario_by_number(pm_scenid)
-    	de.replace_primary_scenario(scen)
-    	nr = dt.root_worksheet_folder().child_item('Network_Results')
-    	nr = nr.open()
-    	nr.save_as_data_table('Network_Results_PM', overwrite=True)
-    	nr.close()
-    	# transit
-    	nt = dt.root_worksheet_folder().child_item('TransitSegmentResults')
-    	nt = nt.open()
-    	nt.save_as_data_table('Transit_Results_PM', overwrite=True)
-    	nt.close()
-
-    	# extract network results
+    	# get data out of datatables
     	dfAm = pd.read_sql("SELECT * FROM Network_Results_AM", conn)
     	dfMd = pd.read_sql("SELECT * FROM Network_Results_MD", conn)
     	dfPm = pd.read_sql("SELECT * FROM Network_Results_PM", conn)
 
-    	# extract network results
     	dfAmT = pd.read_sql("SELECT * FROM Transit_Results_AM", conn)
     	dfMdT = pd.read_sql("SELECT * FROM Transit_Results_MD", conn)
     	dfPmT = pd.read_sql("SELECT * FROM Transit_Results_PM", conn)
@@ -650,3 +609,22 @@ class DataExport(_m.Tool()):
     	dfPm.to_sql(name='netResults', con=conn, flavor='sqlite', index=False, if_exists='append')
     	dfA.to_sql(name='transitResults', con=conn, flavor='sqlite', index=False, if_exists='replace')
     	conn.close()
+
+
+    def exportWorkSheets(self, scenario, peak):
+        # connect to desktop
+        dt = _d.app.connect()
+        de = dt.data_explorer()
+        db = de.active_database()
+        # set scenario
+        scen = db.scenario_by_number(scenario)
+        de.replace_primary_scenario(scen)
+        nr = dt.root_worksheet_folder().child_item('Network_Results')
+        nr = nr.open()
+        nr.save_as_data_table('Network_Results_{}'.format(peak), overwrite=True)
+        nr.close()
+        # transit
+        nt = dt.root_worksheet_folder().child_item('TransitSegmentResults')
+        nt = nt.open()
+        nt.save_as_data_table('Transit_Results_{}'.format(peak), overwrite=True)
+        nt.close()
