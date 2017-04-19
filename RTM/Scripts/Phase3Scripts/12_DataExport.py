@@ -5,6 +5,7 @@
 ##--Purpose: Output data after run
 ##---------------------------------------------------------------------
 import inro.modeller as _m
+import inro.emme.desktop as _d
 import traceback as _traceback
 
 import os
@@ -12,6 +13,7 @@ import csv as csv
 
 import sqlite3
 import pandas as pd
+import numpy as np
 
 
 
@@ -90,6 +92,7 @@ class DataExport(_m.Tool()):
         df.to_sql(name='tripGeneration', con=conn, flavor='sqlite', index=False, if_exists='replace')
         conn.close()
 
+        self.networkExport(eb)
 
         # runs last
         if self.export_csvs:
@@ -464,7 +467,6 @@ class DataExport(_m.Tool()):
         return df
 
 
-
     def prdsAtrs(self, eb):
         util = _m.Modeller().tool("translink.util")
 
@@ -548,3 +550,103 @@ class DataExport(_m.Tool()):
         conn.close()
 
         return prDf, arDf
+
+
+    def networkExport(self, eb):
+    	util = _m.Modeller().tool("translink.util")
+
+    	# connect to data tables - assumes tables have been manually created
+    	project = _m.Modeller().desktop.project
+    	db_loc = os.path.dirname(project.path)
+    	db_path = os.path.join(db_loc, 'data_tables.db')
+    	conn = sqlite3.connect(db_path)
+
+    	am_scenid = int(eb.matrix("msAmScen").data)
+    	md_scenid = int(eb.matrix("msMdScen").data)
+    	pm_scenid = int(eb.matrix("msPmScen").data)
+
+    	# connect to desktop
+    	dt = _d.app.connect()
+    	de = dt.data_explorer()
+    	db = de.active_database()
+
+    	# set AM scenario
+    	# auto
+    	scen = db.scenario_by_number(am_scenid)
+    	de.replace_primary_scenario(scen)
+    	nr = dt.root_worksheet_folder().child_item('Network_Results')
+    	nr = nr.open()
+    	nr.save_as_data_table('Network_Results_AM', overwrite=True)
+    	nr.close()
+    	# transit
+    	nt = dt.root_worksheet_folder().child_item('TransitSegmentResults')
+    	nt = nt.open()
+    	nt.save_as_data_table('Transit_Results_AM', overwrite=True)
+    	nt.close()
+
+    	# set MD scenario
+    	scen = db.scenario_by_number(md_scenid)
+    	de.replace_primary_scenario(scen)
+    	nr = dt.root_worksheet_folder().child_item('Network_Results')
+    	nr = nr.open()
+    	nr.save_as_data_table('Network_Results_MD', overwrite=True)
+    	nr.close()
+    	# transit
+    	nt = dt.root_worksheet_folder().child_item('TransitSegmentResults')
+    	nt = nt.open()
+    	nt.save_as_data_table('Transit_Results_MD', overwrite=True)
+    	nt.close()
+
+    	# set PM scenario
+    	scen = db.scenario_by_number(pm_scenid)
+    	de.replace_primary_scenario(scen)
+    	nr = dt.root_worksheet_folder().child_item('Network_Results')
+    	nr = nr.open()
+    	nr.save_as_data_table('Network_Results_PM', overwrite=True)
+    	nr.close()
+    	# transit
+    	nt = dt.root_worksheet_folder().child_item('TransitSegmentResults')
+    	nt = nt.open()
+    	nt.save_as_data_table('Transit_Results_PM', overwrite=True)
+    	nt.close()
+
+    	# extract network results
+    	dfAm = pd.read_sql("SELECT * FROM Network_Results_AM", conn)
+    	dfMd = pd.read_sql("SELECT * FROM Network_Results_MD", conn)
+    	dfPm = pd.read_sql("SELECT * FROM Network_Results_PM", conn)
+
+    	# extract network results
+    	dfAmT = pd.read_sql("SELECT * FROM Transit_Results_AM", conn)
+    	dfMdT = pd.read_sql("SELECT * FROM Transit_Results_MD", conn)
+    	dfPmT = pd.read_sql("SELECT * FROM Transit_Results_PM", conn)
+    	conn.close()
+
+    	# add time period
+    	dfAm['peakperiod'] = 'AM'
+    	dfMd['peakperiod'] = 'MD'
+    	dfPm['peakperiod'] = 'PM'
+
+    	dfAmT['peakperiod'] = 'AM'
+    	dfMdT['peakperiod'] = 'MD'
+    	dfPmT['peakperiod'] = 'PM'
+
+    	#clean up transit lines for aggregation.  Extract line and direction from EMME coding
+    	dfA = dfAmT.append(dfMdT).append(dfPmT)
+    	dfC = dfA['Line'].str.extract(r'(?P<newLine>[a-zA-Z]{1,2}_?\d+)(?P<dir>N|S|E|W|L|[M]2?)')
+    	dfB = dfA['Line'].str.extract(r'(?P<newLine>\d+)(?:[^ioNSEW\d]?)(?P<dir>i|o|N|S|E|W|[M]2?)')
+
+    	# testing if the first character is a letter to pick which regex to use
+    	dfA['newLine'] = np.where(dfA['Line'].str[:1].str.isalpha() == True, dfC['newLine'], dfB['newLine'])
+    	dfA['dir'] = np.where(dfA['Line'].str[:1].str.isalpha() == True, dfC['dir'], dfB['dir'])
+
+    	dfA.drop('geometry', axis=1, inplace=True)
+
+    	# connect to output data base and create if not existing
+        conn = util.get_db_byname(eb, 'network_results.db')
+
+    	# write data to single output table
+    	dfAm.to_sql(name='netResults', con=conn, flavor='sqlite', index=False, if_exists='replace')
+    	dfMd.to_sql(name='netResults', con=conn, flavor='sqlite', index=False, if_exists='append')
+    	dfPm.to_sql(name='netResults', con=conn, flavor='sqlite', index=False, if_exists='append')
+    	dfA.to_sql(name='transitResults', con=conn, flavor='sqlite', index=False, if_exists='replace')
+    	conn.close()
