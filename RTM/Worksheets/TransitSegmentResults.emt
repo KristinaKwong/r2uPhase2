@@ -1,5 +1,5 @@
 292ED8A4-37FA-4242-AE4E-D78DB768CA1D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
-# Emme table generated on Wed Apr 19 12:09:20 2017
+# Emme table generated on Wed Apr 19 15:35:47 2017
 # File: E:/RTM/RTM/Worksheets/TransitSegmentResults.emt
 #
 [transit segments]
@@ -67,4 +67,6 @@ ColumnDef[] = standingPassengers;;8;7;@pstand;0;;0;0
 ColumnDef[] = hdwyfac;Effective Headway Multiplier;8;7;@hdwyfac;0;;0;0
 ColumnDef[] = seatedCapacity;;8;7;@seatcapacity;0;;0;0
 ColumnDef[] = totalCapacity;;8;7;@totcapacity;0;;0;0
+ColumnDef[] = mode;;8;7;mode;0;;0;0
+ColumnDef[] = modeDesc;;8;7;mdesc;0;;0;0
 
