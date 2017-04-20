@@ -119,19 +119,7 @@ class DataExport(_m.Tool()):
 
         conn.close()
 
-        conn = util.get_db_byname(eb, "network_results.db")
-        c = conn.cursor()
-        c.execute("SELECT name FROM sqlite_master WHERE type in ('table', 'view');")
-        tabs = c.fetchall()
 
-        for table in tabs:
-            ot = table[0]
-            sql = "SELECT * FROM {}".format(ot)
-            df = pd.read_sql(sql, conn)
-            fn = os.path.join(output_loc, '{}.csv'.format(ot))
-            df.to_csv(fn, index=False)
-
-        conn.close()
 
     def addViewDailyModeSharebyPurp(self, eb):
         util = _m.Modeller().tool("translink.util")
@@ -610,7 +598,7 @@ class DataExport(_m.Tool()):
     	dfA.drop('geometry', axis=1, inplace=True)
 
     	# connect to output data base and create if not existing
-        conn = util.get_db_byname(eb, 'network_results.db')
+        conn = util.get_db_byname(eb, 'trip_summaries.db')
 
     	# write data to single output table
     	dfAm.to_sql(name='netResults', con=conn, flavor='sqlite', index=False, if_exists='replace')
