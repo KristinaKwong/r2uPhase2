@@ -24,7 +24,7 @@ class DataExport(_m.Tool()):
 
 
     def __init__(self):
-        self.export_csvs = False
+        self.export_csvs = True
 
 
 
