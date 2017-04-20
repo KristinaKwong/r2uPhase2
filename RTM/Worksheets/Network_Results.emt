@@ -1,6 +1,6 @@
 292ED8A4-37FA-4242-AE4E-D78DB768CA1D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
-# Emme table generated on Wed Mar 15 10:52:41 2017
-# File: F:/RTM_Model_Dev_Phase3/model_files_p3/RTM/Worksheets/Network_Results.emt
+# Emme table generated on Thu Apr 20 13:24:33 2017
+# File: E:/RTM/RTM/Worksheets/Network_Results.emt
 #
 [links]
 # String Name: table name that appears in the table header (tr,subst)
@@ -34,4 +34,5 @@ ColumnDef[] = speed;auto speed;6;2;speedau;0;;0;0
 ColumnDef[] = modes;link modes;8;0;modes;0;;0;0
 ColumnDef[] = lanes;number of lanes;5;1;lanes;0;;0;0
 ColumnDef[] = vdf;volume-delay function index;4;0;vdf;0;;0;0
+ColumnDef[] = postedSpeed;;8;7;[Posted Speed Limit] @posted_speed;0;;0;0
 
