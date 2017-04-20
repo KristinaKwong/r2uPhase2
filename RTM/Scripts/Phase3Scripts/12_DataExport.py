@@ -603,15 +603,10 @@ class DataExport(_m.Tool()):
     	dfMdT['peakperiod'] = 'MD'
     	dfPmT['peakperiod'] = 'PM'
 
-    	#clean up transit lines for aggregation.  Extract line and direction from EMME coding
+    	# clean up transit lines for aggregation.  Extract line and direction from EMME coding
     	dfA = dfAmT.append(dfMdT).append(dfPmT)
-    	dfC = dfA['Line'].str.extract(r'(?P<newLine>[a-zA-Z]{1,2}_?\d+)(?P<dir>N|S|E|W|L|[M]2?)')
-    	dfB = dfA['Line'].str.extract(r'(?P<newLine>\d+)(?:[^ioNSEW\d]?)(?P<dir>i|o|N|S|E|W|[M]2?)')
-
-    	# testing if the first character is a letter to pick which regex to use
-    	dfA['newLine'] = np.where(dfA['Line'].str[:1].str.isalpha() == True, dfC['newLine'], dfB['newLine'])
-    	dfA['dir'] = np.where(dfA['Line'].str[:1].str.isalpha() == True, dfC['dir'], dfB['dir'])
-
+        dfB = dfA['Line'].str.extract(r'(?P<newLine>[a-zA-Z]{0,2}_?\d+)(?:[^ioNSEW\d]?)(?P<dir>N|S|E|W|L|[M]2?)')
+        dfA = pd.concat([dfA, dfB], axis=1)
     	dfA.drop('geometry', axis=1, inplace=True)
 
     	# connect to output data base and create if not existing
