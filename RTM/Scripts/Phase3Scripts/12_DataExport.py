@@ -53,7 +53,7 @@ class DataExport(_m.Tool()):
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
 
-    @_m.logbook_trace("Data Import")
+    @_m.logbook_trace("Data Export")
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.util")
         model_year = int(util.get_year(eb))
@@ -94,6 +94,9 @@ class DataExport(_m.Tool()):
 
         self.networkExport(eb)
 
+        if True:
+            self.addViewBridgeXings(eb)
+
         # runs last
         if self.export_csvs:
             self.export_text(eb)
@@ -119,7 +122,75 @@ class DataExport(_m.Tool()):
 
         conn.close()
 
+    def addViewBridgeXings(self, eb):
+        util = _m.Modeller().tool("translink.util")
 
+        conn = util.get_db_byname(eb, "trip_summaries.db")
+        c = conn.cursor()
+
+        c.execute("DROP VIEW IF EXISTS vBridgeXings;")
+        conn.commit()
+
+        create_view = """
+            CREATE VIEW vBridgeXings AS
+            SELECT
+                nd.Bridge_Name
+               ,nd.peakperiod
+               ,sum(nd.Tot_Auto_Vol) as Auto
+               ,sum(nd.Tot_Tran_Vol) as Transit
+
+            FROM (
+                    SELECT
+                         i
+                        ,j
+                        ,peakperiod
+                        ,CASE
+                             WHEN i = 541808 and j in (541023, 532112) then "Massey"
+                             WHEN i in (532111,541024) and j = 541801 then "Massey"
+                             WHEN i = 541806 and j = 532112 then "Massey"
+
+                             WHEN i = 541005 or j = 541004  then "Alex_Fraser"
+
+                             WHEN i = 610905 and j = 292013 then "Pattullo"
+                             WHEN i = 292604 and j = 610903 then "Pattullo"
+
+                             WHEN i = 611310 and j = 292618 then "Pattullo"
+                             WHEN i = 292617 and j = 611309 then "Pattullo"
+
+                             WHEN i = 611407 and j = 292613 then "Sky_Bridge"
+                             WHEN i = 292613 and j = 611407 then "Sky_Bridge"
+
+                             WHEN i = 630207 and j = 326317 then "Port_Mann"
+                             WHEN i = 630103 and j = 326315 then "Port_Mann"
+                             WHEN i = 630104 and j = 325807 then "Port_Mann"
+                             WHEN i = 326413 and j = 630705 then "Port_Mann"
+                             WHEN i = 326410 and j = 630704 then "Port_Mann"
+                             WHEN i = 326411 and j = 610804 then "Port_Mann"
+
+                             WHEN i = 680401 or j = 680302 then "GEB"
+
+                             ELSE "Other"
+                             END Bridge_Name
+
+                        ,ROUND(SOV+HOV+Light_Trucks+Heavy_Trucks+Transit_Vehicles) as Tot_Auto_Vol
+                        ,ROUND(Transit_Volume) as Tot_Tran_Vol
+
+                FROM netResults
+            ) nd
+
+            WHERE 1=1
+                and Bridge_Name != 'Other'
+
+            GROUP BY
+                nd.Bridge_Name
+               ,nd.peakperiod
+
+            """
+
+        c = conn.cursor()
+        c.execute(create_view)
+        conn.commit()
+        conn.close()
 
     def addViewDailyModeSharebyPurp(self, eb):
         util = _m.Modeller().tool("translink.util")
@@ -213,7 +284,6 @@ class DataExport(_m.Tool()):
         df['mode'] = 'auto'
         df = df[['period','mode','measure','value']]
         return df
-
 
     def calc_transit_tt(self, eb):
         util = _m.Modeller().tool("translink.util")
@@ -325,7 +395,6 @@ class DataExport(_m.Tool()):
 
         df = df[['period','mode','measure','value']]
         return df
-
 
     def calc_auto_tt(self, eb):
         util = _m.Modeller().tool("translink.util")
@@ -468,7 +537,6 @@ class DataExport(_m.Tool()):
         df = df[['period','mode','measure','value']]
         return df
 
-
     def prdsAtrs(self, eb):
         util = _m.Modeller().tool("translink.util")
 
@@ -553,7 +621,6 @@ class DataExport(_m.Tool()):
 
         return prDf, arDf
 
-
     def networkExport(self, eb):
     	util = _m.Modeller().tool("translink.util")
 
@@ -607,12 +674,14 @@ class DataExport(_m.Tool()):
     	dfA.to_sql(name='transitResults', con=conn, flavor='sqlite', index=False, if_exists='replace')
     	conn.close()
 
-
     def exportWorkSheets(self, scenario, peak):
         # connect to desktop
         dt = _d.app.connect()
+        dt.refresh_data()
         de = dt.data_explorer()
         db = de.active_database()
+
+
         # set scenario
         scen = db.scenario_by_number(scenario)
         de.replace_primary_scenario(scen)
