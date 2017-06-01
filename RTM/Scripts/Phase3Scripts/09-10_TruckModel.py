@@ -117,10 +117,10 @@ class FullTruckModel(_m.Tool()):
         TruckConFact=0.35 # % Light Truck in West Area
         Quarter=4
 
-        if Year==2011:
-            BC_GDP=172696
-            NGrowth1=1
-            NGrowth2=1
+        if Year < 2030:
+            BC_GDP= 172696 + (Year - 2011)*(257458.98 - 172696)/(2030 - 2011)
+            NGrowth1 = 1 + (Year - 2011)*(1.2 - 1.0)/(2030 - 2011)
+            NGrowth2 = 1 + (Year - 2011)*(1.2 - 1.0)/(2030 - 2011)
 
         if Year==2030:
             BC_GDP=257458.98
