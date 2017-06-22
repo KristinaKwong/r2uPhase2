@@ -1,0 +1,72 @@
+292ED8A4-37FA-4242-AE4E-D78DB768CA1D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
+# Emme table generated on Wed Apr 19 15:35:47 2017
+# File: E:/RTM/RTM/Worksheets/TransitSegmentResults.emt
+#
+[transit segments]
+# String Name: table name that appears in the table header (tr,subst)
+Name : $ListLoaded/
+Name = TransitSegmentResults
+# Text Description: user definable table description (tr,subst)
+Description = (boardings over capacity highlighted in red)
+# String IncomingSyncs: regular expression to filter incoming sync signals
+IncomingSyncs = [$>].
+# String SaveListConfiguration: file name to save current table configuration (subst,nosave)
+SaveListConfiguration : /$SaveListConfiguration
+# Click PrintCurrentListNoSetup: when clicked, current table will be printed without entering setup dialog (nosave)
+PrintCurrentListNoSetup : /$PrintCurrentListNoSetup/$PrintCurrentListNoSetup
+# String ExportCurrentTableToFile: when set to a file name, the current table is exported to it (nosave)
+ExportCurrentTableToFile : /$PunchCurrentListToFile
+# Click CloseList: when clicked, table will be closed (nosave)
+CloseList : /$CloseList/$CloseList
+# String Caption: caption text on table window bar (tr,subst)
+Caption = %<Name>%
+# Expression Condition: indicates that the table is valid only if the condition is met (tr)
+Condition =  hasTransitAssignment
+# Filter Filter: expression for transit segment filtering [,transit segment iterator] (tr,seg.,string,max. 2 values)
+Filter : (0x10) />_TableFilter
+Filter[] = 
+Filter[] = [transit stop] noboa==0||noali==0
+Filter[] = [alightings] alight>0
+Filter[] = [boardings] board>0
+Filter[] = [boardings or alightings] board>0||alight>0
+Filter[] = [no boardings] board==0
+Filter[] = [no alightings] alight==0
+Filter[] = [no boardings and alightings] board==0&&alight==0
+Filter[] = [no boardings allowed] noboa==1
+Filter[] = [no alightings allowed] noali==1
+Filter[] = [no stop] noboa==1&&noali==1
+Filter[] = [exclude last (hidden) segment] not(isHidden)
+Filter[] = [all segments] 1
+# Expression StyleIndex: expression for table style index (tr,seg.)
+StyleIndex[] = [boarding over capacity] if(row<0,3,if(column<3,1,if(column==9&&voltr>capt&&board>0,2,0)))
+StyleIndex[] = [boarding over capacity] if(row<0,3,if(column<3,1,if(column==9&&voltr>capt&&board>0,2,0)))
+# Style Style: style used to generate table entries
+Style : (0x200) /Tables!/$ListLoaded
+Style[] = 0x20000000 0x01ffffff 0x00000000 0x00000000
+Style[] = 0x20000000 0x01ffffff 0x08000000 0x00000000
+Style[] = 0x20000000 0x01ffffff 0x08ff0000 0x00000000
+Style[] = 0x01000000 0x01ffffff 0x00000000 0x00000000
+# String ColumnDef: list column definitions (tr)
+ColumnDef[] = index;transit segment index;6;0;index;0;;768;0
+ColumnDef[] = Line;transit line;8;0;line;0;;256;111
+ColumnDef[] = Segment;segment (from-to);14;7;if(isHidden,tr("hidden"),i+"-"+j);0;-;896;0
+ColumnDef[] = Length;link length;6;2;if(not(isHidden),length,-0);0;-;768;0
+ColumnDef[] = Time;transit segment time;6;2;if(not(isHidden),timtr,-0);0;-;768;0
+ColumnDef[] = Speed;speed on link;6;0;if(timtr,length*60/timtr,-0);0;-;768;0
+ColumnDef[] = loadFactor;;6;2;if(not(isHidden),voltr/capt,-0);0;-;768;0
+ColumnDef[] = volume;transit segment volume;8;0;if(not(isHidden),voltr,-0);0;-;896;0
+ColumnDef[] = transitStop;transit stop;7;0;i*isIStop;0;-;0;0
+ColumnDef[] = boardings;transit boardings;6;0;board;0;-;768;0
+ColumnDef[] = alightings;transit alightings at I-node;6;0;alight;0;-;768;0
+ColumnDef[] = seatProbability;seat probability;6;2;if(board,(min(max(caps-(Pprev->voltr-alight),0)/board,1)),-1);-1;-;896;0
+ColumnDef[] = lineDescription;;8;7;description;0;;0;171
+ColumnDef[] = vehType;;8;7;veh;0;;0;0
+ColumnDef[] = vehDesc;;8;7;vdesc;0;;0;121
+ColumnDef[] = seatedPassengers;seatedPassengers;8;7;@pseat;0;;0;0
+ColumnDef[] = standingPassengers;;8;7;@pstand;0;;0;0
+ColumnDef[] = hdwyfac;Effective Headway Multiplier;8;7;@hdwyfac;0;;0;0
+ColumnDef[] = seatedCapacity;;8;7;@seatcapacity;0;;0;0
+ColumnDef[] = totalCapacity;;8;7;@totcapacity;0;;0;0
+ColumnDef[] = mode;;8;7;mode;0;;0;0
+ColumnDef[] = modeDesc;;8;7;mdesc;0;;0;0
+

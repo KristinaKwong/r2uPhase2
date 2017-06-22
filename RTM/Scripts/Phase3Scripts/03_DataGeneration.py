@@ -11,12 +11,20 @@ import pandas as pd
 
 class DataGeneration(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
+    run_parking_model = _m.Attribute(bool)
+
+    def __init__(self):
+        self.run_parking_model = True
+
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
         pb.title = "Generate Data for Model Run"
         pb.description = "Generate Densities, Initial Skims, data dependant values"
         pb.branding_text = "TransLink"
+
+        with pb.section("Data Generation Options"):
+            pb.add_checkbox("run_parking_model", label="Run Parking Model")
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
@@ -27,6 +35,8 @@ class DataGeneration(_m.Tool()):
         self.tool_run_msg = ""
         try:
             eb = _m.Modeller().emmebank
+            eb.matrix("msparkingModel").data = self.run_parking_model
+
             self.__call__(eb)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
@@ -57,7 +67,10 @@ class DataGeneration(_m.Tool()):
 
         self.calc_all_accessibilities(eb)
 
-        if model_year > 2016 and cyclenum == 1:
+
+        runParking = int(eb.matrix("msparkingModel").data)
+
+        if model_year > 2016 and cyclenum == 1 and runParking == 1:
             self.parking_model(eb)
 
     @_m.logbook_trace("Calculate Accessibilites")

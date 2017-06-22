@@ -5,6 +5,7 @@
 ##--Purpose: Output data after run
 ##---------------------------------------------------------------------
 import inro.modeller as _m
+import inro.emme.desktop as _d
 import traceback as _traceback
 
 import os
@@ -12,6 +13,7 @@ import csv as csv
 
 import sqlite3
 import pandas as pd
+import numpy as np
 
 
 
@@ -22,7 +24,7 @@ class DataExport(_m.Tool()):
 
 
     def __init__(self):
-        self.export_csvs = False
+        self.export_csvs = True
 
 
 
@@ -51,7 +53,7 @@ class DataExport(_m.Tool()):
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
 
-    @_m.logbook_trace("Data Import")
+    @_m.logbook_trace("Data Export")
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.util")
         model_year = int(util.get_year(eb))
@@ -90,6 +92,10 @@ class DataExport(_m.Tool()):
         df.to_sql(name='tripGeneration', con=conn, flavor='sqlite', index=False, if_exists='replace')
         conn.close()
 
+        self.networkExport(eb)
+
+        if True:
+            self.addViewBridgeXings(eb)
 
         # runs last
         if self.export_csvs:
@@ -114,6 +120,76 @@ class DataExport(_m.Tool()):
             fn = os.path.join(output_loc, '{}.csv'.format(ot))
             df.to_csv(fn, index=False)
 
+        conn.close()
+
+    def addViewBridgeXings(self, eb):
+        util = _m.Modeller().tool("translink.util")
+
+        conn = util.get_db_byname(eb, "trip_summaries.db")
+        c = conn.cursor()
+
+        c.execute("DROP VIEW IF EXISTS vBridgeXings;")
+        conn.commit()
+
+        create_view = """
+            CREATE VIEW vBridgeXings AS
+            SELECT
+                nd.Bridge_Name
+               ,nd.peakperiod
+               ,sum(nd.Tot_Auto_Vol) as Auto
+               ,sum(nd.Tot_Tran_Vol) as Transit
+
+            FROM (
+                    SELECT
+                         i
+                        ,j
+                        ,peakperiod
+                        ,CASE
+                             WHEN i = 541808 and j in (541023, 532112) then "Massey"
+                             WHEN i in (532111,541024) and j = 541801 then "Massey"
+                             WHEN i = 541806 and j = 532112 then "Massey"
+
+                             WHEN i = 541005 or j = 541004  then "Alex_Fraser"
+
+                             WHEN i = 610905 and j = 292013 then "Pattullo"
+                             WHEN i = 292604 and j = 610903 then "Pattullo"
+
+                             WHEN i = 611310 and j = 292618 then "Pattullo"
+                             WHEN i = 292617 and j = 611309 then "Pattullo"
+
+                             WHEN i = 611407 and j = 292613 then "Sky_Bridge"
+                             WHEN i = 292613 and j = 611407 then "Sky_Bridge"
+
+                             WHEN i = 630207 and j = 326317 then "Port_Mann"
+                             WHEN i = 630103 and j = 326315 then "Port_Mann"
+                             WHEN i = 630104 and j = 325807 then "Port_Mann"
+                             WHEN i = 326413 and j = 630705 then "Port_Mann"
+                             WHEN i = 326410 and j = 630704 then "Port_Mann"
+                             WHEN i = 326411 and j = 610804 then "Port_Mann"
+
+                             WHEN i = 680401 or j = 680302 then "GEB"
+
+                             ELSE "Other"
+                             END Bridge_Name
+
+                        ,ROUND(SOV+HOV+Light_Trucks+Heavy_Trucks+Transit_Vehicles) as Tot_Auto_Vol
+                        ,ROUND(Transit_Volume) as Tot_Tran_Vol
+
+                FROM netResults
+            ) nd
+
+            WHERE 1=1
+                and Bridge_Name != 'Other'
+
+            GROUP BY
+                nd.Bridge_Name
+               ,nd.peakperiod
+
+            """
+
+        c = conn.cursor()
+        c.execute(create_view)
+        conn.commit()
         conn.close()
 
     def addViewDailyModeSharebyPurp(self, eb):
@@ -208,7 +284,6 @@ class DataExport(_m.Tool()):
         df['mode'] = 'auto'
         df = df[['period','mode','measure','value']]
         return df
-
 
     def calc_transit_tt(self, eb):
         util = _m.Modeller().tool("translink.util")
@@ -320,7 +395,6 @@ class DataExport(_m.Tool()):
 
         df = df[['period','mode','measure','value']]
         return df
-
 
     def calc_auto_tt(self, eb):
         util = _m.Modeller().tool("translink.util")
@@ -463,8 +537,6 @@ class DataExport(_m.Tool()):
         df = df[['period','mode','measure','value']]
         return df
 
-
-
     def prdsAtrs(self, eb):
         util = _m.Modeller().tool("translink.util")
 
@@ -548,3 +620,77 @@ class DataExport(_m.Tool()):
         conn.close()
 
         return prDf, arDf
+
+    def networkExport(self, eb):
+    	util = _m.Modeller().tool("translink.util")
+
+    	am_scenid = int(eb.matrix("msAmScen").data)
+    	md_scenid = int(eb.matrix("msMdScen").data)
+    	pm_scenid = int(eb.matrix("msPmScen").data)
+
+        # export network data from emmebank to data tables
+        self.exportWorkSheets(am_scenid, 'AM')
+        self.exportWorkSheets(md_scenid, 'MD')
+        self.exportWorkSheets(pm_scenid, 'PM')
+
+    	# connect to data tables
+    	project = _m.Modeller().desktop.project
+    	db_loc = os.path.dirname(project.path)
+    	db_path = os.path.join(db_loc, 'data_tables.db')
+    	conn = sqlite3.connect(db_path)
+
+    	# get data out of datatables
+    	dfAm = pd.read_sql("SELECT * FROM Network_Results_AM", conn)
+    	dfMd = pd.read_sql("SELECT * FROM Network_Results_MD", conn)
+    	dfPm = pd.read_sql("SELECT * FROM Network_Results_PM", conn)
+
+    	dfAmT = pd.read_sql("SELECT * FROM Transit_Results_AM", conn)
+    	dfMdT = pd.read_sql("SELECT * FROM Transit_Results_MD", conn)
+    	dfPmT = pd.read_sql("SELECT * FROM Transit_Results_PM", conn)
+    	conn.close()
+
+    	# add time period
+    	dfAm['peakperiod'] = 'AM'
+    	dfMd['peakperiod'] = 'MD'
+    	dfPm['peakperiod'] = 'PM'
+
+    	dfAmT['peakperiod'] = 'AM'
+    	dfMdT['peakperiod'] = 'MD'
+    	dfPmT['peakperiod'] = 'PM'
+
+    	# clean up transit lines for aggregation.  Extract line and direction from EMME coding
+    	dfA = dfAmT.append(dfMdT).append(dfPmT)
+        dfB = dfA['Line'].str.extract(r'(?P<newLine>[a-zA-Z]{0,2}_?\d+)(?:[^ioNSEW\d]?)(?P<dir>N|S|E|W|L|[M]2?)')
+        dfA = pd.concat([dfA, dfB], axis=1)
+    	dfA.drop('geometry', axis=1, inplace=True)
+
+    	# connect to output data base and create if not existing
+        conn = util.get_db_byname(eb, 'trip_summaries.db')
+
+    	# write data to single output table
+    	dfAm.to_sql(name='netResults', con=conn, flavor='sqlite', index=False, if_exists='replace')
+    	dfMd.to_sql(name='netResults', con=conn, flavor='sqlite', index=False, if_exists='append')
+    	dfPm.to_sql(name='netResults', con=conn, flavor='sqlite', index=False, if_exists='append')
+    	dfA.to_sql(name='transitResults', con=conn, flavor='sqlite', index=False, if_exists='replace')
+    	conn.close()
+
+    def exportWorkSheets(self, scenario, peak):
+        # connect to desktop
+        dt = _d.app.connect()
+        dt.refresh_data()
+        de = dt.data_explorer()
+        db = de.active_database()
+
+
+        # set scenario
+        scen = db.scenario_by_number(scenario)
+        de.replace_primary_scenario(scen)
+        nr = dt.root_worksheet_folder().child_item('Network_Results')
+        nr = nr.open()
+        nr.save_as_data_table('Network_Results_{}'.format(peak), overwrite=True)
+        nr.close()
+        # transit
+        nt = dt.root_worksheet_folder().child_item('TransitSegmentResults')
+        nt = nt.open()
+        nt.save_as_data_table('Transit_Results_{}'.format(peak), overwrite=True)
+        nt.close()

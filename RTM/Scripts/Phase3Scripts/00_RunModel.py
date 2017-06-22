@@ -20,6 +20,7 @@ class FullModelRun(_m.Tool()):
     run_congested_transit = _m.Attribute(bool)
     run_capacited_transit = _m.Attribute(bool)
     num_processors = _m.Attribute(int)
+    run_parking_model = _m.Attribute(bool)
 
     tool_run_msg = _m.Attribute(unicode)
 
@@ -32,6 +33,7 @@ class FullModelRun(_m.Tool()):
         self.run_congested_transit = True
         self.run_capacited_transit = True
         self.num_processors = multiprocessing.cpu_count()
+        self.run_parking_model = True
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
@@ -47,7 +49,7 @@ class FullModelRun(_m.Tool()):
         pb.add_text_box(tool_attribute_name="horizon_year",
                         size="4",
                         title="Model horizion year:",
-                        note="Should match network scenario")
+                        note="Should match current landuse years: 2011, 2030 and 2045")
 
         pb.add_select_scenario(tool_attribute_name="master_scen",
                         title="Scenario containing network information:",
@@ -56,7 +58,7 @@ class FullModelRun(_m.Tool()):
         pb.add_text_box(tool_attribute_name="global_iterations",
                         size="3",
                         title="Global model iterations:",
-                        note="Use 6 iterations in normal operation")
+                        note="Use 4 iterations in normal operation")
 
         pb.add_select_file(tool_attribute_name="demographics_file",
                            window_type="file",
@@ -99,6 +101,12 @@ class FullModelRun(_m.Tool()):
             pb.add_checkbox("run_congested_transit", label="Run Congested Transit Assignment")
             pb.add_checkbox("run_capacited_transit", label="Run Capacited Transit Assignment")
 
+        with pb.section("Data Generation Options"):
+            pb.add_checkbox("run_parking_model", label="Run Parking Model",
+                                                 note="Parking model should be run "
+                                                 "unless parking scenarios are being tested "
+                                                 "that are coded in geographics file")
+
         pb.add_text_box(tool_attribute_name="num_processors",
                         size="3",
                         title="Number of processors on machine running model:",
@@ -112,7 +120,7 @@ class FullModelRun(_m.Tool()):
             self.__call__(self.horizon_year, self.global_iterations, self.master_scen, self.demographics_file,
                  self.geographics_file, self.max_distribution_iterations,
                  self.max_assignment_iterations, self.run_congested_transit, self.run_capacited_transit,
-                 self.num_processors)
+                 self.num_processors, self.run_parking_model)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
@@ -120,14 +128,15 @@ class FullModelRun(_m.Tool()):
     @_m.logbook_trace("Full Model Run")
     def __call__(self, horizon_year, global_iterations, master_scen, demographics_file,
                     geographics_file, max_distribution_iterations,
-                    max_assignment_iterations, run_congested_transit, run_capacited_transit, num_processors):
+                    max_assignment_iterations, run_congested_transit,
+                    run_capacited_transit, num_processors, run_parking_model):
         eb = master_scen.emmebank
         util = _m.Modeller().tool("translink.util")
         self.initoptions(eb=eb, horizon_year=horizon_year, global_iterations=global_iterations,
                         max_distribution_iterations=max_distribution_iterations,
                         max_assignment_iterations=max_assignment_iterations,
                         run_congested_transit=run_congested_transit, run_capacited_transit=run_capacited_transit,
-                        num_processors=num_processors)
+                        num_processors=num_processors, run_parking_model=run_parking_model)
 
         self.stage0(eb, master_scen=master_scen, demographics_file=demographics_file, geographics_file=geographics_file)
 
@@ -136,6 +145,9 @@ class FullModelRun(_m.Tool()):
             with _m.logbook_trace("Run Cycle %d" % cycle):
                 self.stage1(eb)
                 self.run_one_cycle(eb)
+
+        data_export = _m.Modeller().tool("translink.RTM3.stage4.dataexport")
+        data_export(eb)
 
     def stage0(self, eb, master_scen, demographics_file, geographics_file):
         util = _m.Modeller().tool("translink.util")
@@ -205,7 +217,7 @@ class FullModelRun(_m.Tool()):
     def initoptions(self, eb, horizon_year, global_iterations,
                     max_distribution_iterations, max_assignment_iterations,
                     run_congested_transit, run_capacited_transit,
-                    num_processors):
+                    num_processors, run_parking_model):
 
         util = _m.Modeller().tool("translink.util")
         # model business
@@ -215,6 +227,8 @@ class FullModelRun(_m.Tool()):
         util.initmat(eb, "ms4", "PmScen", "PMScenario", 23000)
         util.initmat(eb, "ms10", "Year", "Horizon Year of Run", horizon_year)
         util.initmat(eb, "ms12", "Processors", "Number of Processors for Computer Running Model", num_processors)
+        # data generation
+        util.initmat(eb, "ms20", "parkingModel", "Run Parking Model", run_parking_model)
         # overall model
         util.initmat(eb, "ms30", "IterGlobal", "Global Iterations", global_iterations)
         # distribution

@@ -79,7 +79,7 @@ class InitEmmebank(_m.Tool()):
 
             self.initfunctions(eb)
             self.initscenario(eb, 1000, "2011 Base Network")
-            self.initscenario(eb, 2000, "2015 Base Network")
+            self.initscenario(eb, 2000, "2016 Base Network")
             self.initscenario(eb, 3000, "2030 Base Network")
             self.initscenario(eb, 4000, "2045 Base Network")
             self.initoptions(eb)
