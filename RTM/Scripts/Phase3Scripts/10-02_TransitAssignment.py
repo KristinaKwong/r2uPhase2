@@ -128,6 +128,7 @@ class TransitAssignment(_m.Tool()):
         self.num_processors = int(eb.matrix("ms12").data)
         assign_transit = _m.Modeller().tool("inro.emme.transit_assignment.extended_transit_assignment")
         util = _m.Modeller().tool("translink.util")
+        create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
 
         if disable_congestion:
             run_crowding = 0
@@ -192,6 +193,12 @@ class TransitAssignment(_m.Tool()):
         # now that the skims have been written back, delete the temporary matrices
         for matrix in self.get_temp_matrices():
             util.delmat(eb, matrix[0])
+
+        # add transit volumes to links for export
+        for scenario in scenario_list:
+            create_attr("LINK", "@voltr", "Total Transit Volume on Link", 0, False, scenario)
+            util.emme_segment_calc(scenario, "@voltr", "voltr", sel_link="all",aggregate= "+")
+
 
     def get_common_transit_assignment_spec(self, modes, demand):
         spec = {
