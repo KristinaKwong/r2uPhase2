@@ -52,6 +52,25 @@ class ModeChoice(_m.Tool()):
         td_mode_choice_hbes(eb)
         td_mode_choice_nhbw(eb)
         td_mode_choice_nhbo(eb)
+        
+        # now that all SOV/HOV driver trips have been aggregated, adjust for external deamnd
+        # and demand adjust incremental matrices as needed
+        self.add_external_demadj_demand()
+
+    def add_external_demadj_demand(self):
+        util = _m.Modeller().tool("translink.util")
+        specs = []
+        # AM
+        specs.append(util.matrix_spec("SOV_drvtrp_VOT_3_Am", "SOV_drvtrp_VOT_3_Am + extSovAm"))
+        specs.append(util.matrix_spec("HOV_drvtrp_VOT_3_Am", "HOV_drvtrp_VOT_3_Am + extHovAm"))
+        # MD
+        specs.append(util.matrix_spec("SOV_drvtrp_VOT_3_Md", "((SOV_drvtrp_VOT_3_Md + extSovMd + MD_Demadj).max.0)"))
+        specs.append(util.matrix_spec("HOV_drvtrp_VOT_3_Md", "HOV_drvtrp_VOT_3_Md + extHovMd"))
+        # PM
+        specs.append(util.matrix_spec("SOV_drvtrp_VOT_3_Pm", "SOV_drvtrp_VOT_3_Pm + extSovPm"))
+        specs.append(util.matrix_spec("HOV_drvtrp_VOT_3_Pm", "HOV_drvtrp_VOT_3_Pm + extHovPm"))
+
+        util.compute_matrix(specs)
 
     @_m.logbook_trace("Initialize Matrices")
     def matrix_batchins(self, eb):
