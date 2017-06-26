@@ -196,7 +196,7 @@ class TransitAssignment(_m.Tool()):
 
         # add transit volumes to links for export
         for scenario in scenario_list:
-            create_attr("LINK", "@voltr", "Total Transit Volume on Link", 0, False, scenario)
+            create_attr("LINK", "@voltr", "Total Transit Volume on Link", 0, True, scenario)
             util.emme_segment_calc(scenario, "@voltr", "voltr", sel_link="all",aggregate= "+")
 
 
