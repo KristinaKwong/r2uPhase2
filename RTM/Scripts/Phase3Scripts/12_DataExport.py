@@ -628,26 +628,14 @@ class DataExport(_m.Tool()):
     	md_scenid = int(eb.matrix("msMdScen").data)
     	pm_scenid = int(eb.matrix("msPmScen").data)
 
-        # export network data from emmebank to data tables
-        self.exportWorkSheets(am_scenid, 'AM')
-        self.exportWorkSheets(md_scenid, 'MD')
-        self.exportWorkSheets(pm_scenid, 'PM')
+    	# get auto and transit data out of eb
+    	dfAm = self.get_auto_data(eb, am_scenid)
+    	dfMd = self.get_auto_data(eb, md_scenid)
+    	dfPm = self.get_auto_data(eb, pm_scenid)
 
-    	# connect to data tables
-    	project = _m.Modeller().desktop.project
-    	db_loc = os.path.dirname(project.path)
-    	db_path = os.path.join(db_loc, 'data_tables.db')
-    	conn = sqlite3.connect(db_path)
-
-    	# get data out of datatables
-    	dfAm = pd.read_sql("SELECT * FROM Network_Results_AM", conn)
-    	dfMd = pd.read_sql("SELECT * FROM Network_Results_MD", conn)
-    	dfPm = pd.read_sql("SELECT * FROM Network_Results_PM", conn)
-
-    	dfAmT = pd.read_sql("SELECT * FROM Transit_Results_AM", conn)
-    	dfMdT = pd.read_sql("SELECT * FROM Transit_Results_MD", conn)
-    	dfPmT = pd.read_sql("SELECT * FROM Transit_Results_PM", conn)
-    	conn.close()
+    	dfAmT = self.get_transit_data(eb, am_scenid)
+    	dfMdT = self.get_transit_data(eb, md_scenid)
+    	dfPmT = self.get_transit_data(eb, pm_scenid)
 
     	# add time period
     	dfAm['peakperiod'] = 'AM'
@@ -659,38 +647,129 @@ class DataExport(_m.Tool()):
     	dfPmT['peakperiod'] = 'PM'
 
     	# clean up transit lines for aggregation.  Extract line and direction from EMME coding
-    	dfA = dfAmT.append(dfMdT).append(dfPmT)
-        dfB = dfA['Line'].str.extract(r'(?P<newLine>[a-zA-Z]{0,2}_?\d+)(?:[^ioNSEW\d]?)(?P<dir>N|S|E|W|L|[M]2?)')
-        dfA = pd.concat([dfA, dfB], axis=1)
-    	dfA.drop('geometry', axis=1, inplace=True)
+    	dfTransit = dfAmT.append(dfMdT).append(dfPmT)
+        dfLineName = dfTransit['Line'].str.extract(r'(?P<newLine>[a-zA-Z]{0,2}_?\d+)(?:[^ioNSEW\d]?)(?P<dir>N|S|E|W|L|[M]2?)')
+        dfTransit = pd.concat([dfTransit, dfLineName], axis=1)
+
+        dfAuto = dfAm.append(dfMd).append(dfPm)
 
     	# connect to output data base and create if not existing
         conn = util.get_db_byname(eb, 'trip_summaries.db')
 
     	# write data to single output table
-    	dfAm.to_sql(name='netResults', con=conn, flavor='sqlite', index=False, if_exists='replace')
-    	dfMd.to_sql(name='netResults', con=conn, flavor='sqlite', index=False, if_exists='append')
-    	dfPm.to_sql(name='netResults', con=conn, flavor='sqlite', index=False, if_exists='append')
-    	dfA.to_sql(name='transitResults', con=conn, flavor='sqlite', index=False, if_exists='replace')
+    	dfAuto.to_sql(name='netResults', con=conn, flavor='sqlite', index=False, if_exists='replace')
+    	dfTransit.to_sql(name='transitResults', con=conn, flavor='sqlite', index=False, if_exists='replace')
     	conn.close()
 
-    def exportWorkSheets(self, scenario, peak):
-        # connect to desktop
-        dt = _d.app.connect()
-        dt.refresh_data()
-        de = dt.data_explorer()
-        db = de.active_database()
+    def get_transit_data(self, eb, scenario_id):
+        scenario = eb.scenario(scenario_id)
+        network = scenario.get_network()
+        dfDict = {'Line' : [],
+                  'Segment' : [],
+                  'Length' : [],
+                  'Time' : [],
+                  'Speed' : [],
+                  'loadFactor' : [],
+                  'volume' : [],
+                  'transitStop' : [],
+                  'boardings' : [],
+                  'alightings' : [],
+                  'seatProbability' : [],
+                  'lineDescription' : [],
+                  'vehType' : [],
+                  'vehDesc' : [],
+                  'seatedPassengers' : [],
+                  'standingPassengers' : [],
+                  'hdwyfac' : [],
+                  'seatedCapacity' : [],
+                  'totalCapacity' : [],
+                  'mode' : [],
+                  'modeDesc' : []}
 
 
-        # set scenario
-        scen = db.scenario_by_number(scenario)
-        de.replace_primary_scenario(scen)
-        nr = dt.root_worksheet_folder().child_item('Network_Results')
-        nr = nr.open()
-        nr.save_as_data_table('Network_Results_{}'.format(peak), overwrite=True)
-        nr.close()
-        # transit
-        nt = dt.root_worksheet_folder().child_item('TransitSegmentResults')
-        nt = nt.open()
-        nt.save_as_data_table('Transit_Results_{}'.format(peak), overwrite=True)
-        nt.close()
+
+        for seg in network.transit_segments():
+            dfDict['Line'].append(seg.line.id)
+            dfDict['Segment'].append("{}-{}".format(seg.i_node, seg.j_node))
+
+            try:
+                dfDict['Length'].append(seg.link.length)
+            except:
+                dfDict['Length'].append(np.nan)
+            dfDict['Time'].append(seg.transit_time)
+
+            try:
+                dfDict['Speed'].append(seg.link.length / (seg.transit_time / 60))
+            except:
+                dfDict['Speed'].append(np.nan)
+
+            dfDict['loadFactor'].append(seg.transit_volume / seg.line['@totcapacity'])
+            dfDict['volume'].append(seg.transit_volume)
+
+            if (seg.allow_alightings or seg.allow_boardings):
+                 dfDict['transitStop'].append(int(seg.i_node))
+            else:
+                dfDict['transitStop'].append(np.nan)
+
+            dfDict['boardings'].append( seg.transit_boardings)
+            dfDict['alightings'].append(seg['@alight']) #TODO update if we can remove the extra attribute calculation
+            dfDict['seatProbability'].append(0) # TODO update when alightings becomes available
+            dfDict['lineDescription'].append(seg.line.description)
+            dfDict['vehType'].append(seg.line.vehicle.number)
+            dfDict['vehDesc'].append(seg.line.vehicle.description)
+            dfDict['seatedPassengers'].append(seg['@pseat'])
+            dfDict['standingPassengers'].append(seg['@pstand'])
+            dfDict['hdwyfac'].append(seg['@hdwyfac'])
+            dfDict['seatedCapacity'].append(seg.line['@seatcapacity'])
+            dfDict['totalCapacity'].append(seg.line['@totcapacity'])
+            dfDict['mode'].append(seg.line.mode.id)
+            dfDict['modeDesc'].append(seg.line.mode.description)
+
+        df = pd.DataFrame(dfDict)
+        df = df[['Line','Segment','Length','Time','Speed','loadFactor','volume','transitStop','boardings','alightings','seatProbability','lineDescription','vehType','vehDesc','seatedPassengers','standingPassengers','hdwyfac','seatedCapacity','totalCapacity','mode','modeDesc']]
+
+        return df
+
+    def get_auto_data(self, eb, scenario_id):
+        scenario = eb.scenario(scenario_id)
+        network = scenario.get_network()
+        dfDict = {'i' : [],
+                  'j' : [],
+                  'Screenline_ID' : [],
+                  'Screenline_Station' : [],
+                  'SOV' : [],
+                  'HOV' : [],
+                  'Light_Trucks' : [],
+                  'Heavy_Trucks' : [],
+                  'Transit_Vehicles' : [],
+                  'Transit_Volume' : [],
+                  'Length' : [],
+                  'Auto_Time' : [],
+                  'tolls' : [],
+                  'speed' : [],
+                  'lanes' : [],
+                  'vdf' : [],
+                  'posted_speed' : []}
+
+        for link in network.links():
+            dfDict['i'].append(int(link.i_node))
+            dfDict['j'].append(int(link.j_node))
+            dfDict['Screenline_ID'].append(link['@lscid'])
+            dfDict['Screenline_Station'].append(round(link['@lscstn'], 2))
+            dfDict['SOV'].append((link['@sov1'] + link['@sov2'] + link['@sov3'] + link['@sov4']))
+            dfDict['HOV'].append((link['@hov1'] + link['@hov2'] + link['@hov3'] + link['@hov4']) )
+            dfDict['Light_Trucks'].append((link['@lgvol'] / 1.5))
+            dfDict['Heavy_Trucks'].append((link['@hgvol'] / 2.5))
+            dfDict['Transit_Vehicles'].append((link.additional_volume / 2.5))
+            dfDict['Transit_Volume'].append(link['@voltr']) #TODO remove 3 once using different test network
+            dfDict['Length'].append(link.length)
+            dfDict['Auto_Time'].append(np.maximum(link.auto_time, 0))
+            dfDict['tolls'].append(link['@tolls'])
+            dfDict['speed'].append((link.length / (np.maximum(link.auto_time, 0) / 60)))
+            dfDict['lanes'].append(link.num_lanes)
+            dfDict['vdf'].append(link.volume_delay_func)
+            dfDict['posted_speed'].append(link['@posted_speed'])
+
+        df = pd.DataFrame(dfDict)
+        df = df[['i','j','Screenline_ID','Screenline_Station','SOV','HOV','Light_Trucks','Heavy_Trucks','Transit_Vehicles','Transit_Volume','Length','Auto_Time','tolls','speed','lanes','vdf','posted_speed']]
+        return df
