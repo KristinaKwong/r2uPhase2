@@ -64,10 +64,6 @@ class AutoAssignment(_m.Tool()):
 
     @_m.logbook_trace("Auto Traffic Assignment")
     def __call__(self, am_scenario, md_scenario, pm_scenario):
-
-        ## Add External Demand to SOV and HOV VOT3 Segment and Demand Adjust Inc Demand for MD SOV VOT3 only
-        self.add_external_demadj_demand()
-
         am_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Am", "mfSOV_drvtrp_VOT_2_Am", "mfSOV_drvtrp_VOT_3_Am", "mfSOV_drvtrp_VOT_4_Am"],
                       "hov":   ["mfHOV_drvtrp_VOT_1_Am", "mfHOV_drvtrp_VOT_2_Am", "mfHOV_drvtrp_VOT_3_Am"],
                       "truck": ["mflgvPceAm", "mfhgvPceAm"]}
@@ -111,21 +107,6 @@ class AutoAssignment(_m.Tool()):
                     "lgv":  ["mfPmLgvOpCst", "mfPmLgvTime", "mfPmLgvToll"],
                     "hgv":  ["mfPmHgvOpCst", "mfPmHgvTime", "mfPmHgvToll"]}
         self.store_skims(pm_scenario, pm_skims)
-
-    def add_external_demadj_demand(self):
-        util = _m.Modeller().tool("translink.util")
-        specs = []
-        # AM
-        specs.append(util.matrix_spec("SOV_drvtrp_VOT_3_Am", "SOV_drvtrp_VOT_3_Am + extSovAm"))
-        specs.append(util.matrix_spec("HOV_drvtrp_VOT_3_Am", "HOV_drvtrp_VOT_3_Am + extHovAm"))
-        # MD
-        specs.append(util.matrix_spec("SOV_drvtrp_VOT_3_Md", "((SOV_drvtrp_VOT_3_Md + extSovMd + MD_Demadj).max.0)"))
-        specs.append(util.matrix_spec("HOV_drvtrp_VOT_3_Md", "HOV_drvtrp_VOT_3_Md + extHovMd"))
-        # PM
-        specs.append(util.matrix_spec("SOV_drvtrp_VOT_3_Pm", "SOV_drvtrp_VOT_3_Pm + extSovPm"))
-        specs.append(util.matrix_spec("HOV_drvtrp_VOT_3_Pm", "HOV_drvtrp_VOT_3_Pm + extHovPm"))
-
-        util.compute_matrix(specs)
 
     def assign_scen(self, scenario, demands):
         assign_traffic = _m.Modeller().tool("inro.emme.traffic_assignment.sola_traffic_assignment")
