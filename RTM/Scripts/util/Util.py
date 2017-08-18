@@ -219,6 +219,19 @@ class Util(_m.Tool()):
         for i in range(len(matrices)):
             matrices[i].set_data(mat_data[i])
 
+    @_m.logbook_trace("Reading csv file of ms values", save_arguments=True)
+    def read_csv_ms(self, eb, f):
+        with open(f, "rb") as sourcefile:
+            lines = list(csv.reader(sourcefile, skipinitialspace=True))
+
+        valid_cols = len(lines[0])
+        for num in range(len(lines)):
+            if len(lines[num]) != valid_cols:
+                raise Exception("File: %s Line: %d - expected %d columns, found %d" % (file, num + 1, valid_cols, len(lines[num])))
+
+        for i in range(1, len(lines)):
+            self.initmat(eb, lines[i][0], lines[i][1], lines[i][2], float(lines[i][3]))
+
     def get_matrix_numpy(self, eb, mat_id, reshape=True):
         """Get EMME matrix data as a numpy array
 

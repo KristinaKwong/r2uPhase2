@@ -273,6 +273,10 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "mf355", "railPm", "Rail Person Trips PM", 0)
         util.initmat(eb, "mf356", "WCEPm", "WCE Person Trips PM", 0)
 
+        custom_scalars = os.path.join(util.get_input_path(eb), 'custom_scalars.csv')
+        if os.path.isfile(custom_scalars):
+            util.read_csv_ms(eb, custom_scalars)
+
     @_m.logbook_trace("Importing Vector Data from CSV")
     def import_vectors(self, eb, demographics_file, geographics_file):
         util = _m.Modeller().tool("translink.util")
