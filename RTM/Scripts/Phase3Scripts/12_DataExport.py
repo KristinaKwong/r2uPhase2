@@ -749,6 +749,7 @@ class DataExport(_m.Tool()):
                   'tolls' : [],
                   'speed' : [],
                   'lanes' : [],
+                  'func_class' : [],                  
                   'vdf' : [],
                   'posted_speed' : []}
 
@@ -769,9 +770,10 @@ class DataExport(_m.Tool()):
             dfDict['tolls'].append(link['@tolls'])
             dfDict['speed'].append((link.length / (np.maximum(link.auto_time, 0) / 60)))
             dfDict['lanes'].append(link.num_lanes)
+            dfDict['func_class'].append(link.type)            
             dfDict['vdf'].append(link.volume_delay_func)
             dfDict['posted_speed'].append(link['@posted_speed'])
 
         df = pd.DataFrame(dfDict)
-        df = df[['i','j','Screenline_ID','Screenline_Station','SOV','HOV','Light_Trucks','Heavy_Trucks','Transit_Vehicles','Transit_Volume','Transit_Capacity','Length','Auto_Time','tolls','speed','lanes','vdf','posted_speed']]
+        df = df[['i','j','Screenline_ID','Screenline_Station','SOV','HOV','Light_Trucks','Heavy_Trucks','Transit_Vehicles','Transit_Volume','Transit_Capacity','Length','Auto_Time','tolls','speed','lanes','func_class','vdf','posted_speed']]
         return df
