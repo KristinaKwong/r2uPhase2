@@ -785,7 +785,7 @@ class HbWork(_m.Tool()):
         WCE_AM_Fct_S_PA, WCE_AM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='AM', geo='S',minimum_value=0)
         WCE_PM_Fct_S_PA, WCE_PM_Fct_S_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='WCE',peakperiod='PM', geo='S',minimum_value=0)
 
-        Gy_P = util.get_matrix_numpy(eb, 'gy_ensem')  + np.zeros((1, 1741))
+        Gy_P = util.get_matrix_numpy(eb, 'gy_ensem')  + np.zeros((1, NoTAZ))
 
 
         Tran_MD_Fct = np.array([np.where(Gy_P<8, Tran_MD_Fct_N_PA, Tran_MD_Fct_S_PA), np.where(Gy_P<8, Tran_MD_Fct_N_AP, Tran_MD_Fct_S_AP)])
