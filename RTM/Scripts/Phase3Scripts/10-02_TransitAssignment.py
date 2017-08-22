@@ -194,13 +194,18 @@ class TransitAssignment(_m.Tool()):
         for matrix in self.get_temp_matrices():
             util.delmat(eb, matrix[0])
 
-        # add transit volumes to links for export
+        # add transit volumes and capacity to links for export
         for scenario in scenario_list:
+
+            # transit volume
             create_attr("LINK", "@voltr", "Total Transit Volume on Link", 0, True, scenario)
             create_attr("TRANSIT_SEGMENT", "@alight", "alightings", 0, True, scenario)
             util.emme_segment_calc(scenario, "@voltr", "voltr", sel_link="all",aggregate= "+")
             util.emme_segment_calc(scenario, "@alightn", "(boardn + voltr - voltrn)")
 
+            # transit capacity
+            create_attr("LINK", "@tran_cap", "Transit Capacity", 0, True, scenario)
+            util.emme_segment_calc(scenario, "@tran_cap", "@totcapacity",aggregate= "+")
 
     def get_common_transit_assignment_spec(self, modes, demand):
         spec = {

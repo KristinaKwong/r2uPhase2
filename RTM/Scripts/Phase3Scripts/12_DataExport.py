@@ -743,6 +743,7 @@ class DataExport(_m.Tool()):
                   'Heavy_Trucks' : [],
                   'Transit_Vehicles' : [],
                   'Transit_Volume' : [],
+                  'Transit_Capacity' : [],
                   'Length' : [],
                   'Auto_Time' : [],
                   'tolls' : [],
@@ -762,6 +763,7 @@ class DataExport(_m.Tool()):
             dfDict['Heavy_Trucks'].append((link['@hgvol'] / 2.5))
             dfDict['Transit_Vehicles'].append((link.additional_volume / 2.5))
             dfDict['Transit_Volume'].append(link['@voltr']) #TODO remove 3 once using different test network
+            dfDict['Transit_Capacity'].append(link['@tran_cap'])
             dfDict['Length'].append(link.length)
             dfDict['Auto_Time'].append(np.maximum(link.auto_time, 0))
             dfDict['tolls'].append(link['@tolls'])
@@ -771,5 +773,5 @@ class DataExport(_m.Tool()):
             dfDict['posted_speed'].append(link['@posted_speed'])
 
         df = pd.DataFrame(dfDict)
-        df = df[['i','j','Screenline_ID','Screenline_Station','SOV','HOV','Light_Trucks','Heavy_Trucks','Transit_Vehicles','Transit_Volume','Length','Auto_Time','tolls','speed','lanes','vdf','posted_speed']]
+        df = df[['i','j','Screenline_ID','Screenline_Station','SOV','HOV','Light_Trucks','Heavy_Trucks','Transit_Vehicles','Transit_Volume','Transit_Capacity','Length','Auto_Time','tolls','speed','lanes','vdf','posted_speed']]
         return df
