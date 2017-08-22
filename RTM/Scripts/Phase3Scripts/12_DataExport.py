@@ -9,6 +9,7 @@ import inro.emme.desktop as _d
 import traceback as _traceback
 
 import os
+import re
 import csv as csv
 
 import sqlite3
@@ -93,7 +94,7 @@ class DataExport(_m.Tool()):
         conn.close()
 
         self.networkExport(eb)
-
+        self.autoStats(eb)
         if True:
             self.addViewBridgeXings(eb)
 
@@ -120,6 +121,68 @@ class DataExport(_m.Tool()):
             fn = os.path.join(output_loc, '{}.csv'.format(ot))
             df.to_csv(fn, index=False)
 
+        conn.close()
+
+    def autoStats(self, eb):
+        util = _m.Modeller().tool("translink.util")
+        aonDist = util.get_matrix_numpy(eb, "mfdistAON").flatten()
+        df = util.get_ijensem_df(eb, 'gy','gy')
+
+        df['amSovDemand1'] = util.get_matrix_numpy(eb, "mfSOV_drvtrp_VOT_1_Am").flatten()
+        df['amSovDemand2'] = util.get_matrix_numpy(eb, "mfSOV_drvtrp_VOT_2_Am").flatten()
+        df['amSovDemand3'] = util.get_matrix_numpy(eb, "mfSOV_drvtrp_VOT_3_Am").flatten()
+        df['amSovDemand4'] = util.get_matrix_numpy(eb, "mfSOV_drvtrp_VOT_4_Am").flatten()
+
+        df['mdSovDemand1'] = util.get_matrix_numpy(eb, "mfSOV_drvtrp_VOT_1_Md").flatten()
+        df['mdSovDemand2'] = util.get_matrix_numpy(eb, "mfSOV_drvtrp_VOT_2_Md").flatten()
+        df['mdSovDemand3'] = util.get_matrix_numpy(eb, "mfSOV_drvtrp_VOT_3_Md").flatten()
+        df['mdSovDemand4'] = util.get_matrix_numpy(eb, "mfSOV_drvtrp_VOT_4_Md").flatten()
+
+        df['pmSovDemand1'] = util.get_matrix_numpy(eb, "mfSOV_drvtrp_VOT_1_Pm").flatten()
+        df['pmSovDemand2'] = util.get_matrix_numpy(eb, "mfSOV_drvtrp_VOT_2_Pm").flatten()
+        df['pmSovDemand3'] = util.get_matrix_numpy(eb, "mfSOV_drvtrp_VOT_3_Pm").flatten()
+        df['pmSovDemand4'] = util.get_matrix_numpy(eb, "mfSOV_drvtrp_VOT_4_Pm").flatten()
+
+
+        df['amHovDemand1'] = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_1_Am").flatten()
+        df['amHovDemand2'] = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_2_Am").flatten()
+        df['amHovDemand3'] = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_3_Am").flatten()
+        df['amHovDemand4'] = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_4_Am").flatten()
+
+        df['mdHovDemand1'] = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_1_Md").flatten()
+        df['mdHovDemand2'] = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_2_Md").flatten()
+        df['mdHovDemand3'] = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_3_Md").flatten()
+        df['mdHovDemand4'] = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_4_Md").flatten()
+
+        df['pmHovDemand1'] = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_1_Pm").flatten()
+        df['pmHovDemand2'] = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_2_Pm").flatten()
+        df['pmHovDemand3'] = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_3_Pm").flatten()
+        df['pmHovDemand4'] = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_4_Pm").flatten()
+
+        # create copy of trips and multiply by distance to get simple vkt
+        df2 = df.drop(['gy_i','gy_j'], 1).mul(aonDist, axis = 0)
+        df2.rename(columns= lambda x: re.sub('Demand', 'Vkt', x), inplace=True)
+        # need to bring back ij refs for group by
+        df2 = pd.concat([util.get_ijensem_df(eb, 'gy','gy'),df2], axis=1)
+        df2 = pd.melt(df2, id_vars = ['gy_i','gy_j'], var_name = 'timeModeVot', value_name='vkt')
+        df2Gy =  df2.groupby(['gy_i','gy_j','timeModeVot'])
+        df2Gy = df2Gy.sum().reset_index()
+
+        df = pd.melt(df, id_vars = ['gy_i','gy_j'], var_name = 'timeModeVot', value_name = 'trips')
+        dfGy = df.groupby(['gy_i','gy_j','timeModeVot'])
+        dfGy = dfGy.sum().reset_index()
+
+        # create categorical fields from original colnames
+        dfTimeModeVot = dfGy['timeModeVot'].str.extract(r'(?P<peak>[a|m|p]{1}[m|d])(?P<mode>[S|H]{1}ov)Demand(?P<votclass>\d)')
+
+        dfGy = pd.concat([dfGy,dfTimeModeVot], axis=1)
+        dfGy = dfGy[['gy_i','gy_j','peak','mode','votclass','trips']]
+
+        df2Gy = pd.concat([df2Gy,dfTimeModeVot], axis=1)
+        df2Gy = df2Gy[['gy_i','gy_j','peak','mode','votclass','vkt']]
+        conn = util.get_db_byname(eb, 'trip_summaries.db')
+        dfGy.to_sql(name='autoTripsGy', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df2Gy.to_sql(name='autoVktGy', con=conn, flavor='sqlite', index=False, if_exists='replace')
         conn.close()
 
     def addViewBridgeXings(self, eb):
@@ -749,7 +812,7 @@ class DataExport(_m.Tool()):
                   'tolls' : [],
                   'speed' : [],
                   'lanes' : [],
-                  'func_class' : [],                  
+                  'func_class' : [],
                   'vdf' : [],
                   'posted_speed' : []}
 
@@ -770,7 +833,7 @@ class DataExport(_m.Tool()):
             dfDict['tolls'].append(link['@tolls'])
             dfDict['speed'].append((link.length / (np.maximum(link.auto_time, 0) / 60)))
             dfDict['lanes'].append(link.num_lanes)
-            dfDict['func_class'].append(link.type)            
+            dfDict['func_class'].append(link.type)
             dfDict['vdf'].append(link.volume_delay_func)
             dfDict['posted_speed'].append(link['@posted_speed'])
 
