@@ -7,9 +7,13 @@
 import inro.modeller as _m
 import traceback as _traceback
 
+import pandas as pd
+
 class AutoAssignment(_m.Tool()):
 
-    sl_scenario = _m.Attribute(_m.InstanceType)
+    sl_scenario_am = _m.Attribute(_m.InstanceType)
+    sl_scenario_md = _m.Attribute(_m.InstanceType)
+    sl_scenario_pm = _m.Attribute(_m.InstanceType)
 
     relative_gap = _m.Attribute(float)
     best_relative_gap = _m.Attribute(float)
@@ -18,11 +22,20 @@ class AutoAssignment(_m.Tool()):
     period = _m.Attribute(int)
     tool_run_msg = _m.Attribute(unicode)
 
+    sel_thresh_min = _m.Attribute(float)
+    sel_thresh_max = _m.Attribute(float)
+    func_op = _m.Attribute(unicode)
+
+    link_file = _m.Attribute(_m.InstanceType)
+
     def __init__(self):
         self.relative_gap = 0.0001
         self.best_relative_gap = 0.01
         self.normalized_gap = 0.005
         self.max_iterations = 250
+        self.sel_thresh_min = 1.0
+        self.sel_thresh_max = 1.0
+        self.func_op = ".max."
 
 
     def page(self):
@@ -33,19 +46,37 @@ class AutoAssignment(_m.Tool()):
                          "generate select link volumes."
         pb.branding_text = "TransLink"
 
-        pb.add_select(tool_attribute_name="period",keyvalues=[[1,"AM"],[2,"MD"],[3,"PM"]],
+        pb.add_select(tool_attribute_name="period",keyvalues=[[1,"AM"],[2,"MD"],[3,"PM"],[4,"All"]],
                 title="AM, MD or PM")
+
+        util = _m.Modeller().tool("translink.util")
+        input_path = util.get_input_path(_m.Modeller().emmebank)
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
 
-        pb.add_select_scenario("sl_scenario", title="SL_Scenario:")
+        # TODO update to work with all 3 time periods
+        pb.add_select_scenario("sl_scenario_am", title="SL_Scenario AM:")
+        pb.add_select_scenario("sl_scenario_md", title="SL_Scenario MD:")
+        pb.add_select_scenario("sl_scenario_pm", title="SL_Scenario PM:")
 
         with pb.section("Stopping criteria:"):
             pb.add_text_box("relative_gap", title="Relative gap:")
             pb.add_text_box("best_relative_gap", title="Best relative gap (%):")
             pb.add_text_box("normalized_gap", title="Normalized gap:")
             pb.add_text_box("max_iterations", title="Maximum iterations:")
+            pb.add_text_box("func_op", title="Selection Function Operator:")
+            pb.add_text_box("sel_thresh_min", title="Selection Threshold Min:")
+            pb.add_text_box("sel_thresh_max", title="Selection Threshold Max:")
+
+
+        pb.add_select_file(tool_attribute_name="link_file",
+                           window_type="file",
+                           file_filter="*selected_links*.csv",
+                           start_path= input_path,
+                           title="Links to be tagged: ",
+                           note="File must be csv file.")
+
 
         return pb.render()
 
@@ -58,13 +89,14 @@ class AutoAssignment(_m.Tool()):
             eb.matrix("ms42").data = self.best_relative_gap
             eb.matrix("ms43").data = self.normalized_gap
 
-            self(self.sl_scenario, self.period)
+
+            self.__call__(self.period, self.link_file, self.func_op, self.sel_thresh_min, self.sel_thresh_max,self.sl_scenario_am, self.sl_scenario_md, self.sl_scenario_pm)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Auto Traffic Assignment")
-    def __call__(self, sl_scenario, period):
+    def __call__(self, period, link_file, func_op, sel_thresh_min, sel_thresh_max, sl_scenario_am=None, sl_scenario_md=None, sl_scenario_pm=None):
 
         am_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Am", "mfSOV_drvtrp_VOT_2_Am", "mfSOV_drvtrp_VOT_3_Am", "mfSOV_drvtrp_VOT_4_Am"],
                       "hov":   ["mfHOV_drvtrp_VOT_1_Am", "mfHOV_drvtrp_VOT_2_Am", "mfHOV_drvtrp_VOT_3_Am"],
@@ -83,27 +115,36 @@ class AutoAssignment(_m.Tool()):
                       "truck": ["mflgvPcePm", "mfhgvPcePm"]}
 
 
-        if period == 1:
-            demand = am_demands
 
-        if period == 2:
-            demand = md_demands
+        if period == 1 or period == 4:
+            self.assign_scen(sl_scenario_am, am_demands, link_file, period, 'AM', func_op, sel_thresh_min, sel_thresh_max)
 
-        if period == 3:
-            demand = pm_demands
+        if period == 2 or period == 4:
+            self.assign_scen(sl_scenario_md, md_demands, link_file, period, 'MD', func_op, sel_thresh_min, sel_thresh_max)
 
-        self.assign_scen(sl_scenario, am_demands)
+        if period == 3 or period == 4:
+            self.assign_scen(sl_scenario_pm, pm_demands, link_file, period, 'PM', func_op, sel_thresh_min, sel_thresh_max)
 
-    def assign_scen(self, scenario, demands):
+
+    def assign_scen(self, scenario, demands, link_file, period, peak, func_op, sel_thresh_min, sel_thresh_max):
         assign_traffic = _m.Modeller().tool("inro.emme.traffic_assignment.sola_traffic_assignment")
 
         self.calc_network_costs(scenario)
-        self.tag_link(scenario)
-        self.init_matrices(scenario.emmebank)
+
+        # create attribute and tag links
+        create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
+        create_attr("LINK", "@sltag", "Tagged Link", 0, True, scenario)
+        links = pd.read_csv(link_file)
+        for index, row in links.iterrows():
+            self.tag_link(scenario, row.ix['inode'], row.ix['jnode'], row.ix['seltag'])
+
+        self.init_matrices(scenario.emmebank, period)
 
         # Second assignment to generate distance and time skims
         spec = self.get_class_specs(scenario.emmebank, demands)
-        self.add_distance_path_analysis(spec)
+        self.add_distance_path_analysis(spec, peak, func_op, sel_thresh_min, sel_thresh_max)
+
+        # add_distance_path_analysis(self, spec, peak, func_op, sel_thresh_min, sel_thresh_max)
         assign_traffic(spec, scenario=scenario)
 
         # Aggregate network volumes post-assignment and calculate intrazonal skims
@@ -149,29 +190,29 @@ class AutoAssignment(_m.Tool()):
             "performance_settings": {"number_of_processors": int(eb.matrix("ms12").data)},
         }
         return spec
-
-    def add_distance_path_analysis(self, spec):
+    #TODO update calls to this function with additional arguments
+    def add_distance_path_analysis(self, spec, peak, func_op, sel_thresh_min, sel_thresh_max):
         path_od = { "considered_paths": "SELECTED",
                     "multiply_path_proportions_by": { "analyzed_demand": True, "path_value": False }
                   }
-        spec["classes"][ 0]["analysis"] = {"results": {"od_values": "mfSOV_SL_1"}}
-        spec["classes"][ 0]["path_analysis"] = {"link_component": "@sltag", "operator": ".max.", "path_to_od_composition": path_od, "selection_threshold": {"lower": 1.0, "upper": 1.0}}
-        spec["classes"][ 1]["analysis"] = {"results": {"od_values": "mfSOV_SL_2"}}
-        spec["classes"][ 1]["path_analysis"] = {"link_component": "@sltag", "operator": ".max.", "path_to_od_composition": path_od, "selection_threshold": {"lower": 1.0, "upper": 1.0} }
-        spec["classes"][ 2]["analysis"] = {"results": {"od_values": "mfSOV_SL_3"}}
-        spec["classes"][ 2]["path_analysis"] = {"link_component": "@sltag", "operator": ".max.", "path_to_od_composition": path_od, "selection_threshold": {"lower": 1.0, "upper": 1.0} }
-        spec["classes"][ 3]["analysis"] = {"results": {"od_values": "mfSOV_SL_4"}}
-        spec["classes"][ 3]["path_analysis"] = {"link_component": "@sltag", "operator": ".max.", "path_to_od_composition": path_od, "selection_threshold": {"lower": 1.0, "upper": 1.0} }
-        spec["classes"][ 4]["analysis"] = {"results": {"od_values": "mfHOV_SL_1"}}
-        spec["classes"][ 4]["path_analysis"] = {"link_component": "@sltag", "operator": ".max.", "path_to_od_composition": path_od, "selection_threshold": {"lower": 1.0, "upper": 1.0} }
-        spec["classes"][ 5]["analysis"] = {"results": {"od_values": "mfHOV_SL_2"}}
-        spec["classes"][ 5]["path_analysis"] = {"link_component": "@sltag", "operator": ".max.", "path_to_od_composition": path_od, "selection_threshold": {"lower": 1.0, "upper": 1.0} }
-        spec["classes"][ 6]["analysis"] = {"results": {"od_values": "mfHOV_SL_3"}}
-        spec["classes"][ 6]["path_analysis"] = {"link_component": "@sltag", "operator": ".max.", "path_to_od_composition": path_od, "selection_threshold": {"lower": 1.0, "upper": 1.0} }
-        spec["classes"][ 7]["analysis"] = {"results": {"od_values": "mfLGV_SL"}}
-        spec["classes"][ 7]["path_analysis"] = {"link_component": "@sltag", "operator": ".max.", "path_to_od_composition": path_od, "selection_threshold": {"lower": 1.0, "upper": 1.0} }
-        spec["classes"][ 8]["analysis"] = {"results": {"od_values": "mfHGV_SL"}}
-        spec["classes"][ 8]["path_analysis"] = {"link_component": "@sltag", "operator": ".max.", "path_to_od_composition": path_od, "selection_threshold": {"lower": 1.0, "upper": 1.0} }
+        spec["classes"][ 0]["analysis"] = {"results": {"od_values": "mfSOV_SL_1_{}".format(peak)}}
+        spec["classes"][ 0]["path_analysis"] = {"link_component": "@sltag", "operator": "{}".format(func_op), "path_to_od_composition": path_od, "selection_threshold": {"lower": sel_thresh_min, "upper": sel_thresh_max} }
+        spec["classes"][ 1]["analysis"] = {"results": {"od_values": "mfSOV_SL_2_{}".format(peak)}}
+        spec["classes"][ 1]["path_analysis"] = {"link_component": "@sltag", "operator": "{}".format(func_op), "path_to_od_composition": path_od, "selection_threshold": {"lower": sel_thresh_min, "upper": sel_thresh_max} }
+        spec["classes"][ 2]["analysis"] = {"results": {"od_values": "mfSOV_SL_3_{}".format(peak)}}
+        spec["classes"][ 2]["path_analysis"] = {"link_component": "@sltag", "operator": "{}".format(func_op), "path_to_od_composition": path_od, "selection_threshold": {"lower": sel_thresh_min, "upper": sel_thresh_max} }
+        spec["classes"][ 3]["analysis"] = {"results": {"od_values": "mfSOV_SL_4_{}".format(peak)}}
+        spec["classes"][ 3]["path_analysis"] = {"link_component": "@sltag", "operator": "{}".format(func_op), "path_to_od_composition": path_od, "selection_threshold": {"lower": sel_thresh_min, "upper": sel_thresh_max} }
+        spec["classes"][ 4]["analysis"] = {"results": {"od_values": "mfHOV_SL_1_{}".format(peak)}}
+        spec["classes"][ 4]["path_analysis"] = {"link_component": "@sltag", "operator": "{}".format(func_op), "path_to_od_composition": path_od, "selection_threshold": {"lower": sel_thresh_min, "upper": sel_thresh_max}}
+        spec["classes"][ 5]["analysis"] = {"results": {"od_values": "mfHOV_SL_2_{}".format(peak)}}
+        spec["classes"][ 5]["path_analysis"] = {"link_component": "@sltag", "operator": "{}".format(func_op), "path_to_od_composition": path_od, "selection_threshold": {"lower": sel_thresh_min, "upper": sel_thresh_max} }
+        spec["classes"][ 6]["analysis"] = {"results": {"od_values": "mfHOV_SL_3_{}".format(peak)}}
+        spec["classes"][ 6]["path_analysis"] = {"link_component": "@sltag", "operator":  "{}".format(func_op), "path_to_od_composition": path_od, "selection_threshold": {"lower": sel_thresh_min, "upper": sel_thresh_max} }
+        spec["classes"][ 7]["analysis"] = {"results": {"od_values": "mfLGV_SL_{}".format(peak)}}
+        spec["classes"][ 7]["path_analysis"] = {"link_component": "@sltag", "operator":  "{}".format(func_op), "path_to_od_composition": path_od, "selection_threshold": {"lower": sel_thresh_min, "upper": sel_thresh_max} }
+        spec["classes"][ 8]["analysis"] = {"results": {"od_values": "mfHGV_SL_{}".format(peak)}}
+        spec["classes"][ 8]["path_analysis"] = {"link_component": "@sltag", "operator":  "{}".format(func_op), "path_to_od_composition": path_od, "selection_threshold": {"lower": sel_thresh_min, "upper": sel_thresh_max} }
 
 
     @_m.logbook_trace("Calculate Link and Turn Aggregate Volumes")
@@ -202,23 +243,21 @@ class AutoAssignment(_m.Tool()):
         util.emme_link_calc(scenario, "@hgvoc", "length * %s + 3 * @tolls + @tkpen" % (hgv_voc))
 
     @_m.logbook_trace("Tag Select Link")
-    def tag_link(self, scenario):
+    #TODO add new arguments to calls to this function
+    def tag_link(self, scenario, inode, jnode, tag_value):
         util = _m.Modeller().tool("translink.util")
         eb = scenario.emmebank
-        create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
-
-        create_attr("LINK", "@sltag", "Tagged Link", 0, True, scenario)
-        selection = """link = 680401, 423614 or link = 423613, 680302 """
-        util.emme_link_calc(scenario, "@sltag", "1", sel_link=selection)
+        selection = ("""link = {i}, {j} or link = {j}, {i} """).format(i=inode, j=jnode)
+        util.emme_link_calc(scenario, "@sltag", "{}".format(tag_value), sel_link=selection)
 
 
-    def init_matrices(self, eb):
+    def init_matrices(self, eb, period):
         util = _m.Modeller().tool("translink.util")
 
-        for matrix in self.get_temp_matrices():
+        for matrix in self.get_temp_matrices(period):
             util.initmat(eb, matrix[0], matrix[1], matrix[2], matrix[3])
 
-    def get_temp_matrices(self):
+    def get_temp_matrices(self, period):
         matrices = []
 
         matrices.append(["mf9900", "SOVGCTimeVOT1",  "SOV GC Minutes VOT1", 0])
@@ -277,15 +316,39 @@ class AutoAssignment(_m.Tool()):
         matrices.append(["mf9949", "HGVTime",      "HGV Travel Time", 0])
 
         # Add Select Link Demands
-        matrices.append(["mf9960", "SOV_SL_1", "SOV_SL_1", 0])
-        matrices.append(["mf9961", "SOV_SL_2", "SOV_SL_2", 0])
-        matrices.append(["mf9962", "SOV_SL_3", "SOV_SL_3", 0])
-        matrices.append(["mf9963", "SOV_SL_4", "SOV_SL_4", 0])
-        matrices.append(["mf9964", "HOV_SL_1", "HOV_SL_1", 0])
-        matrices.append(["mf9965", "HOV_SL_2", "HOV_SL_2", 0])
-        matrices.append(["mf9966", "HOV_SL_3", "HOV_SL_3", 0])
-        matrices.append(["mf9968", "LGV_SL", "LGV_SL", 0])
-        matrices.append(["mf9969", "HGV_SL", "HGV_SL", 0])
+        if period == 1 or period == 4:
+            matrices.append(["mf400", "SOV_SL_1_AM", "SOV_SL_1_AM", 0])
+            matrices.append(["mf401", "SOV_SL_2_AM", "SOV_SL_2_AM", 0])
+            matrices.append(["mf402", "SOV_SL_3_AM", "SOV_SL_3_AM", 0])
+            matrices.append(["mf403", "SOV_SL_4_AM", "SOV_SL_4_AM", 0])
+            matrices.append(["mf406", "HOV_SL_1_AM", "HOV_SL_1_AM", 0])
+            matrices.append(["mf407", "HOV_SL_2_AM", "HOV_SL_2_AM", 0])
+            matrices.append(["mf408", "HOV_SL_3_AM", "HOV_SL_3_AM", 0])
+            matrices.append(["mf412", "LGV_SL_AM", "LGV_SL_AM", 0])
+            matrices.append(["mf413", "HGV_SL_AM", "HGV_SL_AM", 0])
+
+        if period == 2 or period == 4:
+            matrices.append(["mf420", "SOV_SL_1_MD", "SOV_SL_1_MD", 0])
+            matrices.append(["mf421", "SOV_SL_2_MD", "SOV_SL_2_MD", 0])
+            matrices.append(["mf422", "SOV_SL_3_MD", "SOV_SL_3_MD", 0])
+            matrices.append(["mf423", "SOV_SL_4_MD", "SOV_SL_4_MD", 0])
+            matrices.append(["mf426", "HOV_SL_1_MD", "HOV_SL_1_MD", 0])
+            matrices.append(["mf427", "HOV_SL_2_MD", "HOV_SL_2_MD", 0])
+            matrices.append(["mf428", "HOV_SL_3_MD", "HOV_SL_3_MD", 0])
+            matrices.append(["mf432", "LGV_SL_MD", "LGV_SL_MD", 0])
+            matrices.append(["mf433", "HGV_SL_MD", "HGV_SL_MD", 0])
+
+        if period == 3 or period == 4:
+            matrices.append(["mf440", "SOV_SL_1_PM", "SOV_SL_1_PM", 0])
+            matrices.append(["mf441", "SOV_SL_2_PM", "SOV_SL_2_PM", 0])
+            matrices.append(["mf442", "SOV_SL_3_PM", "SOV_SL_3_PM", 0])
+            matrices.append(["mf443", "SOV_SL_4_PM", "SOV_SL_4_PM", 0])
+            matrices.append(["mf446", "HOV_SL_1_PM", "HOV_SL_1_PM", 0])
+            matrices.append(["mf447", "HOV_SL_2_PM", "HOV_SL_2_PM", 0])
+            matrices.append(["mf448", "HOV_SL_3_PM", "HOV_SL_3_PM", 0])
+            matrices.append(["mf452", "LGV_SL_PM", "LGV_SL_PM", 0])
+            matrices.append(["mf453", "HGV_SL_PM", "HGV_SL_PM", 0])
+
 
 
         return matrices
