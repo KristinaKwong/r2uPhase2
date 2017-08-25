@@ -138,7 +138,7 @@ class AutoAssignment(_m.Tool()):
         for index, row in links.iterrows():
             self.tag_link(scenario, row.ix['inode'], row.ix['jnode'], row.ix['seltag'])
 
-        self.init_matrices(scenario.emmebank, period)
+        self.init_matrices(scenario.emmebank, peak)
 
         # Second assignment to generate distance and time skims
         spec = self.get_class_specs(scenario.emmebank, demands)
@@ -251,13 +251,13 @@ class AutoAssignment(_m.Tool()):
         util.emme_link_calc(scenario, "@sltag", "{}".format(tag_value), sel_link=selection)
 
 
-    def init_matrices(self, eb, period):
+    def init_matrices(self, eb, peak):
         util = _m.Modeller().tool("translink.util")
 
-        for matrix in self.get_temp_matrices(period):
+        for matrix in self.get_temp_matrices(peak):
             util.initmat(eb, matrix[0], matrix[1], matrix[2], matrix[3])
 
-    def get_temp_matrices(self, period):
+    def get_temp_matrices(self, peak):
         matrices = []
 
         matrices.append(["mf9900", "SOVGCTimeVOT1",  "SOV GC Minutes VOT1", 0])
@@ -316,7 +316,7 @@ class AutoAssignment(_m.Tool()):
         matrices.append(["mf9949", "HGVTime",      "HGV Travel Time", 0])
 
         # Add Select Link Demands
-        if period == 1 or period == 4:
+        if peak == 'AM':
             matrices.append(["mf400", "SOV_SL_1_AM", "SOV_SL_1_AM", 0])
             matrices.append(["mf401", "SOV_SL_2_AM", "SOV_SL_2_AM", 0])
             matrices.append(["mf402", "SOV_SL_3_AM", "SOV_SL_3_AM", 0])
@@ -327,7 +327,7 @@ class AutoAssignment(_m.Tool()):
             matrices.append(["mf412", "LGV_SL_AM", "LGV_SL_AM", 0])
             matrices.append(["mf413", "HGV_SL_AM", "HGV_SL_AM", 0])
 
-        if period == 2 or period == 4:
+        if peak == 'MD':
             matrices.append(["mf420", "SOV_SL_1_MD", "SOV_SL_1_MD", 0])
             matrices.append(["mf421", "SOV_SL_2_MD", "SOV_SL_2_MD", 0])
             matrices.append(["mf422", "SOV_SL_3_MD", "SOV_SL_3_MD", 0])
@@ -338,7 +338,7 @@ class AutoAssignment(_m.Tool()):
             matrices.append(["mf432", "LGV_SL_MD", "LGV_SL_MD", 0])
             matrices.append(["mf433", "HGV_SL_MD", "HGV_SL_MD", 0])
 
-        if period == 3 or period == 4:
+        if peak == 'PM':
             matrices.append(["mf440", "SOV_SL_1_PM", "SOV_SL_1_PM", 0])
             matrices.append(["mf441", "SOV_SL_2_PM", "SOV_SL_2_PM", 0])
             matrices.append(["mf442", "SOV_SL_3_PM", "SOV_SL_3_PM", 0])
