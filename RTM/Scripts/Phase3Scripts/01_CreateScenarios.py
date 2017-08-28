@@ -174,7 +174,7 @@ class InputSettings(_m.Tool()):
             return
 
         with open(custom_network, "rb") as sourcefile:
-            lines = list(csv.reader(sourcefile, skipinitialspace=True))
+            lines = list(csv.reader(sourcefile, skipinitialspace=True, delimiter='\t'))
 
         for line in lines:
             # skip commented lines
@@ -203,4 +203,3 @@ class InputSettings(_m.Tool()):
 
             if per == "PM" or per == "ALL":
                 util.emme_link_calc(pmscen, res, exp, sel, agg)
-
