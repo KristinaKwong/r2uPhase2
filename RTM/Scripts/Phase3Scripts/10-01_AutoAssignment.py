@@ -114,15 +114,16 @@ class AutoAssignment(_m.Tool()):
         self.calc_network_costs(scenario)
         self.init_matrices(scenario.emmebank)
 
-        # First assignment to generate toll skims
-        #spec = self.get_class_specs(scenario.emmebank, demands)
-        #self.add_toll_path_analysis(spec)
-        #assign_traffic(spec, scenario=scenario)
-
-        # Second assignment to generate distance and time skims
+        # Assignment to generate distance, tolls and time skims
         spec = self.get_class_specs(scenario.emmebank, demands)
         self.add_distance_path_analysis(spec)
         assign_traffic(spec, scenario=scenario)
+
+        skimToll = int(eb.matrix("mstollSkim").data)
+        if skimToll == 1:
+            spec = self.get_class_specs(scenario.emmebank, demands)
+            self.add_toll_path_analysis(spec)
+            assign_traffic(spec, scenario=scenario)
 
         # Aggregate network volumes post-assignment and calculate intrazonal skims
         self.calc_network_volumes(scenario)
@@ -294,7 +295,7 @@ class AutoAssignment(_m.Tool()):
             specs.append(util.matrix_spec(skim_list["hgv"][2], "0.5*(mfHGVToll + %s)" % skim_list["hgv"][2]))
 
         util.compute_matrix(specs, scenario)
-        
+
         # now that the skims have been written back, delete the temporary matrices
         for matrix in self.get_temp_matrices():
             util.delmat(scenario.emmebank, matrix[0])
@@ -306,7 +307,6 @@ class AutoAssignment(_m.Tool()):
                 "results": { "od_travel_times": {"shortest_paths": travel_time},
                              "link_volumes": link_vol,
                              "turn_volumes": turn_vol }
-
                 }
         specs.append(spec)
 
@@ -344,7 +344,7 @@ class AutoAssignment(_m.Tool()):
         path_od = { "considered_paths": "ALL",
                     "multiply_path_proportions_by": { "analyzed_demand": False, "path_value": True }
                   }
-        spec["classes"][ 0]["path_analysis"] = {"results": {"od_values": "mfSOVOpCstVOT1"}, "link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999}}
+        spec["classes"][ 0]["path_analysis"] = {"results": {"od_values": "mfSOVOpCstVOT1"}, "link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
         spec["classes"][ 1]["path_analysis"] = {"results": {"od_values": "mfSOVOpCstVOT2"}, "link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
         spec["classes"][ 2]["path_analysis"] = {"results": {"od_values": "mfSOVOpCstVOT3"}, "link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
         spec["classes"][ 3]["path_analysis"] = {"results": {"od_values": "mfSOVOpCstVOT4"}, "link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
@@ -355,27 +355,18 @@ class AutoAssignment(_m.Tool()):
         spec["classes"][ 8]["path_analysis"] = {"results": {"od_values": "mfHGVOpCst"},     "link_component": "@hgvoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
 
     def add_toll_path_analysis(self, spec):
-        spec["path_analysis"] = {"link_component": "@tolls",
-                                 "turn_component": None,
-                                 "operator": "+",
-                                 "selection_threshold": {"lower": 0.01, "upper": 100},
-                                 "path_to_od_composition": {
-                                     "considered_paths": "SELECTED",
-                                     "multiply_path_proportions_by": {
-                                         "analyzed_demand": False,
-                                         "path_value": True
-                                     }
-                                 }
-                                }
-        spec["classes"][ 0]["analysis"] = {"results": {"od_values": "mfSOVTollVOT1"}}
-        spec["classes"][ 1]["analysis"] = {"results": {"od_values": "mfSOVTollVOT2"}}
-        spec["classes"][ 2]["analysis"] = {"results": {"od_values": "mfSOVTollVOT3"}}
-        spec["classes"][ 3]["analysis"] = {"results": {"od_values": "mfSOVTollVOT4"}}
-        spec["classes"][ 4]["analysis"] = {"results": {"od_values": "mfHOVTollVOT1"}}
-        spec["classes"][ 5]["analysis"] = {"results": {"od_values": "mfHOVTollVOT2"}}
-        spec["classes"][ 6]["analysis"] = {"results": {"od_values": "mfHOVTollVOT3"}}
-        spec["classes"][ 7]["analysis"] = {"results": {"od_values": "mfLGVToll"}}
-        spec["classes"][ 8]["analysis"] = {"results": {"od_values": "mfHGVToll"}}
+        path_od = { "considered_paths": "ALL",
+                    "multiply_path_proportions_by": { "analyzed_demand": False, "path_value": True }
+                  }
+        spec["classes"][ 0]["path_analysis"] = {"results": {"od_values": "mfSOVTollVOT1"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
+        spec["classes"][ 1]["path_analysis"] = {"results": {"od_values": "mfSOVTollVOT2"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
+        spec["classes"][ 2]["path_analysis"] = {"results": {"od_values": "mfSOVTollVOT3"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
+        spec["classes"][ 3]["path_analysis"] = {"results": {"od_values": "mfSOVTollVOT4"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
+        spec["classes"][ 4]["path_analysis"] = {"results": {"od_values": "mfHOVTollVOT1"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
+        spec["classes"][ 5]["path_analysis"] = {"results": {"od_values": "mfHOVTollVOT2"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
+        spec["classes"][ 6]["path_analysis"] = {"results": {"od_values": "mfHOVTollVOT3"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
+        spec["classes"][ 7]["path_analysis"] = {"results": {"od_values": "mfLGVToll"},     "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
+        spec["classes"][ 8]["path_analysis"] = {"results": {"od_values": "mfHGVToll"},     "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
 
     @_m.logbook_trace("Calculate Link and Turn Aggregate Volumes")
     def calc_network_volumes(self, scenario):

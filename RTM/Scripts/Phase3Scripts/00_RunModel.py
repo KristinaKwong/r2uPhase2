@@ -21,6 +21,7 @@ class FullModelRun(_m.Tool()):
     run_capacited_transit = _m.Attribute(bool)
     num_processors = _m.Attribute(int)
     run_parking_model = _m.Attribute(bool)
+    run_toll_skim = _m.Attribute(bool)
 
     tool_run_msg = _m.Attribute(unicode)
 
@@ -34,6 +35,7 @@ class FullModelRun(_m.Tool()):
         self.run_capacited_transit = True
         self.num_processors = multiprocessing.cpu_count()
         self.run_parking_model = True
+        self.run_toll_skim = False
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
@@ -107,6 +109,8 @@ class FullModelRun(_m.Tool()):
                                                  "unless parking scenarios are being tested "
                                                  "that are coded in geographics file")
 
+        pb.add_checkbox("run_toll_skim", label="Run toll assignment on final iteration")
+
         pb.add_text_box(tool_attribute_name="num_processors",
                         size="3",
                         title="Number of processors on machine running model:",
@@ -120,7 +124,7 @@ class FullModelRun(_m.Tool()):
             self.__call__(self.horizon_year, self.global_iterations, self.master_scen, self.demographics_file,
                  self.geographics_file, self.max_distribution_iterations,
                  self.max_assignment_iterations, self.run_congested_transit, self.run_capacited_transit,
-                 self.num_processors, self.run_parking_model)
+                 self.num_processors, self.run_parking_model, self.run_toll_skim)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
@@ -129,14 +133,14 @@ class FullModelRun(_m.Tool()):
     def __call__(self, horizon_year, global_iterations, master_scen, demographics_file,
                     geographics_file, max_distribution_iterations,
                     max_assignment_iterations, run_congested_transit,
-                    run_capacited_transit, num_processors, run_parking_model):
+                    run_capacited_transit, num_processors, run_parking_model, run_toll_skim):
         eb = master_scen.emmebank
         util = _m.Modeller().tool("translink.util")
         self.initoptions(eb=eb, horizon_year=horizon_year, global_iterations=global_iterations,
                         max_distribution_iterations=max_distribution_iterations,
                         max_assignment_iterations=max_assignment_iterations,
                         run_congested_transit=run_congested_transit, run_capacited_transit=run_capacited_transit,
-                        num_processors=num_processors, run_parking_model=run_parking_model)
+                        num_processors=num_processors, run_parking_model=run_parking_model, run_toll_skim=run_toll_skim)
 
         self.stage0(eb, master_scen=master_scen, demographics_file=demographics_file, geographics_file=geographics_file)
 
@@ -217,7 +221,7 @@ class FullModelRun(_m.Tool()):
     def initoptions(self, eb, horizon_year, global_iterations,
                     max_distribution_iterations, max_assignment_iterations,
                     run_congested_transit, run_capacited_transit,
-                    num_processors, run_parking_model):
+                    num_processors, run_parking_model, run_toll_skim):
 
         util = _m.Modeller().tool("translink.util")
         # model business
@@ -229,6 +233,7 @@ class FullModelRun(_m.Tool()):
         util.initmat(eb, "ms12", "Processors", "Number of Processors for Computer Running Model", num_processors)
         # data generation
         util.initmat(eb, "ms20", "parkingModel", "Run Parking Model", run_parking_model)
+        util.initmat(eb, "ms21", "tollSkim", "Run Toll Skim", run_toll_skim)
         # overall model
         util.initmat(eb, "ms30", "IterGlobal", "Global Iterations", global_iterations)
         # distribution
