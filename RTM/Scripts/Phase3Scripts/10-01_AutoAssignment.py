@@ -344,24 +344,15 @@ class AutoAssignment(_m.Tool()):
         path_od = { "considered_paths": "ALL",
                     "multiply_path_proportions_by": { "analyzed_demand": False, "path_value": True }
                   }
-        spec["classes"][ 0]["analysis"] = {"results": {"od_values": "mfSOVOpCstVOT1"}}
-        spec["classes"][ 0]["path_analysis"] = {"link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999}}
-        spec["classes"][ 1]["analysis"] = {"results": {"od_values": "mfSOVOpCstVOT2"}}
-        spec["classes"][ 1]["path_analysis"] = {"link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 2]["analysis"] = {"results": {"od_values": "mfSOVOpCstVOT3"}}
-        spec["classes"][ 2]["path_analysis"] = {"link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 3]["analysis"] = {"results": {"od_values": "mfSOVOpCstVOT4"}}
-        spec["classes"][ 3]["path_analysis"] = {"link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 4]["analysis"] = {"results": {"od_values": "mfHOVOpCstVOT1"}}
-        spec["classes"][ 4]["path_analysis"] = {"link_component": "@hovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 5]["analysis"] = {"results": {"od_values": "mfHOVOpCstVOT2"}}
-        spec["classes"][ 5]["path_analysis"] = {"link_component": "@hovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 6]["analysis"] = {"results": {"od_values": "mfHOVOpCstVOT3"}}
-        spec["classes"][ 6]["path_analysis"] = {"link_component": "@hovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 7]["analysis"] = {"results": {"od_values": "mfLGVOpCst"}}
-        spec["classes"][ 7]["path_analysis"] = {"link_component": "@lgvoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 8]["analysis"] = {"results": {"od_values": "mfHGVOpCst"}}
-        spec["classes"][ 8]["path_analysis"] = {"link_component": "@hgvoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
+        spec["classes"][ 0]["path_analysis"] = {"results": {"od_values": "mfSOVOpCstVOT1"}, "link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999}}
+        spec["classes"][ 1]["path_analysis"] = {"results": {"od_values": "mfSOVOpCstVOT2"}, "link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
+        spec["classes"][ 2]["path_analysis"] = {"results": {"od_values": "mfSOVOpCstVOT3"}, "link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
+        spec["classes"][ 3]["path_analysis"] = {"results": {"od_values": "mfSOVOpCstVOT4"}, "link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
+        spec["classes"][ 4]["path_analysis"] = {"results": {"od_values": "mfHOVOpCstVOT1"}, "link_component": "@hovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
+        spec["classes"][ 5]["path_analysis"] = {"results": {"od_values": "mfHOVOpCstVOT2"}, "link_component": "@hovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
+        spec["classes"][ 6]["path_analysis"] = {"results": {"od_values": "mfHOVOpCstVOT3"}, "link_component": "@hovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
+        spec["classes"][ 7]["path_analysis"] = {"results": {"od_values": "mfLGVOpCst"},     "link_component": "@lgvoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
+        spec["classes"][ 8]["path_analysis"] = {"results": {"od_values": "mfHGVOpCst"},     "link_component": "@hgvoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
 
     def add_toll_path_analysis(self, spec):
         spec["path_analysis"] = {"link_component": "@tolls",
