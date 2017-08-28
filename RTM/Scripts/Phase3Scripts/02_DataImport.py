@@ -95,6 +95,11 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms142", "sov_pct_Hbesc", "SOV proportion of Auto HB Escorting", 0.288)
         util.initmat(eb, "ms148", "sov_pct_NHBo", "SOV proportion of Auto NHB Other", 0.365)
 
+        util.initmat(eb, "ms150", "lgvTollFac", "LGV toll factor", 2.0)
+        util.initmat(eb, "ms151", "hgvTollFac", "HGV toll factor", 3.0)
+
+
+
         util.initmat(eb, "ms160", "oneZoneFare", "One Zone Fare - FS-SV", 2.1)
         # Used for SOV and HOV
         util.initmat(eb, "ms200", "AutoVOT1", "AutoVOT1", 9.5)
