@@ -6,6 +6,8 @@
 ##---------------------------------------------------------------------
 import inro.modeller as _m
 import traceback as _traceback
+import os
+import csv
 
 class InputSettings(_m.Tool()):
     base_scenario = _m.Attribute(_m.InstanceType)
@@ -66,6 +68,8 @@ class InputSettings(_m.Tool()):
         pmscen = eb.scenario(pm_scenid)
 
         self.attribute_code(pmscen, "@lanespm", "@vdfpm", "@tpfpm", "@hdwypm", "@tollpm")
+
+        self.overide_network(amscen, mdscen, pmscen)
 
     def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr, toll_attr):
         util = _m.Modeller().tool("translink.util")
@@ -161,3 +165,42 @@ class InputSettings(_m.Tool()):
         create_attr("TRANSIT_SEGMENT", "@fareincrement", "Increment Zone Fare ($)", 0, False, scen)
         create_attr("NODE", "@wcestopfare", "WCE Boarding Fare by Stop ($)", 0, False, scen)
         create_attr("NODE", "@wcexferfare", "Xfer WCE Boarding Fare by Stop($)", 0, False, scen)
+
+    def overide_network(self, amscen, mdscen, pmscen):
+        util = _m.Modeller().tool("translink.util")
+
+        custom_network = os.path.join(util.get_input_path(amscen.emmebank), 'custom_network.txt')
+        if not os.path.isfile(custom_network):
+            return
+
+        with open(custom_network, "rb") as sourcefile:
+            lines = list(csv.reader(sourcefile, skipinitialspace=True))
+
+        for line in lines:
+            # skip commented lines
+            if line[0].startswith('#'):
+                continue;
+            # error on short records
+            if len(line) < 3:
+                raise Exception("Error reading custom network file, less than 3 columns found")
+
+            per = line[0].strip()
+            res = line[1].strip()
+            exp = line[2].strip()
+
+            sel = "all"
+            if len(line) > 3:
+                sel = line[3].strip()
+            agg = None
+            if len(line) > 4:
+                agg = line[4].strip()
+
+            if per == "AM" or per == "ALL":
+                util.emme_link_calc(amscen, res, exp, sel, agg)
+
+            if per == "MD" or per == "ALL":
+                util.emme_link_calc(mdscen, res, exp, sel, agg)
+
+            if per == "PM" or per == "ALL":
+                util.emme_link_calc(pmscen, res, exp, sel, agg)
+
