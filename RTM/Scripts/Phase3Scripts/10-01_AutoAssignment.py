@@ -119,7 +119,7 @@ class AutoAssignment(_m.Tool()):
         self.add_distance_path_analysis(spec)
         assign_traffic(spec, scenario=scenario)
 
-        skimToll = int(eb.matrix("mstollSkim").data)
+        skimToll = int(scenario.emmebank.matrix("mstollSkim").data)
         if skimToll == 1:
             spec = self.get_class_specs(scenario.emmebank, demands)
             self.add_toll_path_analysis(spec)
