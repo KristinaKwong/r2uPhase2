@@ -172,17 +172,61 @@ class DataExport(_m.Tool()):
         dfGy = df.groupby(['gy_i','gy_j','timeModeVot'])
         dfGy = dfGy.sum().reset_index()
 
+        # extract toll data
+        dfToll = util.get_ijensem_df(eb, 'gy','gy')
+        dfToll['amSovToll1'] = util.get_matrix_numpy(eb, "mfAmSovTollVOT1").flatten()
+        dfToll['amSovToll2'] = util.get_matrix_numpy(eb, "mfAmSovTollVOT2").flatten()
+        dfToll['amSovToll3'] = util.get_matrix_numpy(eb, "mfAmSovTollVOT3").flatten()
+        dfToll['amSovToll4'] = util.get_matrix_numpy(eb, "mfAmSovTollVOT4").flatten()
+
+        dfToll['mdSovToll1'] = util.get_matrix_numpy(eb, "mfMdSovTollVOT1").flatten()
+        dfToll['mdSovToll2'] = util.get_matrix_numpy(eb, "mfMdSovTollVOT2").flatten()
+        dfToll['mdSovToll3'] = util.get_matrix_numpy(eb, "mfMdSovTollVOT3").flatten()
+        dfToll['mdSovToll4'] = util.get_matrix_numpy(eb, "mfMdSovTollVOT4").flatten()
+
+        dfToll['pmSovToll1'] = util.get_matrix_numpy(eb, "mfPmSovTollVOT1").flatten()
+        dfToll['pmSovToll2'] = util.get_matrix_numpy(eb, "mfPmSovTollVOT2").flatten()
+        dfToll['pmSovToll3'] = util.get_matrix_numpy(eb, "mfPmSovTollVOT3").flatten()
+        dfToll['pmSovToll4'] = util.get_matrix_numpy(eb, "mfPmSovTollVOT4").flatten()
+
+        dfToll['amHovToll1'] = util.get_matrix_numpy(eb, "mfAmHovTollVOT1").flatten()
+        dfToll['amHovToll2'] = util.get_matrix_numpy(eb, "mfAmHovTollVOT2").flatten()
+        dfToll['amHovToll3'] = util.get_matrix_numpy(eb, "mfAmHovTollVOT3").flatten()
+        dfToll['amHovToll4'] = util.get_matrix_numpy(eb, "mfAmHovTollVOT4").flatten()
+
+        dfToll['mdHovToll1'] = util.get_matrix_numpy(eb, "mfMdHovTollVOT1").flatten()
+        dfToll['mdHovToll2'] = util.get_matrix_numpy(eb, "mfMdHovTollVOT2").flatten()
+        dfToll['mdHovToll3'] = util.get_matrix_numpy(eb, "mfMdHovTollVOT3").flatten()
+        dfToll['mdHovToll4'] = util.get_matrix_numpy(eb, "mfMdHovTollVOT4").flatten()
+
+        dfToll['pmHovToll1'] = util.get_matrix_numpy(eb, "mfPmHovTollVOT1").flatten()
+        dfToll['pmHovToll2'] = util.get_matrix_numpy(eb, "mfPmHovTollVOT2").flatten()
+        dfToll['pmHovToll3'] = util.get_matrix_numpy(eb, "mfPmHovTollVOT3").flatten()
+        dfToll['pmHovToll4'] = util.get_matrix_numpy(eb, "mfPmHovTollVOT4").flatten()
+
+
+        dfToll = pd.melt(dfToll, id_vars = ['gy_i','gy_j'], var_name = 'timeModeVot', value_name = 'tolls')
+        dfTollGy = dfToll.groupby(['gy_i','gy_j','timeModeVot'])
+        dfTollGy = dfTollGy.sum().reset_index()
+
+
         # create categorical fields from original colnames
         dfTimeModeVot = dfGy['timeModeVot'].str.extract(r'(?P<peak>[a|m|p]{1}[m|d])(?P<mode>[S|H]{1}ov)Demand(?P<votclass>\d)')
+        dfTimeModeVotT = dfTollGy['timeModeVot'].str.extract(r'(?P<peak>[a|m|p]{1}[m|d])(?P<mode>[S|H]{1}ov)Toll(?P<votclass>\d)')
 
         dfGy = pd.concat([dfGy,dfTimeModeVot], axis=1)
         dfGy = dfGy[['gy_i','gy_j','peak','mode','votclass','trips']]
 
         df2Gy = pd.concat([df2Gy,dfTimeModeVot], axis=1)
         df2Gy = df2Gy[['gy_i','gy_j','peak','mode','votclass','vkt']]
+
+        dfTollGy = pd.concat([dfTollGy,dfTimeModeVotT], axis=1)
+        dfTollGy = dfTollGy[['gy_i','gy_j','peak','mode','votclass','tolls']]
+
         conn = util.get_db_byname(eb, 'trip_summaries.db')
         dfGy.to_sql(name='autoTripsGy', con=conn, flavor='sqlite', index=False, if_exists='replace')
         df2Gy.to_sql(name='autoVktGy', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        dfTollGy.to_sql(name='autoTollGy', con=conn, flavor='sqlite', index=False, if_exists='replace')
         conn.close()
 
     def addViewBridgeXings(self, eb):
