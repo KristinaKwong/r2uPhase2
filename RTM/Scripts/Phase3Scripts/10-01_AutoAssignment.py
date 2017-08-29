@@ -121,9 +121,12 @@ class AutoAssignment(_m.Tool()):
 
         skimToll = int(scenario.emmebank.matrix("mstollSkim").data)
         if skimToll == 1:
-            spec = self.get_class_specs(scenario.emmebank, demands)
-            self.add_toll_path_analysis(spec)
-            assign_traffic(spec, scenario=scenario)
+            max_cycles = int(scenario.emmebank.matrix("msIterGlobal").data)
+            cur_cycles = int(scenario.emmebank.matrix("msCycleNum").data)
+            if max_cycles == cur_cycles:
+                spec = self.get_class_specs(scenario.emmebank, demands)
+                self.add_toll_path_analysis(spec)
+                assign_traffic(spec, scenario=scenario)
 
         # Aggregate network volumes post-assignment and calculate intrazonal skims
         self.calc_network_volumes(scenario)
@@ -282,17 +285,16 @@ class AutoAssignment(_m.Tool()):
 
             specs.append(util.matrix_spec(skim_list["lgv"][1], "0.5*(mfLGVTime + %s)" % skim_list["lgv"][1]))
             specs.append(util.matrix_spec(skim_list["hgv"][1], "0.5*(mfHGVTime + %s)" % skim_list["hgv"][1]))
-            # Average GC Toll Matrices
-            specs.append(util.matrix_spec(skim_list["sovVot1"][2], "0.5*(mfSOVTollVOT1 + %s)" % skim_list["sovVot1"][2]))
-            specs.append(util.matrix_spec(skim_list["sovVot2"][2], "0.5*(mfSOVTollVOT2 + %s)" % skim_list["sovVot2"][2]))
-            specs.append(util.matrix_spec(skim_list["sovVot3"][2], "0.5*(mfSOVTollVOT3 + %s)" % skim_list["sovVot3"][2]))
-            specs.append(util.matrix_spec(skim_list["sovVot4"][2], "0.5*(mfSOVTollVOT4 + %s)" % skim_list["sovVot4"][2]))
-            specs.append(util.matrix_spec(skim_list["hovVot1"][2], "0.5*(mfHOVTollVOT1 + %s)" % skim_list["hovVot1"][2]))
-            specs.append(util.matrix_spec(skim_list["hovVot2"][2], "0.5*(mfHOVTollVOT2 + %s)" % skim_list["hovVot2"][2]))
-            specs.append(util.matrix_spec(skim_list["hovVot3"][2], "0.5*(mfHOVTollVOT3 + %s)" % skim_list["hovVot3"][2]))
-
-            specs.append(util.matrix_spec(skim_list["lgv"][2], "0.5*(mfLGVToll + %s)" % skim_list["lgv"][2]))
-            specs.append(util.matrix_spec(skim_list["hgv"][2], "0.5*(mfHGVToll + %s)" % skim_list["hgv"][2]))
+            # Set GC Toll Matrices
+            specs.append(util.matrix_spec(skim_list["sovVot1"][2], "mfSOVTollVOT1"))
+            specs.append(util.matrix_spec(skim_list["sovVot2"][2], "mfSOVTollVOT2"))
+            specs.append(util.matrix_spec(skim_list["sovVot3"][2], "mfSOVTollVOT3"))
+            specs.append(util.matrix_spec(skim_list["sovVot4"][2], "mfSOVTollVOT4"))
+            specs.append(util.matrix_spec(skim_list["hovVot1"][2], "mfHOVTollVOT1"))
+            specs.append(util.matrix_spec(skim_list["hovVot2"][2], "mfHOVTollVOT2"))
+            specs.append(util.matrix_spec(skim_list["hovVot3"][2], "mfHOVTollVOT3"))
+            specs.append(util.matrix_spec(skim_list["lgv"][2], "mfLGVToll"))
+            specs.append(util.matrix_spec(skim_list["hgv"][2], "mfHGVToll"))
 
         util.compute_matrix(specs, scenario)
 
