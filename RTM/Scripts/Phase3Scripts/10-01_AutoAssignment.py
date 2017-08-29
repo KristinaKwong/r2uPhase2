@@ -121,9 +121,12 @@ class AutoAssignment(_m.Tool()):
 
         skimToll = int(scenario.emmebank.matrix("mstollSkim").data)
         if skimToll == 1:
-            spec = self.get_class_specs(scenario.emmebank, demands)
-            self.add_toll_path_analysis(spec)
-            assign_traffic(spec, scenario=scenario)
+            max_cycles = int(scenario.emmebank.matrix("msIterGlobal").data)
+            cur_cycles = int(scenario.emmebank.matrix("msCycleNum").data)
+            if max_cycles == cur_cycles:
+                spec = self.get_class_specs(scenario.emmebank, demands)
+                self.add_toll_path_analysis(spec)
+                assign_traffic(spec, scenario=scenario)
 
         # Aggregate network volumes post-assignment and calculate intrazonal skims
         self.calc_network_volumes(scenario)
