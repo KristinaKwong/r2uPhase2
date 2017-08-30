@@ -114,19 +114,22 @@ class AutoAssignment(_m.Tool()):
         self.calc_network_costs(scenario)
         self.init_matrices(scenario.emmebank)
 
-        # Assignment to generate distance, tolls and time skims
+        # Generate basic specification of modes/VOTs/saved volumes
         spec = self.get_class_specs(scenario.emmebank, demands)
-        self.add_distance_path_analysis(spec)
-        assign_traffic(spec, scenario=scenario)
 
+        # skim the vehicle operating costs
+        self.add_opcost_path_analysis(spec)
+
+        # conditionally skim the tolls on the final model cycle
         skimToll = int(scenario.emmebank.matrix("mstollSkim").data)
         if skimToll == 1:
             max_cycles = int(scenario.emmebank.matrix("msIterGlobal").data)
             cur_cycles = int(scenario.emmebank.matrix("msCycleNum").data)
             if max_cycles == cur_cycles:
-                spec = self.get_class_specs(scenario.emmebank, demands)
                 self.add_toll_path_analysis(spec)
-                assign_traffic(spec, scenario=scenario)
+
+        # run assignment
+        assign_traffic(spec, scenario=scenario)
 
         # Aggregate network volumes post-assignment and calculate intrazonal skims
         self.calc_network_volumes(scenario)
@@ -308,7 +311,8 @@ class AutoAssignment(_m.Tool()):
                 "generalized_cost": { "link_costs": gc_cost, "perception_factor": gc_factor },
                 "results": { "od_travel_times": {"shortest_paths": travel_time},
                              "link_volumes": link_vol,
-                             "turn_volumes": turn_vol }
+                             "turn_volumes": turn_vol },
+                "path_analyses": []
                 }
         specs.append(spec)
 
@@ -342,33 +346,33 @@ class AutoAssignment(_m.Tool()):
         }
         return spec
 
-    def add_distance_path_analysis(self, spec):
+    def add_opcost_path_analysis(self, spec):
         path_od = { "considered_paths": "ALL",
                     "multiply_path_proportions_by": { "analyzed_demand": False, "path_value": True }
                   }
-        spec["classes"][ 0]["path_analysis"] = {"results": {"od_values": "mfSOVOpCstVOT1"}, "link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 1]["path_analysis"] = {"results": {"od_values": "mfSOVOpCstVOT2"}, "link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 2]["path_analysis"] = {"results": {"od_values": "mfSOVOpCstVOT3"}, "link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 3]["path_analysis"] = {"results": {"od_values": "mfSOVOpCstVOT4"}, "link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 4]["path_analysis"] = {"results": {"od_values": "mfHOVOpCstVOT1"}, "link_component": "@hovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 5]["path_analysis"] = {"results": {"od_values": "mfHOVOpCstVOT2"}, "link_component": "@hovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 6]["path_analysis"] = {"results": {"od_values": "mfHOVOpCstVOT3"}, "link_component": "@hovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 7]["path_analysis"] = {"results": {"od_values": "mfLGVOpCst"},     "link_component": "@lgvoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 8]["path_analysis"] = {"results": {"od_values": "mfHGVOpCst"},     "link_component": "@hgvoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
+        spec["classes"][ 0]["path_analyses"].append({"results": {"od_values": "mfSOVOpCstVOT1"}, "link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 1]["path_analyses"].append({"results": {"od_values": "mfSOVOpCstVOT2"}, "link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 2]["path_analyses"].append({"results": {"od_values": "mfSOVOpCstVOT3"}, "link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 3]["path_analyses"].append({"results": {"od_values": "mfSOVOpCstVOT4"}, "link_component": "@sovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 4]["path_analyses"].append({"results": {"od_values": "mfHOVOpCstVOT1"}, "link_component": "@hovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 5]["path_analyses"].append({"results": {"od_values": "mfHOVOpCstVOT2"}, "link_component": "@hovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 6]["path_analyses"].append({"results": {"od_values": "mfHOVOpCstVOT3"}, "link_component": "@hovoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 7]["path_analyses"].append({"results": {"od_values": "mfLGVOpCst"},     "link_component": "@lgvoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 8]["path_analyses"].append({"results": {"od_values": "mfHGVOpCst"},     "link_component": "@hgvoc", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
 
     def add_toll_path_analysis(self, spec):
         path_od = { "considered_paths": "ALL",
                     "multiply_path_proportions_by": { "analyzed_demand": False, "path_value": True }
                   }
-        spec["classes"][ 0]["path_analysis"] = {"results": {"od_values": "mfSOVTollVOT1"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 1]["path_analysis"] = {"results": {"od_values": "mfSOVTollVOT2"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 2]["path_analysis"] = {"results": {"od_values": "mfSOVTollVOT3"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 3]["path_analysis"] = {"results": {"od_values": "mfSOVTollVOT4"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 4]["path_analysis"] = {"results": {"od_values": "mfHOVTollVOT1"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 5]["path_analysis"] = {"results": {"od_values": "mfHOVTollVOT2"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 6]["path_analysis"] = {"results": {"od_values": "mfHOVTollVOT3"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 7]["path_analysis"] = {"results": {"od_values": "mfLGVToll"},     "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
-        spec["classes"][ 8]["path_analysis"] = {"results": {"od_values": "mfHGVToll"},     "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} }
+        spec["classes"][ 0]["path_analyses"].append({"results": {"od_values": "mfSOVTollVOT1"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 1]["path_analyses"].append({"results": {"od_values": "mfSOVTollVOT2"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 2]["path_analyses"].append({"results": {"od_values": "mfSOVTollVOT3"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 3]["path_analyses"].append({"results": {"od_values": "mfSOVTollVOT4"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 4]["path_analyses"].append({"results": {"od_values": "mfHOVTollVOT1"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 5]["path_analyses"].append({"results": {"od_values": "mfHOVTollVOT2"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 6]["path_analyses"].append({"results": {"od_values": "mfHOVTollVOT3"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 7]["path_analyses"].append({"results": {"od_values": "mfLGVToll"},     "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 8]["path_analyses"].append({"results": {"od_values": "mfHGVToll"},     "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
 
     @_m.logbook_trace("Calculate Link and Turn Aggregate Volumes")
     def calc_network_volumes(self, scenario):
