@@ -6,6 +6,8 @@
 ##---------------------------------------------------------------------
 import inro.modeller as _m
 import traceback as _traceback
+import numpy as np
+import pandas as pd
 
 class TransitAssignment(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
@@ -615,6 +617,8 @@ class TransitAssignment(_m.Tool()):
         return spec
 
     def skim_bus(self, scenarionumber):
+
+        eb = _m.Modeller().emmebank
         util = _m.Modeller().tool("translink.util")
         transit_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.matrix_results")
         strategy_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.strategy_based_analysis")
@@ -642,7 +646,14 @@ class TransitAssignment(_m.Tool()):
         specs.append(util.matrix_spec("mfBusFare", "mfBusIncCst + mfBusIncFirstCost"))
         util.compute_matrix(specs, scenarionumber)
 
+        # Correct skims
+        transit_mode = "bus"
+        fare_skim = "mfBusFare"
+        self.fix_skims(eb, transit_mode, fare_skim)
+
     def skim_rail(self, scenarionumber):
+
+        eb = _m.Modeller().emmebank
         util = _m.Modeller().tool("translink.util")
         transit_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.matrix_results")
         strategy_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.strategy_based_analysis")
@@ -679,7 +690,14 @@ class TransitAssignment(_m.Tool()):
         specs.append(util.matrix_spec("mfRailFare", "mfRailIvCst + mfRailBrdCst"))
         util.compute_matrix(specs, scenarionumber)
 
+        # Correct skims
+        transit_mode = "rail"
+        fare_skim = "mfRailFare"
+        self.fix_skims(eb, transit_mode, fare_skim)
+
     def skim_wce(self, scenarionumber):
+
+        eb = _m.Modeller().emmebank
         util = _m.Modeller().tool("translink.util")
         transit_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.matrix_results")
         strategy_skim = _m.Modeller().tool("inro.emme.transit_assignment.extended.strategy_based_analysis")
@@ -740,6 +758,21 @@ class TransitAssignment(_m.Tool()):
         specs.append(util.matrix_spec(result, expression1))
         specs.append(util.matrix_spec(result, expression2))
         util.compute_matrix(specs, scenarionumber)
+
+    def fix_skims(self, eb, transit_mode, fare_skim):
+
+        util = _m.Modeller().tool("translink.util")
+
+        #  get existing fares zones (matrix based)
+        NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
+        Fare_Mat = util.get_matrix_numpy(eb, fare_skim)
+
+        Crossed_Zones = util.get_matrix_numpy(eb, "mffare_zones")
+        Max_Fare = (Crossed_Zones - 1)*self.bus_zone_increment + self.bus_zone1_fare
+
+        Fare_Mat = np.where(Fare_Mat >= Max_Fare, Max_Fare, Fare_Mat)
+
+        util.set_matrix_numpy(eb, fare_skim, Fare_Mat)
 
     @_m.logbook_trace("Generate and Move Skims to Time of Day Locations")
     def collect_skims(self, sc, tod):

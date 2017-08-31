@@ -498,7 +498,14 @@ class DataImport(_m.Tool()):
         util.set_matrix_numpy(eb, "mfBridge_pen_AM", df['Bridge_pen_AM'].values.reshape(NoTAZ, NoTAZ))
         util.set_matrix_numpy(eb, "mfBridge_pen_PM", df['Bridge_pen_PM'].values.reshape(NoTAZ, NoTAZ))
 
+        # input fare zones travelled data
+        dfe = util.get_ijensem_df(eb, ensem_o='gy')
+        fareData = os.path.join(proj_path, "BaseNetworks", "fare_zones_travelled.csv.gz")
+        dfd = pd.read_csv(fareData, compression = 'gzip')
+        df = pd.merge(dfe, dfd, how='left', left_on=['gy_i','gy_j'], right_on = ['gy_i','gy_j'])
 
+        # Set fare zones matrix
+        util.set_matrix_numpy(eb, "fare_zones", df['Zones_Travelled'].values.reshape(NoTAZ, NoTAZ))
 
 
     @_m.logbook_trace("Matrix Batchins")
@@ -709,3 +716,6 @@ class DataImport(_m.Tool()):
 
         util.initmat(eb, "mf92", "Bridge_pen_AM", "Bridge_pen_AM", 0)
         util.initmat(eb, "mf93", "Bridge_pen_PM", "Bridge_pen_PM", 0)
+
+        # Fare Zones Travelled
+        util.initmat(eb, "mf95", "fare_zones", "Fare Zones Travelled", 0)
