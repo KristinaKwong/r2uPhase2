@@ -1,5 +1,0 @@
-mat_id,mat_name,mat_desc,value
-ms100,autoOpCost,Auto Operating Cost,0.18
-ms101,lgvOpCost,Light Truck Operating Cost,0.24
-ms102,hgvOpCost,Heavy Truck Operating Cost,0.56
-ms160,oneZoneFare,One Zone Fare - FS-SV,2.1
