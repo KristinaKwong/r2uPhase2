@@ -97,6 +97,8 @@ class DataImport(_m.Tool()):
 
         util.initmat(eb, "ms150", "lgvTollFac", "LGV toll factor", 2.0)
         util.initmat(eb, "ms151", "hgvTollFac", "HGV toll factor", 3.0)
+        util.initmat(eb, "ms152", "sovTollFac", "SOV toll factor", 1.0)
+        util.initmat(eb, "ms153", "hovTollFac", "HOV toll factor", 1.0)
 
 
 
