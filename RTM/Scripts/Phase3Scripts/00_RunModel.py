@@ -7,8 +7,11 @@
 import inro.modeller as _m
 import multiprocessing
 import traceback as _traceback
+import pandas as pd
 
 class FullModelRun(_m.Tool()):
+    scenario_name = _m.Attribute(_m.InstanceType)
+    alternative_name = _m.Attribute(_m.InstanceType)
     horizon_year = _m.Attribute(int)
     global_iterations = _m.Attribute(int)
     master_scen = _m.Attribute(_m.InstanceType)
@@ -27,6 +30,8 @@ class FullModelRun(_m.Tool()):
 
     def __init__(self):
         self.horizon_year = 2011
+        self.scenario_name = 'Scenario Name'
+        self.alternative_name = 'Alternative Name'
         self.global_iterations = 4
         self.max_distribution_iterations = 60
         self.distribution_relative_err = 0.0001
@@ -47,6 +52,14 @@ class FullModelRun(_m.Tool()):
         input_path = util.get_input_path(_m.Modeller().emmebank)
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
+
+        pb.add_text_box(tool_attribute_name="scenario_name",
+                        size=30,
+                        title="Enter the scenario name for the new emmebank.  e.g. Business as Usual")
+
+        pb.add_text_box(tool_attribute_name="alternative_name",
+                        size=30,
+                        title="Enter the alternative name for the new emmebank.  e.g. Mayor's Plan")
 
         pb.add_text_box(tool_attribute_name="horizon_year",
                         size="4",
@@ -124,7 +137,7 @@ class FullModelRun(_m.Tool()):
             self.__call__(self.horizon_year, self.global_iterations, self.master_scen, self.demographics_file,
                  self.geographics_file, self.max_distribution_iterations,
                  self.max_assignment_iterations, self.run_congested_transit, self.run_capacited_transit,
-                 self.num_processors, self.run_parking_model, self.run_toll_skim)
+                 self.num_processors, self.run_parking_model, self.run_toll_skim, self.scenario_name, self.alternative_name)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
@@ -133,9 +146,22 @@ class FullModelRun(_m.Tool()):
     def __call__(self, horizon_year, global_iterations, master_scen, demographics_file,
                     geographics_file, max_distribution_iterations,
                     max_assignment_iterations, run_congested_transit,
-                    run_capacited_transit, num_processors, run_parking_model, run_toll_skim):
+                    run_capacited_transit, num_processors, run_parking_model, run_toll_skim, scenario_name, alternative_name):
         eb = master_scen.emmebank
         util = _m.Modeller().tool("translink.util")
+
+        # add meta data to output datbases
+        md = {'scenario' : scenario_name,
+              'alternative' : alternative_name,
+              'horizon_year' : horizon_year}
+        md = pd.DataFrame(md, index=[0])
+        conn = util.get_rtm_db(eb)
+        md.to_sql(name='metadata', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        conn.close()
+        conn = util.get_db_byname(eb, 'trip_summaries.db')
+        md.to_sql(name='metadata', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        conn.close()
+
         self.initoptions(eb=eb, horizon_year=horizon_year, global_iterations=global_iterations,
                         max_distribution_iterations=max_distribution_iterations,
                         max_assignment_iterations=max_assignment_iterations,

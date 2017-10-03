@@ -158,6 +158,13 @@ class DataExport(_m.Tool()):
         df['pmHovDemand2'] = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_2_Pm").flatten()
         df['pmHovDemand3'] = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_3_Pm").flatten()
         df['pmHovDemand4'] = util.get_matrix_numpy(eb, "mfHOV_drvtrp_VOT_4_Pm").flatten()
+        
+        df['amLGVDemand1'] = util.get_matrix_numpy(eb, "mfLGVAM").flatten()
+        df['amHGVDemand1'] = util.get_matrix_numpy(eb, "mfHGVAM").flatten()
+        df['mdLGVDemand1'] = util.get_matrix_numpy(eb, "mfLGVMD").flatten()
+        df['mdHGVDemand1'] = util.get_matrix_numpy(eb, "mfHGVMD").flatten()
+        df['pmLGVDemand1'] = util.get_matrix_numpy(eb, "mfLGVPM").flatten()
+        df['pmHGVDemand1'] = util.get_matrix_numpy(eb, "mfHGVPM").flatten()
 
         # create copy of trips and multiply by distance to get simple vkt
         df2 = df.drop(['gy_i','gy_j'], 1).mul(aonDist, axis = 0)
@@ -203,6 +210,14 @@ class DataExport(_m.Tool()):
         dfToll['pmHovToll2'] = util.get_matrix_numpy(eb, "mfPmHovTollVOT2").flatten()
         dfToll['pmHovToll3'] = util.get_matrix_numpy(eb, "mfPmHovTollVOT3").flatten()
         dfToll['pmHovToll4'] = util.get_matrix_numpy(eb, "mfPmHovTollVOT4").flatten()
+        
+        dfToll['amLGVToll1'] = util.get_matrix_numpy(eb, "mfAmLgvToll").flatten()
+        dfToll['amHGVToll1'] = util.get_matrix_numpy(eb, "mfAmHgvToll").flatten()
+        dfToll['mdLGVToll1'] = util.get_matrix_numpy(eb, "mfMdLgvToll").flatten()
+        dfToll['mdHGVToll1'] = util.get_matrix_numpy(eb, "mfMdHgvToll").flatten()
+        dfToll['pmLGVToll1'] = util.get_matrix_numpy(eb, "mfPmLgvToll").flatten()
+        dfToll['pmHGVToll1'] = util.get_matrix_numpy(eb, "mfPmHgvToll").flatten()
+
 
 
         dfToll = pd.melt(dfToll, id_vars = ['gy_i','gy_j'], var_name = 'timeModeVot', value_name = 'tolls')
@@ -211,8 +226,8 @@ class DataExport(_m.Tool()):
 
 
         # create categorical fields from original colnames
-        dfTimeModeVot = dfGy['timeModeVot'].str.extract(r'(?P<peak>[a|m|p]{1}[m|d])(?P<mode>[S|H]{1}ov)Demand(?P<votclass>\d)')
-        dfTimeModeVotT = dfTollGy['timeModeVot'].str.extract(r'(?P<peak>[a|m|p]{1}[m|d])(?P<mode>[S|H]{1}ov)Toll(?P<votclass>\d)')
+        dfTimeModeVot = dfGy['timeModeVot'].str.extract(r'(?P<peak>[a|m|p]{1}[m|d])(?P<mode>Sov|Hov|LGV|HGV)Demand(?P<votclass>\d)')
+        dfTimeModeVotT = dfTollGy['timeModeVot'].str.extract(r'(?P<peak>[a|m|p]{1}[m|d])(?P<mode>Sov|Hov|LGV|HGV)Toll(?P<votclass>\d)')
 
         dfGy = pd.concat([dfGy,dfTimeModeVot], axis=1)
         dfGy = dfGy[['gy_i','gy_j','peak','mode','votclass','trips']]
