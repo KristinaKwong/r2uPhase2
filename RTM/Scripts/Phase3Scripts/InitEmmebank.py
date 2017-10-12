@@ -56,7 +56,7 @@ class InitEmmebank(_m.Tool()):
                "origin_matrices": 9999,
                "destination_matrices": 9999,
                "full_matrices": 9999,
-               "scenarios": 30,
+               "scenarios": 100,
                "functions": 99,
                "operators": 5000,
                "centroids": 1750,
