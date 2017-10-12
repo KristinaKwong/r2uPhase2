@@ -93,7 +93,13 @@ class DataExport(_m.Tool()):
         df.to_sql(name='tripGeneration', con=conn, flavor='sqlite', index=False, if_exists='replace')
         conn.close()
 
-        self.networkExport(eb)
+        # auto network outputs
+        dfAuto, dfTransit = self.networkExport(eb)
+        conn = util.get_db_byname(eb, 'trip_summaries.db')
+    	dfAuto.to_sql(name='netResults', con=conn, flavor='sqlite', index=False, if_exists='replace')
+    	dfTransit.to_sql(name='transitResults', con=conn, flavor='sqlite', index=False, if_exists='replace')
+    	conn.close()
+
         self.autoStats(eb)
         if True:
             self.addViewBridgeXings(eb)
@@ -776,12 +782,7 @@ class DataExport(_m.Tool()):
         dfAuto = dfAm.append(dfMd).append(dfPm)
 
     	# connect to output data base and create if not existing
-        conn = util.get_db_byname(eb, 'trip_summaries.db')
-
-    	# write data to single output table
-    	dfAuto.to_sql(name='netResults', con=conn, flavor='sqlite', index=False, if_exists='replace')
-    	dfTransit.to_sql(name='transitResults', con=conn, flavor='sqlite', index=False, if_exists='replace')
-    	conn.close()
+        return dfAuto, dfTransit
 
     def get_transit_data(self, eb, scenario_id):
         scenario = eb.scenario(scenario_id)
