@@ -25347,8 +25347,9 @@ a'319N1A' b   1   7.50  23.00 'ScottRd/NewtonEx    '      0      0      0
    611409          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    611410          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    611406          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   611404          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   611401          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   611404          dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   611416          dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   611401          dwt=>0   ttf=3   us1=0   us2=0   us3=0
    611402        lay=5.00
 a'319N1M' b   1   7.50  23.00 'ScottRd/NewtonEx    '      0      0      0
   path=no
@@ -25393,8 +25394,9 @@ a'319N1M' b   1   7.50  23.00 'ScottRd/NewtonEx    '      0      0      0
    611409          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    611410          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    611406          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   611404          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   611401          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   611404          dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   611416          dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   611401          dwt=>0   ttf=3   us1=0   us2=0   us3=0
    611402        lay=5.00
 a'319N1P' b   1   6.67  23.00 'ScottRd/NewtonEx    '      0      0      0
   path=no
@@ -25439,8 +25441,9 @@ a'319N1P' b   1   6.67  23.00 'ScottRd/NewtonEx    '      0      0      0
    611409          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    611410          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    611406          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   611404          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   611401          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   611404          dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   611416          dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   611401          dwt=>0   ttf=3   us1=0   us2=0   us3=0
    611402        lay=5.00
 a'319S1A' b   1   7.50  23.00 'ScottRd/NewtonEx    '      0      0      0
   path=no
@@ -30459,8 +30462,9 @@ a'391N1A' b   1  30.00  35.00 'Scottsd\ScottRdStn  '      0      0      0
    611409          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    611410          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    611406          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   611404          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   611401          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   611404          dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   611416          dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   611401          dwt=>0   ttf=3   us1=0   us2=0   us3=0
    611402        lay=5.00
 a'391S1P' b   1  30.00  35.00 'Scottsd/ScottRdStn  '      0      0      0
   path=no
@@ -37082,8 +37086,9 @@ a'640N1A' b   1  20.00  35.00 'Ladner Exchange/Scot'      0      0      0
    611409          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    611410          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    611406          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   611404          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   611401          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   611404          dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   611416          dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   611401          dwt=>0   ttf=3   us1=0   us2=0   us3=0
    611402        lay=5.00
 a'640N1M' b   1  30.00  35.00 'Ladner Exchange/Scot'      0      0      0
   path=no
@@ -37138,8 +37143,9 @@ a'640N1M' b   1  30.00  35.00 'Ladner Exchange/Scot'      0      0      0
    611409          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    611410          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    611406          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   611404          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   611401          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   611404          dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   611416          dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   611401          dwt=>0   ttf=3   us1=0   us2=0   us3=0
    611402        lay=5.00
 a'640N1P' b   1  20.00  35.00 'Ladner Exchange/Scot'      0      0      0
   path=no
@@ -37194,8 +37200,9 @@ a'640N1P' b   1  20.00  35.00 'Ladner Exchange/Scot'      0      0      0
    611409          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    611410          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    611406          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   611404          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   611401          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   611404          dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   611416          dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   611401          dwt=>0   ttf=3   us1=0   us2=0   us3=0
    611402        lay=5.00
 a'640S1A' b   1  20.00  35.00 'Ladner Exchange/Scot'      0      0      0
   path=no
@@ -41922,7 +41929,8 @@ a'C70W1P' b  13  30.00  23.00 'Cloverdale/Willowbro'      0      0      0
    650401        lay=5.00
 a'C71E1M' b  13  60.00  23.00 'Surrey CenStn\Scott '      0      0      0
   path=no
-   610906          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   610906          dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   611416          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    611404          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    610910          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    610911          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -41951,11 +41959,12 @@ a'C71E1M' b  13  60.00  23.00 'Surrey CenStn\Scott '      0      0      0
    614303          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    614405          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    614406          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   614407          dwt=+0  ttf=20   us1=0   us2=0   us3=0
+   614407          dwt=>0  ttf=20   us1=0   us2=0   us3=0
    614408        lay=5.00
 a'C71E1P' b  13  30.00  23.00 'Surrey CenStn\Scott '      0      0      0
   path=no
-   610906          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   610906          dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   611416          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    611404          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    610910          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    610911          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -41984,7 +41993,7 @@ a'C71E1P' b  13  30.00  23.00 'Surrey CenStn\Scott '      0      0      0
    614303          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    614405          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    614406          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   614407          dwt=+0  ttf=20   us1=0   us2=0   us3=0
+   614407          dwt=>0  ttf=20   us1=0   us2=0   us3=0
    614408        lay=5.00
 a'C71W1M' b  13  30.00  23.00 'Surrey CenStn\Scott '      0      0      0
   path=no
@@ -44168,7 +44177,8 @@ a'c70W1A' b  13  30.00  23.00 'Cloverdale/Willowbro'      0      0      0
    650401        lay=5.00
 a'c71E1A' b  13  30.00  23.00 'Surrey CenStn\Scott '      0      0      0
   path=no
-   610906          dwt=+0   ttf=3   us1=0   us2=0   us3=0
+   610906          dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   611416          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    611404          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    610910          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    610911          dwt=#0   ttf=5   us1=0   us2=0   us3=0
@@ -44197,7 +44207,7 @@ a'c71E1A' b  13  30.00  23.00 'Surrey CenStn\Scott '      0      0      0
    614303          dwt=+0   ttf=2   us1=0   us2=0   us3=0
    614405          dwt=#0   ttf=5   us1=0   us2=0   us3=0
    614406          dwt=#0   ttf=5   us1=0   us2=0   us3=0
-   614407          dwt=+0  ttf=20   us1=0   us2=0   us3=0
+   614407          dwt=>0  ttf=20   us1=0   us2=0   us3=0
    614408        lay=5.00
 a'c71W1A' b  13  30.00  23.00 'Surrey CenStn\Scott '      0      0      0
   path=no
