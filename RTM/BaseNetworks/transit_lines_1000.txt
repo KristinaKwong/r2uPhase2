@@ -49992,7 +49992,7 @@ a'cf17LA' b   7  60.00  23.00 'Townline Industrial '      0      0      0
   path=no
    814513          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814508          dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814510       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
+   814510          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814511          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815101          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814006          dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -50035,7 +50035,7 @@ a'cf17LA' b   7  60.00  23.00 'Townline Industrial '      0      0      0
    814008          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814007          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814006          dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   815101       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
+   815101          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814511          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814510          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814509          dwt=+0   ttf=1   us1=0   us2=0   us3=0

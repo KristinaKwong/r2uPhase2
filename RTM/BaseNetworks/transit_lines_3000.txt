@@ -9267,26 +9267,26 @@ a'160W1M' b   1  30.00  30.00 'PortCoqStn/Kootenay '      0      0      0
    320306          dwt=#0   ttf=1   us1=0   us2=0   us3=0
    320304          dwt=#0   ttf=1   us1=0   us2=0   us3=0
    320302          dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   320301       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   320303       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   320401       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   333007       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   333005       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   333002       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   332806       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   332801       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   332011       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   332502       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   332501       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   332701       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   332702       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   332901       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   311501       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   312001       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   311401       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   311904       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   311905       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   311906       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
+   320301          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   320303          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   320401          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   333007          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   333005          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   333002          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   332806          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   332801          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   332011          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   332502          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   332501          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   332701          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   332702          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   332901          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   311501          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   312001          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   311401          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   311904          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   311905          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   311906          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    311908          dwt=#0   ttf=1   us1=0   us2=0   us3=0
    311909          dwt=#0   ttf=1   us1=0   us2=0   us3=0
    311718          dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -9348,26 +9348,26 @@ a'160W1P' b   1  30.00  30.00 'PortCoqStn/Kootenay '      0      0      0
    320306          dwt=#0   ttf=1   us1=0   us2=0   us3=0
    320304          dwt=#0   ttf=1   us1=0   us2=0   us3=0
    320302          dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   320301       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   320303       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   320401       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   333007       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   333005       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   333002       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   332806       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   332801       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   332011       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   332502       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   332501       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   332701       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   332702       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   332901       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   311501       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   312001       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   311401       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   311904       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   311905       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
-   311906       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
+   320301          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   320303          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   320401          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   333007          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   333005          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   333002          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   332806          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   332801          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   332011          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   332502          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   332501          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   332701          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   332702          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   332901          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   311501          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   312001          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   311401          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   311904          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   311905          dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   311906          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    311908          dwt=#0   ttf=1   us1=0   us2=0   us3=0
    311909          dwt=#0   ttf=1   us1=0   us2=0   us3=0
    311718          dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -18165,7 +18165,7 @@ a'502W2 ' b   1  30.00  35.00 'Brkswood/SurreyCntrl'      0      0      0
    614402        lay=5.00
 a'503E1 ' b   1  30.00  35.00 'Aldgr/Langley/Surrey'      0      0      0
   path=no
-   670804       dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
+   670804          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670802          dwt=#0   ttf=1   us1=0   us2=0   us3=0
    671001          dwt=+0   ttf=1   us1=0   us2=0   us3=0
    671002          dwt=#0   ttf=1   us1=0   us2=0   us3=0
