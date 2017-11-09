@@ -292,12 +292,7 @@ class InitEmmebank(_m.Tool()):
 
         # Update FT functions to include dwell time (us1) based on boardings and alightings
         eb.create_function("ft01", "timau + us1")
-        eb.create_function("ft02", "timau + us1")
-        eb.create_function("ft03", "timau + us1")
-        eb.create_function("ft04", "timau + us1")
-        eb.create_function("ft05", "timau + us1")
         eb.create_function("ft10", "0.01")
-        eb.create_function("ft20", "timau + us1")
         eb.create_function("fp01", "(.1 + pvolau / 100) ^ 4")
         eb.create_function("fp02", "(.1 + pvolau / 200) ^ 4")
         eb.create_function("fp03", "(.1 + pvolau / 300) ^ 4")
