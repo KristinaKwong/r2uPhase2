@@ -38352,43 +38352,43 @@ a'9921W ' l  14   6.70  65.00 'ExpL ProdStn-VancCBD'      0      0      0
    223501        lay=1.00
 a'9922E ' l   5   3.30  55.00 'Mill VCC-Douglas    '      0      0      0
   path=no
-   254009       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   254203       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   255801       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   256104       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   273101       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   273301       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   273601       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   275003       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   275104       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   275210          dwt=#0   ttf=8   us1=0   us2=0   us3=0
-   276103       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   276201       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   321402       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   311807       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   311912       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   320310       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   333004       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
+   254009       dwt=+1.45  ttf=10   us1=0   us2=0   us3=0
+   254203       dwt=+2.51  ttf=10   us1=0   us2=0   us3=0
+   255801       dwt=+1.52  ttf=10   us1=0   us2=0   us3=0
+   256104        dwt=+2.2  ttf=10   us1=0   us2=0   us3=0
+   273101       dwt=+1.54  ttf=10   us1=0   us2=0   us3=0
+   273301       dwt=+2.09  ttf=10   us1=0   us2=0   us3=0
+   273601       dwt=+2.12  ttf=10   us1=0   us2=0   us3=0
+   275003       dwt=+2.57  ttf=10   us1=0   us2=0   us3=0
+   275104       dwt=+2.16  ttf=10   us1=0   us2=0   us3=0
+   275210       dwt=#2.12  ttf=10   us1=0   us2=0   us3=0
+   276103       dwt=+0.17  ttf=10   us1=0   us2=0   us3=0
+   276201       dwt=+2.63  ttf=10   us1=0   us2=0   us3=0
+   321402       dwt=+5.23  ttf=10   us1=0   us2=0   us3=0
+   311807       dwt=+1.93  ttf=10   us1=0   us2=0   us3=0
+   311912       dwt=+2.81  ttf=10   us1=0   us2=0   us3=0
+   320310       dwt=+1.31  ttf=10   us1=0   us2=0   us3=0
+   333004       dwt=+1.17  ttf=10   us1=0   us2=0   us3=0
    332802        lay=1.00
 a'9922W ' l   5   3.30  55.00 'Mill VCC-Douglas    '      0      0      0
   path=no
-   332802       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   333004       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   320310       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   311912       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   311807       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   321402       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   276201       dwt=#0.33   ttf=8   us1=0   us2=0   us3=0
-   276103          dwt=+0   ttf=8   us1=0   us2=0   us3=0
-   275210       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   275104       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   275003       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   273601       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   273301       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   273101       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   256104       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   255801       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
-   254203       dwt=+0.33   ttf=8   us1=0   us2=0   us3=0
+   332802       dwt=+1.17  ttf=10   us1=0   us2=0   us3=0
+   333004       dwt=+1.31  ttf=10   us1=0   us2=0   us3=0
+   320310       dwt=+2.81  ttf=10   us1=0   us2=0   us3=0
+   311912       dwt=+1.93  ttf=10   us1=0   us2=0   us3=0
+   311807       dwt=+5.23  ttf=10   us1=0   us2=0   us3=0
+   321402       dwt=+2.63  ttf=10   us1=0   us2=0   us3=0
+   276201       dwt=#0.67  ttf=10   us1=0   us2=0   us3=0
+   276103       dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
+   275210       dwt=+2.16  ttf=10   us1=0   us2=0   us3=0
+   275104       dwt=+2.57  ttf=10   us1=0   us2=0   us3=0
+   275003       dwt=+2.12  ttf=10   us1=0   us2=0   us3=0
+   273601       dwt=+2.09  ttf=10   us1=0   us2=0   us3=0
+   273301       dwt=+1.54  ttf=10   us1=0   us2=0   us3=0
+   273101        dwt=+2.2  ttf=10   us1=0   us2=0   us3=0
+   256104       dwt=+1.52  ttf=10   us1=0   us2=0   us3=0
+   255801       dwt=+2.51  ttf=10   us1=0   us2=0   us3=0
+   254203       dwt=+1.45  ttf=10   us1=0   us2=0   us3=0
    254009        lay=1.00
 a'C12N1A' b  13  30.00  23.00 'C12-NB1EX           '      0      0      0
   path=no
