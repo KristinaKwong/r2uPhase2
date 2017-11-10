@@ -19691,51 +19691,51 @@ a'9922W2' l   5   2.50  55.00 'Mill Arbutus-Douglas'      0      0      0
    233607        lay=1.00
 a'L_1E  ' f  17   5.00  34.00 'KGStn-Langley       '      0      0      0
   path=no
-   616700          dwt=+0   ttf=7   us1=0   us2=0   us3=0
-   617000          dwt=+0   ttf=7   us1=0   us2=0   us3=0
-   618300          dwt=+0   ttf=7   us1=0   us2=0   us3=0
-   633400          dwt=+0   ttf=7   us1=0   us2=0   us3=0
-   635199          dwt=+0   ttf=7   us1=0   us2=0   us3=0
-   637699          dwt=+0   ttf=7   us1=0   us2=0   us3=0
-   637700          dwt=+0   ttf=7   us1=0   us2=0   us3=0
-   638800          dwt=+0   ttf=7   us1=0   us2=0   us3=0
+   616700       dwt=+2.12  ttf=10   us1=0   us2=0   us3=0
+   617000       dwt=+5.92  ttf=10   us1=0   us2=0   us3=0
+   618300       dwt=+4.14  ttf=10   us1=0   us2=0   us3=0
+   633400       dwt=+3.24  ttf=10   us1=0   us2=0   us3=0
+   635199      dwt=+10.96  ttf=10   us1=0   us2=0   us3=0
+   637699       dwt=+2.05  ttf=10   us1=0   us2=0   us3=0
+   637700       dwt=+2.51  ttf=10   us1=0   us2=0   us3=0
+   638800       dwt=+3.81  ttf=10   us1=0   us2=0   us3=0
    670700        lay=3.00
 a'L_1W  ' f  17   5.00  34.00 'KGStn-Langley       '      0      0      0
   path=no
-   670700          dwt=+0   ttf=7   us1=0   us2=0   us3=0
-   638800          dwt=+0   ttf=7   us1=0   us2=0   us3=0
-   637700          dwt=+0   ttf=7   us1=0   us2=0   us3=0
-   637699          dwt=+0   ttf=7   us1=0   us2=0   us3=0
-   635199          dwt=+0   ttf=7   us1=0   us2=0   us3=0
-   633400          dwt=+0   ttf=7   us1=0   us2=0   us3=0
-   618300          dwt=+0   ttf=7   us1=0   us2=0   us3=0
-   617000          dwt=+0   ttf=7   us1=0   us2=0   us3=0
+   670700       dwt=+3.81  ttf=10   us1=0   us2=0   us3=0
+   638800       dwt=+2.51  ttf=10   us1=0   us2=0   us3=0
+   637700       dwt=+2.05  ttf=10   us1=0   us2=0   us3=0
+   637699      dwt=+10.96  ttf=10   us1=0   us2=0   us3=0
+   635199       dwt=+3.24  ttf=10   us1=0   us2=0   us3=0
+   633400       dwt=+4.14  ttf=10   us1=0   us2=0   us3=0
+   618300       dwt=+5.92  ttf=10   us1=0   us2=0   us3=0
+   617000       dwt=+2.12  ttf=10   us1=0   us2=0   us3=0
    616700        lay=3.00
 a'L_4E  ' f  17   5.00  34.00 'Newton/Guildford    '      0      0      0
   path=no
-   624200       dwt=+0.23   ttf=8   us1=0   us2=0   us3=0
-   622500       dwt=+0.23   ttf=8   us1=0   us2=0   us3=0
-   621100       dwt=+0.27   ttf=8   us1=0   us2=0   us3=0
-   620300        dwt=+0.4   ttf=8   us1=0   us2=0   us3=0
-   617600        dwt=+0.4   ttf=8   us1=0   us2=0   us3=0
-   616700       dwt=+0.23   ttf=8   us1=0   us2=0   us3=0
-   614400       dwt=+0.23   ttf=8   us1=0   us2=0   us3=0
-   614700       dwt=+0.27   ttf=8   us1=0   us2=0   us3=0
-   614000          dwt=+0   ttf=8   us1=0   us2=0   us3=0
-   615400          dwt=+0   ttf=8   us1=0   us2=0   us3=0
+   624200       dwt=+3.16  ttf=10   us1=0   us2=0   us3=0
+   622500       dwt=+2.21  ttf=10   us1=0   us2=0   us3=0
+   621100       dwt=+4.18  ttf=10   us1=0   us2=0   us3=0
+   620300       dwt=+4.19  ttf=10   us1=0   us2=0   us3=0
+   617600       dwt=+1.79  ttf=10   us1=0   us2=0   us3=0
+   616700       dwt=+2.51  ttf=10   us1=0   us2=0   us3=0
+   614400       dwt=+3.25  ttf=10   us1=0   us2=0   us3=0
+   614700       dwt=+2.19  ttf=10   us1=0   us2=0   us3=0
+   614000       dwt=+1.87  ttf=10   us1=0   us2=0   us3=0
+   615400       dwt=+2.01  ttf=10   us1=0   us2=0   us3=0
    631300        lay=3.00
 a'L_4W  ' f  17   5.00  34.00 'Newton/Guildford    '      0      0      0
   path=no
-   631300       dwt=+0.27   ttf=8   us1=0   us2=0   us3=0
-   615400       dwt=+0.23   ttf=8   us1=0   us2=0   us3=0
-   614000       dwt=+0.23   ttf=8   us1=0   us2=0   us3=0
-   614700        dwt=+0.4   ttf=8   us1=0   us2=0   us3=0
-   614400        dwt=+0.4   ttf=8   us1=0   us2=0   us3=0
-   616700       dwt=+0.27   ttf=8   us1=0   us2=0   us3=0
-   617600       dwt=+0.23   ttf=8   us1=0   us2=0   us3=0
-   620300       dwt=+0.23   ttf=8   us1=0   us2=0   us3=0
-   621100       dwt=+0.23   ttf=8   us1=0   us2=0   us3=0
-   622500          dwt=+0   ttf=8   us1=0   us2=0   us3=0
+   631300       dwt=+2.28  ttf=10   us1=0   us2=0   us3=0
+   615400        dwt=+2.1  ttf=10   us1=0   us2=0   us3=0
+   614000       dwt=+2.15  ttf=10   us1=0   us2=0   us3=0
+   614700       dwt=+3.42  ttf=10   us1=0   us2=0   us3=0
+   614400       dwt=+2.68  ttf=10   us1=0   us2=0   us3=0
+   616700       dwt=+1.66  ttf=10   us1=0   us2=0   us3=0
+   617600       dwt=+4.02  ttf=10   us1=0   us2=0   us3=0
+   620300       dwt=+4.14  ttf=10   us1=0   us2=0   us3=0
+   621100       dwt=+2.21  ttf=10   us1=0   us2=0   us3=0
+   622500       dwt=+2.93  ttf=10   us1=0   us2=0   us3=0
    624200        lay=3.00
 a'c01E1A' b  13  30.00  23.00 'Hastings/Mac/Kootena'      0      0      0
   path=no
