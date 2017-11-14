@@ -1,5 +1,5 @@
 0CAFACB7-AD3C-40E4-80DD-675DE315EA7F 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
-# Emme project file generated on Thu Jun 22 10:31:15 2017
+# Emme project file generated on Fri Nov 10 15:20:36 2017
 # File: C:/proj/tlink/RTM/RTM.emp
 #
 # String Name: name of preference configuration (tr)
@@ -178,14 +178,57 @@ DefaultLinkAttributes[] = 0
 DefaultLinkAttributes[] = 0
 DefaultLinkAttributes[] = 0
 DefaultLinkAttributes[] = 0
+# String ModeAttributesToPromptInEditor: attributes prompted for new modes in the editor (and also the default value)
+ModeAttributesToPromptInEditor[] = mode'false'
+ModeAttributesToPromptInEditor[] = type'false'
+ModeAttributesToPromptInEditor[] = description'false'
+ModeAttributesToPromptInEditor[] = cpul'false'0
+ModeAttributesToPromptInEditor[] = cphr'false'0
+ModeAttributesToPromptInEditor[] = epul'false'0
+ModeAttributesToPromptInEditor[] = ephr'false'0
+ModeAttributesToPromptInEditor[] = spdfac'false'0.01
+# String ModeAttributesVisibleInEditor: attributes in the editor mode table
+ModeAttributesVisibleInEditor[] = mode
+ModeAttributesVisibleInEditor[] = type
+ModeAttributesVisibleInEditor[] = description
+ModeAttributesVisibleInEditor[] = cpul
+ModeAttributesVisibleInEditor[] = cphr
+ModeAttributesVisibleInEditor[] = epul
+ModeAttributesVisibleInEditor[] = ephr
+ModeAttributesVisibleInEditor[] = spdfac
+# String VehicleAttributesToPromptInEditor: attributes prompted for new vehicles in the editor (and also the default value)
+VehicleAttributesToPromptInEditor[] = veh'false'
+VehicleAttributesToPromptInEditor[] = vmode'false'
+VehicleAttributesToPromptInEditor[] = description'false'
+VehicleAttributesToPromptInEditor[] = vauteq'false'0
+VehicleAttributesToPromptInEditor[] = vcaps'false'1
+VehicleAttributesToPromptInEditor[] = vcapt'false'1
+VehicleAttributesToPromptInEditor[] = vfleet'false'1
+VehicleAttributesToPromptInEditor[] = vcolu'false'0
+VehicleAttributesToPromptInEditor[] = vcohr'false'0
+VehicleAttributesToPromptInEditor[] = venlu'false'0
+VehicleAttributesToPromptInEditor[] = venhr'false'0
+# String VehicleAttributesVisibleInEditor: attributes in the editor vehicle table
+VehicleAttributesVisibleInEditor[] = veh
+VehicleAttributesVisibleInEditor[] = vmode
+VehicleAttributesVisibleInEditor[] = description
+VehicleAttributesVisibleInEditor[] = vauteq
+VehicleAttributesVisibleInEditor[] = vcaps
+VehicleAttributesVisibleInEditor[] = vcapt
+VehicleAttributesVisibleInEditor[] = vfleet
+VehicleAttributesVisibleInEditor[] = vcolu
+VehicleAttributesVisibleInEditor[] = vcohr
+VehicleAttributesVisibleInEditor[] = venlu
+VehicleAttributesVisibleInEditor[] = venhr
 # String NodeAttributesToPromptInEditor: attributes prompted for new nodes in the editor (and also the default value)
-NodeAttributesToPromptInEditor[] = i'false'0
+NodeAttributesToPromptInEditor[] = i'true'0
 NodeAttributesToPromptInEditor[] = xi'false'
 NodeAttributesToPromptInEditor[] = yi'false'
-NodeAttributesToPromptInEditor[] = label'false'
+NodeAttributesToPromptInEditor[] = label'false'0000
 NodeAttributesToPromptInEditor[] = ui1'false'0
 NodeAttributesToPromptInEditor[] = ui2'false'0
 NodeAttributesToPromptInEditor[] = ui3'false'0
+NodeAttributesToPromptInEditor[] = @farezone'false'0
 # String NodeAttributesVisibleInEditor: attributes in the editor node table
 NodeAttributesVisibleInEditor[] = i
 NodeAttributesVisibleInEditor[] = xi
@@ -194,23 +237,25 @@ NodeAttributesVisibleInEditor[] = label
 NodeAttributesVisibleInEditor[] = ui1
 NodeAttributesVisibleInEditor[] = ui2
 NodeAttributesVisibleInEditor[] = ui3
+NodeAttributesVisibleInEditor[] = @farezone
 # String LinkAttributesToPromptInEditor: attributes prompted for new links in the editor (and also the default value)
 LinkAttributesToPromptInEditor[] = i'false'
 LinkAttributesToPromptInEditor[] = j'false'
 LinkAttributesToPromptInEditor[] = length'false'-1
-LinkAttributesToPromptInEditor[] = type'false'1
-LinkAttributesToPromptInEditor[] = modes'false'c
-LinkAttributesToPromptInEditor[] = lanes'false'0
-LinkAttributesToPromptInEditor[] = vdf'false'0
-LinkAttributesToPromptInEditor[] = @lanesam'true'
-LinkAttributesToPromptInEditor[] = @lanesmd'true'
-LinkAttributesToPromptInEditor[] = @lanespm'true'
-LinkAttributesToPromptInEditor[] = @vdfam'true'
-LinkAttributesToPromptInEditor[] = @vdfmd'true'
-LinkAttributesToPromptInEditor[] = @vdfpm'true'
-LinkAttributesToPromptInEditor[] = @tollam'true'
-LinkAttributesToPromptInEditor[] = @tollmd'true'
-LinkAttributesToPromptInEditor[] = @tollpm'true'
+LinkAttributesToPromptInEditor[] = type'true'1
+LinkAttributesToPromptInEditor[] = modes'true'vcdxtnbp
+LinkAttributesToPromptInEditor[] = lanes'true'1
+LinkAttributesToPromptInEditor[] = vdf'true'85
+LinkAttributesToPromptInEditor[] = @lanesam'true'1
+LinkAttributesToPromptInEditor[] = @lanesmd'true'1
+LinkAttributesToPromptInEditor[] = @lanespm'true'1
+LinkAttributesToPromptInEditor[] = @vdfam'true'85
+LinkAttributesToPromptInEditor[] = @vdfmd'true'85
+LinkAttributesToPromptInEditor[] = @vdfpm'true'85
+LinkAttributesToPromptInEditor[] = @tollam'true'0
+LinkAttributesToPromptInEditor[] = @tollmd'true'0
+LinkAttributesToPromptInEditor[] = @tollpm'true'0
+LinkAttributesToPromptInEditor[] = @posted_speed'true'50
 # String LinkAttributesVisibleInEditor: attributes in the editor link table
 LinkAttributesVisibleInEditor[] = i
 LinkAttributesVisibleInEditor[] = j
@@ -228,6 +273,7 @@ LinkAttributesVisibleInEditor[] = @vdfpm
 LinkAttributesVisibleInEditor[] = @tollam
 LinkAttributesVisibleInEditor[] = @tollmd
 LinkAttributesVisibleInEditor[] = @tollpm
+LinkAttributesVisibleInEditor[] = @posted_speed
 # String LineAttributesToPromptInEditor: attributes prompted for new lines in the editor (and also the default value)
 LineAttributesToPromptInEditor[] = line'false'
 LineAttributesToPromptInEditor[] = description'false'
@@ -250,10 +296,10 @@ LineAttributesVisibleInEditor[] = @hdwypm
 TurnAttributesToPromptInEditor[] = j'false'
 TurnAttributesToPromptInEditor[] = i'false'
 TurnAttributesToPromptInEditor[] = k'false'
-TurnAttributesToPromptInEditor[] = tpf'false'-1
-TurnAttributesToPromptInEditor[] = @tpfam'false'
-TurnAttributesToPromptInEditor[] = @tpfmd'false'
-TurnAttributesToPromptInEditor[] = @tpfpm'false'
+TurnAttributesToPromptInEditor[] = tpf'false'auto
+TurnAttributesToPromptInEditor[] = @tpfam'false'-1
+TurnAttributesToPromptInEditor[] = @tpfmd'false'-1
+TurnAttributesToPromptInEditor[] = @tpfpm'false'-1
 # String TurnAttributesVisibleInEditor: attributes in the editor turn table
 TurnAttributesVisibleInEditor[] = j
 TurnAttributesVisibleInEditor[] = i
@@ -266,11 +312,10 @@ TurnAttributesVisibleInEditor[] = @tpfpm
 SegmentAttributesToPromptInEditor[] = line'false'
 SegmentAttributesToPromptInEditor[] = i'false'
 SegmentAttributesToPromptInEditor[] = j'false'
-SegmentAttributesToPromptInEditor[] = dwt'false'0.01
-SegmentAttributesToPromptInEditor[] = noali'false'0
-SegmentAttributesToPromptInEditor[] = noboa'false'0
-SegmentAttributesToPromptInEditor[] = dwfac'false'0
-SegmentAttributesToPromptInEditor[] = ttf'false'0
+SegmentAttributesToPromptInEditor[] = dwt'false'0
+SegmentAttributesToPromptInEditor[] = noali'false'1
+SegmentAttributesToPromptInEditor[] = noboa'false'1
+SegmentAttributesToPromptInEditor[] = ttf'false'1
 SegmentAttributesToPromptInEditor[] = us1'false'0
 SegmentAttributesToPromptInEditor[] = us2'false'0
 SegmentAttributesToPromptInEditor[] = us3'false'0
@@ -281,7 +326,6 @@ SegmentAttributesVisibleInEditor[] = j
 SegmentAttributesVisibleInEditor[] = dwt
 SegmentAttributesVisibleInEditor[] = noali
 SegmentAttributesVisibleInEditor[] = noboa
-SegmentAttributesVisibleInEditor[] = dwfac
 SegmentAttributesVisibleInEditor[] = ttf
 SegmentAttributesVisibleInEditor[] = us1
 SegmentAttributesVisibleInEditor[] = us2
