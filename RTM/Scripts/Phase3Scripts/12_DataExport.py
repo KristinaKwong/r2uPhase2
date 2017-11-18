@@ -181,8 +181,8 @@ class DataExport(_m.Tool()):
         df2Gy =  df2.groupby(['gy_i','gy_j','timeModeVot'])
         df2Gy = df2Gy.sum().reset_index()
 
-        df = pd.melt(df, id_vars = ['gy_i','gy_j'], var_name = 'timeModeVot', value_name = 'trips')
-        dfGy = df.groupby(['gy_i','gy_j','timeModeVot'])
+        df3 = pd.melt(df, id_vars = ['gy_i','gy_j'], var_name = 'timeModeVot', value_name = 'trips')
+        dfGy = df3.groupby(['gy_i','gy_j','timeModeVot'])
         dfGy = dfGy.sum().reset_index()
 
         # extract toll data
