@@ -82,4 +82,3 @@ class CheckNetwork(_m.Tool()):
 
         util.emme_turn_calc(scen, "up1", "(@tpfam.eq.@tpfmd).and.(@tpfam.eq.@tpfpm)")
         util.emme_turn_calc(scen, "tpf", "(@tpfam*(up1.eq.1))+(tpf*(up1.ne.1))")
-
