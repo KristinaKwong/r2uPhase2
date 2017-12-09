@@ -230,8 +230,12 @@ class AutoAssignment(_m.Tool()):
         util.set_matrix_numpy(eb, matrix, np_mat)
 
     def store_skims(self, scenario, skim_list):
+        #compute social cost after each run
+        self.calc_network_social_costs(scenario)
+        self.calc_transit_us2(scenario)
+        
         util = _m.Modeller().tool("translink.util")
-
+        
         do_averaging = util.get_cycle(scenario.emmebank) > 1
         specs = []
 
@@ -471,3 +475,47 @@ class AutoAssignment(_m.Tool()):
         matrices.append(["mf9949", "HGVTime",      "HGV Travel Time", 0])
 
         return matrices
+
+    def calc_network_social_costs(self, scenario):
+        util = _m.Modeller().tool("translink.util")
+        eb = scenario.emmebank
+        #initialize ul1 to timau
+        util.emme_link_calc(scenario, "ul1", "timau")
+        
+        #ul1 = timau using old VDF calculations
+        #ul1 = -1 where mode is not auto or lane = 0
+        util.emme_link_calc(scenario, "ul1", "(0.25 + length * 60 / @posted_speed + .85 * ((volau + volad) / ( 400 * lanes)) ^ 4)", sel_link="vdf=26 and lanes=1,99")
+        util.emme_link_calc(scenario, "ul1", "(0.25 + length * 60 / @posted_speed + .85 * ((volau + volad) / ( 600 * lanes)) ^ 4)", sel_link="vdf=36 and lanes=1,99")
+        util.emme_link_calc(scenario, "ul1", "(0.25 + length * 60 / @posted_speed + .85 * ((volau + volad) / ( 800 * lanes)) ^ 4)", sel_link="vdf=46 and lanes=1,99")
+        util.emme_link_calc(scenario, "ul1", "(0.25 + length * 60 / @posted_speed + .85 * ((volau + volad) / (1000 * lanes)) ^ 4)", sel_link="vdf=56 and lanes=1,99")
+        util.emme_link_calc(scenario, "ul1", "(0.25 + length * 60 / @posted_speed + .85 * ((volau + volad) / (1200 * lanes)) ^ 4)", sel_link="vdf=66 and lanes=1,99")
+        util.emme_link_calc(scenario, "ul1", "(0.25 + length * 60 / @posted_speed + .85 * ((volau + volad) / (1400 * lanes)) ^ 4)", sel_link="vdf=76 and lanes=1,99")
+        util.emme_link_calc(scenario, "ul1", "(length * 60 / @posted_speed * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5))", sel_link="vdf=86 and lanes=1,99")
+        util.emme_link_calc(scenario, "ul1", "(length * 60 / (@posted_speed * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5.25))", sel_link="vdf=89 and lanes=1,99")
+        util.emme_link_calc(scenario, "ul1", "(length * 60 / @posted_speed + 0.85 * ((volau + volad) / ( 600*lanes))^5)", sel_link="vdf=13 and lanes=1,99")
+        util.emme_link_calc(scenario, "ul1", "(length * 60 / @posted_speed + 0.85 * ((volau + volad) / ( 800*lanes))^5)", sel_link="vdf=14 and lanes=1,99")
+        util.emme_link_calc(scenario, "ul1", "(length * 60 / @posted_speed + 0.85 * ((volau + volad) / (1000*lanes))^5)", sel_link="vdf=15 and lanes=1,99")
+        util.emme_link_calc(scenario, "ul1", "(length * 60 / @posted_speed + 0.85 * ((volau + volad) / (1200*lanes))^5)", sel_link="vdf=16 and lanes=1,99")
+        util.emme_link_calc(scenario, "ul1", "(length * 60 / @posted_speed + 0.85 * ((volau + volad) / (1400*lanes))^5)", sel_link="vdf=17 and lanes=1,99")
+        #ul2 = social cost as travel time
+        util.emme_link_calc(scenario, "ul2", "timau-ul1")
+
+    def calc_transit_us2(self, scenario):
+        util = _m.Modeller().tool("translink.util")
+        eb = scenario.emmebank
+        #initialize ul1 to timau
+        util.emme_segment_calc(scenario, "us2", "60*length/speed")
+        #us2=timau where timau exists
+        util.emme_segment_calc(scenario, "us2", "(0.25 + length * 60 / @posted_speed + .85 * ((volau + volad) / ( 400 * lanes)) ^ 4)", sel_link="vdf=26 and mode=v")
+        util.emme_segment_calc(scenario, "us2", "(0.25 + length * 60 / @posted_speed + .85 * ((volau + volad) / ( 600 * lanes)) ^ 4)", sel_link="vdf=36 and mode=v")
+        util.emme_segment_calc(scenario, "us2", "(0.25 + length * 60 / @posted_speed + .85 * ((volau + volad) / ( 800 * lanes)) ^ 4)", sel_link="vdf=46 and mode=v")
+        util.emme_segment_calc(scenario, "us2", "(0.25 + length * 60 / @posted_speed + .85 * ((volau + volad) / (1000 * lanes)) ^ 4)", sel_link="vdf=56 and mode=v")
+        util.emme_segment_calc(scenario, "us2", "(0.25 + length * 60 / @posted_speed + .85 * ((volau + volad) / (1200 * lanes)) ^ 4)", sel_link="vdf=66 and mode=v")
+        util.emme_segment_calc(scenario, "us2", "(0.25 + length * 60 / @posted_speed + .85 * ((volau + volad) / (1400 * lanes)) ^ 4)", sel_link="vdf=76 and mode=v")
+        util.emme_segment_calc(scenario, "us2", "(length * 60 / @posted_speed * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5))", sel_link="vdf=86 and mode=v")
+        util.emme_segment_calc(scenario, "us2", "(length * 60 / (@posted_speed * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5.25))", sel_link="vdf=89 and mode=v")
+        util.emme_segment_calc(scenario, "us2", "(length * 60 / @posted_speed + 0.85 * ((volau + volad) / ( 600*lanes))^5)", sel_link="vdf=13 and mode=v")
+        util.emme_segment_calc(scenario, "us2", "(length * 60 / @posted_speed + 0.85 * ((volau + volad) / ( 800*lanes))^5)", sel_link="vdf=14 and mode=v")
+        util.emme_segment_calc(scenario, "us2", "(length * 60 / @posted_speed + 0.85 * ((volau + volad) / (1000*lanes))^5)", sel_link="vdf=15 and mode=v")
+        util.emme_segment_calc(scenario, "us2", "(length * 60 / @posted_speed + 0.85 * ((volau + volad) / (1200*lanes))^5)", sel_link="vdf=16 and mode=v")
+        util.emme_segment_calc(scenario, "us2", "(length * 60 / @posted_speed + 0.85 * ((volau + volad) / (1400*lanes))^5)", sel_link="vdf=17 and mode=v")
