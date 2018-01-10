@@ -866,7 +866,16 @@ class DataExport(_m.Tool()):
                   'lanes' : [],
                   'func_class' : [],
                   'vdf' : [],
-                  'posted_speed' : []}
+                  'posted_speed' : [],
+                  'sov1' : [],
+                  'sov2' : [],
+                  'sov3' : [], 
+                  'sov4' : [],
+                  'hov1' : [],
+                  'hov2' : [],
+                  'hov3' : [], 
+                  'hov4' : []
+                  }
 
         for link in network.links():
             dfDict['i'].append(int(link.i_node))
@@ -888,7 +897,16 @@ class DataExport(_m.Tool()):
             dfDict['func_class'].append(link.type)
             dfDict['vdf'].append(link.volume_delay_func)
             dfDict['posted_speed'].append(link['@posted_speed'])
+            dfDict['sov1'].append(link['@sov1'])
+            dfDict['sov2'].append(link['@sov2'])
+            dfDict['sov3'].append(link['@sov3'])
+            dfDict['sov4'].append(link['@sov4'])
+            dfDict['hov1'].append(link['@hov1'])
+            dfDict['hov2'].append(link['@hov2'])
+            dfDict['hov3'].append(link['@hov3'])
+            dfDict['hov4'].append(link['@hov4'])
+
 
         df = pd.DataFrame(dfDict)
-        df = df[['i','j','Screenline_ID','Screenline_Station','SOV','HOV','Light_Trucks','Heavy_Trucks','Transit_Vehicles','Transit_Volume','Transit_Capacity','Length','Auto_Time','tolls','speed','lanes','func_class','vdf','posted_speed']]
+        df = df[['i','j','Screenline_ID','Screenline_Station','SOV','HOV','Light_Trucks','Heavy_Trucks','Transit_Vehicles','Transit_Volume','Transit_Capacity','Length','Auto_Time','tolls','speed','lanes','func_class','vdf','posted_speed','sov1','sov2','sov3','sov4','hov1','hov2','hov3','hov4']]
         return df
