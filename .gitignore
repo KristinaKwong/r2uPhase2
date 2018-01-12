@@ -4,3 +4,6 @@
 .idea/
 *.spyderworkspace
 *.emx
+db_*/
+mp_*.txt
+RTM_*.emp
