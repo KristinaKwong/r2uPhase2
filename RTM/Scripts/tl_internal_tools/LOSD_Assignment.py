@@ -1,7 +1,7 @@
 ##---------------------------------------------------------------------
 ##--TransLink Phase 3.0 Regional Transportation Model
 ##--
-##
+##--Path: translink.internal_tools.losDass
 ##--Purpose: Run an LOS D Assignment for AM, MD and PM
 ##---------------------------------------------------------------------
 import inro.modeller as _m
@@ -30,7 +30,7 @@ class AutoAssignment(_m.Tool()):
         pb.title = "Auto Assignment"
         pb.description = "Performs an LOS D Assignment " +\
                          "with 4 classes, SOV, HOV , Light Trucks " +\
-                         "and Heavy Trucks. Make sure to create separate AM, MD and PM Scenarios"
+                         "and Heavy Trucks. Creates new copies of input scenarios"
         pb.branding_text = "TransLink"
 
         if self.tool_run_msg:
@@ -66,6 +66,9 @@ class AutoAssignment(_m.Tool()):
     def __call__(self, eb, am_scenario, md_scenario, pm_scenario):
 
         util = _m.Modeller().tool("translink.util")
+
+        # make sure we don't overwrite existing scenarios
+        am_scenario, md_scenario, pm_scenario = self.losdscenarios(eb, am_scenario, md_scenario, pm_scenario)
 
         # Initialize LOSD Skims by time period
         util.initmat(eb, "mf9650", "AmSovTimeLosDcnst", "SOV Minutes LOSD Constant AM", 0)
@@ -309,3 +312,40 @@ class AutoAssignment(_m.Tool()):
         matrices.append(["mf9641", "HgvPenyLosDcnst",  "HGV TrkPeny LOSD Constant", 0])
 
         return matrices
+
+
+    def losdscenarios(self, eb, am_scenario, md_scenario, pm_scenario):
+        copy_scenario = _m.Modeller().tool("inro.emme.data.scenario.copy_scenario")
+        # create_scenarios = _m.Modeller().tool("translink.RTM3.stage0.create_scenarios")
+ 
+         # Copy to new AM Scenarios
+        am_scenid = am_scenario.number + 637
+        copy_scenario(from_scenario=am_scenario,
+                    scenario_id=am_scenid,
+                    scenario_title="{} Los D Assignment".format(am_scenario.title),
+                    overwrite=True,
+                    copy_strategies=False)
+        amscen_out = eb.scenario(am_scenid)
+
+        
+        # Copy to new MD Scenarios
+        md_scenid = md_scenario.number + 637
+        copy_scenario(from_scenario=md_scenario,
+                    scenario_id=md_scenid,
+                    scenario_title="{} Los D Assignment".format(md_scenario.title),
+                    overwrite=True,
+                    copy_strategies=False)
+        mdscen_out = eb.scenario(md_scenid)
+
+
+        # Copy to new pm Scenarios
+        pm_scenid = pm_scenario.number + 637
+        copy_scenario(from_scenario=pm_scenario,
+                    scenario_id=pm_scenid,
+                    scenario_title="{} Los D Assignment".format(pm_scenario.title),
+                    overwrite=True,
+                    copy_strategies=False)
+        pmscen_out = eb.scenario(pm_scenid)
+
+        return amscen_out, mdscen_out, pmscen_out
+
