@@ -7,3 +7,5 @@
 db_*/
 mp_*.txt
 RTM_*.emp
+RTM_*.emp.prj
+run_many_*.ipynb
