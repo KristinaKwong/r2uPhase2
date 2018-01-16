@@ -127,6 +127,8 @@ class AutoAssignment(_m.Tool()):
             cur_cycles = int(scenario.emmebank.matrix("msCycleNum").data)
             if max_cycles == cur_cycles:
                 self.add_toll_path_analysis(spec)
+                self.add_distance_path_analysis(spec)
+
 
         # run assignment
         assign_traffic(spec, scenario=scenario)
@@ -160,14 +162,11 @@ class AutoAssignment(_m.Tool()):
 
         gc = util.get_matrix_numpy(eb, gc_mat)
         opcst = util.get_matrix_numpy(eb, opcst_mat)
-        toll = util.get_matrix_numpy(eb, toll_mat)
 
         time = gc - (opcst * vot)
         opcst = opcst * occupancy
-        dist = (opcst - toll) / voc
 
         util.set_matrix_numpy(eb, time_mat, time)
-        util.set_matrix_numpy(eb, dist_mat, dist)
         util.set_matrix_numpy(eb, opcst_mat, opcst)
 
     @_m.logbook_trace("Execute Intrazonal Calculation")
@@ -373,6 +372,20 @@ class AutoAssignment(_m.Tool()):
         spec["classes"][ 6]["path_analyses"].append({"results": {"od_values": "mfHOVTollVOT3"}, "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
         spec["classes"][ 7]["path_analyses"].append({"results": {"od_values": "mfLGVToll"},     "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
         spec["classes"][ 8]["path_analyses"].append({"results": {"od_values": "mfHGVToll"},     "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+
+    def add_distance_path_analysis(self, spec):
+        path_od = { "considered_paths": "ALL",
+                    "multiply_path_proportions_by": { "analyzed_demand": False, "path_value": True }
+                  }
+        spec["classes"][ 0]["path_analyses"].append({"results": {"od_values": "mfSOVDistVOT1"}, "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 1]["path_analyses"].append({"results": {"od_values": "mfSOVDistVOT2"}, "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 2]["path_analyses"].append({"results": {"od_values": "mfSOVDistVOT3"}, "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 3]["path_analyses"].append({"results": {"od_values": "mfSOVDistVOT4"}, "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 4]["path_analyses"].append({"results": {"od_values": "mfHOVDistVOT1"}, "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 5]["path_analyses"].append({"results": {"od_values": "mfHOVDistVOT2"}, "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 6]["path_analyses"].append({"results": {"od_values": "mfHOVDistVOT3"}, "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 7]["path_analyses"].append({"results": {"od_values": "mfLGVDist"},     "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 8]["path_analyses"].append({"results": {"od_values": "mfHGVDist"},     "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
 
     @_m.logbook_trace("Calculate Link and Turn Aggregate Volumes")
     def calc_network_volumes(self, scenario):
