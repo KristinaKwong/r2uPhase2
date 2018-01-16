@@ -64,6 +64,8 @@ class AutoAssignment(_m.Tool()):
 
     @_m.logbook_trace("Auto Traffic Assignment")
     def __call__(self, am_scenario, md_scenario, pm_scenario):
+        self.init_skim_matrices(am_scenario.emmebank)
+
         am_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Am", "mfSOV_drvtrp_VOT_2_Am", "mfSOV_drvtrp_VOT_3_Am", "mfSOV_drvtrp_VOT_4_Am"],
                       "hov":   ["mfHOV_drvtrp_VOT_1_Am", "mfHOV_drvtrp_VOT_2_Am", "mfHOV_drvtrp_VOT_3_Am"],
                       "truck": ["mflgvPceAm", "mfhgvPceAm"]}
@@ -413,6 +415,111 @@ class AutoAssignment(_m.Tool()):
         util.emme_link_calc(scenario, "@hovoc", "(length * %s + @tolls * %s) / %s" % (auto_voc, hov_tollfac, hov_occupancy))
         util.emme_link_calc(scenario, "@lgvoc", "length * %s + %s * @tolls" % (lgv_voc, lgv_tollfac))
         util.emme_link_calc(scenario, "@hgvoc", "length * %s + %s * @tolls + @tkpen" % (hgv_voc, hgv_tollfac))
+
+    def init_skim_matrices(self, eb):
+        util = _m.Modeller().tool("translink.util")
+
+        # AM Time Skims
+        util.initmat(eb, "mf8100", "SkimAmSovTimeVOT1", "Skim AM SOV VOT1 Time", 0)
+        util.initmat(eb, "mf8101", "SkimAmSovTimeVOT2", "Skim AM SOV VOT2 Time", 0)
+        util.initmat(eb, "mf8102", "SkimAmSovTimeVOT3", "Skim AM SOV VOT3 Time", 0)
+        util.initmat(eb, "mf8103", "SkimAmSovTimeVOT4", "Skim AM SOV VOT4 Time", 0)
+        util.initmat(eb, "mf8104", "SkimAmHovTimeVOT1", "Skim AM HOV VOT1 Time", 0)
+        util.initmat(eb, "mf8105", "SkimAmHovTimeVOT2", "Skim AM HOV VOT2 Time", 0)
+        util.initmat(eb, "mf8106", "SkimAmHovTimeVOT3", "Skim AM HOV VOT3 Time", 0)
+        util.initmat(eb, "mf8107", "SkimAmHovTimeVOT4", "Skim AM HOV VOT4 Time", 0)
+        util.initmat(eb, "mf8108", "SkimAmLgvTime",     "Skim AM LGV Time",      0)
+        util.initmat(eb, "mf8109", "SkimAmHgvTime",     "Skim AM HGV Time",      0)
+        # AM Distance Skims
+        util.initmat(eb, "mf8110", "SkimAmSovDistVOT1", "Skim AM SOV VOT1 Dist", 0)
+        util.initmat(eb, "mf8111", "SkimAmSovDistVOT2", "Skim AM SOV VOT2 Dist", 0)
+        util.initmat(eb, "mf8112", "SkimAmSovDistVOT3", "Skim AM SOV VOT3 Dist", 0)
+        util.initmat(eb, "mf8113", "SkimAmSovDistVOT4", "Skim AM SOV VOT4 Dist", 0)
+        util.initmat(eb, "mf8114", "SkimAmHovDistVOT1", "Skim AM HOV VOT1 Dist", 0)
+        util.initmat(eb, "mf8115", "SkimAmHovDistVOT2", "Skim AM HOV VOT2 Dist", 0)
+        util.initmat(eb, "mf8116", "SkimAmHovDistVOT3", "Skim AM HOV VOT3 Dist", 0)
+        util.initmat(eb, "mf8117", "SkimAmHovDistVOT4", "Skim AM HOV VOT4 Dist", 0)
+        util.initmat(eb, "mf8118", "SkimAmLgvDist",     "Skim AM LGV Dist",      0)
+        util.initmat(eb, "mf8119", "SkimAmHgvDist",     "Skim AM HGV Dist",      0)
+        # AM Toll Skims
+        util.initmat(eb, "mf8120", "SkimAmSovTollVOT1", "Skim AM SOV VOT1 Dist", 0)
+        util.initmat(eb, "mf8121", "SkimAmSovTollVOT2", "Skim AM SOV VOT2 Dist", 0)
+        util.initmat(eb, "mf8122", "SkimAmSovTollVOT3", "Skim AM SOV VOT3 Dist", 0)
+        util.initmat(eb, "mf8123", "SkimAmSovTollVOT4", "Skim AM SOV VOT4 Dist", 0)
+        util.initmat(eb, "mf8124", "SkimAmHovTollVOT1", "Skim AM HOV VOT1 Dist", 0)
+        util.initmat(eb, "mf8125", "SkimAmHovTollVOT2", "Skim AM HOV VOT2 Dist", 0)
+        util.initmat(eb, "mf8126", "SkimAmHovTollVOT3", "Skim AM HOV VOT3 Dist", 0)
+        util.initmat(eb, "mf8127", "SkimAmHovTollVOT4", "Skim AM HOV VOT4 Dist", 0)
+        util.initmat(eb, "mf8128", "SkimAmLgvToll",     "Skim AM LGV Dist",      0)
+        util.initmat(eb, "mf8129", "SkimAmHgvToll",     "Skim AM HGV Dist",      0)
+
+        # MD Time Skims
+        util.initmat(eb, "mf8130", "SkimMdSovTimeVOT1", "Skim MD SOV VOT1 Time", 0)
+        util.initmat(eb, "mf8131", "SkimMdSovTimeVOT2", "Skim MD SOV VOT2 Time", 0)
+        util.initmat(eb, "mf8132", "SkimMdSovTimeVOT3", "Skim MD SOV VOT3 Time", 0)
+        util.initmat(eb, "mf8133", "SkimMdSovTimeVOT4", "Skim MD SOV VOT4 Time", 0)
+        util.initmat(eb, "mf8134", "SkimMdHovTimeVOT1", "Skim MD HOV VOT1 Time", 0)
+        util.initmat(eb, "mf8135", "SkimMdHovTimeVOT2", "Skim MD HOV VOT2 Time", 0)
+        util.initmat(eb, "mf8136", "SkimMdHovTimeVOT3", "Skim MD HOV VOT3 Time", 0)
+        util.initmat(eb, "mf8137", "SkimMdHovTimeVOT4", "Skim MD HOV VOT4 Time", 0)
+        util.initmat(eb, "mf8138", "SkimMdLgvTime",     "Skim MD LGV Time",      0)
+        util.initmat(eb, "mf8139", "SkimMdHgvTime",     "Skim MD HGV Time",      0)
+        # MD Distance Skims
+        util.initmat(eb, "mf8140", "SkimMdSovDistVOT1", "Skim MD SOV VOT1 Dist", 0)
+        util.initmat(eb, "mf8141", "SkimMdSovDistVOT2", "Skim MD SOV VOT2 Dist", 0)
+        util.initmat(eb, "mf8142", "SkimMdSovDistVOT3", "Skim MD SOV VOT3 Dist", 0)
+        util.initmat(eb, "mf8143", "SkimMdSovDistVOT4", "Skim MD SOV VOT4 Dist", 0)
+        util.initmat(eb, "mf8144", "SkimMdHovDistVOT1", "Skim MD HOV VOT1 Dist", 0)
+        util.initmat(eb, "mf8145", "SkimMdHovDistVOT2", "Skim MD HOV VOT2 Dist", 0)
+        util.initmat(eb, "mf8146", "SkimMdHovDistVOT3", "Skim MD HOV VOT3 Dist", 0)
+        util.initmat(eb, "mf8147", "SkimMdHovDistVOT4", "Skim MD HOV VOT4 Dist", 0)
+        util.initmat(eb, "mf8148", "SkimMdLgvDist",     "Skim MD LGV Dist",      0)
+        util.initmat(eb, "mf8149", "SkimMdHgvDist",     "Skim MD HGV Dist",      0)
+        # MD Toll Skims
+        util.initmat(eb, "mf8150", "SkimMdSovTollVOT1", "Skim MD SOV VOT1 Dist", 0)
+        util.initmat(eb, "mf8151", "SkimMdSovTollVOT2", "Skim MD SOV VOT2 Dist", 0)
+        util.initmat(eb, "mf8152", "SkimMdSovTollVOT3", "Skim MD SOV VOT3 Dist", 0)
+        util.initmat(eb, "mf8153", "SkimMdSovTollVOT4", "Skim MD SOV VOT4 Dist", 0)
+        util.initmat(eb, "mf8154", "SkimMdHovTollVOT1", "Skim MD HOV VOT1 Dist", 0)
+        util.initmat(eb, "mf8155", "SkimMdHovTollVOT2", "Skim MD HOV VOT2 Dist", 0)
+        util.initmat(eb, "mf8156", "SkimMdHovTollVOT3", "Skim MD HOV VOT3 Dist", 0)
+        util.initmat(eb, "mf8157", "SkimMdHovTollVOT4", "Skim MD HOV VOT4 Dist", 0)
+        util.initmat(eb, "mf8158", "SkimMdLgvToll",     "Skim MD LGV Dist",      0)
+        util.initmat(eb, "mf8159", "SkimMdHgvToll",     "Skim MD HGV Dist",      0)
+
+        # PM Time Skims
+        util.initmat(eb, "mf8160", "SkimPmSovTimeVOT1", "Skim PM SOV VOT1 Time", 0)
+        util.initmat(eb, "mf8161", "SkimPmSovTimeVOT2", "Skim PM SOV VOT2 Time", 0)
+        util.initmat(eb, "mf8162", "SkimPmSovTimeVOT3", "Skim PM SOV VOT3 Time", 0)
+        util.initmat(eb, "mf8163", "SkimPmSovTimeVOT4", "Skim PM SOV VOT4 Time", 0)
+        util.initmat(eb, "mf8164", "SkimPmHovTimeVOT1", "Skim PM HOV VOT1 Time", 0)
+        util.initmat(eb, "mf8165", "SkimPmHovTimeVOT2", "Skim PM HOV VOT2 Time", 0)
+        util.initmat(eb, "mf8166", "SkimPmHovTimeVOT3", "Skim PM HOV VOT3 Time", 0)
+        util.initmat(eb, "mf8167", "SkimPmHovTimeVOT4", "Skim PM HOV VOT4 Time", 0)
+        util.initmat(eb, "mf8168", "SkimPmLgvTime",     "Skim PM LGV Time",      0)
+        util.initmat(eb, "mf8169", "SkimPmHgvTime",     "Skim PM HGV Time",      0)
+        # PM Distance Skims
+        util.initmat(eb, "mf8170", "SkimPmSovDistVOT1", "Skim PM SOV VOT1 Dist", 0)
+        util.initmat(eb, "mf8171", "SkimPmSovDistVOT2", "Skim PM SOV VOT2 Dist", 0)
+        util.initmat(eb, "mf8172", "SkimPmSovDistVOT3", "Skim PM SOV VOT3 Dist", 0)
+        util.initmat(eb, "mf8173", "SkimPmSovDistVOT4", "Skim PM SOV VOT4 Dist", 0)
+        util.initmat(eb, "mf8174", "SkimPmHovDistVOT1", "Skim PM HOV VOT1 Dist", 0)
+        util.initmat(eb, "mf8175", "SkimPmHovDistVOT2", "Skim PM HOV VOT2 Dist", 0)
+        util.initmat(eb, "mf8176", "SkimPmHovDistVOT3", "Skim PM HOV VOT3 Dist", 0)
+        util.initmat(eb, "mf8177", "SkimPmHovDistVOT4", "Skim PM HOV VOT4 Dist", 0)
+        util.initmat(eb, "mf8178", "SkimPmLgvDist",     "Skim PM LGV Dist",      0)
+        util.initmat(eb, "mf8179", "SkimPmHgvDist",     "Skim PM HGV Dist",      0)
+        # PM Toll Skims
+        util.initmat(eb, "mf8180", "SkimPmSovTollVOT1", "Skim PM SOV VOT1 Dist", 0)
+        util.initmat(eb, "mf8181", "SkimPmSovTollVOT2", "Skim PM SOV VOT2 Dist", 0)
+        util.initmat(eb, "mf8182", "SkimPmSovTollVOT3", "Skim PM SOV VOT3 Dist", 0)
+        util.initmat(eb, "mf8183", "SkimPmSovTollVOT4", "Skim PM SOV VOT4 Dist", 0)
+        util.initmat(eb, "mf8184", "SkimPmHovTollVOT1", "Skim PM HOV VOT1 Dist", 0)
+        util.initmat(eb, "mf8185", "SkimPmHovTollVOT2", "Skim PM HOV VOT2 Dist", 0)
+        util.initmat(eb, "mf8186", "SkimPmHovTollVOT3", "Skim PM HOV VOT3 Dist", 0)
+        util.initmat(eb, "mf8187", "SkimPmHovTollVOT4", "Skim PM HOV VOT4 Dist", 0)
+        util.initmat(eb, "mf8188", "SkimPmLgvToll",     "Skim PM LGV Dist",      0)
+        util.initmat(eb, "mf8189", "SkimPmHgvToll",     "Skim PM HGV Dist",      0)
 
     def init_matrices(self, eb):
         util = _m.Modeller().tool("translink.util")
