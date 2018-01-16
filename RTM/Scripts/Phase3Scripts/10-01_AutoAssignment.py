@@ -280,7 +280,6 @@ class AutoAssignment(_m.Tool()):
             specs.append(util.matrix_spec(skim_list["hovVot1"][1], "0.5*(mfHOVTimeVOT1 + %s)" % skim_list["hovVot1"][1]))
             specs.append(util.matrix_spec(skim_list["hovVot2"][1], "0.5*(mfHOVTimeVOT2 + %s)" % skim_list["hovVot2"][1]))
             specs.append(util.matrix_spec(skim_list["hovVot3"][1], "0.5*(mfHOVTimeVOT3 + %s)" % skim_list["hovVot3"][1]))
-
             specs.append(util.matrix_spec(skim_list["lgv"][1], "0.5*(mfLGVTime + %s)" % skim_list["lgv"][1]))
             specs.append(util.matrix_spec(skim_list["hgv"][1], "0.5*(mfHGVTime + %s)" % skim_list["hgv"][1]))
 
