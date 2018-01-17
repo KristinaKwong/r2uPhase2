@@ -64,48 +64,50 @@ class AutoAssignment(_m.Tool()):
 
     @_m.logbook_trace("Auto Traffic Assignment")
     def __call__(self, am_scenario, md_scenario, pm_scenario):
+        self.init_skim_matrices(am_scenario.emmebank)
+
         am_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Am", "mfSOV_drvtrp_VOT_2_Am", "mfSOV_drvtrp_VOT_3_Am", "mfSOV_drvtrp_VOT_4_Am"],
                       "hov":   ["mfHOV_drvtrp_VOT_1_Am", "mfHOV_drvtrp_VOT_2_Am", "mfHOV_drvtrp_VOT_3_Am"],
                       "truck": ["mflgvPceAm", "mfhgvPceAm"]}
         self.assign_scen(am_scenario, am_demands)
-        am_skims = {"sovVot1":  ["mfAmSovOpCstVOT1", "mfAmSovTimeVOT1", "mfAmSovTollVOT1"],
-                    "sovVot2":  ["mfAmSovOpCstVOT2", "mfAmSovTimeVOT2", "mfAmSovTollVOT2"],
-                    "sovVot3":  ["mfAmSovOpCstVOT3", "mfAmSovTimeVOT3", "mfAmSovTollVOT3"],
-                    "sovVot4":  ["mfAmSovOpCstVOT4", "mfAmSovTimeVOT4", "mfAmSovTollVOT4"],
-                    "hovVot1":  ["mfAmHovOpCstVOT1", "mfAmHovTimeVOT1", "mfAmHovTollVOT1"],
-                    "hovVot2":  ["mfAmHovOpCstVOT2", "mfAmHovTimeVOT2", "mfAmHovTollVOT2"],
-                    "hovVot3":  ["mfAmHovOpCstVOT3", "mfAmHovTimeVOT3", "mfAmHovTollVOT3"],
-                    "lgv":  ["mfAmLgvOpCst", "mfAmLgvTime", "mfAmLgvToll"],
-                    "hgv":  ["mfAmHgvOpCst", "mfAmHgvTime", "mfAmHgvToll"]}
+        am_skims = {"sovVot1":  ["mfAmSovOpCstVOT1", "mfAmSovTimeVOT1", "mfSkimAmSovTimeVOT1", "mfSkimAmSovDistVOT1", "mfSkimAmSovTollVOT1"],
+                    "sovVot2":  ["mfAmSovOpCstVOT2", "mfAmSovTimeVOT2", "mfSkimAmSovTimeVOT2", "mfSkimAmSovDistVOT2", "mfSkimAmSovTollVOT2"],
+                    "sovVot3":  ["mfAmSovOpCstVOT3", "mfAmSovTimeVOT3", "mfSkimAmSovTimeVOT3", "mfSkimAmSovDistVOT3", "mfSkimAmSovTollVOT3"],
+                    "sovVot4":  ["mfAmSovOpCstVOT4", "mfAmSovTimeVOT4", "mfSkimAmSovTimeVOT4", "mfSkimAmSovDistVOT4", "mfSkimAmSovTollVOT4"],
+                    "hovVot1":  ["mfAmHovOpCstVOT1", "mfAmHovTimeVOT1", "mfSkimAmHovTimeVOT1", "mfSkimAmHovDistVOT1", "mfSkimAmHovTollVOT1"],
+                    "hovVot2":  ["mfAmHovOpCstVOT2", "mfAmHovTimeVOT2", "mfSkimAmHovTimeVOT2", "mfSkimAmHovDistVOT2", "mfSkimAmHovTollVOT2"],
+                    "hovVot3":  ["mfAmHovOpCstVOT3", "mfAmHovTimeVOT3", "mfSkimAmHovTimeVOT3", "mfSkimAmHovDistVOT3", "mfSkimAmHovTollVOT3"],
+                    "lgv":  ["mfAmLgvOpCst", "mfAmLgvTime", "mfSkimAmLgvTime", "mfSkimAmLgvDist", "mfSkimAmLgvToll"],
+                    "hgv":  ["mfAmHgvOpCst", "mfAmHgvTime", "mfSkimAmHgvTime", "mfSkimAmHgvDist", "mfSkimAmHgvToll"]}
         self.store_skims(am_scenario, am_skims)
 
         md_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Md", "mfSOV_drvtrp_VOT_2_Md", "mfSOV_drvtrp_VOT_3_Md", "mfSOV_drvtrp_VOT_4_Md"],
                       "hov":   ["mfHOV_drvtrp_VOT_1_Md", "mfHOV_drvtrp_VOT_2_Md", "mfHOV_drvtrp_VOT_3_Md"],
                       "truck": ["mflgvPceMd", "mfhgvPceMd"]}
         self.assign_scen(md_scenario, md_demands)
-        md_skims = {"sovVot1":  ["mfMdSovOpCstVOT1", "mfMdSovTimeVOT1", "mfMdSovTollVOT1"],
-                    "sovVot2":  ["mfMdSovOpCstVOT2", "mfMdSovTimeVOT2", "mfMdSovTollVOT2"],
-                    "sovVot3":  ["mfMdSovOpCstVOT3", "mfMdSovTimeVOT3", "mfMdSovTollVOT3"],
-                    "sovVot4":  ["mfMdSovOpCstVOT4", "mfMdSovTimeVOT4", "mfMdSovTollVOT4"],
-                    "hovVot1":  ["mfMdHovOpCstVOT1", "mfMdHovTimeVOT1", "mfMdHovTollVOT1"],
-                    "hovVot2":  ["mfMdHovOpCstVOT2", "mfMdHovTimeVOT2", "mfMdHovTollVOT2"],
-                    "hovVot3":  ["mfMdHovOpCstVOT3", "mfMdHovTimeVOT3", "mfMdHovTollVOT3"],
-                    "lgv":  ["mfMdLgvOpCst", "mfMdLgvTime", "mfMdLgvToll"],
-                    "hgv":  ["mfMdHgvOpCst", "mfMdHgvTime", "mfMdHgvToll"]}
+        md_skims = {"sovVot1":  ["mfMdSovOpCstVOT1", "mfMdSovTimeVOT1", "mfSkimMdSovTimeVOT1", "mfSkimMdSovDistVOT1", "mfSkimMdSovTollVOT1"],
+                    "sovVot2":  ["mfMdSovOpCstVOT2", "mfMdSovTimeVOT2", "mfSkimMdSovTimeVOT2", "mfSkimMdSovDistVOT2", "mfSkimMdSovTollVOT2"],
+                    "sovVot3":  ["mfMdSovOpCstVOT3", "mfMdSovTimeVOT3", "mfSkimMdSovTimeVOT3", "mfSkimMdSovDistVOT3", "mfSkimMdSovTollVOT3"],
+                    "sovVot4":  ["mfMdSovOpCstVOT4", "mfMdSovTimeVOT4", "mfSkimMdSovTimeVOT4", "mfSkimMdSovDistVOT4", "mfSkimMdSovTollVOT4"],
+                    "hovVot1":  ["mfMdHovOpCstVOT1", "mfMdHovTimeVOT1", "mfSkimMdHovTimeVOT1", "mfSkimMdHovDistVOT1", "mfSkimMdHovTollVOT1"],
+                    "hovVot2":  ["mfMdHovOpCstVOT2", "mfMdHovTimeVOT2", "mfSkimMdHovTimeVOT2", "mfSkimMdHovDistVOT2", "mfSkimMdHovTollVOT2"],
+                    "hovVot3":  ["mfMdHovOpCstVOT3", "mfMdHovTimeVOT3", "mfSkimMdHovTimeVOT3", "mfSkimMdHovDistVOT3", "mfSkimMdHovTollVOT3"],
+                    "lgv":  ["mfMdLgvOpCst", "mfMdLgvTime", "mfSkimMdLgvTime", "mfSkimMdLgvDist", "mfSkimMdLgvToll"],
+                    "hgv":  ["mfMdHgvOpCst", "mfMdHgvTime", "mfSkimMdHgvTime", "mfSkimMdHgvDist", "mfSkimMdHgvToll"]}
         self.store_skims(md_scenario, md_skims)
         pm_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Pm", "mfSOV_drvtrp_VOT_2_Pm", "mfSOV_drvtrp_VOT_3_Pm", "mfSOV_drvtrp_VOT_4_Pm"],
                       "hov":   ["mfHOV_drvtrp_VOT_1_Pm", "mfHOV_drvtrp_VOT_2_Pm", "mfHOV_drvtrp_VOT_3_Pm"],
                       "truck": ["mflgvPcePm", "mfhgvPcePm"]}
         self.assign_scen(pm_scenario, pm_demands)
-        pm_skims = {"sovVot1":  ["mfPmSovOpCstVOT1", "mfPmSovTimeVOT1", "mfPmSovTollVOT1"],
-                    "sovVot2":  ["mfPmSovOpCstVOT2", "mfPmSovTimeVOT2", "mfPmSovTollVOT2"],
-                    "sovVot3":  ["mfPmSovOpCstVOT3", "mfPmSovTimeVOT3", "mfPmSovTollVOT3"],
-                    "sovVot4":  ["mfPmSovOpCstVOT4", "mfPmSovTimeVOT4", "mfPmSovTollVOT4"],
-                    "hovVot1":  ["mfPmHovOpCstVOT1", "mfPmHovTimeVOT1", "mfPmHovTollVOT1"],
-                    "hovVot2":  ["mfPmHovOpCstVOT2", "mfPmHovTimeVOT2", "mfPmHovTollVOT2"],
-                    "hovVot3":  ["mfPmHovOpCstVOT3", "mfPmHovTimeVOT3", "mfPmHovTollVOT3"],
-                    "lgv":  ["mfPmLgvOpCst", "mfPmLgvTime", "mfPmLgvToll"],
-                    "hgv":  ["mfPmHgvOpCst", "mfPmHgvTime", "mfPmHgvToll"]}
+        pm_skims = {"sovVot1":  ["mfPmSovOpCstVOT1", "mfPmSovTimeVOT1", "mfSkimPmSovTimeVOT1", "mfSkimPmSovDistVOT1", "mfSkimPmSovTollVOT1"],
+                    "sovVot2":  ["mfPmSovOpCstVOT2", "mfPmSovTimeVOT2", "mfSkimPmSovTimeVOT2", "mfSkimPmSovDistVOT2", "mfSkimPmSovTollVOT2"],
+                    "sovVot3":  ["mfPmSovOpCstVOT3", "mfPmSovTimeVOT3", "mfSkimPmSovTimeVOT3", "mfSkimPmSovDistVOT3", "mfSkimPmSovTollVOT3"],
+                    "sovVot4":  ["mfPmSovOpCstVOT4", "mfPmSovTimeVOT4", "mfSkimPmSovTimeVOT4", "mfSkimPmSovDistVOT4", "mfSkimPmSovTollVOT4"],
+                    "hovVot1":  ["mfPmHovOpCstVOT1", "mfPmHovTimeVOT1", "mfSkimPmHovTimeVOT1", "mfSkimPmHovDistVOT1", "mfSkimPmHovTollVOT1"],
+                    "hovVot2":  ["mfPmHovOpCstVOT2", "mfPmHovTimeVOT2", "mfSkimPmHovTimeVOT2", "mfSkimPmHovDistVOT2", "mfSkimPmHovTollVOT2"],
+                    "hovVot3":  ["mfPmHovOpCstVOT3", "mfPmHovTimeVOT3", "mfSkimPmHovTimeVOT3", "mfSkimPmHovDistVOT3", "mfSkimPmHovTollVOT3"],
+                    "lgv":  ["mfPmLgvOpCst", "mfPmLgvTime", "mfSkimPmLgvTime", "mfSkimPmLgvDist", "mfSkimPmLgvToll"],
+                    "hgv":  ["mfPmHgvOpCst", "mfPmHgvTime", "mfSkimPmHgvTime", "mfSkimPmHgvDist", "mfSkimPmHgvToll"]}
         self.store_skims(pm_scenario, pm_skims)
 
     def assign_scen(self, scenario, demands):
@@ -127,6 +129,8 @@ class AutoAssignment(_m.Tool()):
             cur_cycles = int(scenario.emmebank.matrix("msCycleNum").data)
             if max_cycles == cur_cycles:
                 self.add_toll_path_analysis(spec)
+                self.add_distance_path_analysis(spec)
+
 
         # run assignment
         assign_traffic(spec, scenario=scenario)
@@ -160,14 +164,11 @@ class AutoAssignment(_m.Tool()):
 
         gc = util.get_matrix_numpy(eb, gc_mat)
         opcst = util.get_matrix_numpy(eb, opcst_mat)
-        toll = util.get_matrix_numpy(eb, toll_mat)
 
         time = gc - (opcst * vot)
         opcst = opcst * occupancy
-        dist = (opcst - toll) / voc
 
         util.set_matrix_numpy(eb, time_mat, time)
-        util.set_matrix_numpy(eb, dist_mat, dist)
         util.set_matrix_numpy(eb, opcst_mat, opcst)
 
     @_m.logbook_trace("Execute Intrazonal Calculation")
@@ -260,16 +261,6 @@ class AutoAssignment(_m.Tool()):
             specs.append(util.matrix_spec(skim_list["hovVot3"][1], "mfHOVTimeVOT3"))
             specs.append(util.matrix_spec(skim_list["lgv"][1], "mfLGVTime"))
             specs.append(util.matrix_spec(skim_list["hgv"][1], "mfHGVTime"))
-            # Set GC Toll Matrices
-            specs.append(util.matrix_spec(skim_list["sovVot1"][2], "mfSOVTollVOT1"))
-            specs.append(util.matrix_spec(skim_list["sovVot2"][2], "mfSOVTollVOT2"))
-            specs.append(util.matrix_spec(skim_list["sovVot3"][2], "mfSOVTollVOT3"))
-            specs.append(util.matrix_spec(skim_list["sovVot4"][2], "mfSOVTollVOT4"))
-            specs.append(util.matrix_spec(skim_list["hovVot1"][2], "mfHOVTollVOT1"))
-            specs.append(util.matrix_spec(skim_list["hovVot2"][2], "mfHOVTollVOT2"))
-            specs.append(util.matrix_spec(skim_list["hovVot3"][2], "mfHOVTollVOT3"))
-            specs.append(util.matrix_spec(skim_list["lgv"][2], "mfLGVToll"))
-            specs.append(util.matrix_spec(skim_list["hgv"][2], "mfHGVToll"))
         else:
             # Average Distance Matrices
             specs.append(util.matrix_spec(skim_list["sovVot1"][0], "0.5*(mfSOVOpCstVOT1 + %s)" % skim_list["sovVot1"][0]))
@@ -289,19 +280,41 @@ class AutoAssignment(_m.Tool()):
             specs.append(util.matrix_spec(skim_list["hovVot1"][1], "0.5*(mfHOVTimeVOT1 + %s)" % skim_list["hovVot1"][1]))
             specs.append(util.matrix_spec(skim_list["hovVot2"][1], "0.5*(mfHOVTimeVOT2 + %s)" % skim_list["hovVot2"][1]))
             specs.append(util.matrix_spec(skim_list["hovVot3"][1], "0.5*(mfHOVTimeVOT3 + %s)" % skim_list["hovVot3"][1]))
-
             specs.append(util.matrix_spec(skim_list["lgv"][1], "0.5*(mfLGVTime + %s)" % skim_list["lgv"][1]))
             specs.append(util.matrix_spec(skim_list["hgv"][1], "0.5*(mfHGVTime + %s)" % skim_list["hgv"][1]))
-            # Set GC Toll Matrices
-            specs.append(util.matrix_spec(skim_list["sovVot1"][2], "mfSOVTollVOT1"))
-            specs.append(util.matrix_spec(skim_list["sovVot2"][2], "mfSOVTollVOT2"))
-            specs.append(util.matrix_spec(skim_list["sovVot3"][2], "mfSOVTollVOT3"))
-            specs.append(util.matrix_spec(skim_list["sovVot4"][2], "mfSOVTollVOT4"))
-            specs.append(util.matrix_spec(skim_list["hovVot1"][2], "mfHOVTollVOT1"))
-            specs.append(util.matrix_spec(skim_list["hovVot2"][2], "mfHOVTollVOT2"))
-            specs.append(util.matrix_spec(skim_list["hovVot3"][2], "mfHOVTollVOT3"))
-            specs.append(util.matrix_spec(skim_list["lgv"][2], "mfLGVToll"))
-            specs.append(util.matrix_spec(skim_list["hgv"][2], "mfHGVToll"))
+
+        # Set Skimmed Time Matrices
+        specs.append(util.matrix_spec(skim_list["sovVot1"][2], "mfSOVTimeVOT1"))
+        specs.append(util.matrix_spec(skim_list["sovVot2"][2], "mfSOVTimeVOT2"))
+        specs.append(util.matrix_spec(skim_list["sovVot3"][2], "mfSOVTimeVOT3"))
+        specs.append(util.matrix_spec(skim_list["sovVot4"][2], "mfSOVTimeVOT4"))
+        specs.append(util.matrix_spec(skim_list["hovVot1"][2], "mfHOVTimeVOT1"))
+        specs.append(util.matrix_spec(skim_list["hovVot2"][2], "mfHOVTimeVOT2"))
+        specs.append(util.matrix_spec(skim_list["hovVot3"][2], "mfHOVTimeVOT3"))
+        specs.append(util.matrix_spec(skim_list["lgv"][2], "mfLGVTime"))
+        specs.append(util.matrix_spec(skim_list["hgv"][2], "mfHGVTime"))
+
+        # Set Skimmed Distance Matrices
+        specs.append(util.matrix_spec(skim_list["sovVot1"][3], "mfSOVDistVOT1"))
+        specs.append(util.matrix_spec(skim_list["sovVot2"][3], "mfSOVDistVOT2"))
+        specs.append(util.matrix_spec(skim_list["sovVot3"][3], "mfSOVDistVOT3"))
+        specs.append(util.matrix_spec(skim_list["sovVot4"][3], "mfSOVDistVOT4"))
+        specs.append(util.matrix_spec(skim_list["hovVot1"][3], "mfHOVDistVOT1"))
+        specs.append(util.matrix_spec(skim_list["hovVot2"][3], "mfHOVDistVOT2"))
+        specs.append(util.matrix_spec(skim_list["hovVot3"][3], "mfHOVDistVOT3"))
+        specs.append(util.matrix_spec(skim_list["lgv"][3], "mfLGVDist"))
+        specs.append(util.matrix_spec(skim_list["hgv"][3], "mfHGVDist"))
+
+        # Set Skimmed Toll Matrices
+        specs.append(util.matrix_spec(skim_list["sovVot1"][4], "mfSOVTollVOT1 * mssovTollFac"))
+        specs.append(util.matrix_spec(skim_list["sovVot2"][4], "mfSOVTollVOT2 * mssovTollFac"))
+        specs.append(util.matrix_spec(skim_list["sovVot3"][4], "mfSOVTollVOT3 * mssovTollFac"))
+        specs.append(util.matrix_spec(skim_list["sovVot4"][4], "mfSOVTollVOT4 * mssovTollFac"))
+        specs.append(util.matrix_spec(skim_list["hovVot1"][4], "mfHOVTollVOT1 * mshovTollFac"))
+        specs.append(util.matrix_spec(skim_list["hovVot2"][4], "mfHOVTollVOT2 * mshovTollFac"))
+        specs.append(util.matrix_spec(skim_list["hovVot3"][4], "mfHOVTollVOT3 * mshovTollFac"))
+        specs.append(util.matrix_spec(skim_list["lgv"][4], "mfLGVToll * mslgvTollFac"))
+        specs.append(util.matrix_spec(skim_list["hgv"][4], "mfHGVToll * mshgvTollFac"))
 
         util.compute_matrix(specs, scenario)
 
@@ -378,6 +391,20 @@ class AutoAssignment(_m.Tool()):
         spec["classes"][ 7]["path_analyses"].append({"results": {"od_values": "mfLGVToll"},     "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
         spec["classes"][ 8]["path_analyses"].append({"results": {"od_values": "mfHGVToll"},     "link_component": "@tolls", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
 
+    def add_distance_path_analysis(self, spec):
+        path_od = { "considered_paths": "ALL",
+                    "multiply_path_proportions_by": { "analyzed_demand": False, "path_value": True }
+                  }
+        spec["classes"][ 0]["path_analyses"].append({"results": {"od_values": "mfSOVDistVOT1"}, "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 1]["path_analyses"].append({"results": {"od_values": "mfSOVDistVOT2"}, "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 2]["path_analyses"].append({"results": {"od_values": "mfSOVDistVOT3"}, "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 3]["path_analyses"].append({"results": {"od_values": "mfSOVDistVOT4"}, "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 4]["path_analyses"].append({"results": {"od_values": "mfHOVDistVOT1"}, "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 5]["path_analyses"].append({"results": {"od_values": "mfHOVDistVOT2"}, "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 6]["path_analyses"].append({"results": {"od_values": "mfHOVDistVOT3"}, "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 7]["path_analyses"].append({"results": {"od_values": "mfLGVDist"},     "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+        spec["classes"][ 8]["path_analyses"].append({"results": {"od_values": "mfHGVDist"},     "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
+
     @_m.logbook_trace("Calculate Link and Turn Aggregate Volumes")
     def calc_network_volumes(self, scenario):
         util = _m.Modeller().tool("translink.util")
@@ -409,6 +436,111 @@ class AutoAssignment(_m.Tool()):
         util.emme_link_calc(scenario, "@hovoc", "(length * %s + @tolls * %s) / %s" % (auto_voc, hov_tollfac, hov_occupancy))
         util.emme_link_calc(scenario, "@lgvoc", "length * %s + %s * @tolls" % (lgv_voc, lgv_tollfac))
         util.emme_link_calc(scenario, "@hgvoc", "length * %s + %s * @tolls + @tkpen" % (hgv_voc, hgv_tollfac))
+
+    def init_skim_matrices(self, eb):
+        util = _m.Modeller().tool("translink.util")
+
+        # AM Time Skims
+        util.initmat(eb, "mf8100", "SkimAmSovTimeVOT1", "Skim AM SOV VOT1 Time", 0)
+        util.initmat(eb, "mf8101", "SkimAmSovTimeVOT2", "Skim AM SOV VOT2 Time", 0)
+        util.initmat(eb, "mf8102", "SkimAmSovTimeVOT3", "Skim AM SOV VOT3 Time", 0)
+        util.initmat(eb, "mf8103", "SkimAmSovTimeVOT4", "Skim AM SOV VOT4 Time", 0)
+        util.initmat(eb, "mf8104", "SkimAmHovTimeVOT1", "Skim AM HOV VOT1 Time", 0)
+        util.initmat(eb, "mf8105", "SkimAmHovTimeVOT2", "Skim AM HOV VOT2 Time", 0)
+        util.initmat(eb, "mf8106", "SkimAmHovTimeVOT3", "Skim AM HOV VOT3 Time", 0)
+        util.initmat(eb, "mf8107", "SkimAmHovTimeVOT4", "Skim AM HOV VOT4 Time", 0)
+        util.initmat(eb, "mf8108", "SkimAmLgvTime",     "Skim AM LGV Time",      0)
+        util.initmat(eb, "mf8109", "SkimAmHgvTime",     "Skim AM HGV Time",      0)
+        # AM Distance Skims
+        util.initmat(eb, "mf8110", "SkimAmSovDistVOT1", "Skim AM SOV VOT1 Dist", 0)
+        util.initmat(eb, "mf8111", "SkimAmSovDistVOT2", "Skim AM SOV VOT2 Dist", 0)
+        util.initmat(eb, "mf8112", "SkimAmSovDistVOT3", "Skim AM SOV VOT3 Dist", 0)
+        util.initmat(eb, "mf8113", "SkimAmSovDistVOT4", "Skim AM SOV VOT4 Dist", 0)
+        util.initmat(eb, "mf8114", "SkimAmHovDistVOT1", "Skim AM HOV VOT1 Dist", 0)
+        util.initmat(eb, "mf8115", "SkimAmHovDistVOT2", "Skim AM HOV VOT2 Dist", 0)
+        util.initmat(eb, "mf8116", "SkimAmHovDistVOT3", "Skim AM HOV VOT3 Dist", 0)
+        util.initmat(eb, "mf8117", "SkimAmHovDistVOT4", "Skim AM HOV VOT4 Dist", 0)
+        util.initmat(eb, "mf8118", "SkimAmLgvDist",     "Skim AM LGV Dist",      0)
+        util.initmat(eb, "mf8119", "SkimAmHgvDist",     "Skim AM HGV Dist",      0)
+        # AM Toll Skims
+        util.initmat(eb, "mf8120", "SkimAmSovTollVOT1", "Skim AM SOV VOT1 Toll", 0)
+        util.initmat(eb, "mf8121", "SkimAmSovTollVOT2", "Skim AM SOV VOT2 Toll", 0)
+        util.initmat(eb, "mf8122", "SkimAmSovTollVOT3", "Skim AM SOV VOT3 Toll", 0)
+        util.initmat(eb, "mf8123", "SkimAmSovTollVOT4", "Skim AM SOV VOT4 Toll", 0)
+        util.initmat(eb, "mf8124", "SkimAmHovTollVOT1", "Skim AM HOV VOT1 Toll", 0)
+        util.initmat(eb, "mf8125", "SkimAmHovTollVOT2", "Skim AM HOV VOT2 Toll", 0)
+        util.initmat(eb, "mf8126", "SkimAmHovTollVOT3", "Skim AM HOV VOT3 Toll", 0)
+        util.initmat(eb, "mf8127", "SkimAmHovTollVOT4", "Skim AM HOV VOT4 Toll", 0)
+        util.initmat(eb, "mf8128", "SkimAmLgvToll",     "Skim AM LGV Toll",      0)
+        util.initmat(eb, "mf8129", "SkimAmHgvToll",     "Skim AM HGV Toll",      0)
+
+        # MD Time Skims
+        util.initmat(eb, "mf8130", "SkimMdSovTimeVOT1", "Skim MD SOV VOT1 Time", 0)
+        util.initmat(eb, "mf8131", "SkimMdSovTimeVOT2", "Skim MD SOV VOT2 Time", 0)
+        util.initmat(eb, "mf8132", "SkimMdSovTimeVOT3", "Skim MD SOV VOT3 Time", 0)
+        util.initmat(eb, "mf8133", "SkimMdSovTimeVOT4", "Skim MD SOV VOT4 Time", 0)
+        util.initmat(eb, "mf8134", "SkimMdHovTimeVOT1", "Skim MD HOV VOT1 Time", 0)
+        util.initmat(eb, "mf8135", "SkimMdHovTimeVOT2", "Skim MD HOV VOT2 Time", 0)
+        util.initmat(eb, "mf8136", "SkimMdHovTimeVOT3", "Skim MD HOV VOT3 Time", 0)
+        util.initmat(eb, "mf8137", "SkimMdHovTimeVOT4", "Skim MD HOV VOT4 Time", 0)
+        util.initmat(eb, "mf8138", "SkimMdLgvTime",     "Skim MD LGV Time",      0)
+        util.initmat(eb, "mf8139", "SkimMdHgvTime",     "Skim MD HGV Time",      0)
+        # MD Distance Skims
+        util.initmat(eb, "mf8140", "SkimMdSovDistVOT1", "Skim MD SOV VOT1 Dist", 0)
+        util.initmat(eb, "mf8141", "SkimMdSovDistVOT2", "Skim MD SOV VOT2 Dist", 0)
+        util.initmat(eb, "mf8142", "SkimMdSovDistVOT3", "Skim MD SOV VOT3 Dist", 0)
+        util.initmat(eb, "mf8143", "SkimMdSovDistVOT4", "Skim MD SOV VOT4 Dist", 0)
+        util.initmat(eb, "mf8144", "SkimMdHovDistVOT1", "Skim MD HOV VOT1 Dist", 0)
+        util.initmat(eb, "mf8145", "SkimMdHovDistVOT2", "Skim MD HOV VOT2 Dist", 0)
+        util.initmat(eb, "mf8146", "SkimMdHovDistVOT3", "Skim MD HOV VOT3 Dist", 0)
+        util.initmat(eb, "mf8147", "SkimMdHovDistVOT4", "Skim MD HOV VOT4 Dist", 0)
+        util.initmat(eb, "mf8148", "SkimMdLgvDist",     "Skim MD LGV Dist",      0)
+        util.initmat(eb, "mf8149", "SkimMdHgvDist",     "Skim MD HGV Dist",      0)
+        # MD Toll Skims
+        util.initmat(eb, "mf8150", "SkimMdSovTollVOT1", "Skim MD SOV VOT1 Toll", 0)
+        util.initmat(eb, "mf8151", "SkimMdSovTollVOT2", "Skim MD SOV VOT2 Toll", 0)
+        util.initmat(eb, "mf8152", "SkimMdSovTollVOT3", "Skim MD SOV VOT3 Toll", 0)
+        util.initmat(eb, "mf8153", "SkimMdSovTollVOT4", "Skim MD SOV VOT4 Toll", 0)
+        util.initmat(eb, "mf8154", "SkimMdHovTollVOT1", "Skim MD HOV VOT1 Toll", 0)
+        util.initmat(eb, "mf8155", "SkimMdHovTollVOT2", "Skim MD HOV VOT2 Toll", 0)
+        util.initmat(eb, "mf8156", "SkimMdHovTollVOT3", "Skim MD HOV VOT3 Toll", 0)
+        util.initmat(eb, "mf8157", "SkimMdHovTollVOT4", "Skim MD HOV VOT4 Toll", 0)
+        util.initmat(eb, "mf8158", "SkimMdLgvToll",     "Skim MD LGV Toll",      0)
+        util.initmat(eb, "mf8159", "SkimMdHgvToll",     "Skim MD HGV Toll",      0)
+
+        # PM Time Skims
+        util.initmat(eb, "mf8160", "SkimPmSovTimeVOT1", "Skim PM SOV VOT1 Time", 0)
+        util.initmat(eb, "mf8161", "SkimPmSovTimeVOT2", "Skim PM SOV VOT2 Time", 0)
+        util.initmat(eb, "mf8162", "SkimPmSovTimeVOT3", "Skim PM SOV VOT3 Time", 0)
+        util.initmat(eb, "mf8163", "SkimPmSovTimeVOT4", "Skim PM SOV VOT4 Time", 0)
+        util.initmat(eb, "mf8164", "SkimPmHovTimeVOT1", "Skim PM HOV VOT1 Time", 0)
+        util.initmat(eb, "mf8165", "SkimPmHovTimeVOT2", "Skim PM HOV VOT2 Time", 0)
+        util.initmat(eb, "mf8166", "SkimPmHovTimeVOT3", "Skim PM HOV VOT3 Time", 0)
+        util.initmat(eb, "mf8167", "SkimPmHovTimeVOT4", "Skim PM HOV VOT4 Time", 0)
+        util.initmat(eb, "mf8168", "SkimPmLgvTime",     "Skim PM LGV Time",      0)
+        util.initmat(eb, "mf8169", "SkimPmHgvTime",     "Skim PM HGV Time",      0)
+        # PM Distance Skims
+        util.initmat(eb, "mf8170", "SkimPmSovDistVOT1", "Skim PM SOV VOT1 Dist", 0)
+        util.initmat(eb, "mf8171", "SkimPmSovDistVOT2", "Skim PM SOV VOT2 Dist", 0)
+        util.initmat(eb, "mf8172", "SkimPmSovDistVOT3", "Skim PM SOV VOT3 Dist", 0)
+        util.initmat(eb, "mf8173", "SkimPmSovDistVOT4", "Skim PM SOV VOT4 Dist", 0)
+        util.initmat(eb, "mf8174", "SkimPmHovDistVOT1", "Skim PM HOV VOT1 Dist", 0)
+        util.initmat(eb, "mf8175", "SkimPmHovDistVOT2", "Skim PM HOV VOT2 Dist", 0)
+        util.initmat(eb, "mf8176", "SkimPmHovDistVOT3", "Skim PM HOV VOT3 Dist", 0)
+        util.initmat(eb, "mf8177", "SkimPmHovDistVOT4", "Skim PM HOV VOT4 Dist", 0)
+        util.initmat(eb, "mf8178", "SkimPmLgvDist",     "Skim PM LGV Dist",      0)
+        util.initmat(eb, "mf8179", "SkimPmHgvDist",     "Skim PM HGV Dist",      0)
+        # PM Toll Skims
+        util.initmat(eb, "mf8180", "SkimPmSovTollVOT1", "Skim PM SOV VOT1 Toll", 0)
+        util.initmat(eb, "mf8181", "SkimPmSovTollVOT2", "Skim PM SOV VOT2 Toll", 0)
+        util.initmat(eb, "mf8182", "SkimPmSovTollVOT3", "Skim PM SOV VOT3 Toll", 0)
+        util.initmat(eb, "mf8183", "SkimPmSovTollVOT4", "Skim PM SOV VOT4 Toll", 0)
+        util.initmat(eb, "mf8184", "SkimPmHovTollVOT1", "Skim PM HOV VOT1 Toll", 0)
+        util.initmat(eb, "mf8185", "SkimPmHovTollVOT2", "Skim PM HOV VOT2 Toll", 0)
+        util.initmat(eb, "mf8186", "SkimPmHovTollVOT3", "Skim PM HOV VOT3 Toll", 0)
+        util.initmat(eb, "mf8187", "SkimPmHovTollVOT4", "Skim PM HOV VOT4 Toll", 0)
+        util.initmat(eb, "mf8188", "SkimPmLgvToll",     "Skim PM LGV Toll",      0)
+        util.initmat(eb, "mf8189", "SkimPmHgvToll",     "Skim PM HGV Toll",      0)
 
     def init_matrices(self, eb):
         util = _m.Modeller().tool("translink.util")
