@@ -306,15 +306,15 @@ class AutoAssignment(_m.Tool()):
         specs.append(util.matrix_spec(skim_list["hgv"][3], "mfHGVDist"))
 
         # Set Skimmed Toll Matrices
-        specs.append(util.matrix_spec(skim_list["sovVot1"][4], "mfSOVTollVOT1"))
-        specs.append(util.matrix_spec(skim_list["sovVot2"][4], "mfSOVTollVOT2"))
-        specs.append(util.matrix_spec(skim_list["sovVot3"][4], "mfSOVTollVOT3"))
-        specs.append(util.matrix_spec(skim_list["sovVot4"][4], "mfSOVTollVOT4"))
-        specs.append(util.matrix_spec(skim_list["hovVot1"][4], "mfHOVTollVOT1"))
-        specs.append(util.matrix_spec(skim_list["hovVot2"][4], "mfHOVTollVOT2"))
-        specs.append(util.matrix_spec(skim_list["hovVot3"][4], "mfHOVTollVOT3"))
-        specs.append(util.matrix_spec(skim_list["lgv"][4], "mfLGVToll"))
-        specs.append(util.matrix_spec(skim_list["hgv"][4], "mfHGVToll"))
+        specs.append(util.matrix_spec(skim_list["sovVot1"][4], "mfSOVTollVOT1 * mssovTollFac"))
+        specs.append(util.matrix_spec(skim_list["sovVot2"][4], "mfSOVTollVOT2 * mssovTollFac"))
+        specs.append(util.matrix_spec(skim_list["sovVot3"][4], "mfSOVTollVOT3 * mssovTollFac"))
+        specs.append(util.matrix_spec(skim_list["sovVot4"][4], "mfSOVTollVOT4 * mssovTollFac"))
+        specs.append(util.matrix_spec(skim_list["hovVot1"][4], "mfHOVTollVOT1 * mshovTollFac"))
+        specs.append(util.matrix_spec(skim_list["hovVot2"][4], "mfHOVTollVOT2 * mshovTollFac"))
+        specs.append(util.matrix_spec(skim_list["hovVot3"][4], "mfHOVTollVOT3 * mshovTollFac"))
+        specs.append(util.matrix_spec(skim_list["lgv"][4], "mfLGVToll * mslgvTollFac"))
+        specs.append(util.matrix_spec(skim_list["hgv"][4], "mfHGVToll * mshgvTollFac"))
 
         util.compute_matrix(specs, scenario)
 
