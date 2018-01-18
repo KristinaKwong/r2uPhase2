@@ -16,7 +16,7 @@ class AutoAssignment(_m.Tool()):
     best_relative_gap = _m.Attribute(float)
     normalized_gap = _m.Attribute(float)
     max_iterations = _m.Attribute(int)
-
+    assignment_type = _m.Attribute(int)
     attribute_to_skim =  _m.Attribute(str)
 
     tool_run_msg = _m.Attribute(unicode)
@@ -27,6 +27,7 @@ class AutoAssignment(_m.Tool()):
         self.best_relative_gap = 0.01
         self.normalized_gap = 0.005
         self.max_iterations = 250
+        self.assignment_type = 1
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
@@ -39,7 +40,7 @@ class AutoAssignment(_m.Tool()):
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
 
-
+        pb.add_select(tool_attribute_name="assignment_type",keyvalues=[[1,"Regular"],[2,"Social_Optimal"]])
 
         pb.add_text_box("attribute_to_skim", title="Attribute to Skim:")
         pb.add_select_scenario("am_scenario", title="AM scenario:")
@@ -63,13 +64,13 @@ class AutoAssignment(_m.Tool()):
             eb.matrix("ms42").data = self.best_relative_gap
             eb.matrix("ms43").data = self.normalized_gap
 
-            self(eb, self.am_scenario, self.md_scenario, self.pm_scenario, self.attribute_to_skim)
+            self(eb, self.am_scenario, self.md_scenario, self.pm_scenario, self.attribute_to_skim, self.assignment_type)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Auto Traffic Assignment")
-    def __call__(self, eb, am_scenario, md_scenario, pm_scenario, attribute_to_skim):
+    def __call__(self, eb, am_scenario, md_scenario, pm_scenario, attribute_to_skim, assignment_type):
 
         util = _m.Modeller().tool("translink.util")
 
@@ -149,7 +150,7 @@ class AutoAssignment(_m.Tool()):
         am_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Am", "mfSOV_drvtrp_VOT_2_Am", "mfSOV_drvtrp_VOT_3_Am", "mfSOV_drvtrp_VOT_4_Am"],
                       "hov":   ["mfHOV_drvtrp_VOT_1_Am", "mfHOV_drvtrp_VOT_2_Am", "mfHOV_drvtrp_VOT_3_Am"],
                       "truck": ["mflgvPceAm", "mfhgvPceAm"]}
-        self.assign_scen(am_scenario, am_demands, attribute_to_skim)
+        self.assign_scen(am_scenario, am_demands, attribute_to_skim, assignment_type)
         am_skims = {"sovVot1":  ["mfAmSovTimeCongVOT1", "mfAmSovTimeLOSDVOT1"],
                     "sovVot2":  ["mfAmSovTimeCongVOT2", "mfAmSovTimeLOSDVOT2"],
                     "sovVot3":  ["mfAmSovTimeCongVOT3", "mfAmSovTimeLOSDVOT3"],
@@ -164,7 +165,7 @@ class AutoAssignment(_m.Tool()):
         md_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Md", "mfSOV_drvtrp_VOT_2_Md", "mfSOV_drvtrp_VOT_3_Md", "mfSOV_drvtrp_VOT_4_Md"],
                       "hov":   ["mfHOV_drvtrp_VOT_1_Md", "mfHOV_drvtrp_VOT_2_Md", "mfHOV_drvtrp_VOT_3_Md"],
                       "truck": ["mflgvPceMd", "mfhgvPceMd"]}
-        self.assign_scen(md_scenario, md_demands, attribute_to_skim)
+        self.assign_scen(md_scenario, md_demands, attribute_to_skim, assignment_type)
         md_skims = {"sovVot1":  ["mfMdSovTimeCongVOT1", "mfMdSovTimeLOSDVOT1"],
                     "sovVot2":  ["mfMdSovTimeCongVOT2", "mfMdSovTimeLOSDVOT2"],
                     "sovVot3":  ["mfMdSovTimeCongVOT3", "mfMdSovTimeLOSDVOT3"],
@@ -179,7 +180,7 @@ class AutoAssignment(_m.Tool()):
         pm_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Pm", "mfSOV_drvtrp_VOT_2_Pm", "mfSOV_drvtrp_VOT_3_Pm", "mfSOV_drvtrp_VOT_4_Pm"],
                       "hov":   ["mfHOV_drvtrp_VOT_1_Pm", "mfHOV_drvtrp_VOT_2_Pm", "mfHOV_drvtrp_VOT_3_Pm"],
                       "truck": ["mflgvPcePm", "mfhgvPcePm"]}
-        self.assign_scen(pm_scenario, pm_demands, attribute_to_skim)
+        self.assign_scen(pm_scenario, pm_demands, attribute_to_skim, assignment_type)
         pm_skims = {"sovVot1":  ["mfPmSovTimeCongVOT1", "mfPmSovTimeLOSDVOT1"],
                     "sovVot2":  ["mfPmSovTimeCongVOT2", "mfPmSovTimeLOSDVOT2"],
                     "sovVot3":  ["mfPmSovTimeCongVOT3", "mfPmSovTimeLOSDVOT3"],
@@ -235,7 +236,7 @@ class AutoAssignment(_m.Tool()):
 
         util.compute_matrix(specs)
 
-    def assign_scen(self, scenario, demands, attribute_to_skim):
+    def assign_scen(self, scenario, demands, attribute_to_skim, assignment_type):
         assign_traffic = _m.Modeller().tool("inro.emme.traffic_assignment.sola_traffic_assignment")
         util = _m.Modeller().tool("translink.util")
         eb = _m.Modeller().emmebank
@@ -254,12 +255,22 @@ class AutoAssignment(_m.Tool()):
 
         # undertake a dummy assignment with only background traffic at 85% of the volume (LOS D)
         # Calculate volume = 85% of capacity on the network and store it in ul3
-        util.emme_link_calc(scenario, "ul3", "0")
-        util.emme_link_calc(scenario, "ul3", "100", sel_link="vdf = 2")
-        util.emme_link_calc(scenario, "ul3", "0.85*200*vdf*lanes", sel_link="vdf = 3,7")
-        util.emme_link_calc(scenario, "ul3", "0.85*200*int(vdf/10)*lanes", sel_link="vdf = 10,79")
-        util.emme_link_calc(scenario, "ul3", "0.85*1600*(lanes^1.05)", sel_link="vdf = 85")
-        util.emme_link_calc(scenario, "ul3", "0.85*1600*(lanes^1.05)", sel_link="vdf = 88")
+
+        if assignment_type == 1:
+            util.emme_link_calc(scenario, "ul3", "0")
+            util.emme_link_calc(scenario, "ul3", "100", sel_link="vdf = 2")
+            util.emme_link_calc(scenario, "ul3", "0.85*200*vdf*lanes", sel_link="vdf = 3,7")
+            util.emme_link_calc(scenario, "ul3", "0.85*200*int(vdf/10)*lanes", sel_link="vdf = 20,79")
+            util.emme_link_calc(scenario, "ul3", "0.85*1600*(lanes^1.05)", sel_link="vdf = 85")
+            util.emme_link_calc(scenario, "ul3", "0.85*1600*(lanes^1.05)", sel_link="vdf = 88")
+
+        if assignment_type == 2:
+            util.emme_link_calc(scenario, "ul3", "0")
+            util.emme_link_calc(scenario, "ul3", "100", sel_link="vdf = 2")
+            util.emme_link_calc(scenario, "ul3", "0.85*200*(vdf-10)*lanes*(1/6)^(1/5)", sel_link="vdf = 13,17")
+            util.emme_link_calc(scenario, "ul3", "0.85*200*int(vdf/10)*lanes*(1/5)^(1/4)", sel_link="vdf = 20,79")
+            util.emme_link_calc(scenario, "ul3", "0.85*1600*(lanes^1.05)*(1/6)^(1/5)", sel_link="vdf = 86")
+            util.emme_link_calc(scenario, "ul3", "0.85*1600*(lanes^1.05)*(1/6.25)^(1/5.25)", sel_link="vdf = 89")
 
         # Assign temporary scenario
 
