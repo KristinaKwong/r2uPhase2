@@ -11,6 +11,7 @@ class AutoAssignment(_m.Tool()):
     am_scenario = _m.Attribute(_m.InstanceType)
     md_scenario = _m.Attribute(_m.InstanceType)
     pm_scenario = _m.Attribute(_m.InstanceType)
+    assignment_type = _m.Attribute(int)
 
     relative_gap = _m.Attribute(float)
     best_relative_gap = _m.Attribute(float)
@@ -24,6 +25,7 @@ class AutoAssignment(_m.Tool()):
         self.best_relative_gap = 0.01
         self.normalized_gap = 0.005
         self.max_iterations = 250
+        self.assignment_type = 1
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
@@ -36,6 +38,7 @@ class AutoAssignment(_m.Tool()):
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
 
+        pb.add_select(tool_attribute_name="assignment_type",keyvalues=[[1,"Regular"],[2,"Social_Optimal"]])
         pb.add_select_scenario("am_scenario", title="AM scenario:")
         pb.add_select_scenario("md_scenario", title="MD scenario:")
         pb.add_select_scenario("pm_scenario", title="PM scenario:")
@@ -57,13 +60,13 @@ class AutoAssignment(_m.Tool()):
             eb.matrix("ms42").data = self.best_relative_gap
             eb.matrix("ms43").data = self.normalized_gap
 
-            self(eb, self.am_scenario, self.md_scenario, self.pm_scenario)
+            self(eb, self.am_scenario, self.md_scenario, self.pm_scenario, self.assignment_type)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Auto Traffic Assignment")
-    def __call__(self, eb, am_scenario, md_scenario, pm_scenario):
+    def __call__(self, eb, am_scenario, md_scenario, pm_scenario,assignment_type):
 
         util = _m.Modeller().tool("translink.util")
 
@@ -86,7 +89,7 @@ class AutoAssignment(_m.Tool()):
 
         # AM
 
-        self.assign_scen(am_scenario)
+        self.assign_scen(am_scenario, assignment_type)
         self.calc_intrazonal_skims(eb)
 
         am_skims = {"sov":  ["mfAmSovTimeLosDcnst"],
@@ -98,7 +101,7 @@ class AutoAssignment(_m.Tool()):
 
         # MD
 
-        self.assign_scen(md_scenario)
+        self.assign_scen(md_scenario, assignment_type)
         self.calc_intrazonal_skims(eb)
         md_skims = {"sov":  ["mfMdSovTimeLosDcnst"],
                     "hov":  ["mfMdHovTimeLosDcnst"],
@@ -109,7 +112,7 @@ class AutoAssignment(_m.Tool()):
 
         # PM
 
-        self.assign_scen(pm_scenario)
+        self.assign_scen(pm_scenario, assignment_type)
         self.calc_intrazonal_skims(eb)
         pm_skims = {"sov":  ["mfPmSovTimeLosDcnst"],
                     "hov":  ["mfPmHovTimeLosDcnst"],
@@ -118,7 +121,7 @@ class AutoAssignment(_m.Tool()):
 
         self.store_skims(pm_scenario, pm_skims)
 
-    def assign_scen(self, scenario):
+    def assign_scen(self, scenario, assignment_type):
         assign_traffic = _m.Modeller().tool("inro.emme.traffic_assignment.sola_traffic_assignment")
         util = _m.Modeller().tool("translink.util")
         eb = _m.Modeller().emmebank
@@ -128,16 +131,30 @@ class AutoAssignment(_m.Tool()):
         # undertake a dummy assignment with only background traffic at 85% of the volume (LOS D)
         # Calculate volume = 85% of capacity on the network and store it in ul3
 
-        util.emme_link_calc(scenario, "ul3", "100", sel_link="vdf = 2")
-        util.emme_link_calc(scenario, "ul3", "0.85*200*vdf*lanes", sel_link="vdf = 3,7")
-        util.emme_link_calc(scenario, "ul3", "0.85*200*vdf*lanes", sel_link="vdf = 3,7")
-        util.emme_link_calc(scenario, "ul3", "0.85*200*int(vdf/10)*lanes", sel_link="vdf = 10,79")
-        util.emme_link_calc(scenario, "ul3", "0.85*1600*(lanes^1.05)", sel_link="vdf = 85")
-        util.emme_link_calc(scenario, "ul3", "0.85*1600*(lanes^1.05)", sel_link="vdf = 88")
+        if assignment_type == 1:
+            util.emme_link_calc(scenario, "ul3", "0")
+            util.emme_link_calc(scenario, "ul3", "100", sel_link="vdf = 2")
+            util.emme_link_calc(scenario, "ul3", "0.85*200*vdf*lanes", sel_link="vdf = 3,7")
+            util.emme_link_calc(scenario, "ul3", "0.85*200*int(vdf/10)*lanes", sel_link="vdf = 20,79")
+            util.emme_link_calc(scenario, "ul3", "0.85*1600*(lanes^1.05)", sel_link="vdf = 85")
+            util.emme_link_calc(scenario, "ul3", "0.85*1600*(lanes^1.05)", sel_link="vdf = 88")
+
+        if assignment_type == 2:
+            util.emme_link_calc(scenario, "ul3", "0")
+            util.emme_link_calc(scenario, "ul3", "100", sel_link="vdf = 2")
+            util.emme_link_calc(scenario, "ul3", "0.85*200*(vdf-10)*lanes*(1/6)^(1/5)", sel_link="vdf = 13,17")
+            util.emme_link_calc(scenario, "ul3", "0.85*200*int(vdf/10)*lanes*(1/5)^(1/4)", sel_link="vdf = 20,79")
+            util.emme_link_calc(scenario, "ul3", "0.85*1600*(lanes^1.05)*(1/6)^(1/5)", sel_link="vdf = 86")
+            util.emme_link_calc(scenario, "ul3", "0.85*1600*(lanes^1.05)*(1/6.25)^(1/5.25)", sel_link="vdf = 89")
 
         # get truck perception_factor
 
         hgv_perception = eb.matrix("msVotHgv").data
+
+        # calculate @tkpen
+        util.emme_link_calc(scenario, "@tkpen", "0")
+        util.emme_link_calc(scenario, "@tkpen", "length * 100", sel_link="mode=n")
+
 
         # stopping criteria
 
@@ -252,7 +269,7 @@ class AutoAssignment(_m.Tool()):
         # correct heavy truck travel time matrix
         specs = []
 
-        specs.append(util.matrix_spec("mfHgvTimeLosDcnst", "mfHgvTimeLosDcnst - mfHgvPenyLosDcnst"))
+        specs.append(util.matrix_spec("mfHgvTimeLosDcnst", "mfHgvTimeLosDcnst - mfHgvPenyLosDcnst*msVotHgv"))
         util.compute_matrix(specs, scenario)
 
     @_m.logbook_trace("Execute Intrazonal Calculation")
@@ -317,7 +334,7 @@ class AutoAssignment(_m.Tool()):
     def losdscenarios(self, eb, am_scenario, md_scenario, pm_scenario):
         copy_scenario = _m.Modeller().tool("inro.emme.data.scenario.copy_scenario")
         # create_scenarios = _m.Modeller().tool("translink.RTM3.stage0.create_scenarios")
- 
+
          # Copy to new AM Scenarios
         am_scenid = am_scenario.number + 637
         copy_scenario(from_scenario=am_scenario,
@@ -327,7 +344,7 @@ class AutoAssignment(_m.Tool()):
                     copy_strategies=False)
         amscen_out = eb.scenario(am_scenid)
 
-        
+
         # Copy to new MD Scenarios
         md_scenid = md_scenario.number + 637
         copy_scenario(from_scenario=md_scenario,
