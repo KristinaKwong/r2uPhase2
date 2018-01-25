@@ -225,7 +225,7 @@ class AutoAssignment(_m.Tool()):
         # calculate the mimimum non-zero value in each row and set half that
         # as the intrazonal value
         for i in xrange(np_mat.shape[0]):
-            np_mat[i][i] = np_mat[i][np_mat[i] > 0].min() * 0.5
+            np_mat[i][i] = np_mat[i][np_mat[i] >= 0].min() * 0.5
 
         # write the updated matrix back to the emmebank
         util.set_matrix_numpy(eb, matrix, np_mat)
