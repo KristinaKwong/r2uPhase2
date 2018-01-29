@@ -174,7 +174,7 @@ class FullModelRun(_m.Tool()):
             util.initmat(eb, "ms1", "CycleNum", "Current Cycle Number", cycle)
             with _m.logbook_trace("Run Cycle %d" % cycle):
                 self.stage1(eb)
-                self.run_one_cycle(eb)
+                self.run_one_cycle(eb, horizon_year)
 
         data_export = _m.Modeller().tool("translink.RTM3.stage4.dataexport")
         data_export(eb)
@@ -202,7 +202,7 @@ class FullModelRun(_m.Tool()):
         trip_productions(eb)
         trip_attractions(eb)
 
-    def run_one_cycle(self, eb):
+    def run_one_cycle(self, eb, horizon_year):
         util = _m.Modeller().tool("translink.util")
 
         blended_skims = _m.Modeller().tool("translink.RTM3.stage2.blendedskims")
@@ -212,7 +212,7 @@ class FullModelRun(_m.Tool()):
         mode_choice(eb)
 
         truck_model = _m.Modeller().tool("translink.RTM3.stage2.truckmodel")
-        truck_model(eb, self.horizon_year)
+        truck_model(eb, horizon_year)
 
         am_scen = eb.scenario(int(eb.matrix("ms2").data))
         md_scen = eb.scenario(int(eb.matrix("ms3").data))
