@@ -69,6 +69,8 @@ class InputSettings(_m.Tool()):
 
         self.attribute_code(pmscen, "@lanespm", "@vdfpm", "@tpfpm", "@hdwypm", "@tollpm")
 
+        self.custom_link_attributes(amscen, mdscen, pmscen)
+
         self.overide_network(amscen, mdscen, pmscen)
 
     def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr, toll_attr):
@@ -203,3 +205,33 @@ class InputSettings(_m.Tool()):
 
             if per == "PM" or per == "ALL":
                 util.emme_link_calc(pmscen, res, exp, sel, agg)
+
+
+    def custom_link_attributes(self, amscen, mdscen, pmscen):
+
+        util = _m.Modeller().tool("translink.util")
+        create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
+        import_values = _m.Modeller().tool("inro.emme.data.network.import_attribute_values")
+
+        scens = [amscen,mdscen,pmscen]
+
+        custom_attributes = os.path.join(util.get_input_path(amscen.emmebank), 'custom_attributes.txt')
+        if not os.path.isfile(custom_attributes):
+            return
+
+        with open(custom_attributes) as f:
+            reader =csv.reader(f, delimiter ='\t')
+            col_labs = reader.next()       
+
+        new_attributes = col_labs[2:]
+
+        for scen in scens:
+            for attr in new_attributes:
+                create_attr("LINK", attr, attr[1:], 0, False, scen)
+            import_values(file_path=custom_attributes,
+                            field_separator='TAB', 
+                            scenario=scen, 
+                            column_labels=col_labs, 
+                            revert_on_error=True)
+                        
+  
