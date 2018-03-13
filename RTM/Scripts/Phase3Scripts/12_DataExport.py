@@ -395,7 +395,7 @@ class DataExport(_m.Tool()):
         eVht = "{totVol}*timau/60".format(totVol=totVol)
 
         vkt = util.emme_link_calc(scen, None, eVkt, sel_link = sel)['sum']
-        vht = rep = util.emme_link_calc(scen, None, eVht, sel_link = sel)['sum']
+        vht = util.emme_link_calc(scen, None, eVht, sel_link = sel)['sum']
         avgSpeed = vkt/vht
 
         df = pd.DataFrame({'measure' : ['vkt','vht','avgSpeed'],
