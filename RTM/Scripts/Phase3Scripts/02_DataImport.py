@@ -103,6 +103,43 @@ class DataImport(_m.Tool()):
 
 
         util.initmat(eb, "ms160", "oneZoneFare", "One Zone Fare - FS-SV", 2.1)
+        util.initmat(eb, "ms161", "fareIncrement", "Fare Increment", 1.05)
+        
+        util.initmat(eb, "ms162", "wce_bfare_zone1_1", "wce_bfare_zone1_1", 0)
+        util.initmat(eb, "ms163", "wce_bfare_zone1_2", "wce_bfare_zone1_2", 0)
+        util.initmat(eb, "ms164", "wce_bfare_zone1_3", "wce_bfare_zone1_3", 5.03)
+
+        util.initmat(eb, "ms165", "wce_bfare_zone3_1", "wce_bfare_zone3_1", 2.12)
+        util.initmat(eb, "ms166", "wce_bfare_zone3_2", "wce_bfare_zone3_2", 0)
+        util.initmat(eb, "ms167", "wce_bfare_zone3_3", "wce_bfare_zone3_3", 2.72)
+
+        util.initmat(eb, "ms168", "wce_bfare_zone4_1", "wce_bfare_zone4_1", 2.10)
+        util.initmat(eb, "ms169", "wce_bfare_zone4_2", "wce_bfare_zone4_2", 0)
+        util.initmat(eb, "ms170", "wce_bfare_zone4_3", "wce_bfare_zone4_3", 2.10)
+
+        util.initmat(eb, "ms171", "wce_bfare_zone5_1", "wce_bfare_zone5_1", 3.79)
+        util.initmat(eb, "ms172", "wce_bfare_zone5_2", "wce_bfare_zone5_2", 0)
+        util.initmat(eb, "ms173", "wce_bfare_zone5_3", "wce_bfare_zone5_3", 0)
+
+        util.initmat(eb, "ms174", "wce_bfare_zone13_1", "wce_bfare_zone13_1", 2.91)
+        util.initmat(eb, "ms175", "wce_bfare_zone13_2", "wce_bfare_zone13_2", 0)
+        util.initmat(eb, "ms176", "wce_bfare_zone13_3", "wce_bfare_zone13_3", 0)
+ 
+        util.initmat(eb, "ms177", "wce_bfare_zone34_1", "wce_bfare_zone34_1", 1.69)
+        util.initmat(eb, "ms178", "wce_bfare_zone34_2", "wce_bfare_zone34_2", 0)
+        util.initmat(eb, "ms179", "wce_bfare_zone34_3", "wce_bfare_zone34_3", 1.08)
+
+        util.initmat(eb, "ms180", "wce_bfare_zone45_1", "wce_bfare_zone34_1", 1.69)
+        util.initmat(eb, "ms181", "wce_bfare_zone45_2", "wce_bfare_zone34_2", 0)
+        util.initmat(eb, "ms182", "wce_bfare_zone45_3", "wce_bfare_zone34_3", 1.08)
+
+        util.initmat(eb, "ms190", "wce_fare_1z", "wce_fare_1z", 3.79)
+        util.initmat(eb, "ms191", "wce_fare_2z", "wce_fare_2z", 3.79)
+        util.initmat(eb, "ms192", "wce_fare_3z", "wce_fare_3z", 5.03)
+        util.initmat(eb, "ms193", "wce_fare_4z", "wce_fare_4z", 6.10)
+        util.initmat(eb, "ms194", "wce_fare_5z", "wce_fare_5z", 8.39)
+
+
         # Used for SOV and HOV
         util.initmat(eb, "ms200", "AutoVOT1", "AutoVOT1", 9.5)
         util.initmat(eb, "ms201", "AutoVOT2", "AutoVOT2", 5.8)

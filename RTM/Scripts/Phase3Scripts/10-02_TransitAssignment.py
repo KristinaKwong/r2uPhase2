@@ -56,6 +56,7 @@ class TransitAssignment(_m.Tool()):
         self.bus_zone1_fare = 2.1
         self.bus_zone_increment = 1.05
         # By Time Period [AM, MD, PM]
+
         self.wce_bfare_zone1 = [0, 0, 5.03]
         self.wce_bfare_zone3 = [2.12, 0, 2.72]
         self.wce_bfare_zone4 = [2.10, 0, 2.10]
@@ -63,6 +64,7 @@ class TransitAssignment(_m.Tool()):
         self.wce_fare_zone13 = [2.91, 0, 0]
         self.wce_fare_zone34 = [1.69, 0, 1.08]
         self.wce_fare_zone45 = [0, 0, 1.69]
+
 
         self.cost_perception_factor = 4.90
 
@@ -122,14 +124,51 @@ class TransitAssignment(_m.Tool()):
 
     @_m.logbook_trace("Transit Assignment")
     def __call__(self, eb, scenarioam, scenariomd, scenariopm, disable_congestion=False):
+
+        util = _m.Modeller().tool("translink.util")
         self.am_scenario = scenarioam
         self.md_scenario = scenariomd
         self.pm_scenario = scenariopm
         self.init_matrices(eb)
 
+        # update fares from scalar matrices - allow for change of fares
+        self.bus_zone1_fare = eb.matrix("oneZoneFare").data
+        self.bus_zone_increment = eb.matrix("fareIncrement").data
+
+        # By Time Period [AM, MD, PM]
+        # zone_timeperiod 1=AM, 2=MD, 3=PM
+        self.wce_bfare_zone1 = [eb.matrix("wce_bfare_zone1_1").data,
+                                eb.matrix("wce_bfare_zone1_2").data,
+                                eb.matrix("wce_bfare_zone1_3").data]
+        self.wce_bfare_zone3 = [eb.matrix("wce_bfare_zone3_1").data,
+                                eb.matrix("wce_bfare_zone3_2").data,
+                                eb.matrix("wce_bfare_zone3_3").data]
+        self.wce_bfare_zone4 = [eb.matrix("wce_bfare_zone4_1").data,
+                                eb.matrix("wce_bfare_zone4_2").data,
+                                eb.matrix("wce_bfare_zone4_3").data]
+        self.wce_bfare_zone5 = [eb.matrix("wce_bfare_zone5_1").data,
+                                eb.matrix("wce_bfare_zone5_2").data,
+                                eb.matrix("wce_bfare_zone5_3").data]
+        self.wce_bfare_zone13 = [eb.matrix("wce_bfare_zone13_1").data,
+                                 eb.matrix("wce_bfare_zone13_2").data,
+                                 eb.matrix("wce_bfare_zone13_3").data]                
+        self.wce_bfare_zone34 = [eb.matrix("wce_bfare_zone34_1").data,
+                                 eb.matrix("wce_bfare_zone34_2").data,
+                                 eb.matrix("wce_bfare_zone34_3").data]
+        self.wce_bfare_zone45 = [eb.matrix("wce_bfare_zone45_1").data,
+                                 eb.matrix("wce_bfare_zone45_2").data,
+                                 eb.matrix("wce_bfare_zone45_3").data]
+
+        self.wce_fare_zone = {1: eb.matrix("wce_fare_1z").data, 
+                              2: eb.matrix("wce_fare_2z").data, 
+                              3: eb.matrix("wce_fare_3z").data, 
+                              4: eb.matrix("wce_fare_4z").data, 
+                              5: eb.matrix("wce_fare_5z").data}
+
+        # TODO fix this numbered matrix reference
         self.num_processors = int(eb.matrix("ms12").data)
         assign_transit = _m.Modeller().tool("inro.emme.transit_assignment.extended_transit_assignment")
-        util = _m.Modeller().tool("translink.util")
+
         create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
 
         if disable_congestion:
