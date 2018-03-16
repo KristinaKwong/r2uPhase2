@@ -42,7 +42,7 @@ class AutoAssignment(_m.Tool()):
 
         pb.add_select(tool_attribute_name="assignment_type",keyvalues=[[1,"Regular"],[2,"Social_Optimal"]])
 
-        pb.add_text_box("attribute_to_skim", title="Attribute to Skim:")
+        pb.add_text_box("attribute_to_skim", title="Attribute to Skim:", note="use ul1 for social optimal")
         pb.add_select_scenario("am_scenario", title="AM scenario:")
         pb.add_select_scenario("md_scenario", title="MD scenario:")
         pb.add_select_scenario("pm_scenario", title="PM scenario:")
