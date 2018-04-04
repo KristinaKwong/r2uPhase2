@@ -389,3 +389,66 @@ class Util(_m.Tool()):
                  "type": "NETWORK_CALCULATION"
                }
         return calc_link(spec, scenario=scen)
+
+    def overide_network(self, amscen, mdscen, pmscen):
+
+        custom_network = os.path.join(self.get_input_path(amscen.emmebank), 'custom_network.txt')
+        if not os.path.isfile(custom_network):
+            return
+
+        with open(custom_network, "rb") as sourcefile:
+            lines = list(csv.reader(sourcefile, skipinitialspace=True, delimiter='\t'))
+
+        for line in lines:
+            # skip commented lines
+            if line[0].startswith('#'):
+                continue
+            # error on short records
+            if len(line) < 3:
+                raise Exception("Error reading custom network file, less than 3 columns found")
+
+            per = line[0].strip()
+            res = line[1].strip()
+            exp = line[2].strip()
+
+            sel = "all"
+            if len(line) > 3:
+                sel = line[3].strip()
+            agg = None
+            if len(line) > 4:
+                agg = line[4].strip()
+
+            if per == "AM" or per == "ALL":
+                self.emme_link_calc(amscen, res, exp, sel, agg)
+
+            if per == "MD" or per == "ALL":
+                self.emme_link_calc(mdscen, res, exp, sel, agg)
+
+            if per == "PM" or per == "ALL":
+                self.emme_link_calc(pmscen, res, exp, sel, agg)
+
+    def custom_link_attributes(self, amscen, mdscen, pmscen):
+
+        create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
+        import_values = _m.Modeller().tool("inro.emme.data.network.import_attribute_values")
+
+        scens = [amscen,mdscen,pmscen]
+
+        custom_attributes = os.path.join(self.get_input_path(amscen.emmebank), 'custom_attributes.txt')
+        if not os.path.isfile(custom_attributes):
+            return
+
+        with open(custom_attributes) as f:
+            reader =csv.reader(f, delimiter ='\t')
+            col_labs = reader.next()       
+
+        new_attributes = col_labs[2:]
+
+        for scen in scens:
+            for attr in new_attributes:
+                create_attr("LINK", attr, attr[1:], 0, False, scen)
+            import_values(file_path=custom_attributes,
+                            field_separator='TAB', 
+                            scenario=scen, 
+                            column_labels=col_labs, 
+                            revert_on_error=True)

@@ -35,6 +35,7 @@ class InputSettings(_m.Tool()):
 
     @_m.logbook_trace("Create Scenarios")
     def __call__(self, base_scenario):
+        util = _m.Modeller().tool("translink.util")
         copy_scenario = _m.Modeller().tool("inro.emme.data.scenario.copy_scenario")
 
         eb = base_scenario.emmebank
@@ -69,9 +70,9 @@ class InputSettings(_m.Tool()):
 
         self.attribute_code(pmscen, "@lanespm", "@vdfpm", "@tpfpm", "@hdwypm", "@tollpm")
 
-        self.custom_link_attributes(amscen, mdscen, pmscen)
+        util.custom_link_attributes(amscen, mdscen, pmscen)
 
-        self.overide_network(amscen, mdscen, pmscen)
+        util.overide_network(amscen, mdscen, pmscen)
 
     def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr, toll_attr):
         util = _m.Modeller().tool("translink.util")
@@ -167,71 +168,4 @@ class InputSettings(_m.Tool()):
         create_attr("TRANSIT_SEGMENT", "@fareincrement", "Increment Zone Fare ($)", 0, False, scen)
         create_attr("NODE", "@wcestopfare", "WCE Boarding Fare by Stop ($)", 0, False, scen)
         create_attr("NODE", "@wcexferfare", "Xfer WCE Boarding Fare by Stop($)", 0, False, scen)
-
-    def overide_network(self, amscen, mdscen, pmscen):
-        util = _m.Modeller().tool("translink.util")
-
-        custom_network = os.path.join(util.get_input_path(amscen.emmebank), 'custom_network.txt')
-        if not os.path.isfile(custom_network):
-            return
-
-        with open(custom_network, "rb") as sourcefile:
-            lines = list(csv.reader(sourcefile, skipinitialspace=True, delimiter='\t'))
-
-        for line in lines:
-            # skip commented lines
-            if line[0].startswith('#'):
-                continue;
-            # error on short records
-            if len(line) < 3:
-                raise Exception("Error reading custom network file, less than 3 columns found")
-
-            per = line[0].strip()
-            res = line[1].strip()
-            exp = line[2].strip()
-
-            sel = "all"
-            if len(line) > 3:
-                sel = line[3].strip()
-            agg = None
-            if len(line) > 4:
-                agg = line[4].strip()
-
-            if per == "AM" or per == "ALL":
-                util.emme_link_calc(amscen, res, exp, sel, agg)
-
-            if per == "MD" or per == "ALL":
-                util.emme_link_calc(mdscen, res, exp, sel, agg)
-
-            if per == "PM" or per == "ALL":
-                util.emme_link_calc(pmscen, res, exp, sel, agg)
-
-
-    def custom_link_attributes(self, amscen, mdscen, pmscen):
-
-        util = _m.Modeller().tool("translink.util")
-        create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
-        import_values = _m.Modeller().tool("inro.emme.data.network.import_attribute_values")
-
-        scens = [amscen,mdscen,pmscen]
-
-        custom_attributes = os.path.join(util.get_input_path(amscen.emmebank), 'custom_attributes.txt')
-        if not os.path.isfile(custom_attributes):
-            return
-
-        with open(custom_attributes) as f:
-            reader =csv.reader(f, delimiter ='\t')
-            col_labs = reader.next()       
-
-        new_attributes = col_labs[2:]
-
-        for scen in scens:
-            for attr in new_attributes:
-                create_attr("LINK", attr, attr[1:], 0, False, scen)
-            import_values(file_path=custom_attributes,
-                            field_separator='TAB', 
-                            scenario=scen, 
-                            column_labels=col_labs, 
-                            revert_on_error=True)
-                        
-  
+        
