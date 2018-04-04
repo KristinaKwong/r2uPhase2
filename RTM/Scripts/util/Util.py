@@ -427,6 +427,43 @@ class Util(_m.Tool()):
             if per == "PM" or per == "ALL":
                 self.emme_link_calc(pmscen, res, exp, sel, agg)
 
+    def custom_tline(self, amscen, mdscen, pmscen):
+
+        custom_network = os.path.join(self.get_input_path(amscen.emmebank), 'custom_tline.txt')
+        if not os.path.isfile(custom_network):
+            return
+
+        with open(custom_network, "rb") as sourcefile:
+            lines = list(csv.reader(sourcefile, skipinitialspace=True, delimiter='\t'))
+
+        for line in lines:
+            # skip commented lines
+            if line[0].startswith('#'):
+                continue
+            # error on short records
+            if len(line) < 3:
+                raise Exception("Error reading custom network file, less than 3 columns found")
+
+            per = line[0].strip()
+            res = line[1].strip()
+            exp = line[2].strip()
+
+            sel = "all"
+            if len(line) > 3:
+                sel = line[3].strip()
+            agg = None
+            if len(line) > 4:
+                agg = line[4].strip()
+
+            if per == "AM" or per == "ALL":
+                self.emme_tline_calc(amscen, res, exp, sel, agg)
+
+            if per == "MD" or per == "ALL":
+                self.emme_tline_calc(mdscen, res, exp, sel, agg)
+
+            if per == "PM" or per == "ALL":
+                self.emme_tline_calc(pmscen, res, exp, sel, agg)
+
     def custom_link_attributes(self, amscen, mdscen, pmscen):
 
         create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
@@ -452,3 +489,4 @@ class Util(_m.Tool()):
                             scenario=scen, 
                             column_labels=col_labs, 
                             revert_on_error=True)
+

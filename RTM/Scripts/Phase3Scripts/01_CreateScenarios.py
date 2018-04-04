@@ -74,6 +74,8 @@ class InputSettings(_m.Tool()):
 
         util.overide_network(amscen, mdscen, pmscen)
 
+        util.custom_tline(amscen, mdscen, pmscen)
+
     def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr, toll_attr):
         util = _m.Modeller().tool("translink.util")
         create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
@@ -168,4 +170,3 @@ class InputSettings(_m.Tool()):
         create_attr("TRANSIT_SEGMENT", "@fareincrement", "Increment Zone Fare ($)", 0, False, scen)
         create_attr("NODE", "@wcestopfare", "WCE Boarding Fare by Stop ($)", 0, False, scen)
         create_attr("NODE", "@wcexferfare", "Xfer WCE Boarding Fare by Stop($)", 0, False, scen)
-        
