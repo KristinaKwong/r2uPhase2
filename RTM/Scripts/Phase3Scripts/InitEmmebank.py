@@ -273,6 +273,7 @@ class InitEmmebank(_m.Tool()):
         eb.create_function("fd01", "length * 60 / 40")
         eb.create_function("fd02", "40 + ((volau + volad) - 100) * 60 / (volau + volad) * ((volau +  volad) .ge. 100)")
 
+        # Default Intersection Functions
         eb.create_function("fd25", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 400 * lanes)) ^ 4")
         eb.create_function("fd35", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 600 * lanes)) ^ 4")
         eb.create_function("fd45", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 800 * lanes)) ^ 4")
@@ -280,8 +281,20 @@ class InitEmmebank(_m.Tool()):
         eb.create_function("fd65", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4")
         eb.create_function("fd75", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4")
 
+        # Default Free Flow Functions
         eb.create_function("fd85", "length * 60 / el1 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)")
         eb.create_function("fd88", "length * 60 / (el1 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5.25)")
+
+        # Manual Adjust / Calibrated Intersection Functions
+        eb.create_function("fd20", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 400 * lanes)) ^ 4")
+        eb.create_function("fd30", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 600 * lanes)) ^ 4")
+        eb.create_function("fd40", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 800 * lanes)) ^ 4")
+        eb.create_function("fd50", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4")
+        eb.create_function("fd60", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4")
+        eb.create_function("fd70", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4")
+
+        # Manual Adjust / Calibrated Free Flow Functions
+        eb.create_function("fd80", "length * 60 / el1 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)")
 
         # Merge Functions
         eb.create_function("fd03", "length * 60 / el1 + 0.85 * ((volau + volad) / ( 600*lanes))^5")

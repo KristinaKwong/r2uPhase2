@@ -1,5 +1,5 @@
 0CAFACB7-AD3C-40E4-80DD-675DE315EA7F 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
-# Emme project file generated on Fri Nov 10 15:20:36 2017
+# Emme project file generated on Fri Feb 16 19:27:58 2018
 # File: C:/proj/tlink/RTM/RTM.emp
 #
 # String Name: name of preference configuration (tr)
@@ -9,7 +9,7 @@ Description = Created on 2013-12-11 at 14:12:34 by AD.
 # String TranslationContext: context for translations of configuration texts (subst)
 TranslationContext = GeneralConfiguration
 # String OpenDatabases: database open in the project (subst)
-OpenDatabases = Template\emmebank
+OpenDatabases = 20180216-beta\emmebank
 # String ViewFolder: folder storing the view files (subst)
 ViewFolder = Views
 # String WorksheetFolder: folder storing worksheets (subst)
@@ -17,7 +17,9 @@ WorksheetFolder = Worksheets
 # String MediaFolder: folder for storing media files (subst)
 MediaFolder = Media
 # String ProjectDatabases: list of databases associated with the project (subst)
-ProjectDatabases = Template\emmebank;;windows-1252
+ProjectDatabases[] = Template\emmebank;;windows-1252
+ProjectDatabases[] = 20180215-stanley\emmebank;;windows-1252
+ProjectDatabases[] = 20180216-beta\emmebank;;windows-1252
 # String ProjectMacroPath: macro path (subst)
 ProjectMacroPath[] = %<$EnvironmentMacroPath>%
 ProjectMacroPath[] = %<$EnvironmentMacroPath>%
@@ -338,6 +340,8 @@ SpatialReferenceName = WGS 84 / UTM zone 10N Vancouver Special
 MeasurementSystem = imperial
 # String DefaultWebBasemapServer: web basemap server to use by default
 DefaultWebBasemapServer = ArcGISOnlineStreets
+# String FindByText: find strings
+FindByText = 410111
 # String MeasureDistanceLayout: layout of the measure distance window
 MeasureDistanceLayout = AdnQywABAAAAAAG1AAAA8wAAA0sAAAG0AAABvQAAAREAAANDAAABrAAAAAAAAA==
 # String ModellerToolboxes: URLs of toolbox databases for Modeller (subst)
