@@ -545,7 +545,7 @@ def main(eb, scenario_name, amscenid, mdscenid, pmscenid):
      freeflow_skim(eb, amscenid, mdscenid, pmscenid)
 
     #TODO switch this off when not export social optimal
-     df = calc_reliability(eb, scenario_name, social_optimal=True)   
+     df = calc_reliability(eb, scenario_name, social_optimal=False)   
 
      add_temp_sd(df)
 

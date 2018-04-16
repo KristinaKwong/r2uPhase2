@@ -365,7 +365,7 @@ if __name__ == '__main__':
         print('Starting export of {} at {}\n'.format(title, current_time))
 
         try:
-            # export_auto(eb, title)
+            export_auto(eb, title)
             export_transit(eb, title)
             print("Scenario {} export complete.".format(title))
         
