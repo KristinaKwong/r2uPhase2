@@ -302,22 +302,7 @@ class InitEmmebank(_m.Tool()):
         eb.create_function("fd05", "length * 60 / el1 + 0.85 * ((volau + volad) / (1000*lanes))^5")
         eb.create_function("fd06", "length * 60 / el1 + 0.85 * ((volau + volad) / (1200*lanes))^5")
         eb.create_function("fd07", "length * 60 / el1 + 0.85 * ((volau + volad) / (1400*lanes))^5")
-        
-        #Social Cost
-        eb.create_function("fd26", "0.25 + length * 60 / el1 + 5 * 0.85 * ((volau + volad) / ( 400 * lanes)) ^ 4")
-        eb.create_function("fd36", "0.25 + length * 60 / el1 + 5 * 0.85 * ((volau + volad) / ( 600 * lanes)) ^ 4")
-        eb.create_function("fd46", "0.25 + length * 60 / el1 + 5 * 0.85 * ((volau + volad) / ( 800 * lanes)) ^ 4")
-        eb.create_function("fd56", "0.25 + length * 60 / el1 + 5 * 0.85 * ((volau + volad) / (1000 * lanes)) ^ 4")
-        eb.create_function("fd66", "0.25 + length * 60 / el1 + 5 * 0.85 * ((volau + volad) / (1200 * lanes)) ^ 4")
-        eb.create_function("fd76", "0.25 + length * 60 / el1 + 5 * 0.85 * ((volau + volad) / (1400 * lanes)) ^ 4")
-        eb.create_function("fd86", "length * 60 / el1 * (1 + 6 * .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)")
-        eb.create_function("fd89", "length * 60 / (el1 * 1.1) * (1 + 6.25* .6 * .43 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5.25)")
-        eb.create_function("fd13", "length * 60 / el1 + 6 * 0.85 * ((volau + volad) / ( 600*lanes))^5")
-        eb.create_function("fd14", "length * 60 / el1 + 6 * 0.85 * ((volau + volad) / ( 800*lanes))^5")
-        eb.create_function("fd15", "length * 60 / el1 + 6 * 0.85 * ((volau + volad) / (1000*lanes))^5")
-        eb.create_function("fd16", "length * 60 / el1 + 6 * 0.85 * ((volau + volad) / (1200*lanes))^5")
-        eb.create_function("fd17", "length * 60 / el1 + 6 * 0.85 * ((volau + volad) / (1400*lanes))^5")
-        
+         
         # Update FT functions to include dwell time (us1) based on boardings and alightings
         eb.create_function("ft01", "us1 + us2")
         eb.create_function("ft10", "0.01")
