@@ -37052,7 +37052,7 @@ a'9903oP' r   8  30.00  55.00 'WCE-WF/Mission      '      0      0      0
    423604       dwt=+6.64  ttf=10   us1=0   us2=0   us3=0
    423005      dwt=+18.03  ttf=10   us1=0   us2=0   us3=0
    711705        lay=5.00
-a'9910N ' l   5   6.70  60.00 'CL-Richmond Ctr/Vanc'      0      0      0
+a'9910N ' l   37   6.70  60.00 'CL-Richmond Ctr/Vanc'      0      0      0
   path=no
    515704       dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
    513601       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
@@ -37069,7 +37069,7 @@ a'9910N ' l   5   6.70  60.00 'CL-Richmond Ctr/Vanc'      0      0      0
    228005       dwt=+1.89  ttf=10   us1=0   us2=0   us3=0
    225501       dwt=+1.54  ttf=10   us1=0   us2=0   us3=0
    223402        lay=3.00
-a'9910S ' l   5   6.70  60.00 'CL-VancCBD/Richmond '      0      0      0
+a'9910S ' l   37   6.70  60.00 'CL-VancCBD/Richmond '      0      0      0
   path=no
    223402       dwt=+1.54  ttf=10   us1=0   us2=0   us3=0
    225501       dwt=+1.89  ttf=10   us1=0   us2=0   us3=0
@@ -37086,7 +37086,7 @@ a'9910S ' l   5   6.70  60.00 'CL-VancCBD/Richmond '      0      0      0
    512401       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
    513601       dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
    515704        lay=0.75
-a'9911N ' l   5   6.70  60.00 'CL-YVR/VancCBD      '      0      0      0
+a'9911N ' l   37   6.70  60.00 'CL-YVR/VancCBD      '      0      0      0
   path=no
    510201       dwt=+2.42  ttf=10   us1=0   us2=0   us3=0
    510308       dwt=+1.87  ttf=10   us1=0   us2=0   us3=0
@@ -37102,7 +37102,7 @@ a'9911N ' l   5   6.70  60.00 'CL-YVR/VancCBD      '      0      0      0
    228005       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
    225501       dwt=+1.56  ttf=10   us1=0   us2=0   us3=0
    223402        lay=3.00
-a'9911S ' l   5   6.70  60.00 'CL-VancCBD/YVR      '      0      0      0
+a'9911S ' l   37   6.70  60.00 'CL-VancCBD/YVR      '      0      0      0
   path=no
    223402       dwt=+1.56  ttf=10   us1=0   us2=0   us3=0
    225501       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
@@ -37118,7 +37118,7 @@ a'9911S ' l   5   6.70  60.00 'CL-VancCBD/YVR      '      0      0      0
    510402       dwt=+1.87  ttf=10   us1=0   us2=0   us3=0
    510308       dwt=+2.42  ttf=10   us1=0   us2=0   us3=0
    510201        lay=0.50
-a'9920E ' l  15   3.30  65.00 'ExpL VancCBD-KGB    '      0      0      0
+a'9920E ' l  31   3.30  65.00 'ExpL VancCBD-KGB    '      0      0      0
   path=no
    223501       dwt=+1.68  ttf=10   us1=0   us2=0   us3=0
    221903       dwt=+1.22  ttf=10   us1=0   us2=0   us3=0
@@ -37141,7 +37141,7 @@ a'9920E ' l  15   3.30  65.00 'ExpL VancCBD-KGB    '      0      0      0
    611606       dwt=+2.19  ttf=10   us1=0   us2=0   us3=0
    614404        dwt=+0.9  ttf=10   us1=0   us2=0   us3=0
    617301        lay=1.00
-a'9920W ' l  15   3.30  65.00 'ExpL KGB-VancCBD    '      0      0      0
+a'9920W ' l  31   3.30  65.00 'ExpL KGB-VancCBD    '      0      0      0
   path=no
    617301       dwt=+0.88  ttf=10   us1=0   us2=0   us3=0
    614404       dwt=+2.19  ttf=10   us1=0   us2=0   us3=0
@@ -37172,7 +37172,7 @@ a'9920Wx' l  14  10.00  65.00 'ML-Broadway/Waterfro'      0      0      0
    224205       dwt=+1.18  ttf=10   us1=0   us2=0   us3=0
    221903       dwt=+1.88  ttf=10   us1=0   us2=0   us3=0
    223501        lay=1.00
-a'9921E ' l  14   6.70  65.00 'ExpL VancCBD-ProdStn'      0      0      0
+a'9921E ' l  31   6.70  65.00 'ExpL VancCBD-ProdStn'      0      0      0
   path=no
    223501       dwt=+1.68  ttf=10   us1=0   us2=0   us3=0
    221903       dwt=+1.23  ttf=10   us1=0   us2=0   us3=0
@@ -37196,7 +37196,7 @@ a'9921E ' l  14   6.70  65.00 'ExpL VancCBD-ProdStn'      0      0      0
    276206       dwt=#0.16  ttf=10   us1=0   us2=0   us3=0
    276103       dwt=+1.97  ttf=10   us1=0   us2=0   us3=0
    275210        lay=1.00
-a'9921W ' l  14   6.70  65.00 'ExpL ProdStn-VancCBD'      0      0      0
+a'9921W ' l  31   6.70  65.00 'ExpL ProdStn-VancCBD'      0      0      0
   path=no
    275210       dwt=#1.37  ttf=10   us1=0   us2=0   us3=0
    276103       dwt=+0.76  ttf=10   us1=0   us2=0   us3=0
@@ -37220,7 +37220,7 @@ a'9921W ' l  14   6.70  65.00 'ExpL ProdStn-VancCBD'      0      0      0
    224205       dwt=+1.23  ttf=10   us1=0   us2=0   us3=0
    221903       dwt=+1.68  ttf=10   us1=0   us2=0   us3=0
    223501        lay=1.00
-a'9922E ' l  20   3.70  55.00 'Mill VCC-Douglas    '      0      0      0
+a'9922E ' l  34   3.70  55.00 'Mill VCC-Douglas    '      0      0      0
   path=no
    254009       dwt=+1.45  ttf=10   us1=0   us2=0   us3=0
    254203       dwt=+2.51  ttf=10   us1=0   us2=0   us3=0
@@ -37240,7 +37240,7 @@ a'9922E ' l  20   3.70  55.00 'Mill VCC-Douglas    '      0      0      0
    320310       dwt=+1.31  ttf=10   us1=0   us2=0   us3=0
    333004       dwt=+1.17  ttf=10   us1=0   us2=0   us3=0
    332802        lay=1.00
-a'9922W ' l  20   3.70  55.00 'Mill VCC-Douglas    '      0      0      0
+a'9922W ' l  34   3.70  55.00 'Mill VCC-Douglas    '      0      0      0
   path=no
    332802       dwt=+1.17  ttf=10   us1=0   us2=0   us3=0
    333004       dwt=+1.31  ttf=10   us1=0   us2=0   us3=0
