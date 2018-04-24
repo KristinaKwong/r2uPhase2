@@ -19719,7 +19719,7 @@ a'9922E2' l  36   3.16  55.00 'Mill Arbutus-Douglas'      0      0      0
    320310       dwt=+1.31  ttf=10   us1=0   us2=0   us3=0
    333004       dwt=+1.17  ttf=10   us1=0   us2=0   us3=0
    332802        lay=1.00
-a'9922W2' l   36   3.16  55.00 'Mill Arbutus-Douglas'      0      0      0
+a'9922W2' l  36   3.16  55.00 'Mill Arbutus-Douglas'      0      0      0
   path=no
    332802       dwt=+1.17  ttf=10   us1=0   us2=0   us3=0
    333004       dwt=+1.31  ttf=10   us1=0   us2=0   us3=0

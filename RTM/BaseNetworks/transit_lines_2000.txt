@@ -37052,7 +37052,7 @@ a'9903oP' r   8  30.00  55.00 'WCE-WF/Mission      '      0      0      0
    423604       dwt=+6.64  ttf=10   us1=0   us2=0   us3=0
    423005      dwt=+18.03  ttf=10   us1=0   us2=0   us3=0
    711705        lay=5.00
-a'9910N ' l   37   6.70  60.00 'CL-Richmond Ctr/Vanc'      0      0      0
+a'9910N ' l  37   6.70  60.00 'CL-Richmond Ctr/Vanc'      0      0      0
   path=no
    515704       dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
    513601       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
@@ -37069,7 +37069,7 @@ a'9910N ' l   37   6.70  60.00 'CL-Richmond Ctr/Vanc'      0      0      0
    228005       dwt=+1.89  ttf=10   us1=0   us2=0   us3=0
    225501       dwt=+1.54  ttf=10   us1=0   us2=0   us3=0
    223402        lay=3.00
-a'9910S ' l   37   6.70  60.00 'CL-VancCBD/Richmond '      0      0      0
+a'9910S ' l  37   6.70  60.00 'CL-VancCBD/Richmond '      0      0      0
   path=no
    223402       dwt=+1.54  ttf=10   us1=0   us2=0   us3=0
    225501       dwt=+1.89  ttf=10   us1=0   us2=0   us3=0
@@ -37086,7 +37086,7 @@ a'9910S ' l   37   6.70  60.00 'CL-VancCBD/Richmond '      0      0      0
    512401       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
    513601       dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
    515704        lay=0.75
-a'9911N ' l   37   6.70  60.00 'CL-YVR/VancCBD      '      0      0      0
+a'9911N ' l  37   6.70  60.00 'CL-YVR/VancCBD      '      0      0      0
   path=no
    510201       dwt=+2.42  ttf=10   us1=0   us2=0   us3=0
    510308       dwt=+1.87  ttf=10   us1=0   us2=0   us3=0
@@ -37102,7 +37102,7 @@ a'9911N ' l   37   6.70  60.00 'CL-YVR/VancCBD      '      0      0      0
    228005       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
    225501       dwt=+1.56  ttf=10   us1=0   us2=0   us3=0
    223402        lay=3.00
-a'9911S ' l   37   6.70  60.00 'CL-VancCBD/YVR      '      0      0      0
+a'9911S ' l  37   6.70  60.00 'CL-VancCBD/YVR      '      0      0      0
   path=no
    223402       dwt=+1.56  ttf=10   us1=0   us2=0   us3=0
    225501       dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
