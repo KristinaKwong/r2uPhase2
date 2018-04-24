@@ -82,7 +82,6 @@ class InitEmmebank(_m.Tool()):
             self.initscenario(eb, 2000, "2016 Base Network")
             self.initscenario(eb, 3000, "2035 Base Network")
             self.initscenario(eb, 4000, "2050 Base Network")
-            self.initoptions(eb)
 
     def initfolder(self, emme_folder):
         project = _m.Modeller().desktop.project
@@ -320,10 +319,3 @@ class InitEmmebank(_m.Tool()):
         eb.create_function("fp16", "(.1 + pvolau / 1600) ^ 4")
         eb.create_function("fp24", "(.1 + pvolau / 2400) ^ 4")
         eb.create_function("fp32", "(.1 + pvolau / 3200) ^ 4")
-
-    def initoptions(self, eb):
-        util = _m.Modeller().tool("translink.util")
-        # model business
-        util.initmat(eb, "ms2", "AmScen", "AMScenario", 21000)
-        util.initmat(eb, "ms3", "MdScen", "MDScenario", 22000)
-        util.initmat(eb, "ms4", "PmScen", "PMScenario", 23000)

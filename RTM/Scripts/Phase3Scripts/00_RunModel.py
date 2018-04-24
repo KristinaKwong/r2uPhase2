@@ -252,9 +252,6 @@ class FullModelRun(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
         # model business
         util.initmat(eb, "ms1", "CycleNum", "Current Cycle Number", 0)
-        util.initmat(eb, "ms2", "AmScen", "AMScenario", 21000)
-        util.initmat(eb, "ms3", "MdScen", "MDScenario", 22000)
-        util.initmat(eb, "ms4", "PmScen", "PMScenario", 23000)
         util.initmat(eb, "ms10", "Year", "Horizon Year of Run", horizon_year)
         util.initmat(eb, "ms12", "Processors", "Number of Processors for Computer Running Model", num_processors)
         # data generation
