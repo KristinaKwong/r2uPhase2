@@ -24,10 +24,6 @@ class TransitAssignment(_m.Tool()):
     dwt_board_factor_bus = _m.Attribute(float)
     dwt_alight_factor_bus = _m.Attribute(float)
 
-    am_scenario = _m.Attribute(_m.InstanceType)
-    md_scenario = _m.Attribute(_m.InstanceType)
-    pm_scenario = _m.Attribute(_m.InstanceType)
-
     def __init__(self):
         # Maximum Number of Iterations for transit loop
         self.max_iterations = 10
@@ -123,11 +119,7 @@ class TransitAssignment(_m.Tool()):
 
     @_m.logbook_trace("Transit Assignment")
     def __call__(self, eb, scenarioam, scenariomd, scenariopm, disable_congestion=False):
-
         util = _m.Modeller().tool("translink.util")
-        self.am_scenario = scenarioam
-        self.md_scenario = scenariomd
-        self.pm_scenario = scenariopm
         self.init_matrices(eb)
 
         # update fares from scalar matrices - allow for change of fares
@@ -211,7 +203,10 @@ class TransitAssignment(_m.Tool()):
                 self.averaging_transit_volumes(sc, iteration, period_length)
 
                 # Run Crowding and Headway Reports
-                self.crowding_headway_report(sc, report, iteration)
+                if sc is scenarioam or sc is scenariopm:
+                    self.crowding_headway_report(sc, report, iteration, self.pk_summary_mode_list)
+                if sc is scenariomd:
+                    self.crowding_headway_report(sc, report, iteration, self.op_summary_mode_list)
 
                 # Update Capacity, Crowding Functions
                 if run_crowding==1:
@@ -591,13 +586,8 @@ class TransitAssignment(_m.Tool()):
         util.emme_segment_calc(sc, "@hdwyeff", "@hdwyfac*@hfrac")
 
     @_m.logbook_trace("Calculate Crowding and Effective Headway report")
-    def crowding_headway_report(self, sc, report, iteration):
+    def crowding_headway_report(self, sc, report, iteration, summary_mode_list):
         util = _m.Modeller().tool("translink.util")
-
-        if sc is self.am_scenario or sc is self.pm_scenario:
-            summary_mode_list = self.pk_summary_mode_list
-        if sc is self.md_scenario:
-            summary_mode_list = self.op_summary_mode_list
 
         if iteration==1:
             report["Iter   Mode"] = "     Seat.pass-kms    Stand.pass-kms   Excess.pass-kms  Max.crowd.factor   Min.Hdwy Factor   Max.Hdwy Factor         Min.Dwell         Max.Dwell"
