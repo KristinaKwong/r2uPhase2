@@ -214,9 +214,7 @@ class FullModelRun(_m.Tool()):
         truck_model = _m.Modeller().tool("translink.RTM3.stage2.truckmodel")
         truck_model(eb, int(util.get_year(eb)))
 
-        am_scen = eb.scenario(int(eb.matrix("ms2").data))
-        md_scen = eb.scenario(int(eb.matrix("ms3").data))
-        pm_scen = eb.scenario(int(eb.matrix("ms4").data))
+        am_scen, md_scen, pm_scen = util.get_tod_scenarios(eb)
 
         auto_assign = _m.Modeller().tool("translink.RTM3.stage3.autoassignment")
         auto_assign(am_scen, md_scen, pm_scen)

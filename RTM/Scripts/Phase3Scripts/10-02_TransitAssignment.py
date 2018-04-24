@@ -110,14 +110,12 @@ class TransitAssignment(_m.Tool()):
         self.tool_run_msg = ""
         try:
             eb = _m.Modeller().emmebank
-            self.am_scenario = _m.Modeller().emmebank.scenario(int(eb.matrix("ms2").data))
-            self.md_scenario = _m.Modeller().emmebank.scenario(int(eb.matrix("ms3").data))
-            self.pm_scenario = _m.Modeller().emmebank.scenario(int(eb.matrix("ms4").data))
+            am_scen, md_scen, pm_scen = util.get_tod_scenarios(eb)
 
             eb.matrix("ms45").data = int(self.run_congested_transit)
             eb.matrix("ms46").data = int(self.run_capacited_transit)
 
-            self(eb, self.am_scenario, self.md_scenario, self.pm_scenario)
+            self(eb, am_scen, md_scen, pm_scen)
             run_msg = "Tool completed"
             self.tool_run_msg = _m.PageBuilder.format_info(run_msg)
         except Exception, e:
