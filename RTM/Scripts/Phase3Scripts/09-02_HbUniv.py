@@ -19,7 +19,7 @@ class HbWork(_m.Tool()):
         return pb.render()
 
     @_m.logbook_trace("Run Home Base University")
-    def __call__(self, eb):
+    def __call__(self, eb, Bus_Bias, Rail_Bias, WCE_Bias):
         util = _m.Modeller().tool("translink.util")
         MChM = _m.Modeller().tool("translink.RTM3.stage2.modechoiceutils")
 
@@ -153,6 +153,7 @@ class HbWork(_m.Tool()):
         # Bus Utility
         # Bus Utility for all incomes
         Df['GeUtl'] = ( p4
+                      + Bus_Bias
                       + p12*(Df['BusFar'])*UPass_Disc
                       + p15*Df['BusIVT']*B_IVT_perc
                       + p17*Df['BusWat']
@@ -170,6 +171,7 @@ class HbWork(_m.Tool()):
         ##
         Df['GeUtl'] = ( p4*Df['RalIBR']
                       + p6*Df['RalIRR']
+                      + Rail_Bias
                       + p12*(Df['RalFar'])*UPass_Disc
                       + p15*Df['RalIVB']*B_IVT_perc
                       + p15*Df['RalIVR']
@@ -526,6 +528,8 @@ class HbWork(_m.Tool()):
         df_Daily_Gy.to_sql(name='daily_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
 
         conn.close()
+
+        return df_Daily_Gy
 
         del Auto_AM_Fct_PA, Auto_MD_Fct_PA, Auto_PM_Fct_PA, Auto_AM_Fct_AP, Auto_MD_Fct_AP, Auto_PM_Fct_AP
 

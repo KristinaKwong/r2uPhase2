@@ -19,7 +19,7 @@ class HbWork(_m.Tool()):
         return pb.render()
 
     @_m.logbook_trace("Run Home Base Work")
-    def __call__(self, eb):
+    def __call__(self, eb, Bus_Bias, Rail_Bias, WCE_Bias):
         util = _m.Modeller().tool("translink.util")
         MChM = _m.Modeller().tool("translink.RTM3.stage2.modechoiceutils")
 
@@ -210,6 +210,7 @@ class HbWork(_m.Tool()):
 #        ##############################################################################
 #        ##       Walk to Transit Modes
 #        ##############################################################################
+
         # Generate Dataframe
         Df = {}
         Tiny=0.000001
@@ -252,6 +253,7 @@ class HbWork(_m.Tool()):
         # Bus Utility
         # Bus Common Utility for all incomes
         Df['GeUtl'] = ( p4
+                      + Bus_Bias
                       + p152*Df['BusIVT']
                       + p17*Df['BusWat']
                       + p18*Df['BusAux']
@@ -272,6 +274,7 @@ class HbWork(_m.Tool()):
         # Rail Common Utility for all incomes
         Df['GeUtl'] = ( p4*Df['RalIBR']
                       + p6*Df['RalIRR']
+                      + Rail_Bias
                       + p152*Df['RalIVB']
                       + p153*Df['RalIVR']
                       + p17*Df['RalWat']
@@ -294,6 +297,7 @@ class HbWork(_m.Tool()):
         Df['GeUtl'] = ( p4*Df['WCEIBR']
                       + p6*Df['WCEIRR']
                       + p8*Df['WCEIWR']
+                      + WCE_Bias
                       + p152*Df['WCEIVB']
                       + p153*Df['WCEIVR']
                       + p153*Df['WCEIVW']
@@ -1283,6 +1287,8 @@ class HbWork(_m.Tool()):
         df_Daily_Gy.to_sql(name='daily_gy', con=conn, flavor='sqlite', index=False, if_exists='replace')
 
         conn.close()
+
+        return df_Daily_Gy
 
     def Calc_Prob(self, eb, Dict, Logsum, Th):
         util = _m.Modeller().tool("translink.util")

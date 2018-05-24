@@ -19,7 +19,7 @@ class HbSchool(_m.Tool()):
         return pb.render()
 
     @_m.logbook_trace("Run Home Base School")
-    def __call__(self, eb):
+    def __call__(self, eb, Bus_Bias, Rail_Bias, WCE_Bias):
         util = _m.Modeller().tool("translink.util")
         MChM = _m.Modeller().tool("translink.RTM3.stage2.modechoiceutils")
 
@@ -141,6 +141,7 @@ class HbSchool(_m.Tool()):
         # Bus Utility
 
         Df['GeUtl'] = ( p4
+                      + Bus_Bias
                       + p12*Df['GenCostBus']
                       + p602*Df['PopEmpDen'])
 
@@ -153,6 +154,7 @@ class HbSchool(_m.Tool()):
         # Rail Utility across all incomes
         Df['GeUtl'] = ( p4*Df['RalIBR']
                       + p6*Df['RalIRR']
+                      + Rail_Bias
                       + p12*Df['GenCostRal']
                       + p602*Df['PopEmpDen'])
 
@@ -563,6 +565,8 @@ class HbSchool(_m.Tool()):
         df_Daily_Gy.to_sql(name='daily_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
 
         conn.close()
+
+        return df_Daily_Gy
 
     def Calc_Prob(self, eb, Dict, Logsum, Th):
         util = _m.Modeller().tool("translink.util")

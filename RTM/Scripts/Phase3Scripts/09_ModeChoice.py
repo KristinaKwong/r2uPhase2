@@ -6,6 +6,9 @@
 ##---------------------------------------------------------------------
 import inro.modeller as _m
 import traceback as _traceback
+import pandas as pd
+import numpy as np
+import os
 
 class ModeChoice(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
@@ -31,8 +34,14 @@ class ModeChoice(_m.Tool()):
 
     @_m.logbook_trace("Mode Choice")
     def __call__(self, eb):
-        self.matrix_batchins(eb)
 
+        util = _m.Modeller().tool("translink.util")
+        self.matrix_batchins(eb)
+        conn = util.get_rtm_db(eb)
+        df_transit_adj = pd.read_sql("SELECT * FROM transit_adj", conn)
+        conn.close()
+        
+        
         td_mode_choice_hbw = _m.Modeller().tool("translink.RTM3.stage2.hbwork")
         td_mode_choice_hbu = _m.Modeller().tool("translink.RTM3.stage2.hbuniv")
         td_mode_choice_hbsc = _m.Modeller().tool("translink.RTM3.stage2.hbschool")
@@ -43,19 +52,90 @@ class ModeChoice(_m.Tool()):
         td_mode_choice_nhbw = _m.Modeller().tool("translink.RTM3.stage2.nhbwork")
         td_mode_choice_nhbo = _m.Modeller().tool("translink.RTM3.stage2.nhbother")
 
-        td_mode_choice_hbw(eb)
-        td_mode_choice_hbu(eb)
-        td_mode_choice_hbsc(eb)
-        td_mode_choice_hbsh(eb)
-        td_mode_choice_hbpb(eb)
-        td_mode_choice_hbso(eb)
-        td_mode_choice_hbes(eb)
-        td_mode_choice_nhbw(eb)
-        td_mode_choice_nhbo(eb)
-        
-        # now that all SOV/HOV driver trips have been aggregated, adjust for external deamnd
-        # and demand adjust incremental matrices as needed
+        # Read in calibration file
+
+        # hbw
+        Bus_Bias, Rail_Bias, WCE_Bias = self.calibrate(eb, df_transit_adj, 'hbw')
+        td_mode_choice_hbw(eb, Bus_Bias, Rail_Bias, WCE_Bias)
+
+        # hbu
+        Bus_Bias, Rail_Bias, WCE_Bias = self.calibrate(eb, df_transit_adj, 'hbu')
+        td_mode_choice_hbu(eb, Bus_Bias, Rail_Bias, WCE_Bias)
+
+        # hbsc
+        Bus_Bias, Rail_Bias, WCE_Bias = self.calibrate(eb, df_transit_adj, 'hbsc')
+        td_mode_choice_hbsc(eb,Bus_Bias, Rail_Bias, WCE_Bias)
+
+        # hbsh
+        Bus_Bias, Rail_Bias, WCE_Bias = self.calibrate(eb, df_transit_adj, 'hbsh')
+        td_mode_choice_hbsh(eb,Bus_Bias, Rail_Bias, WCE_Bias)
+
+        # hbpb
+        Bus_Bias, Rail_Bias, WCE_Bias = self.calibrate(eb, df_transit_adj, 'hbpb')
+        td_mode_choice_hbpb(eb,Bus_Bias, Rail_Bias, WCE_Bias)
+
+        # hbso
+        Bus_Bias, Rail_Bias, WCE_Bias = self.calibrate(eb, df_transit_adj, 'hbso')
+        td_mode_choice_hbso(eb,Bus_Bias, Rail_Bias, WCE_Bias)
+
+        # hbes
+        Bus_Bias, Rail_Bias, WCE_Bias = self.calibrate(eb, df_transit_adj, 'hbes')
+        td_mode_choice_hbes(eb,Bus_Bias, Rail_Bias, WCE_Bias)
+
+        # nhbw
+        Bus_Bias, Rail_Bias, WCE_Bias = self.calibrate(eb, df_transit_adj, 'nhbw')
+        td_mode_choice_nhbw(eb,Bus_Bias, Rail_Bias, WCE_Bias)
+
+        # nhbo
+        Bus_Bias, Rail_Bias,WCE_Bias = self.calibrate(eb, df_transit_adj, 'nhbo')
+        td_mode_choice_nhbo(eb,Bus_Bias, Rail_Bias, WCE_Bias)
+
+        # adjust MD Auto
         self.add_external_demadj_demand()
+
+       # adjust Evergreen usage
+
+        self.adjust_egl(eb)
+
+    def adjust_egl(self, eb):
+
+        util = _m.Modeller().tool("translink.util")
+        NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
+
+        Factor = 0.90
+        df_gy = util.get_ijensem_df(eb, 'gy','gy')
+        df_gy['AM_Rail'] = util.get_matrix_numpy(eb, 'railAm').flatten()
+        df_gy['PM_Rail'] = util.get_matrix_numpy(eb, 'railPm').flatten()
+        df_gy['AM_Rail'] = np.where((df_gy['gy_i'] == 6), Factor*df_gy['AM_Rail'], df_gy['AM_Rail'])
+        df_gy['PM_Rail'] = np.where((df_gy['gy_i'] == 6), Factor*df_gy['PM_Rail'], df_gy['PM_Rail'])
+        df_gy['AM_Rail'] = np.where((df_gy['gy_i'] != 6) & (df_gy['gy_j'] == 6), Factor*df_gy['AM_Rail'], df_gy['AM_Rail'])
+        df_gy['PM_Rail'] = np.where((df_gy['gy_i'] != 6) & (df_gy['gy_j'] == 6), Factor*df_gy['PM_Rail'], df_gy['PM_Rail'])
+
+        util.set_matrix_numpy(eb, "railAm", np.array(df_gy['AM_Rail']).reshape(NoTAZ, NoTAZ))
+        util.set_matrix_numpy(eb, "railPm", np.array(df_gy['PM_Rail']).reshape(NoTAZ, NoTAZ))
+
+
+    def calibrate(self, eb, df, purp):
+
+        util = _m.Modeller().tool("translink.util")
+        NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
+
+        df_purp = df.loc[df['purp'] == purp]
+        df_gy = util.get_ijensem_df(eb, 'gy','gy')
+        df_gy = pd.merge(df_gy, df_purp, how = 'left', left_on = ['gy_i', 'gy_j'],
+                              right_on = ['gy_o', 'gy_d'])
+        df_gy_bus = df_gy.loc[(df_gy['Mode'] == 'bus')]
+        df_gy_rail = df_gy.loc[(df_gy['Mode'] == 'rail')]
+        df_gy_wce = df_gy.loc[(df_gy['Mode'] == 'wce')]
+
+        Bus_Bs = np.array(df_gy_bus['bias_add']).reshape(NoTAZ, NoTAZ)
+
+        Rail_Bs = np.array(df_gy_rail['bias_add']).reshape(NoTAZ, NoTAZ)
+
+        WCE_Bs = np.array(df_gy_wce['bias_add']).reshape(NoTAZ, NoTAZ)
+
+        return Bus_Bs, Rail_Bs, WCE_Bs
+
 
     def add_external_demadj_demand(self):
         util = _m.Modeller().tool("translink.util")
