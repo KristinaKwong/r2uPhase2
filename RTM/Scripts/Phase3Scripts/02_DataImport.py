@@ -104,7 +104,7 @@ class DataImport(_m.Tool()):
 
         util.initmat(eb, "ms160", "oneZoneFare", "One Zone Fare - FS-SV", 2.1)
         util.initmat(eb, "ms161", "fareIncrement", "Fare Increment", 1.05)
-        
+
         util.initmat(eb, "ms162", "wce_bfare_zone1_1", "wce_bfare_zone1_1", 0)
         util.initmat(eb, "ms163", "wce_bfare_zone1_2", "wce_bfare_zone1_2", 0)
         util.initmat(eb, "ms164", "wce_bfare_zone1_3", "wce_bfare_zone1_3", 5.03)
@@ -124,7 +124,7 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms174", "wce_bfare_zone13_1", "wce_bfare_zone13_1", 2.91)
         util.initmat(eb, "ms175", "wce_bfare_zone13_2", "wce_bfare_zone13_2", 0)
         util.initmat(eb, "ms176", "wce_bfare_zone13_3", "wce_bfare_zone13_3", 0)
- 
+
         util.initmat(eb, "ms177", "wce_bfare_zone34_1", "wce_bfare_zone34_1", 1.69)
         util.initmat(eb, "ms178", "wce_bfare_zone34_2", "wce_bfare_zone34_2", 0)
         util.initmat(eb, "ms179", "wce_bfare_zone34_3", "wce_bfare_zone34_3", 1.08)
@@ -341,7 +341,7 @@ class DataImport(_m.Tool()):
         ensem_file = os.path.join(proj_path, "BaseNetworks", "taz1700_ensembles.csv")
         time_slicing_file = os.path.join(file_loc,'time_slicing.csv')
         time_slicing_file_gb = os.path.join(file_loc,'time_slicing_gb.csv')
-
+        transit_adj = os.path.join(file_loc,'transit_adj.csv')
 
         # import raw data to mo's in emmebank
         util.read_csv_momd(eb, demo_file)
@@ -381,6 +381,10 @@ class DataImport(_m.Tool()):
         # time_slicing gb
         df = pd.read_csv(time_slicing_file_gb, skiprows = 0)
         df.to_sql(name='timeSlicingFactorsGb', con=conn, flavor='sqlite', index=False, if_exists='replace')
+
+        # transit bias adjustments
+        df = pd.read_csv(transit_adj, skiprows = 0)
+        df.to_sql(name='transit_adj', con=conn, flavor='sqlite', index=False, if_exists='replace')
 
         conn.close()
 
