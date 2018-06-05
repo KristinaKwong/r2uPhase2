@@ -127,12 +127,17 @@ class TripProductions(_m.Tool()):
         Inc = [1,2,3]
         Aut = [0,1,2]
 
+        ## Attach gm file in order to select Bowen Island
+        df_emme['gm'] = util.get_matrix_numpy(eb, 'gm_ensem')
+        bowen_adj = 0.65
+
         # stuff data
         for purpose in Pur:
             for income in Inc:
                 for auto in Aut:
                     mo = "mo{purpose}Inc{income}Au{auto}prd".format(purpose=purpose, income=income, auto=auto)
                     vec = "{purpose} {income} {auto}".format(purpose=purpose, income=income, auto=auto)
+                    df_emme[vec] = np.where(df_emme['gm'] == 100, df_emme[vec]*bowen_adj, df_emme[vec])
                     util.set_matrix_numpy(eb, mo, df_emme[vec].values)
 
         return np.round(nhbw_ct,6), np.round(nhbo_ct,6)
@@ -267,6 +272,13 @@ class TripProductions(_m.Tool()):
         df.to_sql(name='TripsTazPrds', con=conn, flavor='sqlite', index=False, if_exists='replace')
         ct_df.to_sql(name='TripsBalCts', con=conn, flavor='sqlite', index=False, if_exists='append')
         conn.close()
+
+        df['gm'] = util.get_matrix_numpy(eb, 'gm_ensem')
+        bowen_adj = 0.65
+
+        df['hbu'] = np.where(df['gm'] == 100, df['hbu']*bowen_adj, df['hbu'])
+        df['nhbw'] = np.where(df['gm'] == 100, df['nhbw']*bowen_adj, df['nhbw'])
+        df['nhbo'] = np.where(df['gm'] == 100, df['nhbo']*bowen_adj, df['nhbo'])
 
         # stuff in emmebank
         util.set_matrix_numpy(eb, 'mohbuprd', df['hbu'].values)

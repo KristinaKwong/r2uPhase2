@@ -121,11 +121,16 @@ class TripAttractions(_m.Tool()):
         # hbu
         c_hbu_iCbdPsfte = 0.287631
         c_hbu_iNotCbdPsfte = 1.411431
+        
+        
 
         ########################################################################
         # Calculate and Balance Attractions
         ########################################################################
 
+        df['gm'] = util.get_matrix_numpy(eb, 'gm_ensem')
+        df['bowen_adj'] = np.where(df['gm'] == 100, 0.65, 1)
+        
         # HBW ##################################################################
         df['hbw'] = ( c_hbw_CM * df['EMP_Construct_Mfg']
                     + c_hbw_TW * df['EMP_TCU_Wholesale']
@@ -133,7 +138,7 @@ class TripAttractions(_m.Tool()):
                     + c_hbw_FIRE * df['EMP_FIRE']
                     + c_hbw_Ret * df['EMP_Retail']
                     + c_hbw_AFIC * df['EMP_AccomFood_InfoCult']
-                    + c_hbw_HEPA * df['EMP_Health_Educat_PubAdmin'] )
+                    + c_hbw_HEPA * df['EMP_Health_Educat_PubAdmin'] )*df['bowen_adj']
 
         # balance to productions
         scalar = ct_df.get_value(index='hbw', col='control_total')/ df['hbw'].sum()
@@ -148,7 +153,7 @@ class TripAttractions(_m.Tool()):
                        + c_hbesc_EE * df['Elementary_Enrolment']
                        + c_hbesc_SE * df['Secondary_Enrolment']
                        + c_hbesc_PU18 * df['PopU18']
-                       + c_hbesc_PO65 * df['POP_65plus'] )
+                       + c_hbesc_PO65 * df['POP_65plus'] )*df['bowen_adj']
 
         # clear out intercept trips from pnr and external zones and balance
         df['hbesc'] = np.where(df['TAZ1741'] < 1000, 0, df['hbesc'])
@@ -159,14 +164,14 @@ class TripAttractions(_m.Tool()):
         df['hbpb'] = ( c_hbpb_Ret * df['EMP_Retail']
                      + c_hbpb_AFIC * df['EMP_AccomFood_InfoCult']
                      + c_hbpb_HEPA * df['EMP_Health_Educat_PubAdmin']
-                     + c_hbpb_PoTot * df['POP_Total'] )
+                     + c_hbpb_PoTot * df['POP_Total'] )*df['bowen_adj']
 
         scalar = ct_df.get_value(index='hbpb', col='control_total')/ df['hbpb'].sum()
         df['hbpb'] = df['hbpb'] * scalar
 
         # HBSCH ################################################################
         df['hbsch'] = ( c_hbsch_EE * df['Elementary_Enrolment']
-                      + c_hbsch_SE * df['Secondary_Enrolment'] )
+                      + c_hbsch_SE * df['Secondary_Enrolment'] )*df['bowen_adj']
 
         # write school attraction to EMMEbank md2030
         util.set_matrix_numpy(eb, 'mdhbschatr', df['hbsch'].values)
@@ -190,7 +195,7 @@ class TripAttractions(_m.Tool()):
         df['hbsch'] = util.get_matrix_numpy(eb, 'mdhbschatr')
 
         # HBSHOP ###############################################################
-        df['hbshop'] = c_hbshop_Ret * df['EMP_Retail']
+        df['hbshop'] = c_hbshop_Ret * df['EMP_Retail']*df['bowen_adj']
 
         scalar = ct_df.get_value(index='hbshop', col='control_total')/ df['hbshop'].sum()
         df['hbshop'] = df['hbshop'] * scalar
@@ -200,7 +205,7 @@ class TripAttractions(_m.Tool()):
               + c_hbsoc_AFIC * df['EMP_AccomFood_InfoCult']
               + c_hbsoc_Ret * df['EMP_Retail']
               + c_hbsoc_HEPA * df['EMP_Health_Educat_PubAdmin']
-              + c_hbsoc_PoTot * df['POP_Total'] )
+              + c_hbsoc_PoTot * df['POP_Total'] )*df['bowen_adj']
 
         df['hbsoc'] = np.where(df['TAZ1741'] < 1000, 0, df['hbsoc'])
         scalar = ct_df.get_value(index='hbsoc', col='control_total') / df['hbsoc'].sum()
@@ -214,7 +219,7 @@ class TripAttractions(_m.Tool()):
                      + c_nhbw_FIRE * df['EMP_FIRE']
                      + c_nhbw_Ret * df['EMP_Retail']
                      + c_nhbw_AFIC * df['EMP_AccomFood_InfoCult']
-                     + c_nhbw_HEPA * df['EMP_Health_Educat_PubAdmin'] )
+                     + c_nhbw_HEPA * df['EMP_Health_Educat_PubAdmin'] )*df['bowen_adj']
 
         df['nhbw'] = np.where(df['TAZ1741'] < 1000, 0, df['nhbw'])
         scalar = ct_df.get_value(index='nhbw', col='control_total') / df['nhbw'].sum()
@@ -226,14 +231,14 @@ class TripAttractions(_m.Tool()):
                      + c_nhbo_HEPA * df['EMP_Health_Educat_PubAdmin']
                      + c_nhbo_PoTot * df['POP_Total']
                      + c_nhbo_EE * df['Elementary_Enrolment']
-                     + c_nhbo_SE * df['Secondary_Enrolment'] )
+                     + c_nhbo_SE * df['Secondary_Enrolment'] )*df['bowen_adj']
 
         scalar = ct_df.get_value(index='nhbo', col='control_total') / df['nhbo'].sum()
         df['nhbo'] = df['nhbo'] * scalar
 
         # HBU ##################################################################
         df['hbu'] = ( c_hbu_iCbdPsfte * df['iCbdPsfte']
-                    + c_hbu_iNotCbdPsfte * df['iNotCbdPsfte'] )
+                    + c_hbu_iNotCbdPsfte * df['iNotCbdPsfte'] )*df['bowen_adj']
 
         # set control total for hbu in database and get productions to scale
         ct_df_hbu = pd.DataFrame(df['hbu'])
@@ -263,6 +268,8 @@ class TripAttractions(_m.Tool()):
         df.to_sql(name='TripsTazAtrs', con=conn, flavor='sqlite', index=False, if_exists='replace')
         prd_df.to_sql(name='TripsTazPrds', con=conn, flavor='sqlite', index=False, if_exists='replace')
         conn.close()
+        
+        
 
         # write to EMMEbank
         util.set_matrix_numpy(eb, 'mohbuprd', prd_df['hbu'].values)
