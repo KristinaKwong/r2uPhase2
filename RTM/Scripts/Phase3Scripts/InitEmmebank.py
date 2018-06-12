@@ -304,7 +304,7 @@ class InitEmmebank(_m.Tool()):
         eb.create_function("fd07", "length * 60 / el1 + 0.85 * ((volau + volad) / (1400*lanes))^5")
          
         # Update FT functions to include dwell time (us1) based on boardings and alightings
-        eb.create_function("ft01", "us1 + us2")
+        eb.create_function("ft01", "us1 + 1.1 * us2")
         eb.create_function("ft10", "0.01")
         eb.create_function("fp01", "(.1 + pvolau / 100) ^ 4")
         eb.create_function("fp02", "(.1 + pvolau / 200) ^ 4")

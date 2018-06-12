@@ -106,6 +106,7 @@ class TransitAssignment(_m.Tool()):
         return pb.render()
 
     def run(self):
+        util = _m.Modeller().tool("translink.util")
         self.tool_run_msg = ""
         try:
             eb = _m.Modeller().emmebank
