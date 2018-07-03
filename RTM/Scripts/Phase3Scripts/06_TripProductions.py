@@ -60,8 +60,20 @@ class TripProductions(_m.Tool()):
 
         # acquire household level data
         conn = util.get_rtm_db(eb)
-        hh_df = pd.read_sql("SELECT * FROM segmentedHouseholds", conn)
+        hh_df = pd.read_sql('''SELECT TAZ1741,
+                               HHSize,
+                               HHWorker,
+                               HHInc,
+                               HHAuto,
+                               CountHHs,
+                               e.gm
+
+                               FROM segmentedHouseholds sh
+
+                               LEFT JOIN ensembles e on e.TAZ1700 = sh.TAZ1741''', conn)
         conn.close()
+
+
 
         # Attach commute  trip rates
         hh_df = pd.merge(hh_df, hh_c_df, how = 'left', left_on = ['HHWorker','HHInc'], right_on = ['HHWorker','HHInc'])
@@ -72,18 +84,23 @@ class TripProductions(_m.Tool()):
         # Attach non-commute trip rates
         hh_df = pd.merge(hh_df, hh_nc_df, how = 'left', left_on = ['HHSize','HHInc'], right_on = ['HHSize','HHInc'])
 
+        bowen_adj = 0.65
+
+        hh_df['bowen_adj'] = np.where(hh_df['gm'] == 100, bowen_adj, 1.00)
+
+
         # Calculate Productions
 
         # Commute
-        hh_df['hbw'] = hh_df['CountHHs'] * hh_df['hbw_prds']
-        hh_df['nhbw_ct'] = hh_df['CountHHs'] * hh_df['nhbw_ct_prds']
+        hh_df['hbw'] = hh_df['CountHHs'] * hh_df['hbw_prds'] * hh_df['bowen_adj']
+        hh_df['nhbw_ct'] = hh_df['CountHHs'] * hh_df['nhbw_ct_prds'] * hh_df['bowen_adj']
         #  Non Commute
-        hh_df['hbesc'] = hh_df['CountHHs'] * hh_df['hbesc_prds']
-        hh_df['hbpb'] = hh_df['CountHHs'] * hh_df['hbpb_prds']
-        hh_df['hbsch'] = hh_df['CountHHs'] * hh_df['hbsch_prds']
-        hh_df['hbshop'] = hh_df['CountHHs'] * hh_df['hbshop_prds']
-        hh_df['hbsoc'] = hh_df['CountHHs'] * hh_df['hbsoc_prds']
-        hh_df['nhbo_ct'] = hh_df['CountHHs'] * hh_df['nhbo_ct_prds']
+        hh_df['hbesc'] = hh_df['CountHHs'] * hh_df['hbesc_prds'] * hh_df['bowen_adj']
+        hh_df['hbpb'] = hh_df['CountHHs'] * hh_df['hbpb_prds'] * hh_df['bowen_adj']
+        hh_df['hbsch'] = hh_df['CountHHs'] * hh_df['hbsch_prds'] * hh_df['bowen_adj']
+        hh_df['hbshop'] = hh_df['CountHHs'] * hh_df['hbshop_prds'] * hh_df['bowen_adj']
+        hh_df['hbsoc'] = hh_df['CountHHs'] * hh_df['hbsoc_prds'] * hh_df['bowen_adj']
+        hh_df['nhbo_ct'] = hh_df['CountHHs'] * hh_df['nhbo_ct_prds'] * hh_df['bowen_adj']
 
         # Calculate NHB trip control totals
         nhbw_ct = hh_df['nhbw_ct'].sum()
@@ -127,17 +144,12 @@ class TripProductions(_m.Tool()):
         Inc = [1,2,3]
         Aut = [0,1,2]
 
-        ## Attach gm file in order to select Bowen Island
-        df_emme['gm'] = util.get_matrix_numpy(eb, 'gm_ensem')
-        bowen_adj = 0.65
-
         # stuff data
         for purpose in Pur:
             for income in Inc:
                 for auto in Aut:
                     mo = "mo{purpose}Inc{income}Au{auto}prd".format(purpose=purpose, income=income, auto=auto)
                     vec = "{purpose} {income} {auto}".format(purpose=purpose, income=income, auto=auto)
-                    df_emme[vec] = np.where(df_emme['gm'] == 100, df_emme[vec]*bowen_adj, df_emme[vec])
                     util.set_matrix_numpy(eb, mo, df_emme[vec].values)
 
         return np.round(nhbw_ct,6), np.round(nhbo_ct,6)
@@ -216,13 +228,18 @@ class TripProductions(_m.Tool()):
         c_nhbo_PS = 0.040261
         c_nhbo_HHs = 0.175705
 
+        ## Add Bowenn Island adjsutment
+
+        bowen_adj = 0.65
+        df['gm'] = util.get_matrix_numpy(eb, 'gm_ensem')
+        df['bowen_adj'] = np.where(df['gm'] == 100, bowen_adj, 1.00)
 
         # calculate hbu productions
         df['hbu'] = ( c_hbu_int * df['hbu_intercept']
                     + c_iPop1824UnAcOth * df['iPop1824UnAcOth']
                     + c_iPop1824UnAcVan * df['iPop1824UnAcVan']
                     + c_iPop1824UnAcSur * df['iPop1824UnAcSur']
-                    + c_iP2434UnAc * df['iPop2534UnAc'] )
+                    + c_iP2434UnAc * df['iPop2534UnAc'] ) * df['bowen_adj']
 
         # calculate non-home based work productions
         df['nhbw'] = ( c_nhbw_int
@@ -235,7 +252,7 @@ class TripProductions(_m.Tool()):
                      + c_nhbw_HEPA * df['EMP_Health_Educat_PubAdmin']
                      + c_nhbw_EE * df['Elementary_Enrolment']
                      + c_nhbw_SE * df['Secondary_Enrolment']
-                     + c_nhbw_HHs * df['HH_Total'] )
+                     + c_nhbw_HHs * df['HH_Total'] ) * df['bowen_adj']
 
         # calculate non-home based other productions
         df['nhbo'] = ( c_nhbo_int
@@ -245,7 +262,7 @@ class TripProductions(_m.Tool()):
                      + c_nhbo_EE * df['Elementary_Enrolment']
                      + c_nhbo_SE * df['Secondary_Enrolment']
                      + c_nhbo_PS * df['PostSecFTE']
-                     + c_nhbo_HHs * df['HH_Total'] )
+                     + c_nhbo_HHs * df['HH_Total'] ) * df['bowen_adj']
 
         # clear out intercept trips from pnr and external zones
         df['hbu'] = np.where(df['TAZ1741'] < 1000, 0, df['hbu'])
@@ -256,6 +273,7 @@ class TripProductions(_m.Tool()):
 
         nhbw_scalar = nhbw_ct / df['nhbw'].sum()
         nhbo_scalar = nhbo_ct / df['nhbo'].sum()
+
         df['nhbw'] = df['nhbw'] * nhbw_scalar
         df['nhbo'] = df['nhbo'] * nhbo_scalar
 
@@ -272,13 +290,6 @@ class TripProductions(_m.Tool()):
         df.to_sql(name='TripsTazPrds', con=conn, flavor='sqlite', index=False, if_exists='replace')
         ct_df.to_sql(name='TripsBalCts', con=conn, flavor='sqlite', index=False, if_exists='append')
         conn.close()
-
-        df['gm'] = util.get_matrix_numpy(eb, 'gm_ensem')
-        bowen_adj = 0.65
-
-        df['hbu'] = np.where(df['gm'] == 100, df['hbu']*bowen_adj, df['hbu'])
-        df['nhbw'] = np.where(df['gm'] == 100, df['nhbw']*bowen_adj, df['nhbw'])
-        df['nhbo'] = np.where(df['gm'] == 100, df['nhbo']*bowen_adj, df['nhbo'])
 
         # stuff in emmebank
         util.set_matrix_numpy(eb, 'mohbuprd', df['hbu'].values)

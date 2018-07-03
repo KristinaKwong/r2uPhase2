@@ -121,16 +121,16 @@ class TripAttractions(_m.Tool()):
         # hbu
         c_hbu_iCbdPsfte = 0.287631
         c_hbu_iNotCbdPsfte = 1.411431
-        
-        
+
+
 
         ########################################################################
         # Calculate and Balance Attractions
         ########################################################################
 
         df['gm'] = util.get_matrix_numpy(eb, 'gm_ensem')
-        df['bowen_adj'] = np.where(df['gm'] == 100, 0.65, 1)
-        
+        df['bowen_adj'] = np.where(df['gm'] == 100, 1.00, 1)
+
         # HBW ##################################################################
         df['hbw'] = ( c_hbw_CM * df['EMP_Construct_Mfg']
                     + c_hbw_TW * df['EMP_TCU_Wholesale']
@@ -189,7 +189,7 @@ class TripAttractions(_m.Tool()):
         spec = util.matrix_spec("md2030", "md2030*md2031/md2032")
         spec["constraint"]["by_zone"] = {"destinations": "gx1-gx15"}
         specs.append(spec)
-        
+
         util.compute_matrix(specs)
         # feed gx-balanced attractions back to dataframe
         df['hbsch'] = util.get_matrix_numpy(eb, 'mdhbschatr')
@@ -268,8 +268,8 @@ class TripAttractions(_m.Tool()):
         df.to_sql(name='TripsTazAtrs', con=conn, flavor='sqlite', index=False, if_exists='replace')
         prd_df.to_sql(name='TripsTazPrds', con=conn, flavor='sqlite', index=False, if_exists='replace')
         conn.close()
-        
-        
+
+
 
         # write to EMMEbank
         util.set_matrix_numpy(eb, 'mohbuprd', prd_df['hbu'].values)
