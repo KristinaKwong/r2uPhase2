@@ -19,8 +19,8 @@ class FullTruckModel(_m.Tool()):
         pb.description = "Run Full Truck Model"
         pb.branding_text = "TransLink"
 
-        pb.add_select(tool_attribute_name="Year",keyvalues=[[2011,"2011"],[2016,"2016"],[2030,"2030"],[2045,"2045"]],
-                        title="Choose Analysis Year (2011, 2016, 2030 or 2045)")
+        pb.add_select(tool_attribute_name="Year",keyvalues=[[2011,"2011"],[2016,"2016"],[2035,"2035"],[2050,"2050"]],
+                        title="Choose Analysis Year (2011, 2016, 2035 or 2050)")
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
@@ -63,6 +63,20 @@ class FullTruckModel(_m.Tool()):
         util.delmat(eb, "mf8013")
         matrix_file1 = os.path.join(root_directory, "TruckBatchFiles", str(Year)+"CrossBorderv1.txt")
         process(transaction_file=matrix_file1, throw_on_error=True)
+
+        ## Adjust PM Trucks
+
+        lgv_pm_fac = 0.6
+        hgv_pm_fac = 0.5
+
+        mat1 = util.get_matrix_numpy(eb, 'mfPMCBLg')
+        mat2 = util.get_matrix_numpy(eb, 'mfPMCBHv')
+
+        mat3 = lgv_pm_fac*mat1
+        mat4 = hgv_pm_fac*mat2
+
+        util.set_matrix_numpy(eb, 'mfPMCBLg', mat3)
+        util.set_matrix_numpy(eb, 'mfPMCBHv', mat4)
 
     @_m.logbook_trace("Inter-Regional Demand Market")
     def inter_regional(self, eb, Year):
@@ -124,13 +138,19 @@ class FullTruckModel(_m.Tool()):
 
         if Year==2030:
             BC_GDP=257458.98
-            NGrowth1=1.2
-            NGrowth2=1.2
+            NGrowth1=1.20
+            NGrowth2=1.20
 
-        if Year==2045:
+        if Year==2035:
+            BC_GDP=281998.00
+            NGrowth1=1.23
+            NGrowth2=1.30
+
+
+        if Year>=2045:
             BC_GDP=331079.67
             NGrowth1=1.28
-            NGrowth2=1.5
+            NGrowth2=1.50
 
         Q1,Q2,Q3,Rcn=0,0,0,0
 
@@ -305,6 +325,21 @@ class FullTruckModel(_m.Tool()):
                         spec["constraint"]["by_zone"] = {"origins": "*", "destinations": str(ConstraintList[k][l])}
                         util.compute_matrix(spec)
 
+        ## Adjust PM Trucks
+
+        lgv_pm_fac = 0.6
+        hgv_pm_fac = 0.5
+
+        mat1 = util.get_matrix_numpy(eb, 'mfIRLgPM')
+        mat2 = util.get_matrix_numpy(eb, 'mfIRHvPM')
+
+        mat3 = lgv_pm_fac*mat1
+        mat4 = hgv_pm_fac*mat2
+
+        util.set_matrix_numpy(eb, 'mfIRLgPM', mat3)
+        util.set_matrix_numpy(eb, 'mfIRHvPM', mat4)
+
+
     @_m.logbook_trace("Asia Pacific Demand Market")
     def asia_pacific(self, eb, Year):
         util = _m.Modeller().tool("translink.util")
@@ -346,6 +381,17 @@ class FullTruckModel(_m.Tool()):
         specs.append(util.matrix_spec("mf8042", "mf8032*mo8030*mo8030'"))
         specs.append(util.matrix_spec("mf8043", "mf8033*mo8030*mo8030'"))
         util.compute_matrix(specs)
+
+        ## Adjust PM Trucks
+
+        lgv_pm_fac = 0.6
+        hgv_pm_fac = 0.5
+
+        mat2 = util.get_matrix_numpy(eb, 'mfAPHvPM')
+
+        mat4 = hgv_pm_fac*mat2
+
+        util.set_matrix_numpy(eb, 'mfAPHvPM', mat4)
 
     @_m.logbook_trace("Regional Demand Market")
     def regional(self, eb):
@@ -542,6 +588,20 @@ class FullTruckModel(_m.Tool()):
         specs.append(util.matrix_spec("mf8069", "mf8063*mf8055*ms8052"))
 
         util.compute_matrix(specs)
+
+        ## Adjust PM Trucks
+
+        lgv_pm_fac = 0.6
+        hgv_pm_fac = 0.5
+
+        mat1 = util.get_matrix_numpy(eb, 'mfRGLgPM')
+        mat2 = util.get_matrix_numpy(eb, 'mfRGHvPM')
+
+        mat3 = lgv_pm_fac*mat1
+        mat4 = hgv_pm_fac*mat2
+
+        util.set_matrix_numpy(eb, 'mfRGLgPM', mat3)
+        util.set_matrix_numpy(eb, 'mfRGHvPM', mat4)
 
     def aggregate_demand_pce(self, eb):
         util = _m.Modeller().tool("translink.util")
