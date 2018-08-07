@@ -84,7 +84,7 @@ class TripProductions(_m.Tool()):
         # Attach non-commute trip rates
         hh_df = pd.merge(hh_df, hh_nc_df, how = 'left', left_on = ['HHSize','HHInc'], right_on = ['HHSize','HHInc'])
 
-        bowen_adj = 0.65
+        bowen_adj = 0.40
 
         hh_df['bowen_adj'] = np.where(hh_df['gm'] == 100, bowen_adj, 1.00)
 
@@ -230,7 +230,7 @@ class TripProductions(_m.Tool()):
 
         ## Add Bowenn Island adjsutment
 
-        bowen_adj = 0.65
+        bowen_adj = 0.40
         df['gm'] = util.get_matrix_numpy(eb, 'gm_ensem')
         df['bowen_adj'] = np.where(df['gm'] == 100, bowen_adj, 1.00)
 

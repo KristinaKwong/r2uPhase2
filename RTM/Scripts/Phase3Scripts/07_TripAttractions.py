@@ -129,7 +129,7 @@ class TripAttractions(_m.Tool()):
         ########################################################################
 
         df['gm'] = util.get_matrix_numpy(eb, 'gm_ensem')
-        df['bowen_adj'] = np.where(df['gm'] == 100, 1.00, 1)
+        df['bowen_adj'] = np.where(df['gm'] == 100, 0.4, 1)
 
         # HBW ##################################################################
         df['hbw'] = ( c_hbw_CM * df['EMP_Construct_Mfg']
