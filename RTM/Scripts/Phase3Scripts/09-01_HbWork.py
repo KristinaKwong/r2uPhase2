@@ -96,6 +96,10 @@ class HbWork(_m.Tool()):
 #        ##############################################################################
 #        ##       Auto Modes
 #        ##############################################################################
+
+        with _m.logbook_trace("Start Time of Auto Modes Utility Calculation"):
+            pass
+
         # Generate Dataframe
         Df = {}
         MaxPark = 10.0
@@ -206,10 +210,12 @@ class HbWork(_m.Tool()):
         DfU['HV3I2']  = MChM.AutoAvail(Df['AutoCosHOV2'], Df['HV3I2'], AvailDict)
         DfU['HV3I3']  = MChM.AutoAvail(Df['AutoCosHOV3'], Df['HV3I3'], AvailDict)
 
-
 #        ##############################################################################
 #        ##       Walk to Transit Modes
 #        ##############################################################################
+
+        with _m.logbook_trace("Start Time of Walk to Transit Utility Calculation"):
+            pass
 
         # Generate Dataframe
         Df = {}
@@ -318,6 +324,10 @@ class HbWork(_m.Tool()):
 #        ##############################################################################
 #        ##       Drive to Transit Modes
 #        ##############################################################################
+
+        with _m.logbook_trace("Start Time of Drive to Transit Utility Calculation"):
+            pass
+
         # Generate Dataframe
         Df = {}
         Df['BAuCos'] = util.get_matrix_numpy(eb, 'HbWBlBAuPRCost') #Bus PR Drive Distance
@@ -461,6 +471,9 @@ class HbWork(_m.Tool()):
 #        ##       Active Modes
 #        ##############################################################################
 
+        with _m.logbook_trace("Start Time of Active Utility Calculation"):
+            pass
+
         Df = {}
         Df['AutoDis'] = util.get_matrix_numpy(eb, "mfdistAON") # Distance
         Df['IntrCBD'] = util.get_matrix_numpy(eb, 'd_cbd') #Intra-CBD
@@ -504,6 +517,9 @@ class HbWork(_m.Tool()):
         ############
 
         ## Add SOV Availability Term, Zones close to car shares assumed to have vehicle availability
+
+        with _m.logbook_trace("Start Time of Probability Calculation"):
+            pass
 
         DfU['CarShare'] = util.get_matrix_numpy(eb, 'cs500').reshape(NoTAZ,1) + np.zeros((1, NoTAZ))
         LrgU     = -99999.0
@@ -612,6 +628,9 @@ class HbWork(_m.Tool()):
         ##       Trip Distribution
        ##############################################################################
 
+        with _m.logbook_trace("Start Time of Trip Distribution"):
+            pass
+
         Logsum =  [
                   "HbWLSI1A0", "HbWLSI1A1", "HbWLSI1A2",
                   "HbWLSI2A0", "HbWLSI2A1", "HbWLSI2A2",
@@ -665,6 +684,9 @@ class HbWork(_m.Tool()):
 #       ##############################################################################
 #        ##       Calculate Demand
 #       ##############################################################################
+
+        with _m.logbook_trace("Start Time of Demand Calculation"):
+            pass
 
         I1A0_Dict = self.Calc_Demand(I1A0_Dict, util.get_matrix_numpy(eb,"HbWP-AI1A0"))
         I1A1_Dict = self.Calc_Demand(I1A1_Dict, util.get_matrix_numpy(eb,"HbWP-AI1A1"))
@@ -722,13 +744,17 @@ class HbWork(_m.Tool()):
 #       ##############################################################################
 #        ##       Get Time Slice Factors
 #       ##############################################################################
+
+        with _m.logbook_trace("Start Time of Time Slicing"):
+            pass
+
         purp = 'hbw'
         min_val = 0.000143
 
         # setup for hbw auto time slice matrices
         conn = util.get_rtm_db(eb)
         ts_uw = pd.read_sql("SELECT * FROM timeSlicingFactorsGb", conn)
-		# bus and rail AM PM factors
+        # bus and rail AM PM factors
         ts_uw_b = pd.read_sql("SELECT * FROM timeSlicingFactors where mode='Bus' ", conn)
         ts_uw_r = pd.read_sql("SELECT * FROM timeSlicingFactors where mode='Rail'", conn)
 
@@ -751,14 +777,14 @@ class HbWork(_m.Tool()):
         Auto_MD_Fct_AP = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'MD', 'AtoP', NoTAZ)
         Auto_PM_Fct_AP = MChM.ts_mat(df_mats, ts_uw, min_val, purp, 'PM', 'AtoP', NoTAZ)
 
-		# Bus Factors for AM and PM
+        # Bus Factors for AM and PM
         Bus_AM_Fct_PA = MChM.ts_mat(df_mats_br, ts_uw_b, min_val, purp, 'AM', 'PtoA', NoTAZ)
         Bus_PM_Fct_PA = MChM.ts_mat(df_mats_br, ts_uw_b, min_val, purp, 'PM', 'PtoA', NoTAZ)
 
         Bus_AM_Fct_AP = MChM.ts_mat(df_mats_br, ts_uw_b, min_val, purp, 'AM', 'AtoP', NoTAZ)
         Bus_PM_Fct_AP = MChM.ts_mat(df_mats_br, ts_uw_b, min_val, purp, 'PM', 'AtoP', NoTAZ)
 
-		# Rail Factors for AM and PM
+        # Rail Factors for AM and PM
         Rail_AM_Fct_PA = MChM.ts_mat(df_mats_br, ts_uw_r, min_val, purp, 'AM', 'PtoA', NoTAZ)
         Rail_PM_Fct_PA = MChM.ts_mat(df_mats_br, ts_uw_r, min_val, purp, 'PM', 'PtoA', NoTAZ)
 
@@ -802,11 +828,14 @@ class HbWork(_m.Tool()):
         WCE_AM_Fct = np.where(Gy_P<8, WCE_AM_Fct_N_PA, WCE_AM_Fct_S_PA)
         WCE_PM_Fct = np.where(Gy_P<8, WCE_PM_Fct_N_AP, WCE_PM_Fct_S_AP)
 
-
 #       #########################################################################################
 #        ##       Split Park and Ride to Auto and Transit Legs
 #       ##########################################################################################
         ## General Setup
+
+        with _m.logbook_trace("Start Time of Park and Ride Splitting"):
+            pass
+
         BLBsWk = util.get_matrix_numpy(eb, "buspr-lotChceWkAMPA").flatten() #Best Lot Bus Work
         BLRlWk = util.get_matrix_numpy(eb, "railpr-lotChceWkAMPA").flatten() #Best Lot Rail Work
         BLWcWk = util.get_matrix_numpy(eb, "wcepr-lotChceWkAMPA").flatten() #Best Lot WCE Work
@@ -873,6 +902,10 @@ class HbWork(_m.Tool()):
        ##       Calculate peak hour O-D person trips and final 24 hour P-A Trips
       ##########################################################################################
       ## SOV Trips      #SOV*PA_Factor + SOV_transpose*AP_Factor
+
+        with _m.logbook_trace("Start Time of Setting Matrices"):
+            pass
+
         SOVI1_AM = SOVI1*Auto_AM_Fct_PA + SOVI1.transpose()*Auto_AM_Fct_AP  # Low Income
         SOVI1_MD = SOVI1*Auto_MD_Fct_PA + SOVI1.transpose()*Auto_MD_Fct_AP
         SOVI1_PM = SOVI1*Auto_PM_Fct_PA + SOVI1.transpose()*Auto_PM_Fct_AP
@@ -1220,6 +1253,9 @@ class HbWork(_m.Tool()):
         util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_2_Pm", AuDr_HOVI1_PM)
         util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_3_Pm", AuDr_HOVI2_PM)
         util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_3_Pm", AuDr_HOVI3_PM)
+
+        with _m.logbook_trace("Start Time of Dumping Outputs to SQLite Database"):
+            pass
 
         ## Dump demands to SQL Database
         # AM
