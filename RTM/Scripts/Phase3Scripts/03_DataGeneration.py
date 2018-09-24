@@ -53,9 +53,7 @@ class DataGeneration(_m.Tool()):
             self.matrix_batchins(eb)
             self.calc_density(eb)
 
-            am_scen = eb.scenario(int(eb.matrix("ms2").data))
-            md_scen = eb.scenario(int(eb.matrix("ms3").data))
-            pm_scen = eb.scenario(int(eb.matrix("ms4").data))
+            am_scen, md_scen, pm_scen = util.get_tod_scenarios(eb)
 
             # Run iniitial AON assignment to generate a distance skim
             self.assignAON(am_scen)

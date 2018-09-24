@@ -490,3 +490,9 @@ class Util(_m.Tool()):
                             column_labels=col_labs, 
                             revert_on_error=True)
 
+    def get_tod_scenarios(self, eb):
+        am_scen = eb.scenario(int(eb.matrix("msAmScen").data))
+        md_scen = eb.scenario(int(eb.matrix("msMdScen").data))
+        pm_scen = eb.scenario(int(eb.matrix("msPmScen").data))
+
+        return (am_scen, md_scen, pm_scen)

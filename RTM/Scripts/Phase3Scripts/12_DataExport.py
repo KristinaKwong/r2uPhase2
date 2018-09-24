@@ -58,9 +58,7 @@ class DataExport(_m.Tool()):
     def __call__(self, eb):
         util = _m.Modeller().tool("translink.util")
         model_year = int(util.get_year(eb))
-        am_scen = eb.scenario(int(eb.matrix("ms2").data))
-        md_scen = eb.scenario(int(eb.matrix("ms3").data))
-        pm_scen = eb.scenario(int(eb.matrix("ms4").data))
+        am_scen, md_scen, pm_scen = util.get_tod_scenarios(eb)
 
         # add trip summary views
         self.addViewDailyModeSharebyPurp(eb)

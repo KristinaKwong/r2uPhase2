@@ -41,7 +41,9 @@ class InputSettings(_m.Tool()):
         eb = base_scenario.emmebank
 
         # Copy to new AM scenarios
-        am_scenid = int(eb.matrix("ms2").data)
+        #am_scenid = (base_scenario.number * 10) + 1
+        am_scenid = 21000
+        util.initmat(eb, "ms2", "AmScen", "AMScenario", am_scenid)
         copy_scenario(from_scenario=base_scenario,
                       scenario_id=am_scenid,
                       scenario_title=base_scenario.title + " AM",
@@ -51,7 +53,9 @@ class InputSettings(_m.Tool()):
         self.attribute_code(amscen, "@lanesam", "@vdfam", "@tpfam", "@hdwyam", "@tollam")
 
         # Copy to new MD Scenarios
-        md_scenid = int(eb.matrix("ms3").data)
+        #md_scenid = (base_scenario.number * 10) + 2
+        md_scenid = 22000
+        util.initmat(eb, "ms3", "MdScen", "MDScenario", md_scenid)
         copy_scenario(from_scenario=base_scenario,
                       scenario_id=md_scenid,
                       scenario_title=base_scenario.title + " MD",
@@ -60,8 +64,10 @@ class InputSettings(_m.Tool()):
 
         self.attribute_code(mdscen, "@lanesmd", "@vdfmd", "@tpfmd", "@hdwymd", "@tollmd")
 
-        # Copy to new pm Scenarios
-        pm_scenid = int(eb.matrix("ms4").data)
+        # Copy to new PM Scenarios
+        #pm_scenid = (base_scenario.number * 10) + 3
+        pm_scenid = 23000
+        util.initmat(eb, "ms4", "PmScen", "PMScenario", pm_scenid)
         copy_scenario(from_scenario=base_scenario,
                       scenario_id=pm_scenid,
                       scenario_title=base_scenario.title + " PM",
