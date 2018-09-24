@@ -140,7 +140,7 @@ class AutoAssignment(_m.Tool()):
         self.calc_timedist_skims(scenario.emmebank)
         self.calc_intrazonal_skims(scenario.emmebank)
 
-    @_m.logbook_trace("Calculate Time and Distance Skims")
+
     def calc_timedist_skims(self, eb):
         self.calc_timedist_skim(eb, "msAutoVOT1", "msautoOpCost", "mfSOVGCTimeVOT1", "mfSOVOpCstVOT1", "mfSOVTollVOT1", "mfSOVTimeVOT1", "mfSOVDistVOT1", 1.0)
         self.calc_timedist_skim(eb, "msAutoVOT2", "msautoOpCost", "mfSOVGCTimeVOT2", "mfSOVOpCstVOT2", "mfSOVTollVOT2", "mfSOVTimeVOT2", "mfSOVDistVOT2", 1.0)
@@ -171,7 +171,7 @@ class AutoAssignment(_m.Tool()):
         util.set_matrix_numpy(eb, time_mat, time)
         util.set_matrix_numpy(eb, opcst_mat, opcst)
 
-    @_m.logbook_trace("Execute Intrazonal Calculation")
+
     def calc_intrazonal_skims(self, eb):
         # Calculate Intrazonal GC Minutes
         self.calc_intrazonal_skim(eb, "mfSOVTimeVOT1")
@@ -406,7 +406,7 @@ class AutoAssignment(_m.Tool()):
         spec["classes"][ 7]["path_analyses"].append({"results": {"od_values": "mfLGVDist"},     "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
         spec["classes"][ 8]["path_analyses"].append({"results": {"od_values": "mfHGVDist"},     "link_component": "length", "operator": "+", "path_to_od_composition": path_od, "selection_threshold": {"lower": 0.00, "upper": 99999} })
 
-    @_m.logbook_trace("Calculate Link and Turn Aggregate Volumes")
+
     def calc_network_volumes(self, scenario):
         util = _m.Modeller().tool("translink.util")
 
@@ -415,7 +415,7 @@ class AutoAssignment(_m.Tool()):
         util.emme_turn_calc(scenario, "@wsovt", "@tsov1+@tsov2+@tsov3+@tsov4")
         util.emme_turn_calc(scenario, "@whovt", "@thov1+@thov2+@thov3+@thov4")
 
-    @_m.logbook_trace("Calculate Fixed Network Costs")
+
     def calc_network_costs(self, scenario):
         util = _m.Modeller().tool("translink.util")
         eb = scenario.emmebank
