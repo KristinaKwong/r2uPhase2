@@ -794,6 +794,7 @@ class DataExport(_m.Tool()):
                   'seatedPassengers' : [],
                   'standingPassengers' : [],
                   'hdwyfac' : [],
+                  'headway' : [],
                   'seatedCapacity' : [],
                   'totalCapacity' : [],
                   'mode' : [],
@@ -802,6 +803,7 @@ class DataExport(_m.Tool()):
 
 
         for seg in network.transit_segments():
+
             dfDict['Line'].append(seg.line.id)
             dfDict['Segment'].append("{}-{}".format(seg.i_node, seg.j_node))
 
@@ -833,13 +835,14 @@ class DataExport(_m.Tool()):
             dfDict['seatedPassengers'].append(seg['@pseat'])
             dfDict['standingPassengers'].append(seg['@pstand'])
             dfDict['hdwyfac'].append(seg['@hdwyfac'])
+            dfDict['headway'].append(seg.line.headway)           
             dfDict['seatedCapacity'].append(seg.line['@seatcapacity'])
             dfDict['totalCapacity'].append(seg.line['@totcapacity'])
             dfDict['mode'].append(seg.line.mode.id)
             dfDict['modeDesc'].append(seg.line.mode.description)
 
         df = pd.DataFrame(dfDict)
-        df = df[['Line','Segment','Length','Time','Speed','loadFactor','volume','transitStop','boardings','alightings','seatProbability','lineDescription','vehType','vehDesc','seatedPassengers','standingPassengers','hdwyfac','seatedCapacity','totalCapacity','mode','modeDesc']]
+        df = df[['Line','Segment','Length','Time','Speed','loadFactor','volume','transitStop','boardings','alightings','seatProbability','lineDescription','vehType','vehDesc','seatedPassengers','standingPassengers','hdwyfac', 'headway', 'seatedCapacity','totalCapacity','mode','modeDesc']]
 
         return df
 
