@@ -788,16 +788,21 @@ class ModeChoiceGenDf(_m.Tool()):
             "inro.emme.matrix_calculation.matrix_triple_index_operation")
 
         # explictly set lot ensemble - will have different lots in 2011 and future
-        # gn1 exist in 2011 and future
+        # gn1 exist in 2011, 2016, 2035 and 2050
         # gn2 exist only in 2011
-        # gn3 exist only in future
+        # gn3 exist in 2016, 2035 and 2050
+        # gn4 exist in 2035 and 2050
 
         if year == 2011:
         #    intermediates = 'gn1;gn2'
             intermediates = 'gn1;gn2'
-        else:
+        if year == 2016:
         #    intermediates = 'gn1;gn3'
             intermediates = 'gn1;gn3'
+        if year >= 2035:
+        #    intermediates = 'gn1;gn3'
+            intermediates = 'gn1;gn3;gn4'
+
         # defining dictionaries to keep matrix references explicit
         # matrices needed for calulcation
         # generalized time for auto and transit legs
@@ -1041,7 +1046,7 @@ class ModeChoiceGenDf(_m.Tool()):
     def AutoGT(self, eb):
         util = _m.Modeller().tool("translink.util")
 
-        # work trips 
+        # work trips
         # [AM,MD,PM]
         auto_mats = {"autotime" : ["AmSovTimeVOT4",  "MdSovTimeVOT4", "PmSovTimeVOT4"],
                     "autocost" : ["mfAmSovOpCstVOT4", "mfMdSovOpCstVOT4", "mfPmSovOpCstVOT4"]}
