@@ -198,7 +198,8 @@ class ModeChoiceUtilities(_m.Tool()):
                         (Df['BusWat']<AvailDict['TranWat']) &
                         (Df['BusAux']<AvailDict['TranAux']) &
                         (Df['BusBrd']<=AvailDict['TranBrd']) &
-                        (Df['BAuTim']>AvailDict['PRAutTim'])&
+                        (Df['BAuTim']>AvailDict['PRAutTim_min'])&
+                        (Df['BAuTim']<=AvailDict['PRAutTim_max'])&
                         (np.logical_or(Df['BusFar']<=1.05*Df['WBusFar'], Df['WBusFar']==0))&
                         (Df['BAuTim']/(Df['BusIVT']+Tiny)<=AvailDict['pr_ratio'])&
                         (Df['IntZnl']!=1)                   &
@@ -213,7 +214,8 @@ class ModeChoiceUtilities(_m.Tool()):
                         (Df['RalWat']<AvailDict['TranWat']) &
                         (Df['RalAux']<AvailDict['TranAux']) &
                         (Df['RalBrd']<=AvailDict['TranBrd']) &
-                        (Df['RAuTim']>AvailDict['PRAutTim'])&
+                        (Df['RAuTim']>AvailDict['PRAutTim_min'])&
+                        (Df['RAuTim']<=AvailDict['PRAutTim_max'])&
                         (np.logical_or(Df['RalFar']<=1.05*Df['WRalFar'], Df['WRalFar']==0))&
                         (np.logical_or(Df['WRalIVR'] == 0, Df['RAuTot'] <= 1.5*Df['RalTot']))&
                         (np.logical_or(Df['BusIVT'] == 0, Df['RAuTot'] <= 1.5*Df['BusTot']))&
@@ -229,7 +231,8 @@ class ModeChoiceUtilities(_m.Tool()):
                         (Df['WCEWat']<AvailDict['WCEWat'])  &
                         (Df['WCEAux']<AvailDict['WCEAux'])  &
                         (Df['WCEBrd']<=AvailDict['TranBrd']) &
-                        (Df['WAuTim']>AvailDict['PRAutTim'])&
+                        (Df['WAuTim']>AvailDict['PRAutTim_min'])&
+                        (Df['WAuTim']<=AvailDict['PRAutTim_max'])&
                         (np.logical_or(Df['WCEFar']<=1.05*Df['WWCEFar'], Df['WWCEFar']==0))&
                         (np.logical_or(Df['WWCEIVW'] == 0, Df['WAuTot'] <= 1.5*Df['WCETot']))&
                         (np.logical_or(Df['WRalIVR'] == 0, Df['WAuTot'] <= 1.5*Df['RalTot']))&
