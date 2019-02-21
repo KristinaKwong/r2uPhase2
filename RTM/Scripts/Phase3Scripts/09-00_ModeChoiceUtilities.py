@@ -289,3 +289,73 @@ class ModeChoiceUtilities(_m.Tool()):
         mat = dfa['shares'].values.reshape(notaz,notaz)
         del dfa
         return mat
+
+    def Calc_Prob(self, eb, Dict, Logsum, Th, trip_attr, LS_Coeff, modes_dict, taz_list, purp_name, inc, auto):
+
+        util = _m.Modeller().tool("translink.util")
+        Tiny=0.000001
+
+        attr_vector = util.get_matrix_numpy(eb, trip_attr)
+        NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
+        attr_mat = attr_vector.reshape(1, NoTAZ) + np.zeros((NoTAZ, 1))
+        df_final = pd.DataFrame()
+
+        L_Nst = {key:sum(np.exp(nest))
+                      for key,nest in Dict.items()}
+
+        U_Nst  = {key:pow(nest,Th)
+                      for key,nest in L_Nst.items()}
+
+        L_Nst = {key:np.where(value == 0, Tiny, value)
+                      for key,value in L_Nst.items()}
+
+        for ls in modes_dict.items():
+
+            temp_dict ={x: U_Nst[x] for x in ls[1] if x in U_Nst}
+
+
+
+            F_Utl = sum(temp_dict.values())
+            F_Utl = np.where(F_Utl == 0, Tiny, F_Utl)
+
+            if ls[0] == 'All':
+                util.set_matrix_numpy(eb, Logsum, np.log(F_Utl))
+                Prob_Dict = {key:np.exp(nest)/L_Nst[key]*temp_dict[key]/F_Utl
+                                 for key, nest in Dict.items()}
+
+
+        ### Calculate accessibilities
+
+            F_Utl = LS_Coeff*np.log(F_Utl)
+            access = np.log(np.sum(attr_mat*np.exp(F_Utl), axis = 1))
+            df = pd.DataFrame()
+            df['TZ']  = taz_list
+            df['mode'] = ls[0]
+            df['Accessibility_Value'] = access
+            df_final = pd.concat([df_final, df])
+
+        df_final['purpose'], df_final['income'], df_final['autos'] = purp_name, inc, auto
+
+        conn = util.get_db_byname(eb, "trip_summaries.db")
+
+        if Logsum == 'HbWLSI1A0':
+
+            write_type = 'replace'
+
+        else:
+
+            write_type = 'append'
+
+        df_final = df_final[['TZ', 'purpose', 'mode', 'income', 'autos', 'Accessibility_Value']]
+        df_final.to_sql(name='logsum_accessibilities', con=conn, flavor='sqlite', index=False, if_exists=write_type)
+        conn.close()
+
+        return Prob_Dict
+
+
+    def Calc_Demand(self, Dict, Dem):
+        util = _m.Modeller().tool("translink.util")
+
+        Seg_Dict = {key:Dem*nest_len
+                    for key, nest_len in Dict.items()}
+        return Seg_Dict

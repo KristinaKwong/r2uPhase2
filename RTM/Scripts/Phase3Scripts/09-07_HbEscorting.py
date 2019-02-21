@@ -65,6 +65,7 @@ class HbEscorting(_m.Tool()):
         p161 = 2.731352
         p164 = 4.789199
         thet = 0.500000
+        LS_Coeff = 0.2
 
 
 #        ##############################################################################
@@ -188,6 +189,8 @@ class HbEscorting(_m.Tool()):
         # All Incomes
         #############
 
+        taz_list = util.get_matrix_numpy(eb, 'zoneindex', reshape = False)
+
         ## Zero Autos
         Dict = {
                'Auto'  : [DfU['Auto']],
@@ -195,7 +198,12 @@ class HbEscorting(_m.Tool()):
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
 
-        A0_Dict = self.Calc_Prob(eb, Dict, "HbEsLSA0", thet)
+        keys_list = list(Dict.keys())
+        modes_dict = {'All':keys_list, 'Auto': ['Auto'],
+                     'Transit': ['WTra'], 'Active': ['Acti']}
+
+        A0_Dict = MChM.Calc_Prob(eb, Dict, "HbEsLSA0", thet, 'hbescatr', LS_Coeff, modes_dict, taz_list, purp_name = 'hbesc', inc = 9, auto = 0)
+
 
         ## One Auto
         Dict = {
@@ -204,7 +212,7 @@ class HbEscorting(_m.Tool()):
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
 
-        A1_Dict = self.Calc_Prob(eb, Dict, "HbEsLSA1", thet)
+        A1_Dict = MChM.Calc_Prob(eb, Dict, "HbEsLSA1", thet, 'hbescatr', LS_Coeff, modes_dict, taz_list, purp_name = 'hbesc', inc = 9, auto = 1)
 
         ## Two Auto
         Dict = {
@@ -213,7 +221,7 @@ class HbEscorting(_m.Tool()):
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
 
-        A2_Dict = self.Calc_Prob(eb, Dict, "HbEsLSA2", thet)
+        A2_Dict = MChM.Calc_Prob(eb, Dict, "HbEsLSA2", thet, 'hbescatr', LS_Coeff, modes_dict, taz_list, purp_name = 'hbesc', inc = 9, auto = 2)
 
 #
 #       ##############################################################################
@@ -246,11 +254,7 @@ class HbEscorting(_m.Tool()):
                     "HbEsP-AI3A0", "HbEsP-AI3A1", "HbEsP-AI3A2"
                    ]
 
-        LS_Coeff = 0.2
-
         LambdaList = [-0.406931,-0.386407,-0.391416,-0.406931,-0.386407,-0.391416,-0.406931,-0.386407,-0.391416]
-
-
 
 
         AlphaList =  [0,0,0,0,0,0,0,0,0]
@@ -270,15 +274,15 @@ class HbEscorting(_m.Tool()):
 #        ##       Calculate Demand
 #       ##############################################################################
 
-        I1A0_Dict = self.Calc_Demand(A0_Dict, util.get_matrix_numpy(eb,"HbEsP-AI1A0"))
-        I1A1_Dict = self.Calc_Demand(A1_Dict, util.get_matrix_numpy(eb,"HbEsP-AI1A1"))
-        I1A2_Dict = self.Calc_Demand(A2_Dict, util.get_matrix_numpy(eb,"HbEsP-AI1A2"))
-        I2A0_Dict = self.Calc_Demand(A0_Dict, util.get_matrix_numpy(eb,"HbEsP-AI2A0"))
-        I2A1_Dict = self.Calc_Demand(A1_Dict, util.get_matrix_numpy(eb,"HbEsP-AI2A1"))
-        I2A2_Dict = self.Calc_Demand(A2_Dict, util.get_matrix_numpy(eb,"HbEsP-AI2A2"))
-        I3A0_Dict = self.Calc_Demand(A0_Dict, util.get_matrix_numpy(eb,"HbEsP-AI3A0"))
-        I3A1_Dict = self.Calc_Demand(A1_Dict, util.get_matrix_numpy(eb,"HbEsP-AI3A1"))
-        I3A2_Dict = self.Calc_Demand(A2_Dict, util.get_matrix_numpy(eb,"HbEsP-AI3A2"))
+        I1A0_Dict = MChM.Calc_Demand(A0_Dict, util.get_matrix_numpy(eb,"HbEsP-AI1A0"))
+        I1A1_Dict = MChM.Calc_Demand(A1_Dict, util.get_matrix_numpy(eb,"HbEsP-AI1A1"))
+        I1A2_Dict = MChM.Calc_Demand(A2_Dict, util.get_matrix_numpy(eb,"HbEsP-AI1A2"))
+        I2A0_Dict = MChM.Calc_Demand(A0_Dict, util.get_matrix_numpy(eb,"HbEsP-AI2A0"))
+        I2A1_Dict = MChM.Calc_Demand(A1_Dict, util.get_matrix_numpy(eb,"HbEsP-AI2A1"))
+        I2A2_Dict = MChM.Calc_Demand(A2_Dict, util.get_matrix_numpy(eb,"HbEsP-AI2A2"))
+        I3A0_Dict = MChM.Calc_Demand(A0_Dict, util.get_matrix_numpy(eb,"HbEsP-AI3A0"))
+        I3A1_Dict = MChM.Calc_Demand(A1_Dict, util.get_matrix_numpy(eb,"HbEsP-AI3A1"))
+        I3A2_Dict = MChM.Calc_Demand(A2_Dict, util.get_matrix_numpy(eb,"HbEsP-AI3A2"))
 
         # Auto Trips
         AutoI1 = I1A0_Dict['Auto'][0] + I1A1_Dict['Auto'][0] + I1A2_Dict['Auto'][0]
@@ -610,37 +614,8 @@ class HbEscorting(_m.Tool()):
 
         conn.close()
 
-        return df_Daily_Gy
-
         del Auto_AM_Fct_PA, Auto_MD_Fct_PA, Auto_PM_Fct_PA, Auto_AM_Fct_AP, Auto_MD_Fct_AP, Auto_PM_Fct_AP
 
-    def Calc_Prob(self, eb, Dict, Logsum, Th):
-        util = _m.Modeller().tool("translink.util")
-
-        Tiny =  0.000000001
-        L_Nst = {key:sum(np.exp(nest))
-                      for key,nest in Dict.items()}
-
-        U_Nst  = {key:pow(nest,Th)
-                      for key,nest in L_Nst.items()}
-
-        L_Nst = {key:np.where(value == 0, Tiny, value)
-                      for key,value in L_Nst.items()}
-
-        F_Utl = sum(U_Nst.values())
-        F_Utl = np.where(F_Utl ==0, Tiny, F_Utl)
-        util.set_matrix_numpy(eb, Logsum, np.log(F_Utl))
-
-        Prob_Dict = {key:np.exp(nest)/L_Nst[key]*U_Nst[key]/F_Utl
-                         for key, nest in Dict.items()}
-        return Prob_Dict
-
-    def Calc_Demand(self, Dict, Dem):
-        util = _m.Modeller().tool("translink.util")
-
-        Seg_Dict = {key:Dem*nest_len
-                    for key, nest_len in Dict.items()}
-        return Seg_Dict
     @_m.logbook_trace("PnR")
     def splitpnr (self, DfmergedAuto, DfmergedTran, DfInt):
 

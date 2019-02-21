@@ -65,6 +65,7 @@ class HbSchool(_m.Tool()):
         p602 =  0.370481
         p701 =  0.222423
         thet =  0.500000
+        LS_Coeff = 0.4
 
 #        ##############################################################################
 #        ##       Auto Modes
@@ -201,6 +202,8 @@ class HbSchool(_m.Tool()):
         # All Incomes
         #############
 
+        taz_list = util.get_matrix_numpy(eb, 'zoneindex', reshape = False)
+
         ## Zero Autos
         Dict = {
                'HOV'  : [DfU['HOV']],
@@ -208,7 +211,13 @@ class HbSchool(_m.Tool()):
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
 
-        A0_Dict = self.Calc_Prob(eb, Dict, "HbScLSA0", thet)
+        # get a list of all keys
+
+        keys_list = list(Dict.keys())
+        modes_dict = {'All':keys_list, 'Auto': ['HOV'],
+                     'Transit': ['WTra'], 'Active': ['Acti']}
+
+        A0_Dict = MChM.Calc_Prob(eb, Dict, "HbScLSA0", thet, 'hbschatr', LS_Coeff, modes_dict, taz_list, purp_name = 'hbsch', inc = 9, auto = 0)
 
         ## One Auto
         Dict = {
@@ -217,7 +226,7 @@ class HbSchool(_m.Tool()):
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
 
-        A1_Dict = self.Calc_Prob(eb, Dict, "HbScLSA1", thet)
+        A1_Dict = MChM.Calc_Prob(eb, Dict, "HbScLSA1", thet, 'hbschatr', LS_Coeff, modes_dict, taz_list, purp_name = 'hbsch', inc = 9, auto = 1)
 
         ## Two Auto
         Dict = {
@@ -226,7 +235,7 @@ class HbSchool(_m.Tool()):
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
 
-        A2_Dict = self.Calc_Prob(eb, Dict, "HbScLSA2", thet)
+        A2_Dict = MChM.Calc_Prob(eb, Dict, "HbScLSA2", thet, 'hbschatr', LS_Coeff, modes_dict, taz_list, purp_name = 'hbsch', inc = 9, auto = 2)
 
 #       ##############################################################################
 #        ##       Trip Distribution
@@ -257,8 +266,6 @@ class HbSchool(_m.Tool()):
                     "HbScP-AI2A0", "HbScP-AI2A1", "HbScP-AI2A2",
                     "HbScP-AI3A0", "HbScP-AI3A1", "HbScP-AI3A2"
                    ]
-
-        LS_Coeff = 0.4
 
         LambdaList = [-0.938565,-0.944464,-0.839627,-0.938565,-0.944464,-0.839627,-0.938565,-0.944464,-0.839627]
 
@@ -294,15 +301,15 @@ class HbSchool(_m.Tool()):
 #        ##       Calculate Demand
 #       ##############################################################################
 
-        I1A0_Dict = self.Calc_Demand(A0_Dict, util.get_matrix_numpy(eb,"HbScP-AI1A0"))
-        I1A1_Dict = self.Calc_Demand(A1_Dict, util.get_matrix_numpy(eb,"HbScP-AI1A1"))
-        I1A2_Dict = self.Calc_Demand(A2_Dict, util.get_matrix_numpy(eb,"HbScP-AI1A2"))
-        I2A0_Dict = self.Calc_Demand(A0_Dict, util.get_matrix_numpy(eb,"HbScP-AI2A0"))
-        I2A1_Dict = self.Calc_Demand(A1_Dict, util.get_matrix_numpy(eb,"HbScP-AI2A1"))
-        I2A2_Dict = self.Calc_Demand(A2_Dict, util.get_matrix_numpy(eb,"HbScP-AI2A2"))
-        I3A0_Dict = self.Calc_Demand(A0_Dict, util.get_matrix_numpy(eb,"HbScP-AI3A0"))
-        I3A1_Dict = self.Calc_Demand(A1_Dict, util.get_matrix_numpy(eb,"HbScP-AI3A1"))
-        I3A2_Dict = self.Calc_Demand(A2_Dict, util.get_matrix_numpy(eb,"HbScP-AI3A2"))
+        I1A0_Dict = MChM.Calc_Demand(A0_Dict, util.get_matrix_numpy(eb,"HbScP-AI1A0"))
+        I1A1_Dict = MChM.Calc_Demand(A1_Dict, util.get_matrix_numpy(eb,"HbScP-AI1A1"))
+        I1A2_Dict = MChM.Calc_Demand(A2_Dict, util.get_matrix_numpy(eb,"HbScP-AI1A2"))
+        I2A0_Dict = MChM.Calc_Demand(A0_Dict, util.get_matrix_numpy(eb,"HbScP-AI2A0"))
+        I2A1_Dict = MChM.Calc_Demand(A1_Dict, util.get_matrix_numpy(eb,"HbScP-AI2A1"))
+        I2A2_Dict = MChM.Calc_Demand(A2_Dict, util.get_matrix_numpy(eb,"HbScP-AI2A2"))
+        I3A0_Dict = MChM.Calc_Demand(A0_Dict, util.get_matrix_numpy(eb,"HbScP-AI3A0"))
+        I3A1_Dict = MChM.Calc_Demand(A1_Dict, util.get_matrix_numpy(eb,"HbScP-AI3A1"))
+        I3A2_Dict = MChM.Calc_Demand(A2_Dict, util.get_matrix_numpy(eb,"HbScP-AI3A2"))
 
         # Auto Trips
         HOVI1 = I1A0_Dict['HOV'][0] + I1A1_Dict['HOV'][0] + I1A2_Dict['HOV'][0]
@@ -566,35 +573,6 @@ class HbSchool(_m.Tool()):
 
         conn.close()
 
-        return df_Daily_Gy
-
-    def Calc_Prob(self, eb, Dict, Logsum, Th):
-        util = _m.Modeller().tool("translink.util")
-
-        Tiny=0.000001
-        L_Nst = {key:sum(np.exp(nest))
-                      for key,nest in Dict.items()}
-
-        U_Nst  = {key:pow(nest,Th)
-                      for key,nest in L_Nst.items()}
-
-        L_Nst = {key:np.where(value == 0, Tiny, value)
-                      for key,value in L_Nst.items()}
-
-        F_Utl = sum(U_Nst.values())
-        F_Utl = np.where(F_Utl ==0, Tiny, F_Utl)
-        util.set_matrix_numpy(eb, Logsum, np.log(F_Utl))
-
-        Prob_Dict = {key:np.exp(nest)/L_Nst[key]*U_Nst[key]/F_Utl
-                         for key, nest in Dict.items()}
-        return Prob_Dict
-
-    def Calc_Demand(self, Dict, Dem):
-        util = _m.Modeller().tool("translink.util")
-
-        Seg_Dict = {key:Dem*nest_len
-                    for key, nest_len in Dict.items()}
-        return Seg_Dict
     @_m.logbook_trace("PnR")
     def splitpnr (self, DfmergedAuto, DfmergedTran, DfInt):
 

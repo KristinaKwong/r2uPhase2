@@ -72,6 +72,8 @@ class Non_hbwork(_m.Tool()):
         p870 =   0.937169
         thet =   0.542267
 
+        LS_Coeff = 0.7
+
 #        ##############################################################################
 #        ##       Auto Modes
 #        ##############################################################################
@@ -212,6 +214,8 @@ class Non_hbwork(_m.Tool()):
 #        ##       Calculate Probabilities
 #        ##############################################################################
 
+        taz_list = util.get_matrix_numpy(eb, 'zoneindex', reshape = False)
+
         # All Incomes All Autos
         Dict = {
                'SOV'  : [DfU['SOV']],
@@ -220,7 +224,11 @@ class Non_hbwork(_m.Tool()):
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
 
-        Prob_Dict = self.Calc_Prob(eb, Dict, "NHbWLS", thet)
+        keys_list = list(Dict.keys())
+        modes_dict = {'All':keys_list, 'Auto': ['SOV', 'HOV'],
+                     'Transit': ['WTra'], 'Active': ['Acti']}
+
+        Prob_Dict = MChM.Calc_Prob(eb, Dict, "NHbWLS", thet, 'nhbwatr', LS_Coeff, modes_dict, taz_list, purp_name = 'nhbw', inc = 9, auto = 9)
         del DfU, Dict
 #
        ##############################################################################
@@ -237,7 +245,7 @@ class Non_hbwork(_m.Tool()):
 
         out_list = ["NHbWP-A"]
 
-        LS_Coeff = 0.7
+
 
         LambdaList = [-0.094648]
 
@@ -262,7 +270,7 @@ class Non_hbwork(_m.Tool()):
 #        ##       Calculate Demand
 #       ##############################################################################
 
-        Demand_Dict = self.Calc_Demand(Prob_Dict, util.get_matrix_numpy(eb,"NHbWP-A"))
+        Demand_Dict = MChM.Calc_Demand(Prob_Dict, util.get_matrix_numpy(eb,"NHbWP-A"))
 
 
         SOV =   Demand_Dict['SOV'][0]
@@ -516,35 +524,7 @@ class Non_hbwork(_m.Tool()):
         df_Daily_Gy.to_sql(name='daily_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
 
         conn.close()
-        return df_Daily_Gy
 
-    def Calc_Prob(self, eb, Dict, Logsum, Th):
-        util = _m.Modeller().tool("translink.util")
-
-        Tiny =  0.000000001
-        L_Nst = {key:sum(np.exp(nest))
-                      for key,nest in Dict.items()}
-
-        U_Nst  = {key:pow(nest,Th)
-                      for key,nest in L_Nst.items()}
-
-        L_Nst = {key:np.where(value == 0, Tiny, value)
-                      for key,value in L_Nst.items()}
-
-        F_Utl = sum(U_Nst.values())
-        F_Utl = np.where(F_Utl ==0, Tiny, F_Utl)
-        util.set_matrix_numpy(eb, Logsum, np.log(F_Utl))
-
-        Prob_Dict = {key:np.exp(nest)/L_Nst[key]*U_Nst[key]/F_Utl
-                         for key, nest in Dict.items()}
-        return Prob_Dict
-
-    def Calc_Demand(self, Dict, Dem):
-        util = _m.Modeller().tool("translink.util")
-
-        Seg_Dict = {key:Dem*nest_len
-                    for key, nest_len in Dict.items()}
-        return Seg_Dict
     @_m.logbook_trace("PnR")
     def splitpnr (self, DfmergedAuto, DfmergedTran, DfInt):
 
