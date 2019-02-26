@@ -1,4 +1,6 @@
 BE1EDF10-2EAD-462F-8D9D-01D816FE2C10 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
+# Emme View file generated on Tue Feb 26 11:23:08 2019
+# File: O:/Proj/2121-00448-00 Translink-SLSP Modeling Services/4.0 ENGINEERING DESIGN/4.8 Planning/EMME/RTM/Views/Initial.emv
 #
 # String Name: user definable name of configurable object (tr)
 Name = Initial View
@@ -15,13 +17,13 @@ FileType : (0x80)
 # Click SetAsInitial: Set this view as the initial view
 SetAsInitial : (0x1)
 # Float XMin: X-coordinate of lower left corner of the view
-XMin = 478.364990234375
+XMin = 478.361938476562
 # Float YMin: Y-coordinate of lower left corner of the view
-YMin = 5428.6279296875
+YMin = 5427.84423828125
 # Float XMax: X-coordinate of upper right corner of the view
-XMax = 540.513000488281
+XMax = 540.507263183594
 # Float YMax: Y-coordinate of upper right corner of the view
-YMax = 5473.7109375
+YMax = 5474.48779296875
 # Box ViewBox: box defining the view (nosave)
 ViewBox : (0x80)
 
