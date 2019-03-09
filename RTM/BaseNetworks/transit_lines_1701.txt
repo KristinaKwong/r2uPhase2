@@ -1,5 +1,5 @@
 c Emme Modeller - Transit Line Transaction
-c Scenario 1700:  2017 Base Network
+c Scenario 1701:  2017 Base: c/o Sc1700 + Initial Fraser Hwy Review
 t lines
 c Transit Lines
 c Line  Mod Veh Headwy Speed Description             Data1  Data2  Data3
@@ -29826,11 +29826,13 @@ a'502E1M' b   1  15.00  35.00 '502-EB1ALD          '      0      0      0
    635501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    636001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    635606         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   636401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    636202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    636402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    637105         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    637701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   637702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    638502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    670403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -29869,11 +29871,13 @@ a'502E1P' b   1   6.67  23.00 '502-EB1ALD          '      0      0      0
    635501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    636001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    635606         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   636401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    636202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    636402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    637105         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    637701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   637702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    638502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    670403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -29912,11 +29916,13 @@ a'502E3A' b   1  10.00  35.00 '502-EBLANG          '      0      0      0
    635501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    636001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    635606         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   636401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    636202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    636402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    637105         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    637701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   637702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    638502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    670403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -29939,11 +29945,13 @@ a'502W1M' b   1  15.00  35.00 '502-WB1ALD          '      0      0      0
    670403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    638502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   637702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    637105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    636402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    636202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   636401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    635607         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    635606         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    636001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -29983,11 +29991,13 @@ a'502W1P' b   1  10.00  23.00 '502-WB1ALD          '      0      0      0
    670403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    638502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   637702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    637105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    636402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    636202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   636401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    635607         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    635606         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    636001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -30029,11 +30039,13 @@ a'502W3A' b   1   6.67  35.00 '502-WB7             '      0      0      0
    670403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    638502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   637702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    637105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    636402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    636202         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   636401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    635607         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    635606         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    636001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -30090,11 +30102,13 @@ a'503E1A' b   1  30.00  35.00 'Aldgr/Langley/Surrey'      0      0      0
    635501         dwt=<0   ttf=1   us1=0   us2=0   us3=0
    636001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    635606         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   636401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    636202         dwt=<0   ttf=1   us1=0   us2=0   us3=0
    636402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637103         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637105         dwt=<0   ttf=1   us1=0   us2=0   us3=0
    637701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   637702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    638502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    670403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -30157,11 +30171,13 @@ a'503E1M' b   1  30.00  35.00 'Aldgr/Langley/Surrey'      0      0      0
    635501         dwt=<0   ttf=1   us1=0   us2=0   us3=0
    636001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    635606         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   636401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    636202         dwt=<0   ttf=1   us1=0   us2=0   us3=0
    636402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637103         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637105         dwt=<0   ttf=1   us1=0   us2=0   us3=0
    637701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   637702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    638502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    670403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -30224,11 +30240,13 @@ a'503E1P' b   1  30.00  35.00 'Aldgr/Langley/Surrey'      0      0      0
    635501         dwt=<0   ttf=1   us1=0   us2=0   us3=0
    636001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    635606         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   636401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    636202         dwt=<0   ttf=1   us1=0   us2=0   us3=0
    636402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637103         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637105         dwt=<0   ttf=1   us1=0   us2=0   us3=0
    637701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   637702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    638502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    670403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -30298,11 +30316,13 @@ a'503W1A' b   1  30.00  35.00 'Aldgr/Langley/Surrey'      0      0      0
    670403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    638502         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   637702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637701         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637103         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    636402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    636202         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   636401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    635607         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    635606         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    636001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -30368,11 +30388,13 @@ a'503W1M' b   1  30.00  35.00 'Aldgr/Langley/Surrey'      0      0      0
    670403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    638502         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   637702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637701         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637103         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    636402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    636202         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   636401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    635607         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    635606         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    636001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -30438,11 +30460,13 @@ a'503W1P' b   1  30.00  35.00 'Aldgr/Langley/Surrey'      0      0      0
    670403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    638502         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   637702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637701         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637103         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    636402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    636202         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   636401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    635607         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    635606         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    636001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
