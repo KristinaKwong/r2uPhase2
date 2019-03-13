@@ -290,55 +290,111 @@ class ModeChoiceUtilities(_m.Tool()):
         del dfa
         return mat
 
-    def Calc_Prob(self, eb, Dict, Logsum, Th, trip_attr, LS_Coeff, modes_dict, taz_list, purp_name, inc, auto):
+    def Calc_Prob(self, eb, Dict, Logsum, Th, trip_attr, LS_Coeff, modes_dict, taz_list):
 
         util = _m.Modeller().tool("translink.util")
         Tiny=0.000001
-
-        attr_vector = util.get_matrix_numpy(eb, trip_attr)
         NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
-        attr_mat = attr_vector.reshape(1, NoTAZ) + np.zeros((NoTAZ, 1))
+        attr_mat = util.get_matrix_numpy(eb, trip_attr).reshape(1, NoTAZ) + np.zeros((NoTAZ, 1))
         df_final = pd.DataFrame()
 
-        L_Nst = {key:sum(np.exp(nest))
-                      for key,nest in Dict.items()}
-
-        U_Nst  = {key:pow(nest,Th)
-                      for key,nest in L_Nst.items()}
-
-        L_Nst = {key:np.where(value == 0, Tiny, value)
-                      for key,value in L_Nst.items()}
+        L_Nst = {key:sum(np.exp(nest)) for key,nest in Dict.items()}
+        U_Nst  = {key:pow(nest,Th) for key,nest in L_Nst.items()}
+        L_Nst = {key:np.where(value == 0, Tiny, value) for key,value in L_Nst.items()}
 
         for ls in modes_dict.items():
-
             temp_dict ={x: U_Nst[x] for x in ls[1] if x in U_Nst}
-
-
-
             F_Utl = sum(temp_dict.values())
             F_Utl = np.where(F_Utl == 0, Tiny, F_Utl)
 
             if ls[0] == 'All':
                 util.set_matrix_numpy(eb, Logsum, np.log(F_Utl))
-                Prob_Dict = {key:np.exp(nest)/L_Nst[key]*temp_dict[key]/F_Utl
-                                 for key, nest in Dict.items()}
-
+                Prob_Dict = {key:np.exp(nest)/L_Nst[key]*temp_dict[key]/F_Utl for key, nest in Dict.items()}
 
         ### Calculate accessibilities
-
             F_Utl = LS_Coeff*np.log(F_Utl)
             access = np.log(np.sum(attr_mat*np.exp(F_Utl), axis = 1))
             df = pd.DataFrame()
-            df['TZ']  = taz_list
-            df['mode'] = ls[0]
-            df['Accessibility_Value'] = access
+            df['TZ'], df['mode'], df['Accessibility_Value']  = taz_list, ls[0], access
             df_final = pd.concat([df_final, df])
 
-        df_final['purpose'], df_final['income'], df_final['autos'] = purp_name, inc, auto
+        prp, sg = Logsum.split('LS')
+        df_final['purpose'] = prp
+        dct1 = {'income':['I', 1], 'autos':['A', 1]}
+
+        for keys, values in dct1.items():
+            if sg.find(values[0]) == -1:
+                df_final[keys] = 9
+            else:
+                df_final[keys] = sg[sg.find(values[0]) + values[1]]
+
+        if sg.find('I') == -1:
+            df_final['income'] = 1
+            df_temp = df_final.copy()
+
+            for i in range (2, 4):
+                df_temp['income'] = i
+                df_final = pd.concat([df_final, df_temp])
+
+        conn = util.get_db_byname(eb, "rtm.db")
+
+        if Logsum == 'HbWLSI1A0':
+            write_type = 'replace'
+        else:
+            write_type = 'append'
+
+        df_final.to_sql(name='logsum_accessibilities', con=conn, flavor='sqlite', index=False, if_exists=write_type)
+        conn.close()
+
+        return Prob_Dict
+
+    def Calc_Demand(self, eb, Dict, mat_name, write_att_demand = True):
+
+        util = _m.Modeller().tool("translink.util")
+        Dem = util.get_matrix_numpy(eb, mat_name)
+        taz_list = util.get_matrix_numpy(eb, 'zoneindex', reshape = False)
+        Seg_Dict = {key:Dem*nest_len for key, nest_len in Dict.items()}
+
+        dfnames, df_att = pd.DataFrame(), pd.DataFrame()
+
+        dfnames['md1'] = ['SOV','HOV','HOV','WTra','WTra','WTra','DTra','DTra','DTra',
+                     'KTra','KTra','KTra','TTra','TTra','TTra','Acti','Acti','TNC', 'Auto']
+        dfnames['md2'] = [0,0,1,0,1,2,0,1,2,0,1,2,0,1,2,0,1,0,0]
+        dfnames['mode'] = ['SOV','HV2','HV3','Bus','Rail','WCE','BAu','RAu','WAu',
+                    'BKr','RKr','WKr','BTnc','RTnc','WTnc','Walk','Bike','TNC', 'Auto']
+        dfnames['mode_agg'] = ['Auto','Auto','Auto','Transit','Transit','Transit','Transit','Transit','Transit',
+                    'Transit','Transit','Transit','Transit','Transit','Transit','Active','Active','TNC', 'Auto']
+
+        for keys in Seg_Dict.items():
+            for i in range(len(keys[1])):
+                mod1 = keys[0]
+                mod2 = i
+                df_j = pd.DataFrame()
+                df_j['tz'], df_j['mode1'], df_j['mode2'], df_j['trips'] = taz_list, mod1, mod2, np.sum(keys[1][i], axis = 0)
+                df_att = pd.concat([df_att, df_j])
+
+        df_att = pd.merge(df_att, dfnames, how = 'left', left_on = ['mode1', 'mode2'], right_on = ['md1', 'md2'])
+        purp_name, segment = mat_name.split('-')
+        df_att['purp'] = purp_name[:-1]
+        df_att['segment'] = segment[1:]
+
+        df_triptots = df_att.groupby(['purp', 'segment', 'mode']).sum().reset_index()
+        df_triptots = df_triptots[['purp', 'segment', 'mode', 'trips']]
+        df_att = df_att[['tz', 'purp', 'mode_agg', 'trips']]
+
+        prp = 'hbo'
+        sg  = 0
+
+        if purp_name[:-1] == 'HbW':
+            prp = 'hbw'
+
+
+        df_att['purp'] = prp
+
 
         conn = util.get_db_byname(eb, "trip_summaries.db")
 
-        if Logsum == 'HbWLSI1A0':
+        if mat_name == 'HbWP-AI1A0':
 
             write_type = 'replace'
 
@@ -346,16 +402,11 @@ class ModeChoiceUtilities(_m.Tool()):
 
             write_type = 'append'
 
-        df_final = df_final[['TZ', 'purpose', 'mode', 'income', 'autos', 'Accessibility_Value']]
-        df_final.to_sql(name='logsum_accessibilities', con=conn, flavor='sqlite', index=False, if_exists=write_type)
+        df_triptots.to_sql(name='trip_tots', con=conn, flavor='sqlite', index=False, if_exists=write_type)
+
+        if write_att_demand == True:
+            df_att.to_sql(name='trip_att_tots', con=conn, flavor='sqlite', index=False, if_exists=write_type)
+
         conn.close()
 
-        return Prob_Dict
-
-
-    def Calc_Demand(self, Dict, Dem):
-        util = _m.Modeller().tool("translink.util")
-
-        Seg_Dict = {key:Dem*nest_len
-                    for key, nest_len in Dict.items()}
         return Seg_Dict

@@ -228,7 +228,7 @@ class Non_hbwork(_m.Tool()):
         modes_dict = {'All':keys_list, 'Auto': ['SOV', 'HOV'],
                      'Transit': ['WTra'], 'Active': ['Acti']}
 
-        Prob_Dict = MChM.Calc_Prob(eb, Dict, "NHbWLS", thet, 'nhbwatr', LS_Coeff, modes_dict, taz_list, purp_name = 'nhbw', inc = 9, auto = 9)
+        Prob_Dict = MChM.Calc_Prob(eb, Dict, "NHbWLS", thet, 'nhbwatr', LS_Coeff, modes_dict, taz_list)
         del DfU, Dict
 #
        ##############################################################################
@@ -270,7 +270,7 @@ class Non_hbwork(_m.Tool()):
 #        ##       Calculate Demand
 #       ##############################################################################
 
-        Demand_Dict = MChM.Calc_Demand(Prob_Dict, util.get_matrix_numpy(eb,"NHbWP-A"))
+        Demand_Dict = MChM.Calc_Demand(eb, Prob_Dict, "NHbWP-A")
 
 
         SOV =   Demand_Dict['SOV'][0]

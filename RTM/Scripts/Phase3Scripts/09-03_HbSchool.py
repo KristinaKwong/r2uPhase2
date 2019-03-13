@@ -217,7 +217,7 @@ class HbSchool(_m.Tool()):
         modes_dict = {'All':keys_list, 'Auto': ['HOV'],
                      'Transit': ['WTra'], 'Active': ['Acti']}
 
-        A0_Dict = MChM.Calc_Prob(eb, Dict, "HbScLSA0", thet, 'hbschatr', LS_Coeff, modes_dict, taz_list, purp_name = 'hbsch', inc = 9, auto = 0)
+        A0_Dict = MChM.Calc_Prob(eb, Dict, "HbScLSA0", thet, 'hbschatr', LS_Coeff, modes_dict, taz_list)
 
         ## One Auto
         Dict = {
@@ -226,7 +226,7 @@ class HbSchool(_m.Tool()):
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
 
-        A1_Dict = MChM.Calc_Prob(eb, Dict, "HbScLSA1", thet, 'hbschatr', LS_Coeff, modes_dict, taz_list, purp_name = 'hbsch', inc = 9, auto = 1)
+        A1_Dict = MChM.Calc_Prob(eb, Dict, "HbScLSA1", thet, 'hbschatr', LS_Coeff, modes_dict, taz_list)
 
         ## Two Auto
         Dict = {
@@ -235,7 +235,7 @@ class HbSchool(_m.Tool()):
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
 
-        A2_Dict = MChM.Calc_Prob(eb, Dict, "HbScLSA2", thet, 'hbschatr', LS_Coeff, modes_dict, taz_list, purp_name = 'hbsch', inc = 9, auto = 2)
+        A2_Dict = MChM.Calc_Prob(eb, Dict, "HbScLSA2", thet, 'hbschatr', LS_Coeff, modes_dict, taz_list)
 
 #       ##############################################################################
 #        ##       Trip Distribution
@@ -301,15 +301,15 @@ class HbSchool(_m.Tool()):
 #        ##       Calculate Demand
 #       ##############################################################################
 
-        I1A0_Dict = MChM.Calc_Demand(A0_Dict, util.get_matrix_numpy(eb,"HbScP-AI1A0"))
-        I1A1_Dict = MChM.Calc_Demand(A1_Dict, util.get_matrix_numpy(eb,"HbScP-AI1A1"))
-        I1A2_Dict = MChM.Calc_Demand(A2_Dict, util.get_matrix_numpy(eb,"HbScP-AI1A2"))
-        I2A0_Dict = MChM.Calc_Demand(A0_Dict, util.get_matrix_numpy(eb,"HbScP-AI2A0"))
-        I2A1_Dict = MChM.Calc_Demand(A1_Dict, util.get_matrix_numpy(eb,"HbScP-AI2A1"))
-        I2A2_Dict = MChM.Calc_Demand(A2_Dict, util.get_matrix_numpy(eb,"HbScP-AI2A2"))
-        I3A0_Dict = MChM.Calc_Demand(A0_Dict, util.get_matrix_numpy(eb,"HbScP-AI3A0"))
-        I3A1_Dict = MChM.Calc_Demand(A1_Dict, util.get_matrix_numpy(eb,"HbScP-AI3A1"))
-        I3A2_Dict = MChM.Calc_Demand(A2_Dict, util.get_matrix_numpy(eb,"HbScP-AI3A2"))
+        I1A0_Dict = MChM.Calc_Demand(eb, A0_Dict, "HbScP-AI1A0")
+        I1A1_Dict = MChM.Calc_Demand(eb, A1_Dict, "HbScP-AI1A1")
+        I1A2_Dict = MChM.Calc_Demand(eb, A2_Dict, "HbScP-AI1A2")
+        I2A0_Dict = MChM.Calc_Demand(eb, A0_Dict, "HbScP-AI2A0")
+        I2A1_Dict = MChM.Calc_Demand(eb, A1_Dict, "HbScP-AI2A1")
+        I2A2_Dict = MChM.Calc_Demand(eb, A2_Dict, "HbScP-AI2A2")
+        I3A0_Dict = MChM.Calc_Demand(eb, A0_Dict, "HbScP-AI3A0")
+        I3A1_Dict = MChM.Calc_Demand(eb, A1_Dict, "HbScP-AI3A1")
+        I3A2_Dict = MChM.Calc_Demand(eb, A2_Dict, "HbScP-AI3A2")
 
         # Auto Trips
         HOVI1 = I1A0_Dict['HOV'][0] + I1A1_Dict['HOV'][0] + I1A2_Dict['HOV'][0]

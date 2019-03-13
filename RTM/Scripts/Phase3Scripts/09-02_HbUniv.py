@@ -233,7 +233,7 @@ class HbWork(_m.Tool()):
         modes_dict = {'All':keys_list, 'Auto': ['SOV', 'HOV'],
                      'Transit': ['WTra'], 'Active': ['Acti']}
 
-        Prob_Dict = MChM.Calc_Prob(eb, Dict, "HbULS", thet, 'hbuatr', LS_Coeff, modes_dict, taz_list, purp_name = 'hbu', inc = 9, auto = 9)
+        Prob_Dict = MChM.Calc_Prob(eb, Dict, "HbULS", thet, 'hbuatr', LS_Coeff, modes_dict, taz_list)
         del DfU, Dict
 
        ##############################################################################
@@ -273,7 +273,7 @@ class HbWork(_m.Tool()):
 #        ##       Calculate Demand
 #       ##############################################################################
 
-        Demand_Dict = MChM.Calc_Demand(Prob_Dict, util.get_matrix_numpy(eb,"HbUP-A"))
+        Demand_Dict = MChM.Calc_Demand(eb, Prob_Dict, "HbUP-A")
 
 
         SOV =   Demand_Dict['SOV'][0]
