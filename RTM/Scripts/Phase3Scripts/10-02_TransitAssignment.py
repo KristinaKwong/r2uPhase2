@@ -142,7 +142,7 @@ class TransitAssignment(_m.Tool()):
                                 eb.matrix("wce_bfare_zone5_3").data]
         self.wce_bfare_zone13 = [eb.matrix("wce_bfare_zone13_1").data,
                                  eb.matrix("wce_bfare_zone13_2").data,
-                                 eb.matrix("wce_bfare_zone13_3").data]                
+                                 eb.matrix("wce_bfare_zone13_3").data]
         self.wce_bfare_zone34 = [eb.matrix("wce_bfare_zone34_1").data,
                                  eb.matrix("wce_bfare_zone34_2").data,
                                  eb.matrix("wce_bfare_zone34_3").data]
@@ -150,10 +150,10 @@ class TransitAssignment(_m.Tool()):
                                  eb.matrix("wce_bfare_zone45_2").data,
                                  eb.matrix("wce_bfare_zone45_3").data]
 
-        self.wce_fare_zone = {1: eb.matrix("wce_fare_1z").data, 
-                              2: eb.matrix("wce_fare_2z").data, 
-                              3: eb.matrix("wce_fare_3z").data, 
-                              4: eb.matrix("wce_fare_4z").data, 
+        self.wce_fare_zone = {1: eb.matrix("wce_fare_1z").data,
+                              2: eb.matrix("wce_fare_2z").data,
+                              3: eb.matrix("wce_fare_3z").data,
+                              4: eb.matrix("wce_fare_4z").data,
                               5: eb.matrix("wce_fare_5z").data}
 
         # TODO fix this numbered matrix reference
@@ -517,11 +517,10 @@ class TransitAssignment(_m.Tool()):
 
         # Intial Assignment of Parameters
         util.emme_segment_calc(sc, "us1", "0")  # dwell time
-        util.emme_segment_calc(sc, "@ivttfac", "1")
+        util.emme_tline_calc(sc, "@ivtp", "0.25", sel_line="mode=bg")
+        util.emme_segment_calc(sc, "@ivttfac", "1 + @ivtp")
         util.emme_segment_calc(sc, "@hdwyfac", "1")
         util.emme_segment_calc(sc, "@hdwyeff", "@hdwyfac*@hfrac")
-        util.emme_tline_calc(sc, "@ivtp", "0.25", sel_line="mode=bg")
-
 
         # Initialize volume averaging parameters
         util.emme_segment_calc(sc, "@boardavg", "0")
