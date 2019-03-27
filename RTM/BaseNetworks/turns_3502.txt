@@ -1,5 +1,5 @@
 c Emme Modeller - Turn Transaction
-c Scenario 3502:  2035 Base: BAU
+c Scenario 3502:  2035 Base: BAU + Bus Integration Plan
 t turns
 c     At   From     To   TPF  Data1  Data2  Data3
 a 110507 110506 110504    -1      0      0      0

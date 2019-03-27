@@ -1,5 +1,5 @@
 c Emme Modeller - Base Network Transaction
-c Scenario 3502:  2035 Base: BAU
+c Scenario 3502:  2035 Base: BAU + Bus Integration Plan
 t nodes
 c   Node          X-coord          Y-coord   Data1   Data2   Data3 Label
 a*     1     612.99646844    5474.40799367       0       0       0 0001
@@ -23594,6 +23594,7 @@ a 630507 630504 .392245 vcdxtbp      302 2.0  45       0       0       0
 a 630507 630508 .493201 vcdxtbp      302 2.0  45       0       0       0
 a 630508 630507 .493201 vcdxtbp      302 2.0  45       0       0       0
 a 630508 632205 1.20941 vcdxtbp      302 1.0  55       0       0       0
+a 630601 613403 .401117 vbp          303 1.0  25       0       0       0
 a 630601 630702 .431918 vcdxtbp      302 2.0  65       0       0       0
 a 630601 631301 .201413 vcdxtbp      302 3.0  45       0       0       0
 a 630702 612302 .439102 vcdxtbp      305 3.0  85       0       0       0
