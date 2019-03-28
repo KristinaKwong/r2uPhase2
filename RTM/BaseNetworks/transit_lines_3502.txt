@@ -12619,7 +12619,7 @@ a'316N1 ' b   1  30.00  35.00 'SurreyCn/Scottsdale '      0      0      0
    614307         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    614405         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    614406         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614407         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614407         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    614408         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    614412         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    614402        lay=5.00
@@ -13201,14 +13201,14 @@ a'323N1 ' b   1  15.00  35.00 'NewtonEx/Surry Ctl  '      0      0      0
    614303         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    614401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    614402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614412         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614412         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    614408         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    614409         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    614410        lay=5.00
 a'323S1 ' b   1  15.00  35.00 'NewtonEx/Surry Ctl  '      0      0      0
   path=no
    614410         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614409         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614409         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    614408         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    614412         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    614402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -13271,7 +13271,7 @@ a'324N1 ' b   1  15.00  35.00 'NewtonEx/Surry Ctl  '      0      0      0
    614303         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    614401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    614402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614412         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614412         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    614408         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    614409        lay=5.00
 a'324S1 ' b   1  15.00  35.00 'NewtonEx/Surry Ctl  '      0      0      0
@@ -13332,14 +13332,14 @@ a'325N1 ' b   1  15.00  35.00 'NewtonEx/Surry Ctl  '      0      0      0
    615901         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    615801         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    614410         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614409         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614409         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    614408         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    614412         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    614402        lay=5.00
 a'325S1 ' b   1  15.00  35.00 'NewtonEx/Surry Ctl  '      0      0      0
   path=no
    614402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614412         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614412         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    614408         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    614409         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    614410         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -14031,7 +14031,7 @@ a'341S1 ' b   1  20.00  23.00 'Guildford/Langley Ce'      0      0      0
    671501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    671301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    670804         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   670802         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   670802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    671001        lay=5.00
 a'345N1 ' b   1  15.00  35.00 'King George Stn/Whit'      0      0      0
@@ -14626,12 +14626,12 @@ a'364E1 ' b   1  30.00  23.00 'Langley/Scottsdale  '      0      0      0
    684503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    684510         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    684512         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   670704         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   670704         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    671001        lay=5.00
 a'364W1 ' b   1  30.00  23.00 'Langley/Scottsdale  '      0      0      0
   path=no
-   671001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   671001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670801         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    670704         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    684512         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -16660,7 +16660,7 @@ a'503E1 ' b   1  30.00  35.00 'Aldgr/Langley/Surrey'      0      0      0
    670403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    670703         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   670705         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   670705         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670706         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    670804         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    670802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -16715,7 +16715,7 @@ a'503W1 ' b   1  30.00  35.00 'Aldgr/Langley/Surrey'      0      0      0
    670801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670803         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    670802         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   670804         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   670804         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670706         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    670705         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670703         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -20935,7 +20935,7 @@ a'c62S1 ' b  13  30.00  23.00 'LangleyC/WalnutGrove'      0      0      0
    670902         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670903         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670904         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   670905         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   670905         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670704        lay=5.00
 a'c63N1 ' b  13  60.00  23.00 'LangleyCtr\Fernridge'      0      0      0
@@ -21046,7 +21046,7 @@ a'c64W1 ' b  13  60.00  23.00 'LangleyC/WillowBrook'      0      0      0
   path=no
    670802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   670704         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   670704         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    670706         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    671501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    671201         dwt=#0   ttf=1   us1=0   us2=0   us3=0
