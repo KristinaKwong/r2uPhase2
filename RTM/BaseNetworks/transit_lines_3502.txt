@@ -1,5 +1,5 @@
 c Emme Modeller - Transit Line Transaction
-c Scenario 3502:  2035 Base: BAU + Bus Integration Plan
+c Scenario 3502:  2035 Base: Fleetwood + Bus Integration Plan
 t lines
 c Transit Lines
 c Line  Mod Veh Headwy Speed Description             Data1  Data2  Data3
