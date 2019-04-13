@@ -32,10 +32,10 @@ class FullModelRun(_m.Tool()):
         self.horizon_year = 2011
         self.scenario_name = 'Scenario Name'
         self.alternative_name = 'Alternative Name'
-        self.global_iterations = 4
+        self.global_iterations = 7
         self.max_distribution_iterations = 60
         self.distribution_relative_err = 0.0001
-        self.max_assignment_iterations = 200
+        self.max_assignment_iterations = 300
         self.run_congested_transit = True
         self.run_capacited_transit = True
         self.num_processors = multiprocessing.cpu_count()
@@ -263,8 +263,8 @@ class FullModelRun(_m.Tool()):
         # auto assignment
         util.initmat(eb, "ms40", "IterAss", "Assignment Iterations", max_assignment_iterations)
         util.initmat(eb, "ms41", "ConRelGap", "ConvergenceRelativeGap", 0.0001)
-        util.initmat(eb, "ms42", "ConBestRel", "ConvergenceBestRelative", 0.01)
-        util.initmat(eb, "ms43", "ConNorm", "ConvergenceNormalized", 0.005)
+        util.initmat(eb, "ms42", "ConBestRel", "ConvergenceBestRelative", 0)
+        util.initmat(eb, "ms43", "ConNorm", "ConvergenceNormalized", 0)
         util.initmat(eb, "ms44", "AutoOcc", "Standard HOV Occupancy", 2.25)
         util.initmat(eb, "ms45", "tranCongest", "Run Congested Transit Assignment", int(run_congested_transit))
         util.initmat(eb, "ms46", "tranCapac", "Run Capacitated Transit Assignment", int(run_capacited_transit))

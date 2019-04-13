@@ -26,7 +26,7 @@ class TransitAssignment(_m.Tool()):
 
     def __init__(self):
         # Maximum Number of Iterations for transit loop
-        self.max_iterations = 10
+        self.max_iterations = 25
         # Crowding Parameters
         self.min_seat_weight = 1.0
         self.max_seat_weight = 1.2
