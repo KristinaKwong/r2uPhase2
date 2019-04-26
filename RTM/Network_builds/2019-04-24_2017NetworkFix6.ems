@@ -1,0 +1,575 @@
+{
+    "command_history": [
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "610202": "POINT(508.089485 5450.326863)",
+                    "292618": "POINT(507.608736 5450.590271)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "292618-610202"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "292618-610202": "LINESTRING(507.608736 5450.590271, 507.675813 5450.553596, 508.089485 5450.326863)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@posted_speed",
+                "element_ids": [
+                    "292618-610202"
+                ],
+                "value": 50.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "292617": "POINT(507.613759 5450.591879)",
+                    "610203": "POINT(508.093386 5450.336315)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "610203-292617"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "610203-292617": "LINESTRING(508.093386 5450.336315, 508.093386 5450.336315, 508.045775 5450.361571, 507.898766 5450.439555, 507.676479 5450.557471, 507.613759 5450.591879)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@posted_speed",
+                "element_ids": [
+                    "610203-292617"
+                ],
+                "value": 50.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "610202": "POINT(508.089485 5450.326863)",
+                    "610903": "POINT(508.627816 5450.352702)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "610202-610903"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "610202-610903": "LINESTRING(508.089485 5450.326863, 508.089485 5450.326863, 508.152348 5450.307861, 508.198335 5450.303399, 508.361171 5450.324414, 508.40757 5450.330084, 508.433703 5450.333137, 508.447319 5450.334909, 508.466143 5450.337359, 508.505593 5450.3411, 508.627816 5450.352702)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@posted_speed",
+                "element_ids": [
+                    "610202-610903"
+                ],
+                "value": 50.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "610904": "POINT(508.724008 5450.358423)",
+                    "610903": "POINT(508.627816 5450.352702)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "610903-610904"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "610903-610904": "LINESTRING(508.627816 5450.352702, 508.685304 5450.356122, 508.724008 5450.358423)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@posted_speed",
+                "element_ids": [
+                    "610903-610904"
+                ],
+                "value": 50.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "610904": "POINT(508.724008 5450.358423)",
+                    "611403": "POINT(509.552661 5450.38581)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "610904-611403"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "610904-611403": "LINESTRING(508.724008 5450.358423, 508.803346 5450.362651, 509.102616 5450.35361, 509.113811 5450.353634, 509.168442 5450.357514, 509.382653 5450.383642, 509.463163 5450.384669, 509.552661 5450.38581)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@posted_speed",
+                "element_ids": [
+                    "610904-611403"
+                ],
+                "value": 50.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "611403": "POINT(509.552661 5450.38581)",
+                    "611003": "POINT(509.65655 5450.397459)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "611403-611003"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "611403-611003": "LINESTRING(509.552661 5450.38581, 509.654936 5450.391273, 509.655938 5450.391327, 509.65655 5450.397459)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@posted_speed",
+                "element_ids": [
+                    "611403-611003"
+                ],
+                "value": 50.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "292617": "POINT(507.613759 5450.591879)",
+                    "292013": "POINT(507.249312 5450.996395)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "292617-292013"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "292617-292013": "LINESTRING(507.613759 5450.591879, 507.462057 5450.675105, 507.440856 5450.686737, 507.435214 5450.689831, 507.428123 5450.6942, 507.38719 5450.719415, 507.379587 5450.728098, 507.378898 5450.728884, 507.360016 5450.755026, 507.353885 5450.768419, 507.265978 5450.960432, 507.249312 5450.996395)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@posted_speed",
+                "element_ids": [
+                    "292617-292013"
+                ],
+                "value": 50.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "292005": "POINT(507.204312 5451.222145)",
+                    "292013": "POINT(507.249312 5450.996395)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "292013-292005"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "292013-292005": "LINESTRING(507.249312 5450.996395, 507.240816 5451.027108, 507.236827 5451.055976, 507.221161 5451.169352, 507.204312 5451.222145)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@posted_speed",
+                "element_ids": [
+                    "292013-292005"
+                ],
+                "value": 50.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "292003": "POINT(507.078906 5451.369046)",
+                    "292005": "POINT(507.204312 5451.222145)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "292005-292003"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "292005-292003": "LINESTRING(507.204312 5451.222145, 507.082232 5451.372059, 507.078906 5451.369046)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@posted_speed",
+                "element_ids": [
+                    "292005-292003"
+                ],
+                "value": 50.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "292003": "POINT(507.078906 5451.369046)",
+                    "291501": "POINT(506.669183 5451.868255)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "292003-291501"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "292003-291501": "LINESTRING(507.078906 5451.369046, 507.082232 5451.372059, 506.956651 5451.526628, 506.836659 5451.67165, 506.672187 5451.870732, 506.669183 5451.868255)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@posted_speed",
+                "element_ids": [
+                    "292003-291501"
+                ],
+                "value": 50.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "292003": "POINT(507.078906 5451.369046)",
+                    "291501": "POINT(506.669183 5451.868255)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "291501-292003"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "291501-292003": "LINESTRING(506.669183 5451.868255, 506.666179 5451.865777, 507.020253 5451.435489, 507.075579 5451.366033, 507.078906 5451.369046)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@posted_speed",
+                "element_ids": [
+                    "291501-292003"
+                ],
+                "value": 50.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "291103": "POINT(506.411418 5452.183182)",
+                    "291501": "POINT(506.669183 5451.868255)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "291501-291103"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "291501-291103": "LINESTRING(506.669183 5451.868255, 506.672187 5451.870732, 506.416334 5452.185628, 506.415703 5452.186405, 506.411418 5452.183182)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@posted_speed",
+                "element_ids": [
+                    "291501-291103"
+                ],
+                "value": 50.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "291103": "POINT(506.411418 5452.183182)",
+                    "291501": "POINT(506.669183 5451.868255)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "291103-291501"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "291103-291501": "LINESTRING(506.411418 5452.183182, 506.407132 5452.179958, 506.407768 5452.179186, 506.54398 5452.013984, 506.665102 5451.867084, 506.666179 5451.865777, 506.669183 5451.868255)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@posted_speed",
+                "element_ids": [
+                    "291103-291501"
+                ],
+                "value": 50.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "292604": "POINT(507.360185 5450.737793)",
+                    "292009": "POINT(507.221277 5451.089526)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "292009-292604"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "292009-292604": "LINESTRING(507.221277 5451.089526, 507.225102 5451.064496, 507.230823 5451.027024, 507.241393 5450.99342, 507.259238 5450.95471, 507.315187 5450.837089, 507.324391 5450.817739, 507.333829 5450.793932, 507.350399 5450.752131, 507.360185 5450.737793)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@posted_speed",
+                "element_ids": [
+                    "292009-292604"
+                ],
+                "value": 50.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "292604": "POINT(507.360185 5450.737793)",
+                    "292618": "POINT(507.608736 5450.590271)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "292604-292618"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "292604-292618": "LINESTRING(507.360185 5450.737793, 507.37585 5450.723005, 507.383821 5450.715455, 507.42343 5450.692029, 507.433455 5450.6861, 507.43861 5450.683283, 507.459829 5450.671686, 507.608736 5450.590271)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@posted_speed",
+                "element_ids": [
+                    "292604-292618"
+                ],
+                "value": 50.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "292003": "POINT(507.078906 5451.369046)",
+                    "292009": "POINT(507.221277 5451.089526)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "292003-292009"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "292003-292009": "LINESTRING(507.078906 5451.369046, 507.075579 5451.366033, 507.19659 5451.214462, 507.210975 5451.167188, 507.221277 5451.089526)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@posted_speed",
+                "element_ids": [
+                    "292003-292009"
+                ],
+                "value": 50.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "610202": "POINT(508.089485 5450.326863)",
+                    "292618": "POINT(507.608736 5450.590271)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "292618-610202"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "292618-610202": "LINESTRING(507.608736 5450.590271, 507.675813 5450.553596, 508.089485 5450.326863)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "volume_delay_func",
+                "element_ids": [
+                    "292618-610202"
+                ],
+                "value": 7,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "292617": "POINT(507.613759 5450.591879)",
+                    "610203": "POINT(508.093386 5450.336315)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "610203-292617"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "610203-292617": "LINESTRING(508.093386 5450.336315, 508.093386 5450.336315, 508.045775 5450.361571, 507.898766 5450.439555, 507.676479 5450.557471, 507.613759 5450.591879)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "volume_delay_func",
+                "element_ids": [
+                    "610203-292617"
+                ],
+                "value": 7,
+                "element_type": "LINK"
+            }
+        }
+    ],
+    "version": "F8A1BCA0-D0A1-49a1-9A43-6769D2312D7D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 1 0 0",
+    "type": "NETWORK_BUILD",
+    "metadata": {
+        "projection": "PROJCS[\"WGS_84_UTM_10N_vancouver_special\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",500.0],PARAMETER[\"False_Northing\",0],PARAMETER[\"Central_Meridian\",-123.0],PARAMETER[\"Scale_Factor\",0.9996],PARAMETER[\"Latitude_Of_Origin\",0.0],UNIT[\"Kilometer\",1000.0]]",
+        "emmebank_path": "E:/2121-00448 SLSP Modelling Services/RTM/2017_BaseNetwork - ReviewBusNetwork/emmebank",
+        "comments": "",
+        "scenario_title": "2017 Base Network",
+        "author_initials": "SL",
+        "scenario_number": "1701",
+        "time": "16:02:45",
+        "date": "2019-04-26",
+        "project_title": "2017_BaseNetwork - ReviewBusNetwork"
+    }
+}
