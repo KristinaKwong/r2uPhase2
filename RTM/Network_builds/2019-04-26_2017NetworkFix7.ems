@@ -1,0 +1,1733 @@
+{
+    "command_history": [
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.781497 5443.162671)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.731464 5442.689489)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.731464 5442.689489, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.731464 5442.689489)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": -0.050033270849723976,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.47318154590357153
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.731464 5442.689489)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.791502 5442.743185)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.791502 5442.743185, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.791502 5442.743185)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": 0.06003808038241232,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 0.05369587609948212
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.791502 5442.743185)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.8222 5443.500189)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.8222 5443.500189, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.8222 5443.500189)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": 0.030698571012237608,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 0.7570035047383499
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "61730": "POINT(511.46387 5447.451327)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "61730"
+                        ],
+                        "LINK": [
+                            "61730-617302",
+                            "617302-61730"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "61730": "POINT(511.416073 5447.328659)"
+                    },
+                    "LINK": {
+                        "61730-617302": "LINESTRING(511.416073 5447.328659, 511.433497 5447.536622, 511.432658 5447.542767)",
+                        "617302-61730": "LINESTRING(511.432658 5447.542767, 511.433497 5447.536622, 511.416073 5447.328659)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    61730
+                ],
+                "delta_x": -0.04779691634445271,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.12266798889959318
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "61730": "POINT(511.416073 5447.328659)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "61730"
+                        ],
+                        "LINK": [
+                            "61730-617302",
+                            "617302-61730"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "61730": "POINT(511.513308 5447.322176)"
+                    },
+                    "LINK": {
+                        "61730-617302": "LINESTRING(511.513308 5447.322176, 511.433497 5447.536622, 511.432658 5447.542767)",
+                        "617302-61730": "LINESTRING(511.432658 5447.542767, 511.433497 5447.536622, 511.513308 5447.322176)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    61730
+                ],
+                "delta_x": 0.09723465106850426,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.006483641425802489
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "61730": "POINT(511.513308 5447.322176)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "61730"
+                        ],
+                        "LINK": [
+                            "61730-617302",
+                            "617302-61730"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "61730": "POINT(511.516609 5447.346697)"
+                    },
+                    "LINK": {
+                        "61730-617302": "LINESTRING(511.516609 5447.346697, 511.433497 5447.536622, 511.432658 5447.542767)",
+                        "617302-61730": "LINESTRING(511.432658 5447.542767, 511.433497 5447.536622, 511.516609 5447.346697)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    61730
+                ],
+                "delta_x": 0.003301281421954627,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 0.02452091686609492
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "61730": "POINT(511.516609 5447.346697)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "61730"
+                        ],
+                        "LINK": [
+                            "61730-617302",
+                            "617302-61730"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "61730": "POINT(511.419409 5447.336466)"
+                    },
+                    "LINK": {
+                        "61730-617302": "LINESTRING(511.419409 5447.336466, 511.433497 5447.536622, 511.432658 5447.542767)",
+                        "617302-61730": "LINESTRING(511.432658 5447.542767, 511.433497 5447.536622, 511.419409 5447.336466)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    61730
+                ],
+                "delta_x": -0.09719965301417233,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.010230474209492968
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63330": "POINT(514.911459 5445.975823)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63330"
+                        ],
+                        "LINK": [
+                            "63330-634002",
+                            "634002-63330"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63330": "POINT(515.054173 5446.107726)"
+                    },
+                    "LINK": {
+                        "63330-634002": "LINESTRING(515.054173 5446.107726, 514.730003 5445.794998, 514.727603 5445.791445)",
+                        "634002-63330": "LINESTRING(514.727603 5445.791445, 514.730003 5445.794998, 515.054173 5446.107726)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63330
+                ],
+                "delta_x": 0.14271392641092007,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 0.13190305201533192
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63410": "POINT(515.75454 5445.323459)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63410"
+                        ],
+                        "LINK": [
+                            "63410-634102",
+                            "634102-63410"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63410": "POINT(515.917623 5445.368514)"
+                    },
+                    "LINK": {
+                        "634102-63410": "LINESTRING(515.661727 5445.246774, 515.661702 5445.249729, 515.917623 5445.368514)",
+                        "63410-634102": "LINESTRING(515.917623 5445.368514, 515.661702 5445.249729, 515.661727 5445.246774)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63410
+                ],
+                "delta_x": 0.1630830216679442,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 0.045054962743051874
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63430": "POINT(515.671797 5445.061611)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63430"
+                        ],
+                        "LINK": [
+                            "634103-63430",
+                            "63430-634103"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63430": "POINT(515.497192 5445.13469)"
+                    },
+                    "LINK": {
+                        "63430-634103": "LINESTRING(515.497192 5445.13469, 515.880518 5445.117743)",
+                        "634103-63430": "LINESTRING(515.880518 5445.117743, 515.497192 5445.13469)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63430
+                ],
+                "delta_x": -0.17460510928231088,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 0.07307945327738707
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63640": "POINT(520.232749 5442.024249)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63640"
+                        ],
+                        "LINK": [
+                            "636202-63640",
+                            "63640-636202"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63640": "POINT(519.995466 5442.023385)"
+                    },
+                    "LINK": {
+                        "636202-63640": "LINESTRING(520.594206 5442.017129, 520.591399 5442.012241, 519.995466 5442.023385)",
+                        "63640-636202": "LINESTRING(519.995466 5442.023385, 520.591399 5442.012241, 520.594206 5442.017129)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63640
+                ],
+                "delta_x": -0.23728212380854075,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.0008632037079223664
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63640": "POINT(519.995466 5442.023385)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63640"
+                        ],
+                        "LINK": [
+                            "636202-63640",
+                            "63640-636202"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63640": "POINT(520.068267 5442.014185)"
+                    },
+                    "LINK": {
+                        "636202-63640": "LINESTRING(520.594206 5442.017129, 520.591399 5442.012241, 520.068267 5442.014185)",
+                        "63640-636202": "LINESTRING(520.068267 5442.014185, 520.591399 5442.012241, 520.594206 5442.017129)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63640
+                ],
+                "delta_x": 0.07280068304601173,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.009200158109706535
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63640": "POINT(520.068267 5442.014185)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63640"
+                        ],
+                        "LINK": [
+                            "636202-63640",
+                            "63640-636202"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63640": "POINT(520.06821 5442.029959)"
+                    },
+                    "LINK": {
+                        "636202-63640": "LINESTRING(520.594206 5442.017129, 520.591399 5442.012241, 520.06821 5442.029959)",
+                        "63640-636202": "LINESTRING(520.06821 5442.029959, 520.591399 5442.012241, 520.594206 5442.017129)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63640
+                ],
+                "delta_x": -5.7268467571702786e-05,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 0.01577328024086455
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63640": "POINT(520.06821 5442.029959)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63640"
+                        ],
+                        "LINK": [
+                            "636202-63640",
+                            "63640-636202"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63640": "POINT(520.068336 5441.995257)"
+                    },
+                    "LINK": {
+                        "636202-63640": "LINESTRING(520.594206 5442.017129, 520.591399 5442.012241, 520.068336 5441.995257)",
+                        "63640-636202": "LINESTRING(520.068336 5441.995257, 520.591399 5442.012241, 520.594206 5442.017129)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63640
+                ],
+                "delta_x": 0.00012599068099916622,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.03470127560376568
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63640": "POINT(520.068336 5441.995257)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63640"
+                        ],
+                        "LINK": [
+                            "636202-63640",
+                            "63640-636202"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63640": "POINT(520.068405 5441.976329)"
+                    },
+                    "LINK": {
+                        "636202-63640": "LINESTRING(520.594206 5442.017129, 520.591399 5442.012241, 520.068405 5441.976329)",
+                        "63640-636202": "LINESTRING(520.068405 5441.976329, 520.591399 5442.012241, 520.594206 5442.017129)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63640
+                ],
+                "delta_x": 6.872227072562964e-05,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.018928059806967212
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63430": "POINT(515.497192 5445.13469)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63430"
+                        ],
+                        "LINK": [
+                            "634103-63430",
+                            "63430-634103"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63430": "POINT(515.536761 5445.119037)"
+                    },
+                    "LINK": {
+                        "63430-634103": "LINESTRING(515.536761 5445.119037, 515.880518 5445.117743)",
+                        "634103-63430": "LINESTRING(515.880518 5445.117743, 515.536761 5445.119037)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63430
+                ],
+                "delta_x": 0.0395690024729447,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.01565337531883415
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63430": "POINT(515.536761 5445.119037)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63430"
+                        ],
+                        "LINK": [
+                            "634103-63430",
+                            "63430-634103"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63430": "POINT(515.511447 5445.125271)"
+                    },
+                    "LINK": {
+                        "63430-634103": "LINESTRING(515.511447 5445.125271, 515.880518 5445.117743)",
+                        "634103-63430": "LINESTRING(515.880518 5445.117743, 515.511447 5445.125271)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63430
+                ],
+                "delta_x": -0.025313559450864886,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 0.006234666513591947
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63430": "POINT(515.511447 5445.125271)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63430"
+                        ],
+                        "LINK": [
+                            "634103-63430",
+                            "63430-634103"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63430": "POINT(515.501944 5445.13155)"
+                    },
+                    "LINK": {
+                        "63430-634103": "LINESTRING(515.501944 5445.13155, 515.880518 5445.117743)",
+                        "634103-63430": "LINESTRING(515.880518 5445.117743, 515.501944 5445.13155)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63430
+                ],
+                "delta_x": -0.009503634095608504,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 0.006279136914599803
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63430": "POINT(515.501944 5445.13155)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63430"
+                        ],
+                        "LINK": [
+                            "634103-63430",
+                            "63430-634103"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63430": "POINT(515.498795 5445.126812)"
+                    },
+                    "LINK": {
+                        "63430-634103": "LINESTRING(515.498795 5445.126812, 515.880518 5445.117743)",
+                        "634103-63430": "LINESTRING(515.880518 5445.117743, 515.498795 5445.126812)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63430
+                ],
+                "delta_x": -0.0031486992211284814,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.004738207005175354
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63430": "POINT(515.498795 5445.126812)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63430"
+                        ],
+                        "LINK": [
+                            "634103-63430",
+                            "63430-634103"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63430": "POINT(515.500376 5445.126817)"
+                    },
+                    "LINK": {
+                        "63430-634103": "LINESTRING(515.500376 5445.126817, 515.880518 5445.117743)",
+                        "634103-63430": "LINESTRING(515.880518 5445.117743, 515.500376 5445.126817)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63430
+                ],
+                "delta_x": 0.0015809881172117457,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 4.43774933955865e-06
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "61730": "POINT(511.419409 5447.336466)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "61730"
+                        ],
+                        "LINK": [
+                            "61730-617302",
+                            "617302-61730"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "61730": "POINT(511.421003 5447.330166)"
+                    },
+                    "LINK": {
+                        "61730-617302": "LINESTRING(511.421003 5447.330166, 511.433497 5447.536622, 511.432658 5447.542767)",
+                        "617302-61730": "LINESTRING(511.432658 5447.542767, 511.433497 5447.536622, 511.421003 5447.330166)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    61730
+                ],
+                "delta_x": 0.0015933966786860765,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.00629999381453672
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "61730": "POINT(511.421003 5447.330166)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "61730"
+                        ],
+                        "LINK": [
+                            "61730-617302",
+                            "617302-61730"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "61730": "POINT(511.420996 5447.333318)"
+                    },
+                    "LINK": {
+                        "61730-617302": "LINESTRING(511.420996 5447.333318, 511.433497 5447.536622, 511.432658 5447.542767)",
+                        "617302-61730": "LINESTRING(511.432658 5447.542767, 511.433497 5447.536622, 511.420996 5447.333318)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    61730
+                ],
+                "delta_x": -6.521667046399671e-06,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 0.0031516328017460182
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.8222 5443.500189)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.823787 5443.496248)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.823787 5443.496248, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.823787 5443.496248)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": 0.0015863198108831966,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.003940304407478834
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.823787 5443.496248)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.822991 5443.50019)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.822991 5443.50019, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.822991 5443.50019)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": -0.0007955946952051818,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 0.003941280961953453
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.822991 5443.50019)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.823785 5443.497825)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.823785 5443.497825, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.823785 5443.497825)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": 0.0007936468632578908,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.0023643775739401462
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.823785 5443.497825)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.823783 5443.499402)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.823783 5443.499402, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.823783 5443.499402)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": -1.9478317767607223e-06,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 0.0015769029396324186
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.823783 5443.499402)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.822992 5443.499401)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.822992 5443.499401, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.822992 5443.499401)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": -0.0007907252284553579,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -9.766672519617714e-07
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.822992 5443.499401)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.822992 5443.499401)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.822992 5443.499401, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.822992 5443.499401)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": 0.0,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 0.0
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.822992 5443.499401)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.823783 5443.499402)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.823783 5443.499402, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.823783 5443.499402)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": 0.0007907252284553579,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 9.766672519617714e-07
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.823783 5443.499402)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.82586 5443.498124)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.82586 5443.498124, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.82586 5443.498124)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": 0.0020772361745002854,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.0012786691204382805
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.82586 5443.498124)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.832568 5443.499247)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.832568 5443.499247, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.832568 5443.499247)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": 0.006708145078619054,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 0.0011233324485147023
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.832568 5443.499247)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.832561 5443.504822)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.832561 5443.504822, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.832561 5443.504822)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": -6.895401156725711e-06,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 0.00557518753248587
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.832561 5443.504822)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.834801 5443.502595)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.834801 5443.502595, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.834801 5443.502595)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": 0.0022392644065121203,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.0022273077738645952
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.834801 5443.502595)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.835913 5443.507056)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.835913 5443.507056, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.835913 5443.507056)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": 0.0011127340944767639,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 0.004461531411834585
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.835913 5443.507056)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.832559 5443.507052)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.832559 5443.507052, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.832559 5443.507052)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": -0.0033547566609399837,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -4.150189852225594e-06
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.832559 5443.507052)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.83256 5443.505937)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.83256 5443.505937, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.83256 5443.505937)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": 1.379079947128048e-06,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.0011150366117362864
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.83256 5443.505937)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.832564 5443.502592)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.832564 5443.502592, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.832564 5443.502592)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": 4.137240296131495e-06,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.003345111177623039
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "54130": "POINT(506.832564 5443.502592)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "54130"
+                        ],
+                        "LINK": [
+                            "54130-541301",
+                            "541301-54130"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "54130": "POINT(506.831446 5443.502591)"
+                    },
+                    "LINK": {
+                        "54130-541301": "LINESTRING(506.831446 5443.502591, 507.084229 5443.037121)",
+                        "541301-54130": "LINESTRING(507.084229 5443.037121, 506.831446 5443.502591)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    54130
+                ],
+                "delta_x": -0.0011182531232520887,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -1.3829449017066509e-06
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63710": "POINT(521.339873 5441.309157)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63710"
+                        ],
+                        "LINK": [
+                            "63710-637104",
+                            "637104-63710"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63710": "POINT(521.183579 5441.22179)"
+                    },
+                    "LINK": {
+                        "637104-63710": "LINESTRING(521.364228 5441.420278, 521.183579 5441.22179)",
+                        "63710-637104": "LINESTRING(521.183579 5441.22179, 521.364228 5441.420278)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63710
+                ],
+                "delta_x": -0.1562940193571194,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.08736729181691771
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63710": "POINT(521.183579 5441.22179)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63710"
+                        ],
+                        "LINK": [
+                            "63710-637104",
+                            "637104-63710"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63710": "POINT(521.226308 5441.218798)"
+                    },
+                    "LINK": {
+                        "637104-63710": "LINESTRING(521.364228 5441.420278, 521.226308 5441.218798)",
+                        "63710-637104": "LINESTRING(521.226308 5441.218798, 521.364228 5441.420278)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63710
+                ],
+                "delta_x": 0.04272909175983841,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -0.002991279264279001
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63710": "POINT(521.226308 5441.218798)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63710"
+                        ],
+                        "LINK": [
+                            "63710-637104",
+                            "637104-63710"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63710": "POINT(521.194659 5441.220255)"
+                    },
+                    "LINK": {
+                        "637104-63710": "LINESTRING(521.364228 5441.420278, 521.194659 5441.220255)",
+                        "63710-637104": "LINESTRING(521.194659 5441.220255, 521.364228 5441.420278)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63710
+                ],
+                "delta_x": -0.031648262906401214,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 0.0014561658745151362
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63710": "POINT(521.194659 5441.220255)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63710"
+                        ],
+                        "LINK": [
+                            "63710-637104",
+                            "637104-63710"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63710": "POINT(521.199406 5441.220273)"
+                    },
+                    "LINK": {
+                        "637104-63710": "LINESTRING(521.364228 5441.420278, 521.199406 5441.220273)",
+                        "63710-637104": "LINESTRING(521.199406 5441.220273, 521.364228 5441.420278)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63710
+                ],
+                "delta_x": 0.004746330956095335,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 1.819713543227408e-05
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63710": "POINT(521.199406 5441.220273)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63710"
+                        ],
+                        "LINK": [
+                            "63710-637104",
+                            "637104-63710"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63710": "POINT(521.194659 5441.220255)"
+                    },
+                    "LINK": {
+                        "637104-63710": "LINESTRING(521.364228 5441.420278, 521.194659 5441.220255)",
+                        "63710-637104": "LINESTRING(521.194659 5441.220255, 521.364228 5441.420278)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63710
+                ],
+                "delta_x": -0.004746330956095335,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": -1.819713543227408e-05
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "63710": "POINT(521.194659 5441.220255)"
+                }
+            },
+            "command": "move_nodes",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "NODE": [
+                            "63710"
+                        ],
+                        "LINK": [
+                            "63710-637104",
+                            "637104-63710"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "63710": "POINT(521.196892 5441.221658)"
+                    },
+                    "LINK": {
+                        "637104-63710": "LINESTRING(521.364228 5441.420278, 521.196892 5441.221658)",
+                        "63710-637104": "LINESTRING(521.196892 5441.221658, 521.364228 5441.420278)"
+                    }
+                }
+            },
+            "parameters": {
+                "nodes_ids": [
+                    63710
+                ],
+                "delta_x": 0.0022320945772662526,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "delta_y": 0.0014029544154254836
+            }
+        }
+    ],
+    "version": "F8A1BCA0-D0A1-49a1-9A43-6769D2312D7D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 1 0 0",
+    "type": "NETWORK_BUILD",
+    "metadata": {
+        "projection": "PROJCS[\"WGS_84_UTM_10N_vancouver_special\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",500.0],PARAMETER[\"False_Northing\",0],PARAMETER[\"Central_Meridian\",-123.0],PARAMETER[\"Scale_Factor\",0.9996],PARAMETER[\"Latitude_Of_Origin\",0.0],UNIT[\"Kilometer\",1000.0]]",
+        "emmebank_path": "E:/2121-00448 SLSP Modelling Services/RTM/2017_BaseNetwork - ReviewBusNetwork/emmebank",
+        "comments": "",
+        "scenario_title": "2017 Base Network",
+        "author_initials": "SL",
+        "scenario_number": "1701",
+        "time": "16:49:09",
+        "date": "2019-04-26",
+        "project_title": "2017_BaseNetwork - ReviewBusNetwork"
+    }
+}
