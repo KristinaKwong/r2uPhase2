@@ -28,7 +28,10 @@
                     "292618-610202"
                 ],
                 "value": 50.0,
-                "element_type": "LINK"
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "penalty_func": "auto"
+                }
             }
         },
         {
@@ -59,7 +62,10 @@
                     "610203-292617"
                 ],
                 "value": 50.0,
-                "element_type": "LINK"
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "penalty_func": "auto"
+                }
             }
         },
         {
@@ -90,7 +96,10 @@
                     "610202-610903"
                 ],
                 "value": 50.0,
-                "element_type": "LINK"
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "penalty_func": "auto"
+                }
             }
         },
         {
@@ -121,7 +130,10 @@
                     "610903-610904"
                 ],
                 "value": 50.0,
-                "element_type": "LINK"
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "penalty_func": "auto"
+                }
             }
         },
         {
@@ -152,7 +164,10 @@
                     "610904-611403"
                 ],
                 "value": 50.0,
-                "element_type": "LINK"
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "penalty_func": "auto"
+                }
             }
         },
         {
@@ -183,7 +198,10 @@
                     "611403-611003"
                 ],
                 "value": 50.0,
-                "element_type": "LINK"
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "penalty_func": "auto"
+                }
             }
         },
         {
@@ -214,7 +232,10 @@
                     "292617-292013"
                 ],
                 "value": 50.0,
-                "element_type": "LINK"
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "penalty_func": "auto"
+                }
             }
         },
         {
@@ -245,7 +266,10 @@
                     "292013-292005"
                 ],
                 "value": 50.0,
-                "element_type": "LINK"
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "penalty_func": "auto"
+                }
             }
         },
         {
@@ -276,7 +300,10 @@
                     "292005-292003"
                 ],
                 "value": 50.0,
-                "element_type": "LINK"
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "penalty_func": "auto"
+                }
             }
         },
         {
@@ -307,7 +334,10 @@
                     "292003-291501"
                 ],
                 "value": 50.0,
-                "element_type": "LINK"
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "penalty_func": "auto"
+                }
             }
         },
         {
@@ -338,7 +368,10 @@
                     "291501-292003"
                 ],
                 "value": 50.0,
-                "element_type": "LINK"
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "penalty_func": "auto"
+                }
             }
         },
         {
@@ -369,7 +402,10 @@
                     "291501-291103"
                 ],
                 "value": 50.0,
-                "element_type": "LINK"
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "penalty_func": "auto"
+                }
             }
         },
         {
@@ -400,7 +436,10 @@
                     "291103-291501"
                 ],
                 "value": 50.0,
-                "element_type": "LINK"
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "penalty_func": "auto"
+                }
             }
         },
         {
@@ -431,7 +470,10 @@
                     "292009-292604"
                 ],
                 "value": 50.0,
-                "element_type": "LINK"
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "penalty_func": "auto"
+                }
             }
         },
         {
@@ -462,7 +504,10 @@
                     "292604-292618"
                 ],
                 "value": 50.0,
-                "element_type": "LINK"
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "penalty_func": "auto"
+                }
             }
         },
         {
@@ -493,7 +538,10 @@
                     "292003-292009"
                 ],
                 "value": 50.0,
-                "element_type": "LINK"
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "penalty_func": "auto"
+                }
             }
         },
         {
@@ -524,7 +572,10 @@
                     "292618-610202"
                 ],
                 "value": 7,
-                "element_type": "LINK"
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "penalty_func": "auto"
+                }
             }
         },
         {
@@ -555,6 +606,195 @@
                     "610203-292617"
                 ],
                 "value": 7,
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "penalty_func": "auto"
+                }
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "610202": "POINT(508.089485 5450.326863)",
+                    "292618": "POINT(507.608736 5450.590271)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "292618-610202"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "292618-610202": "LINESTRING(507.608736 5450.590271, 507.675813 5450.553596, 508.089485 5450.326863)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@vdfam",
+                "element_ids": [
+                    "292618-610202"
+                ],
+                "value": 7.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "610202": "POINT(508.089485 5450.326863)",
+                    "292618": "POINT(507.608736 5450.590271)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "292618-610202"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "292618-610202": "LINESTRING(507.608736 5450.590271, 507.675813 5450.553596, 508.089485 5450.326863)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@vdfmd",
+                "element_ids": [
+                    "292618-610202"
+                ],
+                "value": 7.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "610202": "POINT(508.089485 5450.326863)",
+                    "292618": "POINT(507.608736 5450.590271)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "292618-610202"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "292618-610202": "LINESTRING(507.608736 5450.590271, 507.675813 5450.553596, 508.089485 5450.326863)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@vdfpm",
+                "element_ids": [
+                    "292618-610202"
+                ],
+                "value": 7.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "292617": "POINT(507.613759 5450.591879)",
+                    "610203": "POINT(508.093386 5450.336315)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "610203-292617"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "610203-292617": "LINESTRING(508.093386 5450.336315, 508.093386 5450.336315, 508.045775 5450.361571, 507.898766 5450.439555, 507.676479 5450.557471, 507.613759 5450.591879)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@vdfam",
+                "element_ids": [
+                    "610203-292617"
+                ],
+                "value": 7.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "292617": "POINT(507.613759 5450.591879)",
+                    "610203": "POINT(508.093386 5450.336315)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "610203-292617"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "610203-292617": "LINESTRING(508.093386 5450.336315, 508.093386 5450.336315, 508.045775 5450.361571, 507.898766 5450.439555, 507.676479 5450.557471, 507.613759 5450.591879)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@vdfmd",
+                "element_ids": [
+                    "610203-292617"
+                ],
+                "value": 7.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "292617": "POINT(507.613759 5450.591879)",
+                    "610203": "POINT(508.093386 5450.336315)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "610203-292617"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "610203-292617": "LINESTRING(508.093386 5450.336315, 508.093386 5450.336315, 508.045775 5450.361571, 507.898766 5450.439555, 507.676479 5450.557471, 507.613759 5450.591879)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@vdfpm",
+                "element_ids": [
+                    "610203-292617"
+                ],
+                "value": 7.0,
                 "element_type": "LINK"
             }
         }
@@ -563,13 +803,13 @@
     "type": "NETWORK_BUILD",
     "metadata": {
         "projection": "PROJCS[\"WGS_84_UTM_10N_vancouver_special\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",500.0],PARAMETER[\"False_Northing\",0],PARAMETER[\"Central_Meridian\",-123.0],PARAMETER[\"Scale_Factor\",0.9996],PARAMETER[\"Latitude_Of_Origin\",0.0],UNIT[\"Kilometer\",1000.0]]",
-        "emmebank_path": "E:/2121-00448 SLSP Modelling Services/RTM/2017_BaseNetwork - ReviewBusNetwork/emmebank",
+        "emmebank_path": "E:/2121-00448 SLSP Modelling Services/RTM/2017_BaseNetwork_v2/emmebank",
         "comments": "",
-        "scenario_title": "2017 Base Network",
+        "scenario_title": "2017 Base Network v3",
         "author_initials": "SL",
-        "scenario_number": "1701",
-        "time": "16:02:45",
-        "date": "2019-04-26",
-        "project_title": "2017_BaseNetwork - ReviewBusNetwork"
+        "scenario_number": "1703",
+        "time": "16:46:57",
+        "date": "2019-04-28",
+        "project_title": "2017_BaseNetwork_v2"
     }
 }
