@@ -21,9 +21,9 @@ class AutoAssignment(_m.Tool()):
 
     def __init__(self):
         self.relative_gap = 0.0001
-        self.best_relative_gap = 0.01
-        self.normalized_gap = 0.005
-        self.max_iterations = 250
+        self.best_relative_gap = 0
+        self.normalized_gap = 0
+        self.max_iterations = 300
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
@@ -57,19 +57,23 @@ class AutoAssignment(_m.Tool()):
             eb.matrix("ms42").data = self.best_relative_gap
             eb.matrix("ms43").data = self.normalized_gap
 
-            self(self.am_scenario, self.md_scenario, self.pm_scenario)
+            self(eb, self.am_scenario, self.md_scenario, self.pm_scenario)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Auto Traffic Assignment")
-    def __call__(self, am_scenario, md_scenario, pm_scenario):
+    def __call__(self, eb, am_scenario, md_scenario, pm_scenario):
         self.init_skim_matrices(am_scenario.emmebank)
+        self.init_DemandAdj_matrices(eb)
+        DAdj_matrices = {"AM": ["mfSOV_adj_drvtrp_VOT_3_Am","mfSOV_gra_drvtrp_VOT_3_Am"],
+                         "MD": ["mfSOV_adj_drvtrp_VOT_3_Md","mfSOV_gra_drvtrp_VOT_3_Md"],
+                         "PM": ["mfSOV_adj_drvtrp_VOT_3_Pm","mfSOV_gra_drvtrp_VOT_3_Pm"]}
 
         am_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Am", "mfSOV_drvtrp_VOT_2_Am", "mfSOV_drvtrp_VOT_3_Am", "mfSOV_drvtrp_VOT_4_Am"],
                       "hov":   ["mfHOV_drvtrp_VOT_1_Am", "mfHOV_drvtrp_VOT_2_Am", "mfHOV_drvtrp_VOT_3_Am"],
                       "truck": ["mflgvPceAm", "mfhgvPceAm"]}
-        self.assign_scen(am_scenario, am_demands)
+        self.assign_scen(am_scenario, am_demands, DAdj_matrices, "AM")
         am_skims = {"sovVot1":  ["mfAmSovOpCstVOT1", "mfAmSovTimeVOT1", "mfSkimAmSovTimeVOT1", "mfSkimAmSovDistVOT1", "mfSkimAmSovTollVOT1"],
                     "sovVot2":  ["mfAmSovOpCstVOT2", "mfAmSovTimeVOT2", "mfSkimAmSovTimeVOT2", "mfSkimAmSovDistVOT2", "mfSkimAmSovTollVOT2"],
                     "sovVot3":  ["mfAmSovOpCstVOT3", "mfAmSovTimeVOT3", "mfSkimAmSovTimeVOT3", "mfSkimAmSovDistVOT3", "mfSkimAmSovTollVOT3"],
@@ -84,7 +88,7 @@ class AutoAssignment(_m.Tool()):
         md_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Md", "mfSOV_drvtrp_VOT_2_Md", "mfSOV_drvtrp_VOT_3_Md", "mfSOV_drvtrp_VOT_4_Md"],
                       "hov":   ["mfHOV_drvtrp_VOT_1_Md", "mfHOV_drvtrp_VOT_2_Md", "mfHOV_drvtrp_VOT_3_Md"],
                       "truck": ["mflgvPceMd", "mfhgvPceMd"]}
-        self.assign_scen(md_scenario, md_demands)
+        self.assign_scen(md_scenario, md_demands, DAdj_matrices, "MD")
         md_skims = {"sovVot1":  ["mfMdSovOpCstVOT1", "mfMdSovTimeVOT1", "mfSkimMdSovTimeVOT1", "mfSkimMdSovDistVOT1", "mfSkimMdSovTollVOT1"],
                     "sovVot2":  ["mfMdSovOpCstVOT2", "mfMdSovTimeVOT2", "mfSkimMdSovTimeVOT2", "mfSkimMdSovDistVOT2", "mfSkimMdSovTollVOT2"],
                     "sovVot3":  ["mfMdSovOpCstVOT3", "mfMdSovTimeVOT3", "mfSkimMdSovTimeVOT3", "mfSkimMdSovDistVOT3", "mfSkimMdSovTollVOT3"],
@@ -98,7 +102,7 @@ class AutoAssignment(_m.Tool()):
         pm_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Pm", "mfSOV_drvtrp_VOT_2_Pm", "mfSOV_drvtrp_VOT_3_Pm", "mfSOV_drvtrp_VOT_4_Pm"],
                       "hov":   ["mfHOV_drvtrp_VOT_1_Pm", "mfHOV_drvtrp_VOT_2_Pm", "mfHOV_drvtrp_VOT_3_Pm"],
                       "truck": ["mflgvPcePm", "mfhgvPcePm"]}
-        self.assign_scen(pm_scenario, pm_demands)
+        self.assign_scen(pm_scenario, pm_demands, DAdj_matrices, "PM")
         pm_skims = {"sovVot1":  ["mfPmSovOpCstVOT1", "mfPmSovTimeVOT1", "mfSkimPmSovTimeVOT1", "mfSkimPmSovDistVOT1", "mfSkimPmSovTollVOT1"],
                     "sovVot2":  ["mfPmSovOpCstVOT2", "mfPmSovTimeVOT2", "mfSkimPmSovTimeVOT2", "mfSkimPmSovDistVOT2", "mfSkimPmSovTollVOT2"],
                     "sovVot3":  ["mfPmSovOpCstVOT3", "mfPmSovTimeVOT3", "mfSkimPmSovTimeVOT3", "mfSkimPmSovDistVOT3", "mfSkimPmSovTollVOT3"],
@@ -110,7 +114,7 @@ class AutoAssignment(_m.Tool()):
                     "hgv":  ["mfPmHgvOpCst", "mfPmHgvTime", "mfSkimPmHgvTime", "mfSkimPmHgvDist", "mfSkimPmHgvToll"]}
         self.store_skims(pm_scenario, pm_skims)
 
-    def assign_scen(self, scenario, demands):
+    def assign_scen(self, scenario, demands, DAdj_matrices, TOD):
         assign_traffic = _m.Modeller().tool("inro.emme.traffic_assignment.sola_traffic_assignment")
 
         self.calc_network_costs(scenario)
@@ -139,7 +143,17 @@ class AutoAssignment(_m.Tool()):
         self.calc_network_volumes(scenario)
         self.calc_timedist_skims(scenario.emmebank)
         self.calc_intrazonal_skims(scenario.emmebank)
-
+        
+        #demand adjust
+        create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
+        create_attr("LINK", "@sovcount", "SOV Demand Adjust Count Volume", 0, True, scenario)
+        util = _m.Modeller().tool("translink.util")
+        util.emme_link_calc(scenario, "@sovcount", "(@trafficcount-@lgvol/1.5-@hgvol/2.5-@whovl-@wsovl+@sov3).max.0")
+        multiclass_demand_adjust = _m.Modeller().tool("inro.emme.demand_adjust.multiclass_demand_adjust")
+        spec = self.get_class_specs(scenario.emmebank, demands)
+        adjustement_spec = self.get_DemandAdjust_specs(scenario.emmebank, demands, DAdj_matrices,TOD)
+        multiclass_demand_adjust(spec,adjustement_spec,screen_index_global=None,adjust_iter=3,
+                                 log_worksheets=False,separate_measures=False,scenario=scenario)
 
     def calc_timedist_skims(self, eb):
         self.calc_timedist_skim(eb, "msAutoVOT1", "msautoOpCost", "mfSOVGCTimeVOT1", "mfSOVOpCstVOT1", "mfSOVTollVOT1", "mfSOVTimeVOT1", "mfSOVDistVOT1", 1.0)
@@ -364,6 +378,29 @@ class AutoAssignment(_m.Tool()):
         }
         return spec
 
+    #generate demand adjust specifications 
+    def get_DemandAdjust_specs(self, eb, demand_matrices, DAdj_matrices,TOD):
+        all_classes = []
+        all_classes.append({"mode": "d","demand": demand_matrices["sov"][0],"adjustment": None})
+        all_classes.append({"mode": "d","demand": demand_matrices["sov"][1],"adjustment": None})
+        all_classes.append({"mode": "d","demand": DAdj_matrices[TOD][0],
+            "adjustment": {"alpha": 0.5,
+                "matrices": {"original_demand": demand_matrices["sov"][2],"gradient": DAdj_matrices[TOD][1],"mask": None},
+                "link_counts": {"counts": "@sovcount","screen_index_class": None,"weights": None},"turn_counts": None}
+        })
+        all_classes.append({"mode": "d","demand": demand_matrices["sov"][3],"adjustment": None})
+        all_classes.append({"mode": "c","demand": demand_matrices["hov"][0],"adjustment": None})
+        all_classes.append({"mode": "c","demand": demand_matrices["hov"][1],"adjustment": None})
+        all_classes.append({"mode": "c","demand": demand_matrices["hov"][2],"adjustment": None})
+        all_classes.append({"mode": "x","demand": demand_matrices["truck"][0],"adjustment": None})
+        all_classes.append({"mode": "t","demand": demand_matrices["truck"][1],"adjustment": None})
+
+        spec = {
+            "type": "MULTICLASS_DEMAND_ADJUSTMENT",
+            "classes": all_classes
+        }
+        return spec
+        
     def add_opcost_path_analysis(self, spec):
         path_od = { "considered_paths": "ALL",
                     "multiply_path_proportions_by": { "analyzed_demand": False, "path_value": True }
@@ -658,3 +695,17 @@ class AutoAssignment(_m.Tool()):
         util.emme_segment_calc(scenario, "us2", "(length * 60 / @posted_speed + 0.85 * ((volau + volad) / (1000*lanes))^5)", sel_link="vdf=15 and mode=v")
         util.emme_segment_calc(scenario, "us2", "(length * 60 / @posted_speed + 0.85 * ((volau + volad) / (1200*lanes))^5)", sel_link="vdf=16 and mode=v")
         util.emme_segment_calc(scenario, "us2", "(length * 60 / @posted_speed + 0.85 * ((volau + volad) / (1400*lanes))^5)", sel_link="vdf=17 and mode=v")
+        
+    def init_DemandAdj_matrices(self, scenario):
+        util = _m.Modeller().tool("translink.util")
+        matrices = []
+        #Adjusted SOV_VOT3 Demand
+        matrices.append(["mf361", "SOV_adj_drvtrp_VOT_3_Am",  "SOV Adj drv-trips VOT 3 AM", 0])
+        matrices.append(["mf362", "SOV_adj_drvtrp_VOT_3_Md",  "SOV Adj drv-trips VOT 3 Md", 0])
+        matrices.append(["mf363", "SOV_adj_drvtrp_VOT_3_Pm",  "SOV Adj drv-trips VOT 3 PM", 0])
+        #Gradient SOV_VOT3 Demand
+        matrices.append(["mf364", "SOV_gra_drvtrp_VOT_3_Am",  "SOV Gra drv-trips VOT 3 AM", 0])
+        matrices.append(["mf365", "SOV_gra_drvtrp_VOT_3_Md",  "SOV Gra drv-trips VOT 3 Md", 0])
+        matrices.append(["mf366", "SOV_gra_drvtrp_VOT_3_Pm",  "SOV Gra drv-trips VOT 3 PM", 0])
+        for matrix in matrices:
+            util.initmat(eb, matrix[0], matrix[1], matrix[2], matrix[3])
