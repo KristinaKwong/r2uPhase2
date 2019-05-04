@@ -1,0 +1,329 @@
+{
+    "command_history": [
+        {
+            "extra_geometries": {},
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "TRANSIT_SEGMENT": [
+                            "335W1A-612501-612504-1"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "TRANSIT_SEGMENT": {
+                        "335W1A-612501-612504-1": "LINESTRING(510.866722 5449.579772, 510.862378 5449.579857, 510.862833 5449.409279, 510.862824 5449.408278, 510.861469 5449.264117, 510.867313 5449.264068)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "allow_alightings",
+                "element_ids": [
+                    "335W1A-612501-612504-1"
+                ],
+                "value": true,
+                "element_type": "TRANSIT_SEGMENT"
+            }
+        },
+        {
+            "extra_geometries": {},
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "TRANSIT_SEGMENT": [
+                            "335W1A-612501-612504-1"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "TRANSIT_SEGMENT": {
+                        "335W1A-612501-612504-1": "LINESTRING(510.866722 5449.579772, 510.862378 5449.579857, 510.862833 5449.409279, 510.862824 5449.408278, 510.861469 5449.264117, 510.867313 5449.264068)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "allow_boardings",
+                "element_ids": [
+                    "335W1A-612501-612504-1"
+                ],
+                "value": true,
+                "element_type": "TRANSIT_SEGMENT"
+            }
+        },
+        {
+            "extra_geometries": {},
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "TRANSIT_SEGMENT": [
+                            "335W1M-612501-612504-1"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "TRANSIT_SEGMENT": {
+                        "335W1M-612501-612504-1": "LINESTRING(510.866722 5449.579772, 510.862378 5449.579857, 510.862833 5449.409279, 510.862824 5449.408278, 510.861469 5449.264117, 510.867313 5449.264068)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "allow_alightings",
+                "element_ids": [
+                    "335W1M-612501-612504-1"
+                ],
+                "value": true,
+                "element_type": "TRANSIT_SEGMENT"
+            }
+        },
+        {
+            "extra_geometries": {},
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "TRANSIT_SEGMENT": [
+                            "335W1M-612501-612504-1"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "TRANSIT_SEGMENT": {
+                        "335W1M-612501-612504-1": "LINESTRING(510.866722 5449.579772, 510.862378 5449.579857, 510.862833 5449.409279, 510.862824 5449.408278, 510.861469 5449.264117, 510.867313 5449.264068)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "allow_boardings",
+                "element_ids": [
+                    "335W1M-612501-612504-1"
+                ],
+                "value": true,
+                "element_type": "TRANSIT_SEGMENT"
+            }
+        },
+        {
+            "extra_geometries": {},
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "TRANSIT_SEGMENT": [
+                            "335W1P-612501-612504-1"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "TRANSIT_SEGMENT": {
+                        "335W1P-612501-612504-1": "LINESTRING(510.866722 5449.579772, 510.862378 5449.579857, 510.862833 5449.409279, 510.862824 5449.408278, 510.861469 5449.264117, 510.867313 5449.264068)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "allow_alightings",
+                "element_ids": [
+                    "335W1P-612501-612504-1"
+                ],
+                "value": true,
+                "element_type": "TRANSIT_SEGMENT"
+            }
+        },
+        {
+            "extra_geometries": {},
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "TRANSIT_SEGMENT": [
+                            "335W1P-612501-612504-1"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "TRANSIT_SEGMENT": {
+                        "335W1P-612501-612504-1": "LINESTRING(510.866722 5449.579772, 510.862378 5449.579857, 510.862833 5449.409279, 510.862824 5449.408278, 510.861469 5449.264117, 510.867313 5449.264068)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "allow_boardings",
+                "element_ids": [
+                    "335W1P-612501-612504-1"
+                ],
+                "value": true,
+                "element_type": "TRANSIT_SEGMENT"
+            }
+        },
+        {
+            "extra_geometries": {},
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "TRANSIT_SEGMENT": [
+                            "335W2A-612501-612504-1"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "TRANSIT_SEGMENT": {
+                        "335W2A-612501-612504-1": "LINESTRING(510.866722 5449.579772, 510.862378 5449.579857, 510.862833 5449.409279, 510.862824 5449.408278, 510.861469 5449.264117, 510.867313 5449.264068)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "allow_alightings",
+                "element_ids": [
+                    "335W2A-612501-612504-1"
+                ],
+                "value": true,
+                "element_type": "TRANSIT_SEGMENT"
+            }
+        },
+        {
+            "extra_geometries": {},
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "TRANSIT_SEGMENT": [
+                            "335W2A-612501-612504-1"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "TRANSIT_SEGMENT": {
+                        "335W2A-612501-612504-1": "LINESTRING(510.866722 5449.579772, 510.862378 5449.579857, 510.862833 5449.409279, 510.862824 5449.408278, 510.861469 5449.264117, 510.867313 5449.264068)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "allow_boardings",
+                "element_ids": [
+                    "335W2A-612501-612504-1"
+                ],
+                "value": true,
+                "element_type": "TRANSIT_SEGMENT"
+            }
+        },
+        {
+            "extra_geometries": {},
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "TRANSIT_SEGMENT": [
+                            "335W2M-612501-612504-1"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "TRANSIT_SEGMENT": {
+                        "335W2M-612501-612504-1": "LINESTRING(510.866722 5449.579772, 510.862378 5449.579857, 510.862833 5449.409279, 510.862824 5449.408278, 510.861469 5449.264117, 510.867313 5449.264068)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "allow_alightings",
+                "element_ids": [
+                    "335W2M-612501-612504-1"
+                ],
+                "value": true,
+                "element_type": "TRANSIT_SEGMENT"
+            }
+        },
+        {
+            "extra_geometries": {},
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "TRANSIT_SEGMENT": [
+                            "335W2M-612501-612504-1"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "TRANSIT_SEGMENT": {
+                        "335W2M-612501-612504-1": "LINESTRING(510.866722 5449.579772, 510.862378 5449.579857, 510.862833 5449.409279, 510.862824 5449.408278, 510.861469 5449.264117, 510.867313 5449.264068)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "allow_boardings",
+                "element_ids": [
+                    "335W2M-612501-612504-1"
+                ],
+                "value": true,
+                "element_type": "TRANSIT_SEGMENT"
+            }
+        },
+        {
+            "extra_geometries": {},
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "TRANSIT_SEGMENT": [
+                            "335W2P-612501-612504-1"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "TRANSIT_SEGMENT": {
+                        "335W2P-612501-612504-1": "LINESTRING(510.866722 5449.579772, 510.862378 5449.579857, 510.862833 5449.409279, 510.862824 5449.408278, 510.861469 5449.264117, 510.867313 5449.264068)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "allow_alightings",
+                "element_ids": [
+                    "335W2P-612501-612504-1"
+                ],
+                "value": true,
+                "element_type": "TRANSIT_SEGMENT"
+            }
+        },
+        {
+            "extra_geometries": {},
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "TRANSIT_SEGMENT": [
+                            "335W2P-612501-612504-1"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "TRANSIT_SEGMENT": {
+                        "335W2P-612501-612504-1": "LINESTRING(510.866722 5449.579772, 510.862378 5449.579857, 510.862833 5449.409279, 510.862824 5449.408278, 510.861469 5449.264117, 510.867313 5449.264068)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "allow_boardings",
+                "element_ids": [
+                    "335W2P-612501-612504-1"
+                ],
+                "value": true,
+                "element_type": "TRANSIT_SEGMENT"
+            }
+        }
+    ],
+    "version": "F8A1BCA0-D0A1-49a1-9A43-6769D2312D7D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 1 0 0",
+    "type": "NETWORK_BUILD",
+    "metadata": {
+        "projection": "PROJCS[\"WGS_84_UTM_10N_vancouver_special\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",500.0],PARAMETER[\"False_Northing\",0],PARAMETER[\"Central_Meridian\",-123.0],PARAMETER[\"Scale_Factor\",0.9996],PARAMETER[\"Latitude_Of_Origin\",0.0],UNIT[\"Kilometer\",1000.0]]",
+        "emmebank_path": "E:/2121-00448 SLSP Modelling Services/RTM/2017_BaseNetwork_v4_Assign_v5/emmebank",
+        "comments": "",
+        "scenario_title": "2017 Base Network v5",
+        "author_initials": "SL",
+        "scenario_number": "1701",
+        "time": "20:20:26",
+        "date": "2019-05-03",
+        "project_title": "2017_BaseNetwork_v4_Assign_v5"
+    }
+}
