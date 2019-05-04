@@ -162,6 +162,7 @@ class InitEmmebank(_m.Tool()):
         create_attr("TRANSIT_LINE", "@hdwyam", "AM Transit Headway", 0, False, scen)
         create_attr("TRANSIT_LINE", "@hdwymd", "MD Transit Headway", 0, False, scen)
         create_attr("TRANSIT_LINE", "@hdwypm", "PM Transit Headway", 0, False, scen)
+        create_attr("LINK", "@signal_delay", "Signal Delay", 0.25, False, scen)
 
         data_path = os.path.join(proj_path, "BaseNetworks", "extra_nodes_%d.txt" % scen_id)
         node_attr = _m.Modeller().tool("inro.emme.data.network.import_attribute_values")
@@ -268,29 +269,30 @@ class InitEmmebank(_m.Tool()):
     def initfunctions(self, eb):
         extra_parameters = _m.Modeller().tool("inro.emme.traffic_assignment.set_extra_function_parameters")
         extra_parameters(emmebank=eb, el1="@posted_speed")
+        extra_parameters(emmebank=eb, el2="@signal_delay")
 
         eb.create_function("fd01", "length * 60 / 40")
         eb.create_function("fd02", "40 + ((volau + volad) - 100) * 60 / (volau + volad) * ((volau +  volad) .ge. 100)")
 
         # Default Intersection Functions
-        eb.create_function("fd25", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 400 * lanes)) ^ 4")
-        eb.create_function("fd35", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 600 * lanes)) ^ 4")
-        eb.create_function("fd45", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 800 * lanes)) ^ 4")
-        eb.create_function("fd55", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4")
-        eb.create_function("fd65", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4")
-        eb.create_function("fd75", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4")
+        eb.create_function("fd25", "el2 + length * 60 / el1 + .85 * ((volau + volad) / ( 400 * lanes)) ^ 4")
+        eb.create_function("fd35", "el2 + length * 60 / el1 + .85 * ((volau + volad) / ( 600 * lanes)) ^ 4")
+        eb.create_function("fd45", "el2 + length * 60 / el1 + .85 * ((volau + volad) / ( 800 * lanes)) ^ 4")
+        eb.create_function("fd55", "el2 + length * 60 / el1 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4")
+        eb.create_function("fd65", "el2 + length * 60 / el1 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4")
+        eb.create_function("fd75", "el2 + length * 60 / el1 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4")
 
         # Default Free Flow Functions
         eb.create_function("fd85", "length * 60 / el1 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)")
         eb.create_function("fd88", "length * 60 / (el1 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5.25)")
 
         # Manual Adjust / Calibrated Intersection Functions
-        eb.create_function("fd20", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 400 * lanes)) ^ 4")
-        eb.create_function("fd30", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 600 * lanes)) ^ 4")
-        eb.create_function("fd40", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 800 * lanes)) ^ 4")
-        eb.create_function("fd50", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4")
-        eb.create_function("fd60", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4")
-        eb.create_function("fd70", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4")
+        eb.create_function("fd20", "el2 + length * 60 / el1 + .85 * ((volau + volad) / ( 400 * lanes)) ^ 4")
+        eb.create_function("fd30", "el2 + length * 60 / el1 + .85 * ((volau + volad) / ( 600 * lanes)) ^ 4")
+        eb.create_function("fd40", "el2 + length * 60 / el1 + .85 * ((volau + volad) / ( 800 * lanes)) ^ 4")
+        eb.create_function("fd50", "el2 + length * 60 / el1 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4")
+        eb.create_function("fd60", "el2 + length * 60 / el1 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4")
+        eb.create_function("fd70", "el2 + length * 60 / el1 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4")
 
         # Manual Adjust / Calibrated Free Flow Functions
         eb.create_function("fd80", "length * 60 / el1 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)")
