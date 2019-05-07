@@ -1,5 +1,5 @@
 c Emme Modeller - Base Network Transaction
-c Scenario 1701:  2017 Base Network v6
+c Scenario 1701:  2017 Base Network v7
 t nodes
 c   Node          X-coord          Y-coord   Data1   Data2   Data3 Label
 a*     1     612.99646844    5474.40799367       0       0       0 0001
