@@ -97,7 +97,7 @@ class ModeChoice(_m.Tool()):
 
         self.adjust_egl(eb)
         
-        if False: #add MD transit demand = demand * (1 + factor)
+        if True: #add MD transit demand = demand * (1 + factor)
             self.md_transit_demand_adjust(eb, 0.2)#factor = 0.2
 
     def adjust_egl(self, eb):
