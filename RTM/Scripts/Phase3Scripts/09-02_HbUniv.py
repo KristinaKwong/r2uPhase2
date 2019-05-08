@@ -69,6 +69,7 @@ class HbWork(_m.Tool()):
         p602 =  0.122524
         p991 =  0.097689
         thet =  0.459772
+        LS_Coeff = 0.4
 
 #        ##############################################################################
 #        ##       Auto Modes
@@ -216,9 +217,8 @@ class HbWork(_m.Tool()):
 #        ##       Calculate Probabilities
 #        ##############################################################################
 
-
-
         LrgU     = -99999.0
+        taz_list = util.get_matrix_numpy(eb, 'zoneindex', reshape = False)
 
         Dict = {
                'SOV'  : [DfU['SOV']],
@@ -227,7 +227,13 @@ class HbWork(_m.Tool()):
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
 
-        Prob_Dict = self.Calc_Prob(eb, Dict, "HbULS", thet)
+        # get a list of all keys
+
+        keys_list = list(Dict.keys())
+        modes_dict = {'All':keys_list, 'Auto': ['SOV', 'HOV'],
+                     'Transit': ['WTra'], 'Active': ['Acti']}
+
+        Prob_Dict = MChM.Calc_Prob(eb, Dict, "HbULS", thet, 'hbuatr', LS_Coeff, modes_dict, taz_list)
         del DfU, Dict
 
        ##############################################################################
@@ -244,7 +250,7 @@ class HbWork(_m.Tool()):
 
         out_list = ["HbUP-A"]
 
-        LS_Coeff = 0.4
+
 
         LambdaList = [-0.106753]
 
@@ -267,7 +273,7 @@ class HbWork(_m.Tool()):
 #        ##       Calculate Demand
 #       ##############################################################################
 
-        Demand_Dict = self.Calc_Demand(Prob_Dict, util.get_matrix_numpy(eb,"HbUP-A"))
+        Demand_Dict = MChM.Calc_Demand(eb, Prob_Dict, "HbUP-A")
 
 
         SOV =   Demand_Dict['SOV'][0]
@@ -529,37 +535,8 @@ class HbWork(_m.Tool()):
 
         conn.close()
 
-        return df_Daily_Gy
-
         del Auto_AM_Fct_PA, Auto_MD_Fct_PA, Auto_PM_Fct_PA, Auto_AM_Fct_AP, Auto_MD_Fct_AP, Auto_PM_Fct_AP
 
-    def Calc_Prob(self, eb, Dict, Logsum, Th):
-        util = _m.Modeller().tool("translink.util")
-
-        Tiny=0.000001
-        L_Nst = {key:sum(np.exp(nest))
-                      for key,nest in Dict.items()}
-
-        U_Nst  = {key:pow(nest,Th)
-                      for key,nest in L_Nst.items()}
-
-        L_Nst = {key:np.where(value == 0, Tiny, value)
-                      for key,value in L_Nst.items()}
-
-        F_Utl = sum(U_Nst.values())
-        F_Utl = np.where(F_Utl ==0, Tiny, F_Utl)
-        util.set_matrix_numpy(eb, Logsum, np.log(F_Utl))
-
-        Prob_Dict = {key:np.exp(nest)/L_Nst[key]*U_Nst[key]/F_Utl
-                         for key, nest in Dict.items()}
-        return Prob_Dict
-
-    def Calc_Demand(self, Dict, Dem):
-        util = _m.Modeller().tool("translink.util")
-
-        Seg_Dict = {key:Dem*nest_len
-                    for key, nest_len in Dict.items()}
-        return Seg_Dict
     @_m.logbook_trace("PnR")
     def splitpnr (self, DfmergedAuto, DfmergedTran, DfInt):
 
@@ -580,6 +557,12 @@ class HbWork(_m.Tool()):
 
         ## Initialze Logsum Matrices
         util.initmat(eb, "mf9010", "HbULS", " HbU LogSum ", 0)
+
+        util.initmat(eb, "mf9310", "HbULSAU", " HbU LogSum Auto ", 0)
+
+        util.initmat(eb, "mf9410", "HbULSTR", " HbU LogSum Transit ", 0)
+
+        util.initmat(eb, "mf9510", "HbULSAC", " HbU LogSum Active ", 0)
 
         ## Initialze Friction Factor Matrices
         util.initmat(eb, "mf9100", "P-AFrictionFact1", "Trip Distribution Friction Factor 1", 0)

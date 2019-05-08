@@ -78,11 +78,7 @@ class HbSoc(_m.Tool()):
         p870 =   0.240894
         thet =   0.554886
 
-
-
-
-
-
+        LS_Coeff = 0.8
 
 #        ##############################################################################
 #        ##       Auto Modes
@@ -269,6 +265,8 @@ class HbSoc(_m.Tool()):
         # Low Income
         ############
 
+        taz_list = util.get_matrix_numpy(eb, 'zoneindex', reshape = False)
+
         ## Add SOV Availability car share term for households with zero vehicles
 
         CarShare = util.get_matrix_numpy(eb, 'cs500').reshape(NoTAZ,1) + np.zeros((1, NoTAZ))
@@ -281,7 +279,11 @@ class HbSoc(_m.Tool()):
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
 
-        I1A0_Dict = self.Calc_Prob(eb, Dict, "HbSoLSI1A0", thet)
+        keys_list = list(Dict.keys())
+        modes_dict = {'All':keys_list, 'Auto': ['SOV', 'HOV'],
+                     'Transit': ['WTra'], 'Active': ['Acti']}
+
+        I1A0_Dict = MChM.Calc_Prob(eb, Dict, "HbSoLSI1A0", thet, 'hbsocatr', LS_Coeff, modes_dict, taz_list)
 
         ## Low Income One Auto
         Dict = {
@@ -290,7 +292,7 @@ class HbSoc(_m.Tool()):
                'WTra' : [DfU['BusI1'], DfU['RalI1']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
-        I1A1_Dict = self.Calc_Prob(eb, Dict, "HbSoLSI1A1", thet)
+        I1A1_Dict = MChM.Calc_Prob(eb, Dict, "HbSoLSI1A1", thet, 'hbsocatr', LS_Coeff, modes_dict, taz_list)
 
         ## Low Income Two Autos
         Dict = {
@@ -299,7 +301,7 @@ class HbSoc(_m.Tool()):
                'WTra' : [DfU['BusI1'], DfU['RalI1']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
-        I1A2_Dict = self.Calc_Prob(eb, Dict, "HbSoLSI1A2", thet)
+        I1A2_Dict = MChM.Calc_Prob(eb, Dict, "HbSoLSI1A2", thet, 'hbsocatr', LS_Coeff, modes_dict, taz_list)
 
         ############
         # Med Income
@@ -313,7 +315,7 @@ class HbSoc(_m.Tool()):
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
 
-        I2A0_Dict = self.Calc_Prob(eb, Dict, "HbSoLSI2A0", thet)
+        I2A0_Dict = MChM.Calc_Prob(eb, Dict, "HbSoLSI2A0", thet, 'hbsocatr', LS_Coeff, modes_dict, taz_list)
 
         ## Med Income One Auto
         Dict = {
@@ -322,7 +324,7 @@ class HbSoc(_m.Tool()):
                'WTra' : [DfU['BusI2'], DfU['RalI2']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
-        I2A1_Dict = self.Calc_Prob(eb, Dict, "HbSoLSI2A1", thet)
+        I2A1_Dict = MChM.Calc_Prob(eb, Dict, "HbSoLSI2A1", thet, 'hbsocatr', LS_Coeff, modes_dict, taz_list)
 
         ## Med Income Two Autos
         Dict = {
@@ -331,7 +333,7 @@ class HbSoc(_m.Tool()):
                'WTra' : [DfU['BusI2'], DfU['RalI2']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
-        I2A2_Dict = self.Calc_Prob(eb, Dict, "HbSoLSI2A2", thet)
+        I2A2_Dict = MChM.Calc_Prob(eb, Dict, "HbSoLSI2A2", thet, 'hbsocatr', LS_Coeff, modes_dict, taz_list)
 
         #############
         # High Income
@@ -344,7 +346,7 @@ class HbSoc(_m.Tool()):
                'WTra' : [DfU['BusI3'] + p164, DfU['RalI3'] + p164],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
-        I3A0_Dict = self.Calc_Prob(eb, Dict, "HbSoLSI3A0", thet)
+        I3A0_Dict = MChM.Calc_Prob(eb, Dict, "HbSoLSI3A0", thet, 'hbsocatr', LS_Coeff, modes_dict, taz_list)
 
         ## High Income One Auto
         Dict = {
@@ -353,7 +355,7 @@ class HbSoc(_m.Tool()):
                'WTra' : [DfU['BusI3'], DfU['RalI3']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
-        I3A1_Dict = self.Calc_Prob(eb, Dict, "HbSoLSI3A1", thet)
+        I3A1_Dict = MChM.Calc_Prob(eb, Dict, "HbSoLSI3A1", thet, 'hbsocatr', LS_Coeff, modes_dict, taz_list)
 
         ## High Income Two Autos
         Dict = {
@@ -362,7 +364,7 @@ class HbSoc(_m.Tool()):
                'WTra' : [DfU['BusI3'], DfU['RalI3']],
                'Acti' : [DfU['Walk'], DfU['Bike']]
                }
-        I3A2_Dict = self.Calc_Prob(eb, Dict, "HbSoLSI3A2", thet)
+        I3A2_Dict = MChM.Calc_Prob(eb, Dict, "HbSoLSI3A2", thet, 'hbsocatr', LS_Coeff, modes_dict, taz_list)
 
         del DfU, Dict
 
@@ -396,8 +398,6 @@ class HbSoc(_m.Tool()):
                     "HbSoP-AI3A0", "HbSoP-AI3A1", "HbSoP-AI3A2"
                     ]
 
-        LS_Coeff = 0.8
-
         LambdaList = [-0.205104,-0.237037,-0.238268,-0.205104,-0.237037,-0.238268,-0.205104,-0.237037,-0.238268]
 
 
@@ -422,15 +422,15 @@ class HbSoc(_m.Tool()):
 #        ##       Calculate Demand
 #       ##############################################################################
 
-        I1A0_Dict = self.Calc_Demand(I1A0_Dict, util.get_matrix_numpy(eb,"HbSoP-AI1A0"))
-        I1A1_Dict = self.Calc_Demand(I1A1_Dict, util.get_matrix_numpy(eb,"HbSoP-AI1A1"))
-        I1A2_Dict = self.Calc_Demand(I1A2_Dict, util.get_matrix_numpy(eb,"HbSoP-AI1A2"))
-        I2A0_Dict = self.Calc_Demand(I2A0_Dict, util.get_matrix_numpy(eb,"HbSoP-AI2A0"))
-        I2A1_Dict = self.Calc_Demand(I2A1_Dict, util.get_matrix_numpy(eb,"HbSoP-AI2A1"))
-        I2A2_Dict = self.Calc_Demand(I2A2_Dict, util.get_matrix_numpy(eb,"HbSoP-AI2A2"))
-        I3A0_Dict = self.Calc_Demand(I3A0_Dict, util.get_matrix_numpy(eb,"HbSoP-AI3A0"))
-        I3A1_Dict = self.Calc_Demand(I3A1_Dict, util.get_matrix_numpy(eb,"HbSoP-AI3A1"))
-        I3A2_Dict = self.Calc_Demand(I3A2_Dict, util.get_matrix_numpy(eb,"HbSoP-AI3A2"))
+        I1A0_Dict = MChM.Calc_Demand(eb, I1A0_Dict, "HbSoP-AI1A0")
+        I1A1_Dict = MChM.Calc_Demand(eb, I1A1_Dict, "HbSoP-AI1A1")
+        I1A2_Dict = MChM.Calc_Demand(eb, I1A2_Dict, "HbSoP-AI1A2")
+        I2A0_Dict = MChM.Calc_Demand(eb, I2A0_Dict, "HbSoP-AI2A0")
+        I2A1_Dict = MChM.Calc_Demand(eb, I2A1_Dict, "HbSoP-AI2A1")
+        I2A2_Dict = MChM.Calc_Demand(eb, I2A2_Dict, "HbSoP-AI2A2")
+        I3A0_Dict = MChM.Calc_Demand(eb, I3A0_Dict, "HbSoP-AI3A0")
+        I3A1_Dict = MChM.Calc_Demand(eb, I3A1_Dict, "HbSoP-AI3A1")
+        I3A2_Dict = MChM.Calc_Demand(eb, I3A2_Dict, "HbSoP-AI3A2")
 
         # SOV Trips
         SOVI1 = I1A0_Dict['SOV'][0] + I1A1_Dict['SOV'][0] + I1A2_Dict['SOV'][0]
@@ -748,37 +748,8 @@ class HbSoc(_m.Tool()):
 
         conn.close()
 
-        return df_Daily_Gy
-
         del Auto_AM_Fct_PA, Auto_MD_Fct_PA, Auto_PM_Fct_PA, Auto_AM_Fct_AP, Auto_MD_Fct_AP, Auto_PM_Fct_AP
 
-    def Calc_Prob(self, eb, Dict, Logsum, Th):
-        util = _m.Modeller().tool("translink.util")
-
-        Tiny=0.000001
-        L_Nst = {key:sum(np.exp(nest))
-                      for key,nest in Dict.items()}
-
-        U_Nst  = {key:pow(nest,Th)
-                      for key,nest in L_Nst.items()}
-
-        L_Nst = {key:np.where(value == 0, Tiny, value)
-                      for key,value in L_Nst.items()}
-
-        F_Utl = sum(U_Nst.values())
-        F_Utl = np.where(F_Utl ==0, Tiny, F_Utl)
-        util.set_matrix_numpy(eb, Logsum, np.log(F_Utl))
-
-        Prob_Dict = {key:np.exp(nest)/L_Nst[key]*U_Nst[key]/F_Utl
-                         for key, nest in Dict.items()}
-        return Prob_Dict
-
-    def Calc_Demand(self, Dict, Dem):
-        util = _m.Modeller().tool("translink.util")
-
-        Seg_Dict = {key:Dem*nest_len
-                    for key, nest_len in Dict.items()}
-        return Seg_Dict
     @_m.logbook_trace("PnR")
     def splitpnr (self, DfmergedAuto, DfmergedTran, DfInt):
 
@@ -807,6 +778,36 @@ class HbSoc(_m.Tool()):
         util.initmat(eb, "mf9056", "HbSoLSI3A0", "LogSum HbSo I3 A0", 0)
         util.initmat(eb, "mf9057", "HbSoLSI3A1", "LogSum HbSo I3 A1", 0)
         util.initmat(eb, "mf9058", "HbSoLSI3A2", "LogSum HbSo I3 A2", 0)
+
+        util.initmat(eb, "mf9350", "HbSoLSAUI1A0", "LogSum HbSo Auto I1 A0", 0)
+        util.initmat(eb, "mf9351", "HbSoLSAUI1A1", "LogSum HbSo Auto I1 A1", 0)
+        util.initmat(eb, "mf9352", "HbSoLSAUI1A2", "LogSum HbSo Auto I1 A2", 0)
+        util.initmat(eb, "mf9353", "HbSoLSAUI2A0", "LogSum HbSo Auto I2 A0", 0)
+        util.initmat(eb, "mf9354", "HbSoLSAUI2A1", "LogSum HbSo Auto I2 A1", 0)
+        util.initmat(eb, "mf9355", "HbSoLSAUI2A2", "LogSum HbSo Auto I2 A2", 0)
+        util.initmat(eb, "mf9356", "HbSoLSAUI3A0", "LogSum HbSo Auto I3 A0", 0)
+        util.initmat(eb, "mf9357", "HbSoLSAUI3A1", "LogSum HbSo Auto I3 A1", 0)
+        util.initmat(eb, "mf9358", "HbSoLSAUI3A2", "LogSum HbSo Auto I3 A2", 0)
+
+        util.initmat(eb, "mf9450", "HbSoLSTRI1A0", "LogSum HbSo Transit I1 A0", 0)
+        util.initmat(eb, "mf9451", "HbSoLSTRI1A1", "LogSum HbSo Transit I1 A1", 0)
+        util.initmat(eb, "mf9452", "HbSoLSTRI1A2", "LogSum HbSo Transit I1 A2", 0)
+        util.initmat(eb, "mf9453", "HbSoLSTRI2A0", "LogSum HbSo Transit I2 A0", 0)
+        util.initmat(eb, "mf9454", "HbSoLSTRI2A1", "LogSum HbSo Transit I2 A1", 0)
+        util.initmat(eb, "mf9455", "HbSoLSTRI2A2", "LogSum HbSo Transit I2 A2", 0)
+        util.initmat(eb, "mf9456", "HbSoLSTRI3A0", "LogSum HbSo Transit I3 A0", 0)
+        util.initmat(eb, "mf9457", "HbSoLSTRI3A1", "LogSum HbSo Transit I3 A1", 0)
+        util.initmat(eb, "mf9458", "HbSoLSTRI3A2", "LogSum HbSo Transit I3 A2", 0)
+
+        util.initmat(eb, "mf9550", "HbSoLSACI1A0", "LogSum HbSo Active I1 A0", 0)
+        util.initmat(eb, "mf9551", "HbSoLSACI1A1", "LogSum HbSo Active I1 A1", 0)
+        util.initmat(eb, "mf9552", "HbSoLSACI1A2", "LogSum HbSo Active I1 A2", 0)
+        util.initmat(eb, "mf9553", "HbSoLSACI2A0", "LogSum HbSo Active I2 A0", 0)
+        util.initmat(eb, "mf9554", "HbSoLSACI2A1", "LogSum HbSo Active I2 A1", 0)
+        util.initmat(eb, "mf9555", "HbSoLSACI2A2", "LogSum HbSo Active I2 A2", 0)
+        util.initmat(eb, "mf9556", "HbSoLSACI3A0", "LogSum HbSo Active I3 A0", 0)
+        util.initmat(eb, "mf9557", "HbSoLSACI3A1", "LogSum HbSo Active I3 A1", 0)
+        util.initmat(eb, "mf9558", "HbSoLSACI3A2", "LogSum HbSo Active I3 A2", 0)
 
         ## Initialze Friction Factor Matrices
         util.initmat(eb, "mf9100", "P-AFrictionFact1", "Trip Distribution Friction Factor 1", 0)
