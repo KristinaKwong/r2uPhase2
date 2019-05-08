@@ -18289,6 +18289,56 @@ a'9924W ' l  32   2.30  65.00 'ExpL Fltwood-VancCBD'      0      0      0
    224205      dwt=+1.18  ttf=10   us1=0   us2=0   us3=0
    221903      dwt=+1.88  ttf=10   us1=0   us2=0   us3=0
    223501        lay=1.00
+a'9925E ' l  32   2.30  65.00 'ExpL VancCBD-Clayton'      0      0      0
+  path=no
+   223501      dwt=+1.68  ttf=10   us1=0   us2=0   us3=0
+   221903      dwt=+1.22  ttf=10   us1=0   us2=0   us3=0
+   224205      dwt=+1.39  ttf=10   us1=0   us2=0   us3=0
+   226002       dwt=+2.1  ttf=10   us1=0   us2=0   us3=0
+   228503      dwt=+3.18  ttf=10   us1=0   us2=0   us3=0
+   255602      dwt=+2.27  ttf=10   us1=0   us2=0   us3=0
+   258004      dwt=+1.47  ttf=10   us1=0   us2=0   us3=0
+   260201      dwt=+1.82  ttf=10   us1=0   us2=0   us3=0
+   260303      dwt=+2.16  ttf=10   us1=0   us2=0   us3=0
+   282404      dwt=+1.32  ttf=10   us1=0   us2=0   us3=0
+   283705       dwt=+2.1  ttf=10   us1=0   us2=0   us3=0
+   285201      dwt=+2.95  ttf=10   us1=0   us2=0   us3=0
+   286604      dwt=+2.34  ttf=10   us1=0   us2=0   us3=0
+   293705      dwt=+2.97  ttf=10   us1=0   us2=0   us3=0
+   293505      dwt=+1.46  ttf=10   us1=0   us2=0   us3=0
+   293201      dwt=#0.28  ttf=10   us1=0   us2=0   us3=0
+   292613      dwt=+2.01  ttf=10   us1=0   us2=0   us3=0
+   611407      dwt=+3.21  ttf=10   us1=0   us2=0   us3=0
+   611606      dwt=+2.19  ttf=10   us1=0   us2=0   us3=0
+   614404      dwt=+1.31  ttf=10   us1=0   us2=0   us3=0
+   617301       dwt=+1.8  ttf=10   us1=0   us2=0   us3=0
+   617010      dwt=+3.29  ttf=10   us1=0   us2=0   us3=0
+   619204        lay=1.00
+a'9925W ' l  32   2.30  65.00 'ExpL Clayton-VancCBD'      0      0      0
+  path=no
+   619204      dwt=+3.29  ttf=10   us1=0   us2=0   us3=0
+   617010       dwt=+1.8  ttf=10   us1=0   us2=0   us3=0
+   617301      dwt=+1.29  ttf=10   us1=0   us2=0   us3=0
+   614404      dwt=+2.19  ttf=10   us1=0   us2=0   us3=0
+   611606      dwt=+3.18  ttf=10   us1=0   us2=0   us3=0
+   611407         dwt=#2  ttf=10   us1=0   us2=0   us3=0
+   292613      dwt=+0.29  ttf=10   us1=0   us2=0   us3=0
+   293201      dwt=+1.46  ttf=10   us1=0   us2=0   us3=0
+   293505      dwt=+2.97  ttf=10   us1=0   us2=0   us3=0
+   293705      dwt=+2.34  ttf=10   us1=0   us2=0   us3=0
+   286604      dwt=+2.95  ttf=10   us1=0   us2=0   us3=0
+   285201       dwt=+2.1  ttf=10   us1=0   us2=0   us3=0
+   283705      dwt=+1.32  ttf=10   us1=0   us2=0   us3=0
+   282404      dwt=+2.16  ttf=10   us1=0   us2=0   us3=0
+   260303      dwt=+1.82  ttf=10   us1=0   us2=0   us3=0
+   260201      dwt=+1.47  ttf=10   us1=0   us2=0   us3=0
+   258004      dwt=+2.27  ttf=10   us1=0   us2=0   us3=0
+   255602      dwt=+3.18  ttf=10   us1=0   us2=0   us3=0
+   228503      dwt=+2.01  ttf=10   us1=0   us2=0   us3=0
+   226002      dwt=+1.39  ttf=10   us1=0   us2=0   us3=0
+   224205      dwt=+1.18  ttf=10   us1=0   us2=0   us3=0
+   221903      dwt=+1.88  ttf=10   us1=0   us2=0   us3=0
+   223501        lay=1.00
 a'c01E1A' b  13  30.00  23.00 'Hastings/Mac/Kootena'      0      0      0
   path=no
    252702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
