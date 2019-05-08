@@ -247,7 +247,7 @@ class ModeChoice(_m.Tool()):
             df["adjust_flag"] = np.where((df['gm_i'] == gm), 1, df["adjust_flag"])
             df["adjust_flag"] = np.where((df['gm_j'] == gm), 1, df["adjust_flag"])
         
-        for demand in ["mfbusMd", "mfrailMd", "mfWCEMd"]:
+        for demand in ["mfrailMd"]:
             df[demand] = util.get_matrix_numpy(eb, demand).flatten()
             df[demand] = np.where((df['adjust_flag'] == 1), Factor*df[demand], df[demand])
             
