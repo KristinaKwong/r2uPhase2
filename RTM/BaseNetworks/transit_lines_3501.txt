@@ -18313,9 +18313,15 @@ a'9925E ' l  32   2.30  65.00 'ExpL VancCBD-Clayton'      0      0      0
    614404      dwt=+1.31  ttf=10   us1=0   us2=0   us3=0
    617301       dwt=+1.8  ttf=10   us1=0   us2=0   us3=0
    617010      dwt=+3.29  ttf=10   us1=0   us2=0   us3=0
-   619204        lay=1.00
+   619204      dwt=+2.81  ttf=10   us1=0   us2=0   us3=0
+   635106      dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
+   635107      dwt=+5.05  ttf=10   us1=0   us2=0   us3=0
+   636204        lay=1.00
 a'9925W ' l  32   2.30  65.00 'ExpL Clayton-VancCBD'      0      0      0
   path=no
+   636204      dwt=+5.05  ttf=10   us1=0   us2=0   us3=0
+   635107      dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
+   635106      dwt=+2.81  ttf=10   us1=0   us2=0   us3=0
    619204      dwt=+3.29  ttf=10   us1=0   us2=0   us3=0
    617010       dwt=+1.8  ttf=10   us1=0   us2=0   us3=0
    617301      dwt=+1.29  ttf=10   us1=0   us2=0   us3=0
