@@ -108,7 +108,7 @@ class EconomicAnalysis(_m.Tool()):
             Logsum_Master_DF = Logsum_Master_DF.append(self.Calculate_Logsum_Benefits(eb, BaseScenario_Folder, AlternativeScenario_Folder, ensem))
         
             ROH_Master_DF = ROH_Master_DF[["Year", "{}_from".format(ensem), "{}_to".format(ensem), "Scenario", "Benefit_Category", "Daily_Benefits"]]
-            Logsum_Master_DF = Logsum_Master_DF[["Year", "{}_from".format(ensem), "{}_to".format(ensem), "Scenario", "Purpose", "Income", "Auto_Ownership", "Daily_Benefits(min)"]]
+            Logsum_Master_DF = Logsum_Master_DF[["Year", "{}_from".format(ensem), "{}_to".format(ensem), "Scenario", "Purpose", "Income", "Auto_Ownership", "Mode", "Daily_Benefits(min)"]]
         
             conn = sqlite3.connect(os.path.join(AlternativeScenario_Folder,"EconomicAnalysis.db"))
             ROH_Master_DF.to_sql(name='ROH_Benefits', con=conn, flavor='sqlite', index=False, if_exists='replace')
@@ -162,32 +162,41 @@ class EconomicAnalysis(_m.Tool()):
             Income = demand_key[-3]
             Auto_Ownership = demand_key[-1]
             IVTT_Coeff = purpose_dict[purpose]
-            utility_key = self.get_utility_key(demand_key)
             
-            Benefit = -0.5 * ( Altr_Utility[utility_key] * (Altr_Demand[demand_key] + Base_Demand[demand_key]) - 2 * Base_Utility[utility_key] * Base_Demand[demand_key]) / IVTT_Coeff
-            
-            df = pd.concat([util.get_pd_ij_df(eb),util.get_ijensem_df(eb, ensem, ensem)], axis=1)
-            ensem_i = '{}_from'.format(ensem)
-            ensem_j = '{}_to'.format(ensem)
-            df[['i','j', ensem_i, ensem_j]] = df[['i','j', '{}_i'.format(ensem), '{}_j'.format(ensem)]].astype(int)
-            df["Daily_Benefits(min)"] = Benefit.flatten()            
-            df = df.drop(['i','j'], axis = 1)
-            df = df.groupby([ensem_i, ensem_j])
-            df = df.sum().reset_index()
-            df["Purpose"] = purpose
-            df["Income"] = income_label[Income]
-            df["Auto_Ownership"] = auto_ownership_label[Auto_Ownership]
-            Scenario_Master_DF = Scenario_Master_DF.append(df)
+            for Mode in ["Auto","Transit","Active"]:
+                utility_key = self.get_utility_key(demand_key, Mode)
+                
+                Benefit = -0.5 * ( Altr_Utility[utility_key] * (Altr_Demand[demand_key] + Base_Demand[demand_key]) - 2 * Base_Utility[utility_key] * Base_Demand[demand_key]) / IVTT_Coeff
+                
+                df = pd.concat([util.get_pd_ij_df(eb),util.get_ijensem_df(eb, ensem, ensem)], axis=1)
+                ensem_i = '{}_from'.format(ensem)
+                ensem_j = '{}_to'.format(ensem)
+                df[['i','j', ensem_i, ensem_j]] = df[['i','j', '{}_i'.format(ensem), '{}_j'.format(ensem)]].astype(int)
+                df["Daily_Benefits(min)"] = Benefit.flatten()            
+                df = df.drop(['i','j'], axis = 1)
+                df = df.groupby([ensem_i, ensem_j])
+                df = df.sum().reset_index()
+                df["Purpose"] = purpose
+                df["Income"] = income_label[Income]
+                df["Auto_Ownership"] = auto_ownership_label[Auto_Ownership]
+                df["Mode"] = Mode
+                
+                Scenario_Master_DF = Scenario_Master_DF.append(df)
         
         Scenario_Master_DF["Year"] = self.get_scenario_info(eb, "horizon_year")
         Scenario_Master_DF["Scenario"] = self.get_scenario_info( eb, "alternative")
         return Scenario_Master_DF
         
-    def get_utility_key(self, demand_key):
+    def get_utility_key(self, demand_key, Mode):
         if demand_key[3:7] in ["HSCH", "HESC"]:
             utility_key = "LSM" + demand_key[3:8] + "9" + demand_key[9:]
         else:
             utility_key = "LSM" + demand_key[3:]
+        
+        #insert mode into utility_key
+        mode_dict = {"Auto":"AU", "Transit":"TR", "Active":"AC"}
+        utility_key = utility_key[:7] + mode_dict[Mode] + utility_key[7:]
+        
         return utility_key
         
     @_m.logbook_trace("Calculate ROH Benefits")
@@ -581,7 +590,7 @@ class EconomicAnalysis(_m.Tool()):
         
         # list mf matrix number to be exported
         matrix_list = []
-        matrix_list += range(9000,9100) # Logsum Matrices
+        matrix_list += range(9300,9600) # Logsum Matrices
         
         Dict = {}
         for mat_id in matrix_list:
@@ -600,8 +609,11 @@ class EconomicAnalysis(_m.Tool()):
         purpose = matrix_name.split("LS")[0]
         purpose = self.rename_Purpose(purpose)
         
+        #get mode
+        mode = matrix_name.split("LS")[1][:2]
+        
         #get auto ownership
-        if matrix_name[-2]=="A":
+        if (matrix_name[-2]=="A") & (purpose!="NOTH")& (purpose!="HUNI")& (purpose!="NWRK"):
             Auto_Ownership = matrix_name[-2:]
         else:
             Auto_Ownership = "A9"
@@ -613,7 +625,7 @@ class EconomicAnalysis(_m.Tool()):
             Income = "I9"
         
         # LSM = LogSum
-        export_name = "LSM" + purpose + Income + Auto_Ownership
+        export_name = "LSM" + purpose + mode + Income + Auto_Ownership
         return export_name.upper()
         
     def rename_Purpose(self, key):
