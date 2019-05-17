@@ -21,8 +21,8 @@ class EconomicAnalysis(_m.Tool()):
     tool_run_msg = _m.Attribute(unicode)
 
     def __init__(self):
-        self.baseScenarioName = "2016Base"
-        self.ensem = "gm"
+        self.baseScenarioName = "2017_BAU_v2"
+        self.ensem = "gy"
         
     def page(self):
         pb = _m.ToolPageBuilder(self)
@@ -81,6 +81,7 @@ class EconomicAnalysis(_m.Tool()):
             self.Export_ROH_Demand(eb)
             self.Export_ROH_TimeCost(eb)
             self.Export_LogSum_Demand(eb)
+            self.Export_PA_Factors(eb)
             
             # re-calculate utility in mode choice, then export utility
             self.Export_LogSum_Utility(eb)
@@ -106,22 +107,24 @@ class EconomicAnalysis(_m.Tool()):
                                  "HGV": [4.88, 5.43, 6.36]}
             ROH_Master_DF = ROH_Master_DF.append(self.Calculate_ROH_Benefits(eb, BaseScenario_Folder, AlternativeScenario_Folder, ensem, expansion_factors))
             Logsum_Master_DF = Logsum_Master_DF.append(self.Calculate_Logsum_Benefits(eb, BaseScenario_Folder, AlternativeScenario_Folder, ensem))
-        
+            
             ROH_Master_DF = ROH_Master_DF[["Year", "{}_from".format(ensem), "{}_to".format(ensem), "Scenario", "Benefit_Category", "Daily_Benefits"]]
             Logsum_Master_DF = Logsum_Master_DF[["Year", "{}_from".format(ensem), "{}_to".format(ensem), "Scenario", "Purpose", "Income", "Auto_Ownership", "Mode", "Daily_Benefits(min)"]]
-        
+            
             conn = sqlite3.connect(os.path.join(AlternativeScenario_Folder,"EconomicAnalysis.db"))
             ROH_Master_DF.to_sql(name='ROH_Benefits', con=conn, flavor='sqlite', index=False, if_exists='replace')
             Logsum_Master_DF.to_sql(name='Logsum_Benefits', con=conn, flavor='sqlite', index=False, if_exists='replace')
             conn.close()
-        
-            #ROH_Master_DF.to_csv(os.path.join(AlternativeScenario_Folder,"ROH_Benefits.csv"), index=False)
-            #Logsum_Master_DF.to_csv(os.path.join(AlternativeScenario_Folder,"Logsum_Benefits.csv"), index=False)
+            
+            ROH_Master_DF.to_csv(os.path.join(AlternativeScenario_Folder,"ROH_Benefits.csv"), index=False)
+            Logsum_Master_DF.to_csv(os.path.join(AlternativeScenario_Folder,"Logsum_Benefits.csv"), index=False)
             
             #Summarize Project benefits
             Summary_DF = ROH_Master_DF.groupby("Benefit_Category")["Daily_Benefits"].sum().reset_index()
             Summary_DF["Method"] = "ROH"
-            Summary_DF.loc[len(Summary_DF)] = ["Project_Time(min)",Logsum_Master_DF["Daily_Benefits(min)"].sum(),"Logsum"]
+            Summary_DF.loc[len(Summary_DF)] = ["Auto_Time(min)",Logsum_Master_DF.loc[Logsum_Master_DF.Mode=="Auto","Daily_Benefits(min)"].sum(),"Logsum"]
+            Summary_DF.loc[len(Summary_DF)] = ["Transit_Time(min)",Logsum_Master_DF.loc[Logsum_Master_DF.Mode=="Transit","Daily_Benefits(min)"].sum(),"Logsum"]
+            Summary_DF.loc[len(Summary_DF)] = ["Active_Time(min)",Logsum_Master_DF.loc[Logsum_Master_DF.Mode=="Active","Daily_Benefits(min)"].sum(),"Logsum"]
             Summary_DF.loc[len(Summary_DF)] = ["Project_Scenario",self.get_scenario_info(eb, "alternative"),"-"]
             Summary_DF.loc[len(Summary_DF)] = ["Project_Year",self.get_scenario_info(eb, "horizon_year"),"-"]
             Summary_DF.loc[len(Summary_DF)] = ["Emmebank_Name",title,"-"]
@@ -136,6 +139,11 @@ class EconomicAnalysis(_m.Tool()):
         Base_Utility  = np.load("{}/{}".format(BaseScenario_Folder,"LogSum_Utility.npz"))
         Altr_Demand= np.load("{}/{}".format(AlternativeScenario_Folder,"LogSum_Demand.npz"))
         Altr_Utility  = np.load("{}/{}".format(AlternativeScenario_Folder,"LogSum_Utility.npz"))
+        
+        Base_UtilitySplit  = np.load("{}/{}".format(BaseScenario_Folder,"LogSum_UtilitySplit.npz"))
+        Altr_UtilitySplit  = np.load("{}/{}".format(AlternativeScenario_Folder,"LogSum_UtilitySplit.npz"))
+        
+        PA_Factor_Dict = np.load("{}/{}".format(AlternativeScenario_Folder,"PA_to_OD_Factors.npz"))
         
         # purpose_dict = {purpose: Auto_IVTT_Coefficients}
         purpose_dict = {"HWRK": -0.048225, 
@@ -163,16 +171,39 @@ class EconomicAnalysis(_m.Tool()):
             Auto_Ownership = demand_key[-1]
             IVTT_Coeff = purpose_dict[purpose]
             
-            for Mode in ["Auto","Transit","Active"]:
-                utility_key = self.get_utility_key(demand_key, Mode)
+            utility_key = self.get_utility_key(demand_key)
+            
+            #logsum benefits (ROH formula)
+            Benefit = 0.5 * (Altr_Demand[demand_key] + Base_Demand[demand_key])*(Base_Utility[utility_key] - Altr_Utility[utility_key]) / IVTT_Coeff
+            #logsum benefits (Formula A)
+            #Benefit = (Base_Demand[demand_key])*(Base_Utility[utility_key] - Altr_Utility[utility_key]) / IVTT_Coeff
+            
+            BenefitByMode_dict = {"All":Benefit}
+            ModeList = ["All"]
+            if True: #split logsum by modes
                 
-                Benefit = -0.5 * ( Altr_Utility[utility_key] * (Altr_Demand[demand_key] + Base_Demand[demand_key]) - 2 * Base_Utility[utility_key] * Base_Demand[demand_key]) / IVTT_Coeff
+                utility_key_auto    = "LSS" + utility_key[3:7] + "AU" + utility_key[7:]
+                utility_key_transit = "LSS" + utility_key[3:7] + "TR" + utility_key[7:]
+                utility_key_active  = "LSS" + utility_key[3:7] + "AC" + utility_key[7:]
                 
+                Auto_portion    = -(Altr_UtilitySplit[utility_key_auto]    - Base_UtilitySplit[utility_key_auto]    )
+                Transit_portion = -(Altr_UtilitySplit[utility_key_transit] - Base_UtilitySplit[utility_key_transit] )
+                Active_portion  = -(Altr_UtilitySplit[utility_key_active]  - Base_UtilitySplit[utility_key_active]  )
+                Sum_portions = Auto_portion + Transit_portion + Active_portion
+                
+                Auto_Benefit    = np.where(Sum_portions!=0, Benefit * Auto_portion    / Sum_portions, 0)
+                Transit_Benefit = np.where(Sum_portions!=0, Benefit * Transit_portion / Sum_portions, 0)
+                Active_Benefit  = np.where(Sum_portions!=0, Benefit * Active_portion  / Sum_portions, 0)
+                
+                ModeList = ["Auto", "Transit", "Active"]
+                BenefitByMode_dict = {"Auto":Auto_Benefit, "Transit":Transit_Benefit, "Active":Active_Benefit}
+            
+            for Mode in ModeList:
                 df = pd.concat([util.get_pd_ij_df(eb),util.get_ijensem_df(eb, ensem, ensem)], axis=1)
                 ensem_i = '{}_from'.format(ensem)
                 ensem_j = '{}_to'.format(ensem)
                 df[['i','j', ensem_i, ensem_j]] = df[['i','j', '{}_i'.format(ensem), '{}_j'.format(ensem)]].astype(int)
-                df["Daily_Benefits(min)"] = Benefit.flatten()            
+                df["Daily_Benefits(min)"] = self.PA_to_OD(BenefitByMode_dict[Mode],PA_Factor_Dict[purpose]).flatten()            
                 df = df.drop(['i','j'], axis = 1)
                 df = df.groupby([ensem_i, ensem_j])
                 df = df.sum().reset_index()
@@ -180,22 +211,25 @@ class EconomicAnalysis(_m.Tool()):
                 df["Income"] = income_label[Income]
                 df["Auto_Ownership"] = auto_ownership_label[Auto_Ownership]
                 df["Mode"] = Mode
-                
+            
                 Scenario_Master_DF = Scenario_Master_DF.append(df)
         
         Scenario_Master_DF["Year"] = self.get_scenario_info(eb, "horizon_year")
         Scenario_Master_DF["Scenario"] = self.get_scenario_info( eb, "alternative")
         return Scenario_Master_DF
         
-    def get_utility_key(self, demand_key, Mode):
+    def PA_to_OD(self, pa_mat, pa_factors):    
+        pa_Factor_AM, pa_Factor_MD, pa_Factor_PM = pa_factors
+        pa_fac = pa_Factor_AM + pa_Factor_MD + pa_Factor_PM
+        ap_fac = 1 - pa_fac
+        
+        return pa_mat * pa_fac + pa_mat.transpose() * ap_fac
+        
+    def get_utility_key(self, demand_key):
         if demand_key[3:7] in ["HSCH", "HESC"]:
             utility_key = "LSM" + demand_key[3:8] + "9" + demand_key[9:]
         else:
             utility_key = "LSM" + demand_key[3:]
-        
-        #insert mode into utility_key
-        mode_dict = {"Auto":"AU", "Transit":"TR", "Active":"AC"}
-        utility_key = utility_key[:7] + mode_dict[Mode] + utility_key[7:]
         
         return utility_key
         
@@ -317,12 +351,21 @@ class EconomicAnalysis(_m.Tool()):
                 TransitCost_Altr_MD = np.where(Sum_TransitTrip_Altr_MD==0, Min_TransitCost_Altr_MD, Sum_TransitCost_Altr_MD/Sum_TransitTrip_Altr_MD)
                 TransitCost_Altr_PM = np.where(Sum_TransitTrip_Altr_PM==0, Min_TransitCost_Altr_PM, Sum_TransitCost_Altr_PM/Sum_TransitTrip_Altr_PM)
                 
+                #ROH
                 Time_Benefit_AM = 0.5 * (Sum_TransitTrip_Base_AM + Sum_TransitTrip_Altr_AM) * (TransitTime_Base_AM - TransitTime_Altr_AM)
                 Time_Benefit_MD = 0.5 * (Sum_TransitTrip_Base_MD + Sum_TransitTrip_Altr_MD) * (TransitTime_Base_MD - TransitTime_Altr_MD)
                 Time_Benefit_PM = 0.5 * (Sum_TransitTrip_Base_PM + Sum_TransitTrip_Altr_PM) * (TransitTime_Base_PM - TransitTime_Altr_PM)
                 Cost_Benefit_AM = 0.5 * (Sum_TransitTrip_Base_AM + Sum_TransitTrip_Altr_AM) * (TransitCost_Base_AM - TransitCost_Altr_AM)
                 Cost_Benefit_MD = 0.5 * (Sum_TransitTrip_Base_MD + Sum_TransitTrip_Altr_MD) * (TransitCost_Base_MD - TransitCost_Altr_MD)
                 Cost_Benefit_PM = 0.5 * (Sum_TransitTrip_Base_PM + Sum_TransitTrip_Altr_PM) * (TransitCost_Base_PM - TransitCost_Altr_PM)
+                
+                #for existing users
+                #Time_Benefit_AM = Sum_TransitTrip_Base_AM * (TransitTime_Base_AM - TransitTime_Altr_AM)
+                #Time_Benefit_MD = Sum_TransitTrip_Base_MD * (TransitTime_Base_MD - TransitTime_Altr_MD)
+                #Time_Benefit_PM = Sum_TransitTrip_Base_PM * (TransitTime_Base_PM - TransitTime_Altr_PM)
+                #Cost_Benefit_AM = Sum_TransitTrip_Base_AM * (TransitCost_Base_AM - TransitCost_Altr_AM)
+                #Cost_Benefit_MD = Sum_TransitTrip_Base_MD * (TransitCost_Base_MD - TransitCost_Altr_MD)
+                #Cost_Benefit_PM = Sum_TransitTrip_Base_PM * (TransitCost_Base_PM - TransitCost_Altr_PM)
             
             else:
                 for mode in mode_group:
@@ -539,12 +582,14 @@ class EconomicAnalysis(_m.Tool()):
     def Get_Daily_OD(self, eb, mat_name):    
         util = _m.Modeller().tool("translink.util")
         
+        pa_mat = util.get_matrix_numpy(eb, mat_name)
+        if True: #return PA demand
+            return pa_mat
+        
         matrix_name = eb.matrix(mat_name).name
         purpose = matrix_name.split("P-A")[0]
         purpose_List = ["HbW",  "HbU",  "HbSc", "HbSh", "HbPb", "HbSo", "HbEs", "NHbW", "NHbO"]
         purpose_index = purpose_List.index(purpose)
-        
-        pa_mat = util.get_matrix_numpy(eb, mat_name)
         
         pa_Factor_AM = np.asscalar(util.get_matrix_numpy(eb, "ms4{}0".format(purpose_index)))
         pa_Factor_MD = np.asscalar(util.get_matrix_numpy(eb, "ms4{}1".format(purpose_index)))
@@ -553,6 +598,21 @@ class EconomicAnalysis(_m.Tool()):
         ap_fac = 1 - pa_fac
         
         return pa_mat * pa_fac + pa_mat.transpose() * ap_fac
+        
+    def Export_PA_Factors(self, eb):    
+        util = _m.Modeller().tool("translink.util")
+        
+        Dict = {}
+        
+        purpose_List = ["HbW",  "HbU",  "HbSc", "HbSh", "HbPb", "HbSo", "HbEs", "NHbW", "NHbO"]
+        for purpose in purpose_List:
+            purpose_index = purpose_List.index(purpose)
+            purpose = self.rename_Purpose(purpose)
+            Dict[purpose] = np.array([np.asscalar(util.get_matrix_numpy(eb, "ms4{}0".format(purpose_index))),
+                                         np.asscalar(util.get_matrix_numpy(eb, "ms4{}1".format(purpose_index))),
+                                         np.asscalar(util.get_matrix_numpy(eb, "ms4{}2".format(purpose_index)))])
+                           
+        self.ExportData(eb, Dict, "PA_to_OD_Factors.npz")
         
     def rename_LogSum_Demand(self, eb, mf_number):
         matrix_name = eb.matrix("mf{}".format(mf_number)).name
@@ -582,6 +642,7 @@ class EconomicAnalysis(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
         
         with_previous_export = os.path.isfile(os.path.join(util.get_eb_path(eb), 'EconomicAnalysis', 'LogSum_Utility.npz'))
+        with_previous_export = with_previous_export & os.path.isfile(os.path.join(util.get_eb_path(eb), 'EconomicAnalysis', 'Logsum_UtilitySplit.npz'))
         if with_previous_export:
             return # do not re-export
         
@@ -590,7 +651,7 @@ class EconomicAnalysis(_m.Tool()):
         
         # list mf matrix number to be exported
         matrix_list = []
-        matrix_list += range(9300,9600) # Logsum Matrices
+        matrix_list += range(9000,9100) # Logsum Matrices
         
         Dict = {}
         for mat_id in matrix_list:
@@ -602,7 +663,44 @@ class EconomicAnalysis(_m.Tool()):
         
         self.ExportData(eb, Dict, "LogSum_Utility.npz")
         
+        # list mf matrix number to be exported
+        matrix_list = []
+        matrix_list += range(9300,9600) # Split auto/transit/active
+        
+        Dict = {}
+        for mat_id in matrix_list:
+            mat_name = "mf{}".format(mat_id)
+            mat_exists = eb.matrix(mat_name)
+            if mat_exists:
+                name_key = self.rename_LogSum_UtilitySplit(eb, mat_id)
+                Dict[name_key] = util.get_matrix_numpy(eb, mat_name)
+        
+        self.ExportData(eb, Dict, "LogSum_UtilitySplit.npz")
+        
     def rename_LogSum_Utility(self, eb, mf_number):
+        matrix_name = eb.matrix("mf{}".format(mf_number)).name
+        
+        #get purpose
+        purpose = matrix_name.split("LS")[0]
+        purpose = self.rename_Purpose(purpose)
+        
+        #get auto ownership
+        if matrix_name[-2]=="A":
+            Auto_Ownership = matrix_name[-2:]
+        else:
+            Auto_Ownership = "A9"
+        
+        #get income
+        if matrix_name[-4]=="I":
+            Income = matrix_name[-4:-2]
+        else:
+            Income = "I9"
+        
+        # LSM = LogSum
+        export_name = "LSM" + purpose + Income + Auto_Ownership
+        return export_name.upper()
+        
+    def rename_LogSum_UtilitySplit(self, eb, mf_number):
         matrix_name = eb.matrix("mf{}".format(mf_number)).name
         
         #get purpose
@@ -624,8 +722,8 @@ class EconomicAnalysis(_m.Tool()):
         else:
             Income = "I9"
         
-        # LSM = LogSum
-        export_name = "LSM" + purpose + mode + Income + Auto_Ownership
+        # LSS = LogSum Split (by Auto/Transit/Active)
+        export_name = "LSS" + purpose + mode + Income + Auto_Ownership
         return export_name.upper()
         
     def rename_Purpose(self, key):
