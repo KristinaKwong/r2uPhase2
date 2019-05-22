@@ -63,7 +63,7 @@ class EconomicAnalysis(_m.Tool()):
             if title == baseline_eb_title:
                 BaseScenario_Folder = os.path.join(os.path.dirname(eb.path), "EconomicAnalysis")
         if BaseScenario_Folder=="":
-            raise Exception('Base scenario emmebank is not in this porject.')
+            raise Exception('Base scenario emmebank is not in this project.')
         
         # Check if ensemble is valid
         if not ((ensem[0]=="g") and ensem[1].isalpha() and ensem[1].islower()):
@@ -174,6 +174,7 @@ class EconomicAnalysis(_m.Tool()):
             utility_key = self.get_utility_key(demand_key)
             
             #logsum benefits (ROH formula)
+            #Benefit = 0.5 * (self.PA_to_OD(Altr_Demand[demand_key],PA_Factor_Dict[purpose]) + self.PA_to_OD(Base_Demand[demand_key],PA_Factor_Dict[purpose]))*(Base_Utility[utility_key] - Altr_Utility[utility_key]) / IVTT_Coeff
             Benefit = 0.5 * (Altr_Demand[demand_key] + Base_Demand[demand_key])*(Base_Utility[utility_key] - Altr_Utility[utility_key]) / IVTT_Coeff
             #logsum benefits (Formula A)
             #Benefit = (Base_Demand[demand_key])*(Base_Utility[utility_key] - Altr_Utility[utility_key]) / IVTT_Coeff
@@ -203,7 +204,8 @@ class EconomicAnalysis(_m.Tool()):
                 ensem_i = '{}_from'.format(ensem)
                 ensem_j = '{}_to'.format(ensem)
                 df[['i','j', ensem_i, ensem_j]] = df[['i','j', '{}_i'.format(ensem), '{}_j'.format(ensem)]].astype(int)
-                df["Daily_Benefits(min)"] = self.PA_to_OD(BenefitByMode_dict[Mode],PA_Factor_Dict[purpose]).flatten()            
+                df["Daily_Benefits(min)"] = self.PA_to_OD(BenefitByMode_dict[Mode],PA_Factor_Dict[purpose]).flatten()  
+                #df["Daily_Benefits(min)"] = BenefitByMode_dict[Mode].flatten()            
                 df = df.drop(['i','j'], axis = 1)
                 df = df.groupby([ensem_i, ensem_j])
                 df = df.sum().reset_index()
