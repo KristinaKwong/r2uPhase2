@@ -1,5 +1,5 @@
 c Emme Modeller - Transit Line Transaction
-c Scenario 3504:  2035 Clayton v3
+c Scenario 3504:  2035 Clayton v4
 t lines
 c Transit Lines
 c Line  Mod Veh Headwy Speed Description             Data1  Data2  Data3
@@ -16591,11 +16591,6 @@ a'502W1 ' b   1   5.00  35.00 'Langleys/SurreyCntrl'      0      0      0
    614408        lay=5.00
 a'503E1 ' b   1  30.00  35.00 'Aldgr/Langley/Surrey'      0      0      0
   path=no
-   635501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   636001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   635606         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   636401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   636202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    636402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637103         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637105         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -16632,11 +16627,6 @@ a'503E1 ' b   1  30.00  35.00 'Aldgr/Langley/Surrey'      0      0      0
    687102        lay=5.00
 a'503E2 ' b  10  10.00  35.00 'Langleys/SurreyCntrl'      0      0      0
   path=no
-   635501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   636001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   635606         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   636401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   636202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    636402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637103         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637105         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -16696,13 +16686,7 @@ a'503W1 ' b   1  30.00  35.00 'Aldgr/Langley/Surrey'      0      0      0
    637701         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   636402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   636202         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   636401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   635607         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   635606         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   636001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   635501        lay=5.00
+   636402        lay=5.00
 a'503W2 ' b  10   5.00  35.00 'Langleys/SurreyCntrl'      0      0      0
   path=no
    670803         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -16719,13 +16703,7 @@ a'503W2 ' b  10   5.00  35.00 'Langleys/SurreyCntrl'      0      0      0
    637701         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    637103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   636402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   636202         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   636401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   635607         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   635606         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   636001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   635501        lay=5.00
+   636402        lay=5.00
 a'509E1P' b   1  20.00  35.00 'WalnutGr/SurreySta  '      0      0      0
   path=no
    614408         dwt=#0   ttf=1   us1=0   us2=0   us3=0
