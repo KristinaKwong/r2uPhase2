@@ -1,7 +1,7 @@
 ##---------------------------------------------------------------------
 ##--TransLink Phase 3.0 Regional Transportation Model
 ##--
-##--Path: translink.internal_tools.losDass
+##--Path: translink.RTM3.ff_assignment
 ##--Purpose: Run an LOS D Assignment for AM, MD and PM
 ##---------------------------------------------------------------------
 import inro.modeller as _m
@@ -26,9 +26,9 @@ class AutoAssignment(_m.Tool()):
 
     def __init__(self):
         self.relative_gap = 0.0001
-        self.best_relative_gap = 0.01
-        self.normalized_gap = 0.005
-        self.max_iterations = 250
+        self.best_relative_gap = 0
+        self.normalized_gap = 0
+        self.max_iterations = 300
         self.assignment_type = 1
 
     def page(self):
@@ -78,18 +78,18 @@ class AutoAssignment(_m.Tool()):
         am_scenario, md_scenario, pm_scenario = self.losdscenarios(eb, am_scenario, md_scenario, pm_scenario)
 
         # Initialize LOSD Skims by time period
-        util.initmat(eb, "mf9350", "AmSovTimeFreeflow", "SOV Minutes Freeflow AM", 0)
-        util.initmat(eb, "mf9360", "MdSovTimeFreeflow", "SOV Minutes Freeflow MD", 0)
-        util.initmat(eb, "mf9370", "PmSovTimeFreeflow", "SOV Minutes Freeflow PM", 0)
-        util.initmat(eb, "mf9355", "AmHovTimeFreeflow", "HOV Minutes Freeflow AM", 0)
-        util.initmat(eb, "mf9365", "MdHovTimeFreeflow", "HOV Minutes Freeflow MD", 0)
-        util.initmat(eb, "mf9375", "PmHovTimeFreeflow", "HOV Minutes Freeflow PM", 0)
-        util.initmat(eb, "mf9380", "AmLgvTimeFreeflow", "LGV Minutes Freeflow AM", 0)
-        util.initmat(eb, "mf9381", "MdLgvTimeFreeflow", "LGV Minutes Freeflow MD", 0)
-        util.initmat(eb, "mf9382", "PmLgvTimeFreeflow", "LGV Minutes Freeflow PM", 0)
-        util.initmat(eb, "mf9390", "AmHgvTimeFreeflow", "HGV Minutes Freeflow AM", 0)
-        util.initmat(eb, "mf9391", "MdHgvTimeFreeflow", "HGV Minutes Freeflow MD", 0)
-        util.initmat(eb, "mf9392", "PmHgvTimeFreeflow", "HGV Minutes Freeflow PM", 0)
+        util.initmat(eb, "mf9650", "AmSovTimeFreeflow", "SOV Minutes Freeflow AM", 0)
+        util.initmat(eb, "mf9660", "MdSovTimeFreeflow", "SOV Minutes Freeflow MD", 0)
+        util.initmat(eb, "mf9670", "PmSovTimeFreeflow", "SOV Minutes Freeflow PM", 0)
+        util.initmat(eb, "mf9655", "AmHovTimeFreeflow", "HOV Minutes Freeflow AM", 0)
+        util.initmat(eb, "mf9665", "MdHovTimeFreeflow", "HOV Minutes Freeflow MD", 0)
+        util.initmat(eb, "mf9675", "PmHovTimeFreeflow", "HOV Minutes Freeflow PM", 0)
+        util.initmat(eb, "mf9680", "AmLgvTimeFreeflow", "LGV Minutes Freeflow AM", 0)
+        util.initmat(eb, "mf9681", "MdLgvTimeFreeflow", "LGV Minutes Freeflow MD", 0)
+        util.initmat(eb, "mf9682", "PmLgvTimeFreeflow", "LGV Minutes Freeflow PM", 0)
+        util.initmat(eb, "mf9690", "AmHgvTimeFreeflow", "HGV Minutes Freeflow AM", 0)
+        util.initmat(eb, "mf9691", "MdHgvTimeFreeflow", "HGV Minutes Freeflow MD", 0)
+        util.initmat(eb, "mf9692", "PmHgvTimeFreeflow", "HGV Minutes Freeflow PM", 0)
 
         # AM
 
@@ -319,11 +319,11 @@ class AutoAssignment(_m.Tool()):
     def get_temp_matrices(self):
         matrices = []
 
-        matrices.append(["mf9300", "SovTimeFreeflow",  "SOV Minutes Freeflow", 0])
-        matrices.append(["mf9305", "HovTimeFreeflow",  "HOV Minutes Freeflow", 0])
-        matrices.append(["mf9330", "LgvTimeFreeflow",  "LGV Minutes Freeflow", 0])
-        matrices.append(["mf9340", "HgvTimeFreeflow",  "HGV Minutes Freeflow", 0])
-        matrices.append(["mf9341", "HgvPenyFreeflow",  "HGV TrkPeny Freeflow", 0])
+        matrices.append(["mf9600", "SovTimeFreeflow",  "SOV Minutes Freeflow", 0])
+        matrices.append(["mf9605", "HovTimeFreeflow",  "HOV Minutes Freeflow", 0])
+        matrices.append(["mf9630", "LgvTimeFreeflow",  "LGV Minutes Freeflow", 0])
+        matrices.append(["mf9640", "HgvTimeFreeflow",  "HGV Minutes Freeflow", 0])
+        matrices.append(["mf9641", "HgvPenyFreeflow",  "HGV TrkPeny Freeflow", 0])
 
         return matrices
 
@@ -333,7 +333,7 @@ class AutoAssignment(_m.Tool()):
         # create_scenarios = _m.Modeller().tool("translink.RTM3.stage0.create_scenarios")
 
          # Copy to new AM Scenarios
-        am_scenid = am_scenario.number + 6
+        am_scenid = am_scenario.number + 100
         copy_scenario(from_scenario=am_scenario,
                     scenario_id=am_scenid,
                     scenario_title="{} FF".format(am_scenario.title),
@@ -343,7 +343,7 @@ class AutoAssignment(_m.Tool()):
 
 
         # Copy to new MD Scenarios
-        md_scenid = md_scenario.number + 6
+        md_scenid = md_scenario.number + 100
         copy_scenario(from_scenario=md_scenario,
                     scenario_id=md_scenid,
                     scenario_title="{} FF".format(md_scenario.title),
@@ -353,7 +353,7 @@ class AutoAssignment(_m.Tool()):
 
 
         # Copy to new pm Scenarios
-        pm_scenid = pm_scenario.number + 6
+        pm_scenid = pm_scenario.number + 100
         copy_scenario(from_scenario=pm_scenario,
                     scenario_id=pm_scenid,
                     scenario_title="{} FF".format(pm_scenario.title),
@@ -452,7 +452,7 @@ class AutoAssignment(_m.Tool()):
             matrix_name = matrix_name.replace("Rel","RTIM").upper()
             export_dict[matrix_name] = matrix
         
-        out_path = os.path.join(util.get_eb_path(eb), 'TripSim') # set output directory
+        out_path = os.path.join(util.get_eb_path(eb), 'EconomicAnalysis') # set output directory
         if not os.path.exists(out_path): # initialize output directory if it does not exist
             os.makedirs(out_path)
         OutputFile = os.path.join(out_path,'RELISKIM.npz') # output file name
