@@ -443,9 +443,15 @@ class AutoAssignment(_m.Tool()):
         self.calc_reliability(eb, pm_coefs, 'PmHgvRel', 'mfPmHgvTime', 'mfPmHgvTimeFreeflow', 'mfPmHgvOpCst', 0.56)
         
         export_dict = {} #intialize empty dictionary for output items
-        export_list = ["AmSovRelVot1","AmSovRelVot4","AmHovRelVot1","AmHovRelVot3",
-                       "MdSovRelVot1","MdSovRelVot4","MdHovRelVot1","MdHovRelVot3",
-                       "PmSovRelVot1","PmSovRelVot4","PmHovRelVot1","PmHovRelVot3"
+        export_list = ["AmSovRelVot1","MdSovRelVot1","PmSovRelVot1",
+                       "AmSovRelVot2","MdSovRelVot2","PmSovRelVot2",
+                       "AmSovRelVot3","MdSovRelVot3","PmSovRelVot3",
+                       "AmSovRelVot4","MdSovRelVot4","PmSovRelVot4",
+                       "AmHovRelVot1","MdHovRelVot1","PmHovRelVot1",
+                       "AmHovRelVot2","MdHovRelVot2","PmHovRelVot2",
+                       "AmHovRelVot3","MdHovRelVot3","PmHovRelVot3",
+                       "AmLgvRel","MdLgvRel","PmLgvRel",
+                       "AmHgvRel","MdHgvRel","PmHgvRel"
                        ]
         for matrix_name in export_list:
             matrix = util.get_matrix_numpy(eb, matrix_name)
