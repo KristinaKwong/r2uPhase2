@@ -1,6 +1,6 @@
 0CAFACB7-AD3C-40E4-80DD-675DE315EA7F 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
-# Emme project file generated on Mon Mar 4 20:21:42 2019
-# File: O:/Proj/2121-00448-00 Translink-SLSP Modeling Services/4.0 ENGINEERING DESIGN/4.8 Planning/EMME/RTM/RTM.emp
+# Emme project file generated on Tue May 28 11:19:30 2019
+# File: Z:/2121-00448-00 South of Fraser Transit/RTM/RTM.emp
 #
 # String Name: name of preference configuration (tr)
 Name = TransLink Regional Travel Demand Model Phase 3.0
@@ -9,7 +9,7 @@ Description = Created on 2013-12-11 at 14:12:34 by AD.
 # String TranslationContext: context for translations of configuration texts (subst)
 TranslationContext = GeneralConfiguration
 # String OpenDatabases: database open in the project (subst)
-OpenDatabases = SLS_2017BASE\emmebank
+OpenDatabases = SoF_BASE\emmebank
 # String ViewFolder: folder storing the view files (subst)
 ViewFolder = Views
 # String WorksheetFolder: folder storing worksheets (subst)
@@ -17,8 +17,7 @@ WorksheetFolder = Worksheets
 # String MediaFolder: folder for storing media files (subst)
 MediaFolder = Media
 # String ProjectDatabases: list of databases associated with the project (subst)
-ProjectDatabases[] = SLS_2017BASE\emmebank;;windows-1252
-ProjectDatabases[] = SLS_2035BASE\emmebank;;windows-1252
+ProjectDatabases = SoF_BASE\emmebank;;windows-1252
 # String ProjectMacroPath: macro path (subst)
 ProjectMacroPath[] = %<$EnvironmentMacroPath>%
 ProjectMacroPath[] = %<$EnvironmentMacroPath>%
