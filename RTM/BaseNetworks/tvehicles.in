@@ -21,6 +21,10 @@ a  17 'LRT       ' f      1   160   300   0.00   3.00   0.00   0.00   0.00
 a  18 'Gondola   ' h     20    28    35   0.00   0.00   0.00   0.00   0.00
 a  20 'Sky-ML2   ' l    999   127   218   0.00   0.00   0.00   0.00   0.00
 c ------------------------------------------------------------------------
+c  New Transit Vehicles for SoF Transit LRT and BRT
+a  21 'BRT-SFT   ' g    999    48    85  65.00   0.55   0.00   0.00   3.75
+a  22 'LRT-SFT   ' f    999    50   170   0.00   3.00   0.00   0.00   0.00
+c ------------------------------------------------------------------------
 c  Updated SkyTrain Transit Vehicles
 c  c  Car ; Seated ; Theoretical Total ; Practical Total
 c  ROTEM ; 044 ; 169 ; 144
