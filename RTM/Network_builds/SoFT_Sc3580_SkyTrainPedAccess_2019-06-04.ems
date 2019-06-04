@@ -1,0 +1,136 @@
+{
+    "command_history": [
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "616704": "POINT(511.266099 5447.705469)",
+                    "616708": "POINT(511.281564 5447.768172)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "616708-616704"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "616708-616704": "LINESTRING(511.281564 5447.768172, 511.266099 5447.705469)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "length",
+                "element_ids": [
+                    "616708-616704"
+                ],
+                "value": 0.115,
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "@tpfpm": -1.0,
+                    "@tpfmd": -1.0,
+                    "penalty_func": "auto",
+                    "@tpfam": -1.0
+                }
+            }
+        },
+        {
+            "description": "Paste link attributes",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "621104": "POINT(511.27547 5443.920721)",
+                            "616708": "POINT(511.281564 5447.768172)",
+                            "616709": "POINT(511.276006 5447.121802)",
+                            "621103": "POINT(511.254126 5443.937632)",
+                            "616704": "POINT(511.266099 5447.705469)",
+                            "622504": "POINT(511.257964 5443.127535)",
+                            "616706": "POINT(511.244155 5447.150686)",
+                            "620301": "POINT(511.24192 5445.558883)",
+                            "622505": "POINT(511.286511 5443.102879)",
+                            "618803": "POINT(511.277093 5445.521859)",
+                            "624201": "POINT(511.467258 5442.31332)",
+                            "624202": "POINT(511.382984 5442.134603)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "616704-616708",
+                                    "616706-616709",
+                                    "616709-616706",
+                                    "618803-620301",
+                                    "620301-618803",
+                                    "621103-621104",
+                                    "621104-621103",
+                                    "622504-622505",
+                                    "622505-622504",
+                                    "624201-624202",
+                                    "624202-624201"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "624201-624202": "LINESTRING(511.467258 5442.31332, 511.382984 5442.134603)",
+                                "622504-622505": "LINESTRING(511.257964 5443.127535, 511.286511 5443.102879)",
+                                "618803-620301": "LINESTRING(511.277093 5445.521859, 511.24192 5445.558883)",
+                                "616706-616709": "LINESTRING(511.244155 5447.150686, 511.276006 5447.121802)",
+                                "624202-624201": "LINESTRING(511.382984 5442.134603, 511.467258 5442.31332)",
+                                "616709-616706": "LINESTRING(511.276006 5447.121802, 511.244155 5447.150686)",
+                                "616704-616708": "LINESTRING(511.266099 5447.705469, 511.281564 5447.768172)",
+                                "621103-621104": "LINESTRING(511.254126 5443.937632, 511.27547 5443.920721)",
+                                "620301-618803": "LINESTRING(511.24192 5445.558883, 511.277093 5445.521859)",
+                                "622505-622504": "LINESTRING(511.286511 5443.102879, 511.257964 5443.127535)",
+                                "621104-621103": "LINESTRING(511.27547 5443.920721, 511.254126 5443.937632)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "624201-624202",
+                            "624202-624201",
+                            "616704-616708",
+                            "616706-616709",
+                            "616709-616706",
+                            "618803-620301",
+                            "620301-618803",
+                            "621104-621103",
+                            "621103-621104",
+                            "622504-622505",
+                            "622505-622504"
+                        ],
+                        "value": 0.115,
+                        "element_type": "LINK",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "version": "F8A1BCA0-D0A1-49a1-9A43-6769D2312D7D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 1 0 0",
+    "type": "NETWORK_BUILD",
+    "metadata": {
+        "projection": "PROJCS[\"WGS_84_UTM_10N_vancouver_special\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",500.0],PARAMETER[\"False_Northing\",0],PARAMETER[\"Central_Meridian\",-123.0],PARAMETER[\"Scale_Factor\",0.9996],PARAMETER[\"Latitude_Of_Origin\",0.0],UNIT[\"Kilometer\",1000.0]]",
+        "emmebank_path": "//vcr-fs5c/AS2121EMME/2121-00448-00 South of Fraser Transit/RTM/SoF_BASE/emmebank",
+        "comments": "",
+        "scenario_title": "2035 Alt3: Sc 3550 + SkyTrain on KGB",
+        "author_initials": "MS",
+        "scenario_number": "3580",
+        "time": "13:12:55",
+        "date": "2019-06-04",
+        "project_title": "SoF_BASE"
+    }
+}
