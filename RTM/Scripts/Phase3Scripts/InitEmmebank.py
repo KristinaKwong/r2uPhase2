@@ -14,6 +14,9 @@ import pandas as pd
 class InitEmmebank(_m.Tool()):
     emme_title = _m.Attribute(_m.InstanceType)
     emme_folder = _m.Attribute(_m.InstanceType)
+    scen_number = _m.Attribute(int)
+    scen_name = _m.Attribute(_m.InstanceType)
+
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
@@ -29,6 +32,14 @@ class InitEmmebank(_m.Tool()):
         pb.add_text_box(tool_attribute_name="emme_title",
                         size=30,
                         title="Enter the Title for the new emmebank")
+
+        pb.add_text_box(tool_attribute_name="scen_number",
+                        size=10,
+                        title="Enter the Scenario Number to import into the new emmebank")
+
+        pb.add_text_box(tool_attribute_name="scen_name",
+                        size=60,
+                        title="Enter the Scenario Name for the new scenario")
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
@@ -46,12 +57,12 @@ class InitEmmebank(_m.Tool()):
     def __call__(self):
         new_path = self.initfolder(self.emme_folder)
 
-        self.initbank(new_path, self.emme_title)
+        self.initbank(new_path, self.emme_title, self.scen_number, self.scen_name)
         _m.Modeller().desktop.data_explorer().add_database(new_path).open()
         self.initdatabase(_m.Modeller().emmebank)
 
 
-    def initbank(self, path, title):
+    def initbank(self, path, title, scen_number, scen_name):
         dim = {"scalar_matrices": 9999,
                "origin_matrices": 9999,
                "destination_matrices": 9999,
@@ -78,10 +89,11 @@ class InitEmmebank(_m.Tool()):
             eb.node_number_digits = 6
 
             self.initfunctions(eb)
-            self.initscenario(eb, 1000, "2011 Base Network")
-            self.initscenario(eb, 2000, "2016 Base Network")
-            self.initscenario(eb, 3000, "2035 Base Network")
-            self.initscenario(eb, 4000, "2050 Base Network")
+            self.initscenario(eb, scen_number, scen_name)
+            #self.initscenario(eb, 1000, "2011 Base Network")
+            #self.initscenario(eb, 2000, "2016 Base Network")
+            #self.initscenario(eb, 3000, "2035 Base Network")
+            #self.initscenario(eb, 4000, "2050 Base Network")
 
     def initfolder(self, emme_folder):
         project = _m.Modeller().desktop.project
