@@ -1297,7 +1297,7 @@ class ModeChoiceGenDf(_m.Tool()):
         util.initmat(eb, "mf5462", "HbEsBlBusAux", "HbEs Bl Bus Auxillary Time", 0)
         util.initmat(eb, "mf5463", "HbEsBlBusBoard", "HbEs Bl Bus Boardings", 0)
         util.initmat(eb, "mf5464", "HbEsBlBusFare", "HbEs Bl Bus Fare", 0)
-        util.initmat(eb, "mf5465", "HbEsBlBusIvttBRT ", "HbEs Bl Bus BRT InVehicle Time", 0)
+        util.initmat(eb, "mf5465", "HbEsBlBusIvttBRT", "HbEs Bl Bus BRT InVehicle Time", 0)
         util.initmat(eb, "mf5470", "NHbWBlBusIvtt", "NHbW Bl Bus InVehicle Time", 0)
         util.initmat(eb, "mf5471", "NHbWBlBusWait", "NHbW Bl Bus Waiting Time", 0)
         util.initmat(eb, "mf5472", "NHbWBlBusAux", "NHbW Bl Bus Auxillary Time", 0)
