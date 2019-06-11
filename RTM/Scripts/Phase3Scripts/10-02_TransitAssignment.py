@@ -920,7 +920,7 @@ class TransitAssignment(_m.Tool()):
         matrices.append(["mf9964", "BusIncCst", "Interim Skim BusIncrementalCost", 0])
         matrices.append(["mf9965", "BusIncFirstCost", "Interim Skim BusFirstBoardCost", 0])
         matrices.append(["mf9966", "BusFare", "Interim Skim BusTotalFare", 0])
-        matrices.append(["mf9967", "BusIVTTBRT", "Interim Skim BusIVTTBRT", 0])
+        matrices.append(["mf9967", "BusIvttBRT", "Interim Skim BusIVTTBRT", 0])
 
         # Rail journey-level assignment
         matrices.append(["mf9970", "RailBoard", "Interim-JL Skim RailAvgBoard", 0])
