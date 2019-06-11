@@ -552,23 +552,23 @@ class ModeChoiceGenDf(_m.Tool()):
         # Blend Factors
         BlendDict = {  #AM,   MD,   PM         AM,   MD,   PM
          'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
-                 'Mat':['HbWBlRailIvtt', 'HbWBlRailIvttBus', 'HbWBlRailWait', 'HbWBlRailAux', 'HbWBlRailBoard']}, # Where Blended Matrices get stored in same order as above
+                 'Mat':['HbWBlRailIvtt', 'HbWBlRailIvttBus', 'HbWBlRailWait', 'HbWBlRailAux', 'HbWBlRailBoard', 'HbWBlRailIvttBRT', 'HbWBlRailIvttLRT']}, # Where Blended Matrices get stored in same order as above
          'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1],
-                 'Mat':['HbUBlRailIvtt', 'HbUBlRailIvttBus', 'HbUBlRailWait', 'HbUBlRailAux', 'HbUBlRailBoard']},
+                 'Mat':['HbUBlRailIvtt', 'HbUBlRailIvttBus', 'HbUBlRailWait', 'HbUBlRailAux', 'HbUBlRailBoard', 'HbUBlRailIvttBRT', 'HbUBlRailIvttLRT']},
          'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1],
-                 'Mat':['HbScBlRailIvtt', 'HbScBlRailIvttBus', 'HbScBlRailWait', 'HbScBlRailAux', 'HbScBlRailBoard']},
+                 'Mat':['HbScBlRailIvtt', 'HbScBlRailIvttBus', 'HbScBlRailWait', 'HbScBlRailAux', 'HbScBlRailBoard', 'HbScBlRailIvttBRT', 'HbScBlRailIvttLRT']},
          'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1],
-                 'Mat':['HbShBlRailIvtt', 'HbShBlRailIvttBus', 'HbShBlRailWait', 'HbShBlRailAux', 'HbShBlRailBoard']},
+                 'Mat':['HbShBlRailIvtt', 'HbShBlRailIvttBus', 'HbShBlRailWait', 'HbShBlRailAux', 'HbShBlRailBoard', 'HbShBlRailIvttBRT', 'HbShBlRailIvttLRT']},
          'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1],
-                 'Mat':['HbPbBlRailIvtt', 'HbPbBlRailIvttBus', 'HbPbBlRailWait', 'HbPbBlRailAux', 'HbPbBlRailBoard']},
+                 'Mat':['HbPbBlRailIvtt', 'HbPbBlRailIvttBus', 'HbPbBlRailWait', 'HbPbBlRailAux', 'HbPbBlRailBoard', 'HbPbBlRailIvttBRT', 'HbPbBlRailIvttLRT']},
          'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1],
-                 'Mat':['HbSoBlRailIvtt', 'HbSoBlRailIvttBus', 'HbSoBlRailWait', 'HbSoBlRailAux', 'HbSoBlRailBoard']},
+                 'Mat':['HbSoBlRailIvtt', 'HbSoBlRailIvttBus', 'HbSoBlRailWait', 'HbSoBlRailAux', 'HbSoBlRailBoard', 'HbSoBlRailIvttBRT', 'HbSoBlRailIvttLRT']},
          'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1],
-                 'Mat':['HbEsBlRailIvtt', 'HbEsBlRailIvttBus', 'HbEsBlRailWait', 'HbEsBlRailAux', 'HbEsBlRailBoard']},
+                 'Mat':['HbEsBlRailIvtt', 'HbEsBlRailIvttBus', 'HbEsBlRailWait', 'HbEsBlRailAux', 'HbEsBlRailBoard', 'HbEsBlRailIvttBRT', 'HbEsBlRailIvttLRT']},
          'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1],
-                 'Mat':['NHbWBlRailIvtt', 'NHbWBlRailIvttBus', 'NHbWBlRailWait', 'NHbWBlRailAux', 'NHbWBlRailBoard']},
+                 'Mat':['NHbWBlRailIvtt', 'NHbWBlRailIvttBus', 'NHbWBlRailWait', 'NHbWBlRailAux', 'NHbWBlRailBoard', 'NHbWBlRailIvttBRT', 'NHbWBlRailIvttLRT']},
          'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1],
-                 'Mat':['NHbOBlRailIvtt', 'NHbOBlRailIvttBus', 'NHbOBlRailWait', 'NHbOBlRailAux', 'NHbOBlRailBoard']}}
+                 'Mat':['NHbOBlRailIvtt', 'NHbOBlRailIvttBus', 'NHbOBlRailWait', 'NHbOBlRailAux', 'NHbOBlRailBoard', 'NHbOBlRailIvttBRT', 'NHbOBlRailIvttLRT']}}
 
         BlendFareDict = {
          'trfrhbwo':{'PA': trfr_hbwo_fct[0], 'AP':trfr_hbwo_fct[1], 'Mat':['HbWBlRailFare']}, # fare blends
