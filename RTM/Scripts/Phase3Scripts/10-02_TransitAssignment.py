@@ -662,6 +662,11 @@ class TransitAssignment(_m.Tool()):
         spec_as_dict["by_mode_subset"]["actual_first_boarding_costs"] = "mfBusIncFirstCost"
         transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
+        spec_as_dict = self.get_matrix_skim_spec(modelist)
+        spec_as_dict["by_mode_subset"]["modes"] = ["g"]
+        spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = "mfBusIvttBRT"
+        transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
+        
         # Skim for FareIncrements
         strat_spec = self.get_strategy_skim_spec()
         strat_spec["trip_components"]["in_vehicle"] = "@fareincrement"
@@ -704,6 +709,16 @@ class TransitAssignment(_m.Tool()):
         spec_as_dict = self.get_matrix_skim_spec(modelist)
         spec_as_dict["by_mode_subset"]["modes"] = ["s", "l", "r", "f", "h"]
         spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = "mfRailIvtt"
+        transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
+
+        spec_as_dict = self.get_matrix_skim_spec(modelist)
+        spec_as_dict["by_mode_subset"]["modes"] = ["g"]
+        spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = "mfRailIvttBRT"
+        transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
+
+        spec_as_dict = self.get_matrix_skim_spec(modelist)
+        spec_as_dict["by_mode_subset"]["modes"] = ["f"]
+        spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = "mfRailIvttLRT"
         transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
         # Skim for Fare Increments: In-vehicle costs
@@ -813,16 +828,16 @@ class TransitAssignment(_m.Tool()):
             self.skim_wce(sc)
 
         if tod == "AM":
-            bus_skims =  ["mfAmBusIvtt", "mfAmBusWait", "mfAmBusAux", "mfAmBusBoard", "mfAmBusFare"]
-            rail_skims = ["mfAmRailIvtt", "mfAmRailIvttBus", "mfAmRailWait", "mfAmRailAux", "mfAmRailBoard", "mfAmRailFare"]
+            bus_skims =  ["mfAmBusIvtt", "mfAmBusWait", "mfAmBusAux", "mfAmBusBoard", "mfAmBusFare", "mfAmBusIvttBRT"]
+            rail_skims = ["mfAmRailIvtt", "mfAmRailIvttBus", "mfAmRailWait", "mfAmRailAux", "mfAmRailBoard", "mfAmRailFare", "mfAmRailIvttBRT", "mfAmRailIvttLRT"]
             wce_skims =  ["mfAmWceIvtt", "mfAmWceIvttRail", "mfAmWceIvttBus", "mfAmWceWait", "mfAmWceAux", "mfAmWceBoard", "mfAmWceFare"]
         if tod == "MD":
-            bus_skims =  ["mfMdBusIvtt", "mfMdBusWait", "mfMdBusAux", "mfMdBusBoard", "mfMdBusFare"]
-            rail_skims = ["mfMdRailIvtt", "mfMdRailIvttBus", "mfMdRailWait", "mfMdRailAux", "mfMdRailBoard", "mfMdRailFare"]
+            bus_skims =  ["mfMdBusIvtt", "mfMdBusWait", "mfMdBusAux", "mfMdBusBoard", "mfMdBusFare", "mfMdBusIvttBRT"]
+            rail_skims = ["mfMdRailIvtt", "mfMdRailIvttBus", "mfMdRailWait", "mfMdRailAux", "mfMdRailBoard", "mfMdRailFare", "mfMdRailIvttBRT", "mfMdRailIvttLRT"]
             wce_skims =  None
         if tod == "PM":
-            bus_skims =  ["mfPmBusIvtt", "mfPmBusWait", "mfPmBusAux", "mfPmBusBoard", "mfPmBusFare"]
-            rail_skims = ["mfPmRailIvtt", "mfPmRailIvttBus", "mfPmRailWait", "mfPmRailAux", "mfPmRailBoard", "mfPmRailFare"]
+            bus_skims =  ["mfPmBusIvtt", "mfPmBusWait", "mfPmBusAux", "mfPmBusBoard", "mfPmBusFare", "mfPmBusIvttBRT"]
+            rail_skims = ["mfPmRailIvtt", "mfPmRailIvttBus", "mfPmRailWait", "mfPmRailAux", "mfPmRailBoard", "mfPmRailFare", "mfPmRailIvttBRT", "mfPmRailIvttLRT"]
             wce_skims =  ["mfPmWceIvtt", "mfPmWceIvttRail", "mfPmWceIvttBus", "mfPmWceWait", "mfPmWceAux", "mfPmWceBoard", "mfPmWceFare"]
 
         do_averaging = util.get_cycle(sc.emmebank) > 1
@@ -835,6 +850,7 @@ class TransitAssignment(_m.Tool()):
             specs.append(util.matrix_spec(bus_skims[2], "mfBusAux"))
             specs.append(util.matrix_spec(bus_skims[3], "mfBusBoard"))
             specs.append(util.matrix_spec(bus_skims[4], "mfBusFare"))
+            specs.append(util.matrix_spec(bus_skims[5], "mfBusIvttBRT"))
 
             # Set Rail Skims
             specs.append(util.matrix_spec(rail_skims[0], "mfRailIvtt"))
@@ -843,6 +859,8 @@ class TransitAssignment(_m.Tool()):
             specs.append(util.matrix_spec(rail_skims[3], "mfRailAux"))
             specs.append(util.matrix_spec(rail_skims[4], "mfRailBoard"))
             specs.append(util.matrix_spec(rail_skims[5], "mfRailFare"))
+            specs.append(util.matrix_spec(rail_skims[6], "mfRailIvttBRT"))
+            specs.append(util.matrix_spec(rail_skims[7], "mfRailIvttLRT"))
 
             # Set WCE Skims
             if wce_skims is not None:
@@ -860,6 +878,7 @@ class TransitAssignment(_m.Tool()):
             specs.append(util.matrix_spec(bus_skims[2], "0.5*(mfBusAux + %s)"   % bus_skims[2]))
             specs.append(util.matrix_spec(bus_skims[3], "0.5*(mfBusBoard + %s)" % bus_skims[3]))
             specs.append(util.matrix_spec(bus_skims[4], "0.5*(mfBusFare + %s)"  % bus_skims[4]))
+            specs.append(util.matrix_spec(bus_skims[4], "0.5*(mfBusIvttBRT + %s)"  % bus_skims[5]))
 
             # Average Rail Skims
             specs.append(util.matrix_spec(rail_skims[0], "0.5*(mfRailIvtt + %s)"    % rail_skims[0]))
@@ -868,6 +887,8 @@ class TransitAssignment(_m.Tool()):
             specs.append(util.matrix_spec(rail_skims[3], "0.5*(mfRailAux + %s)"     % rail_skims[3]))
             specs.append(util.matrix_spec(rail_skims[4], "0.5*(mfRailBoard + %s)"   % rail_skims[4]))
             specs.append(util.matrix_spec(rail_skims[5], "0.5*(mfRailFare + %s)"    % rail_skims[5]))
+            specs.append(util.matrix_spec(rail_skims[1], "0.5*(mfRailIvttBRT + %s)" % rail_skims[6]))
+            specs.append(util.matrix_spec(rail_skims[1], "0.5*(mfRailIvttLRT + %s)" % rail_skims[7]))
 
             # Average WCE Skims
             if wce_skims is not None:
@@ -899,6 +920,7 @@ class TransitAssignment(_m.Tool()):
         matrices.append(["mf9964", "BusIncCst", "Interim Skim BusIncrementalCost", 0])
         matrices.append(["mf9965", "BusIncFirstCost", "Interim Skim BusFirstBoardCost", 0])
         matrices.append(["mf9966", "BusFare", "Interim Skim BusTotalFare", 0])
+        matrices.append(["mf9967", "BusIVTTBRT", "Interim Skim BusIVTTBRT", 0])
 
         # Rail journey-level assignment
         matrices.append(["mf9970", "RailBoard", "Interim-JL Skim RailAvgBoard", 0])
@@ -909,6 +931,8 @@ class TransitAssignment(_m.Tool()):
         matrices.append(["mf9975", "RailIvCst", "Interim-JL Skim Rail Invehicle Cost", 0])
         matrices.append(["mf9976", "RailBrdCst", "Interim-JL Skim Rail Boarding Cost", 0])
         matrices.append(["mf9977", "RailFare", "Interim-JL Skim Rail Fare", 0])
+        matrices.append(["mf9978", "RailIvttBRT", "Interim-JL Skim RailBRTIVTT", 0])
+        matrices.append(["mf9979", "RailIvttLRT", "Interim-JL Skim RailLRTIVTT", 0])
 
         # WCE journey-level assignment
         matrices.append(["mf9980", "WceBoard", "Interim-JL Skim WCEAvgBoard", 0])

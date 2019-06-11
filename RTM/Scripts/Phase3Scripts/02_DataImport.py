@@ -99,7 +99,8 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms151", "hgvTollFac", "HGV toll factor", 3.0)
         util.initmat(eb, "ms152", "sovTollFac", "SOV toll factor", 1.0)
         util.initmat(eb, "ms153", "hovTollFac", "HOV toll factor", 1.0)
-
+        util.initmat(eb, "ms154", "BRTASCFactor", "BRT Percent of Rail ASC", 0.4)
+        util.initmat(eb, "ms155", "LRTASCFactor", "LRT Percent of Rail ASC", 0.8)
 
 
         util.initmat(eb, "ms160", "oneZoneFare", "One Zone Fare - FS-SV", 2.1)
@@ -606,18 +607,21 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "mf5302", "AmBusAux", "Am Bus Auxillary Time", 0)
         util.initmat(eb, "mf5303", "AmBusBoard", "Am Bus Boardings", 0)
         util.initmat(eb, "mf5304", "AmBusFare", "Am Bus Fare", 0)
+        util.initmat(eb, "mf5305", "AmBusIvttBRT", "Am Bus BRT InVehicle Time", 0)
         # MD
         util.initmat(eb, "mf5310", "MdBusIvtt", "Md Bus InVehicle Time", 0)
         util.initmat(eb, "mf5311", "MdBusWait", "Md Bus Waiting Time", 0)
         util.initmat(eb, "mf5312", "MdBusAux", "Md Bus Auxillary Time", 0)
         util.initmat(eb, "mf5313", "MdBusBoard", "Md Bus Boardings", 0)
         util.initmat(eb, "mf5314", "MdBusFare", "Md Bus Fare", 0)
+        util.initmat(eb, "mf5315", "MdBusIvttBRT", "Md Bus BRT InVehicle Time", 0)
         # PM
         util.initmat(eb, "mf5320", "PmBusIvtt", "Pm Bus InVehicle Time", 0)
         util.initmat(eb, "mf5321", "PmBusWait", "Pm Bus Waiting Time", 0)
         util.initmat(eb, "mf5322", "PmBusAux", "Pm Bus Auxillary Time", 0)
         util.initmat(eb, "mf5323", "PmBusBoard", "Pm Bus Boardings", 0)
         util.initmat(eb, "mf5324", "PmBusFare", "Pm Bus Fare", 0)
+        util.initmat(eb, "mf5325", "PmBusIvttBRT", "Pm Bus BRT InVehicle Time", 0)
 
         #####################
         # Rail
@@ -629,6 +633,8 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "mf5503", "AmRailAux", "Am Rail Auxilliary Time", 0)
         util.initmat(eb, "mf5504", "AmRailBoard", "Am Rail Boardings", 0)
         util.initmat(eb, "mf5505", "AmRailFare", "Am Rail Fare", 0)
+        util.initmat(eb, "mf5506", "AmRailIvttBRT", "Am Rail Invehicle Time on BRT", 0)
+        util.initmat(eb, "mf5507", "AmRailIvttLRT", "Am Rail Invehicle Time on LRT", 0)
         # MD
         util.initmat(eb, "mf5510", "MdRailIvtt", "Md Rail Invehicle Time", 0)
         util.initmat(eb, "mf5511", "MdRailIvttBus", "Md Rail Invehicle Time on Bus", 0)
@@ -636,6 +642,8 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "mf5513", "MdRailAux", "Md Rail Auxilliary Time", 0)
         util.initmat(eb, "mf5514", "MdRailBoard", "Md Rail Boardings", 0)
         util.initmat(eb, "mf5515", "MdRailFare", "Md Rail Fare", 0)
+        util.initmat(eb, "mf5516", "MdRailIvttBRT", "Md Rail Invehicle Time on BRT", 0)
+        util.initmat(eb, "mf5517", "MdRailIvttLRT", "Md Rail Invehicle Time on LRT", 0)
         # PM
         util.initmat(eb, "mf5520", "PmRailIvtt", "Pm Rail Invehicle Time", 0)
         util.initmat(eb, "mf5521", "PmRailIvttBus", "Pm Rail Invehicle Time on Bus", 0)
@@ -643,6 +651,8 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "mf5523", "PmRailAux", "Pm Rail Auxilliary Time", 0)
         util.initmat(eb, "mf5524", "PmRailBoard", "Pm Rail Boardings", 0)
         util.initmat(eb, "mf5525", "PmRailFare", "Pm Rail Fare", 0)
+        util.initmat(eb, "mf5526", "PmRailIvttBRT", "Pm Rail Invehicle Time on BRT", 0)
+        util.initmat(eb, "mf5527", "PmRailIvttLRT", "Pm Rail Invehicle Time on LRT", 0)
 
         #####################
         # WCE
