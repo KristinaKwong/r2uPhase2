@@ -257,6 +257,9 @@ class HbWork(_m.Tool()):
         Df['AutoDisSqd'] = Df['AutoDis']* Df['AutoDis'] #Distance squared
         Df['LogAutoDis'] = np.log(Df['AutoDis'] + Tiny) # Log Distance
 
+        # Calculate mode specific constant for BRT and LRT as a fraction of bus and rail constants
+        BRT_fac, LRT_fac = MChM.calc_BRT_LRT_asc(eb, p4, p6)
+
         # Utilities
         # Bus Utility
         # Bus Common Utility for all incomes

@@ -428,3 +428,12 @@ class ModeChoiceUtilities(_m.Tool()):
         conn.close()
 
         return Seg_Dict
+
+    def calc_BRT_LRT_asc(self, eb, busASC, railASC):
+        # Calculate mode specific constant for BRT and LRT as a fraction of bus and rail constants
+        BRT_fac = eb.matrix("msBRTASCFactor").data
+        LRT_fac = eb.matrix("msLRTASCFactor").data
+        BRTASC = ((1.0 - BRT_fac) * busASC) + (BRT_fac * railASC)
+        LRTASC = ((1.0 - LRT_fac) * busASC) + (LRT_fac * railASC)
+
+        return BRTASC, LRTASC

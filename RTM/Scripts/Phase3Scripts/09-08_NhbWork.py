@@ -144,6 +144,8 @@ class Non_hbwork(_m.Tool()):
         Df['IntZnl'] = np.identity(NoTAZ)
         Df['TranAccess'] = util.get_matrix_numpy(eb, 'transitAccLn').reshape(NoTAZ,1) + np.zeros((1, NoTAZ))
 
+        # Calculate mode specific constant for BRT and LRT as a fraction of bus and rail constants
+        BRT_asc, LRT_asc = MChM.calc_BRT_LRT_asc(eb, p4, p6)
 
         # Utilities
         # Bus Utility

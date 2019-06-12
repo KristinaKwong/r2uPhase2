@@ -191,6 +191,9 @@ class HbSoc(_m.Tool()):
 
         Df['IntZnl'] = np.identity(NoTAZ)
 
+        # Calculate mode specific constant for BRT and LRT as a fraction of bus and rail constants
+        BRT_asc, LRT_asc = MChM.calc_BRT_LRT_asc(eb, p4, p6)
+
         # Utilities
         # Bus Utility
         # Bus Utility across all incomes

@@ -137,6 +137,8 @@ class HbSchool(_m.Tool()):
 
         Df['GenCostRal'] = VOT*Df['GenCostRal']/60.0 + Df['RalFar']
 
+        # Calculate mode specific constant for BRT and LRT as a fraction of bus and rail constants
+        BRT_asc, LRT_asc = MChM.calc_BRT_LRT_asc(eb, p4, p6)
 
         # Utilities
         # Bus Utility
