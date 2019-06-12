@@ -114,6 +114,7 @@ class Non_hbwork(_m.Tool()):
         Df['BusBrd'] = util.get_matrix_numpy(eb, 'NHbOBlBusBoard')
         Df['BusFar'] = util.get_matrix_numpy(eb, 'NHbOBlBusFare')
         Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] # Total Bus Travel Time
+        Df['BusIVTBRT'] = util.get_matrix_numpy(eb, 'NHbOBlBusIvttBRT') #In vehicle Bus BRT time
 
         Df['RalIVR'] = util.get_matrix_numpy(eb, 'NHbOBlRailIvtt')
         Df['RalIVB'] = util.get_matrix_numpy(eb, 'NHbOBlRailIvttBus')
@@ -124,6 +125,8 @@ class Non_hbwork(_m.Tool()):
         Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] # Total Bus Travel Time
         Df['RalIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Bus IVT to Total Time
         Df['RalIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Rail IVT to Total Time
+        Df['RalIVBRT'] = util.get_matrix_numpy(eb, 'NHbOBlRailIvttBRT') #In vehicle Rail time BRT
+        Df['RalIVLRT'] = util.get_matrix_numpy(eb, 'NHbOBlRailIvttLRT') #In vehicle Rail time LRT
 
         Df['IntZnl'] = np.identity(NoTAZ)
         Df['PopEmpDen'] = util.get_matrix_numpy(eb, 'combinedensln')

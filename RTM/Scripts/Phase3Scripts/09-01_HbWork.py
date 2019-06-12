@@ -228,6 +228,7 @@ class HbWork(_m.Tool()):
         Df['BusBrd'] = util.get_matrix_numpy(eb, 'HbWBlBusBoard') #Boarding time
         Df['BusFar'] = util.get_matrix_numpy(eb, 'HbWBlBusFare') #Fare
         Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux']  #Total travel Time
+        Df['BusIVTBRT'] = util.get_matrix_numpy(eb, 'HbWBlBusIvttBRT') #In vehicle Bus BRT time
 
         Df['RalIVR'] = util.get_matrix_numpy(eb, 'HbWBlRailIvtt') #In vehicle Rail time on rail
         Df['RalIVB'] = util.get_matrix_numpy(eb, 'HbWBlRailIvttBus') #In vehicle Rail time on bus
@@ -238,6 +239,8 @@ class HbWork(_m.Tool()):
         Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux']  #Total travel Time
         Df['RalIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) #Ratio of IVT on Bus to total IVTT
         Df['RalIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) #Ratio of IVT on Rail to total IVTT
+        Df['RalIVBRT'] = util.get_matrix_numpy(eb, 'HbWBlRailIvttBRT') #In vehicle Rail time BRT
+        Df['RalIVLRT'] = util.get_matrix_numpy(eb, 'HbWBlRailIvttLRT') #In vehicle Rail time LRT
 
         Df['WCEIVW'] = util.get_matrix_numpy(eb, 'HbWBlWceIvtt') #In vehicle Rail time on wce
         Df['WCEIVR'] = util.get_matrix_numpy(eb, 'HbWBlWceIvttRail') #In vehicle Rail time on rail

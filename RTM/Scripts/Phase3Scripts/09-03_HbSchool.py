@@ -106,6 +106,7 @@ class HbSchool(_m.Tool()):
         Df['BusFar'] = util.get_matrix_numpy(eb, 'HbScBlBusFare')
         Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux']  # Total Bus Travel Time
         Df['BusFar'] = Df['BusFar'] * Disc_Fare  ## discount fare for students
+        Df['BusIVTBRT'] = util.get_matrix_numpy(eb, 'HbScBlBusIvttBRT') #In vehicle Bus BRT time
 
         Df['RalIVR'] = util.get_matrix_numpy(eb, 'HbScBlRailIvtt')
         Df['RalIVB'] = util.get_matrix_numpy(eb, 'HbScBlRailIvttBus')
@@ -117,6 +118,8 @@ class HbSchool(_m.Tool()):
         Df['RalIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Bus IVT to Total Time
         Df['RalIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Rail IVT to Total Time
         Df['RalFar'] = Df['RalFar'] * Disc_Fare  ## discount fare for students
+        Df['RalIVBRT'] = util.get_matrix_numpy(eb, 'HbScBlRailIvttBRT') #In vehicle Rail time BRT
+        Df['RalIVLRT'] = util.get_matrix_numpy(eb, 'HbScBlRailIvttLRT') #In vehicle Rail time LRT
 
         Df['IntZnl'] = np.identity(NoTAZ)
         Df['PopEmpDen'] = util.get_matrix_numpy(eb, 'combinedensln')

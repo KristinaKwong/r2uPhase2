@@ -177,6 +177,7 @@ class HbPersonalBusiness(_m.Tool()):
         Df['BusBrd'] = util.get_matrix_numpy(eb, 'HbPbBlBusBoard')
         Df['BusFar'] = util.get_matrix_numpy(eb, 'HbPbBlBusFare')
         Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux']  # Total Bus Travel Time
+        Df['BusIVTBRT'] = util.get_matrix_numpy(eb, 'HbPbBlBusIvttBRT') #In vehicle Bus BRT time
 
         Df['RalIVR'] = util.get_matrix_numpy(eb, 'HbPbBlRailIvtt')
         Df['RalIVB'] = util.get_matrix_numpy(eb, 'HbPbBlRailIvttBus')
@@ -187,6 +188,8 @@ class HbPersonalBusiness(_m.Tool()):
         Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux']  # Total Bus Travel Time
         Df['RalIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Bus IVT to Total Time
         Df['RalIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Rail IVT to Total Time
+        Df['RalIVBRT'] = util.get_matrix_numpy(eb, 'HbPbBlRailIvttBRT') #In vehicle Rail time BRT
+        Df['RalIVLRT'] = util.get_matrix_numpy(eb, 'HbPbBlRailIvttLRT') #In vehicle Rail time LRT
 
         Df['AutoDis'] = util.get_matrix_numpy(eb, "mfdistAON") # Distance
 

@@ -177,6 +177,7 @@ class HbSoc(_m.Tool()):
         Df['BusBrd'] = util.get_matrix_numpy(eb, 'HbSoBlBusBoard')
         Df['BusFar'] = util.get_matrix_numpy(eb, 'HbSoBlBusFare')
         Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] # Total Bus Travel Time
+        Df['BusIVTBRT'] = util.get_matrix_numpy(eb, 'HbSoBlBusIvttBRT') #In vehicle Bus BRT time
 
         Df['RalIVR'] = util.get_matrix_numpy(eb, 'HbSoBlRailIvtt')
         Df['RalIVB'] = util.get_matrix_numpy(eb, 'HbSoBlRailIvttBus')
@@ -188,6 +189,8 @@ class HbSoc(_m.Tool()):
         Df['RalIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Bus IVT to Total Time
         Df['RalIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) # Ratio of Rail IVT to Total Time
         Df['SocAccess'] = util.get_matrix_numpy(eb, 'socAccLn').reshape(NoTAZ,1) + np.zeros((1, NoTAZ)) # Log transit accessiblity broadcast
+        Df['RalIVBRT'] = util.get_matrix_numpy(eb, 'HbSoBlRailIvttBRT') #In vehicle Rail time BRT
+        Df['RalIVLRT'] = util.get_matrix_numpy(eb, 'HbSoBlRailIvttLRT') #In vehicle Rail time LRT
 
         Df['IntZnl'] = np.identity(NoTAZ)
 
