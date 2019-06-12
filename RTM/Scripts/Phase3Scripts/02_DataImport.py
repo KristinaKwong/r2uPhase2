@@ -99,9 +99,10 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms151", "hgvTollFac", "HGV toll factor", 3.0)
         util.initmat(eb, "ms152", "sovTollFac", "SOV toll factor", 1.0)
         util.initmat(eb, "ms153", "hovTollFac", "HOV toll factor", 1.0)
-        util.initmat(eb, "ms154", "BRTASCFactor", "BRT Percent of Rail ASC", 0.4)
-        util.initmat(eb, "ms155", "LRTASCFactor", "LRT Percent of Rail ASC", 0.8)
-
+        util.initmat(eb, "ms154", "BRTASCFactor", "BRT Percent of Rail ASC", 0.233)
+        util.initmat(eb, "ms155", "LRTASCFactor", "LRT Percent of Rail ASC", 0.375)
+        util.initmat(eb, "ms156", "BRTIVTFactor", "BRT Percent of Bus IVT", 0.66)
+        util.initmat(eb, "ms157", "LRTIVTFactor", "LRT Percent of Bus IVT", 0.33)
 
         util.initmat(eb, "ms160", "oneZoneFare", "One Zone Fare - FS-SV", 2.1)
         util.initmat(eb, "ms161", "fareIncrement", "Fare Increment", 1.05)

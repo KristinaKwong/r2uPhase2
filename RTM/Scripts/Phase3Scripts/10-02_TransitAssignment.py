@@ -142,7 +142,7 @@ class TransitAssignment(_m.Tool()):
                                 eb.matrix("wce_bfare_zone5_3").data]
         self.wce_bfare_zone13 = [eb.matrix("wce_bfare_zone13_1").data,
                                  eb.matrix("wce_bfare_zone13_2").data,
-                                 eb.matrix("wce_bfare_zone13_3").data]                
+                                 eb.matrix("wce_bfare_zone13_3").data]
         self.wce_bfare_zone34 = [eb.matrix("wce_bfare_zone34_1").data,
                                  eb.matrix("wce_bfare_zone34_2").data,
                                  eb.matrix("wce_bfare_zone34_3").data]
@@ -150,10 +150,10 @@ class TransitAssignment(_m.Tool()):
                                  eb.matrix("wce_bfare_zone45_2").data,
                                  eb.matrix("wce_bfare_zone45_3").data]
 
-        self.wce_fare_zone = {1: eb.matrix("wce_fare_1z").data, 
-                              2: eb.matrix("wce_fare_2z").data, 
-                              3: eb.matrix("wce_fare_3z").data, 
-                              4: eb.matrix("wce_fare_4z").data, 
+        self.wce_fare_zone = {1: eb.matrix("wce_fare_1z").data,
+                              2: eb.matrix("wce_fare_2z").data,
+                              3: eb.matrix("wce_fare_3z").data,
+                              4: eb.matrix("wce_fare_4z").data,
                               5: eb.matrix("wce_fare_5z").data}
 
         # TODO fix this numbered matrix reference
@@ -514,15 +514,18 @@ class TransitAssignment(_m.Tool()):
                                      "%s*(@wcefareboundary.eq.45)" %(self.wce_fare_zone13[i], self.wce_fare_zone34[i], self.wce_fare_zone45[i]),
                                      sel_link="all", sel_line="mode=r")
 
+        # get BRT and LRT IVT factors
+        brt_ivtfac = eb.matrix("msBRTIVTFactor").data
+        lrt_ivtfac = eb.matrix("msLRTIVTFactor").data
 
         # Intial Assignment of Parameters
         util.emme_segment_calc(sc, "us1", "0")  # dwell time
         util.emme_segment_calc(sc, "@ivttfac", "1")
         util.emme_segment_calc(sc, "@hdwyfac", "1")
         util.emme_segment_calc(sc, "@hdwyeff", "@hdwyfac*@hfrac")
-        util.emme_tline_calc(sc, "@ivtp", "0.25", sel_line="mode=bg")
-
-
+        util.emme_tline_calc(sc, "@ivtp", "0.25", sel_line="mode=b")
+        util.emme_tline_calc(sc, "@ivtp", "0.25*%s" %(brt_ivtfac), sel_line="mode=g")
+        util.emme_tline_calc(sc, "@ivtp", "0.25*%s" %(lrt_ivtfac), sel_line="mode=f")
         # Initialize volume averaging parameters
         util.emme_segment_calc(sc, "@boardavg", "0")
         util.emme_segment_calc(sc, "@alightavg", "0")
@@ -666,7 +669,7 @@ class TransitAssignment(_m.Tool()):
         spec_as_dict["by_mode_subset"]["modes"] = ["g"]
         spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = "mfBusIvttBRT"
         transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
-        
+
         # Skim for FareIncrements
         strat_spec = self.get_strategy_skim_spec()
         strat_spec["trip_components"]["in_vehicle"] = "@fareincrement"
