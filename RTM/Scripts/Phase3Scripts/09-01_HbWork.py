@@ -262,11 +262,12 @@ class HbWork(_m.Tool()):
 
         # Calculate mode specific constant for BRT and LRT as a fraction of bus and rail constants
         BRT_fac, LRT_fac = MChM.calc_BRT_LRT_asc(eb, p4, p6)
+        Bus_const = ((p4 * (Df['BusIVT']-Df['BusIVTBRT'])) + (BRT_fac * Df['BusIVTBRT'])) / (Df['BusIVT'] + Tiny)
 
         # Utilities
         # Bus Utility
         # Bus Common Utility for all incomes
-        Df['GeUtl'] = ( p4
+        Df['GeUtl'] = ( Bus_const
                       + Bus_Bias
                       + p152*Df['BusIVT']
                       + p17*Df['BusWat']
