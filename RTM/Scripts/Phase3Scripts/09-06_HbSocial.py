@@ -195,18 +195,23 @@ class HbSoc(_m.Tool()):
         Df['IntZnl'] = np.identity(NoTAZ)
 
         # Calculate mode specific constant for BRT and LRT as a fraction of bus and rail constants
-        BRT_asc, LRT_asc = MChM.calc_BRT_LRT_asc(eb, p4, p6)
+        BRT_fac, LRT_fac = MChM.calc_BRT_LRT_asc(eb, p4, p6)
         Bus_const = ((p4 * (Df['BusIVT']-Df['BusIVTBRT'])) + (BRT_fac * Df['BusIVTBRT'])) / (Df['BusIVT'] + Tiny)
         Rail_const = (p4 * (Df['RalIVB']-Df['RalIVBRT'])
                     + BRT_fac * Df['RalIVBRT']
                     + LRT_fac * Df['RalIVLRT']
                     + p6 * (Df['RalIVR']-Df['RalIVLRT'])) / (Df['RalIVR'] + Df['RalIVB'] + Tiny)
+
+        p15b = p15*B_IVT_perc
+        BRT_ivt, LRT_ivt = MChM.calc_BRT_LRT_ivt(eb, p15b, p15)
+
         # Utilities
         # Bus Utility
         # Bus Utility across all incomes
         Df['GeUtl'] = ( Bus_const
                       + Bus_Bias
-                      + p15*Df['BusIVT']*B_IVT_perc
+                      + p15*(Df['BusIVT'] - Df['BusIVTBRT'])*B_IVT_perc
+                      + BRT_ivt*(Df['BusIVTBRT'])
                       + p17*Df['BusWat']
                       + p18*Df['BusAux']
                       + p19*Df['BusBrd']
@@ -223,8 +228,10 @@ class HbSoc(_m.Tool()):
         # Rail Utility across all incomes
         Df['GeUtl'] = ( Rail_const
                       + Rail_Bias
-                      + p15*Df['RalIVB']*B_IVT_perc
-                      + p15*Df['RalIVR']
+                      + p15*(Df['RalIVB'] - Df['RalIVBRT'])*B_IVT_perc
+                      + BRT_ivt*(Df['RalIVBRT'])
+                      + p15*(Df['RalIVR'] - Df['RalIVLRT'])
+                      + LRT_ivt*(Df['RalIVLRT'])
                       + p17*Df['RalWat']
                       + p18*Df['RalAux']
                       + p19*Df['RalBrd']

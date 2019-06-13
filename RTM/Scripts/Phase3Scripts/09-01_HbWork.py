@@ -262,6 +262,7 @@ class HbWork(_m.Tool()):
 
         # Calculate mode specific constant for BRT and LRT as a fraction of bus and rail constants
         BRT_fac, LRT_fac = MChM.calc_BRT_LRT_asc(eb, p4, p6)
+        BRT_ivt, LRT_ivt = MChM.calc_BRT_LRT_ivt(eb, p152, p153)
         Bus_const = ((p4 * (Df['BusIVT']-Df['BusIVTBRT'])) + (BRT_fac * Df['BusIVTBRT'])) / (Df['BusIVT'] + Tiny)
         Rail_const = (p4 * (Df['RalIVB']-Df['RalIVBRT'])
                     + BRT_fac * Df['RalIVBRT']
@@ -273,7 +274,8 @@ class HbWork(_m.Tool()):
         # Bus Common Utility for all incomes
         Df['GeUtl'] = ( Bus_const
                       + Bus_Bias
-                      + p152*Df['BusIVT']
+                      + p152*(Df['BusIVT'] - Df['BusIVTBRT'])  # incorporate IVT factor for new modes
+                      + BRT_ivt*(Df['BusIVTBRT'])
                       + p17*Df['BusWat']
                       + p18*Df['BusAux']
                       + p19*(Df['BusBrd'])
@@ -293,8 +295,10 @@ class HbWork(_m.Tool()):
         # Rail Common Utility for all incomes
         Df['GeUtl'] = ( Rail_const
                       + Rail_Bias
-                      + p152*Df['RalIVB']
-                      + p153*Df['RalIVR']
+                      + p152*(Df['RalIVB'] - Df['RalIVBRT'])      # incorporate IVT factor for new modes
+                      + BRT_ivt*(Df['RalIVBRT'])
+                      + p153*(Df['RalIVR'] - Df['RalIVLRT'])      # incorporate IVT factor for new modes
+                      + LRT_ivt*(Df['RalIVLRT'])
                       + p17*Df['RalWat']
                       + p18*Df['RalAux']
                       + p19*Df['RalBrd']
@@ -1369,7 +1373,7 @@ class HbWork(_m.Tool()):
         util.initmat(eb, "mf9006", "HbWLSI3A0", " HbW LogSum I1 A0", 0)
         util.initmat(eb, "mf9007", "HbWLSI3A1", " HbW LogSum I1 A1", 0)
         util.initmat(eb, "mf9008", "HbWLSI3A2", " HbW LogSum I1 A2", 0)
-        
+
         util.initmat(eb, "mf9300", "HbWLSAUI1A0", " HbW LogSum Auto I1 A0", 0)
         util.initmat(eb, "mf9301", "HbWLSAUI1A1", " HbW LogSum Auto I1 A1", 0)
         util.initmat(eb, "mf9302", "HbWLSAUI1A2", " HbW LogSum Auto I1 A2", 0)
@@ -1398,7 +1402,7 @@ class HbWork(_m.Tool()):
         util.initmat(eb, "mf9505", "HbWLSACI2A2", " HbW LogSum Active I1 A2", 0)
         util.initmat(eb, "mf9506", "HbWLSACI3A0", " HbW LogSum Active I1 A0", 0)
         util.initmat(eb, "mf9507", "HbWLSACI3A1", " HbW LogSum Active I1 A1", 0)
-        util.initmat(eb, "mf9508", "HbWLSACI3A2", " HbW LogSum Active I1 A2", 0)        
+        util.initmat(eb, "mf9508", "HbWLSACI3A2", " HbW LogSum Active I1 A2", 0)
 
         ## Initialze Friction Factor Matrices
         util.initmat(eb, "mf9100", "P-AFrictionFact1", "Trip Distribution Friction Factor 1", 0)
