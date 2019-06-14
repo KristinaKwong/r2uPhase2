@@ -1,5 +1,5 @@
 c Emme Modeller - Turn Transaction
-c Scenario 3550:  2035 BAU: c/o Sc 3503 + Network Review
+c Scenario 3550:  2035 BAU: Sc 3503 + Network Review
 t turns
 c     At   From     To   TPF  Data1  Data2  Data3
 a 110507 110506 110504    -1      0      0      0

@@ -1,5 +1,5 @@
 c Emme Modeller - Transit Line Transaction
-c Scenario 3550:  2035 BAU: c/o Sc 3503 + Network Review
+c Scenario 3550:  2035 BAU: Sc 3503 + Network Review
 t lines
 c Transit Lines
 c Line  Mod Veh Headwy Speed Description             Data1  Data2  Data3
@@ -18235,7 +18235,7 @@ a'9926E ' l  32   2.30  65.00 'ExpL VancCBD-Newton '      0      0      0
    611606      dwt=+2.19  ttf=10   us1=0   us2=0   us3=0
    614404      dwt=+1.31  ttf=10   us1=0   us2=0   us3=0
    617301         dwt=#0  ttf=10   us1=0   us2=0   us3=0
-   616708      dwt=+1.52  ttf=10   us1=0   us2=0   us3=0
+   616708      dwt=+2.63  ttf=10   us1=0   us2=0   us3=0
    616709      dwt=+2.37  ttf=10   us1=0   us2=0   us3=0
    618803      dwt=#1.57  ttf=10   us1=0   us2=0   us3=0
    621104      dwt=+1.57  ttf=10   us1=0   us2=0   us3=0
@@ -18247,7 +18247,7 @@ a'9926W ' l  32   2.30  65.00 'ExpL Newton-VancCBD '      0      0      0
    622505      dwt=#1.62  ttf=10   us1=0   us2=0   us3=0
    621104      dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
    618803      dwt=+2.26  ttf=10   us1=0   us2=0   us3=0
-   616709      dwt=#1.52  ttf=10   us1=0   us2=0   us3=0
+   616709      dwt=#2.63  ttf=10   us1=0   us2=0   us3=0
    616708         dwt=+0  ttf=10   us1=0   us2=0   us3=0
    617301      dwt=+1.29  ttf=10   us1=0   us2=0   us3=0
    614404      dwt=+2.19  ttf=10   us1=0   us2=0   us3=0
