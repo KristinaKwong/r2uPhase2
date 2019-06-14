@@ -437,3 +437,12 @@ class ModeChoiceUtilities(_m.Tool()):
         LRTASC = ((1.0 - LRT_fac) * busASC) + (LRT_fac * railASC)
 
         return BRTASC, LRTASC
+
+    def calc_BRT_LRT_ivt(self, eb, busIVT, railIVT):
+        # Calculate mode specific constant for BRT and LRT as a fraction of bus and rail constants
+        BRT_fac = eb.matrix("msBRTIVTFactor").data
+        LRT_fac = eb.matrix("msLRTIVTFactor").data
+        BRTIVT = ((1.0 - BRT_fac) * busIVT) + (BRT_fac * railIVT)
+        LRTIVT = ((1.0 - LRT_fac) * busIVT) + (LRT_fac * railIVT)
+
+        return BRTIVT, LRTIVT

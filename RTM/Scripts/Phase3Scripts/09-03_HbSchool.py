@@ -125,15 +125,23 @@ class HbSchool(_m.Tool()):
         Df['PopEmpDen'] = util.get_matrix_numpy(eb, 'combinedensln')
         Df['PopEmpDen'] = Df['PopEmpDen'].reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
 
-        Df['GenCostBus'] = ( Df['BusIVT']*B_IVT_perc
+        p15r = 1.0
+        p15b = p15r*B_IVT_perc
+
+        BRT_ivt, LRT_ivt = MChM.calc_BRT_LRT_ivt(eb, p15b, p15r)
+
+        Df['GenCostBus'] = ((Df['BusIVT'] - Df['BusIVTBRT'])*B_IVT_perc
+                           + Df['BusIVTBRT']*BRT_ivt
                            + 1.92*Df['BusWat']
                            + 1.71*Df['BusAux']
                            + 10.81*Df['BusBrd'])
 
         Df['GenCostBus'] = VOT*Df['GenCostBus']/60.0 + Df['BusFar']
 
-        Df['GenCostRal'] = ( Df['RalIVB']*B_IVT_perc
-                           + Df['RalIVR']
+        Df['GenCostRal'] = ((Df['RalIVB'] - Df['RalIVBRT'])*B_IVT_perc
+                           + Df['RalIVBRT']*BRT_ivt
+                           +(Df['RalIVR'] - Df['RalIVLRT'])
+                           + LRT_ivt*(Df['RalIVLRT'])
                            + 2.03*Df['RalWat']
                            + 1.80*Df['RalAux']
                            + 11.80*Df['RalBrd'])
@@ -141,7 +149,7 @@ class HbSchool(_m.Tool()):
         Df['GenCostRal'] = VOT*Df['GenCostRal']/60.0 + Df['RalFar']
 
         # Calculate mode specific constant for BRT and LRT as a fraction of bus and rail constants
-        BRT_asc, LRT_asc = MChM.calc_BRT_LRT_asc(eb, p4, p6)
+        BRT_fac, LRT_fac = MChM.calc_BRT_LRT_asc(eb, p4, p6)
         Bus_const = ((p4 * (Df['BusIVT']-Df['BusIVTBRT'])) + (BRT_fac * Df['BusIVTBRT'])) / (Df['BusIVT'] + Tiny)
         Rail_const = (p4 * (Df['RalIVB']-Df['RalIVBRT'])
                     + BRT_fac * Df['RalIVBRT']

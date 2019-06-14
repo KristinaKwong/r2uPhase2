@@ -184,7 +184,7 @@ class TransitAssignment(_m.Tool()):
 
         for i, (sc, period_length, demand_bus, demand_rail, demand_wce) in enumerate(zip(scenario_list, period_length_list, demand_bus_list, demand_rail_list, demand_wce_list)):
             report={}
-            self.calc_network_costs(sc, period_length, i)
+            self.calc_network_costs(eb, sc, period_length, i)
 
             # LOOP FOR CROWDING AND CAPACITY CONSTRAINT
             for iteration in xrange(1, self.max_iterations+1):
@@ -465,7 +465,7 @@ class TransitAssignment(_m.Tool()):
         return spec
 
     @_m.logbook_trace("Calculate Initial Transit Network Costs")
-    def calc_network_costs(self, sc, period_length, i):
+    def calc_network_costs(self, eb, sc, period_length, i):
         util = _m.Modeller().tool("translink.util")
 
         ## Calculate headway fraction based on service frequency
@@ -520,12 +520,12 @@ class TransitAssignment(_m.Tool()):
 
         # Intial Assignment of Parameters
         util.emme_segment_calc(sc, "us1", "0")  # dwell time
-        util.emme_segment_calc(sc, "@ivttfac", "1")
         util.emme_segment_calc(sc, "@hdwyfac", "1")
         util.emme_segment_calc(sc, "@hdwyeff", "@hdwyfac*@hfrac")
         util.emme_tline_calc(sc, "@ivtp", "0.25", sel_line="mode=b")
         util.emme_tline_calc(sc, "@ivtp", "0.25*%s" %(brt_ivtfac), sel_line="mode=g")
         util.emme_tline_calc(sc, "@ivtp", "0.25*%s" %(lrt_ivtfac), sel_line="mode=f")
+        util.emme_segment_calc(sc, "@ivttfac", "1 + @ivtp")
         # Initialize volume averaging parameters
         util.emme_segment_calc(sc, "@boardavg", "0")
         util.emme_segment_calc(sc, "@alightavg", "0")
