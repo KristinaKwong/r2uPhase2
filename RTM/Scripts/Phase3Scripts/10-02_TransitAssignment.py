@@ -881,7 +881,7 @@ class TransitAssignment(_m.Tool()):
             specs.append(util.matrix_spec(bus_skims[2], "0.5*(mfBusAux + %s)"   % bus_skims[2]))
             specs.append(util.matrix_spec(bus_skims[3], "0.5*(mfBusBoard + %s)" % bus_skims[3]))
             specs.append(util.matrix_spec(bus_skims[4], "0.5*(mfBusFare + %s)"  % bus_skims[4]))
-            specs.append(util.matrix_spec(bus_skims[4], "0.5*(mfBusIvttBRT + %s)"  % bus_skims[5]))
+            specs.append(util.matrix_spec(bus_skims[5], "0.5*(mfBusIvttBRT + %s)"  % bus_skims[5]))
 
             # Average Rail Skims
             specs.append(util.matrix_spec(rail_skims[0], "0.5*(mfRailIvtt + %s)"    % rail_skims[0]))
@@ -890,8 +890,8 @@ class TransitAssignment(_m.Tool()):
             specs.append(util.matrix_spec(rail_skims[3], "0.5*(mfRailAux + %s)"     % rail_skims[3]))
             specs.append(util.matrix_spec(rail_skims[4], "0.5*(mfRailBoard + %s)"   % rail_skims[4]))
             specs.append(util.matrix_spec(rail_skims[5], "0.5*(mfRailFare + %s)"    % rail_skims[5]))
-            specs.append(util.matrix_spec(rail_skims[1], "0.5*(mfRailIvttBRT + %s)" % rail_skims[6]))
-            specs.append(util.matrix_spec(rail_skims[1], "0.5*(mfRailIvttLRT + %s)" % rail_skims[7]))
+            specs.append(util.matrix_spec(rail_skims[6], "0.5*(mfRailIvttBRT + %s)" % rail_skims[6]))
+            specs.append(util.matrix_spec(rail_skims[7], "0.5*(mfRailIvttLRT + %s)" % rail_skims[7]))
 
             # Average WCE Skims
             if wce_skims is not None:
