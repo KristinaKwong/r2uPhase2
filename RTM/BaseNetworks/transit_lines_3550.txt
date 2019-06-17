@@ -18270,7 +18270,7 @@ a'9926W ' l  32   2.30  65.00 'ExpL Newton-VancCBD '      0      0      0
    224205      dwt=+1.18  ttf=10   us1=0   us2=0   us3=0
    221903      dwt=+1.88  ttf=10   us1=0   us2=0   us3=0
    223501        lay=1.00
-a'B_96N1' g  21   5.00  23.00 'Newton-Guildford BRT'      0      0      0
+a'B_96N1' f  21   5.00  23.00 'Newton-Guildford BRT'      0      0      0
   path=no
    624202      dwt=+3.65  ttf=10   us1=0   us2=0   us3=0
    622505      dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
@@ -18283,7 +18283,7 @@ a'B_96N1' g  21   5.00  23.00 'Newton-Guildford BRT'      0      0      0
    614004       dwt=+2.1  ttf=10   us1=0   us2=0   us3=0
    615400      dwt=+2.17  ttf=10   us1=0   us2=0   us3=0
    615405        lay=5.00
-a'B_96S1' g  21   5.00  23.00 'Guildford-Newton BRT'      0      0      0
+a'B_96S1' f  21   5.00  23.00 'Guildford-Newton BRT'      0      0      0
   path=no
    615405      dwt=+1.84  ttf=10   us1=0   us2=0   us3=0
    615400       dwt=+2.1  ttf=10   us1=0   us2=0   us3=0
