@@ -515,8 +515,8 @@ class TransitAssignment(_m.Tool()):
                                      sel_link="all", sel_line="mode=r")
 
         # get BRT and LRT IVT factors
-        brt_ivtfac = eb.matrix("msBRTIVTFactor").data
-        lrt_ivtfac = eb.matrix("msLRTIVTFactor").data
+        brt_ivtfac = 1 - eb.matrix("msBRTIVTFactor").data
+        lrt_ivtfac = 1 - eb.matrix("msLRTIVTFactor").data
 
         # Intial Assignment of Parameters
         util.emme_segment_calc(sc, "us1", "0")  # dwell time
