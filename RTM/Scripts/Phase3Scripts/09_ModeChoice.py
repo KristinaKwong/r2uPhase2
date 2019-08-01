@@ -96,9 +96,6 @@ class ModeChoice(_m.Tool()):
        # adjust Evergreen usage
 
         self.adjust_egl(eb)
-        
-        if True: #add MD transit demand = demand * (1 + factor)
-            self.md_transit_demand_adjust(eb, 0.2)#factor = 0.2
 
     def adjust_egl(self, eb):
 
@@ -234,23 +231,3 @@ class ModeChoice(_m.Tool()):
         util.initmat(eb, "mf355", "railPm", "Rail Person Trips PM", 0)
         util.initmat(eb, "mf356", "WCEPm", "WCE Person Trips PM", 0)
 
-    def md_transit_demand_adjust(self, eb, adjustment):
-        util = _m.Modeller().tool("translink.util")
-        
-        Factor = 1 + adjustment
-        NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
-        df = util.get_ijensem_df(eb, 'gm','gm')
-        
-        #flag adjustment OD Pairs, adjust demand where flag = 1
-        df["adjust_flag"] = 0
-        for gm in [121, 123, 124]:
-            df["adjust_flag"] = np.where((df['gm_i'] == gm), 1, df["adjust_flag"])
-            df["adjust_flag"] = np.where((df['gm_j'] == gm), 1, df["adjust_flag"])
-        
-        for demand in ["mfrailMd"]:
-            df[demand] = util.get_matrix_numpy(eb, demand).flatten()
-            df[demand] = np.where((df['adjust_flag'] == 1), Factor*df[demand], df[demand])
-            
-            util.set_matrix_numpy(eb, demand, np.array(df[demand]).reshape(NoTAZ, NoTAZ))
-
-        
