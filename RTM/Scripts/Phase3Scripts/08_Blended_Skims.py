@@ -990,9 +990,9 @@ class ModeChoiceGenDf(_m.Tool()):
             for j in range(0,2):
                 expression = ("{railIVT} * {railIVTprcp}"
                               " + {railWait} * {railOVTprcp}"
-                              " + {busIVT} * {busIVTprcp}"
+                              " + {busIVT} * {busIVTprcp} * {busIVTcal}"
                               " + {auxTrans} * {walkprcp}"
-                              " + {boardings} * {transferprcp} "
+                              " + {boardings} * {transferprcp} * {transferCal}"
                               " + {fare} * {VOT}"
                               ).format(railIVT=transit_mats["railIVT"][i],
                                        railWait=transit_mats["railWait"][i],
@@ -1003,8 +1003,10 @@ class ModeChoiceGenDf(_m.Tool()):
                                        railIVTprcp="railIVTprcpWk",
                                        railOVTprcp="railWAITprcpWk",
                                        busIVTprcp="busIVTprcpWk",
+                                       busIVTcal="busIVTpr_cal_railGT",
                                        walkprcp="railWALKprcpWk",
                                        transferprcp="railBOARDSprcpWk",
+                                       transferCal="transfer_cal_railGT",
                                        VOT=vot_mats[j])
 
                 result = ("{railGT}").format(railGT=result_mats[j][i])

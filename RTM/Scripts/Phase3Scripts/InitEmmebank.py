@@ -48,21 +48,21 @@ class InitEmmebank(_m.Tool()):
 
     def run(self):
         try:
-            self.__call__()
+            self.__call__(self.emme_folder, self.emme_title)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Initializing a new emmebank")
-    def __call__(self):
-        new_path = self.initfolder(self.emme_folder)
+    def __call__(self, folder_name, title_name, master_scen = 0, master_scen_name = ""):
+        new_path = self.initfolder(folder_name)
 
-        self.initbank(new_path, self.emme_title, self.scen_number, self.scen_name)
+        self.initbank(new_path, title_name, master_scen, master_scen_name)
         _m.Modeller().desktop.data_explorer().add_database(new_path).open()
         self.initdatabase(_m.Modeller().emmebank)
 
 
-    def initbank(self, path, title, scen_number, scen_name):
+    def initbank(self, path, title, master_scen, master_scen_name):
         dim = {"scalar_matrices": 9999,
                "origin_matrices": 9999,
                "destination_matrices": 9999,
@@ -89,11 +89,13 @@ class InitEmmebank(_m.Tool()):
             eb.node_number_digits = 6
 
             self.initfunctions(eb)
-            self.initscenario(eb, scen_number, scen_name)
-            #self.initscenario(eb, 1000, "2011 Base Network")
-            #self.initscenario(eb, 2000, "2016 Base Network")
-            #self.initscenario(eb, 3000, "2035 Base Network")
-            #self.initscenario(eb, 4000, "2050 Base Network")
+            if master_scen == 0:
+                self.initscenario(eb, 1000, "2011 Base Network")
+                self.initscenario(eb, 2000, "2016 Base Network")
+                self.initscenario(eb, 3000, "2035 Base Network")
+                self.initscenario(eb, 4000, "2050 Base Network")
+            else:
+                self.initscenario(eb, master_scen, master_scen_name) # Added one scenario init option
 
     def initfolder(self, emme_folder):
         project = _m.Modeller().desktop.project

@@ -59,6 +59,11 @@ class DataGeneration(_m.Tool()):
             self.assignAON(am_scen)
 
             # turn off congested/capacited transit during data generation 0 matrix assignment
+            # use default bus speed to populate us2
+            util.emme_segment_calc(am_scen, "us2", "60*length/speed")
+            util.emme_segment_calc(md_scen, "us2", "60*length/speed")
+            util.emme_segment_calc(pm_scen, "us2", "60*length/speed")
+
             transit_assign = _m.Modeller().tool("translink.RTM3.stage3.transitassignment")
             transit_assign(eb, am_scen, md_scen, pm_scen, disable_congestion=True)
 

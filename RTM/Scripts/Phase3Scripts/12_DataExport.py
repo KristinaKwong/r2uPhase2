@@ -818,16 +818,16 @@ class DataExport(_m.Tool()):
             except:
                 dfDict['Speed'].append(np.nan)
 
-            dfDict['loadFactor'].append(seg.transit_volume / seg.line['@totcapacity'])
-            dfDict['volume'].append(seg.transit_volume)
+            dfDict['loadFactor'].append(seg['@voltravg'] / seg.line['@totcapacity'])
+            dfDict['volume'].append(seg['@voltravg'])
 
             if (seg.allow_alightings or seg.allow_boardings):
                  dfDict['transitStop'].append(int(seg.i_node))
             else:
                 dfDict['transitStop'].append(np.nan)
 
-            dfDict['boardings'].append( seg.transit_boardings)
-            dfDict['alightings'].append(seg['@alight']) #TODO update if we can remove the extra attribute calculation
+            dfDict['boardings'].append(seg['@boardavg'])
+            dfDict['alightings'].append(seg['@alightavg']) #TODO update if we can remove the extra attribute calculation
             dfDict['seatProbability'].append(0) # TODO update when alightings becomes available
             dfDict['lineDescription'].append(seg.line.description)
             dfDict['vehType'].append(seg.line.vehicle.number)

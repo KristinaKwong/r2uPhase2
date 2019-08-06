@@ -164,13 +164,13 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms302", "busWALKprcpWk", "bus walk time perception work", 2.00)
         util.initmat(eb, "ms303", "busBOARDSprcpWk", "bus boarding perception work", 10.00)
         util.initmat(eb, "ms310", "railIVTprcpWk", "rail in-vehicle time perception work", 1.00)
-        util.initmat(eb, "ms311", "railWAITprcpWk", "rail wait time perception work", 3.13)
-        util.initmat(eb, "ms312", "railWALKprcpWk", "rail walk time perception work", 2.50)
-        util.initmat(eb, "ms313", "railBOARDSprcpWk", "rail boarding perception work", 12.50)
+        util.initmat(eb, "ms311", "railWAITprcpWk", "rail wait time perception work", 2.50)  # 3.13
+        util.initmat(eb, "ms312", "railWALKprcpWk", "rail walk time perception work", 2.00)  # 2.50
+        util.initmat(eb, "ms313", "railBOARDSprcpWk", "rail boarding perception work", 10.00)  # 12.50
         util.initmat(eb, "ms320", "wceIVTprcpWk", "wce in-vehicle time perception work", 1.00)
-        util.initmat(eb, "ms321", "wceWAITprcpWk", "wce wait time perception work", 3.13)
-        util.initmat(eb, "ms322", "wceWALKprcpWk", "wce walk time perception work", 2.50)
-        util.initmat(eb, "ms323", "wceBOARDSprcpWk", "wce boarding perception work", 12.50)
+        util.initmat(eb, "ms321", "wceWAITprcpWk", "wce wait time perception work", 2.50)  # 3.13
+        util.initmat(eb, "ms322", "wceWALKprcpWk", "wce walk time perception work", 2.00)  # 2.50
+        util.initmat(eb, "ms323", "wceBOARDSprcpWk", "wce boarding perception work", 10.00)  # 12.50
         util.initmat(eb, "ms330", "busIVTprcpNwk", "bus in-vehicle time perception nonwork", 0)
         util.initmat(eb, "ms331", "busWAITprcpNwk", "bus wait time perception nonwork", 0)
         util.initmat(eb, "ms332", "busWALKprcpNwk", "bus walk time perception nonwork", 0)
@@ -189,6 +189,11 @@ class DataImport(_m.Tool()):
 
         ##      Park and Ride Drive time perception factor
         util.initmat(eb, "ms360", "pr_auto_time_prcp", "Park and Ride Drive time perception factor", 1.2)
+
+        ##      Park and Ride Best Lot Calibration factors
+        util.initmat(eb, "ms365", "busIVTpr_cal_railGT", "BusIVT percep RailGT Cal", 1.0)
+        util.initmat(eb, "ms366", "transfer_cal_railGT", "transfer percep RailGT Cal", 1.0)
+
 
 
         ##      Batch in Blending Factors
