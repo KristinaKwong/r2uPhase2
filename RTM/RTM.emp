@@ -1,6 +1,6 @@
 0CAFACB7-AD3C-40E4-80DD-675DE315EA7F 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
-# Emme project file generated on Tue Jun 11 11:17:40 2019
-# File: Z:/2121-00448-00 South of Fraser Transit/RTM/RTM.emp
+# Emme project file generated on Tue Aug 6 14:04:34 2019
+# File: E:/_test/RTM/RTM.emp
 #
 # String Name: name of preference configuration (tr)
 Name = TransLink Regional Travel Demand Model Phase 3.0
@@ -9,7 +9,7 @@ Description = Created on 2013-12-11 at 14:12:34 by AD.
 # String TranslationContext: context for translations of configuration texts (subst)
 TranslationContext = GeneralConfiguration
 # String OpenDatabases: database open in the project (subst)
-OpenDatabases = SoFT_BASE\emmebank
+OpenDatabases = 
 # String ViewFolder: folder storing the view files (subst)
 ViewFolder = Views
 # String WorksheetFolder: folder storing worksheets (subst)
@@ -17,19 +17,7 @@ WorksheetFolder = Worksheets
 # String MediaFolder: folder for storing media files (subst)
 MediaFolder = Media
 # String ProjectDatabases: list of databases associated with the project (subst)
-ProjectDatabases[] = SoFT_BASE\emmebank;;windows-1252
-ProjectDatabases[] = SoFT_2017_Alt1\emmebank;;windows-1252
-ProjectDatabases[] = SoFT_2017_Alt2\emmebank;;windows-1252
-ProjectDatabases[] = SoFT_2017_Alt3\emmebank;;windows-1252
-ProjectDatabases[] = SoFT_2017_BAU\emmebank;;windows-1252
-ProjectDatabases[] = SoFT_2035_Alt1\emmebank;;windows-1252
-ProjectDatabases[] = SoFT_2035_Alt2\emmebank;;windows-1252
-ProjectDatabases[] = SoFT_2035_Alt3\emmebank;;windows-1252
-ProjectDatabases[] = SoFT_2035_BAU\emmebank;;windows-1252
-ProjectDatabases[] = SoFT_2050_Alt1\emmebank;;windows-1252
-ProjectDatabases[] = SoFT_2050_Alt2\emmebank;;windows-1252
-ProjectDatabases[] = SoFT_2050_Alt3\emmebank;;windows-1252
-ProjectDatabases[] = SoFT_2050_BAU\emmebank;;windows-1252
+ProjectDatabases = Template\emmebank;;windows-1252
 # String ProjectMacroPath: macro path (subst)
 ProjectMacroPath[] = %<$EnvironmentMacroPath>%
 ProjectMacroPath[] = %<$EnvironmentMacroPath>%
