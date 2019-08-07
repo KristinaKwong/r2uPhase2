@@ -91,9 +91,9 @@ class InitEmmebank(_m.Tool()):
             self.initfunctions(eb)
             if master_scen == 0:
                 self.initscenario(eb, 1000, "2011 Base Network")
-                self.initscenario(eb, 2000, "2016 Base Network")
-                self.initscenario(eb, 3000, "2035 Base Network")
-                self.initscenario(eb, 4000, "2050 Base Network")
+                self.initscenario(eb, 1700, "2017 Base Network")
+                self.initscenario(eb, 3500, "2035 Base Network")
+                self.initscenario(eb, 5000, "2050 Base Network")
             else:
                 self.initscenario(eb, master_scen, master_scen_name) # Added one scenario init option
 
