@@ -808,6 +808,9 @@ class ModeChoiceGenDf(_m.Tool()):
         if year == 2016:
         #    intermediates = 'gn1;gn3'
             intermediates = 'gn1;gn3'
+        if year == 2017:
+        #    intermediates = 'gn1;gn3'
+            intermediates = 'gn1;gn3'
         if year >= 2035:
         #    intermediates = 'gn1;gn3'
             intermediates = 'gn1;gn3;gn4'
