@@ -32,7 +32,7 @@ class FullModelRun(_m.Tool()):
         self.horizon_year = 2011
         self.scenario_name = 'Scenario Name'
         self.alternative_name = 'Alternative Name'
-        self.global_iterations = 7
+        self.global_iterations = 4
         self.max_distribution_iterations = 60
         self.distribution_relative_err = 0.0001
         self.max_assignment_iterations = 300
