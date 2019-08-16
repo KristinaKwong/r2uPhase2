@@ -50,7 +50,7 @@ class InputSettings(_m.Tool()):
                       overwrite=True)
         amscen = eb.scenario(am_scenid)
 
-        self.attribute_code(amscen, "@lanesam", "@vdfam", "@tpfam", "@hdwyam", "@tollam")
+        self.attribute_code(amscen, "@lanesam", "@vdfam", "@tpfam", "@hdwyam", "@tollam", "@capacityam")
 
         # Copy to new MD Scenarios
         md_scenid = (base_scenario.number * 10) + 2
@@ -62,7 +62,7 @@ class InputSettings(_m.Tool()):
                       overwrite=True)
         mdscen = eb.scenario(md_scenid)
 
-        self.attribute_code(mdscen, "@lanesmd", "@vdfmd", "@tpfmd", "@hdwymd", "@tollmd")
+        self.attribute_code(mdscen, "@lanesmd", "@vdfmd", "@tpfmd", "@hdwymd", "@tollmd", "@capacitymd")
 
         # Copy to new PM Scenarios
         pm_scenid = (base_scenario.number * 10) + 3
@@ -74,7 +74,7 @@ class InputSettings(_m.Tool()):
                       overwrite=True)
         pmscen = eb.scenario(pm_scenid)
 
-        self.attribute_code(pmscen, "@lanespm", "@vdfpm", "@tpfpm", "@hdwypm", "@tollpm")
+        self.attribute_code(pmscen, "@lanespm", "@vdfpm", "@tpfpm", "@hdwypm", "@tollpm", "@capacitypm")
 
         util.custom_link_attributes(amscen, mdscen, pmscen)
 
@@ -82,7 +82,7 @@ class InputSettings(_m.Tool()):
 
         util.custom_tline(amscen, mdscen, pmscen)
 
-    def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr, toll_attr):
+    def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr, toll_attr, capacity_attr):
         util = _m.Modeller().tool("translink.util")
         create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
         delete_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.delete_extra_attribute")
@@ -96,6 +96,14 @@ class InputSettings(_m.Tool()):
         delete_attr("@vdfam", scen)
         delete_attr("@vdfmd", scen)
         delete_attr("@vdfpm", scen)
+        if True: # lookup new VDF coding
+            util = _m.Modeller().tool("translink.util")
+            util.emme_link_calc(scen, "vdf", "11", sel_link="vdf=1")
+            util.emme_link_calc(scen, "vdf", "12", sel_link="vdf=2")
+            util.emme_link_calc(scen, "vdf", "13", sel_link="vdf=3,7")
+            util.emme_link_calc(scen, "vdf", "14", sel_link="vdf=20,75")
+            util.emme_link_calc(scen, "vdf", "15", sel_link="vdf=80,85")
+            util.emme_link_calc(scen, "vdf", "16", sel_link="vdf=88")
 
         util.emme_turn_calc(scen, "tpf", tpf_attr)
         delete_attr("@tpfam", scen)
@@ -123,27 +131,33 @@ class InputSettings(_m.Tool()):
         delete_attr("@tollmd", scen)
         delete_attr("@tollpm", scen)
 
+        create_attr("LINK", "@capacity", "Roadway Capacity", 0, True, scen)
+        util.emme_link_calc(scen, "@capacity", capacity_attr)
+        delete_attr("@capacityam", scen)
+        delete_attr("@capacitymd", scen)
+        delete_attr("@capacitypm", scen)
+
         # Add all required extra attibutes used in Auto Assignment
-        create_attr("LINK", "@sov1", "SOV Volume VOT1",     0, False, scen)
-        create_attr("LINK", "@sov2", "SOV Volume VOT2",     0, False, scen)
-        create_attr("LINK", "@sov3", "SOV Volume VOT3",     0, False, scen)
+        create_attr("LINK", "@sov1", "SOV Volume VOT1",  0, False, scen)
+        create_attr("LINK", "@sov2", "SOV Volume VOT2",  0, False, scen)
+        create_attr("LINK", "@sov3", "SOV Volume VOT3",  0, False, scen)
         create_attr("LINK", "@sov4", "SOV Volume VOT4",  0, False, scen)
-        create_attr("LINK", "@hov1", "HOV Volume VOT1",     0, False, scen)
-        create_attr("LINK", "@hov2", "HOV Volume VOT2",     0, False, scen)
-        create_attr("LINK", "@hov3", "HOV Volume VOT3",     0, False, scen)
+        create_attr("LINK", "@hov1", "HOV Volume VOT1",  0, False, scen)
+        create_attr("LINK", "@hov2", "HOV Volume VOT2",  0, False, scen)
+        create_attr("LINK", "@hov3", "HOV Volume VOT3",  0, False, scen)
         create_attr("LINK", "@hov4", "HOV Volume VOT4",  0, False, scen)
         create_attr("LINK", "@wsovl", "SOV Link Volume", 0, False, scen)
         create_attr("LINK", "@whovl", "HOV Link Volume", 0, False, scen)
         create_attr("LINK", "@lgvol", "LGV Link Volume", 0, False, scen)
         create_attr("LINK", "@hgvol", "HGV Link Volume", 0, False, scen)
-        create_attr("TURN", "@tsov1", "SOV Turn Volume VOT1",     0, False, scen)
-        create_attr("TURN", "@tsov2", "SOV Turn Volume VOT2",     0, False, scen)
-        create_attr("TURN", "@tsov3", "SOV Turn Volume VOT3",     0, False, scen)
-        create_attr("TURN", "@tsov4", "SOV Turn Volume VOT4",  0, False, scen)
-        create_attr("TURN", "@thov1", "HOV Turn Volume VOT1",     0, False, scen)
-        create_attr("TURN", "@thov2", "HOV Turn Volume VOT2",     0, False, scen)
-        create_attr("TURN", "@thov3", "HOV Turn Volume VOT3",     0, False, scen)
-        create_attr("TURN", "@thov4", "HOV Turn Volume VOT4",  0, False, scen)
+        create_attr("TURN", "@tsov1", "SOV Turn Volume VOT1", 0, False, scen)
+        create_attr("TURN", "@tsov2", "SOV Turn Volume VOT2", 0, False, scen)
+        create_attr("TURN", "@tsov3", "SOV Turn Volume VOT3", 0, False, scen)
+        create_attr("TURN", "@tsov4", "SOV Turn Volume VOT4", 0, False, scen)
+        create_attr("TURN", "@thov1", "HOV Turn Volume VOT1", 0, False, scen)
+        create_attr("TURN", "@thov2", "HOV Turn Volume VOT2", 0, False, scen)
+        create_attr("TURN", "@thov3", "HOV Turn Volume VOT3", 0, False, scen)
+        create_attr("TURN", "@thov4", "HOV Turn Volume VOT4", 0, False, scen)
         create_attr("TURN", "@wsovt", "SOV Turn Volume", 0, False, scen)
         create_attr("TURN", "@whovt", "HOV Turn Volume", 0, False, scen)
         create_attr("TURN", "@lgvtn", "LGV Turn Volume", 0, False, scen)
