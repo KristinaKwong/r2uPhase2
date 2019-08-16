@@ -100,7 +100,7 @@ class ExportNetwork(_m.Tool()):
                           "@tpfam", "@tpfmd", "@tpfpm",
                           "@hdwyam", "@hdwymd", "@hdwypm",
                           "@lscid", "@lscstn", "@timeseg",
-                          "@posted_speed","@signaldelay",
+                          "@posted_speed","@signal_delay",
                           "@farezone", "@fareboundary", "@wcefareboundary"]
         att_trans(extra_attributes = attribute_list,
                   export_path = data_path,
