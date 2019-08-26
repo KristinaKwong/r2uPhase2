@@ -22,7 +22,7 @@ class UpdateBaseNetworkVDF(_m.Tool()):
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
-        pb.title = "Update Network VDF"
+        pb.title = "Update Network VDF (Text File)"
         pb.description = "<object align='left'>Convert RTM3.2 Network to RTM3.3 Network: Update VDF </object><br>" \
                          "<object align='left'>RTM3.2 VDF: 1, 3-7, 25-88 </object><br>"\
                          "<object align='left'>RTM3.3 VDF: 11-16</object>"
@@ -99,6 +99,8 @@ class UpdateBaseNetworkVDF(_m.Tool()):
                 IsFreeFlow = (link_attribute_file[vdf]>=80)&(link_attribute_file[vdf]<=85)
                 link_attribute_file[vdf] = np.where(IsFreeFlow,15,link_attribute_file[vdf])
                 link_attribute_file[vdf] = np.where(link_attribute_file[vdf]==88,16,link_attribute_file[vdf])
+                
+            #export to extra_links_xxxx.txt file
             output_scenario = int(scenario) + int(scenarioInc)
             data_outputpath = os.path.join(proj_path, "BaseNetworks", "extra_links_%d.txt" % output_scenario)
             link_attribute_file.to_csv(data_outputpath, sep=' ', index=False)
@@ -117,6 +119,7 @@ class UpdateBaseNetworkVDF(_m.Tool()):
             import_network = _m.Modeller().tool("translink.RTM3.importnet")
             
             #load scenario title from base_network_xxxx.txt file
+            #copy files
             fp = open(os.path.join(proj_path, "BaseNetworks", "base_network_%s.txt" % scenario))
             for i, line in enumerate(fp):
                 if i == 1:
@@ -124,6 +127,7 @@ class UpdateBaseNetworkVDF(_m.Tool()):
                    break
             fp.close()
             
+            #import then export network to fix formating issues
             import_network(eb, output_scenario, title)
             util.emme_link_calc(eb.scenario(output_scenario), "vdf", "11", sel_link="vdf=1")
             util.emme_link_calc(eb.scenario(output_scenario), "vdf", "12", sel_link="vdf=2")

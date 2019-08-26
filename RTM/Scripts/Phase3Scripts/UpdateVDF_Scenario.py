@@ -1,7 +1,7 @@
 ##---------------------------------------------------------------------
 ##--TransLink Phase 3.3 Regional Transportation Model
 ##--
-##--Path: Analytics.UpdateScenarioVDF
+##--Path: translink.RTM3.checking.UpdateScenarioVDF
 ##--Purpose: Update Scenarios to the RTM3.3 VDFs
 ##---------------------------------------------------------------------
 import inro.modeller as _m
@@ -19,7 +19,7 @@ class UpdateScenarioVDF(_m.Tool()):
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
-        pb.title = "Update Network VDF"
+        pb.title = "Update Network VDF (Scenario)"
         pb.description = "<object align='left'>Convert RTM3.2 Network to RTM3.3 Network: Update VDF </object><br>" \
                          "<object align='left'>RTM3.2 VDF: 1, 3-7, 25-88 </object><br>"\
                          "<object align='left'>RTM3.3 VDF: 11-16</object>"
