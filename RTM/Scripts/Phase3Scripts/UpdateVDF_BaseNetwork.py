@@ -116,7 +116,15 @@ class UpdateBaseNetworkVDF(_m.Tool()):
             export_network = _m.Modeller().tool("translink.RTM3.export_network")
             import_network = _m.Modeller().tool("translink.RTM3.importnet")
             
-            import_network(eb, output_scenario, eb.scenario(scenario).title)
+            #load scenario title from base_network_xxxx.txt file
+            fp = open(os.path.join(proj_path, "BaseNetworks", "base_network_%s.txt" % scenario))
+            for i, line in enumerate(fp):
+                if i == 1:
+                   title = line.split(":")[-1].strip()
+                   break
+            fp.close()
+            
+            import_network(eb, output_scenario, title)
             util.emme_link_calc(eb.scenario(output_scenario), "vdf", "11", sel_link="vdf=1")
             util.emme_link_calc(eb.scenario(output_scenario), "vdf", "12", sel_link="vdf=2")
             util.emme_link_calc(eb.scenario(output_scenario), "vdf", "13", sel_link="vdf=3,7")
