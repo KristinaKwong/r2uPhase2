@@ -21,9 +21,9 @@ class AutoAssignment(_m.Tool()):
 
     def __init__(self):
         self.relative_gap = 0.0001
-        self.best_relative_gap = 0.01
-        self.normalized_gap = 0.005
-        self.max_iterations = 250
+        self.best_relative_gap = 0
+        self.normalized_gap =0
+        self.max_iterations = 300
 
     def page(self):
         pb = _m.ToolPageBuilder(self)

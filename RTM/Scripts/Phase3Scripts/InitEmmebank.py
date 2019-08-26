@@ -33,13 +33,13 @@ class InitEmmebank(_m.Tool()):
                         size=30,
                         title="Enter the Title for the new emmebank")
 
-        pb.add_text_box(tool_attribute_name="scen_number",
-                        size=10,
-                        title="Enter the Scenario Number to import into the new emmebank")
-
-        pb.add_text_box(tool_attribute_name="scen_name",
-                        size=60,
-                        title="Enter the Scenario Name for the new scenario")
+        #pb.add_text_box(tool_attribute_name="scen_number",
+        #                size=10,
+        #                title="Enter the Scenario Number to import into the new emmebank")
+        #
+        #pb.add_text_box(tool_attribute_name="scen_name",
+        #                size=60,
+        #                title="Enter the Scenario Name for the new scenario")
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
