@@ -25242,10 +25242,12 @@ a'640NB1' b   1  20.00  35.00 'Ladner Exchange/Scot'      0      0      0
    541501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    540901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   540801         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   540801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   540802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    541016         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    541017         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   541019         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   541019         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   541021         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    541003         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    541002         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    540513         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -25286,8 +25288,10 @@ a'640SB1' b   1  20.00  35.00 'Ladner Exchange/Scot'      0      0      0
    540513         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    541002         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    541003         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   541019         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   541016         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   541021         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   541019         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   541017         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   541016         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    540802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    540801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    540901         dwt=#0   ttf=1   us1=0   us2=0   us3=0
