@@ -12286,8 +12286,8 @@ a'311NB1' b   1  20.00  35.00 'Scottsdale/Bridgeprt'      0      0      0
    541907         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541817         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541807         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   532112         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   532113         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   532112         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   532113         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    532107         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    532100         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    532105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -14109,8 +14109,8 @@ a'351NB1' b   1   9.00  35.00 'CrescentBch/Bridgepo'      0      0      0
    541907         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541817         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541807         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   532112         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   532113         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   532112         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   532113         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    532107         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    532100         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    532105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -14267,8 +14267,8 @@ a'352NB1' b   1   9.00  23.00 'OceanPark/Bridgeport'      0      0      0
    541907         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541817         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541807         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   532112         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   532113         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   532112         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   532113         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    532107         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    532100         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    532105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -14418,8 +14418,8 @@ a'354NB1' b   1  15.00  35.00 'WhiteRkSth/BrdgprtSt'      0      0      0
    541907         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541817         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541807         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   532112         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   532113         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   532112         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   532113         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    532107         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    532100         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    532105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -17123,8 +17123,8 @@ a'601NB1' b   1  10.00  35.00 'SDelta/BndryBay/Bdgp'      0      0      0
    541907         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541817         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541807         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   532112         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   532113         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   532112         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   532113         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    532107         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    532100         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    532105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -17247,8 +17247,8 @@ a'602NB1' b   1  30.00  35.00 'Tswwassen Hts/Vancvr'      0      0      0
    541907         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541817         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541807         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   532112         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   532113         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   532112         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   532113         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    532107         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    532100         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    532105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -17365,8 +17365,8 @@ a'603NB1' b   1  30.00  35.00 'BeachGrove/Brdgprt  '      0      0      0
    541907         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541817         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541807         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   532112         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   532113         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   532112         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   532113         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    532107         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    532100         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    532105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -17432,8 +17432,8 @@ a'604NB1' b   1  30.00  35.00 'English Bluff/Vancvr'      0      0      0
    541907         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541817         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541807         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   532112         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   532113         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   532112         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   532113         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    532107         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    532100         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    532105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -17540,8 +17540,8 @@ a'620NB1' b  10  60.00  23.00 'TsawFerry/BrdgprtStn'      0      0      0
    541907         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541817         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    541807         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   532112         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   532113         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   532112         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   532113         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    532107         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    532100         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    532105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
