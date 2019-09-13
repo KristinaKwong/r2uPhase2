@@ -37,7 +37,7 @@ a'002E1A' b   1   7.00  23.00 'Macdon/16th/Dtn     '      0      0      0
    224001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    224002         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    223004         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   223002         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   223002         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    223001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    221902         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    221704         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -99,7 +99,7 @@ a'002E1P' b   1  15.00  23.00 'Macdon/16th/Dtn     '      0      0      0
    223808         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    223806         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    224001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   223004         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   223004         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    223001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    221902         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    221704         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -426,7 +426,7 @@ a'004WB1' b   2  12.00  23.00 'Phibbs/Powell/DT/UBC'      0      0      0
    210305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    210303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210601        lay=5.00
-a'005E1 ' b   2   8.00  23.00 'Robson/Downtown     '      0      0      0
+a'005EB1' b   2   8.00  23.00 'Robson/Downtown     '      0      0      0
   path=no
    221402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    221403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -450,53 +450,7 @@ a'005E1 ' b   2   8.00  23.00 'Robson/Downtown     '      0      0      0
    222105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    223301         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    224402        lay=5.00
-a'005W1A' b   2   6.00  23.00 'Robson/Downtown     '      0      0      0
-  path=no
-   224402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   224404         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   224104         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   225502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   225402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   225401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   224006         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   223902         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   224005         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   223806         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   223801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   222703         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   221604         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   220901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   220804         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   220801         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   220802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   220803         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   221401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   221403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   221402        lay=5.00
-a'005W1M' b   2   7.00  23.00 'Robson/Downtown     '      0      0      0
-  path=no
-   224402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   224404         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   224104         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   225502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   225402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   225401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   224006         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   223902         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   224005         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   223806         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   223801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   222703         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   221604         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   220901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   220804         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   220801         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   220802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   220803         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   221401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   221403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   221402        lay=5.00
-a'005W1P' b   2   6.00  23.00 'Robson/Downtown     '      0      0      0
+a'005WB1' b   2   6.00  23.00 'Robson/Downtown     '      0      0      0
   path=no
    224402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    224404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -516,7 +470,7 @@ a'005W1P' b   2   6.00  23.00 'Robson/Downtown     '      0      0      0
    220801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    220802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    220803         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   221401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   221401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    221403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    221402        lay=5.00
 a'006E1 ' b   2   8.00  23.00 'Davie/Downtown      '      0      0      0
@@ -4771,14 +4725,14 @@ a'032N1A' b   1  20.00  23.00 'DunbarX/Downtown    '      0      0      0
    224001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    224002         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    223004         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   223002         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   223002         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    223001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    223101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    222003        lay=5.00
 a'032S1P' b   1  20.00  23.00 'Downtown/Dunbar     '      0      0      0
   path=no
    222003         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   221904         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   221904         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    223001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    222902         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    223004         dwt=#0   ttf=1   us1=0   us2=0   us3=0
