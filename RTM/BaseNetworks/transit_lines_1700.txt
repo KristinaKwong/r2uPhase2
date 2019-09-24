@@ -17779,10 +17779,6 @@ a'402SB1' b   1  12.00  23.00 '402-SB1             '      0      0      0
    522401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    522402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    522001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   521901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   521103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   521902         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   521903         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    522301        lay=5.00
 a'403NB1' b   1  10.00  34.00 '403-NB1             '      0      0      0
   path=no
