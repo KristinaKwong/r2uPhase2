@@ -21586,32 +21586,23 @@ a'901SB1' b  10  10.00  23.00 'R1: Newton/Guildford'      0      0      0
    624201        lay=5.00
 a'902EB1' b  10  10.00  35.00 'R2: ParkRoyal/Phibbs'      0      0      0
   path=no
-   111902         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   111904         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   112006         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   112602         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   112604         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   112605         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   112606         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   112607         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   112608         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    112705         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    112409         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    112803         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   112808         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   112810         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   112808         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   112810         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    122201         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    122202         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    122203         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    122204         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    122205         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    122206         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   122207         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   131001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   122207         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   131001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    131002         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   131003         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   131003         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    131101         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   131103         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   131103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    131203         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    131801         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    131701         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -21619,11 +21610,13 @@ a'902EB1' b  10  10.00  35.00 'R2: ParkRoyal/Phibbs'      0      0      0
    132202         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    132204         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    132102         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   132104         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   132104         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   132101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   132103         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    132101         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    132104         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    132102         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   132203         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   132203         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    132301         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    132501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    132502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -21651,11 +21644,13 @@ a'902WB1' b  10   9.00  35.00 'R2: Phibbs/ParkRoyal'      0      0      0
    133101         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    132702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    132502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   132501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   132501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    132301         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    132203         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    132102         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   132104         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   132104         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   132101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   132103         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    132101         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    132104         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    132102         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -21664,38 +21659,28 @@ a'902WB1' b  10   9.00  35.00 'R2: Phibbs/ParkRoyal'      0      0      0
    131802         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    131701         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    131801         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   131204         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   131204         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    131203         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   131202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   131202         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    131101         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   131003         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   131003         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    131002         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    130306         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   130305         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   130305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    131001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    122207         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    122206         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    122205         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    122204         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    122203         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   122202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   122201         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   122202         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   122201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    112810         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    112807         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    112804         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    112802         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    112409         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   112705         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   112704         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   112608         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   112607         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   112606         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   112605         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   112604         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   112602         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   112006         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   111904         dwt=>0   ttf=1   us1=0   us2=0   us3=0
-   111902        lay=5.00
+   112705        lay=5.00
 a'903EB1' b  10  10.00  35.00 'R3:CoqStn/HaneyPlace'      0      0      0
   path=no
    320311         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -21719,7 +21704,7 @@ a'903EB1' b  10  10.00  35.00 'R3:CoqStn/HaneyPlace'      0      0      0
    342703         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    410104         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    410110         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   410201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   410201         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    410601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    410603         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    410604         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -21729,7 +21714,7 @@ a'903EB1' b  10  10.00  35.00 'R3:CoqStn/HaneyPlace'      0      0      0
    422901         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    422902         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    422903         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   422103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   422103         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    423001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    422404         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    422405         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -21740,7 +21725,7 @@ a'903WB1' b  10  10.00  35.00 'R3:HaneyPlace/CoqStn'      0      0      0
    422502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    423301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    422405         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   422404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   422404         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    423001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    422103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    422903         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -21750,7 +21735,7 @@ a'903WB1' b  10  10.00  35.00 'R3:HaneyPlace/CoqStn'      0      0      0
    422601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    410314         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    410312         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   410305         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   410305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    410601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    410304         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    410201         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -21777,9 +21762,10 @@ a'903WB1' b  10  10.00  35.00 'R3:HaneyPlace/CoqStn'      0      0      0
    320311        lay=5.00
 a'904EB1' b  10   5.00  35.00 'R4: UBC / Joyce Stn '      0      0      0
   path=no
+   210304         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    210302         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    210303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   210602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   210602         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    211001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    211108         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    211301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -21802,8 +21788,8 @@ a'904EB1' b  10   5.00  35.00 'R4: UBC / Joyce Stn '      0      0      0
    241801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    240803         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    240804         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   241901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   242001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   241901         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   242001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    242002         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    242101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    242401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -21819,9 +21805,9 @@ a'904EB1' b  10   5.00  35.00 'R4: UBC / Joyce Stn '      0      0      0
    262301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    262302         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    261504         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   262403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   262403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    262404         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   262401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   262401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    262402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    261801         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    261601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -21872,11 +21858,12 @@ a'904WB1' b  10   5.00  35.00 'R4: Joyce Stn / UBC '      0      0      0
    211404         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    211106         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    211301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   211108         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   211108         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    211001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210602         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   210303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   210302        lay=5.00
+   210303         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   210302         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   210304        lay=5.00
 a'905E1A' b  10   5.45  23.00 'R5: VancCBD / SFU   '      0      0      0
   path=no
    223001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
