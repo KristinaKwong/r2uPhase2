@@ -22658,7 +22658,7 @@ a'9921WB' l  31   6.70  65.00 'ExpL ProdStn-VancCBD'      0      0      0
    224205      dwt=+1.23  ttf=10   us1=0   us2=0   us3=0
    221903      dwt=+1.68  ttf=10   us1=0   us2=0   us3=0
    223501        lay=1.00
-a'9922EB' l  34   3.30  55.00 'Mill VCC-Douglas    '      0      0      0
+a'9930EB' l  34   3.30  55.00 'Mill VCC-Douglas    '      0      0      0
   path=no
    254009      dwt=+1.45  ttf=10   us1=0   us2=0   us3=0
    254203      dwt=+2.51  ttf=10   us1=0   us2=0   us3=0
@@ -22678,7 +22678,7 @@ a'9922EB' l  34   3.30  55.00 'Mill VCC-Douglas    '      0      0      0
    320310      dwt=+1.31  ttf=10   us1=0   us2=0   us3=0
    333004      dwt=+1.17  ttf=10   us1=0   us2=0   us3=0
    332802        lay=1.00
-a'9922WB' l  34   3.30  55.00 'Mill VCC-Douglas    '      0      0      0
+a'9930WB' l  34   3.30  55.00 'Mill VCC-Douglas    '      0      0      0
   path=no
    332802      dwt=+1.17  ttf=10   us1=0   us2=0   us3=0
    333004      dwt=+1.31  ttf=10   us1=0   us2=0   us3=0
