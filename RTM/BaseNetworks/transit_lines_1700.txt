@@ -5728,77 +5728,6 @@ a'095W1P' b  10   6.00  23.00 'VancCBD-SFU (BL)    '      0      0      0
    223005         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    223004         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    223001        lay=5.00
-a'096NB1' b  10  10.00  23.00 'Newton-Guildford BL '      0      0      0
-  path=no
-   624201         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   622703         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   622702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   622701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   622504         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   622501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   621103         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   620604         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   620602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   620301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   618801         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   617603         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   616706         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   616705         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   616704         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   616703         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   615821         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   615801         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614410         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   614408         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614412         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   614502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   613902         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   614701         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   614002         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   615401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   615402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   631301        lay=5.00
-a'096SB1' b  10  10.00  23.00 'Guildford-Newton BL '      0      0      0
-  path=no
-   631301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   615402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   615401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   614002         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   614701         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   613902         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   614502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614412         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   614408         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   614410         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   615801         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   615821         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   616703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   616704         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   616705         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   616706         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   617603         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   618801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   620301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   620602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   621103         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   622501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   622504         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   622701         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   622702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   622703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   624201        lay=5.00
 a'099E1A' b  10   6.00  35.00 '99BL: UBC/Commercial'      0      0      0
   path=no
    210304         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -21958,6 +21887,77 @@ a'791WB2' b   1  30.00  23.00 'MapleRid-LougheedStn'      0      0      0
    325408         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    326101         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    291001        lay=5.00
+a'901NB1' b  10  10.00  23.00 'R1: Newton/Guildford'      0      0      0
+  path=no
+   624201         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   622703         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   622702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   622701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   622504         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   622501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   621103         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   620604         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   620602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   620301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   618801         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   617603         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   616706         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   616705         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   616704         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   616703         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   615821         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   615801         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614410         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   614408         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614412         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   614502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   613902         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   614701         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   614002         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   615401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   615402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   631301        lay=5.00
+a'901SB1' b  10  10.00  23.00 'R1: Newton/Guildford'      0      0      0
+  path=no
+   631301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   615402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   615401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   614002         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   614701         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   613902         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   614502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614412         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   614408         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   614410         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   615801         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   615821         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   616703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   616704         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   616705         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   616706         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   617603         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   618801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   620301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   620602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   621103         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   622501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   622504         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   622701         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   622702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   622703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   624201        lay=5.00
 a'9900NB' s   4  15.00  20.30 'SeaBus-Waterfront/LQ'      0      0      0
   path=no
    223401     dwt=+10.06  ttf=10   us1=0   us2=0   us3=0
