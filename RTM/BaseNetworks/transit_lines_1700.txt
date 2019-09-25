@@ -22178,6 +22178,108 @@ a'903WB1' b  10  10.00  35.00 'R3:HaneyPlace/CoqStn'      0      0      0
    320401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    320308         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    320311        lay=5.00
+a'904EB1' b  10   5.00  35.00 'R4: UBC / Joyce Stn '      0      0      0
+  path=no
+   210302         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   210303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   210602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   211001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   211108         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   211301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   211106         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   211205         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   211405         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   211407         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   211409         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   211601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   211501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   211502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   241501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   241502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   240102         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   240402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   240403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   240501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   240603         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   240604         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   241801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   240803         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   240804         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   241901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   242001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   242002         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   242101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   242401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   242201         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   242301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   242302         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   242303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   262101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   260601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   262901         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   262201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   261303         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   262301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   262302         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   261504         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   262403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   262404         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   262401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   262402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   261801         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   261601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   261107        lay=5.00
+a'904WB1' b  10   5.00  35.00 'R4: Joyce Stn / UBC '      0      0      0
+  path=no
+   261107         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   261601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   262402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   262404         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   262403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   261504         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   262302         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   262301         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   261303         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   262201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   262901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   260601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   262102         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   262101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   242303         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   242302         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   242301         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   242201         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   241203         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   242401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   242101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   242002         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   242001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   241901         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   240804         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   240803         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   241801         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   240604         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   240603         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   240501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   240403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   240402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   240102         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   241502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   241501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   211502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   211501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   211601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   211409         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   211407         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   211406         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   211404         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   211106         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   211301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   211108         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   211001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   210602         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   210303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   210302        lay=5.00
 a'9900NB' s   4  15.00  20.30 'SeaBus-Waterfront/LQ'      0      0      0
   path=no
    223401     dwt=+10.06  ttf=10   us1=0   us2=0   us3=0
