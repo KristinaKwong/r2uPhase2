@@ -56,142 +56,143 @@ class TripProductions(_m.Tool()):
 
     @_m.logbook_trace("Calculate Household Level Trip Productions")
     def Calcuate_HH_Level_Trips(self, eb, hh_c_df, hh_nc_df):
-        util = _m.Modeller().tool("translink.util")
+		util = _m.Modeller().tool("translink.util")
 
-        # acquire household level data
-        conn = util.get_rtm_db(eb)
-        hh_df = pd.read_sql('''SELECT TAZ1741,
-                               HHSize,
-                               HHWorker,
-                               HHInc,
-                               HHAuto,
-                               CountHHs,
-                               e.gm
+		# acquire household level data
+		conn = util.get_rtm_db(eb)
+		hh_df = pd.read_sql('''SELECT TAZ1741,
+							   HHSize,
+							   HHWorker,
+							   HHInc,
+							   HHAuto,
+							   CountHHs,
+							   e.gm
 
-                               FROM segmentedHouseholds sh
+							   FROM segmentedHouseholds sh
 
-                               LEFT JOIN ensembles e on e.TAZ1700 = sh.TAZ1741''', conn)
-        conn.close()
-
-
-
-        # Attach commute  trip rates
-        hh_df = pd.merge(hh_df, hh_c_df, how = 'left', left_on = ['HHWorker','HHInc'], right_on = ['HHWorker','HHInc'])
-        # 0 workers households make no commute trips
-        hh_df['hbw_prds'].fillna(0, inplace=True)
-        hh_df['nhbw_ct_prds'].fillna(0, inplace=True)
-
-        # Attach non-commute trip rates
-        hh_df = pd.merge(hh_df, hh_nc_df, how = 'left', left_on = ['HHSize','HHInc'], right_on = ['HHSize','HHInc'])
-
-        bowen_adj = 0.40
-
-        hh_df['bowen_adj'] = np.where(hh_df['gm'] == 100, bowen_adj, 1.00)
+							   LEFT JOIN ensembles e on e.TAZ1700 = sh.TAZ1741''', conn)
+		conn.close()
 
 
-        # Calculate Productions
 
-        # Commute
-        hh_df['hbw'] = hh_df['CountHHs'] * hh_df['hbw_prds'] * hh_df['bowen_adj']
-        hh_df['nhbw_ct'] = hh_df['CountHHs'] * hh_df['nhbw_ct_prds'] * hh_df['bowen_adj']
-        #  Non Commute
-        hh_df['hbesc'] = hh_df['CountHHs'] * hh_df['hbesc_prds'] * hh_df['bowen_adj']
-        hh_df['hbpb'] = hh_df['CountHHs'] * hh_df['hbpb_prds'] * hh_df['bowen_adj']
-        hh_df['hbsch'] = hh_df['CountHHs'] * hh_df['hbsch_prds'] * hh_df['bowen_adj']
-        hh_df['hbshop'] = hh_df['CountHHs'] * hh_df['hbshop_prds'] * hh_df['bowen_adj']
-        hh_df['hbsoc'] = hh_df['CountHHs'] * hh_df['hbsoc_prds'] * hh_df['bowen_adj']
-        hh_df['nhbo_ct'] = hh_df['CountHHs'] * hh_df['nhbo_ct_prds'] * hh_df['bowen_adj']
+		# Attach commute  trip rates
+		hh_df = pd.merge(hh_df, hh_c_df, how = 'left', left_on = ['HHWorker','HHInc'], right_on = ['HHWorker','HHInc'])
+		# 0 workers households make no commute trips
+		hh_df['hbw_prds'].fillna(0, inplace=True)
+		hh_df['nhbw_ct_prds'].fillna(0, inplace=True)
 
-        # Calculate NHB trip control totals
-        nhbw_ct = hh_df['nhbw_ct'].sum()
-        nhbo_ct = hh_df['nhbo_ct'].sum()
+		# Attach non-commute trip rates
+		hh_df = pd.merge(hh_df, hh_nc_df, how = 'left', left_on = ['HHSize','HHInc'], right_on = ['HHSize','HHInc'])
 
-        # Set Balancing Control Totals
-        ct_df = hh_df[['hbw','hbesc','hbpb','hbsch','hbshop', 'hbsoc']]
-        ct_df = pd.DataFrame(ct_df.sum())
-        ct_df.reset_index(inplace=True)
-        ct_df.columns = ['purpose','control_total']
+		bowen_adj = 0.40
 
-        # prep data frame for output
-        hh_df = hh_df[['TAZ1741','HHSize','HHWorker','HHInc','HHAuto','CountHHs','hbw','hbesc','hbpb','hbsch','hbshop','hbsoc']]
-
-        # write data to sqlite database
-        conn = util.get_rtm_db(eb)
-        hh_df.to_sql(name='TripsHhPrds', con=conn, flavor='sqlite', index=False, if_exists='replace')
-        ct_df.to_sql(name='TripsBalCts', con=conn, flavor='sqlite', index=False, if_exists='replace')
-        conn.close()
-
-        # collapse 2 and 3 Auto
-        hh_df.ix[hh_df.HHAuto == 3, 'HHAuto'] = 2
-
-        # Summarize trips at Income/Auto level
-        df_emme = hh_df
-        df_emme['HHInc'] = df_emme['HHInc'].astype(str)
-        df_emme['HHAuto'] = df_emme['HHAuto'].astype(str)
-        df_emme = df_emme.drop(['HHSize','HHWorker','CountHHs'], axis=1)
-        df_emme = df_emme.groupby(['TAZ1741','HHInc','HHAuto'])
-        df_emme = df_emme.sum()
-        df_emme = df_emme.reset_index()
-
-        # pivot to vectors of length 1741 to stuff in emmebank
-        df_emme = df_emme.pivot_table(index='TAZ1741', columns=['HHInc','HHAuto'], values=['hbw','hbesc','hbpb','hbsch','hbshop','hbsoc'])
-        df_emme.columns = [' '.join(col).strip() for col in df_emme.columns.values]
-        df_emme = pd.DataFrame(df_emme.to_records())
-        df_emme.sort(columns='TAZ1741', inplace=True)
-
-        # loop across these to set the matrices
-        Pur = ['hbw','hbesc','hbpb','hbsch','hbshop','hbsoc']
-        Inc = [1,2,3]
-        Aut = [0,1,2]
-
-        # stuff data
-        for purpose in Pur:
-            for income in Inc:
-                for auto in Aut:
-                    mo = "mo{purpose}Inc{income}Au{auto}prd".format(purpose=purpose, income=income, auto=auto)
-                    vec = "{purpose} {income} {auto}".format(purpose=purpose, income=income, auto=auto)
-                    util.set_matrix_numpy(eb, mo, df_emme[vec].values)
-
-        return np.round(nhbw_ct,6), np.round(nhbo_ct,6)
+		hh_df['bowen_adj'] = np.where(hh_df['gm'] == 100, bowen_adj, 1.00)
 
 
-        @_m.logbook_trace("Import TAZ level Data")
-        def Generate_TAZ_Trip_Productions_df(self, eb):
-            util = _m.Modeller().tool("translink.util")
+		# Calculate Productions
 
-            taz_sql = """
-            SELECT
-                ti.TAZ1741
-                -- hbu variables
-                ,IFNULL(d.POP_18to24 * a.uni_acc_ln, 0) as iPop1824UnAc
-                ,IFNULL(d.POP_25to34 * a.uni_acc_ln, 0) as iPop2534UnAc
-                -- employment variables
-                ,IFNULL(d.EMP_Construct_Mfg, 0) as EMP_Construct_Mfg
-                ,IFNULL(d.EMP_TCU_Wholesale, 0) as EMP_TCU_Wholesale
-                ,IFNULL(d.EMP_FIRE, 0) as EMP_FIRE
-                ,IFNULL(d.EMP_Business_OtherServices, 0) as EMP_Business_OtherServices
-                ,IFNULL(d.EMP_AccomFood_InfoCult, 0) as EMP_AccomFood_InfoCult
-                ,IFNULL(d.EMP_Retail, 0) as EMP_Retail
-                ,IFNULL(d.EMP_Health_Educat_PubAdmin, 0) as EMP_Health_Educat_PubAdmin
-                -- school enrolment variables
-                ,IFNULL(d.Elementary_Enrolment, 0) as Elementary_Enrolment
-                ,IFNULL(d.Secondary_Enrolment, 0) as Secondary_Enrolment
-                ,IFNULL(d.PostSecFTE, 0) as PostSecFTE
-                -- household variables
-                ,IFNULL(d.HH_Total,0) as HH_Total
+		# Commute
+		hh_df['hbw'] = hh_df['CountHHs'] * hh_df['hbw_prds'] * hh_df['bowen_adj']
+		hh_df['nhbw_ct'] = hh_df['CountHHs'] * hh_df['nhbw_ct_prds'] * hh_df['bowen_adj']
+		#  Non Commute
+		hh_df['hbesc'] = hh_df['CountHHs'] * hh_df['hbesc_prds'] * hh_df['bowen_adj']
+		hh_df['hbpb'] = hh_df['CountHHs'] * hh_df['hbpb_prds'] * hh_df['bowen_adj']
+		hh_df['hbsch'] = hh_df['CountHHs'] * hh_df['hbsch_prds'] * hh_df['bowen_adj']
+		hh_df['hbshop'] = hh_df['CountHHs'] * hh_df['hbshop_prds'] * hh_df['bowen_adj']
+		hh_df['hbsoc'] = hh_df['CountHHs'] * hh_df['hbsoc_prds'] * hh_df['bowen_adj']
+		hh_df['nhbo_ct'] = hh_df['CountHHs'] * hh_df['nhbo_ct_prds'] * hh_df['bowen_adj']
 
-            FROM taz_index ti
-                LEFT JOIN demographics d on d.TAZ1700 = ti.TAZ1741
-                LEFT JOIN accessibilities a on a.TAZ1741 = ti.TAZ1741
+		# Calculate NHB trip control totals
+		nhbw_ct = hh_df['nhbw_ct'].sum()
+		nhbo_ct = hh_df['nhbo_ct'].sum()
 
-            ORDER BY
-                ti.TAZ1741
-            """
-            conn = util.get_rtm_db(eb)
-            taz_df = pd.read_sql(taz_sql, conn)
-            conn.close()
+		# Set Balancing Control Totals
+		ct_df = hh_df[['hbw','hbesc','hbpb','hbsch','hbshop', 'hbsoc']]
+		ct_df = pd.DataFrame(ct_df.sum())
+		ct_df.reset_index(inplace=True)
+		ct_df.columns = ['purpose','control_total']
 
-            return taz_df
+		# prep data frame for output
+		hh_df = hh_df[['TAZ1741','HHSize','HHWorker','HHInc','HHAuto','CountHHs','hbw','hbesc','hbpb','hbsch','hbshop','hbsoc']]
+
+		# write data to sqlite database
+		conn = util.get_rtm_db(eb)
+		hh_df.to_sql(name='TripsHhPrds', con=conn, flavor='sqlite', index=False, if_exists='replace')
+		ct_df.to_sql(name='TripsBalCts', con=conn, flavor='sqlite', index=False, if_exists='replace')
+		conn.close()
+
+		# collapse 2 and 3 Auto
+		hh_df.ix[hh_df.HHAuto == 3, 'HHAuto'] = 2
+
+		# Summarize trips at Income/Auto level
+		df_emme = hh_df
+		df_emme['HHInc'] = df_emme['HHInc'].astype(str)
+		df_emme['HHAuto'] = df_emme['HHAuto'].astype(str)
+		df_emme = df_emme.drop(['HHSize','HHWorker','CountHHs'], axis=1)
+		df_emme = df_emme.groupby(['TAZ1741','HHInc','HHAuto'])
+		df_emme = df_emme.sum()
+		df_emme = df_emme.reset_index()
+
+		# pivot to vectors of length 1741 to stuff in emmebank
+		df_emme = df_emme.pivot_table(index='TAZ1741', columns=['HHInc','HHAuto'], values=['hbw','hbesc','hbpb','hbsch','hbshop','hbsoc'])
+		df_emme.columns = [' '.join(col).strip() for col in df_emme.columns.values]
+		df_emme = pd.DataFrame(df_emme.to_records())
+		# Original code (EMME 4.3) -----   df_emme.sort(columns='TAZ1741', inplace=True)
+		df_emme.sort_values(by=['TAZ1741'],axis=0,inplace=True)
+
+		# loop across these to set the matrices
+		Pur = ['hbw','hbesc','hbpb','hbsch','hbshop','hbsoc']
+		Inc = [1,2,3]
+		Aut = [0,1,2]
+
+		# stuff data
+		for purpose in Pur:
+			for income in Inc:
+				for auto in Aut:
+					mo = "mo{purpose}Inc{income}Au{auto}prd".format(purpose=purpose, income=income, auto=auto)
+					vec = "{purpose} {income} {auto}".format(purpose=purpose, income=income, auto=auto)
+					util.set_matrix_numpy(eb, mo, df_emme[vec].values)
+
+		return np.round(nhbw_ct,6), np.round(nhbo_ct,6)
+
+
+		@_m.logbook_trace("Import TAZ level Data")
+		def Generate_TAZ_Trip_Productions_df(self, eb):
+			util = _m.Modeller().tool("translink.util")
+
+			taz_sql = """
+			SELECT
+				ti.TAZ1741
+				-- hbu variables
+				,IFNULL(d.POP_18to24 * a.uni_acc_ln, 0) as iPop1824UnAc
+				,IFNULL(d.POP_25to34 * a.uni_acc_ln, 0) as iPop2534UnAc
+				-- employment variables
+				,IFNULL(d.EMP_Construct_Mfg, 0) as EMP_Construct_Mfg
+				,IFNULL(d.EMP_TCU_Wholesale, 0) as EMP_TCU_Wholesale
+				,IFNULL(d.EMP_FIRE, 0) as EMP_FIRE
+				,IFNULL(d.EMP_Business_OtherServices, 0) as EMP_Business_OtherServices
+				,IFNULL(d.EMP_AccomFood_InfoCult, 0) as EMP_AccomFood_InfoCult
+				,IFNULL(d.EMP_Retail, 0) as EMP_Retail
+				,IFNULL(d.EMP_Health_Educat_PubAdmin, 0) as EMP_Health_Educat_PubAdmin
+				-- school enrolment variables
+				,IFNULL(d.Elementary_Enrolment, 0) as Elementary_Enrolment
+				,IFNULL(d.Secondary_Enrolment, 0) as Secondary_Enrolment
+				,IFNULL(d.PostSecFTE, 0) as PostSecFTE
+				-- household variables
+				,IFNULL(d.HH_Total,0) as HH_Total
+
+			FROM taz_index ti
+				LEFT JOIN demographics d on d.TAZ1700 = ti.TAZ1741
+				LEFT JOIN accessibilities a on a.TAZ1741 = ti.TAZ1741
+
+			ORDER BY
+				ti.TAZ1741
+			"""
+			conn = util.get_rtm_db(eb)
+			taz_df = pd.read_sql(taz_sql, conn)
+			conn.close()
+
+			return taz_df
 
 
 
