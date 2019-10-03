@@ -76,11 +76,11 @@ class UpdateBaseNetworkVDF(_m.Tool()):
             for capacity, lanes, vdf in attribute_dict:
                 link_attribute_file[capacity] = ConnectorCapacity #set default capacity to 2000 (for connectors)
                 IsMerge = (link_attribute_file[vdf]>=3)&(link_attribute_file[vdf]<=7)
-                link_attribute_file[capacity] = np.where(IsMerge, CapacityUnit*link_attribute_file[lanes]*link_attribute_file[vdf],link_attribute_file[capacity])
+                link_attribute_file[capacity] = np.where(IsMerge, CapacityUnit*link_attribute_file[vdf],link_attribute_file[capacity])
                 IsControlledIntersection = (link_attribute_file[vdf]>=20)&(link_attribute_file[vdf]<80)
-                link_attribute_file[capacity] = np.where(IsControlledIntersection, CapacityUnit*link_attribute_file[lanes]*(link_attribute_file[vdf]-link_attribute_file[vdf].mod(10))/10,link_attribute_file[capacity])
+                link_attribute_file[capacity] = np.where(IsControlledIntersection, CapacityUnit*(link_attribute_file[vdf]-link_attribute_file[vdf].mod(10))/10,link_attribute_file[capacity])
                 IsFreeFlow = (link_attribute_file[vdf]>=80)&(link_attribute_file[vdf]<90)
-                link_attribute_file[capacity] = np.where(IsFreeFlow, CapacityUnit*8*link_attribute_file[lanes]**1.05,link_attribute_file[capacity])
+                link_attribute_file[capacity] = np.where(IsFreeFlow, CapacityUnit*8,link_attribute_file[capacity])
                 
                 
             #add signal delay if the attribute does not exist

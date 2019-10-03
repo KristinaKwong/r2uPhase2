@@ -176,9 +176,9 @@ class InitEmmebank(_m.Tool()):
         create_attr("TRANSIT_LINE", "@hdwyam", "AM Transit Headway", 0, False, scen)
         create_attr("TRANSIT_LINE", "@hdwymd", "MD Transit Headway", 0, False, scen)
         create_attr("TRANSIT_LINE", "@hdwypm", "PM Transit Headway", 0, False, scen)
-        create_attr("LINK", "@capacityam", "AM Volume Delay Function", 0, False, scen)
-        create_attr("LINK", "@capacitymd", "MD Volume Delay Function", 0, False, scen)
-        create_attr("LINK", "@capacitypm", "PM Volume Delay Function", 0, False, scen)
+        create_attr("LINK", "@capacityam", "AM Roadway Lane Capacity", 0, False, scen)
+        create_attr("LINK", "@capacitymd", "MD Roadway Lane Capacity", 0, False, scen)
+        create_attr("LINK", "@capacitypm", "PM Roadway Lane Capacity", 0, False, scen)
         create_attr("LINK", "@signal_delay", "Signal Delay", 0.25, False, scen)
 
         data_path = os.path.join(proj_path, "BaseNetworks", "extra_nodes_%d.txt" % scen_id)
@@ -292,10 +292,10 @@ class InitEmmebank(_m.Tool()):
         # Simplified Volume Delay Functions
         eb.create_function("fd11", "length * 60 / 40")
         eb.create_function("fd12", "40 + ((volau + volad) - 100) * 60 / (volau + volad) * ((volau +  volad) .ge. 100)")
-        eb.create_function("fd13", "length * 60 / el1 + 0.85 * ((volau + volad) / el2)^5")
-        eb.create_function("fd14", "el3 + length * 60 / el1 + .85 * ((volau + volad) / el2) ^ 4")
-        eb.create_function("fd15", "length * 60 / el1 * (1 + .6 * .85 * ((volau + volad) / el2) ^ 5)")
-        eb.create_function("fd16", "length * 60 / (el1 * 1.1) * (1 + .6 * .43 * ((volau + volad) / el2) ^ 5.25)")
+        eb.create_function("fd13", "length * 60 / el1 + 0.85 * ((volau + volad) / (el2 * lanes))^5")
+        eb.create_function("fd14", "el3 + length * 60 / el1 + .85 * ((volau + volad) / (el2 * lanes)) ^ 4")
+        eb.create_function("fd15", "length * 60 / el1 * (1 + .6 * .85 * ((volau + volad) / (el2 * lanes ^ 1.05)) ^ 5)")
+        eb.create_function("fd16", "length * 60 / (el1 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (el2 * lanes ^ 1.05)) ^ 5.25)")
          
         # Update FT functions to include dwell time (us1) based on boardings and alightings
         eb.create_function("ft01", "us1 + 1.1 * us2")

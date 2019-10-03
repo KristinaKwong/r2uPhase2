@@ -107,22 +107,22 @@ class UpdateScenarioVDF(_m.Tool()):
             print("Base Network Scenario")
 
             # initialize with centroid connector capacity
-            create_attr("LINK", "@capacityam", "AM Capacity", StrConnectorCapacity, True, scenario)
-            create_attr("LINK", "@capacitymd", "MD Capacity", StrConnectorCapacity, True, scenario)
-            create_attr("LINK", "@capacitypm", "PM Capacity", StrConnectorCapacity, True, scenario)
+            create_attr("LINK", "@capacityam", "AM Roadway Lane Capacity", StrConnectorCapacity, True, scenario)
+            create_attr("LINK", "@capacitymd", "MD Roadway Lane Capacity", StrConnectorCapacity, True, scenario)
+            create_attr("LINK", "@capacitypm", "PM Roadway Lane Capacity", StrConnectorCapacity, True, scenario)
 
             # calculate merge lane capacity
-            util.emme_link_calc(scenario, "@capacityam", StrCapacityUnit+"*@lanesam*@vdfam", sel_link="@vdfam=3,7")
-            util.emme_link_calc(scenario, "@capacitymd", StrCapacityUnit+"*@lanesmd*@vdfmd", sel_link="@vdfmd=3,7")
-            util.emme_link_calc(scenario, "@capacitypm", StrCapacityUnit+"*@lanespm*@vdfpm", sel_link="@vdfpm=3,7")
+            util.emme_link_calc(scenario, "@capacityam", StrCapacityUnit+"*@vdfam", sel_link="@vdfam=3,7")
+            util.emme_link_calc(scenario, "@capacitymd", StrCapacityUnit+"*@vdfmd", sel_link="@vdfmd=3,7")
+            util.emme_link_calc(scenario, "@capacitypm", StrCapacityUnit+"*@vdfpm", sel_link="@vdfpm=3,7")
             # calculate controlled intersection capacity
-            util.emme_link_calc(scenario, "@capacityam", StrCapacityUnit+"*@lanesam*(@vdfam-@vdfam.mod.10)/10", sel_link="@vdfam=20,75")
-            util.emme_link_calc(scenario, "@capacitymd", StrCapacityUnit+"*@lanesmd*(@vdfmd-@vdfmd.mod.10)/10", sel_link="@vdfmd=20,75")
-            util.emme_link_calc(scenario, "@capacitypm", StrCapacityUnit+"*@lanespm*(@vdfpm-@vdfpm.mod.10)/10", sel_link="@vdfpm=20,75")
+            util.emme_link_calc(scenario, "@capacityam", StrCapacityUnit+"*(@vdfam-@vdfam.mod.10)/10", sel_link="@vdfam=20,75")
+            util.emme_link_calc(scenario, "@capacitymd", StrCapacityUnit+"*(@vdfmd-@vdfmd.mod.10)/10", sel_link="@vdfmd=20,75")
+            util.emme_link_calc(scenario, "@capacitypm", StrCapacityUnit+"*(@vdfpm-@vdfpm.mod.10)/10", sel_link="@vdfpm=20,75")
             # calculate freeway capacity
-            util.emme_link_calc(scenario, "@capacityam", StrCapacityUnit+"*8*@lanesam^1.05", sel_link="@vdfam=80,88")
-            util.emme_link_calc(scenario, "@capacitymd", StrCapacityUnit+"*8*@lanesmd^1.05", sel_link="@vdfmd=80,88")
-            util.emme_link_calc(scenario, "@capacitypm", StrCapacityUnit+"*8*@lanespm^1.05", sel_link="@vdfpm=80,88")
+            util.emme_link_calc(scenario, "@capacityam", StrCapacityUnit+"*8", sel_link="@vdfam=80,88")
+            util.emme_link_calc(scenario, "@capacitymd", StrCapacityUnit+"*8", sel_link="@vdfmd=80,88")
+            util.emme_link_calc(scenario, "@capacitypm", StrCapacityUnit+"*8", sel_link="@vdfpm=80,88")
         else:
             print("Time of Day Scenario")
 
@@ -130,8 +130,8 @@ class UpdateScenarioVDF(_m.Tool()):
             create_attr("LINK", "@capacity", "Capacity", StrConnectorCapacity, True, scenario)
 
             # calculate merge lane capacity
-            util.emme_link_calc(scenario, "@capacity", StrCapacityUnit+"*lanes*vdf", sel_link="vdf=3,7")
+            util.emme_link_calc(scenario, "@capacity", StrCapacityUnit+"*vdf", sel_link="vdf=3,7")
             # calculate controlled intersection capacity
-            util.emme_link_calc(scenario, "@capacity", StrCapacityUnit+"*lanes*(vdf-vdf.mod.10)/10", sel_link="vdf=20,75")
+            util.emme_link_calc(scenario, "@capacity", StrCapacityUnit+"*(vdf-vdf.mod.10)/10", sel_link="vdf=20,75")
             # calculate freeway capacity
-            util.emme_link_calc(scenario, "@capacity", StrCapacityUnit+"*8*lanes^1.05", sel_link="vdf=80,88")
+            util.emme_link_calc(scenario, "@capacity", StrCapacityUnit+"*8", sel_link="vdf=80,88")

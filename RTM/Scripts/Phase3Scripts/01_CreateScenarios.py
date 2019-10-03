@@ -131,7 +131,7 @@ class InputSettings(_m.Tool()):
         delete_attr("@tollmd", scen)
         delete_attr("@tollpm", scen)
 
-        create_attr("LINK", "@capacity", "Roadway Capacity", 0, True, scen)
+        create_attr("LINK", "@capacity", "Roadway Lane Capacity", 0, True, scen)
         util.emme_link_calc(scen, "@capacity", capacity_attr)
         delete_attr("@capacityam", scen)
         delete_attr("@capacitymd", scen)
