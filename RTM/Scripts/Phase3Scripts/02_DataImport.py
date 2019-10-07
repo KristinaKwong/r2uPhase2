@@ -70,7 +70,7 @@ class DataImport(_m.Tool()):
         self.import_vectors(eb, demographics_file, geographics_file)
 
         self.starter_skims(eb, horizon_year=model_year)
-
+        self.update_ensembles(eb)
 
     @_m.logbook_trace("Initializing Scalar Matrices")
     def init_scalars(self, eb):
@@ -707,3 +707,41 @@ class DataImport(_m.Tool()):
 
         # Fare Zones Travelled
         util.initmat(eb, "mf95", "fare_zones", "Fare Zones Travelled", 0)
+   
+    @_m.logbook_trace("Importing custom ensembles if custom ensemble CSV file is available")
+    def update_ensembles(self, eb):
+        util = _m.Modeller().tool("translink.util")
+        
+        # Code to check if a custom ensemble file exists and if yes - 
+        # replace the values read in the code above       
+        custom_ensembles = os.path.join(util.get_input_path(eb), 'custom_ensembles.csv')
+        if os.path.isfile(custom_ensembles):
+            util.read_csv_momd(eb, custom_ensembles)
+
+            # Read Ensemble MOs .. the function is defined in Utilities script now
+            util.set_ensemble_from_mo(eb, "ga", "mo120")
+            util.set_ensemble_from_mo(eb, "gb", "mo121")
+            util.set_ensemble_from_mo(eb, "gc", "mo122")
+            util.set_ensemble_from_mo(eb, "gd", "mo123")
+            util.set_ensemble_from_mo(eb, "ge", "mo124")
+            util.set_ensemble_from_mo(eb, "gf", "mo125")
+            util.set_ensemble_from_mo(eb, "gg", "mo126")
+            util.set_ensemble_from_mo(eb, "gh", "mo127")
+            util.set_ensemble_from_mo(eb, "gi", "mo128")
+            util.set_ensemble_from_mo(eb, "gj", "mo129")
+            util.set_ensemble_from_mo(eb, "gk", "mo130")
+            util.set_ensemble_from_mo(eb, "gl", "mo131")
+            util.set_ensemble_from_mo(eb, "gm", "mo132")
+            util.set_ensemble_from_mo(eb, "gn", "mo133")
+            util.set_ensemble_from_mo(eb, "go", "mo134")
+            util.set_ensemble_from_mo(eb, "gp", "mo135")
+            util.set_ensemble_from_mo(eb, "gq", "mo136")
+            util.set_ensemble_from_mo(eb, "gr", "mo137")
+            util.set_ensemble_from_mo(eb, "gs", "mo138")
+            util.set_ensemble_from_mo(eb, "gt", "mo139")
+            util.set_ensemble_from_mo(eb, "gu", "mo140")
+            util.set_ensemble_from_mo(eb, "gv", "mo141")
+            util.set_ensemble_from_mo(eb, "gw", "mo142")
+            util.set_ensemble_from_mo(eb, "gx", "mo143")
+            util.set_ensemble_from_mo(eb, "gy", "mo144")
+            util.set_ensemble_from_mo(eb, "gz", "mo145")    

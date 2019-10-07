@@ -213,45 +213,36 @@ class InitEmmebank(_m.Tool()):
         self.initEnsembles(eb)
 
     def initEnsembles(self, eb):
-        self.set_ensemble_from_mo(eb, "ga", "mo120")
-        self.set_ensemble_from_mo(eb, "gb", "mo121")
-        self.set_ensemble_from_mo(eb, "gc", "mo122")
-        self.set_ensemble_from_mo(eb, "gd", "mo123")
-        self.set_ensemble_from_mo(eb, "ge", "mo124")
-        self.set_ensemble_from_mo(eb, "gf", "mo125")
-        self.set_ensemble_from_mo(eb, "gg", "mo126")
-        self.set_ensemble_from_mo(eb, "gh", "mo127")
-        self.set_ensemble_from_mo(eb, "gi", "mo128")
-        self.set_ensemble_from_mo(eb, "gj", "mo129")
-        self.set_ensemble_from_mo(eb, "gk", "mo130")
-        self.set_ensemble_from_mo(eb, "gl", "mo131")
-        self.set_ensemble_from_mo(eb, "gm", "mo132")
-        self.set_ensemble_from_mo(eb, "gn", "mo133")
-        self.set_ensemble_from_mo(eb, "go", "mo134")
-        self.set_ensemble_from_mo(eb, "gp", "mo135")
-        self.set_ensemble_from_mo(eb, "gq", "mo136")
-        self.set_ensemble_from_mo(eb, "gr", "mo137")
-        self.set_ensemble_from_mo(eb, "gs", "mo138")
-        self.set_ensemble_from_mo(eb, "gt", "mo139")
-        self.set_ensemble_from_mo(eb, "gu", "mo140")
-        self.set_ensemble_from_mo(eb, "gv", "mo141")
-        self.set_ensemble_from_mo(eb, "gw", "mo142")
-        self.set_ensemble_from_mo(eb, "gx", "mo143")
-        self.set_ensemble_from_mo(eb, "gy", "mo144")
-        self.set_ensemble_from_mo(eb, "gz", "mo145")
-
-    def set_ensemble_from_mo(self, eb, part, orig_mat):
-        mat = eb.matrix(orig_mat)
-
-        matData = _emme.matrix.MatrixData(mat.get_data().indices, type="I")
-        matData.from_numpy(mat.get_numpy_data())
-
-        ensem = eb.partition(part)
-        ensem.description = mat.description
-        ensem.set_data(matData)
-
-
-
+        util = _m.Modeller().tool("translink.util")
+        
+        # Read Ensemble MOs .. the function is defined in Utilities script now
+        util.set_ensemble_from_mo(eb, "ga", "mo120")
+        util.set_ensemble_from_mo(eb, "gb", "mo121")
+        util.set_ensemble_from_mo(eb, "gc", "mo122")
+        util.set_ensemble_from_mo(eb, "gd", "mo123")
+        util.set_ensemble_from_mo(eb, "ge", "mo124")
+        util.set_ensemble_from_mo(eb, "gf", "mo125")
+        util.set_ensemble_from_mo(eb, "gg", "mo126")
+        util.set_ensemble_from_mo(eb, "gh", "mo127")
+        util.set_ensemble_from_mo(eb, "gi", "mo128")
+        util.set_ensemble_from_mo(eb, "gj", "mo129")
+        util.set_ensemble_from_mo(eb, "gk", "mo130")
+        util.set_ensemble_from_mo(eb, "gl", "mo131")
+        util.set_ensemble_from_mo(eb, "gm", "mo132")
+        util.set_ensemble_from_mo(eb, "gn", "mo133")
+        util.set_ensemble_from_mo(eb, "go", "mo134")
+        util.set_ensemble_from_mo(eb, "gp", "mo135")
+        util.set_ensemble_from_mo(eb, "gq", "mo136")
+        util.set_ensemble_from_mo(eb, "gr", "mo137")
+        util.set_ensemble_from_mo(eb, "gs", "mo138")
+        util.set_ensemble_from_mo(eb, "gt", "mo139")
+        util.set_ensemble_from_mo(eb, "gu", "mo140")
+        util.set_ensemble_from_mo(eb, "gv", "mo141")
+        util.set_ensemble_from_mo(eb, "gw", "mo142")
+        util.set_ensemble_from_mo(eb, "gx", "mo143")
+        util.set_ensemble_from_mo(eb, "gy", "mo144")
+        util.set_ensemble_from_mo(eb, "gz", "mo145")
+        
     def initdatabase(self, eb):
         util = _m.Modeller().tool("translink.util")
 

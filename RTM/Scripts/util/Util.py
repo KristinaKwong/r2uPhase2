@@ -12,6 +12,8 @@ import csv as csv
 import sqlite3
 import pandas as pd
 
+import inro.emme as _emme
+
 class Util(_m.Tool()):
     def page(self):
         pb = _m.ToolPageBuilder(self)
@@ -496,3 +498,13 @@ class Util(_m.Tool()):
         pm_scen = eb.scenario(int(eb.matrix("msPmScen").data))
 
         return (am_scen, md_scen, pm_scen)
+
+    def set_ensemble_from_mo(self, eb, part, orig_mat):
+        mat = eb.matrix(orig_mat)
+
+        matData = _emme.matrix.MatrixData(mat.get_data().indices, type="I")
+        matData.from_numpy(mat.get_numpy_data())
+
+        ensem = eb.partition(part)
+        ensem.description = mat.description
+        ensem.set_data(matData)
