@@ -129,11 +129,12 @@ class UpdateBaseNetworkVDF(_m.Tool()):
             
             #import then export network to fix formating issues
             import_network(eb, output_scenario, title)
-            util.emme_link_calc(eb.scenario(output_scenario), "vdf", "11", sel_link="vdf=1")
-            util.emme_link_calc(eb.scenario(output_scenario), "vdf", "12", sel_link="vdf=2")
-            util.emme_link_calc(eb.scenario(output_scenario), "vdf", "13", sel_link="vdf=3,7")
-            util.emme_link_calc(eb.scenario(output_scenario), "vdf", "14", sel_link="vdf=20,75")
-            util.emme_link_calc(eb.scenario(output_scenario), "vdf", "15", sel_link="vdf=80,85")
-            util.emme_link_calc(eb.scenario(output_scenario), "vdf", "16", sel_link="vdf=88")
+            for vdf_attribute in ["vdf", "@vdfam", "@vdfmd", "@vdfpm"]:
+                util.emme_link_calc(eb.scenario(output_scenario), "vdf", "11", sel_link="vdf=1")
+                util.emme_link_calc(eb.scenario(output_scenario), "vdf", "12", sel_link="vdf=2")
+                util.emme_link_calc(eb.scenario(output_scenario), "vdf", "13", sel_link="vdf=3,7")
+                util.emme_link_calc(eb.scenario(output_scenario), "vdf", "14", sel_link="vdf=20,79")
+                util.emme_link_calc(eb.scenario(output_scenario), "vdf", "15", sel_link="vdf=80,87")
+                util.emme_link_calc(eb.scenario(output_scenario), "vdf", "16", sel_link="vdf=88")
             export_network.export(output_scenario)
 

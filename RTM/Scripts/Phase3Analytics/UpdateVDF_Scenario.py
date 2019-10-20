@@ -52,12 +52,13 @@ class UpdateScenarioVDF(_m.Tool()):
         
         for scenario in scenarioList:
             #copy oginal scenario into target scenario (and apply increment)
-            copy_scenario = _m.Modeller().tool("inro.emme.data.scenario.copy_scenario")
             target_scenario_id = scenario.number+int(scenarioInc)
-            copy_scenario(from_scenario=scenario,
-                      scenario_id=target_scenario_id,
-                      scenario_title=scenario.title,
-                      overwrite=True)
+            if int(scenarioInc)!=0:
+                copy_scenario = _m.Modeller().tool("inro.emme.data.scenario.copy_scenario")
+                copy_scenario(from_scenario=scenario,
+                              scenario_id=target_scenario_id,
+                              scenario_title=scenario.title,
+                              overwrite=True)
             scenario = scenario.emmebank.scenario(target_scenario_id)
             
             #calculate capacity into new attributes
