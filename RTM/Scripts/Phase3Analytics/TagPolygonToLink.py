@@ -23,8 +23,8 @@ class TagPolygonToLink(_m.Tool()):
     def __init__(self):
         self.default = 0
         self.excludeconnector = True
-        self.polygonfile = path.abspath(path.join(__file__ , "..", "..", "..", "Media", "Shapefiles for RTM", "RTM_8ZonePolygon.shp"))
-        self.polygonfield = "Id"
+        self.polygonfile = path.abspath(path.join(__file__ , "..", "..", "..", "Media", "TAZ", "TAZ1700_Whole_m2.shp"))
+        self.polygonfield = "tazRev3"
         self.algorithm = "by_length"
 
     def page(self):

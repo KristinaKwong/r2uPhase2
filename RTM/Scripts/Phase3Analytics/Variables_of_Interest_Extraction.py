@@ -57,9 +57,7 @@ class ExploreML(_m.Tool()):
     def __call__(self, eb, ExcelSheetName):
         util = _m.Modeller().tool("translink.util")
         
-        #load variable_of_interest table
-        #VOI_df = pd.read_csv("ExploreML/VOI_Table.csv")
-        VOI_df = pd.read_excel("ExploreML/Variables_of_Interest.xlsx",sheetname=ExcelSheetName)
+        VOI_df = pd.read_excel("Phase3Analytics/Variables_of_Interest.xlsx",sheetname=ExcelSheetName)
         
         self.get_ML_DataExport(eb, VOI_df)
 
@@ -68,10 +66,10 @@ class ExploreML(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
         
         #initialize temporary matrix for data export
-        util.initmat(eb, "mf9999", "tempExploreMLMatrix", "temp matrix for ExploreML", 0) #for matrix data
-        util.initmat(eb, "mo9999", "tempExploreMLVector", "temp vector for ExploreML", 0) #for vector data
+        util.initmat(eb, "mf9999", "tempExportMatrix", "temp matrix to Export", 0) #for matrix data
+        util.initmat(eb, "mo9999", "tempExportVector", "temp vector to Export", 0) #for vector data
         
-        conn = sqlite3.connect("ExploreML/ExploreML.db")
+        conn = sqlite3.connect("Phase3Analytics/Variables_of_Interest_Results.db")
         
         #iterate through table and add mf data
         SQL_TableList = list(set(VOI_df["Category"].tolist())) #get unique sql table names
