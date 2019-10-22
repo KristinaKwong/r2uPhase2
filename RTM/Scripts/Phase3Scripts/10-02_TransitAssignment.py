@@ -165,9 +165,12 @@ class TransitAssignment(_m.Tool()):
         if disable_congestion:
             run_crowding = 0
             run_capacity_constraint = 0
+            assign_iterations = 2
         else:
             run_crowding = int(eb.matrix("ms45").data)
             run_capacity_constraint = int(eb.matrix("ms46").data)
+            # TODO: introduce an ms flag to determine the number of transit iterations
+            assign_iterations = self.max_iterations
 
         demand_bus_list  = [ "mfbusAm",  "mfbusMd",  "mfbusPm"]
         demand_rail_list = ["mfrailAm", "mfrailMd", "mfrailPm"]
@@ -182,7 +185,7 @@ class TransitAssignment(_m.Tool()):
             self.calc_network_costs(eb, sc, period_length, i)
 
             # LOOP FOR CROWDING AND CAPACITY CONSTRAINT
-            for iteration in xrange(1, self.max_iterations+1):
+            for iteration in xrange(1, assign_iterations+1):
                 # Set Assignment Parameters
                 bus_spec  = self.get_bus_transit_assignment_spec(demand_bus)
                 rail_spec = self.get_rail_transit_assignment_spec(demand_rail)
