@@ -195,7 +195,10 @@ class TransitAssignment(_m.Tool()):
                     assign_transit(wce_spec, scenario=sc, add_volumes=True, save_strategies=True, class_name= "WCE")
 
                 # MSA on Boardings and transit Volumes
-                self.averaging_transit_volumes(sc, iteration, period_length)
+                self.averaging_transit_volumes(sc, iteration)
+
+                # Calculate stop level dwell times from averaged board/alights
+                self.calculate_dwell_delay(sc, period_length)
 
                 # Run Crowding and Headway Reports
                 if sc is scenarioam or sc is scenariopm:
@@ -530,14 +533,13 @@ class TransitAssignment(_m.Tool()):
         util.emme_segment_calc(sc, "@ridership", "@boardavg", aggregate="+")
 
     @_m.logbook_trace("Transit Volume Averaging")
-    def averaging_transit_volumes(self, sc, iteration, period_length):
+    def averaging_transit_volumes(self, sc, iteration):
         util = _m.Modeller().tool("translink.util")
 
         # MSA on Boardings and transit Volumes
         msa_factor = 1.0 / iteration
         util.emme_segment_calc(sc, "@boardavg" , "board*%s + @boardavg*(1-%s)" %(msa_factor, msa_factor))
         util.emme_segment_calc(sc, "@voltravg", "voltr*%s + @voltravg*(1-%s)" % (msa_factor,  msa_factor))
-
 
         # Average Alightings
         util.emme_segment_calc(sc, "@alightavgn" ,"@boardavgn + @voltravg - @voltravgn")
@@ -549,6 +551,9 @@ class TransitAssignment(_m.Tool()):
         # Update ridership stats
         util.emme_segment_calc(sc, "@ridership", "@boardavg", aggregate="+")
 
+    @_m.logbook_trace("Calculate Transit Stop Dwell Delay")
+    def calculate_dwell_delay(self, sc, period_length):
+        util = _m.Modeller().tool("translink.util")
         # Dwell time calculation
         min_dwell_time = 0.33 # 20 seconds in minutes
         # Zero Passenger - set us1 =0
