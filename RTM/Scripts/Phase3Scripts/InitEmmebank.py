@@ -70,7 +70,7 @@ class InitEmmebank(_m.Tool()):
                "scenarios": 30,
                "functions": 99,
                "operators": 5000,
-               "centroids": 2000,
+               "centroids": 1750,
                "regular_nodes": 9000,
                "links": 22000,
                "turn_entries": 15000,
