@@ -169,11 +169,6 @@ class TransitAssignment(_m.Tool()):
             run_crowding = int(eb.matrix("ms45").data)
             run_capacity_constraint = int(eb.matrix("ms46").data)
 
-        # No Crowding and Capacity constraint applied
-        # Run 2 iterations only to update dwell times
-        if run_crowding+run_capacity_constraint ==0:
-            self.max_iterations=2
-
         demand_bus_list  = [ "mfbusAm",  "mfbusMd",  "mfbusPm"]
         demand_rail_list = ["mfrailAm", "mfrailMd", "mfrailPm"]
         demand_wce_list  = [ "mfWCEAm",  "mfWCEMd",  "mfWCEPm"]
