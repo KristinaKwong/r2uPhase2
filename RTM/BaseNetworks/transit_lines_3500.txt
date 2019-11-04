@@ -21836,7 +21836,7 @@ a'791W2X' b   1  30.00  23.00 'MapleRid-LougheedStn'      0      0      0
    325408         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    326101         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    291001        lay=5.00
-a'901N1X' b  10  10.00  23.00 'R1: Newton/Guildford'      0      0      0
+a'971N1X' b  10  10.00  23.00 'R1: Newton/Guildford'      0      0      0
   path=no
    624201         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    622703         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -21872,7 +21872,7 @@ a'901N1X' b  10  10.00  23.00 'R1: Newton/Guildford'      0      0      0
    615401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    615402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    631301        lay=5.00
-a'901S1X' b  10  10.00  23.00 'R1: Newton/Guildford'      0      0      0
+a'971S1X' b  10  10.00  23.00 'R1: Newton/Guildford'      0      0      0
   path=no
    631301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    615402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -21907,7 +21907,7 @@ a'901S1X' b  10  10.00  23.00 'R1: Newton/Guildford'      0      0      0
    622702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    622703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    624201        lay=5.00
-a'902E1X' b  10  10.00  35.00 'R2: ParkRoyal/Phibbs'      0      0      0
+a'972E1X' b  10  10.00  35.00 'R2: ParkRoyal/Phibbs'      0      0      0
   path=no
    112705         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    112409         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -21954,7 +21954,7 @@ a'902E1X' b  10  10.00  35.00 'R2: ParkRoyal/Phibbs'      0      0      0
    123509         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    123510         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    123511        lay=5.00
-a'902W1X' b  10   9.00  35.00 'R2: Phibbs/ParkRoyal'      0      0      0
+a'972W1X' b  10   9.00  35.00 'R2: Phibbs/ParkRoyal'      0      0      0
   path=no
    123511         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    123510         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -22004,7 +22004,7 @@ a'902W1X' b  10   9.00  35.00 'R2: Phibbs/ParkRoyal'      0      0      0
    112802         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    112409         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    112705        lay=5.00
-a'903E1X' b  10  10.00  35.00 'R3:CoqStn/HaneyPlace'      0      0      0
+a'973E1X' b  10  10.00  35.00 'R3:CoqStn/HaneyPlace'      0      0      0
   path=no
    320311         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    320307         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -22043,7 +22043,7 @@ a'903E1X' b  10  10.00  35.00 'R3:CoqStn/HaneyPlace'      0      0      0
    422405         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    423301         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    422502        lay=5.00
-a'903W1X' b  10  10.00  35.00 'R3:HaneyPlace/CoqStn'      0      0      0
+a'973W1X' b  10  10.00  35.00 'R3:HaneyPlace/CoqStn'      0      0      0
   path=no
    422502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    423301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -22083,7 +22083,7 @@ a'903W1X' b  10  10.00  35.00 'R3:HaneyPlace/CoqStn'      0      0      0
    320401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    320308         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    320311        lay=5.00
-a'904E1X' b  10   5.00  35.00 'R4: UBC / Joyce Stn '      0      0      0
+a'974E1X' b  10   5.00  35.00 'R4: UBC / Joyce Stn '      0      0      0
   path=no
    210304         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    210302         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -22135,7 +22135,7 @@ a'904E1X' b  10   5.00  35.00 'R4: UBC / Joyce Stn '      0      0      0
    261801         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    261601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    261107        lay=5.00
-a'904W1X' b  10   5.00  35.00 'R4: Joyce Stn / UBC '      0      0      0
+a'974W1X' b  10   5.00  35.00 'R4: Joyce Stn / UBC '      0      0      0
   path=no
    261107         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    261601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -22187,7 +22187,7 @@ a'904W1X' b  10   5.00  35.00 'R4: Joyce Stn / UBC '      0      0      0
    210303         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    210302         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210304        lay=5.00
-a'905E1A' b  10   5.45  23.00 'R5: VancCBD / SFU   '      0      0      0
+a'975E1A' b  10   5.45  23.00 'R5: VancCBD / SFU   '      0      0      0
   path=no
    223001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    223101         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -22243,7 +22243,7 @@ a'905E1A' b  10   5.45  23.00 'R5: VancCBD / SFU   '      0      0      0
    271609         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    271610         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    271702        lay=5.00
-a'905E1M' b  10   6.00  23.00 'R5: VancCBD / SFU   '      0      0      0
+a'975E1M' b  10   6.00  23.00 'R5: VancCBD / SFU   '      0      0      0
   path=no
    223001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    223101         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -22299,7 +22299,7 @@ a'905E1M' b  10   6.00  23.00 'R5: VancCBD / SFU   '      0      0      0
    271609         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    271610         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    271702        lay=5.00
-a'905E1P' b  10   6.00  23.00 'R5: VancCBD / SFU   '      0      0      0
+a'975E1P' b  10   6.00  23.00 'R5: VancCBD / SFU   '      0      0      0
   path=no
    223001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    223101         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -22386,7 +22386,7 @@ a'905E1P' b  10   6.00  23.00 'R5: VancCBD / SFU   '      0      0      0
    271609         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    271610         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    271702        lay=5.00
-a'905W1A' b  10   5.00  23.00 'R5: SFU / VancCBD   '      0      0      0
+a'975W1A' b  10   5.00  23.00 'R5: SFU / VancCBD   '      0      0      0
   path=no
    271702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    271703         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -22474,7 +22474,7 @@ a'905W1A' b  10   5.00  23.00 'R5: SFU / VancCBD   '      0      0      0
    223005         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    223004         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    223001        lay=5.00
-a'905W1M' b  10   6.00  23.00 'R5: SFU / VancCBD   '      0      0      0
+a'975W1M' b  10   6.00  23.00 'R5: SFU / VancCBD   '      0      0      0
   path=no
    271702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    271703         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -22532,7 +22532,7 @@ a'905W1M' b  10   6.00  23.00 'R5: SFU / VancCBD   '      0      0      0
    223005         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    223004         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    223001        lay=5.00
-a'905W1P' b  10   6.00  23.00 'R5: SFU / VancCBD   '      0      0      0
+a'975W1P' b  10   6.00  23.00 'R5: SFU / VancCBD   '      0      0      0
   path=no
    271702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    271703         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -22590,7 +22590,7 @@ a'905W1P' b  10   6.00  23.00 'R5: SFU / VancCBD   '      0      0      0
    223005         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    223004         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    223001        lay=5.00
-a'906N1X' b  10   6.00  35.00 'RB: Newton/ScottStn '      0      0      0
+a'976N1X' b  10   6.00  35.00 'RB: Newton/ScottStn '      0      0      0
   path=no
    624201         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    622703         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -22628,7 +22628,7 @@ a'906N1X' b  10   6.00  35.00 'RB: Newton/ScottStn '      0      0      0
    611408         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    611413         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    611414        lay=5.00
-a'906S1X' b  10   8.00  35.00 'RB: ScottStn/Newton '      0      0      0
+a'976S1X' b  10   8.00  35.00 'RB: ScottStn/Newton '      0      0      0
   path=no
    611414         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    611413         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -22663,7 +22663,7 @@ a'906S1X' b  10   8.00  35.00 'RB: ScottStn/Newton '      0      0      0
    624001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    622703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    624201        lay=5.00
-a'907E1X' b  10  20.00  35.00 'RB: Rich / Metrotown'      0      0      0
+a'977E1X' b  10  20.00  35.00 'RB: Rich / Metrotown'      0      0      0
   path=no
    516902         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    515706         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -22727,7 +22727,7 @@ a'907E1X' b  10  20.00  35.00 'RB: Rich / Metrotown'      0      0      0
    283702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    283303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    283304        lay=5.00
-a'907W1X' b  10  15.00  35.00 'RB: Metrotown / Rich'      0      0      0
+a'977W1X' b  10  15.00  35.00 'RB: Metrotown / Rich'      0      0      0
   path=no
    283304         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    283303         dwt=#0   ttf=1   us1=0   us2=0   us3=0
