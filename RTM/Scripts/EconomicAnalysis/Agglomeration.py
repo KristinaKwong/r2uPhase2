@@ -16,13 +16,13 @@ import traceback as _traceback
 class ComputeAgglomeration(_m.Tool()):
     baseScenarioName = _m.Attribute(str)
     
-    ensem = _m.Attribute(str)
+    ensem_selector = _m.Attribute(str)
         
     tool_run_msg = _m.Attribute(unicode)
-
+    
     def __init__(self):
-        self.baseScenarioName = "2050_BAU_v4"
-        self.ensem = "gy"
+        self.baseScenarioName = ""
+        self.ensem_selector = ""
         
     def page(self):
         pb = _m.ToolPageBuilder(self)
@@ -33,7 +33,7 @@ class ComputeAgglomeration(_m.Tool()):
             pb.add_html(self.tool_run_msg)
             
         pb.add_text_box(tool_attribute_name="baseScenarioName", size=50, title="Baseline scenario name: ")
-        #pb.add_text_box(tool_attribute_name="ensem", size=2, title="Ensemble")
+        pb.add_text_box(tool_attribute_name="ensem_selector", title="Select Project Area gh Ensemble",note="comma separated, example: 810, 820, 830",multi_line=True)
         
         return pb.render()
 
@@ -42,12 +42,12 @@ class ComputeAgglomeration(_m.Tool()):
         try:
             eb = _m.Modeller().emmebank
 
-            self(self.baseScenarioName, self.ensem)
+            self(self.baseScenarioName, self.ensem_selector)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
-    def __call__(self, baseline_eb_title, ensem):
+    def __call__(self, baseline_eb_title, ensem_selector):
         dt = _d.app.connect()
         de = dt.data_explorer()
         db = de.active_database()
@@ -62,10 +62,6 @@ class ComputeAgglomeration(_m.Tool()):
                 BaseScenario_Folder = os.path.join(os.path.dirname(eb.path), "EconomicAnalysis")
         if BaseScenario_Folder=="":
             raise Exception('Base scenario emmebank is not in this project.')
-        
-        # Check if ensemble is valid
-        if not ((ensem[0]=="g") and ensem[1].isalpha() and ensem[1].islower()):
-            raise Exception("Ensemble should be 'g' followed by a lowercase letter a-z.") 
                 
         # Export Data to .npz repository
         for eb in ebs:
@@ -97,10 +93,14 @@ class ComputeAgglomeration(_m.Tool()):
                                  "WCE": [3.34,    0, 2.02],
                                  "LGV": [3.59, 5.63, 6.17],
                                  "HGV": [4.88, 5.43, 6.36]}
-            self.Calculate_Agglomeration_Benefits(eb, BaseScenario_Folder, AlternativeScenario_Folder, ensem, expansion_factors)
+            self.Calculate_Agglomeration_Benefits(eb, BaseScenario_Folder, AlternativeScenario_Folder, ensem_selector, expansion_factors)
         
     @_m.logbook_trace("Calculate Agglomeration Benefits")
-    def Calculate_Agglomeration_Benefits(self, eb, BaseScenario_Folder, AlternativeScenario_Folder, ensem, expansion_factors):
+    def Calculate_Agglomeration_Benefits(self, eb, BaseScenario_Folder, AlternativeScenario_Folder, ensem_selector, expansion_factors):
+        # do not calculate agglomeration if ensemble is not selected
+        if ensem_selector=="":
+            return 0
+    
         util = _m.Modeller().tool("translink.util")
         
         #load npz into dictionary
@@ -244,10 +244,7 @@ class ComputeAgglomeration(_m.Tool()):
         df['AverageGC_Altr_Auto'] = np.where(df["Demand_Daily_Altr_Auto"]==0, 0, df["DemandCost_Daily_Altr_Auto"]/df["Demand_Daily_Altr_Auto"])
         df['AverageGC_Altr_Transit'] = np.where(df["Demand_Daily_Altr_Transit"]==0, 0, df["DemandCost_Daily_Altr_Transit"]/df["Demand_Daily_Altr_Transit"])
         
-        df = df.drop(['i','j','{}_i'.format(ensem), '{}_j'.format(ensem)], axis = 1)
-        #df = df.drop(["Demand_Daily_Base_Auto","Demand_Daily_Altr_Auto","DemandCost_Daily_Base_Auto","DemandCost_Daily_Altr_Auto"], axis = 1)
-        #df = df.drop(["Demand_Daily_Base_Transit","Demand_Daily_Altr_Transit","DemandCost_Daily_Base_Transit","DemandCost_Daily_Altr_Transit"], axis = 1)
-        
+        df = df.drop(['i','j','{}_i'.format(ensem), '{}_j'.format(ensem)], axis = 1)        
         
         #join total employment to gh_by_gh_dataframe
         df = pd.merge(df, emp_i_df, left_on="gh_to", right_on="gh", how="left")
@@ -282,20 +279,17 @@ class ComputeAgglomeration(_m.Tool()):
             PerWorkerGDP = PerWorkerGDP_List[employment[3:]][year_index]  
             i_df['ProductivityImpact_{}'.format(employment)] = i_df['Productivity_{}'.format(employment)] * i_df[employment] * PerWorkerGDP
         
-        
-        # apply Surrey/Langley filter and get sum total for the scenario
         ProductivityImpact_Scenario = 0
-        surreylangley_gh = [711, 712, 720, 730, 740, 750, 770, 790, 810, 820, 830]
+        # convert the ensemble selector input to a list
+        ensem_selector = map(int,ensem_selector.split(","))
         for employment in ["EmpConMfg", "EmpFire", "EmpTcuWh", "EmpRet", "EmpBoS", "EmpAcFoInCu", "EmpHeEdPuAd"]:  
-            ProductivityImpact_Scenario += i_df[i_df[ensem_i].isin(surreylangley_gh)]['ProductivityImpact_{}'.format(employment)].sum()
-        #print("%s: %.0f"%(self.get_scenario_info( eb, "alternative"),ProductivityImpact_Scenario))
+            ProductivityImpact_Scenario += i_df[i_df[ensem_i].isin(ensem_selector)]['ProductivityImpact_{}'.format(employment)].sum()
         
         # drop irrelevant columns
         header_list = [ensem_i]
         for employment in ["EmpConMfg", "EmpFire", "EmpTcuWh", "EmpRet", "EmpBoS", "EmpAcFoInCu", "EmpHeEdPuAd"]:
             header_list.append('ProductivityImpact_{}'.format(employment))
         i_df = i_df[header_list]
-        i_df.to_csv(os.path.join(AlternativeScenario_Folder,"Agglomeration_Benefits.csv"), index=False)
         return ProductivityImpact_Scenario
         
     @_m.logbook_trace("Export Parking and Employment for Agglomeration Calculation")

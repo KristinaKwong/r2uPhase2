@@ -15,10 +15,16 @@ import traceback as _traceback
 
 class SummarizeUserBenefits(_m.Tool()):        
     tool_run_msg = _m.Attribute(unicode)
+    ensem_selector = _m.Attribute(str)
+        
+    def __init__(self):
+        self.ensem_selector = ""
         
     def page(self):
         pb = _m.ToolPageBuilder(self)
         pb.title = "Summarize User Benefits"
+        
+        pb.add_text_box(tool_attribute_name="ensem_selector", title="Calaculate Agglomeration: Select Project Area gh Ensemble",note="comma separated, example: 810, 820, 830",multi_line=True)
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
@@ -30,13 +36,13 @@ class SummarizeUserBenefits(_m.Tool()):
         try:
             eb = _m.Modeller().emmebank
 
-            self(eb)
+            self(eb,self.ensem_selector)
             self.tool_run_msg = _m.PageBuilder.format_info("Tool complete")
         except Exception, e:
             self.tool_run_msg = _m.PageBuilder.format_exception(e, _traceback.format_exc(e))
 
     @_m.logbook_trace("Summarize User Benefits")
-    def __call__(self, eb):
+    def __call__(self, eb, ensem_selector):
         
         ##load emmebank title, emmebank path, emmebank EcoAnalysis path, emmebank object into dictionary
         emmebank_object = {}
@@ -95,7 +101,7 @@ class SummarizeUserBenefits(_m.Tool()):
             fieldnames.append('Heavy Truck Reliability')
             Units['Heavy Truck Reliability'] = 'Daily Minutes'
             fieldnames.append('Incremental Fare Revenue')
-            Units['Incremental Fare Revenue'] = 'Annual $'
+            Units['Incremental Fare Revenue'] = 'Daily 2016$'
             fieldnames.append('Agglomeration Benefit')
             Units['Agglomeration Benefit'] = 'Annual $'
             fieldnames.append('GHG')
@@ -213,13 +219,8 @@ class SummarizeUserBenefits(_m.Tool()):
                 # get incremental fare revenue
                 getIncFareRevenue = _m.Modeller().tool("EconomicAnalysis.fareelasticity")
                 DailyIncFareRev = getIncFareRevenue.export_transit_data("%s\emmebank"%emmebank_path[row["BAU Databank"]],"%s\emmebank"%emmebank_path[row["Alternative Databank"]])
-                DailyToAnnualFactor = 300
-                row["Incremental Fare Revenue"] = DailyIncFareRev * DailyToAnnualFactor
+                row["Incremental Fare Revenue"] = DailyIncFareRev
                 
-                # get agglomeration benefit (filtered to surrey/langley)
-                # note when evaluating SLS project, agglomeration benefit is filtered to surrey/langley trip diary zone
-                # for other project, update filter in agglomeration script
-                # this filter to be updated to a user input on tool page
                 getagglomeration = _m.Modeller().tool("EconomicAnalysis.agglomeration")
                 # Export npz files
                 for databank in [row["BAU Databank"], row["Alternative Databank"]]:
@@ -230,9 +231,8 @@ class SummarizeUserBenefits(_m.Tool()):
                     getagglomeration.Export_ROH_TimeCost(eb)
                 eb = emmebank_object[row["Alternative Databank"]]
                 # calculate agglomeration benefit
-                agglomeration_benefit = getagglomeration.Calculate_Agglomeration_Benefits(eb, BaseScenario_Folder, AlternativeScenario_Folder, ensem, expansion_factors)
-                inflation_adjust = 128.4/129.4 #convert from 2019$ to 2018$
-                row["Agglomeration Benefit"] = agglomeration_benefit*inflation_adjust
+                agglomeration_benefit = getagglomeration.Calculate_Agglomeration_Benefits(eb, BaseScenario_Folder, AlternativeScenario_Folder, ensem_selector, expansion_factors)
+                row["Agglomeration Benefit"] = agglomeration_benefit
                 
                 
                 writer.writerow(row)
