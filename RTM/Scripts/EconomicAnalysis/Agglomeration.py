@@ -146,13 +146,12 @@ class ComputeAgglomeration(_m.Tool()):
                               "HeEdPuAd": 1.818}
                            
         # PerWorkerGDP_List = {sector: [2016 GDP/Worker [$], 2035 GDP/Worker [$], 2050 GDP/Worker [$]]}
-        PerWorkerGDP_List = {"ConMfg":   [100554, 100554, 100554],
-                             "Fire":     [448714, 448714, 448714],
-                             "TcuWh":    [124786, 124786, 124786],
-                             "Ret":      [ 53821,  53821,  53821],
-                             "BoS":      [ 56965,  56965,  56965],
-                             "AcFoInCu": [ 70985,  70985,  70985],
-                             "HeEdPuAd": [ 80115,  80115,  80115]}
+        with open('EconomicAnalysis/Assumption_PerWorkerGDP.csv') as Input_csvfile:
+            PerWorkerGDP_List = {}
+            reader = csv.DictReader(Input_csvfile)
+            for row in reader:
+                PerWorkerGDP = [int(row["2016"]),int(row["2035"]),int(row["2050"])]
+                PerWorkerGDP_List[row["Sector"]]=PerWorkerGDP
         
         NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
         
