@@ -104,10 +104,6 @@ class SummarizeUserBenefits(_m.Tool()):
             Units['Incremental Fare Revenue'] = 'Daily 2016$'
             fieldnames.append('Agglomeration Benefit')
             Units['Agglomeration Benefit'] = 'Annual $'
-            fieldnames.append('GHG')
-            Units['GHG'] = 'Annual $'
-            fieldnames.append('Safety Benefit')
-            Units['Safety Benefit'] = 'Annual $'
             
             writer = csv.DictWriter(Output_csvfile, fieldnames=fieldnames)
             writer.writeheader()
@@ -132,28 +128,40 @@ class SummarizeUserBenefits(_m.Tool()):
                 
                 # get GHG/Safety Benefit
                 getVKT = _m.Modeller().tool("EconomicAnalysis.getvkt")
-                # getVKT returns annual vkt by emmebank
+                
+                GHG_Safety_Accounts = [["GHG_0to10kph" ,"@speedau=0,10"],
+                                       ["GHG_10to20kph","@speedau=10.0000001,20"],
+                                       ["GHG_20to30kph","@speedau=20.0000001,30"],
+                                       ["GHG_30to40kph","@speedau=30.0000001,40"],
+                                       ["GHG_40to50kph","@speedau=40.0000001,50"],
+                                       ["GHG_50to60kph","@speedau=50.0000001,60"],
+                                       ["GHG_60to70kph","@speedau=60.0000001,70"],
+                                       ["GHG_70to80kph","@speedau=70.0000001,80"],
+                                       ["GHG_80to90kph","@speedau=80.0000001,90"],
+                                       ["GHG_90to100kph","@speedau=90.0000001,100"],
+                                       ["GHG_100to110kph","@speedau=100.0000001,110"],
+                                       ["GHG_Above110kph","@speedau=110.0000001,9999"],
+                                       ["Safety Benefit_Highway&Ramp","type=300,301 or type=305,307"],
+                                       ["Safety Benefit_Arterial&Collector","type=0,299 or type=302,304"]]
+                for Account, LinkSelection in GHG_Safety_Accounts:
+                    #add the account and the unit to the list
+                    fieldnames.append(Account)
+                    Units[Account] = 'Annual VKT'
+                
+                    # getVKT returns annual vkt by emmebank
+                    database_object[row["BAU Databank"]].open()
+                    Auto_BaseVKT, LGV_BaseVKT, HGV_BaseVKT = getVKT.get_annual_vkt(BAU_emmebank, expansion_factors, LinkSelection)
+                    database_object[row["Alternative Databank"]].open()
+                    Auto_AltrVKT, LGV_AltrVKT, HGV_AltrVKT = getVKT.get_annual_vkt(Alternative_emmebank, expansion_factors, LinkSelection)
+                    row["%s_Auto"%Account] = Auto_BaseVKT - Auto_AltrVKT
+                    row["%s_LGV"%Account]  = LGV_BaseVKT  -  LGV_AltrVKT 
+                    row["%s_HGV"%Account]  = HGV_BaseVKT  -  HGV_AltrVKT 
+                
+                # get Truck Daily OpCost Savings (in dollar)
                 database_object[row["BAU Databank"]].open()
                 Auto_BaseVKT, LGV_BaseVKT, HGV_BaseVKT = getVKT.get_annual_vkt(BAU_emmebank, expansion_factors, "all")
                 database_object[row["Alternative Databank"]].open()
                 Auto_AltrVKT, LGV_AltrVKT, HGV_AltrVKT = getVKT.get_annual_vkt(Alternative_emmebank, expansion_factors, "all")
-                # GHG Emission rates $2018/vkt by mode, [2017, 2035, 2050]
-                GHG_Emission_Rates = {"Auto":[0.0118332, 0.0144050, 0.0158190],
-                                      "LGV" :[0.0183361, 0.0234403, 0.0271553],
-                                      "HGV" :[0.0431519, 0.0750505, 0.0919084]}
-                horizon_index = ['2017', '2035', '2050'].index(Horizon)
-                GHG_Emission_Benefit = 0
-                GHG_Emission_Benefit += (Auto_BaseVKT - Auto_AltrVKT) * GHG_Emission_Rates["Auto"][horizon_index]
-                GHG_Emission_Benefit += (LGV_BaseVKT  -  LGV_AltrVKT) * GHG_Emission_Rates["LGV"][horizon_index]
-                GHG_Emission_Benefit += (HGV_BaseVKT  -  HGV_AltrVKT) * GHG_Emission_Rates["HGV"][horizon_index]
-                row["GHG"] = GHG_Emission_Benefit
-                # Safety Benefit rate $2018/VKT
-                # Safety benefit to be added as user input on tool page
-                Safety_Benefit_rate = 0.15803386 #this rate is specific to Fraser hwy corridor
-                Safety_Benefit = (Auto_BaseVKT + LGV_BaseVKT + HGV_BaseVKT - Auto_AltrVKT - LGV_AltrVKT - HGV_AltrVKT) * Safety_Benefit_rate
-                row["Safety Benefit"] = Safety_Benefit
-                
-                # get Truck Daily OpCost Savings (in dollar)
                 LightTruck_DailyToAnnualFactor = 313
                 HeavyTruck_DailyToAnnualFactor = 276
                 LightTruck_OpCostBenefit = (LGV_BaseVKT - LGV_AltrVKT) * 0.24 / LightTruck_DailyToAnnualFactor

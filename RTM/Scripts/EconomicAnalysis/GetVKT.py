@@ -85,6 +85,12 @@ class GetAnnualVKT(_m.Tool()):
         tod = title[-2:]
         expansion_factors_Index = ["AM","MD","PM"].index(tod)
         
+        if "@speedau" in selection:
+            create_extra = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
+            create_extra(extra_attribute_type="LINK",extra_attribute_name="@speedau",extra_attribute_description="network speed",overwrite=True)
+            spec = {"result": "@speedau", "expression": "length*60/timau", "selections": {"link": "timau=0,99999"}, "aggregation": None, "type": "NETWORK_CALCULATION"}
+            calc_link(spec)
+        
         spec = {"result": None, "expression": "(@sov1+@sov2+@sov3+@sov4)*length", "selections": {"link": selection}, "aggregation": None, "type": "NETWORK_CALCULATION"}
         Auto_VKT = calc_link(spec)["sum"]*expansion_factors["SOV"][expansion_factors_Index]*335
         spec = {"result": None, "expression": "(@hov1+@hov2+@hov3)*length", "selections":  {"link": selection}, "aggregation": None, "type": "NETWORK_CALCULATION"}
