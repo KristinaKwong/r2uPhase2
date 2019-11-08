@@ -118,11 +118,15 @@ class SummarizeUserBenefits(_m.Tool()):
                                    ["GHG_100to110kph","@speedau=100.0000001,110"],
                                    ["GHG_Above110kph","@speedau=110.0000001,9999"],
                                    ["Safety Benefit_Highway&Ramp","type=300,301 or type=305,307"],
-                                   ["Safety Benefit_Arterial&Collector","type=0,299 or type=302,304"]]
+                                   ["Safety Benefit_Arterial&Collector","type=0,299 or type=302,304 or type=308,99999"]]
             for Account, LinkSelection in GHG_Safety_Accounts:
                 #add the account and the unit to the list
-                fieldnames.append(Account)
-                Units[Account] = 'Annual VKT'
+                fieldnames.append("%s_Auto"%Account)
+                fieldnames.append("%s_LGV"%Account)
+                fieldnames.append("%s_HGV"%Account)
+                Units["%s_Auto"%Account] = 'Annual VKT'
+                Units["%s_LGV"%Account] = 'Annual VKT'
+                Units["%s_HGV"%Account] = 'Annual VKT'
                     
             writer = csv.DictWriter(Output_csvfile, fieldnames=fieldnames)
             writer.writeheader()
