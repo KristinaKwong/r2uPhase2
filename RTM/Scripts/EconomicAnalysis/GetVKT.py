@@ -42,10 +42,10 @@ class GetAnnualVKT(_m.Tool()):
                              "HOV": [1.51, 8.58, 5.32],
                              "LGV": [3.59, 5.63, 6.17],
                              "HGV": [4.88, 5.43, 6.36]}
-        #self.print_all_scenario_vkt(eb, expansion_factors)
-        self.get_annual_vkt(eb, expansion_factors)
+        #self.print_all_scenario_vkt(eb, expansion_factors, "all")
+        self.get_annual_vkt(eb, expansion_factors, "all")
             
-    def get_annual_vkt(self, eb, expansion_factors):
+    def get_annual_vkt(self, eb, expansion_factors, selection):
         #load AM/MD/PM scenario from ms matrices
         am_scenario = int(eb.matrix("ms2").data)
         md_scenario = int(eb.matrix("ms3").data)
@@ -60,7 +60,7 @@ class GetAnnualVKT(_m.Tool()):
             
             if scenario_number in [am_scenario, md_scenario, pm_scenario]:
                 de.replace_primary_scenario(sc)
-                component_list = self.compute_network_based_vkt(sc, expansion_factors)
+                component_list = self.compute_network_based_vkt(sc, expansion_factors, selection)
                 Auto_VKT, LGV_VKT, HGV_VKT = [sum(x) for x in zip([Auto_VKT, LGV_VKT, HGV_VKT], component_list)]
         return Auto_VKT, LGV_VKT, HGV_VKT
     
@@ -75,9 +75,9 @@ class GetAnnualVKT(_m.Tool()):
             if scenario_number<10000:
                 continue
             de.replace_primary_scenario(sc)
-            self.compute_network_based_vkt(sc, expansion_factors)
+            self.compute_network_based_vkt(sc, expansion_factors, "all")
         
-    def compute_network_based_vkt(self, sc, expansion_factors):
+    def compute_network_based_vkt(self, sc, expansion_factors, selection):
         util = _m.Modeller().tool("translink.util")
         calc_link = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         
@@ -85,13 +85,13 @@ class GetAnnualVKT(_m.Tool()):
         tod = title[-2:]
         expansion_factors_Index = ["AM","MD","PM"].index(tod)
         
-        spec = {"result": None, "expression": "(@sov1+@sov2+@sov3+@sov4)*length", "selections": {"link": "all"}, "aggregation": None, "type": "NETWORK_CALCULATION"}
+        spec = {"result": None, "expression": "(@sov1+@sov2+@sov3+@sov4)*length", "selections": {"link": selection}, "aggregation": None, "type": "NETWORK_CALCULATION"}
         Auto_VKT = calc_link(spec)["sum"]*expansion_factors["SOV"][expansion_factors_Index]*335
-        spec = {"result": None, "expression": "(@hov1+@hov2+@hov3)*length", "selections":  {"link": "all"}, "aggregation": None, "type": "NETWORK_CALCULATION"}
+        spec = {"result": None, "expression": "(@hov1+@hov2+@hov3)*length", "selections":  {"link": selection}, "aggregation": None, "type": "NETWORK_CALCULATION"}
         Auto_VKT += calc_link(spec)["sum"]*expansion_factors["HOV"][expansion_factors_Index]*335
-        spec = {"result": None, "expression": "(@lgvol/1.5)*length", "selections":  {"link": "all"}, "aggregation": None, "type": "NETWORK_CALCULATION"}
+        spec = {"result": None, "expression": "(@lgvol/1.5)*length", "selections":  {"link": selection}, "aggregation": None, "type": "NETWORK_CALCULATION"}
         LGV_VKT = calc_link(spec)["sum"]*expansion_factors["LGV"][expansion_factors_Index]*313
-        spec = {"result": None, "expression": "(@hgvol/2.5)*length", "selections":  {"link": "all"}, "aggregation": None, "type": "NETWORK_CALCULATION"}
+        spec = {"result": None, "expression": "(@hgvol/2.5)*length", "selections":  {"link": selection}, "aggregation": None, "type": "NETWORK_CALCULATION"}
         HGV_VKT = calc_link(spec)["sum"]*expansion_factors["HGV"][expansion_factors_Index]*276
         #print("Annual VKT disaggregated by AM/MD/PM Time Period")
         #print("%s, Auto, %.0f"%(title, Auto_VKT))

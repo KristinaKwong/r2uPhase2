@@ -22,8 +22,8 @@ class SummarizeUserBenefits(_m.Tool()):
         
     def page(self):
         pb = _m.ToolPageBuilder(self)
-        pb.title = "Summarize User Benefits"
-        
+        pb.title = "Summarize User Benefits" 
+        pb.description = "Specify BAU and Alternative Databanks in EconomicAnalysisTool_Input.csv"
         pb.add_text_box(tool_attribute_name="ensem_selector", title="Calaculate Agglomeration: Select Project Area gh Ensemble",note="comma separated, example: 810, 820, 830",multi_line=True)
 
         if self.tool_run_msg:
@@ -134,9 +134,9 @@ class SummarizeUserBenefits(_m.Tool()):
                 getVKT = _m.Modeller().tool("EconomicAnalysis.getvkt")
                 # getVKT returns annual vkt by emmebank
                 database_object[row["BAU Databank"]].open()
-                Auto_BaseVKT, LGV_BaseVKT, HGV_BaseVKT = getVKT.get_annual_vkt(BAU_emmebank, expansion_factors)
+                Auto_BaseVKT, LGV_BaseVKT, HGV_BaseVKT = getVKT.get_annual_vkt(BAU_emmebank, expansion_factors, "all")
                 database_object[row["Alternative Databank"]].open()
-                Auto_AltrVKT, LGV_AltrVKT, HGV_AltrVKT = getVKT.get_annual_vkt(Alternative_emmebank, expansion_factors)
+                Auto_AltrVKT, LGV_AltrVKT, HGV_AltrVKT = getVKT.get_annual_vkt(Alternative_emmebank, expansion_factors, "all")
                 # GHG Emission rates $2018/vkt by mode, [2017, 2035, 2050]
                 GHG_Emission_Rates = {"Auto":[0.0118332, 0.0144050, 0.0158190],
                                       "LGV" :[0.0183361, 0.0234403, 0.0271553],
