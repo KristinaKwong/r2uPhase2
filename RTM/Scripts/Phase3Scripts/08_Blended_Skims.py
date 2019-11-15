@@ -438,7 +438,7 @@ class ModeChoiceGenDf(_m.Tool()):
 #       ##       Bus Skims
 #       ##############################################################################
 #       # Initialize In-vehicle, Wait, Auxiliary, Boarding and Fare Skim Dictionaries
-        BusIVTDict, BusWatDict, BusAuxDict = {}, {}, {}
+        BusIVTDict, BusWatDict, BusAuxDict, BusIVTBRTDict = {}, {}, {}, {}
         BusBrdDict, BusFarDict = {}, {}
         # Generate Skim Dictionaries
         #                                  AM    ,    MD   ,     PM
@@ -447,18 +447,19 @@ class ModeChoiceGenDf(_m.Tool()):
         self.GenSkimDict(eb, BusAuxDict, ["AmBusAux",  "MdBusAux",   "PmBusAux"]) # Bus Aux
         self.GenSkimDict(eb, BusBrdDict, ["AmBusBoard","MdBusBoard", "PmBusBoard"]) # Bus Boarding
         self.GenSkimDictFare(eb, BusFarDict, ["AmBusFare", "MdBusFare",  "PmBusFare"]) # Bus Fare
+        self.GenSkimDict(eb, BusIVTBRTDict, ["AmBusIvttBRT", "MdBusIvttBRT",  "PmBusIvttBRT"]) # Bus IVTT in BRT modes
 
        # Blend Factors
         BlendDict = {   #AM,   MD,   PM         AM,   MD,   PM         Where Blended Matrices get stored in same order as above
-         'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlBusIvtt', 'HbWBlBusWait', 'HbWBlBusAux', 'HbWBlBusBoard']},  # Home-base work
-         'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['HbUBlBusIvtt', 'HbUBlBusWait', 'HbUBlBusAux', 'HbUBlBusBoard']},  # Home-base university
-         'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlBusIvtt', 'HbScBlBusWait', 'HbScBlBusAux', 'HbScBlBusBoard']},  # Home-base school
-         'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlBusIvtt', 'HbShBlBusWait', 'HbShBlBusAux', 'HbShBlBusBoard']},  # Home-base shopping
-         'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlBusIvtt', 'HbPbBlBusWait', 'HbPbBlBusAux', 'HbPbBlBusBoard']},  # Home-base pb
-         'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlBusIvtt', 'HbSoBlBusWait', 'HbSoBlBusAux', 'HbSoBlBusBoard']},  # Home-base social
-         'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlBusIvtt', 'HbEsBlBusWait', 'HbEsBlBusAux', 'HbEsBlBusBoard']},  # Home-base escorting
-         'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlBusIvtt', 'NHbWBlBusWait', 'NHbWBlBusAux', 'NHbWBlBusBoard']},  # Non-home base work
-         'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlBusIvtt', 'NHbOBlBusWait', 'NHbOBlBusAux', 'NHbOBlBusBoard']}}  # Non-home base other
+         'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlBusIvtt', 'HbWBlBusWait', 'HbWBlBusAux', 'HbWBlBusBoard'    , 'HbWBlBusIvttBRT']},  # Home-base work
+         'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['HbUBlBusIvtt', 'HbUBlBusWait', 'HbUBlBusAux', 'HbUBlBusBoard'    , 'HbUBlBusIvttBRT']},  # Home-base university
+         'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlBusIvtt', 'HbScBlBusWait', 'HbScBlBusAux', 'HbScBlBusBoard','HbScBlBusIvttBRT']},  # Home-base school
+         'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlBusIvtt', 'HbShBlBusWait', 'HbShBlBusAux', 'HbShBlBusBoard','HbShBlBusIvttBRT']},  # Home-base shopping
+         'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlBusIvtt', 'HbPbBlBusWait', 'HbPbBlBusAux', 'HbPbBlBusBoard','HbPbBlBusIvttBRT']},  # Home-base pb
+         'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlBusIvtt', 'HbSoBlBusWait', 'HbSoBlBusAux', 'HbSoBlBusBoard','HbSoBlBusIvttBRT']},  # Home-base social
+         'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlBusIvtt', 'HbEsBlBusWait', 'HbEsBlBusAux', 'HbEsBlBusBoard','HbEsBlBusIvttBRT']},  # Home-base escorting
+         'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlBusIvtt', 'NHbWBlBusWait', 'NHbWBlBusAux', 'NHbWBlBusBoard','NHbWBlBusIvttBRT']},  # Non-home base work
+         'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlBusIvtt', 'NHbOBlBusWait', 'NHbOBlBusAux', 'NHbOBlBusBoard','NHbOBlBusIvttBRT']}}  # Non-home base other
 
         BlendFareDict = {
          'trfrhbwo':{'PA': trfr_hbwo_fct[0], 'AP':trfr_hbwo_fct[1], 'Mat':['HbWBlBusFare']}, # fare blends
@@ -478,12 +479,14 @@ class ModeChoiceGenDf(_m.Tool()):
             Df['BusWat']  = self.calc_blend(values, BusWatDict)
             Df['BusAux']  = self.calc_blend(values, BusAuxDict)
             Df['BusBrd']  = self.calc_blend(values, BusBrdDict)
+            Df['BusIVTBRT']  = self.calc_blend(values, BusIVTBRTDict)
 
             # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['BusIVT'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['BusWat'])
             util.set_matrix_numpy(eb, values['Mat'][2], Df['BusAux'])
             util.set_matrix_numpy(eb, values['Mat'][3], Df['BusBrd'])
+            util.set_matrix_numpy(eb, values['Mat'][4], Df['BusIVTBRT'])
 
 
         for keys, values in BlendFareDict.items():
@@ -532,7 +535,7 @@ class ModeChoiceGenDf(_m.Tool()):
 #        ##       Rail Skims
 #        ##############################################################################
         # Initialize In-vehicle, Wait, Auxiliary, Boarding and Fare Skim Dictionaries
-        RalIVBDict, RalIVRDict, RalWatDict = {}, {}, {}
+        RalIVBDict, RalIVRDict, RalWatDict, RalIVBRTDict, RalIVLRTDict = {}, {}, {}, {}, {}
         RalAuxDict, RalBrdDict, RalFarDict = {}, {}, {}
 
         # Generate Skim Dictionaries
@@ -543,27 +546,29 @@ class ModeChoiceGenDf(_m.Tool()):
         self.GenSkimDict(eb, RalAuxDict, ["AmRailAux",     "MdRailAux",     "PmRailAux"]) # Rail Aux
         self.GenSkimDict(eb, RalBrdDict, ["AmRailBoard",   "MdRailBoard",   "PmRailBoard"]) # Rail Boarding
         self.GenSkimDictFare(eb, RalFarDict, ["AmRailFare",    "MdRailFare",    "PmRailFare"]) # Rail Fare
+        self.GenSkimDict(eb, RalIVBRTDict, ["AmRailIvttBRT", "MdRailIvttBRT", "PmRailIvttBRT"]) # Rail IVB BRT
+        self.GenSkimDict(eb, RalIVLRTDict, ["AmRailIvttLRT", "MdRailIvttLRT", "PmRailIvttLRT"]) # Rail IVB LRT
 
         # Blend Factors
         BlendDict = {  #AM,   MD,   PM         AM,   MD,   PM
          'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
-                 'Mat':['HbWBlRailIvtt', 'HbWBlRailIvttBus', 'HbWBlRailWait', 'HbWBlRailAux', 'HbWBlRailBoard']}, # Where Blended Matrices get stored in same order as above
+                 'Mat':['HbWBlRailIvtt', 'HbWBlRailIvttBus', 'HbWBlRailWait', 'HbWBlRailAux', 'HbWBlRailBoard', 'HbWBlRailIvttBRT', 'HbWBlRailIvttLRT']}, # Where Blended Matrices get stored in same order as above
          'hbun':{'PA': hbun_fct[0], 'AP':hbun_fct[1],
-                 'Mat':['HbUBlRailIvtt', 'HbUBlRailIvttBus', 'HbUBlRailWait', 'HbUBlRailAux', 'HbUBlRailBoard']},
+                 'Mat':['HbUBlRailIvtt', 'HbUBlRailIvttBus', 'HbUBlRailWait', 'HbUBlRailAux', 'HbUBlRailBoard', 'HbUBlRailIvttBRT', 'HbUBlRailIvttLRT']},
          'hbsc':{'PA': hbsc_fct[0], 'AP':hbsc_fct[1],
-                 'Mat':['HbScBlRailIvtt', 'HbScBlRailIvttBus', 'HbScBlRailWait', 'HbScBlRailAux', 'HbScBlRailBoard']},
+                 'Mat':['HbScBlRailIvtt', 'HbScBlRailIvttBus', 'HbScBlRailWait', 'HbScBlRailAux', 'HbScBlRailBoard', 'HbScBlRailIvttBRT', 'HbScBlRailIvttLRT']},
          'hbsh':{'PA': hbsh_fct[0], 'AP':hbsh_fct[1],
-                 'Mat':['HbShBlRailIvtt', 'HbShBlRailIvttBus', 'HbShBlRailWait', 'HbShBlRailAux', 'HbShBlRailBoard']},
+                 'Mat':['HbShBlRailIvtt', 'HbShBlRailIvttBus', 'HbShBlRailWait', 'HbShBlRailAux', 'HbShBlRailBoard', 'HbShBlRailIvttBRT', 'HbShBlRailIvttLRT']},
          'hbpb':{'PA': hbpb_fct[0], 'AP':hbpb_fct[1],
-                 'Mat':['HbPbBlRailIvtt', 'HbPbBlRailIvttBus', 'HbPbBlRailWait', 'HbPbBlRailAux', 'HbPbBlRailBoard']},
+                 'Mat':['HbPbBlRailIvtt', 'HbPbBlRailIvttBus', 'HbPbBlRailWait', 'HbPbBlRailAux', 'HbPbBlRailBoard', 'HbPbBlRailIvttBRT', 'HbPbBlRailIvttLRT']},
          'hbso':{'PA': hbso_fct[0], 'AP':hbso_fct[1],
-                 'Mat':['HbSoBlRailIvtt', 'HbSoBlRailIvttBus', 'HbSoBlRailWait', 'HbSoBlRailAux', 'HbSoBlRailBoard']},
+                 'Mat':['HbSoBlRailIvtt', 'HbSoBlRailIvttBus', 'HbSoBlRailWait', 'HbSoBlRailAux', 'HbSoBlRailBoard', 'HbSoBlRailIvttBRT', 'HbSoBlRailIvttLRT']},
          'hbes':{'PA': hbes_fct[0], 'AP':hbes_fct[1],
-                 'Mat':['HbEsBlRailIvtt', 'HbEsBlRailIvttBus', 'HbEsBlRailWait', 'HbEsBlRailAux', 'HbEsBlRailBoard']},
+                 'Mat':['HbEsBlRailIvtt', 'HbEsBlRailIvttBus', 'HbEsBlRailWait', 'HbEsBlRailAux', 'HbEsBlRailBoard', 'HbEsBlRailIvttBRT', 'HbEsBlRailIvttLRT']},
          'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1],
-                 'Mat':['NHbWBlRailIvtt', 'NHbWBlRailIvttBus', 'NHbWBlRailWait', 'NHbWBlRailAux', 'NHbWBlRailBoard']},
+                 'Mat':['NHbWBlRailIvtt', 'NHbWBlRailIvttBus', 'NHbWBlRailWait', 'NHbWBlRailAux', 'NHbWBlRailBoard', 'NHbWBlRailIvttBRT', 'NHbWBlRailIvttLRT']},
          'nhbo':{'PA': nhbo_fct[0], 'AP':nhbo_fct[1],
-                 'Mat':['NHbOBlRailIvtt', 'NHbOBlRailIvttBus', 'NHbOBlRailWait', 'NHbOBlRailAux', 'NHbOBlRailBoard']}}
+                 'Mat':['NHbOBlRailIvtt', 'NHbOBlRailIvttBus', 'NHbOBlRailWait', 'NHbOBlRailAux', 'NHbOBlRailBoard', 'NHbOBlRailIvttBRT', 'NHbOBlRailIvttLRT']}}
 
         BlendFareDict = {
          'trfrhbwo':{'PA': trfr_hbwo_fct[0], 'AP':trfr_hbwo_fct[1], 'Mat':['HbWBlRailFare']}, # fare blends
@@ -584,12 +589,16 @@ class ModeChoiceGenDf(_m.Tool()):
             Df['RalWat'] = self.calc_blend(values, RalWatDict)
             Df['RalAux'] = self.calc_blend(values, RalAuxDict)
             Df['RalBrd'] = self.calc_blend(values, RalBrdDict)
+            Df['RalIVBRT'] = self.calc_blend(values, RalIVBRTDict)
+            Df['RalIVLRT'] = self.calc_blend(values, RalIVLRTDict)
             # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['RalIVR'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['RalIVB'])
             util.set_matrix_numpy(eb, values['Mat'][2], Df['RalWat'])
             util.set_matrix_numpy(eb, values['Mat'][3], Df['RalAux'])
             util.set_matrix_numpy(eb, values['Mat'][4], Df['RalBrd'])
+            util.set_matrix_numpy(eb, values['Mat'][5], Df['RalIVBRT'])
+            util.set_matrix_numpy(eb, values['Mat'][6], Df['RalIVLRT'])
 
         for keys, values in BlendFareDict.items():
             # Calculate blended fares
@@ -797,6 +806,9 @@ class ModeChoiceGenDf(_m.Tool()):
         #    intermediates = 'gn1;gn2'
             intermediates = 'gn1;gn2'
         if year == 2016:
+        #    intermediates = 'gn1;gn3'
+            intermediates = 'gn1;gn3'
+        if year == 2017:
         #    intermediates = 'gn1;gn3'
             intermediates = 'gn1;gn3'
         if year >= 2035:
@@ -1254,100 +1266,127 @@ class ModeChoiceGenDf(_m.Tool()):
         util.initmat(eb, "mf5402", "HbWBlBusAux", "HbW Bl Bus Auxillary Time", 0)
         util.initmat(eb, "mf5403", "HbWBlBusBoard", "HbW Bl Bus Boardings", 0)
         util.initmat(eb, "mf5404", "HbWBlBusFare", "HbW Bl Bus Fare", 0)
+        util.initmat(eb, "mf5405", "HbWBlBusIvttBRT", "HbW Bl Bus BRT InVehicle Time", 0)
         util.initmat(eb, "mf5410", "HbUBlBusIvtt", "HbU Bl Bus InVehicle Time", 0)
         util.initmat(eb, "mf5411", "HbUBlBusWait", "HbU Bl Bus Waiting Time", 0)
         util.initmat(eb, "mf5412", "HbUBlBusAux", "HbU Bl Bus Auxillary Time", 0)
         util.initmat(eb, "mf5413", "HbUBlBusBoard", "HbU Bl Bus Boardings", 0)
         util.initmat(eb, "mf5414", "HbUBlBusFare", "HbU Bl Bus Fare", 0)
+        util.initmat(eb, "mf5415", "HbUBlBusIvttBRT", "HbU Bl Bus BRT InVehicle Time", 0)
         util.initmat(eb, "mf5420", "HbScBlBusIvtt", "HbSc Bl Bus InVehicle Time", 0)
         util.initmat(eb, "mf5421", "HbScBlBusWait", "HbSc Bl Bus Waiting Time", 0)
         util.initmat(eb, "mf5422", "HbScBlBusAux", "HbSc Bl Bus Auxillary Time", 0)
         util.initmat(eb, "mf5423", "HbScBlBusBoard", "HbSc Bl Bus Boardings", 0)
         util.initmat(eb, "mf5424", "HbScBlBusFare", "HbSc Bl Bus Fare", 0)
+        util.initmat(eb, "mf5425", "HbScBlBusIvttBRT", "HbSc Bl Bus BRT InVehicle Time", 0)
         util.initmat(eb, "mf5430", "HbShBlBusIvtt", "HbSh Bl Bus InVehicle Time", 0)
         util.initmat(eb, "mf5431", "HbShBlBusWait", "HbSh Bl Bus Waiting Time", 0)
         util.initmat(eb, "mf5432", "HbShBlBusAux", "HbSh Bl Bus Auxillary Time", 0)
         util.initmat(eb, "mf5433", "HbShBlBusBoard", "HbSh Bl Bus Boardings", 0)
         util.initmat(eb, "mf5434", "HbShBlBusFare", "HbSh Bl Bus Fare", 0)
+        util.initmat(eb, "mf5435", "HbShBlBusIvttBRT", "HbSh Bl Bus BRT InVehicle Time", 0)
         util.initmat(eb, "mf5440", "HbPbBlBusIvtt", "HbPb Bl Bus InVehicle Time", 0)
         util.initmat(eb, "mf5441", "HbPbBlBusWait", "HbPb Bl Bus Waiting Time", 0)
         util.initmat(eb, "mf5442", "HbPbBlBusAux", "HbPb Bl Bus Auxillary Time", 0)
         util.initmat(eb, "mf5443", "HbPbBlBusBoard", "HbPb Bl Bus Boardings", 0)
         util.initmat(eb, "mf5444", "HbPbBlBusFare", "HbPb Bl Bus Fare", 0)
+        util.initmat(eb, "mf5445", "HbPbBlBusIvttBRT", "HbPb Bl Bus BRT InVehicle Time", 0)
         util.initmat(eb, "mf5450", "HbSoBlBusIvtt", "HbSo Bl Bus InVehicle Time", 0)
         util.initmat(eb, "mf5451", "HbSoBlBusWait", "HbSo Bl Bus Waiting Time", 0)
         util.initmat(eb, "mf5452", "HbSoBlBusAux", "HbSo Bl Bus Auxillary Time", 0)
         util.initmat(eb, "mf5453", "HbSoBlBusBoard", "HbSo Bl Bus Boardings", 0)
         util.initmat(eb, "mf5454", "HbSoBlBusFare", "HbSo Bl Bus Fare", 0)
+        util.initmat(eb, "mf5455", "HbSoBlBusIvttBRT", "HbSo Bl Bus BRT InVehicle Time", 0)
         util.initmat(eb, "mf5460", "HbEsBlBusIvtt", "HbEs Bl Bus InVehicle Time", 0)
         util.initmat(eb, "mf5461", "HbEsBlBusWait", "HbEs Bl Bus Waiting Time", 0)
         util.initmat(eb, "mf5462", "HbEsBlBusAux", "HbEs Bl Bus Auxillary Time", 0)
         util.initmat(eb, "mf5463", "HbEsBlBusBoard", "HbEs Bl Bus Boardings", 0)
         util.initmat(eb, "mf5464", "HbEsBlBusFare", "HbEs Bl Bus Fare", 0)
+        util.initmat(eb, "mf5465", "HbEsBlBusIvttBRT", "HbEs Bl Bus BRT InVehicle Time", 0)
         util.initmat(eb, "mf5470", "NHbWBlBusIvtt", "NHbW Bl Bus InVehicle Time", 0)
         util.initmat(eb, "mf5471", "NHbWBlBusWait", "NHbW Bl Bus Waiting Time", 0)
         util.initmat(eb, "mf5472", "NHbWBlBusAux", "NHbW Bl Bus Auxillary Time", 0)
         util.initmat(eb, "mf5473", "NHbWBlBusBoard", "NHbW Bl Bus Boardings", 0)
         util.initmat(eb, "mf5474", "NHbWBlBusFare", "NHbW Bl Bus Fare", 0)
+        util.initmat(eb, "mf5475", "NHbWBlBusIvttBRT", "NHbW Bl Bus BRT InVehicle Time", 0)
         util.initmat(eb, "mf5480", "NHbOBlBusIvtt", "NHbO Bl Bus InVehicle Time", 0)
         util.initmat(eb, "mf5481", "NHbOBlBusWait", "NHbO Bl Bus Waiting Time", 0)
         util.initmat(eb, "mf5482", "NHbOBlBusAux", "NHbO Bl Bus Auxillary Time", 0)
         util.initmat(eb, "mf5483", "NHbOBlBusBoard", "NHbO Bl Bus Boardings", 0)
         util.initmat(eb, "mf5484", "NHbOBlBusFare", "NHbO Bl Bus Fare", 0)
+        util.initmat(eb, "mf5485", "NHbOBlBusIvttBRT", "NHbO Bl Bus BRT InVehicle Time", 0)
         util.initmat(eb, "mf5600", "HbWBlRailIvtt", "HbW Bl Rail Invehicle Time", 0)
         util.initmat(eb, "mf5601", "HbWBlRailIvttBus", "HbW Bl Rail Invehicle Time on Bus", 0)
         util.initmat(eb, "mf5602", "HbWBlRailWait", "HbW Bl Rail Waiting Time", 0)
         util.initmat(eb, "mf5603", "HbWBlRailAux", "HbW Bl Rail Auxilliary Time", 0)
         util.initmat(eb, "mf5604", "HbWBlRailBoard", "HbW Bl Rail Boardings", 0)
         util.initmat(eb, "mf5605", "HbWBlRailFare", "HbW Bl Rail Fare", 0)
+        util.initmat(eb, "mf5606", "HbWBlRailIvttBRT", "HbW Bl Rail Invehicle Time on BRT", 0)
+        util.initmat(eb, "mf5607", "HbWBlRailIvttLRT", "HbW Bl Rail Invehicle Time on LRT", 0)
         util.initmat(eb, "mf5610", "HbUBlRailIvtt", "HbU Bl Rail Invehicle Time", 0)
         util.initmat(eb, "mf5611", "HbUBlRailIvttBus", "HbU Bl Rail Invehicle Time on Bus", 0)
         util.initmat(eb, "mf5612", "HbUBlRailWait", "HbU Bl Rail Waiting Time", 0)
         util.initmat(eb, "mf5613", "HbUBlRailAux", "HbU Bl Rail Auxilliary Time", 0)
         util.initmat(eb, "mf5614", "HbUBlRailBoard", "HbU Bl Rail Boardings", 0)
         util.initmat(eb, "mf5615", "HbUBlRailFare", "HbU Bl Rail Fare", 0)
+        util.initmat(eb, "mf5616", "HbUBlRailIvttBRT", "HbU Bl Rail Invehicle Time on BRT", 0)
+        util.initmat(eb, "mf5617", "HbUBlRailIvttLRT", "HbU Bl Rail Invehicle Time on LRT", 0)
         util.initmat(eb, "mf5620", "HbScBlRailIvtt", "HbSc Bl Rail Invehicle Time", 0)
         util.initmat(eb, "mf5621", "HbScBlRailIvttBus", "HbSc Bl Rail Invehicle Time on Bus", 0)
         util.initmat(eb, "mf5622", "HbScBlRailWait", "HbSc Bl Rail Waiting Time", 0)
         util.initmat(eb, "mf5623", "HbScBlRailAux", "HbSc Bl Rail Auxilliary Time", 0)
         util.initmat(eb, "mf5624", "HbScBlRailBoard", "HbSc Bl Rail Boardings", 0)
         util.initmat(eb, "mf5625", "HbScBlRailFare", "HbSc Bl Rail Fare", 0)
+        util.initmat(eb, "mf5626", "HbScBlRailIvttBRT", "HbSc Bl Rail Invehicle Time on BRT", 0)
+        util.initmat(eb, "mf5627", "HbScBlRailIvttLRT", "HbSc Bl Rail Invehicle Time on LRT", 0)
         util.initmat(eb, "mf5630", "HbShBlRailIvtt", "HbSh Bl Rail Invehicle Time", 0)
         util.initmat(eb, "mf5631", "HbShBlRailIvttBus", "HbSh Bl Rail Invehicle Time on Bus", 0)
         util.initmat(eb, "mf5632", "HbShBlRailWait", "HbSh Bl Rail Waiting Time", 0)
         util.initmat(eb, "mf5633", "HbShBlRailAux", "HbSh Bl Rail Auxilliary Time", 0)
         util.initmat(eb, "mf5634", "HbShBlRailBoard", "HbSh Bl Rail Boardings", 0)
         util.initmat(eb, "mf5635", "HbShBlRailFare", "HbSh Bl Rail Fare", 0)
+        util.initmat(eb, "mf5636", "HbShBlRailIvttBRT", "HbSh Bl Rail Invehicle Time on BRT", 0)
+        util.initmat(eb, "mf5637", "HbShBlRailIvttLRT", "HbSh Bl Rail Invehicle Time on LRT", 0)
         util.initmat(eb, "mf5640", "HbPbBlRailIvtt", "HbPb Bl Rail Invehicle Time", 0)
         util.initmat(eb, "mf5641", "HbPbBlRailIvttBus", "HbPb Bl Rail Invehicle Time on Bus", 0)
         util.initmat(eb, "mf5642", "HbPbBlRailWait", "HbPb Bl Rail Waiting Time", 0)
         util.initmat(eb, "mf5643", "HbPbBlRailAux", "HbPb Bl Rail Auxilliary Time", 0)
         util.initmat(eb, "mf5644", "HbPbBlRailBoard", "HbPb Bl Rail Boardings", 0)
         util.initmat(eb, "mf5645", "HbPbBlRailFare", "HbPb Bl Rail Fare", 0)
+        util.initmat(eb, "mf5646", "HbPbBlRailIvttBRT", "HbPb Bl Rail Invehicle Time on BRT", 0)
+        util.initmat(eb, "mf5647", "HbPbBlRailIvttLRT", "HbPb Bl Rail Invehicle Time on LRT", 0)
         util.initmat(eb, "mf5650", "HbSoBlRailIvtt", "HbSo Bl Rail Invehicle Time", 0)
         util.initmat(eb, "mf5651", "HbSoBlRailIvttBus", "HbSo Bl Rail Invehicle Time on Bus", 0)
         util.initmat(eb, "mf5652", "HbSoBlRailWait", "HbSo Bl Rail Waiting Time", 0)
         util.initmat(eb, "mf5653", "HbSoBlRailAux", "HbSo Bl Rail Auxilliary Time", 0)
         util.initmat(eb, "mf5654", "HbSoBlRailBoard", "HbSo Bl Rail Boardings", 0)
         util.initmat(eb, "mf5655", "HbSoBlRailFare", "HbSo Bl Rail Fare", 0)
+        util.initmat(eb, "mf5656", "HbSoBlRailIvttBRT", "HbSo Bl Rail Invehicle Time on BRT", 0)
+        util.initmat(eb, "mf5657", "HbSoBlRailIvttLRT", "HbSo Bl Rail Invehicle Time on LRT", 0)
         util.initmat(eb, "mf5660", "HbEsBlRailIvtt", "HbEs Bl Rail Invehicle Time", 0)
         util.initmat(eb, "mf5661", "HbEsBlRailIvttBus", "HbEs Bl Rail Invehicle Time on Bus", 0)
         util.initmat(eb, "mf5662", "HbEsBlRailWait", "HbEs Bl Rail Waiting Time", 0)
         util.initmat(eb, "mf5663", "HbEsBlRailAux", "HbEs Bl Rail Auxilliary Time", 0)
         util.initmat(eb, "mf5664", "HbEsBlRailBoard", "HbEs Bl Rail Boardings", 0)
         util.initmat(eb, "mf5665", "HbEsBlRailFare", "HbEs Bl Rail Fare", 0)
+        util.initmat(eb, "mf5666", "HbEsBlRailIvttBRT", "HbEs Bl Rail Invehicle Time on BRT", 0)
+        util.initmat(eb, "mf5667", "HbEsBlRailIvttLRT", "HbEs Bl Rail Invehicle Time on LRT", 0)
         util.initmat(eb, "mf5670", "NHbWBlRailIvtt", "NHbW Bl Rail Invehicle Time", 0)
         util.initmat(eb, "mf5671", "NHbWBlRailIvttBus", "NHbW Bl Rail Invehicle Time on Bus", 0)
         util.initmat(eb, "mf5672", "NHbWBlRailWait", "NHbW Bl Rail Waiting Time", 0)
         util.initmat(eb, "mf5673", "NHbWBlRailAux", "NHbW Bl Rail Auxilliary Time", 0)
         util.initmat(eb, "mf5674", "NHbWBlRailBoard", "NHbW Bl Rail Boardings", 0)
         util.initmat(eb, "mf5675", "NHbWBlRailFare", "NHbW Bl Rail Fare", 0)
+        util.initmat(eb, "mf5676", "NHbWBlRailIvttBRT", "NHbW Bl Rail Invehicle Time on BRT", 0)
+        util.initmat(eb, "mf5677", "NHbWBlRailIvttLRT", "NHbW Bl Rail Invehicle Time on LRT", 0)
         util.initmat(eb, "mf5680", "NHbOBlRailIvtt", "NHbO Bl Rail Invehicle Time", 0)
         util.initmat(eb, "mf5681", "NHbOBlRailIvttBus", "NHbO Bl Rail Invehicle Time on Bus", 0)
         util.initmat(eb, "mf5682", "NHbOBlRailWait", "NHbO Bl Rail Waiting Time", 0)
         util.initmat(eb, "mf5683", "NHbOBlRailAux", "NHbO Bl Rail Auxilliary Time", 0)
         util.initmat(eb, "mf5684", "NHbOBlRailBoard", "NHbO Bl Rail Boardings", 0)
         util.initmat(eb, "mf5685", "NHbOBlRailFare", "NHbO Bl Rail Fare", 0)
+        util.initmat(eb, "mf5686", "NHbOBlRailIvttBRT", "NHbO Bl Rail Invehicle Time on BRT", 0)
+        util.initmat(eb, "mf5687", "NHbOBlRailIvttLRT", "NHbO Bl Rail Invehicle Time on LRT", 0)
         util.initmat(eb, "mf5800", "HbWBlWceIvtt", "HbW Bl WCE Invehicle Time", 0)
         util.initmat(eb, "mf5801", "HbWBlWceIvttRail", "HbW Bl WCE Invehicle Time on WCE", 0)
         util.initmat(eb, "mf5802", "HbWBlWceIvttBus", "HbW Bl WCE Invehicle Time on Bus", 0)

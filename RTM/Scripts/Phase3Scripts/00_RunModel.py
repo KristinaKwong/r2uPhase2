@@ -35,7 +35,7 @@ class FullModelRun(_m.Tool()):
         self.global_iterations = 4
         self.max_distribution_iterations = 60
         self.distribution_relative_err = 0.0001
-        self.max_assignment_iterations = 200
+        self.max_assignment_iterations = 300
         self.run_congested_transit = True
         self.run_capacited_transit = True
         self.num_processors = multiprocessing.cpu_count()
@@ -64,7 +64,7 @@ class FullModelRun(_m.Tool()):
         pb.add_text_box(tool_attribute_name="horizon_year",
                         size="4",
                         title="Model horizon year:",
-                        note="Should match current landuse years: 2011, 2016, 2035 and 2050")
+                        note="Should match current landuse years: 2011, 2016, 2017, 2035 and 2050")
 
         pb.add_select_scenario(tool_attribute_name="master_scen",
                         title="Scenario containing network information:",
@@ -263,8 +263,8 @@ class FullModelRun(_m.Tool()):
         # auto assignment
         util.initmat(eb, "ms40", "IterAss", "Assignment Iterations", max_assignment_iterations)
         util.initmat(eb, "ms41", "ConRelGap", "ConvergenceRelativeGap", 0.0001)
-        util.initmat(eb, "ms42", "ConBestRel", "ConvergenceBestRelative", 0.01)
-        util.initmat(eb, "ms43", "ConNorm", "ConvergenceNormalized", 0.005)
+        util.initmat(eb, "ms42", "ConBestRel", "ConvergenceBestRelative", 0)
+        util.initmat(eb, "ms43", "ConNorm", "ConvergenceNormalized", 0)
         util.initmat(eb, "ms44", "AutoOcc", "Standard HOV Occupancy", 2.25)
         util.initmat(eb, "ms45", "tranCongest", "Run Congested Transit Assignment", int(run_congested_transit))
         util.initmat(eb, "ms46", "tranCapac", "Run Capacitated Transit Assignment", int(run_capacited_transit))

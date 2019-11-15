@@ -307,9 +307,27 @@ class ModeChoiceUtilities(_m.Tool()):
             F_Utl = sum(temp_dict.values())
             F_Utl = np.where(F_Utl == 0, Tiny, F_Utl)
 
+            ## parse logsum matrix name
+            x1, x2 = Logsum.split('LS')
+
             if ls[0] == 'All':
                 util.set_matrix_numpy(eb, Logsum, np.log(F_Utl))
                 Prob_Dict = {key:np.exp(nest)/L_Nst[key]*temp_dict[key]/F_Utl for key, nest in Dict.items()}
+
+            else:
+
+                if ls[0] == 'Auto':
+                    mat_name = "%sLS%s%s" %(x1, "AU", x2)
+
+
+                if ls[0] == 'Transit':
+                    mat_name = "%sLS%s%s" %(x1, "TR", x2)
+
+                if ls[0] == 'Active':
+                    mat_name = "%sLS%s%s" %(x1, "AC", x2)
+
+                util.set_matrix_numpy(eb, mat_name, F_Utl)
+
 
         ### Calculate accessibilities
             F_Utl = LS_Coeff*np.log(F_Utl)
@@ -410,3 +428,21 @@ class ModeChoiceUtilities(_m.Tool()):
         conn.close()
 
         return Seg_Dict
+
+    def calc_BRT_LRT_asc(self, eb, busASC, railASC):
+        # Calculate mode specific constant for BRT and LRT as a fraction of bus and rail constants
+        BRT_fac = eb.matrix("msBRTASCFactor").data
+        LRT_fac = eb.matrix("msLRTASCFactor").data
+        BRTASC = ((1.0 - BRT_fac) * busASC) + (BRT_fac * railASC)
+        LRTASC = ((1.0 - LRT_fac) * busASC) + (LRT_fac * railASC)
+
+        return BRTASC, LRTASC
+
+    def calc_BRT_LRT_ivt(self, eb, busIVT, railIVT):
+        # Calculate mode specific constant for BRT and LRT as a fraction of bus and rail constants
+        BRT_fac = eb.matrix("msBRTIVTFactor").data
+        LRT_fac = eb.matrix("msLRTIVTFactor").data
+        BRTIVT = ((1.0 - BRT_fac) * busIVT) + (BRT_fac * railIVT)
+        LRTIVT = ((1.0 - LRT_fac) * busIVT) + (LRT_fac * railIVT)
+
+        return BRTIVT, LRTIVT

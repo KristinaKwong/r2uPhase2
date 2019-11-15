@@ -228,6 +228,7 @@ class HbWork(_m.Tool()):
         Df['BusBrd'] = util.get_matrix_numpy(eb, 'HbWBlBusBoard') #Boarding time
         Df['BusFar'] = util.get_matrix_numpy(eb, 'HbWBlBusFare') #Fare
         Df['BusTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux']  #Total travel Time
+        Df['BusIVTBRT'] = util.get_matrix_numpy(eb, 'HbWBlBusIvttBRT') #In vehicle Bus BRT time
 
         Df['RalIVR'] = util.get_matrix_numpy(eb, 'HbWBlRailIvtt') #In vehicle Rail time on rail
         Df['RalIVB'] = util.get_matrix_numpy(eb, 'HbWBlRailIvttBus') #In vehicle Rail time on bus
@@ -238,6 +239,8 @@ class HbWork(_m.Tool()):
         Df['RalTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux']  #Total travel Time
         Df['RalIBR'] = Df['RalIVB']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) #Ratio of IVT on Bus to total IVTT
         Df['RalIRR'] = Df['RalIVR']/(Df['RalIVB'] + Df['RalIVR'] + Tiny) #Ratio of IVT on Rail to total IVTT
+        Df['RalIVBRT'] = util.get_matrix_numpy(eb, 'HbWBlRailIvttBRT') #In vehicle Rail time BRT
+        Df['RalIVLRT'] = util.get_matrix_numpy(eb, 'HbWBlRailIvttLRT') #In vehicle Rail time LRT
 
         Df['WCEIVW'] = util.get_matrix_numpy(eb, 'HbWBlWceIvtt') #In vehicle Rail time on wce
         Df['WCEIVR'] = util.get_matrix_numpy(eb, 'HbWBlWceIvttRail') #In vehicle Rail time on rail
@@ -257,12 +260,22 @@ class HbWork(_m.Tool()):
         Df['AutoDisSqd'] = Df['AutoDis']* Df['AutoDis'] #Distance squared
         Df['LogAutoDis'] = np.log(Df['AutoDis'] + Tiny) # Log Distance
 
+        # Calculate mode specific constant for BRT and LRT as a fraction of bus and rail constants
+        BRT_fac, LRT_fac = MChM.calc_BRT_LRT_asc(eb, p4, p6)
+        BRT_ivt, LRT_ivt = MChM.calc_BRT_LRT_ivt(eb, p152, p153)
+        Bus_const = ((p4 * (Df['BusIVT']-Df['BusIVTBRT'])) + (BRT_fac * Df['BusIVTBRT'])) / (Df['BusIVT'] + Tiny)
+        Rail_const = (p4 * (Df['RalIVB']-Df['RalIVBRT'])
+                    + BRT_fac * Df['RalIVBRT']
+                    + LRT_fac * Df['RalIVLRT']
+                    + p6 * (Df['RalIVR']-Df['RalIVLRT'])) / (Df['RalIVR'] + Df['RalIVB'] + Tiny)
+
         # Utilities
         # Bus Utility
         # Bus Common Utility for all incomes
-        Df['GeUtl'] = ( p4
+        Df['GeUtl'] = ( Bus_const
                       + Bus_Bias
-                      + p152*Df['BusIVT']
+                      + p152*(Df['BusIVT'] - Df['BusIVTBRT'])  # incorporate IVT factor for new modes
+                      + BRT_ivt*(Df['BusIVTBRT'])
                       + p17*Df['BusWat']
                       + p18*Df['BusAux']
                       + p19*(Df['BusBrd'])
@@ -280,11 +293,12 @@ class HbWork(_m.Tool()):
 
         # Rail Utility
         # Rail Common Utility for all incomes
-        Df['GeUtl'] = ( p4*Df['RalIBR']
-                      + p6*Df['RalIRR']
+        Df['GeUtl'] = ( Rail_const
                       + Rail_Bias
-                      + p152*Df['RalIVB']
-                      + p153*Df['RalIVR']
+                      + p152*(Df['RalIVB'] - Df['RalIVBRT'])      # incorporate IVT factor for new modes
+                      + BRT_ivt*(Df['RalIVBRT'])
+                      + p153*(Df['RalIVR'] - Df['RalIVLRT'])      # incorporate IVT factor for new modes
+                      + LRT_ivt*(Df['RalIVLRT'])
                       + p17*Df['RalWat']
                       + p18*Df['RalAux']
                       + p19*Df['RalBrd']
@@ -1359,6 +1373,36 @@ class HbWork(_m.Tool()):
         util.initmat(eb, "mf9006", "HbWLSI3A0", " HbW LogSum I1 A0", 0)
         util.initmat(eb, "mf9007", "HbWLSI3A1", " HbW LogSum I1 A1", 0)
         util.initmat(eb, "mf9008", "HbWLSI3A2", " HbW LogSum I1 A2", 0)
+
+        util.initmat(eb, "mf9300", "HbWLSAUI1A0", " HbW LogSum Auto I1 A0", 0)
+        util.initmat(eb, "mf9301", "HbWLSAUI1A1", " HbW LogSum Auto I1 A1", 0)
+        util.initmat(eb, "mf9302", "HbWLSAUI1A2", " HbW LogSum Auto I1 A2", 0)
+        util.initmat(eb, "mf9303", "HbWLSAUI2A0", " HbW LogSum Auto I1 A0", 0)
+        util.initmat(eb, "mf9304", "HbWLSAUI2A1", " HbW LogSum Auto I1 A1", 0)
+        util.initmat(eb, "mf9305", "HbWLSAUI2A2", " HbW LogSum Auto I1 A2", 0)
+        util.initmat(eb, "mf9306", "HbWLSAUI3A0", " HbW LogSum Auto I1 A0", 0)
+        util.initmat(eb, "mf9307", "HbWLSAUI3A1", " HbW LogSum Auto I1 A1", 0)
+        util.initmat(eb, "mf9308", "HbWLSAUI3A2", " HbW LogSum Auto I1 A2", 0)
+
+        util.initmat(eb, "mf9400", "HbWLSTRI1A0", " HbW LogSum Transit I1 A0", 0)
+        util.initmat(eb, "mf9401", "HbWLSTRI1A1", " HbW LogSum Transit I1 A1", 0)
+        util.initmat(eb, "mf9402", "HbWLSTRI1A2", " HbW LogSum Transit I1 A2", 0)
+        util.initmat(eb, "mf9403", "HbWLSTRI2A0", " HbW LogSum Transit I1 A0", 0)
+        util.initmat(eb, "mf9404", "HbWLSTRI2A1", " HbW LogSum Transit I1 A1", 0)
+        util.initmat(eb, "mf9405", "HbWLSTRI2A2", " HbW LogSum Transit I1 A2", 0)
+        util.initmat(eb, "mf9406", "HbWLSTRI3A0", " HbW LogSum Transit I1 A0", 0)
+        util.initmat(eb, "mf9407", "HbWLSTRI3A1", " HbW LogSum Transit I1 A1", 0)
+        util.initmat(eb, "mf9408", "HbWLSTRI3A2", " HbW LogSum Transit I1 A2", 0)
+
+        util.initmat(eb, "mf9500", "HbWLSACI1A0", " HbW LogSum Active I1 A0", 0)
+        util.initmat(eb, "mf9501", "HbWLSACI1A1", " HbW LogSum Active I1 A1", 0)
+        util.initmat(eb, "mf9502", "HbWLSACI1A2", " HbW LogSum Active I1 A2", 0)
+        util.initmat(eb, "mf9503", "HbWLSACI2A0", " HbW LogSum Active I1 A0", 0)
+        util.initmat(eb, "mf9504", "HbWLSACI2A1", " HbW LogSum Active I1 A1", 0)
+        util.initmat(eb, "mf9505", "HbWLSACI2A2", " HbW LogSum Active I1 A2", 0)
+        util.initmat(eb, "mf9506", "HbWLSACI3A0", " HbW LogSum Active I1 A0", 0)
+        util.initmat(eb, "mf9507", "HbWLSACI3A1", " HbW LogSum Active I1 A1", 0)
+        util.initmat(eb, "mf9508", "HbWLSACI3A2", " HbW LogSum Active I1 A2", 0)
 
         ## Initialze Friction Factor Matrices
         util.initmat(eb, "mf9100", "P-AFrictionFact1", "Trip Distribution Friction Factor 1", 0)

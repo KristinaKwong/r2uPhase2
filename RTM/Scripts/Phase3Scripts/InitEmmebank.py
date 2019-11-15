@@ -14,6 +14,9 @@ import pandas as pd
 class InitEmmebank(_m.Tool()):
     emme_title = _m.Attribute(_m.InstanceType)
     emme_folder = _m.Attribute(_m.InstanceType)
+    scen_number = _m.Attribute(int)
+    scen_name = _m.Attribute(_m.InstanceType)
+
     tool_run_msg = _m.Attribute(unicode)
 
     def page(self):
@@ -29,6 +32,14 @@ class InitEmmebank(_m.Tool()):
         pb.add_text_box(tool_attribute_name="emme_title",
                         size=30,
                         title="Enter the Title for the new emmebank")
+
+        #pb.add_text_box(tool_attribute_name="scen_number",
+        #                size=10,
+        #                title="Enter the Scenario Number to import into the new emmebank")
+        #
+        #pb.add_text_box(tool_attribute_name="scen_name",
+        #                size=60,
+        #                title="Enter the Scenario Name for the new scenario")
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)
@@ -80,9 +91,9 @@ class InitEmmebank(_m.Tool()):
             self.initfunctions(eb)
             if master_scen == 0:
                 self.initscenario(eb, 1000, "2011 Base Network")
-                self.initscenario(eb, 2000, "2016 Base Network")
-                self.initscenario(eb, 3000, "2035 Base Network")
-                self.initscenario(eb, 4000, "2050 Base Network")
+                self.initscenario(eb, 1700, "2017 Base Network")
+                self.initscenario(eb, 3500, "2035 Base Network")
+                self.initscenario(eb, 5000, "2050 Base Network")
             else:
                 self.initscenario(eb, master_scen, master_scen_name) # Added one scenario init option
 
@@ -165,6 +176,10 @@ class InitEmmebank(_m.Tool()):
         create_attr("TRANSIT_LINE", "@hdwyam", "AM Transit Headway", 0, False, scen)
         create_attr("TRANSIT_LINE", "@hdwymd", "MD Transit Headway", 0, False, scen)
         create_attr("TRANSIT_LINE", "@hdwypm", "PM Transit Headway", 0, False, scen)
+        create_attr("LINK", "@capacityam", "AM Roadway Lane Capacity", 0, False, scen)
+        create_attr("LINK", "@capacitymd", "MD Roadway Lane Capacity", 0, False, scen)
+        create_attr("LINK", "@capacitypm", "PM Roadway Lane Capacity", 0, False, scen)
+        create_attr("LINK", "@signal_delay", "Signal Delay", 0.25, False, scen)
 
         data_path = os.path.join(proj_path, "BaseNetworks", "extra_nodes_%d.txt" % scen_id)
         node_attr = _m.Modeller().tool("inro.emme.data.network.import_attribute_values")
@@ -262,39 +277,16 @@ class InitEmmebank(_m.Tool()):
     def initfunctions(self, eb):
         extra_parameters = _m.Modeller().tool("inro.emme.traffic_assignment.set_extra_function_parameters")
         extra_parameters(emmebank=eb, el1="@posted_speed")
-
-        eb.create_function("fd01", "length * 60 / 40")
-        eb.create_function("fd02", "40 + ((volau + volad) - 100) * 60 / (volau + volad) * ((volau +  volad) .ge. 100)")
-
-        # Default Intersection Functions
-        eb.create_function("fd25", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 400 * lanes)) ^ 4")
-        eb.create_function("fd35", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 600 * lanes)) ^ 4")
-        eb.create_function("fd45", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 800 * lanes)) ^ 4")
-        eb.create_function("fd55", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4")
-        eb.create_function("fd65", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4")
-        eb.create_function("fd75", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4")
-
-        # Default Free Flow Functions
-        eb.create_function("fd85", "length * 60 / el1 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)")
-        eb.create_function("fd88", "length * 60 / (el1 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5.25)")
-
-        # Manual Adjust / Calibrated Intersection Functions
-        eb.create_function("fd20", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 400 * lanes)) ^ 4")
-        eb.create_function("fd30", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 600 * lanes)) ^ 4")
-        eb.create_function("fd40", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / ( 800 * lanes)) ^ 4")
-        eb.create_function("fd50", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1000 * lanes)) ^ 4")
-        eb.create_function("fd60", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1200 * lanes)) ^ 4")
-        eb.create_function("fd70", "0.25 + length * 60 / el1 + .85 * ((volau + volad) / (1400 * lanes)) ^ 4")
-
-        # Manual Adjust / Calibrated Free Flow Functions
-        eb.create_function("fd80", "length * 60 / el1 * (1 + .6 * .85 * ((volau + volad) / (1600 * lanes ^ 1.05)) ^ 5)")
-
-        # Merge Functions
-        eb.create_function("fd03", "length * 60 / el1 + 0.85 * ((volau + volad) / ( 600*lanes))^5")
-        eb.create_function("fd04", "length * 60 / el1 + 0.85 * ((volau + volad) / ( 800*lanes))^5")
-        eb.create_function("fd05", "length * 60 / el1 + 0.85 * ((volau + volad) / (1000*lanes))^5")
-        eb.create_function("fd06", "length * 60 / el1 + 0.85 * ((volau + volad) / (1200*lanes))^5")
-        eb.create_function("fd07", "length * 60 / el1 + 0.85 * ((volau + volad) / (1400*lanes))^5")
+        extra_parameters(emmebank=eb, el2="@capacity")
+        extra_parameters(emmebank=eb, el3="@signal_delay")
+        
+        # Simplified Volume Delay Functions
+        eb.create_function("fd11", "length * 60 / 40")
+        eb.create_function("fd12", "40 + ((volau + volad) - 100) * 60 / (volau + volad) * ((volau +  volad) .ge. 100)")
+        eb.create_function("fd13", "length * 60 / el1 + 0.85 * ((volau + volad) / (el2 * lanes))^5")
+        eb.create_function("fd14", "el3 + length * 60 / el1 + .85 * ((volau + volad) / (el2 * lanes)) ^ 4")
+        eb.create_function("fd15", "length * 60 / el1 * (1 + .6 * .85 * ((volau + volad) / (el2 * lanes ^ 1.05)) ^ 5)")
+        eb.create_function("fd16", "length * 60 / (el1 * 1.1) * (1 + .6 * .43 * ((volau + volad) / (el2 * lanes ^ 1.05)) ^ 5.25)")
          
         # Update FT functions to include dwell time (us1) based on boardings and alightings
         eb.create_function("ft01", "us1 + 1.1 * us2")
