@@ -621,12 +621,10 @@ class AutoAssignment(_m.Tool()):
 
         #ul1 = timau using old VDF calculations
         #ul1 = -1 where mode is not auto or lane = 0
-        util.emme_link_calc(scenario, "ul1", "length * 60 / 40", sel_link="vdf=11 and mode=v")
-        util.emme_link_calc(scenario, "ul1", "40 + ((volau + volad) - 100) * 60 / (volau + volad) * ((volau +  volad) .ge. 100)", sel_link="vdf=12 and mode=v")
-        util.emme_link_calc(scenario, "ul1", "length * 60 / @posted_speed + 0.85 * ((volau + volad) / (@capacity * lanes))^5", sel_link="vdf=13 and mode=v")
-        util.emme_link_calc(scenario, "ul1", "@signal_delay + length * 60 / @posted_speed + .85 * ((volau + volad) / (@capacity * lanes)) ^ 4", sel_link="vdf=14 and mode=v")
-        util.emme_link_calc(scenario, "ul1", "length * 60 / @posted_speed * (1 + .6 * .85 * ((volau + volad) / (@capacity * lanes ^ 1.05)) ^ 5)", sel_link="vdf=15 and mode=v")
-        util.emme_link_calc(scenario, "ul1", "length * 60 / (@posted_speed * 1.1) * (1 + .6 * .43 * ((volau + volad) / (@capacity * lanes ^ 1.05)) ^ 5.25)", sel_link="vdf=16 and mode=v")
+        util.emme_link_calc(scenario, "ul1", "length * 60 / @posted_speed + 0.85 * ((volau + volad) / (@capacity * lanes))^5", sel_link="vdf=23 and mode=v")
+        util.emme_link_calc(scenario, "ul1", "@signal_delay + length * 60 / @posted_speed + .85 * ((volau + volad) / (@capacity * lanes)) ^ 4", sel_link="vdf=24 and mode=v")
+        util.emme_link_calc(scenario, "ul1", "length * 60 / @posted_speed * (1 + .6 * .85 * ((volau + volad) / (@capacity * lanes ^ 1.05)) ^ 5)", sel_link="vdf=25 and mode=v")
+        util.emme_link_calc(scenario, "ul1", "length * 60 / (@posted_speed * 1.1) * (1 + .6 * .43 * ((volau + volad) / (@capacity * lanes ^ 1.05)) ^ 5.25)", sel_link="vdf=26 and mode=v")
         #ul2 = social cost as travel time
         util.emme_link_calc(scenario, "ul2", "0")
         util.emme_link_calc(scenario, "ul2", "timau-ul1", sel_link="mode=v")
@@ -638,7 +636,7 @@ class AutoAssignment(_m.Tool()):
         util.emme_segment_calc(scenario, "us2", "60*length/speed")
         util.emme_segment_calc(scenario, "us2", "timau", sel_link="mode=v")
 
-        # Simplified Volume Delay Functions
+        # us2=timau where timau exists
         util.emme_segment_calc(scenario, "us2", "length * 60 / 40", sel_link="vdf=11 and mode=v")
         util.emme_segment_calc(scenario, "us2", "40 + ((volau + volad) - 100) * 60 / (volau + volad) * ((volau +  volad) .ge. 100)", sel_link="vdf=12 and mode=v")
         util.emme_segment_calc(scenario, "us2", "length * 60 / @posted_speed + 0.85 * ((volau + volad) / (@capacity * lanes))^5", sel_link="vdf=13 and mode=v")
