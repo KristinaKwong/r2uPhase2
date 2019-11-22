@@ -1,4 +1,4 @@
-c Emme Modeller - Base Network Transaction
+c Modeller - Base Network Transaction
 c Scenario 3500:  2035 Base Network
 t nodes
 c   Node          X-coord          Y-coord   Data1   Data2   Data3 Label
