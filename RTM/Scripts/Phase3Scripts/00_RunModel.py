@@ -40,7 +40,7 @@ class FullModelRun(_m.Tool()):
         self.run_capacited_transit = True
         self.num_processors = multiprocessing.cpu_count()
         self.run_parking_model = True
-        self.run_toll_skim = False
+        self.run_toll_skim = True
 
     def page(self):
         pb = _m.ToolPageBuilder(self)
