@@ -71,7 +71,7 @@ class DataExport(_m.Tool()):
         df = amDf.append(mdDf).append(pmDf)
 
         conn = util.get_db_byname(eb, "trip_summaries.db")
-        df.to_sql(name='aggregateNetResults', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='aggregateNetResults', con=conn, index=False, if_exists='replace')
         conn.close()
 
         # average travel time by mode
@@ -80,7 +80,7 @@ class DataExport(_m.Tool()):
         df = transitDf.append(autoDf)
 
         conn = util.get_db_byname(eb, "trip_summaries.db")
-        df.to_sql(name='avgTravelTimes', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='avgTravelTimes', con=conn, index=False, if_exists='replace')
         conn.close()
 
         # trip generation
@@ -88,14 +88,14 @@ class DataExport(_m.Tool()):
         df = p.append(a)
 
         conn = util.get_db_byname(eb, "trip_summaries.db")
-        df.to_sql(name='tripGeneration', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='tripGeneration', con=conn, index=False, if_exists='replace')
         conn.close()
 
         # auto network outputs
         dfAuto, dfTransit = self.networkExport(eb)
         conn = util.get_db_byname(eb, 'trip_summaries.db')
-    	dfAuto.to_sql(name='netResults', con=conn, flavor='sqlite', index=False, if_exists='replace')
-    	dfTransit.to_sql(name='transitResults', con=conn, flavor='sqlite', index=False, if_exists='replace')
+    	dfAuto.to_sql(name='netResults', con=conn, index=False, if_exists='replace')
+    	dfTransit.to_sql(name='transitResults', con=conn, index=False, if_exists='replace')
     	conn.close()
 
         self.autoStats(eb)
@@ -222,8 +222,10 @@ class DataExport(_m.Tool()):
 
 
         # create categorical fields from original colnames
-        dfTimeModeVot = dfGy['timeModeVot'].str.extract(r'(?P<peak>[a|m|p]{1}[m|d])(?P<mode>Sov|Hov|LGV|HGV)Demand(?P<votclass>\d)')
-        dfTimeModeVotT = dfTollGy['timeModeVot'].str.extract(r'(?P<peak>[a|m|p]{1}[m|d])(?P<mode>Sov|Hov|LGV|HGV)Toll(?P<votclass>\d)')
+        # old coding*****  dfTimeModeVot = dfGy['timeModeVot'].str.extract(r'(?P<peak>[a|m|p]{1}[m|d])(?P<mode>Sov|Hov|LGV|HGV)Demand(?P<votclass>\d)')
+        dfTimeModeVot = dfGy['timeModeVot'].str.extract(r'(?P<peak>[a|m|p]{1}[m|d])(?P<mode>Sov|Hov|LGV|HGV)Demand(?P<votclass>\d)',expand=True)
+        # old coding*****   dfTimeModeVotT = dfTollGy['timeModeVot'].str.extract(r'(?P<peak>[a|m|p]{1}[m|d])(?P<mode>Sov|Hov|LGV|HGV)Toll(?P<votclass>\d)')
+        dfTimeModeVotT = dfTollGy['timeModeVot'].str.extract(r'(?P<peak>[a|m|p]{1}[m|d])(?P<mode>Sov|Hov|LGV|HGV)Toll(?P<votclass>\d)',expand=True)
 
         dfGy = pd.concat([dfGy,dfTimeModeVot], axis=1)
         dfGy = dfGy[['gy_i','gy_j','peak','mode','votclass','trips']]
@@ -235,9 +237,9 @@ class DataExport(_m.Tool()):
         dfTollGy = dfTollGy[['gy_i','gy_j','peak','mode','votclass','tolls']]
 
         conn = util.get_db_byname(eb, 'trip_summaries.db')
-        dfGy.to_sql(name='autoTripsGy', con=conn, flavor='sqlite', index=False, if_exists='replace')
-        df2Gy.to_sql(name='autoVktGy', con=conn, flavor='sqlite', index=False, if_exists='replace')
-        dfTollGy.to_sql(name='autoTollGy', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        dfGy.to_sql(name='autoTripsGy', con=conn, index=False, if_exists='replace')
+        df2Gy.to_sql(name='autoVktGy', con=conn, index=False, if_exists='replace')
+        dfTollGy.to_sql(name='autoTollGy', con=conn, index=False, if_exists='replace')
         conn.close()
 
     def addViewBridgeXings(self, eb):
@@ -766,7 +768,8 @@ class DataExport(_m.Tool()):
 
     	# clean up transit lines for aggregation.  Extract line and direction from EMME coding
     	dfTransit = dfAmT.append(dfMdT).append(dfPmT)
-        dfLineName = dfTransit['Line'].str.extract(r'(?P<newLine>[a-zA-Z]{0,2}_?\d+)(?:[^ioNSEW\d]?)(?P<dir>N|S|E|W|L|[M]2?)')
+        #dfLineName = dfTransit['Line'].str.extract(r'(?P<newLine>[a-zA-Z]{0,2}_?\d+)(?:[^ioNSEW\d]?)(?P<dir>N|S|E|W|L|[M]2?)')
+        dfLineName = dfTransit['Line'].str.extract(r'(?P<newLine>[a-zA-Z]{0,2}_?\d+)(?:[^ioNSEW\d]?)(?P<dir>N|S|E|W|L|[M]2?)',expand=True)
         dfTransit = pd.concat([dfTransit, dfLineName], axis=1)
 
         dfAuto = dfAm.append(dfMd).append(dfPm)
@@ -893,7 +896,9 @@ class DataExport(_m.Tool()):
             dfDict['Length'].append(link.length)
             dfDict['Auto_Time'].append(np.maximum(link.auto_time, 0))
             dfDict['tolls'].append(link['@tolls'])
-            dfDict['speed'].append((link.length / (np.maximum(link.auto_time, 0) / 60)))
+            ## original coding  *****     dfDict['speed'].append((link.length / (np.maximum(link.auto_time, 0) / 60)))
+            if np.maximum(link.auto_time, 0)>0:dfDict['speed'].append((link.length / (np.maximum(link.auto_time, 0) / 60)))
+            if np.maximum(link.auto_time, 0)==0:dfDict['speed'].append(0)
             dfDict['lanes'].append(link.num_lanes)
             dfDict['func_class'].append(link.type)
             dfDict['vdf'].append(link.volume_delay_func)

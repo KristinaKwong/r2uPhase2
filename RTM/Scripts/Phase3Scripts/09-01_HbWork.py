@@ -876,12 +876,12 @@ class HbWork(_m.Tool()):
         DfAuto, DfTran = self.splitpnr(DfmergedAuto, DfmergedTran, DfInt)
 
 # Store park and ride Demands separately for time slicing
-        SOV_BAu_I1 = DfAuto['BAuI1'].reshape(NoTAZ, NoTAZ)  # low income SOV trips to PnR Zones
-        SOV_BAu_I2 = DfAuto['BAuI2'].reshape(NoTAZ, NoTAZ)  # med income SOV trips to PnR Zones
-        SOV_BAu_I3 = DfAuto['BAuI3'].reshape(NoTAZ, NoTAZ)  # high income SOV trips to PnR Zones
-        Bus_BAu    = (DfTran['BAuI1'].reshape(NoTAZ, NoTAZ) # bus trips from PnR zone to destination
-                     +DfTran['BAuI2'].reshape(NoTAZ, NoTAZ)
-                     +DfTran['BAuI3'].reshape(NoTAZ, NoTAZ))
+        SOV_BAu_I1 = DfAuto['BAuI1'].values.reshape(NoTAZ, NoTAZ)  # low income SOV trips to PnR Zones
+        SOV_BAu_I2 = DfAuto['BAuI2'].values.reshape(NoTAZ, NoTAZ)  # med income SOV trips to PnR Zones
+        SOV_BAu_I3 = DfAuto['BAuI3'].values.reshape(NoTAZ, NoTAZ)  # high income SOV trips to PnR Zones
+        Bus_BAu    = (DfTran['BAuI1'].values.reshape(NoTAZ, NoTAZ) # bus trips from PnR zone to destination
+                     +DfTran['BAuI2'].values.reshape(NoTAZ, NoTAZ)
+                     +DfTran['BAuI3'].values.reshape(NoTAZ, NoTAZ))
 
         ## Rail
         Dfmerge = util.get_pd_ij_df(eb)
@@ -894,12 +894,12 @@ class HbWork(_m.Tool()):
         DfmergedTran = Dfmerge.groupby(['BL', 'j']).sum().reset_index()
         DfAuto, DfTran = self.splitpnr(DfmergedAuto, DfmergedTran, DfInt)
 
-        SOV_RAu_I1 = DfAuto['RAuI1'].reshape(NoTAZ, NoTAZ) # low income SOV trips to PnR Zones
-        SOV_RAu_I2 = DfAuto['RAuI2'].reshape(NoTAZ, NoTAZ) # med income SOV trips to PnR Zones
-        SOV_RAu_I3 = DfAuto['RAuI3'].reshape(NoTAZ, NoTAZ) # high income SOV trips to PnR Zones
-        Ral_RAu    = (DfTran['RAuI1'].reshape(NoTAZ, NoTAZ)# rail trips from PnR zone to destination
-                     +DfTran['RAuI2'].reshape(NoTAZ, NoTAZ)
-                     +DfTran['RAuI3'].reshape(NoTAZ, NoTAZ))
+        SOV_RAu_I1 = DfAuto['RAuI1'].values.reshape(NoTAZ, NoTAZ) # low income SOV trips to PnR Zones
+        SOV_RAu_I2 = DfAuto['RAuI2'].values.reshape(NoTAZ, NoTAZ) # med income SOV trips to PnR Zones
+        SOV_RAu_I3 = DfAuto['RAuI3'].values.reshape(NoTAZ, NoTAZ) # high income SOV trips to PnR Zones
+        Ral_RAu    = (DfTran['RAuI1'].values.reshape(NoTAZ, NoTAZ)# rail trips from PnR zone to destination
+                     +DfTran['RAuI2'].values.reshape(NoTAZ, NoTAZ)
+                     +DfTran['RAuI3'].values.reshape(NoTAZ, NoTAZ))
         ##WCE
         Dfmerge = util.get_pd_ij_df(eb)
         Dfmerge['BL'] = BLWcWk
@@ -911,12 +911,12 @@ class HbWork(_m.Tool()):
         DfmergedTran = Dfmerge.groupby(['BL', 'j']).sum().reset_index()
         DfAuto, DfTran = self.splitpnr(DfmergedAuto, DfmergedTran, DfInt)
 
-        SOV_WAu_I1 = DfAuto['WAuI1'].reshape(NoTAZ, NoTAZ) # low income SOV trips to PnR Zones
-        SOV_WAu_I2 = DfAuto['WAuI2'].reshape(NoTAZ, NoTAZ) # med income SOV trips to PnR Zones
-        SOV_WAu_I3 = DfAuto['WAuI3'].reshape(NoTAZ, NoTAZ) # high income SOV trips to PnR Zones
-        WCE_WAu    = (DfTran['WAuI1'].reshape(NoTAZ, NoTAZ)# rail trips from PnR zone to destination
-                     +DfTran['WAuI2'].reshape(NoTAZ, NoTAZ)
-                     +DfTran['WAuI3'].reshape(NoTAZ, NoTAZ))
+        SOV_WAu_I1 = DfAuto['WAuI1'].values.reshape(NoTAZ, NoTAZ) # low income SOV trips to PnR Zones
+        SOV_WAu_I2 = DfAuto['WAuI2'].values.reshape(NoTAZ, NoTAZ) # med income SOV trips to PnR Zones
+        SOV_WAu_I3 = DfAuto['WAuI3'].values.reshape(NoTAZ, NoTAZ) # high income SOV trips to PnR Zones
+        WCE_WAu    = (DfTran['WAuI1'].values.reshape(NoTAZ, NoTAZ)# rail trips from PnR zone to destination
+                     +DfTran['WAuI2'].values.reshape(NoTAZ, NoTAZ)
+                     +DfTran['WAuI3'].values.reshape(NoTAZ, NoTAZ))
 
         del Dfmerge, DfmergedAuto, DfmergedTran
         del DfAuto, DfTran

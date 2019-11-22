@@ -141,7 +141,7 @@ class TripAttractions(_m.Tool()):
                     + c_hbw_HEPA * df['EMP_Health_Educat_PubAdmin'] )*df['bowen_adj']
 
         # balance to productions
-        scalar = ct_df.get_value(index='hbw', col='control_total')/ df['hbw'].sum()
+        scalar = ct_df.at['hbw','control_total']/ df['hbw'].sum()
         df['hbw'] = df['hbw'] * scalar
 
         # HBESC ################################################################
@@ -157,7 +157,7 @@ class TripAttractions(_m.Tool()):
 
         # clear out intercept trips from pnr and external zones and balance
         df['hbesc'] = np.where(df['TAZ1741'] < 1000, 0, df['hbesc'])
-        scalar = ct_df.get_value(index='hbesc', col='control_total') / df['hbesc'].sum()
+        scalar = ct_df.at['hbesc','control_total'] / df['hbesc'].sum()
         df['hbesc'] = df['hbesc'] * scalar
 
         # HBPB #################################################################
@@ -166,7 +166,7 @@ class TripAttractions(_m.Tool()):
                      + c_hbpb_HEPA * df['EMP_Health_Educat_PubAdmin']
                      + c_hbpb_PoTot * df['POP_Total'] )*df['bowen_adj']
 
-        scalar = ct_df.get_value(index='hbpb', col='control_total')/ df['hbpb'].sum()
+        scalar = ct_df.at['hbpb', 'control_total']/ df['hbpb'].sum()
         df['hbpb'] = df['hbpb'] * scalar
 
         # HBSCH ################################################################
@@ -197,7 +197,7 @@ class TripAttractions(_m.Tool()):
         # HBSHOP ###############################################################
         df['hbshop'] = c_hbshop_Ret * df['EMP_Retail']*df['bowen_adj']
 
-        scalar = ct_df.get_value(index='hbshop', col='control_total')/ df['hbshop'].sum()
+        scalar = ct_df.at['hbshop', 'control_total']/ df['hbshop'].sum()
         df['hbshop'] = df['hbshop'] * scalar
 
         # HBSOC ################################################################
@@ -208,7 +208,7 @@ class TripAttractions(_m.Tool()):
               + c_hbsoc_PoTot * df['POP_Total'] )*df['bowen_adj']
 
         df['hbsoc'] = np.where(df['TAZ1741'] < 1000, 0, df['hbsoc'])
-        scalar = ct_df.get_value(index='hbsoc', col='control_total') / df['hbsoc'].sum()
+        scalar = ct_df.at['hbsoc', 'control_total'] / df['hbsoc'].sum()
         df['hbsoc'] = df['hbsoc'] * scalar
 
         # NHBW #################################################################
@@ -222,7 +222,7 @@ class TripAttractions(_m.Tool()):
                      + c_nhbw_HEPA * df['EMP_Health_Educat_PubAdmin'] )*df['bowen_adj']
 
         df['nhbw'] = np.where(df['TAZ1741'] < 1000, 0, df['nhbw'])
-        scalar = ct_df.get_value(index='nhbw', col='control_total') / df['nhbw'].sum()
+        scalar = ct_df.at['nhbw', 'control_total'] / df['nhbw'].sum()
         df['nhbw'] = df['nhbw'] * scalar
 
         # NHBO #################################################################
@@ -233,7 +233,7 @@ class TripAttractions(_m.Tool()):
                      + c_nhbo_EE * df['Elementary_Enrolment']
                      + c_nhbo_SE * df['Secondary_Enrolment'] )*df['bowen_adj']
 
-        scalar = ct_df.get_value(index='nhbo', col='control_total') / df['nhbo'].sum()
+        scalar = ct_df.at['nhbo', 'control_total'] / df['nhbo'].sum()
         df['nhbo'] = df['nhbo'] * scalar
 
         # HBU ##################################################################
