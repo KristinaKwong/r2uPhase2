@@ -82,6 +82,8 @@ class InputSettings(_m.Tool()):
 
         util.custom_tline(amscen, mdscen, pmscen)
 
+        util.custom_tseg(amscen, mdscen, pmscen)
+
     def attribute_code(self, scen, lane_attr, vdf_attr, tpf_attr, hdw_attr, toll_attr, capacity_attr):
         util = _m.Modeller().tool("translink.util")
         create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
