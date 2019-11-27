@@ -6263,26 +6263,42 @@ a'105N1X' b  13  30.00  23.00 '105 NB1'                 0      0      0
    292014         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    292008         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    292004         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   291502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   291409         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   291408         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   291901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   291502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   292001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   291501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   291201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   291202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   290705         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   290408         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   291103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   291105         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   291106         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   291405         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   291406         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   291407         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   291802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    292401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    292402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   292404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   292404         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    291804        lay=5.00
 c 105N1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
 a'105S1X' b  13  30.00  23.00 '105 SB1'                 0      0      0
   path=no
    291804         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   291803         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   291803         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    291801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   291407         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   291802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   292401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   291901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   291408         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   291409         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   291407         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   291406         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   291405         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   291106         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   291105         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   291103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   290408         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   290705         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   291202         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   291201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   291501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   292001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    291502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    292004         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    292008         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -6297,7 +6313,7 @@ a'105S1X' b  13  30.00  23.00 '105 SB1'                 0      0      0
    293203         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    293204         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    293106         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   293108         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   293108         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    293107        lay=5.00
 c 105S1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
 a'106E1X' b   1  10.00  23.00 '106-EB1'                 0      0      0
@@ -6360,7 +6376,7 @@ a'106W1X' b   1   7.50  23.00 '106-WB1'                 0      0      0
    285502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    285504         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    286603        lay=5.00
-c 106W1X first:      dwt=<0.01 hidden:    us1=0   us2=0   us3=0
+c 106W1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
 a'109N1X' b  13  30.00  23.00 '109 NB1'                 0      0      0
   path=no
    293107         dwt=+0   ttf=1   us1=0   us2=0   us3=0
