@@ -6,5 +6,4 @@ set PYTHON=%EMMEPATH%\Python27\python.exe
 "%PYTHON%" toolbox_modify.py ../Scripts/Phase3Scripts/RTM_Phase3.mtbx Phase3Scripts
 "%PYTHON%" toolbox_modify.py ../Scripts/util/RTM_util.mtbx util
 "%PYTHON%" toolbox_modify.py ../Scripts/Phase3Analytics/Analytics.mtbx Phase3Analytics
-"%PYTHON%" toolbox_modify.py ../Scripts/EconomicAnalysis/EconomicAnalysis.mtbx EconomicAnalysis
 PAUSE
