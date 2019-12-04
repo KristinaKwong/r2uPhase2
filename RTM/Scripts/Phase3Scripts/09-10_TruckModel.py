@@ -19,8 +19,8 @@ class FullTruckModel(_m.Tool()):
         pb.description = "Run Full Truck Model"
         pb.branding_text = "TransLink"
 
-        pb.add_select(tool_attribute_name="Year",keyvalues=[[2011,"2011"],[2016,"2016"],[2035,"2035"],[2050,"2050"]],
-                        title="Choose Analysis Year (2011, 2016, 2035 or 2050)")
+        pb.add_select(tool_attribute_name="Year",keyvalues=[[2011,"2011"],[2016,"2016"],[2017,"2017"],[2035,"2035"],[2050,"2050"]],
+                        title="Choose Analysis Year (2011, 2016, 2017, 2035 or 2050)")
 
         if self.tool_run_msg:
             pb.add_html(self.tool_run_msg)

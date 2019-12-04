@@ -466,6 +466,46 @@ class Util(_m.Tool()):
             if per == "PM" or per == "ALL":
                 self.emme_tline_calc(pmscen, res, exp, sel, agg)
 
+    def custom_tseg(self, amscen, mdscen, pmscen):
+
+            custom_network = os.path.join(self.get_input_path(amscen.emmebank), 'custom_tseg.txt')
+            if not os.path.isfile(custom_network):
+                return
+
+            with open(custom_network, "rb") as sourcefile:
+                lines = list(csv.reader(sourcefile, skipinitialspace=True, delimiter='\t'))
+
+            for line in lines:
+                # skip commented lines
+                if line[0].startswith('#'):
+                    continue
+                # error on short records
+                if len(line) < 3:
+                    raise Exception("Error reading custom segment file, less than 3 columns found")
+
+                per = line[0].strip()
+                res = line[1].strip()
+                exp = line[2].strip()
+
+                sellink = "all"
+                if len(line) > 3:
+                    sellink = line[3].strip()
+                selline = "all"
+                if len(line) > 4:
+                    selline = line[4].strip()
+                agg = None
+                if len(line) > 5:
+                    agg = line[5].strip()
+
+                if per == "AM" or per == "ALL":
+                    self.emme_segment_calc(amscen, res, exp, sellink, selline, agg)
+
+                if per == "MD" or per == "ALL":
+                    self.emme_segment_calc(mdscen, res, exp, sellink, selline, agg)
+
+                if per == "PM" or per == "ALL":
+                    self.emme_segment_calc(pmscen, res, exp, sellink, selline, agg)   
+   
     def custom_link_attributes(self, amscen, mdscen, pmscen):
 
         create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
