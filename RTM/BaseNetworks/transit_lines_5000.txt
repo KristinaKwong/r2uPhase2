@@ -22350,7 +22350,7 @@ a'910N1X' l  39   6.70  60.00 'CL-Richmond Ctr/Vanc'      0      0      0
   path=no
    515704      dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
    513601      dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
-   512401      dwt=+0.63  ttf=10   us1=0   us2=0   us3=0
+   512401      dwt=+1.52  ttf=10   us1=0   us2=0   us3=0
    511406      dwt=#0.77  ttf=10   us1=0   us2=0   us3=0
    510504      dwt=+1.04  ttf=10   us1=0   us2=0   us3=0
    510505      dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
@@ -22376,7 +22376,7 @@ a'910S1X' l  39   6.70  60.00 'CL-VancCBD/Richmond'      0      0      0
    242402      dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
    244605      dwt=+2.74  ttf=10   us1=0   us2=0   us3=0
    510505      dwt=#0.15  ttf=10   us1=0   us2=0   us3=0
-   510504      dwt=+0.77  ttf=10   us1=0   us2=0   us3=0
+   510504      dwt=+1.66  ttf=10   us1=0   us2=0   us3=0
    511406      dwt=+1.52  ttf=10   us1=0   us2=0   us3=0
    512401      dwt=+1.91  ttf=10   us1=0   us2=0   us3=0
    513601      dwt=+1.62  ttf=10   us1=0   us2=0   us3=0
