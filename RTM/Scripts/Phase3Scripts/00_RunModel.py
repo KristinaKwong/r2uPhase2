@@ -64,7 +64,7 @@ class FullModelRun(_m.Tool()):
         pb.add_text_box(tool_attribute_name="horizon_year",
                         size="4",
                         title="Model horizon year:",
-                        note="Should match current landuse years: 2011, 2016, 2017, 2035 and 2050")
+                        note="Should match current landuse years: 2011, 2017, 2035 and 2050")
 
         pb.add_select_scenario(tool_attribute_name="master_scen",
                         title="Scenario containing network information:",
