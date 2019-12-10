@@ -64,7 +64,13 @@ class DataGeneration(_m.Tool()):
             util.emme_segment_calc(md_scen, "us2", "60*length/speed")
             util.emme_segment_calc(pm_scen, "us2", "60*length/speed")
 
+            util.emme_segment_calc(am_scen, "us3", "@posted_speed")
+            util.emme_segment_calc(md_scen, "us3", "@posted_speed")
+            util.emme_segment_calc(pm_scen, "us3", "@posted_speed")
+            
+
             transit_assign = _m.Modeller().tool("translink.RTM3.stage3.transitassignment")
+
             transit_assign(eb, am_scen, md_scen, pm_scen, disable_congestion=True)
 
 
