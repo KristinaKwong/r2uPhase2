@@ -645,7 +645,7 @@ class AutoAssignment(_m.Tool()):
         util.emme_segment_calc(scenario, "us2", "length * 60 / (@posted_speed * 1.1) * (1 + .6 * .43 * ((volau + volad) / (@capacity * lanes ^ 1.05)) ^ 5.25)", sel_link="vdf=16 and mode=v")
 
 
-        util.emme_segment_calc(scenario, "us3", "@posted_speed")
+        util.emme_segment_calc(scenario, "us3", "us1 + 60 * length / @posted_speed * 1.1 + @signal_delay")
 
     def check_signal_delay(self, scenario):
         #check if @signal_delay attribute exist
