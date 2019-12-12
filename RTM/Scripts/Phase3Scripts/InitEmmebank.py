@@ -298,8 +298,10 @@ class InitEmmebank(_m.Tool()):
 
         # Update FT functions to include dwell time (us1) based on boardings and alightings
         eb.create_function("ft01", "us1 + 1.1 * us2")
-        eb.create_function("ft02", "us1 + 60 * length / us3 * 1.1") # place holder for transit specific lanes
+        eb.create_function("ft02", "us3") # place holder for transit specific lanes
         eb.create_function("ft10", "0.01")
+        
+        
         eb.create_function("fp01", "(.1 + pvolau / 100) ^ 4")
         eb.create_function("fp02", "(.1 + pvolau / 200) ^ 4")
         eb.create_function("fp03", "(.1 + pvolau / 300) ^ 4")
