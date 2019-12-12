@@ -637,12 +637,11 @@ class AutoAssignment(_m.Tool()):
         util.emme_segment_calc(scenario, "us2", "timau", sel_link="mode=v")
 
         # us2=timau where timau exists
-        util.emme_segment_calc(scenario, "us2", "length * 60 / 40", sel_link="vdf=11 and mode=v")
-        util.emme_segment_calc(scenario, "us2", "40 + ((volau + volad) - 100) * 60 / (volau + volad) * ((volau +  volad) .ge. 100)", sel_link="vdf=12 and mode=v")
-        util.emme_segment_calc(scenario, "us2", "length * 60 / @posted_speed + 0.85 * ((volau + volad) / (@capacity * lanes))^5", sel_link="vdf=13 and mode=v")
-        util.emme_segment_calc(scenario, "us2", "@signal_delay + length * 60 / @posted_speed + .85 * ((volau + volad) / (@capacity * lanes)) ^ 4", sel_link="vdf=14 and mode=v")
-        util.emme_segment_calc(scenario, "us2", "length * 60 / @posted_speed * (1 + .6 * .85 * ((volau + volad) / (@capacity * lanes ^ 1.05)) ^ 5)", sel_link="vdf=15 and mode=v")
-        util.emme_segment_calc(scenario, "us2", "length * 60 / (@posted_speed * 1.1) * (1 + .6 * .43 * ((volau + volad) / (@capacity * lanes ^ 1.05)) ^ 5.25)", sel_link="vdf=16 and mode=v")
+        # calculate original timau where MSC vdfs are being used
+        util.emme_segment_calc(scenario, "us2", "length * 60 / @posted_speed + 0.85 * ((volau + volad) / (@capacity * lanes))^5", sel_link="vdf=23 and mode=v")
+        util.emme_segment_calc(scenario, "us2", "@signal_delay + length * 60 / @posted_speed + .85 * ((volau + volad) / (@capacity * lanes)) ^ 4", sel_link="vdf=24 and mode=v")
+        util.emme_segment_calc(scenario, "us2", "length * 60 / @posted_speed * (1 + .6 * .85 * ((volau + volad) / (@capacity * lanes ^ 1.05)) ^ 5)", sel_link="vdf=25 and mode=v")
+        util.emme_segment_calc(scenario, "us2", "length * 60 / (@posted_speed * 1.1) * (1 + .6 * .43 * ((volau + volad) / (@capacity * lanes ^ 1.05)) ^ 5.25)", sel_link="vdf=26 and mode=v")
 
 
         util.emme_segment_calc(scenario, "us3", "us1 + 60 * length / @posted_speed * 1.1 + @signal_delay")
