@@ -138,7 +138,7 @@ class ModeChoiceGenDf(_m.Tool()):
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
         BlendDict = {'nhbo':{'PA':nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlSovCost', 'NHbOBlSovTime']}, # non-home base other
                      'hbsc':{'PA':hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlSovCost', 'HbScBlSovTime']}, # home-base school
-                     'hbsh':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbShBlSovCost_I1', 'HbShBlSovTime_I1']}} # home-base shopping low
+                     'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlSovCost_I1', 'HbShBlSovTime_I1']}} # home-base shopping low
 
         for keys, values in BlendDict.items():
             Df = {}
@@ -294,7 +294,7 @@ class ModeChoiceGenDf(_m.Tool()):
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
         BlendDict = {'nhbo':{'PA':nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlHovCost', 'NHbOBlHovTime']}, # non-home base other
                      'hbsc':{'PA':hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlHovCost', 'HbScBlHovTime']}, # home-base school
-                     'hbsh':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbShBlHovCost_I1', 'HbShBlHovTime_I1']}} # home-base shopping low
+                     'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovCost_I1', 'HbShBlHovTime_I1']}} # home-base shopping low
 
         for keys, values in BlendDict.items():
 

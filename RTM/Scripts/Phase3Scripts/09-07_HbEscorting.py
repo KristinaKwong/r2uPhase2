@@ -128,6 +128,7 @@ class HbEscorting(_m.Tool()):
 
         Df['GenCostBus'] = ( (Df['BusIVT'] - Df['BusIVTBRT'])*B_IVT_perc
                            + Df['BusIVTBRT']*BRT_ivt
+                           + 1.92*Df['BusWat']
                            + 1.71*Df['BusAux']
                            + 10.81*Df['BusBrd'])
 
