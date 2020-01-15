@@ -709,7 +709,11 @@ class DataGeneration(_m.Tool()):
         # calculate the mimimum non-zero value in each row and set half that
         # as the intrazonal value
         for i in xrange(np_mat.shape[0]):
-            np_mat[i][i] = np_mat[i][np_mat[i] > 0].min() * 0.5
+            try:
+                np_mat[i][i] = np_mat[i][np_mat[i] > 0].min() * 0.5
+            except:
+                zoneid = util.get_matrix_numpy(eb, "mozoneindex")[i]
+                raise Exception("Zone #%d might be missing centroid connector"%zoneid)
 
         # write the updated matrix back to the emmebank
         util.set_matrix_numpy(eb, "mfdistAON", np_mat)
