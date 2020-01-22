@@ -69,7 +69,7 @@ class ExploreML(_m.Tool()):
         util.initmat(eb, "mf9999", "tempExportMatrix", "temp matrix to Export", 0) #for matrix data
         util.initmat(eb, "mo9999", "tempExportVector", "temp vector to Export", 0) #for vector data
         
-        conn = sqlite3.connect("Phase3Analytics/Variables_of_Interest_Results.db")
+        conn = util.get_db_byname(eb, "Variables_of_Interest_Results.db")
         
         #iterate through table and add mf data
         SQL_TableList = list(set(VOI_df["Category"].tolist())) #get unique sql table names
