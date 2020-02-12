@@ -1,6 +1,6 @@
 ##---------------------------------------------------------------------
 ##--General EMME Python Tool
-##--Namespace: translink.internal_tool.tagpolygon
+##--Namespace: translink.RTM3Analytics.GeographicTagging
 ##--Purpose: Tag polygon attribute to EMME links
 ##---------------------------------------------------------------------
 import inro.modeller as _m

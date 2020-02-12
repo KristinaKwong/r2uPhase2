@@ -1,7 +1,7 @@
 ##---------------------------------------------------------------------
 ##--TransLink Regional Transportation Model
 ##--
-##--Path:
+##--Path: translink.RTM3Analytics.DataExtraction
 ##--Purpose: Export data for Machine Learning Algorithm Exploration
 ##---------------------------------------------------------------------
 import inro.modeller as _m

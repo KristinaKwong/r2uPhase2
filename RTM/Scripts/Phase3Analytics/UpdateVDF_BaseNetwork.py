@@ -1,7 +1,7 @@
 ##---------------------------------------------------------------------
 ##--TransLink Phase 3.3 Regional Transportation Model
 ##--
-##--Path: translink.RTM3.checking.UpdateTextFileVDF
+##--Path: translink.RTM3Analytics.UpdateTextFileVDF
 ##--Purpose: Update Base Network Text Files to the RTM3.3 VDFs
 ##---------------------------------------------------------------------
 import inro.modeller as _m

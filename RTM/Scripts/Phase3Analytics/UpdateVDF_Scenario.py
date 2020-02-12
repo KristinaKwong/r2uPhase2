@@ -1,7 +1,7 @@
 ##---------------------------------------------------------------------
 ##--TransLink Phase 3.3 Regional Transportation Model
 ##--
-##--Path: translink.RTM3.checking.UpdateScenarioVDF
+##--Path: translink.RTM3Analytics.UpdateScenarioVDF
 ##--Purpose: Update Scenarios to the RTM3.3 VDFs
 ##---------------------------------------------------------------------
 import inro.modeller as _m
