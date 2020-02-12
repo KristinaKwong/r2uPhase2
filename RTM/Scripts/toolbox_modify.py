@@ -41,6 +41,7 @@
 
 
 import os
+import sqlite3
 import sqlite3.dbapi2 as _sql
 
 
@@ -53,15 +54,17 @@ class ToolboxWrap():
     attribute_dict = {}
 
     def __init__(self, toolbox_path):
-        self.toolbox_path = toolbox_path
-        self.connection = _sql.connect(self.toolbox_path, isolation_level=None)
-        self.cursor = self.connection.cursor()
+		self.toolbox_path = toolbox_path
+		self.connection = _sql.connect(self.toolbox_path, isolation_level=None)
+		self.cursor = self.connection.cursor()
 
-        self.documents = self.connection.execute('select * from documents').fetchall()
-        self.elements = self.connection.execute('select * from elements').fetchall()
-        self.attributes = self.connection.execute('select * from attributes').fetchall()
+		self.documents = self.connection.execute('select * from documents').fetchall()
+		self.elements = self.connection.execute('select * from elements').fetchall()
+		self.attributes = self.connection.execute('select * from attributes').fetchall()
 
-        self.get_tables_as_dict()
+		self.get_tables_as_dict()
+		
+
 
     def __enter__(self):
         return self
@@ -123,7 +126,7 @@ def change_root_path(toolbox_path, tools_root, new_tools_root):
 
 
 def set_tools_to_current_root(toolbox_path, root_dir_name):
-    print "Processing toolbox at:\n", toolbox_path, "\n\n"
+    print """====================\nProcessing toolbox at:\n""", toolbox_path, """\n===================="""
     new_root_path = os.path.dirname(os.path.dirname(toolbox_path))
 
     with ToolboxWrap(toolbox_path) as toolbox:
@@ -145,12 +148,17 @@ def set_tools_to_current_root(toolbox_path, root_dir_name):
 
 
 if __name__ == "__main__":
-    import sys
-    args = sys.argv
-    toolbox_path = args[1]
-    if len(args) > 2:
-        root_dir_name = args[2]
-    else:
-        root_dir_name = "Scripts"
-    set_tools_to_current_root(toolbox_path, root_dir_name)
+	try:
+		import sys
+		args = sys.argv
+		toolbox_path = args[1]
+		if len(args) > 2:
+			root_dir_name = args[2]
+		else:
+			root_dir_name = "Scripts"
+		set_tools_to_current_root(toolbox_path, root_dir_name)	
+		
+	except sqlite3.OperationalError:
+		print "File not found at " + toolbox_path + "."
+		pass
 
