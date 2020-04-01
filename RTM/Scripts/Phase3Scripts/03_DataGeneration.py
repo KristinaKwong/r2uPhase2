@@ -49,16 +49,24 @@ class DataGeneration(_m.Tool()):
         model_year = int(util.get_year(eb))
 
         cyclenum = util.get_cycle(eb)
+
         if cyclenum == 1:
             self.matrix_batchins(eb)
             self.calc_density(eb)
 
             am_scen, md_scen, pm_scen = util.get_tod_scenarios(eb)
 
+            # Generate Area type vector , rural = 1, suburban heavy = 2, suburban light = 3, urban = 4, very urban = 5
+            self.generate_area_type(eb)
+
             # Run iniitial AON assignment to generate a distance skim
             self.assignAON(am_scen)
 
+            # Generate distances to closest bus
+            self.calc_dist_to_station(eb)
+
             # turn off congested/capacited transit during data generation 0 matrix assignment
+
             # use default bus speed to populate us2
             util.emme_segment_calc(am_scen, "us2", "60*length/speed")
             util.emme_segment_calc(md_scen, "us2", "60*length/speed")
@@ -181,8 +189,10 @@ class DataGeneration(_m.Tool()):
     	md_weight = 0.41
     	pm_weight = 0.39
     	time_cut = 60
+        time_cut_tnc = 30
     	time_cut_uni = 45
         time_cut_soc = 60
+        time_cut_tnc_soc = 30
         floor = 0.000001
 
         emp_sql = """
@@ -268,11 +278,20 @@ class DataGeneration(_m.Tool()):
     	ij['MdTransitTime'] = ij[['MdBusTime','MdRailTime']].min(axis=1)
     	ij['PmTransitTime'] = ij[['PmBusTime','PmRailTime','PmWceTime']].min(axis=1)
 
+        # get HOV skims (used for TNC accessibility)
+        # get waiting time
+        NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
+        ij['TNCWaitTime'] = (util.get_matrix_numpy(eb, 'tncwaittime').reshape(NoTAZ,1)+ np.zeros((1,NoTAZ))).flatten()
+
+        ij['AmTNCTime'] = util.get_matrix_numpy(eb, 'AmHovTimeVOT2').flatten() + ij['TNCWaitTime']
+        ij['MdTNCTime'] = util.get_matrix_numpy(eb, 'MdHovTimeVOT2').flatten() + ij['TNCWaitTime']
+        ij['PmTNCTime'] = util.get_matrix_numpy(eb, 'PmHovTimeVOT2').flatten() + ij['TNCWaitTime']
+
     	#######################################################################
     	# Calculate and set transit accessibilities
     	#######################################################################
 
-    	# calculate weighted accessibilities
+    	# calculate weighted transit accessibilities
     	ij['transit_acc'] = np.where(ij['AmTransitTime'].between(floor, time_cut), ij['emp'] * am_weight, 0) \
     	+ np.where(ij['MdTransitTime'].between(floor, time_cut), ij['emp'] * md_weight, 0)  \
     	+ np.where(ij['PmTransitTime'].between(floor, time_cut), ij['emp'] * pm_weight, 0)
@@ -294,6 +313,28 @@ class DataGeneration(_m.Tool()):
     	util.set_matrix_numpy(eb, 'motransitAcc', ij_acc['transit_acc'].values)
     	util.set_matrix_numpy(eb, 'motransitAccLn', ij_acc['transit_acc_ln'].values)
 
+        # calculate weighted tnc accessibilities
+    	ij['tnc_acc'] = np.where(ij['AmTNCTime'].between(floor, time_cut_tnc), ij['emp'] * am_weight, 0) \
+    	+ np.where(ij['MdTNCTime'].between(floor, time_cut_tnc), ij['emp'] * md_weight, 0)  \
+    	+ np.where(ij['PmTNCTime'].between(floor, time_cut_tnc), ij['emp'] * pm_weight, 0)
+
+    	#aggregate to the origin zone
+    	ij_acc2 = ij['tnc_acc'].groupby(ij['i'])
+    	ij_acc2 = ij_acc2.sum()
+    	ij_acc2 = ij_acc2.reset_index()
+
+    	# log transform, floor output at 0
+    	if ij_acc2['tnc_acc'].min() < 1:
+    		log_trans_const = 1 - ij_acc2['tnc_acc'].min()
+    	else:
+    		log_trans_const = 0
+
+    	ij_acc2['tnc_acc_ln'] = np.log(ij_acc2['tnc_acc'] + log_trans_const)
+
+    	# write data back to emmebank
+    	util.set_matrix_numpy(eb, 'motncAcc', ij_acc2['tnc_acc'].values)
+    	util.set_matrix_numpy(eb, 'motncAccLn', ij_acc2['tnc_acc_ln'].values)
+
 
     	#######################################################################
     	# Calculate and set university accessibilities
@@ -301,12 +342,15 @@ class DataGeneration(_m.Tool()):
 
     	# calculate accessibilities
     	ij['uni_acc'] = np.where(ij['MdTransitTime'].between(floor, time_cut_uni), ij['postsec'], 0)
+        ij['TNCWaitTime'] = (util.get_matrix_numpy(eb, 'tncwaittime').reshape(NoTAZ,1)+ np.zeros((1,NoTAZ))).flatten()
+
+        ij['MdTNCTime'] = util.get_matrix_numpy(eb, 'MdHovTimeVOT2').flatten() + ij['TNCWaitTime']
+    	ij['uni_acc_tnc'] = np.where(ij['MdTNCTime'].between(floor, time_cut_tnc), ij['postsec'], 0)
 
     	#aggregate to the origin zone
     	ij_acc_u = ij['uni_acc'].groupby(ij['i'])
     	ij_acc_u = ij_acc_u.sum()
     	ij_acc_u = ij_acc_u.reset_index()
-
 
     	# log transform, floor output at 0
     	if ij_acc_u['uni_acc'].min() < 1:
@@ -316,17 +360,33 @@ class DataGeneration(_m.Tool()):
 
     	ij_acc_u['uni_acc_ln'] = np.log(ij_acc_u['uni_acc'] + log_trans_const)
 
-
     	# write data back to emmebank
     	util.set_matrix_numpy(eb, 'mouniAcc', ij_acc_u['uni_acc'].values)
     	util.set_matrix_numpy(eb, 'mouniAccLn', ij_acc_u['uni_acc_ln'].values)
+
+        #aggregate to the origin zone
+    	ij_acc_tnc_u = ij['uni_acc_tnc'].groupby(ij['i'])
+    	ij_acc_tnc_u = ij_acc_tnc_u.sum()
+    	ij_acc_tnc_u = ij_acc_tnc_u.reset_index()
+
+    	# log transform, floor output at 0
+    	if ij_acc_tnc_u['uni_acc_tnc'].min() < 1:
+    		log_trans_const = 1 - ij_acc_tnc_u['uni_acc_tnc'].min()
+    	else:
+    		log_trans_const = 0
+
+    	ij_acc_tnc_u['uni_acc_tnc_ln'] = np.log(ij_acc_tnc_u['uni_acc_tnc'] + log_trans_const)
+
+    	# write data back to emmebank
+    	util.set_matrix_numpy(eb, 'motncuniAcc', ij_acc_tnc_u['uni_acc_tnc'].values)
+    	util.set_matrix_numpy(eb, 'motncuniAccLn', ij_acc_tnc_u['uni_acc_tnc_ln'].values)
 
 
     	#######################################################################
     	# Calculate and set social accessibilities
     	#######################################################################
 
-    	# calculate weighted accessibilities
+    	# calculate weighted transit accessibilities
     	ij['soc_acc'] = np.where(ij['AmTransitTime'].between(floor, time_cut_soc), ij['emp_soc'] * am_weight, 0) \
     	+ np.where(ij['MdTransitTime'].between(floor, time_cut_soc), ij['emp_soc'] * md_weight, 0)  \
     	+ np.where(ij['PmTransitTime'].between(floor, time_cut_soc), ij['emp_soc'] * pm_weight, 0)
@@ -347,6 +407,28 @@ class DataGeneration(_m.Tool()):
     	# write data back to emmebank
     	util.set_matrix_numpy(eb, 'mosocAcc', ij_acc_s['soc_acc'].values)
     	util.set_matrix_numpy(eb, 'mosocAccLn', ij_acc_s['soc_acc_ln'].values)
+
+        # calculate weighted tnc accessibilities
+    	ij['soc_acc_tnc'] = np.where(ij['AmTNCTime'].between(floor, time_cut_tnc_soc), ij['emp_soc'] * am_weight, 0) \
+    	+ np.where(ij['MdTNCTime'].between(floor, time_cut_tnc_soc), ij['emp_soc'] * md_weight, 0)  \
+    	+ np.where(ij['PmTNCTime'].between(floor, time_cut_tnc_soc), ij['emp_soc'] * pm_weight, 0)
+
+    	#aggregate to the origin zone
+    	ij_acc_s2 = ij['soc_acc_tnc'].groupby(ij['i'])
+    	ij_acc_s2 = ij_acc_s2.sum()
+    	ij_acc_s2 = ij_acc_s2.reset_index()
+
+    	# log transform, floor output at 0
+    	if ij_acc_s2['soc_acc_tnc'].min() < 1:
+    		log_trans_const = 1 - ij_acc_s2['soc_acc_tnc'].min()
+    	else:
+    		log_trans_const = 0
+
+    	ij_acc_s2['soc_acc_tnc_ln'] = np.log(ij_acc_s2['soc_acc_tnc'] + log_trans_const)
+
+    	# write data back to emmebank
+    	util.set_matrix_numpy(eb, 'motncsocAcc', ij_acc_s2['soc_acc_tnc'].values)
+    	util.set_matrix_numpy(eb, 'motncsocAccLn', ij_acc_s2['soc_acc_tnc_ln'].values)
 
     	#######################################################################
     	# Write everything to sqlite database
@@ -746,6 +828,9 @@ class DataGeneration(_m.Tool()):
         util.initmat(eb, "mo213", "distTc", "Distance to Town Centre", 0)
         util.initmat(eb, "mo214", "uniAcc", "University Accessibility", 0)
         util.initmat(eb, "mo215", "socAcc", "Social Recreational Accessibility", 0)
+        util.initmat(eb, "mo216", "tncAcc", "TNC Accessibility", 0)
+        util.initmat(eb, "mo217", "tncsocAcc", "TNC Social Accessibility", 0)
+        util.initmat(eb, "mo218", "tncuniAcc", "TNC University Accessibility", 0)
 
         util.initmat(eb, "mo220", "autoAccLn", "Log Auto Accessibility", 0)
         util.initmat(eb, "mo221", "transitAccLn", "Log Transit Accessibility", 0)
@@ -753,3 +838,7 @@ class DataGeneration(_m.Tool()):
         util.initmat(eb, "mo223", "distTcLn", "Log Distance to Town Centre", 0)
         util.initmat(eb, "mo224", "uniAccLn", "Log University Accessibility", 0)
         util.initmat(eb, "mo225", "socAccLn", "Log Social Recreational Accessibility", 0)
+        util.initmat(eb, "mo226", "tncAccLn", "Log TNC Accessibility", 0)
+        util.initmat(eb, "mo227", "tncsocAccLn", "Log TNC Social Accessibility", 0)
+        util.initmat(eb, "mo228", "tncuniAccLn", "Log TNC University Accessibility", 0)
+
