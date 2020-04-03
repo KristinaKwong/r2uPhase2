@@ -45,6 +45,7 @@ class ModeChoiceGenDf(_m.Tool()):
         model_year = int(util.get_matrix_numpy(eb, "Year"))
 
         self.AutoGT(eb)
+        self.TncGT(eb)
         self.BusGT(eb)
         self.RailGT(eb)
         self.WceGT(eb)
@@ -55,12 +56,21 @@ class ModeChoiceGenDf(_m.Tool()):
 
 
         ## General Setup
+        # PNR Lots
         BLBsWk = util.get_matrix_numpy(eb, "buspr-lotChceWkAMPA").flatten() #Best Lot Bus Work
         BLBsNw = util.get_matrix_numpy(eb, "buspr-lotChceNWkAMPA").flatten() #Best Lot Bus Non-Work
         BLRlWk = util.get_matrix_numpy(eb, "railpr-lotChceWkAMPA").flatten() #Best Lot Rail Work
         BLRlNw = util.get_matrix_numpy(eb, "railpr-lotChceNWkAMPA").flatten() #Best Lot Rail Non-Work
         BLWcWk = util.get_matrix_numpy(eb, "wcepr-lotChceWkAMPA").flatten() #Best Lot WCE Work
         BLWcNw = util.get_matrix_numpy(eb, "wcepr-lotChceNWkAMPA").flatten() #Best Lot WCE Non-Work
+        # TNC/Taxi drop-off/pick-up locations
+        TncBsWk = util.get_matrix_numpy(eb, "bustnc-lotChceWkAMPA").flatten() #Best Lot Bus Work
+        TncBsNw = util.get_matrix_numpy(eb, "bustnc-lotChceNWkAMPA").flatten() #Best Lot Bus Non-Work
+        TncRlWk = util.get_matrix_numpy(eb, "railtnc-lotChceWkAMPA").flatten() #Best Lot Rail Work
+        TncRlNw = util.get_matrix_numpy(eb, "railtnc-lotChceNWkAMPA").flatten() #Best Lot Rail Non-Work
+        TncWcWk = util.get_matrix_numpy(eb, "wcetnc-lotChceWkAMPA").flatten() #Best Lot WCE Work
+        TncWcNw = util.get_matrix_numpy(eb, "wcetnc-lotChceNWkAMPA").flatten() #Best Lot WCE Non-Work
+
         NoTAZ  = len(util.get_matrix_numpy(eb, "zoneindex")) # Number of TAZs in Model
 
         # Time component blend factors
@@ -283,18 +293,19 @@ class ModeChoiceGenDf(_m.Tool()):
         ##############################################################################
         # Initialize Time and Cost Skim Dictionaries
 
-        TimeDict, CostDict = {}, {}
+        TimeDict, CostDict, TNCDict = {}, {}, {}
 
         # Generate Skim Dictionaries
             #                                 AM    ,       MD   ,            PM
         self.GenSkimDict(eb, CostDict, ["mfAmHovOpCstVOT1", "mfMdHovOpCstVOT1", "mfPmHovOpCstVOT1"]) # Cost
         self.GenSkimDict(eb, TimeDict, ["AmHovTimeVOT1", "MdHovTimeVOT1", "PmHovTimeVOT1"]) # Time
+        self.GenSkimDict(eb, TNCDict, ["mfAmTNCCost", "mfMdTNCCost", "mfPmTNCCost"])  # TNC Cost
 
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
-        BlendDict = {'nhbo':{'PA':nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlHovCost', 'NHbOBlHovTime']}, # non-home base other
-                     'hbsc':{'PA':hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlHovCost', 'HbScBlHovTime']}, # home-base school
-                     'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovCost_I1', 'HbShBlHovTime_I1']}} # home-base shopping low
+        BlendDict = {'nhbo':{'PA':nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlHovCost', 'NHbOBlHovTime', 'NHbOBlTNCCost']}, # non-home base other
+                     'hbsc':{'PA':hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlHovCost', 'HbScBlHovTime', 'HbScBlTNCCost']}, # home-base school
+                     'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovCost_I1', 'HbShBlHovTime_I1', 'HbShBlTNCCost_I1']}} # home-base shopping low
 
         for keys, values in BlendDict.items():
 
@@ -302,34 +313,37 @@ class ModeChoiceGenDf(_m.Tool()):
             # Calculate blended skim
             Df['AutoCos'] = self.calc_blend(values, CostDict)
             Df['AutoTim'] = self.calc_blend(values, TimeDict)
+            Df['TNCCost'] = self.calc_blend(values, TNCDict)
 
 
         # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoCos'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
+            util.set_matrix_numpy(eb, values['Mat'][2], Df['TNCCost'])
 
         #
         ###############################################################################################################
-        ##       Auto Skims SOV VOT 2 HbShopMed, HbSocLow, HbPbLow, HbPBMed, HbEsc, HbUniv, HbWLow, HbPB High, HbSocMed
+        ##       Auto Skims HOV VOT 2 HbShopMed, HbSocLow, HbPbLow, HbPBMed, HbEsc, HbUniv, HbWLow, HbPB High, HbSocMed
         ###############################################################################################################
 
-        TimeDict, CostDict = {}, {}
+        TimeDict, CostDict, TNCDict = {}, {}, {}
 
             #                                 AM    ,       MD   ,            PM
         self.GenSkimDict(eb, CostDict, ["mfAmHovOpCstVOT2", "mfMdHovOpCstVOT2", "mfPmHovOpCstVOT2"]) # Cost
         self.GenSkimDict(eb, TimeDict, ["AmHovTimeVOT2", "MdHovTimeVOT2", "PmHovTimeVOT2"]) # Time
+        self.GenSkimDict(eb, TNCDict, ["mfAmTNCCost", "mfMdTNCCost", "mfPmTNCCost"])  # TNC Cost
 
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
-        BlendDict = {'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovCost_I2', 'HbShBlHovTime_I2' ]}, # home-base shopping med
-                     'hbsol':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I1', 'HbSoBlHovTime_I1']}, # home-base social low
-                     'hbpbl':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I1', 'HbPbBlHovTime_I1']}, # home-base personal business low
-                     'hbpbm':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I2', 'HbPbBlHovTime_I2']}, # home-base personal business med
-                     'hbes':{'PA':hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlHovCost', 'HbEsBlHovTime']}, # home-base escorting
-                     'hbun':{'PA':hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbUBlHovCost', 'HbUBlHovTime']}, # home-base escorting
-                     'hbwo':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovCost_I1', 'HbWBlHovTime_I1' ]}, # home-base work low
-                     'hbpbh':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I3', 'HbPbBlHovTime_I3']}, # home-base personal business high
-                     'hbsom':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I2', 'HbSoBlHovTime_I2']}} # home-base social med
+        BlendDict = {'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovCost_I2', 'HbShBlHovTime_I2', 'HbShBlTNCCost_I2']}, # home-base shopping med
+                     'hbsol':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I1', 'HbSoBlHovTime_I1', 'HbSoBlTNCCost_I1']}, # home-base social low
+                     'hbpbl':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I1', 'HbPbBlHovTime_I1', 'HbPbBlTNCCost_I1']}, # home-base personal business low
+                     'hbpbm':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I2', 'HbPbBlHovTime_I2', 'HbPbBlTNCCost_I2']}, # home-base personal business med
+                     'hbes':{'PA':hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlHovCost', 'HbEsBlHovTime', 'HbEsBlTNCCost']}, # home-base escorting
+                     'hbun':{'PA':hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbUBlHovCost', 'HbUBlHovTime', 'HbUBlTNCCost']}, # home-base escorting
+                     'hbwo':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovCost_I1', 'HbWBlHovTime_I1', 'HbWBlTNCCost_I1']}, # home-base work low
+                     'hbpbh':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I3', 'HbPbBlHovTime_I3', 'HbPbBlTNCCost_I3']}, # home-base personal business high
+                     'hbsom':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I2', 'HbSoBlHovTime_I2', 'HbSoBlTNCCost_I2']}} # home-base social med
 
         for keys, values in BlendDict.items():
 
@@ -337,29 +351,31 @@ class ModeChoiceGenDf(_m.Tool()):
             # Calculate blended skim
             Df['AutoCos'] = self.calc_blend(values, CostDict)
             Df['AutoTim'] = self.calc_blend(values, TimeDict)
+            Df['TNCCost'] = self.calc_blend(values, TNCDict)
 
 
            # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoCos'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
+            util.set_matrix_numpy(eb, values['Mat'][2], Df['TNCCost'])
 
         ##############################################################################
         ##       Auto Skims Hov VOT 3 HbShopHigh, HbW Low, HbSocMed
         ##############################################################################
 
-        TimeDict, CostDict = {}, {}
+        TimeDict, CostDict, TNCDict, TollDict = {}, {}, {}, {}
 
             #                                 AM    ,       MD   ,            PM
         self.GenSkimDict(eb, CostDict, ["mfAmHovOpCstVOT3", "mfMdHovOpCstVOT3", "mfPmHovOpCstVOT3"]) # Cost
         self.GenSkimDict(eb, TimeDict, ["AmHovTimeVOT3", "MdHovTimeVOT3", "PmHovTimeVOT3"]) # Time
-
+        self.GenSkimDict(eb, TNCDict, ["mfAmTNCCost", "mfMdTNCCost", "mfPmTNCCost"])  # TNC Cost
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
-        BlendDict = {'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovCost_I3', 'HbShBlHovTime_I3']}, # home-base shopping high
-                     'hbwom':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovCost_I2', 'HbWBlHovTime_I2' ]}, # home-base work med
-                     'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlHovCost', 'NHbWBlHovTime']}, # non-home base work
-                     'hbso':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I3', 'HbSoBlHovTime_I3']}, # home-base social high
-                     'hbwoh':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovCost_I3', 'HbWBlHovTime_I3']}} # home-base work high
+        BlendDict = {'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovCost_I3', 'HbShBlHovTime_I3', 'HbShBlTNCCost_I3']}, # home-base shopping high
+                     'hbwom':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovCost_I2', 'HbWBlHovTime_I2', 'HbWBlTNCCost_I2' ]}, # home-base work med
+                     'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlHovCost', 'NHbWBlHovTime', 'NHbWBlTNCCost']}, # non-home base work
+                     'hbso':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I3', 'HbSoBlHovTime_I3', 'HbSoBlTNCCost_I3']}, # home-base social high
+                     'hbwoh':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovCost_I3', 'HbWBlHovTime_I3', 'HbWBlTNCCost_I3']}} # home-base work high
 
         for keys, values in BlendDict.items():
 
@@ -367,12 +383,55 @@ class ModeChoiceGenDf(_m.Tool()):
             # Calculate blended skim
             Df['AutoCos'] = self.calc_blend(values, CostDict)
             Df['AutoTim'] = self.calc_blend(values, TimeDict)
-
+            Df['TNCCost'] = self.calc_blend(values, TNCDict)
 
            # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoCos'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
+            util.set_matrix_numpy(eb, values['Mat'][2], Df['TNCCost'])
+        
+        ## TNC/Taxi Access Auto leg - HBW, HBU and HBSo
+        # TODO: check if walk time is required?
 
+        # Blend Factors                AM , MD  , PM           AM  ,MD , PM    Where Blended Matrices get stored in same order as above
+        BlendDictTNC = {'hbwtncb': {'PA': hbwo_fct[0], 'AP': hbwo_fct[1],
+                                    'Mat': ['HbWBlBAuTNCCost', 'HbWBlBAuTNCTime'], 'BL': TncBsWk},  # Bus
+                        'hbwtncr': {'PA': hbwo_fct[0], 'AP': hbwo_fct[1],
+                                    'Mat': ['HbWBlRAuTNCCost', 'HbWBlRAuTNCTime'], 'BL': TncRlWk},  # Rail
+                        'hbwtncw': {'PA': hbwo_fct_wce[0], 'AP': hbwo_fct_wce[1],
+                                    'Mat': ['HbWBlWAuTNCCost', 'HbWBlWAuTNCTime'], 'BL': TncWcWk},  # WCE
+                        'hbutncb': {'PA': hbun_fct[0], 'AP': hbun_fct[1],
+                                    'Mat': ['HbUBlBAuTNCCost', 'HbUBlBAuTNCTime'], 'BL': TncBsWk},  # Bus
+                        'hbutncr': {'PA': hbun_fct[0], 'AP': hbun_fct[1],
+                                    'Mat': ['HbUBlRAuTNCCost', 'HbUBlRAuTNCTime'], 'BL': TncRlWk},  # Rail
+                        #                           'hbutncw': {'PA': hbun_fct_wce[0], 'AP': hbun_fct_wce[1],
+                        #                                       'Mat': ['HbUBlWAuTNCCost', 'HbUBlWAuTNCTime'], 'BL': TncWcWk},  # WCE
+                        'hbsotncb': {'PA': hbso_fct[0], 'AP': hbso_fct[1],
+                                     'Mat': ['HbSoBlBAuTNCCost', 'HbSoBlBAuTNCTime'], 'BL': TncBsNw},  # Bus
+                        'hbsotncr': {'PA': hbso_fct[0], 'AP': hbso_fct[1],
+                                     'Mat': ['HbSoBlRAuTNCCost', 'HbSoBlRAuTNCTime'], 'BL': TncBsNw}  # Rail
+                        #                          'hbsotncw': {'PA': hbso_fct_wce[0], 'AP': hbso_fct_wce[1],
+                        #                                       'Mat': ['HbSoBlWAuTNCCost', 'HbSoBlWAuTNCTime'], 'BL': TncBsNw}  # WCE
+                        }
+
+        for keys, values in BlendDictTNC.items():
+            Df = pd.DataFrame()
+
+            # Generate data frame with Origin Destination and best lot
+            Dfmerge = util.get_pd_ij_df(eb)
+            Dfmerge['BL'] = values['BL']
+            # Generate second data frame and attach to it blended
+            Df_Auto_Leg = util.get_pd_ij_df(eb)
+            Df_Auto_Leg['TNCCost'] = self.calc_blend(values, TNCDict).flatten()
+
+            Df_Auto_Leg['AutoTim'] = self.calc_blend(values, TimeDict).flatten()
+
+            # Join the two data frames based on skims from Origin to the Best Lot
+            Df = pd.merge(Dfmerge, Df_Auto_Leg, left_on=['i', 'BL'],
+                          right_on=['i', 'j'], how='left')
+            # Put results back in the Emmebank
+            util.set_matrix_numpy(eb, values['Mat'][0], Df['TNCCost'].reshape(NoTAZ, NoTAZ))
+            util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'].reshape(NoTAZ, NoTAZ))
 
 #       ##############################################################################
 #       ##       Blended Bridge Crossings
@@ -494,18 +553,32 @@ class ModeChoiceGenDf(_m.Tool()):
             Df = {}
             Df['BusFar']  = self.calc_blend(values, BusFarDict)
             if keys == "trfrhbwo":
-                Temp_Fare = Df['BusFar'].flatten()
+                hbwo_temp_Fare = Df['BusFar'].flatten()
+            if keys == "trfrhbun":
+                hbun_temp_Fare = Df['BusFar'].flatten()
+            if keys == "trfrhbso":
+                hbso_temp_Fare = Df['BusFar'].flatten()
 
             util.set_matrix_numpy(eb, values['Mat'][0], Df['BusFar'])
 
 
        ##############################################################################
-       ##       Park and Ride Home-base Work/Uni/Soc Bus-leg
+       ##       Park and Ride and TNC Access Home-base Work/Uni/Soc Bus-leg
        ##############################################################################
-        BlendDictPR = { #AM,   MD,   PM         AM,   MD,   PM         Where Blended Matrices get stored in same order as above
-         'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
-         'Mat':['HbWBlBAuBusIvtt', 'HbWBlBAuBusWait', 'HbWBlBAuBusAux', 'HbWBlBAuBusBoard', 'HbWBlBAuBusFare'], 'BL': BLBsWk}
-                      }
+        BlendDictPR = {# AM,   MD,   PM         AM,   MD,   PM         Where Blended Matrices get stored in same order as above
+            'hbwopr': {'PA': hbwo_fct[0], 'AP': hbwo_fct[1],
+                     'Mat': ['HbWBlBAuBusIvtt', 'HbWBlBAuBusWait', 'HbWBlBAuBusAux', 'HbWBlBAuBusBoard','HbWBlBAuBusFare'], 'BL': BLBsWk},
+            'hbunpr': {'PA': hbun_fct[0], 'AP': hbun_fct[1],
+                     'Mat': ['HbUBlBAuBusIvtt', 'HbUBlBAuBusWait', 'HbUBlBAuBusAux', 'HbUBlBAuBusBoard','HbUBlBAuBusFare'], 'BL': BLBsWk},
+            'hbsopr': {'PA': hbso_fct[0], 'AP': hbso_fct[1],
+                     'Mat': ['HbSoBlBAuBusIvtt', 'HbSoBlBAuBusWait', 'HbSoBlBAuBusAux', 'HbSoBlBAuBusBoard','HbSoBlBAuBusFare'], 'BL': BLBsNw},
+            'hbwotnc': {'PA': hbwo_fct[0], 'AP': hbwo_fct[1],
+                        'Mat': ['HbWBlBTncBusIvtt', 'HbWBlBTncBusWait', 'HbWBlBTncBusAux', 'HbWBlBTncBusBoard','HbWBlBTncBusFare'], 'BL': TncBsWk},
+            'hbuntnc': {'PA': hbun_fct[0], 'AP': hbun_fct[1],
+                        'Mat': ['HbUBlBTncBusIvtt', 'HbUBlBTncBusWait', 'HbUBlBTncBusAux', 'HbUBlBTncBusBoard','HbUBlBTncBusFare'], 'BL': TncBsWk},
+            'hbsotnc': {'PA': hbso_fct[0], 'AP': hbso_fct[1],
+                        'Mat': ['HbSoBlBTncBusIvtt', 'HbSoBlBTncBusWait', 'HbSoBlBTncBusAux', 'HbSoBlBTncBusBoard','HbSoBlBTncBusFare'], 'BL': TncBsNw}}
+
         for keys, xValue in BlendDictPR.items():
 
             Df = pd.DataFrame()
@@ -518,7 +591,12 @@ class ModeChoiceGenDf(_m.Tool()):
             Df_Bus_Leg['BusWat'] = self.calc_blend(xValue, BusWatDict).flatten()
             Df_Bus_Leg['BusAux'] = self.calc_blend(xValue, BusAuxDict).flatten()
             Df_Bus_Leg['BusBrd'] = self.calc_blend(xValue, BusBrdDict).flatten()
-            Df_Bus_Leg['BusFar'] = Temp_Fare
+            if "hbwo" in keys:
+                Df_Bus_Leg['BusFar'] = hbwo_temp_Fare
+            if "hbun" in keys:
+                Df_Bus_Leg['BusFar'] = hbun_temp_Fare
+            if "hbso" in keys:
+                Df_Bus_Leg['BusFar'] = hbso_temp_Fare
             # Join the two data frames based on skims from the Best Lot to the destination
             Df = pd.merge(Dfmerge, Df_Bus_Leg, left_on = ['BL', 'j'],
                      right_on = ['i', 'j'], how = 'left')
@@ -529,7 +607,7 @@ class ModeChoiceGenDf(_m.Tool()):
             util.set_matrix_numpy(eb, xValue['Mat'][3], Df['BusBrd'].values.reshape(NoTAZ,NoTAZ))
             util.set_matrix_numpy(eb, xValue['Mat'][4], Df['BusFar'].values.reshape(NoTAZ,NoTAZ))
         # delete data generated to free up memory
-        del Df, Dfmerge, Df_Bus_Leg, BusIVTDict, BusWatDict, BusAuxDict, BusBrdDict, BusFarDict, Temp_Fare
+        del Df, Dfmerge, Df_Bus_Leg, BusIVTDict, BusWatDict, BusAuxDict, BusBrdDict, BusFarDict, hbwo_temp_Fare, hbso_temp_Fare, hbun_temp_Fare
 #
 #        ##############################################################################
 #        ##       Rail Skims
@@ -605,18 +683,31 @@ class ModeChoiceGenDf(_m.Tool()):
             Df = {}
             Df['RalFar']  = self.calc_blend(values, RalFarDict)
             if keys == "trfrhbwo":
-                Temp_Fare = Df['RalFar'].flatten()
+                hbwo_temp_Fare = Df['RalFar'].flatten()
+            if keys == "trfrhbun":
+                hbun_temp_Fare = Df['RalFar'].flatten()
+            if keys == "trfrhbso":
+                hbso_temp_Fare = Df['RalFar'].flatten()
 
             util.set_matrix_numpy(eb, values['Mat'][0], Df['RalFar'])
 
 #       ##############################################################################
-#        ##       Park and Ride Home-base Work/Uni/Soc Rail-leg
+#        ##       Park and Ride and TNC Access Home-base Work/Uni/Soc Rail-leg
 #        ##############################################################################
-        BlendDictPR = { #AM,   MD,   PM         AM,   MD,   PM
-           'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
-                 'Mat':['HbWBlRAuRailIvtt', 'HbWBlRAuRailIvttBus', 'HbWBlRAuRailWait', 'HbWBlRAuRailAux', 'HbWBlRAuRailBoard', 'HbWBlRAuRailFare'],
-                        'BL': BLRlWk}, #Where Blended Matrices get stored in same order as above
-                      }
+        BlendDictPR = {# AM,   MD,   PM         AM,   MD,   PM         Where Blended Matrices get stored in same order as above
+            'hbwopr': {'PA': hbwo_fct[0], 'AP': hbwo_fct[1],
+                       'Mat': ['HbWBlRAuRailIvtt', 'HbWBlRAuRailIvttBus', 'HbWBlRAuRailWait', 'HbWBlRAuRailAux', 'HbWBlRAuRailBoard', 'HbWBlRAuRailFare'], 'BL': BLRlWk},
+            'hbunpr': {'PA': hbun_fct[0], 'AP': hbun_fct[1],
+                       'Mat': ['HbUBlRAuRailIvtt', 'HbUBlRAuRailIvttBus', 'HbUBlRAuRailWait', 'HbUBlRAuRailAux','HbUBlRAuRailBoard', 'HbUBlRAuRailFare'], 'BL': BLRlWk},
+            'hbsopr': {'PA': hbso_fct[0], 'AP': hbso_fct[1],
+                       'Mat': ['HbSoBlRAuRailIvtt', 'HbSoBlRAuRailIvttBus', 'HbSoBlRAuRailWait', 'HbSoBlRAuRailAux', 'HbSoBlRAuRailBoard', 'HbSoBlRAuRailFare'], 'BL': BLRlNw},
+            'hbwotnc': {'PA': hbwo_fct[0], 'AP': hbwo_fct[1],
+                        'Mat': ['HbWBlRTncRailIvtt', 'HbWBlRTncRailIvttBus', 'HbWBlRTncRailWait', 'HbWBlRTncRailAux', 'HbWBlRTncRailBoard', 'HbWBlRTncRailFare'], 'BL': TncRlWk},
+            'hbuntnc': {'PA': hbun_fct[0], 'AP': hbun_fct[1],
+                        'Mat': ['HbUBlRTncRailIvtt', 'HbUBlRTncRailIvttBus', 'HbUBlRTncRailWait', 'HbUBlRTncRailAux', 'HbUBlRTncRailBoard', 'HbUBlRTncRailFare'], 'BL': TncRlWk},
+            'hbsotnc': {'PA': hbso_fct[0], 'AP': hbso_fct[1],
+                        'Mat': ['HbSoBlRTncRailIvtt', 'HbSoBlRTncRailIvttBus', 'HbSoBlRTncRailWait', 'HbSoBlRTncRailAux', 'HbSoBlRTncRailBoard', 'HbSoBlRTncRailFare'], 'BL': TncRlNw}}
+        
         for keys, xValue in BlendDictPR.items():
 
             Df = pd.DataFrame()
@@ -630,7 +721,12 @@ class ModeChoiceGenDf(_m.Tool()):
             Df_Rail_Leg['RalWat'] = self.calc_blend(xValue, RalWatDict).flatten()
             Df_Rail_Leg['RalAux'] = self.calc_blend(xValue, RalAuxDict).flatten()
             Df_Rail_Leg['RalBrd'] = self.calc_blend(xValue, RalBrdDict).flatten()
-            Df_Rail_Leg['RalFar'] = Temp_Fare
+            if "hbwo" in keys:
+                Df_Rail_Leg['RalFar'] = hbwo_temp_Fare
+            if "hbso" in keys:
+                Df_Rail_Leg['RalFar'] = hbso_temp_Fare
+            if "hbun" in keys:
+                Df_Rail_Leg['RalFar'] = hbun_temp_Fare
             # Join the two data frames based on skims from the Best Lot to the destination
             Df = pd.merge(Dfmerge, Df_Rail_Leg, left_on = ['BL', 'j'],
                      right_on = ['i', 'j'], how = 'left')
@@ -642,7 +738,7 @@ class ModeChoiceGenDf(_m.Tool()):
             util.set_matrix_numpy(eb, xValue['Mat'][4], Df['RalBrd'].values.reshape(NoTAZ,NoTAZ))
             util.set_matrix_numpy(eb, xValue['Mat'][5], Df['RalFar'].values.reshape(NoTAZ,NoTAZ))
         # delete data generated to free up memory
-        del Df, Dfmerge, Df_Rail_Leg, RalIVBDict, RalIVRDict, RalWatDict, RalAuxDict, RalBrdDict, RalFarDict, Temp_Fare
+        del Df, Dfmerge, Df_Rail_Leg, RalIVBDict, RalIVRDict, RalWatDict, RalAuxDict, RalBrdDict, RalFarDict, hbwo_temp_Fare, hbso_temp_Fare, hbun_temp_Fare
 #
 #        ##############################################################################
 #        ##       WCE Skims
@@ -678,6 +774,7 @@ class ModeChoiceGenDf(_m.Tool()):
             Df['WCEAux'] = self.calc_blend(values, WCEAuxDict)
             Df['WCEBrd'] = self.calc_blend(values, WCEBrdDict)
             Df['WCEFar'] = self.calc_blend(values, WCEFarDict)
+
             # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['WCEIVW'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['WCEIVR'])
@@ -687,13 +784,15 @@ class ModeChoiceGenDf(_m.Tool()):
             util.set_matrix_numpy(eb, values['Mat'][5], Df['WCEBrd'])
             util.set_matrix_numpy(eb, values['Mat'][6], Df['WCEFar'])
 #        ##############################################################################
-#        ##       Park and Ride Home-base Work/Uni/Soc WCE-leg
+#        ##       Park and Ride and TNC Access Home-base Work/Uni/Soc WCE-leg
 #        ##############################################################################
         BlendDictPR = { #AM,   PM,        AM,   PM,
-         'hbwo':{'PA': hbwo_fct_wce[0], 'AP':hbwo_fct_wce[1],  'BL': BLWcWk,
-                 'Mat':['HbWBlWAuWceIvtt', 'HbWBlWAuWceIvttRail', 'HbWBlWAuWceIvttBus',
-                        'HbWBlWAuWceWait', 'HbWBlWAuWceAux', 'HbWBlWAuWceBoards', 'HbWBlWAuWceFare']} # Where Blended Matrices get stored in same order as above
-                      }
+         'hbwopr':{'PA': hbwo_fct_wce[0], 'AP':hbwo_fct_wce[1],  'BL': BLWcWk,
+                 'Mat':['HbWBlWAuWceIvtt', 'HbWBlWAuWceIvttRail', 'HbWBlWAuWceIvttBus','HbWBlWAuWceWait',
+                        'HbWBlWAuWceAux', 'HbWBlWAuWceBoards', 'HbWBlWAuWceFare']}, # Where Blended Matrices get stored in same order as above
+         'hbwotnc': {'PA': hbwo_fct_wce[0], 'AP': hbwo_fct_wce[1], 'BL': TncWcWk,
+                        'Mat': ['HbWBlWTncWceIvtt', 'HbWBlWTncWceIvttRail', 'HbWBlWTncWceIvttBus', 'HbWBlWTncWceWait',
+                                'HbWBlWTncWceAux','HbWBlWTncWceBoards', 'HbWBlWTncWceFare']}}
 
         for keys, xValue in BlendDictPR.items():
 
@@ -790,12 +889,16 @@ class ModeChoiceGenDf(_m.Tool()):
         return np.array([PA_List, AP_List])
 
 
-
-    @_m.logbook_trace("Park & Ride - Choose Best Lot")
+    @_m.logbook_trace("Drive Access - Choose Best Lot")
     def bestlot(self, eb, year):
+
+        util = _m.Modeller().tool("translink.util")
+        cur_cycles = int(eb.matrix("msCycleNum").data)
+
         compute_lot = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_triple_index_operation")
 
+        # Define intermediates - PR and TNC
         # explictly set lot ensemble - will have different lots in 2011 and future
         # gn1 exist in 2011, 2016, 2035 and 2050
         # gn2 exist only in 2011
@@ -803,124 +906,125 @@ class ModeChoiceGenDf(_m.Tool()):
         # gn4 exist in 2035 and 2050
 
         if year == 2011:
-        #    intermediates = 'gn1;gn2'
-            intermediates = 'gn1;gn2'
+            intermediates_list = ['gn1;gn2', 'gn1;gn2']  # TODO: Add expanded set of TNC drop-off/pick-up locations
+
         if year == 2016:
-        #    intermediates = 'gn1;gn3'
-            intermediates = 'gn1;gn3'
+            intermediates_list = ['gn1;gn3', 'gn1;gn3']  # TODO: Add expanded set of TNC drop-off/pick-up locations
+
         if year == 2017:
-        #    intermediates = 'gn1;gn3'
-            intermediates = 'gn1;gn3'
+            intermediates_list = ['gn1;gn3', 'gn1;gn3']
+
         if year >= 2035:
-        #    intermediates = 'gn1;gn3'
-            intermediates = 'gn1;gn3;gn4'
+            intermediates_list = ['gn1;gn3;gn4', 'go1;go3;go4']
 
-        # defining dictionaries to keep matrix references explicit
-        # matrices needed for calulcation
-        # generalized time for auto and transit legs
-        # work uses am for all modes
-        # non-work uses md for bus and rail and am for WCE (there is no md WCE)
+        # Iterate over the three access modes
+        mode_list = ["pr", "tnc"]
+        for mode, intermediates in zip(mode_list, intermediates_list):
 
-        legs = {
-                "work" : {"auto" : "mf6003",
-                         "bus" : "mf6005",
-                         "rail" : "mf6015",
-                         "wce" : "mf6030"},
-                "nonwork" : {"auto" : "mf6173",
-                             "bus" : "mf6175",
-                             "rail" : "mf6185",
-                             "wce" : "mf6030"}
-                }
+            # defining dictionaries to keep matrix references explicit
+            # matrices needed for calculation
+            # generalized time for auto and transit legs
+            # work uses am for all modes
+            # non-work uses md for bus and rail and am for WCE (there is no md WCE)
 
-        # generalized time of minimum auto-lot-transit route
-        # not used, but required by triple index operation
-        min_gt = {
-                "work" : {"bus" : "mf6006",
-                         "rail" : "mf6016",
-                         "wce" : "mf6031"},
-                "nonwork" : {"bus" : "mf6176",
-                             "rail" : "mf6186",
-                             "wce" : "mf6201"}
-                }
-        # lot choice dictionary
-        lot_choice = {
-                "work" : {"bus" : "mf6000",
-                         "rail" : "mf6001",
-                         "wce" : "mf6002"},
-                "nonwork" : {"bus" : "mf6130",
-                             "rail" : "mf6131",
-                             "wce" : "mf6132"}
-                }
+            legs = {
+                    "work": {"auto": mode+"-gtAutoWkAMPA",
+                         "bus": "bus"+mode+"-GctranWkAMPA",
+                         "rail": "rail"+mode+"-GctranWkAMPA",
+                         "wce": "wce"+mode+"-GctranWkAMPA"},
+                    "nonwork": {"auto": mode + "-gtAutoNWkMDPA",
+                            "bus": "bus"+mode+"-GctranNWkMDPA",
+                            "rail": "rail"+mode+"-GctranNWkMDPA",
+                            "wce": "wce"+mode+"-GctranWkAMPA"}
+                    }
 
-        spec  = {
-            "pk_operand": "AutoLeg",
-            "kq_operand": "TransitLeg",
-            "qk_operand": None,
-            "combination_operator": "+",
-            "masks": [],
-            "contraction_operator": ".min.",
-            "result": 'MinGT',
-            "index_result": "BestLot",
-            "constraint": {
-                "by_zone": {
-                    "intermediates": intermediates,
-                    "origins": "all",
-                    "destinations": "all"
+            # generalized time of minimum auto-lot-transit route
+            # not used, but required by triple index operation
+            min_gt = {
+                    "work": {"bus": "bus"+mode+"-minGCWkAMPA",
+                         "rail": "rail"+mode+"-minGCWkAMPA",
+                         "wce": "wce"+mode+"-minGCWkAMPA"},
+                    "nonwork": {"bus": "bus"+mode+"-minGCNWkMDPA",
+                            "rail": "rail"+mode+"-minGCNWkMDPA",
+                            "wce": "wce"+mode+"-minGCNWkMDPA"}
+                    }
+            # lot choice dictionary
+            lot_choice = {
+                    "work": {"bus": "bus"+mode+"-lotChceWkAMPA",
+                         "rail": "rail"+mode+"-lotChceWkAMPA",
+                         "wce": "wce"+mode+"-lotChceWkAMPA"},
+                    "nonwork": {"bus": "bus"+mode+"-lotChceNWkAMPA",
+                            "rail": "rail"+mode+"-lotChceNWkAMPA",
+                            "wce": "wce"+mode+"-lotChceNWkAMPA"}
+                    }
+
+            spec  = {
+                "pk_operand": "AutoLeg",
+                "kq_operand": "TransitLeg",
+                "qk_operand": None,
+                "combination_operator": "+",
+                "masks": [],
+                "contraction_operator": ".min.",
+                "result": 'MinGT',
+                "index_result": "BestLot",
+                "constraint": {
+                    "by_zone": {
+                        "intermediates": intermediates,
+                        "origins": "all",
+                        "destinations": "all"
+                    },
+                    "by_value": None
                 },
-                "by_value": None
-            },
-            "type": "MATRIX_TRIPLE_INDEX_OPERATION"
-        }
+                "type": "MATRIX_TRIPLE_INDEX_OPERATION"
+            }
 
-        # explictly set lot ensemble - will have different lots in 2011 and future
-        # gn1 exist in 2011 and future
-        # gn2 exist only in 2011
-        # gn3 exist only in future
+            # explictly set lot ensemble - will have different lots in 2011 and future
+            # gn1 exist in 2011 and future
+            # gn2 exist only in 2011
+            # gn3 exist only in future
 
+            # work uses AM
+            # note, auto skim is same for all transit modes
 
-        # work uses AM
-        # note, auto skim is same for all transit modes
+            # calculate bus best lot work
+            spec["pk_operand"] = legs['work']['auto']
+            spec["kq_operand"] = legs['work']['bus']
+            spec["result"] = min_gt['work']['bus']
+            spec["index_result"] = lot_choice['work']['bus']
+            compute_lot(spec)
 
-        # calculate bus best lot work
-        spec["pk_operand"] = legs['work']['auto']
-        spec["kq_operand"] = legs['work']['bus']
-        spec["result"] = min_gt['work']['bus']
-        spec["index_result"] = lot_choice['work']['bus']
-        compute_lot(spec)
+            # calculate rail best lot work
+            spec["kq_operand"] = legs['work']['rail']
+            spec["result"] = min_gt['work']['rail']
+            spec["index_result"] = lot_choice['work']['rail']
+            compute_lot(spec)
 
-        # calculate rail best lot work
-        spec["kq_operand"] = legs['work']['rail']
-        spec["result"] = min_gt['work']['rail']
-        spec["index_result"] = lot_choice['work']['rail']
-        compute_lot(spec)
+            # calculate west coast express best lot work
+            spec["kq_operand"] = legs['work']['wce']
+            spec["result"] = min_gt['work']['wce']
+            spec["index_result"] = lot_choice['work']['wce']
+            compute_lot(spec)
 
-        # calculate west coast express best lot work
-        spec["kq_operand"] = legs['work']['wce']
-        spec["result"] = min_gt['work']['wce']
-        spec["index_result"] = lot_choice['work']['wce']
-        compute_lot(spec)
+            # calculate bus best lot nonwork
+            spec["pk_operand"] = legs['nonwork']['auto']
+            spec["kq_operand"] = legs['nonwork']['bus']
+            spec["result"] = min_gt['nonwork']['bus']
+            spec["index_result"] = lot_choice['nonwork']['bus']
+            compute_lot(spec)
 
+            # calculate rail best lot nonwork
+            spec["kq_operand"] = legs['nonwork']['rail']
+            spec["result"] = min_gt['nonwork']['rail']
+            spec["index_result"] = lot_choice['nonwork']['rail']
+            compute_lot(spec)
 
-        # calculate bus best lot nonwork
-        spec["pk_operand"] = legs['nonwork']['auto']
-        spec["kq_operand"] = legs['nonwork']['bus']
-        spec["result"] = min_gt['nonwork']['bus']
-        spec["index_result"] = lot_choice['nonwork']['bus']
-        compute_lot(spec)
-
-        # calculate rail best lot nonwork
-        spec["kq_operand"] = legs['nonwork']['rail']
-        spec["result"] = min_gt['nonwork']['rail']
-        spec["index_result"] = lot_choice['nonwork']['rail']
-        compute_lot(spec)
-
-        # calculate west coast express best lot nonwork
-        # west coast express no midday, uses am and needs AM auto skim brought back
-        spec["pk_operand"] = legs['work']['auto']
-        spec["kq_operand"] = legs['nonwork']['wce']
-        spec["result"] = min_gt['nonwork']['wce']
-        spec["index_result"] = lot_choice['nonwork']['wce']
-        compute_lot(spec)
+            # calculate west coast express best lot nonwork
+            # west coast express no midday, uses am and needs AM auto skim brought back
+            spec["pk_operand"] = legs['work']['auto']
+            spec["kq_operand"] = legs['nonwork']['wce']
+            spec["result"] = min_gt['nonwork']['wce']
+            spec["index_result"] = lot_choice['nonwork']['wce']
+            compute_lot(spec)
 
     @_m.logbook_trace("Park and Ride Calculate West Coast Express Generalized Time")
     def WceGT(self, eb):
@@ -938,7 +1042,7 @@ class ModeChoiceGenDf(_m.Tool()):
         vot_mats = ['VotWce', 'VotWce']
 
         # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
-        result_mats = [["mf6030",  "mf6075", "mf6115"],["mf6160",  "mf6200", "mf6240"]]
+        result_mats = [["mf6030",  "mf6070", "mf6110"],["mf6160",  "mf6190", "mf6240"]]
 
         #calculate generalized time for bus leg
         specs = []
@@ -985,7 +1089,7 @@ class ModeChoiceGenDf(_m.Tool()):
         vot_mats = ['VotRail', 'VotRail']
 
         # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
-        result_mats = [["mf6015", "mf6060", "mf6100"],['mf6145','mf6185','mf6225']]
+        result_mats = [["mf6020", "mf6060", "mf6100"],['mf6150','mf6180','mf6220']]
 
         #calculate generalized time for bus leg
         specs = []
@@ -1030,7 +1134,7 @@ class ModeChoiceGenDf(_m.Tool()):
         vot_mats = ['VotBus', 'VotBus']
 
         # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
-        result_mats = [["mf6005", "mf6050", "mf6090"],['mf6135','mf6175','mf6215']]
+        result_mats = [["mf6013", "mf6050", "mf6090"],['mf6140','mf6170','mf6210']]
 
         #calculate generalized time for bus leg
         specs = []
@@ -1070,7 +1174,8 @@ class ModeChoiceGenDf(_m.Tool()):
         auto_prcp = 'pr_auto_time_prcp'
 
         # [AMWk, MDWk, PMWk]
-        result_mats = ["mf6003", "mf6048", "mf6088"]
+        #result_mats = ["mf6011", "mf6040", "mf6088"]
+        result_mats = ['pr-gtAutoWkAMPA', 'pr-gtAutoWkMDPA', 'pr-gtAutoWkPMPA']
 
         specs = []
         for i in range(0,3):
@@ -1096,7 +1201,8 @@ class ModeChoiceGenDf(_m.Tool()):
         vot_mat = 'AutoVOT3'
         auto_prcp = 'pr_auto_time_prcp'
         # [[AMWk, MDWk, PMWk],[AMnonWk, MDnonWk, PMnonWk]]
-        result_mats = ['mf6133','mf6173','mf6213']
+        #result_mats = ['mf6133','mf6173','mf6213']
+        result_mats = ['pr-gtAutoNWkAMPA','pr-gtAutoNWkMDPA','pr-gtAutoNWkPMPA']
 
         specs = []
         for i in range(0,3):
@@ -1113,6 +1219,40 @@ class ModeChoiceGenDf(_m.Tool()):
             specs.append(util.matrix_spec(result, expression))
         util.compute_matrix(specs)
 
+    @_m.logbook_trace("Calculate TNC/Taxi Access Auto Generalized Time")
+    def TncGT(self, eb):
+        util = _m.Modeller().tool("translink.util")
+
+        # work trips, non-work trips
+        # [AM,MD,PM]
+        auto_mats = {"autotime": ["AmHovTimeVOT3", "MdHovTimeVOT3", "PmHovTimeVOT3"],
+                     "autocost": ["mfAmTNCCost", "mfMdTNCCost", "mfPmTNCCost"]}
+
+        # [Work, non-work]
+        vot_mat = 'AutoVOT3'
+        auto_prcp = 'tnc_auto_time_prcp'
+
+        # [AMWk, MDWk, PMWk]
+        result_mats = ["tnc-gtAutoWkAMPA", "tnc-gtAutoWkMDPA", "tnc-gtAutoWkPMPA"]
+        result_mats_nw = ["tnc-gtAutoNWkAMPA", "tnc-gtAutoNWkMDPA", "tnc-gtAutoNWkPMPA"] # same as work
+
+        specs = []
+        for i in range(0, 3):
+            expression = ("{autotime}*{perception} + {tncwaittime} + {termtime}"  # TODO: Do we need Terminal time in this case?
+                          " + ({autocost})"
+                          ).format(autotime=auto_mats["autotime"][i],
+                                   autocost=auto_mats["autocost"][i],
+                                   perception=auto_prcp,
+                                   VOT=vot_mat,
+                                   tncwaittime="tncwaittime'",
+                                   termtime="mstncxtime")  # TODO: Update terminal time Inputs
+
+            result = ("{AutoGT}").format(AutoGT=result_mats[i])
+            result2 = ("{AutoGT}").format(AutoGT=result_mats_nw[i])
+            specs.append(util.matrix_spec(result, expression))
+            specs.append(util.matrix_spec(result2, expression))
+        util.compute_matrix(specs)
+    
     @_m.logbook_trace("Park & Ride - Read Input Files")
     def read_file(self, eb, file):
         util = _m.Modeller().tool("translink.util")
@@ -1220,6 +1360,26 @@ class ModeChoiceGenDf(_m.Tool()):
         util.initmat(eb, "mf5176", "HbSoBlHovCost_I3", "HbSo Bl Hov Cost_High_Income", 0)
         util.initmat(eb, "mf5177", "HbSoBlHovTime_I3", "HbSo Bl Hov Time_High_Income", 0)
         util.initmat(eb, "mf5178", "HbSoBlHovToll_I3", "HbSo Bl Hov Toll_High_Income", 0)
+
+        # Initialize Blended Distance Matrices for taxi/TNC Skims - SG 1/3/19
+        util.initmat(eb, "mf5180", "HbWBlTNCCost_I1", "HbW Bl TNC Cost_Low_Income", 0)
+        util.initmat(eb, "mf5181", "HbWBlTNCCost_I2", "HbW Bl TNC Cost_Med_Income", 0)
+        util.initmat(eb, "mf5182", "HbWBlTNCCost_I3", "HbW Bl TNC Cost_High_Income", 0)
+        util.initmat(eb, "mf5183", "HbShBlTNCCost_I1", "HbSh Bl TNC Cost_Low_Income", 0)
+        util.initmat(eb, "mf5184", "HbShBlTNCCost_I2", "HbSh Bl TNC Cost_Med_Income", 0)
+        util.initmat(eb, "mf5185", "HbShBlTNCCost_I3", "HbSh Bl TNC Cost_High_Income", 0)
+        util.initmat(eb, "mf5186", "HbPbBlTNCCost_I1", "HbPb Bl TNC Cost_Low_Income", 0)
+        util.initmat(eb, "mf5187", "HbPbBlTNCCost_I2", "HbPb Bl TNC Cost_Med_Income", 0)
+        util.initmat(eb, "mf5189", "HbPbBlTNCCost_I3", "HbPb Bl TNC Cost_High_Income", 0)
+        util.initmat(eb, "mf5190", "HbSoBlTNCCost_I1", "HbSo Bl TNC Cost_Low_Income", 0)
+        util.initmat(eb, "mf5191", "HbSoBlTNCCost_I2", "HbSo Bl TNC Cost_Med_Income", 0)
+        util.initmat(eb, "mf5192", "HbSoBlTNCCost_I3", "HbSo Bl TNC Cost_High_Income", 0)
+        util.initmat(eb, "mf5193", "HbUBlTNCCost", "HbU Bl TNC Cost", 0)
+        util.initmat(eb, "mf5194", "HbScBlTNCCost", "HbSc Bl TNC Cost", 0)
+        util.initmat(eb, "mf5195", "HbEsBlTNCCost", "HbEs Bl TNC Cost", 0)
+        util.initmat(eb, "mf5196", "NHbWBlTNCCost", "NHbW Bl TNC Cost", 0)
+        util.initmat(eb, "mf5197", "NHbOBlTNCCost", "NHbO Bl TNC Cost", 0)
+
         util.initmat(eb, "mf5200", "HbUBlSovCost", "HbU Bl Sov Cost", 0)
         util.initmat(eb, "mf5201", "HbUBlSovTime", "HbU Bl Sov Time", 0)
         util.initmat(eb, "mf5202", "HbUBlSovToll", "HbU Bl Sov Toll", 0)
@@ -1394,6 +1554,7 @@ class ModeChoiceGenDf(_m.Tool()):
         util.initmat(eb, "mf5804", "HbWBlWceAux", "HbW Bl WCE Auxilliary Time", 0)
         util.initmat(eb, "mf5805", "HbWBlWceBoard", "HbW Bl WCE Boardings", 0)
         util.initmat(eb, "mf5806", "HbWBlWceFare", "HbW Bl WCE Fare", 0)
+        # HBW Auto Access transit
         util.initmat(eb, "mf6800", "HbWBlBAuPRCost", "HbW Bl Bus-Auto PR Cost", 0)
         util.initmat(eb, "mf6801", "HbWBlBAuPRTime", "HbW Bl Bus-Auto PR Time", 0)
         util.initmat(eb, "mf6802", "HbWBlBAuPRToll", "HbW Bl Bus-Auto PR Toll", 0)
@@ -1409,6 +1570,13 @@ class ModeChoiceGenDf(_m.Tool()):
         util.initmat(eb, "mf6822", "HbWBlWAuPRToll", "HbW Bl WCE-Auto PR Toll", 0)
         util.initmat(eb, "mf6823", "HbWWAuPrkCst", "HbW WCE-Auto PR Parking Cost", 0)
         util.initmat(eb, "mf6824", "HbWWAuTrmTim", "HbW WCE-Auto PR Terminal Time", 0)
+        util.initmat(eb, "mf6860", "HbWBlBAuTNCCost", "HbW Bl Bus-Auto TNC Cost", 0)
+        util.initmat(eb, "mf6861", "HbWBlBAuTNCTime", "HbW Bl Bus-Auto TNC Time", 0)
+        util.initmat(eb, "mf6870", "HbWBlRAuTNCCost", "HbW Bl Rail-Auto TNC Cost", 0)
+        util.initmat(eb, "mf6871", "HbWBlRAuTNCTime", "HbW Bl Rail-Auto TNC Time", 0)
+        util.initmat(eb, "mf6880", "HbWBlWAuTNCCost", "HbW Bl WCE-Auto TNC Cost", 0)
+        util.initmat(eb, "mf6881", "HbWBlWAuTNCTime", "HbW Bl WCE-Auto TNC Time", 0)
+        # HBW PNR Skims
         util.initmat(eb, "mf6900", "HbWBlBAuBusIvtt", "HbW Bl Bus-Auto PR InVehicle Time", 0)
         util.initmat(eb, "mf6901", "HbWBlBAuBusWait", "HbW Bl Bus-Auto PR Bus Waiting Time", 0)
         util.initmat(eb, "mf6902", "HbWBlBAuBusAux", "HbW Bl Bus-Auto PR Bus Auxillary Time", 0)
@@ -1427,6 +1595,104 @@ class ModeChoiceGenDf(_m.Tool()):
         util.initmat(eb, "mf6924", "HbWBlWAuWceAux", "HbW Bl WCE-Auto WCE Auxilliary Time", 0)
         util.initmat(eb, "mf6925", "HbWBlWAuWceBoards", "HbW Bl WCE-Auto WCE Boardings", 0)
         util.initmat(eb, "mf6926", "HbWBlWAuWceFare", "HbW Bl WCE-Auto WCE Fare", 0)
+        #HBW TNC access skims
+        util.initmat(eb, "mf6960", "HbWBlBTncBusIvtt", "HbW Bl Bus-Auto TNC InVehicle Time", 0)
+        util.initmat(eb, "mf6961", "HbWBlBTncBusWait", "HbW Bl Bus-Auto  TNC Bus Waiting Time", 0)
+        util.initmat(eb, "mf6962", "HbWBlBTncBusAux", "HbW Bl Bus-Auto TNC Bus Auxillary Time", 0)
+        util.initmat(eb, "mf6963", "HbWBlBTncBusBoard", "HbW Bl Bus-Auto TNC Bus Boardings", 0)
+        util.initmat(eb, "mf6964", "HbWBlBTncBusFare", "HbW Bl Bus-Auto TNC Bus Fare", 0)
+        util.initmat(eb, "mf6970", "HbWBlRTncRailIvtt", "HbW Bl Rail-Auto TNC Rail Invehicle Time", 0)
+        util.initmat(eb, "mf6971", "HbWBlRTncRailIvttBus", "HbW Bl Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf6972", "HbWBlRTncRailWait", "HbW Bl Rail-Auto TNC Rail Waiting Time", 0)
+        util.initmat(eb, "mf6973", "HbWBlRTncRailAux", "HbW Bl Rail-Auto TNC Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf6974", "HbWBlRTncRailBoard", "HbW Bl Rail-Auto TNC Rail Boardings", 0)
+        util.initmat(eb, "mf6975", "HbWBlRTncRailFare", "HbW Bl Rail-Auto TNC Rail Fare", 0)
+        util.initmat(eb, "mf6980", "HbWBlWTncWceIvtt", "HbW Bl WCE-Auto TNC WCE Invehicle Time", 0)
+        util.initmat(eb, "mf6981", "HbWBlWTncWceIvttRail", "HbW Bl WCE-Auto TNC WCE Invehicle Time on Rail", 0)
+        util.initmat(eb, "mf6982", "HbWBlWTncWceIvttBus", "HbW Bl WCE-Auto TNC WCE Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf6983", "HbWBlWTncWceWait", "HbW Bl WCE-Auto TNC WCE Waiting Time", 0)
+        util.initmat(eb, "mf6984", "HbWBlWTncWceAux", "HbW Bl WCE-Auto TNC WCE Auxilliary Time", 0)
+        util.initmat(eb, "mf6985", "HbWBlWTncWceBoards", "HbW Bl WCE-Auto TNC WCE Boardings", 0)
+        util.initmat(eb, "mf6986", "HbWBlWTncWceFare", "HbW Bl WCE-Auto TNC WCE Fare", 0)
+        # HBU Auto Access transit
+        util.initmat(eb, "mf7000", "HbUBlBAuPRCost", "HbU Bl Bus-Auto PR Cost", 0)
+        util.initmat(eb, "mf7001", "HbUBlBAuPRTime", "HbU Bl Bus-Auto PR Time", 0)
+        util.initmat(eb, "mf7002", "HbUBlBAuPRToll", "HbU Bl Bus-Auto PR Toll", 0)
+        util.initmat(eb, "mf7003", "HbUBAuPrkCst", "HbU Bus-Auto PR Parking Cost", 0)
+        util.initmat(eb, "mf7004", "HbUBAuTrmTim", "HbU Bus-Auto PR Terminal Time", 0)
+        util.initmat(eb, "mf7010", "HbUBlRAuPRCost", "HbU Bl Rail-Auto PR Cost", 0)
+        util.initmat(eb, "mf7011", "HbUBlRAuPRTime", "HbU Bl Rail-Auto PR Time", 0)
+        util.initmat(eb, "mf7012", "HbUBlRAuPRToll", "HbU Bl Rail-Auto PR Toll", 0)
+        util.initmat(eb, "mf7013", "HbURAuPrkCst", "HbU Rail-Auto PR Parking Cost", 0)
+        util.initmat(eb, "mf7014", "HbURAuTrmTim", "HbU Rail-Auto PR Terminal Time", 0)
+        util.initmat(eb, "mf7060", "HbUBlBAuTNCCost", "HbU Bl Bus-Auto TNC Cost", 0)
+        util.initmat(eb, "mf7061", "HbUBlBAuTNCTime", "HbU Bl Bus-Auto TNC Time", 0)
+        util.initmat(eb, "mf7070", "HbUBlRAuTNCCost", "HbU Bl Rail-Auto TNC Cost", 0)
+        util.initmat(eb, "mf7071", "HbUBlRAuTNCTime", "HbU Bl Rail-Auto TNC Time", 0)
+        # HBU PNR Skims
+        util.initmat(eb, "mf7100", "HbUBlBAuBusIvtt", "HbU Bl Bus-Auto PR InVehicle Time", 0)
+        util.initmat(eb, "mf7101", "HbUBlBAuBusWait", "HbU Bl Bus-Auto PR Bus Waiting Time", 0)
+        util.initmat(eb, "mf7102", "HbUBlBAuBusAux", "HbU Bl Bus-Auto PR Bus Auxillary Time", 0)
+        util.initmat(eb, "mf7103", "HbUBlBAuBusBoard", "HbU Bl Bus-Auto PR Bus Boardings", 0)
+        util.initmat(eb, "mf7104", "HbUBlBAuBusFare", "HbU Bl Bus-Auto PR Bus Fare", 0)
+        util.initmat(eb, "mf7110", "HbUBlRAuRailIvtt", "HbU Bl Rail-Auto Rail Invehicle Time", 0)
+        util.initmat(eb, "mf7111", "HbUBlRAuRailIvttBus", "HbU Bl Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf7112", "HbUBlRAuRailWait", "HbU Bl Rail-Auto Rail Waiting Time", 0)
+        util.initmat(eb, "mf7113", "HbUBlRAuRailAux", "HbU Bl Rail-Auto Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf7114", "HbUBlRAuRailBoard", "HbU Bl Rail-Auto Rail Boardings", 0)
+        util.initmat(eb, "mf7115", "HbUBlRAuRailFare", "HbU Bl Rail-Auto Rail Fare", 0)
+        # HBU TNC access skims
+        util.initmat(eb, "mf7160", "HbUBlBTncBusIvtt", "HbU Bl Bus-Auto TNC InVehicle Time", 0)
+        util.initmat(eb, "mf7161", "HbUBlBTncBusWait", "HbU Bl Bus-Auto  TNC Bus Waiting Time", 0)
+        util.initmat(eb, "mf7162", "HbUBlBTncBusAux", "HbU Bl Bus-Auto TNC Bus Auxillary Time", 0)
+        util.initmat(eb, "mf7163", "HbUBlBTncBusBoard", "HbU Bl Bus-Auto TNC Bus Boardings", 0)
+        util.initmat(eb, "mf7164", "HbUBlBTncBusFare", "HbU Bl Bus-Auto TNC Bus Fare", 0)
+        util.initmat(eb, "mf7170", "HbUBlRTncRailIvtt", "HbU Bl Rail-Auto TNC Rail Invehicle Time", 0)
+        util.initmat(eb, "mf7171", "HbUBlRTncRailIvttBus", "HbU Bl Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf7172", "HbUBlRTncRailWait", "HbU Bl Rail-Auto TNC Rail Waiting Time", 0)
+        util.initmat(eb, "mf7173", "HbUBlRTncRailAux", "HbU Bl Rail-Auto TNC Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf7174", "HbUBlRTncRailBoard", "HbU Bl Rail-Auto TNC Rail Boardings", 0)
+        util.initmat(eb, "mf7175", "HbUBlRTncRailFare", "HbU Bl Rail-Auto TNC Rail Fare", 0)
+        # HBSo Auto Access transit
+        util.initmat(eb, "mf7200", "HbSoBlBAuPRCost", "HbSo Bl Bus-Auto PR Cost", 0)
+        util.initmat(eb, "mf7201", "HbSoBlBAuPRTime", "HbSo Bl Bus-Auto PR Time", 0)
+        util.initmat(eb, "mf7202", "HbSoBlBAuPRToll", "HbSo Bl Bus-Auto PR Toll", 0)
+        util.initmat(eb, "mf7203", "HbSoBAuPrkCst", "HbSo Bus-Auto PR Parking Cost", 0)
+        util.initmat(eb, "mf7204", "HbSoBAuTrmTim", "HbSo Bus-Auto PR Terminal Time", 0)
+        util.initmat(eb, "mf7210", "HbSoBlRAuPRCost", "HbSo Bl Rail-Auto PR Cost", 0)
+        util.initmat(eb, "mf7211", "HbSoBlRAuPRTime", "HbSo Bl Rail-Auto PR Time", 0)
+        util.initmat(eb, "mf7212", "HbSoBlRAuPRToll", "HbSo Bl Rail-Auto PR Toll", 0)
+        util.initmat(eb, "mf7213", "HbSoRAuPrkCst", "HbSo Rail-Auto PR Parking Cost", 0)
+        util.initmat(eb, "mf7214", "HbSoRAuTrmTim", "HbSo Rail-Auto PR Terminal Time", 0)
+        util.initmat(eb, "mf7260", "HbSoBlBAuTNCCost", "HbSo Bl Bus-Auto TNC Cost", 0)
+        util.initmat(eb, "mf7261", "HbSoBlBAuTNCTime", "HbSo Bl Bus-Auto TNC Time", 0)
+        util.initmat(eb, "mf7270", "HbSoBlRAuTNCCost", "HbSo Bl Rail-Auto TNC Cost", 0)
+        util.initmat(eb, "mf7271", "HbSoBlRAuTNCTime", "HbSo Bl Rail-Auto TNC Time", 0)
+        # HBSo PNR Skims
+        util.initmat(eb, "mf7300", "HbSoBlBAuBusIvtt", "HbSo Bl Bus-Auto PR InVehicle Time", 0)
+        util.initmat(eb, "mf7301", "HbSoBlBAuBusWait", "HbSo Bl Bus-Auto PR Bus Waiting Time", 0)
+        util.initmat(eb, "mf7302", "HbSoBlBAuBusAux", "HbSo Bl Bus-Auto PR Bus Auxillary Time", 0)
+        util.initmat(eb, "mf7303", "HbSoBlBAuBusBoard", "HbSo Bl Bus-Auto PR Bus Boardings", 0)
+        util.initmat(eb, "mf7304", "HbSoBlBAuBusFare", "HbSo Bl Bus-Auto PR Bus Fare", 0)
+        util.initmat(eb, "mf7310", "HbSoBlRAuRailIvtt", "HbSo Bl Rail-Auto Rail Invehicle Time", 0)
+        util.initmat(eb, "mf7311", "HbSoBlRAuRailIvttBus", "HbSo Bl Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf7312", "HbSoBlRAuRailWait", "HbSo Bl Rail-Auto Rail Waiting Time", 0)
+        util.initmat(eb, "mf7313", "HbSoBlRAuRailAux", "HbSo Bl Rail-Auto Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf7314", "HbSoBlRAuRailBoard", "HbSo Bl Rail-Auto Rail Boardings", 0)
+        util.initmat(eb, "mf7315", "HbSoBlRAuRailFare", "HbSo Bl Rail-Auto Rail Fare", 0)
+        # HBSo TNC access skims
+        util.initmat(eb, "mf7360", "HbSoBlBTncBusIvtt", "HbSo Bl Bus-Auto TNC InVehicle Time", 0)
+        util.initmat(eb, "mf7361", "HbSoBlBTncBusWait", "HbSo Bl Bus-Auto  TNC Bus Waiting Time", 0)
+        util.initmat(eb, "mf7362", "HbSoBlBTncBusAux", "HbSo Bl Bus-Auto TNC Bus Auxillary Time", 0)
+        util.initmat(eb, "mf7363", "HbSoBlBTncBusBoard", "HbSo Bl Bus-Auto TNC Bus Boardings", 0)
+        util.initmat(eb, "mf7364", "HbSoBlBTncBusFare", "HbSo Bl Bus-Auto TNC Bus Fare", 0)
+        util.initmat(eb, "mf7370", "HbSoBlRTncRailIvtt", "HbSo Bl Rail-Auto TNC Rail Invehicle Time", 0)
+        util.initmat(eb, "mf7371", "HbSoBlRTncRailIvttBus", "HbSo Bl Rail Invehicle Time on Bus", 0)
+        util.initmat(eb, "mf7372", "HbSoBlRTncRailWait", "HbSo Bl Rail-Auto TNC Rail Waiting Time", 0)
+        util.initmat(eb, "mf7373", "HbSoBlRTncRailAux", "HbSo Bl Rail-Auto TNC Rail Auxilliary Time", 0)
+        util.initmat(eb, "mf7374", "HbSoBlRTncRailBoard", "HbSo Bl Rail-Auto TNC Rail Boardings", 0)
+        util.initmat(eb, "mf7375", "HbSoBlRTncRailFare", "HbSo Bl Rail-Auto TNC Rail Fare", 0)
+
 
         ####################
         # PnR Batch-in files
@@ -1436,78 +1702,138 @@ class ModeChoiceGenDf(_m.Tool()):
         util.initmat(eb, "mf6000", "buspr-lotChceWkAMPA", "Bus Best PnR Lot - Bus",0)
         util.initmat(eb, "mf6001", "railpr-lotChceWkAMPA", "Rail Best PnR Lot - Rail",0)
         util.initmat(eb, "mf6002", "wcepr-lotChceWkAMPA", "Rail Best PnR Lot -WCE",0)
+        util.initmat(eb, "mf6006", "bustnc-lotChceWkAMPA", "Bus Best TNC-n-Ride Lot - Bus",0)
+        util.initmat(eb, "mf6007", "railtnc-lotChceWkAMPA", "Rail Best TNC-n-Ride Lot - Rail",0)
+        util.initmat(eb, "mf6008", "wcetnc-lotChceWkAMPA", "Rail Best TNC-n-Ride Lot -WCE",0)
+
         # AM Auto generalized Cost same for all modes
-        util.initmat(eb, "mf6003", "pr-gtAutoWkAMPA", "PnR Generalized Cost Auto Leg",0)
+        util.initmat(eb, "mf6010", "tnc-gtAutoWkAMPA", "TNC-n-Ride Generalized Cost Auto Leg", 0)
+        util.initmat(eb, "mf6011", "pr-gtAutoWkAMPA", "PnR Generalized Cost Auto Leg",0)
+
         # AM bus impedance matrices
-        util.initmat(eb, "mf6005", "buspr-GctranWkAMPA", "PnR Generalized Cost Transit Leg - Bus",0)
-        util.initmat(eb, "mf6006", "buspr-minGCWkAMPA", "PnR Combined Skim Result - Bus",0)
+        util.initmat(eb, "mf6013", "buspr-GctranWkAMPA", "PnR Generalized Cost Transit Leg - Bus",0)
+        util.initmat(eb, "mf6014", "buspr-minGCWkAMPA", "PnR Combined Skim Result - Bus",0)
+        util.initmat(eb, "mf6017", "bustnc-GctranWkAMPA", "TNC-n-Ride Generalized Cost Transit Leg - Bus",0)
+        util.initmat(eb, "mf6018", "bustnc-minGCWkAMPA", "TNC-n-Ride Combined Skim Result - Bus",0)
+
         # AM rail impedance matrices
-        util.initmat(eb, "mf6015", "railpr-GctranWkAMPA", "Rail PnR Generalized Cost Transit Leg - Rail",0)
-        util.initmat(eb, "mf6016", "railpr-minGCWkAMPA", "Rail PnR Combined Skim Result - Rail",0)
+        util.initmat(eb, "mf6020", "railpr-GctranWkAMPA", "Rail PnR Generalized Cost Transit Leg - Rail",0)
+        util.initmat(eb, "mf6021", "railpr-minGCWkAMPA", "Rail PnR Combined Skim Result - Rail",0)
+        util.initmat(eb, "mf6024", "railtnc-GctranWkAMPA", "Rail TNC-n-Ride Generalized Cost Transit Leg - Rail",0)
+        util.initmat(eb, "mf6025", "railtnc-minGCWkAMPA", "Rail TNC-n-Ride Combined Skim Result - Rail",0)
+
         # AM WCE impedance matrices
         util.initmat(eb, "mf6030", "wcepr-GctranWkAMPA", "WCE PnR Generalized Cost Transit Leg",0)
         util.initmat(eb, "mf6031", "wcepr-minGCWkAMPA", "WCE PnR Combined Skim Result",0)
+        util.initmat(eb, "mf6034", "wcetnc-GctranWkAMPA", "WCE TNC-n-Ride Generalized Cost Transit Leg",0)
+        util.initmat(eb, "mf6035", "wcetnc-minGCWkAMPA", "WCE TNC-n-Ride Combined Skim Result",0)
+
         # MD Auto generalized Cost same for all modes
-        util.initmat(eb, "mf6048", "pr-gtAutoWkMDPA", "PnR Generalized Cost Auto Leg",0)
+        util.initmat(eb, "mf6040", "pr-gtAutoWkMDPA", "PnR Generalized Cost Auto Leg",0)
+        util.initmat(eb, "mf6042", "tnc-gtAutoWkMDPA", "TNC Generalized Cost Auto Leg", 0)
+        
         # MD bus impedance matrices
         util.initmat(eb, "mf6050", "buspr-GctranWkMDPA", "PnR Generalized Cost Transit Leg - Bus",0)
         util.initmat(eb, "mf6051", "buspr-minGCWkMDPA", "PnR Combined Skim Result - Bus",0)
+        util.initmat(eb, "mf6054", "bustnc-GctranWkMDPA", "TNC-n-Ride Generalized Cost Transit Leg - Bus",0)
+        util.initmat(eb, "mf6055", "bustnc-minGCWkMDPA", "TNC-n-Ride Combined Skim Result - Bus",0)
+
         # MD rail impedance matrices
         util.initmat(eb, "mf6060", "railpr-GctranWkMDPA", "Rail PnR Generalized Cost Transit Leg - Rail",0)
         util.initmat(eb, "mf6061", "railpr-minGCWkMDPA", "Rail PnR Combined Skim Result - Rail",0)
+        util.initmat(eb, "mf6064", "railtnc-GctranWkMDPA", "Rail TNC-n-Ride Generalized Cost Transit Leg - Rail",0)
+        util.initmat(eb, "mf6065", "railtnc-minGCWkMDPA", "Rail TNC-n-Ride Combined Skim Result - Rail",0)
+
         # MD WCE impedance matrices
-        util.initmat(eb, "mf6075", "wcepr-GctranWkMDPA", "WCE PnR Generalized Cost Transit Leg",0)
-        util.initmat(eb, "mf6076", "wcepr-minGCWkMDPA", "WCE PnR Combined Skim Result",0)
+        util.initmat(eb, "mf6070", "wcepr-GctranWkMDPA", "WCE PnR Generalized Cost Transit Leg",0)
+        util.initmat(eb, "mf6071", "wcepr-minGCWkMDPA", "WCE PnR Combined Skim Result",0)
+        util.initmat(eb, "mf6074", "wcetnc-GctranWkMDPA", "WCE TNC-n-Ride Generalized Cost Transit Leg",0)
+        util.initmat(eb, "mf6075", "wcetnc-minGCWkMDPA", "WCE TNC-n-Ride Combined Skim Result",0)
+
         # PM Auto generalized Cost same for all modes
         util.initmat(eb, "mf6088", "pr-gtAutoWkPMPA", "PnR Generalized Cost Auto Leg",0)
+        util.initmat(eb, "mf6087", "tnc-gtAutoWkPMPA", "TNC Generalized Cost Auto Leg", 0)
         # PM bus impedance matrices
         util.initmat(eb, "mf6090", "buspr-GctranWkPMPA", "PnR Generalized Cost Transit Leg - Bus",0)
         util.initmat(eb, "mf6091", "buspr-minGCWkPMPA", "PnR Combined Skim Result - Bus",0)
+        util.initmat(eb, "mf6094", "bustnc-GctranWkPMPA", "TNC Generalized Cost Transit Leg - Bus",0)
+        util.initmat(eb, "mf6095", "bustnc-minGCWkPMPA", "TNC Combined Skim Result - Bus",0)
+
         # PM rail impedance matrices
         util.initmat(eb, "mf6100", "railpr-GctranWkPMPA", "Rail PnR Generalized Cost Transit Leg - Rail",0)
         util.initmat(eb, "mf6101", "railpr-minGCWkPMPA", "Rail PnR Combined Skim Result - Rail",0)
+        util.initmat(eb, "mf6104", "railtnc-GctranWkPMPA", "Rail TNC Generalized Cost Transit Leg - Rail",0)
         # PM WCE impedance matrices
-        util.initmat(eb, "mf6115", "wcepr-GctranWkPMPA", "WCE PnR Generalized Cost Transit Leg",0)
-        util.initmat(eb, "mf6116", "wcepr-minGCWkPMPA", "WCE PnR Combined Skim Result",0)
+        util.initmat(eb, "mf6110", "wcepr-GctranWkPMPA", "WCE PnR Generalized Cost Transit Leg",0)
+        util.initmat(eb, "mf6111", "wcepr-minGCWkPMPA", "WCE PnR Combined Skim Result",0)
+        util.initmat(eb, "mf6114", "wcetnc-GctranWkPMPA", "WCE TNC Generalized Cost Transit Leg",0)
         # Lot choice using AM impedances, but lot choice fixed for all time periods
-        util.initmat(eb, "mf6130", "buspr-lotChceNWkAMPA", "Bus Best PnR Lot - Bus",0)
-        util.initmat(eb, "mf6131", "railpr-lotChceNWkAMPA", "Rail Best PnR Lot - Rail",0)
-        util.initmat(eb, "mf6132", "wcepr-lotChceNWkAMPA", "Rail Best PnR Lot -WCE",0)
+        # Non-Work Purposes
+        util.initmat(eb, "mf6120", "buspr-lotChceNWkAMPA", "Bus Best PnR Lot - Bus",0)
+        util.initmat(eb, "mf6121", "railpr-lotChceNWkAMPA", "Rail Best PnR Lot - Rail",0)
+        util.initmat(eb, "mf6122", "wcepr-lotChceNWkAMPA", "Rail Best PnR Lot -WCE",0)
+        util.initmat(eb, "mf6126", "bustnc-lotChceNWkAMPA", "Bus Best TNC Lot - Bus",0)
+        util.initmat(eb, "mf6127", "railtnc-lotChceNWkAMPA", "Rail Best TNC Lot - Rail",0)
+        util.initmat(eb, "mf6128", "wcetnc-lotChceNWkAMPA", "Rail Best TNC Lot -WCE",0)
         # AM Auto generalized Cost same for all modes
         util.initmat(eb, "mf6133", "pr-gtAutoNWkAMPA", "PnR Generalized Cost Auto Leg",0)
+        util.initmat(eb, "mf6132", "tnc-gtAutoNWkAMPA", "TNC Generalized Cost Auto Leg", 0)
         # AM bus impedance matrices
-        util.initmat(eb, "mf6135", "buspr-GctranNWkAMPA", "PnR Generalized Cost Transit Leg - Bus",0)
-        util.initmat(eb, "mf6136", "buspr-minGCNWkAMPA", "PnR Combined Skim Result - Bus",0)
+        util.initmat(eb, "mf6140", "buspr-GctranNWkAMPA", "PnR Generalized Cost Transit Leg - Bus",0)
+        util.initmat(eb, "mf6141", "buspr-minGCNWkAMPA", "PnR Combined Skim Result - Bus",0)
+        util.initmat(eb, "mf6144", "bustnc-GctranNWkAMPA", "TNC Generalized Cost Transit Leg - Bus",0)
         # AM rail impedance matrices
-        util.initmat(eb, "mf6145", "railpr-GctranNWkAMPA", "Rail PnR Generalized Cost Transit Leg - Rail",0)
-        util.initmat(eb, "mf6146", "railpr-minGCNWkAMPA", "Rail PnR Combined Skim Result - Rail",0)
+        util.initmat(eb, "mf6150", "railpr-GctranNWkAMPA", "Rail PnR Generalized Cost Transit Leg - Rail",0)
+        util.initmat(eb, "mf6151", "railpr-minGCNWkAMPA", "Rail PnR Combined Skim Result - Rail",0)
+        util.initmat(eb, "mf6154", "railtnc-GctranNWkAMPA", "Rail TNC Generalized Cost Transit Leg - Rail",0)
         # AM WCE impedance matrices
         util.initmat(eb, "mf6160", "wcepr-GctranNWkAMPA", "WCE PnR Generalized Cost Transit Leg",0)
         util.initmat(eb, "mf6161", "wcepr-minGCNWkAMPA", "WCE PnR Combined Skim Result",0)
+        util.initmat(eb, "mf6164", "wcetnc-GctranNWkAMPA", "WCE TNC Generalized Cost Transit Leg",0)
         # MD Auto generalized Cost same for all modes
-        util.initmat(eb, "mf6173", "pr-gtAutoNWkMDPA", "PnR Generalized Cost Auto Leg",0)
+        util.initmat(eb, "mf6167", "pr-gtAutoNWkMDPA", "PnR Generalized Cost Auto Leg",0)
+        util.initmat(eb, "mf6169", "tnc-gtAutoNWkMDPA", "TNC Generalized Cost Auto Leg",0)
         # MD bus impedance matrices
-        util.initmat(eb, "mf6175", "buspr-GctranNWkMDPA", "PnR Generalized Cost Transit Leg - Bus",0)
-        util.initmat(eb, "mf6176", "buspr-minGCNWkMDPA", "PnR Combined Skim Result - Bus",0)
+        util.initmat(eb, "mf6170", "buspr-GctranNWkMDPA", "PnR Generalized Cost Transit Leg - Bus",0)
+        util.initmat(eb, "mf6171", "buspr-minGCNWkMDPA", "PnR Combined Skim Result - Bus",0)
+        util.initmat(eb, "mf6174", "bustnc-GctranNWkMDPA", "TNC Generalized Cost Transit Leg - Bus",0)
+        util.initmat(eb, "mf6175", "bustnc-minGCNWkMDPA", "TNC Combined Skim Result - Bus",0)
         # MD rail impedance matrices
-        util.initmat(eb, "mf6185", "railpr-GctranNWkMDPA", "Rail PnR Generalized Cost Transit Leg - Rail",0)
-        util.initmat(eb, "mf6186", "railpr-minGCNWkMDPA", "Rail PnR Combined Skim Result - Rail",0)
+        util.initmat(eb, "mf6180", "railpr-GctranNWkMDPA", "Rail PnR Generalized Cost Transit Leg - Rail",0)
+        util.initmat(eb, "mf6181", "railpr-minGCNWkMDPA", "Rail PnR Combined Skim Result - Rail",0)
+        util.initmat(eb, "mf6184", "railtnc-GctranNWkMDPA", "Rail TNC Generalized Cost Transit Leg - Rail",0)
+        util.initmat(eb, "mf6185", "railtnc-minGCNWkMDPA", "Rail TNC Combined Skim Result - Rail",0)
+
         # MD WCE impedance matrices
-        util.initmat(eb, "mf6200", "wcepr-GctranNWkMDPA", "WCE PnR Generalized Cost Transit Leg",0)
-        util.initmat(eb, "mf6201", "wcepr-minGCNWkMDPA", "WCE PnR Combined Skim Result",0)
+        util.initmat(eb, "mf6190", "wcepr-GctranNWkMDPA", "WCE PnR Generalized Cost Transit Leg",0)
+        util.initmat(eb, "mf6191", "wcepr-minGCNWkMDPA", "WCE PnR Combined Skim Result",0)
+        util.initmat(eb, "mf6194", "wcetnc-GctranNWkMDPA", "WCE TNC Generalized Cost Transit Leg",0)
+        util.initmat(eb, "mf6195", "wcetnc-minGCNWkMDPA", "WCE TNC Combined Skim Result",0)
+
         # PM Auto generalized Cost same for all modes
-        util.initmat(eb, "mf6213", "pr-gtAutoNWkPMPA", "PnR Generalized Cost Auto Leg",0)
+        util.initmat(eb, "mf6200", "pr-gtAutoNWkPMPA", "PnR Generalized Cost Auto Leg",0)
+        util.initmat(eb, "mf6202", "tnc-gtAutoNWkPMPA", "TNC Generalized Cost Auto Leg", 0)
         # PM bus impedance matrices
-        util.initmat(eb, "mf6215", "buspr-GctranNWkPMPA", "PnR Generalized Cost Transit Leg - Bus",0)
-        util.initmat(eb, "mf6216", "buspr-minGCNWkPMPA", "PnR Combined Skim Result - Bus",0)
+        util.initmat(eb, "mf6210", "buspr-GctranNWkPMPA", "PnR Generalized Cost Transit Leg - Bus",0)
+        util.initmat(eb, "mf6211", "buspr-minGCNWkPMPA", "PnR Combined Skim Result - Bus",0)
+        util.initmat(eb, "mf6214", "bustnc-GctranNWkPMPA", "TNC Generalized Cost Transit Leg - Bus",0)
+        util.initmat(eb, "mf6215", "bustnc-minGCNWkPMPA", "TNC Combined Skim Result - Bus",0)
+
         # PM rail impedance matrices
-        util.initmat(eb, "mf6225", "railpr-GctranNWkPMPA", "Rail PnR Generalized Cost Transit Leg - Rail",0)
-        util.initmat(eb, "mf6226", "railpr-minGCNWkPMPA", "Rail PnR Combined Skim Result - Rail",0)
+        util.initmat(eb, "mf6220", "railpr-GctranNWkPMPA", "Rail PnR Generalized Cost Transit Leg - Rail",0)
+        util.initmat(eb, "mf6221", "railpr-minGCNWkPMPA", "Rail PnR Combined Skim Result - Rail",0)
+        util.initmat(eb, "mf6224", "railtnc-GctranNWkPMPA", "Rail TNC Generalized Cost Transit Leg - Rail",0)
+        util.initmat(eb, "mf6225", "railtnc-minGCNWkPMPA", "Rail TNC Combined Skim Result - Rail",0)
+
         # PM WCE impedance matrices
         util.initmat(eb, "mf6240", "wcepr-GctranNWkPMPA", "WCE PnR Generalized Cost Transit Leg",0)
         util.initmat(eb, "mf6241", "wcepr-minGCNWkPMPA", "WCE PnR Combined Skim Result",0)
+        util.initmat(eb, "mf6244", "wcetnc-GctranNWkPMPA", "WCE TNC Generalized Cost Transit Leg",0)
+        util.initmat(eb, "mf6245", "wcetnc-minGCNWkPMPA", "WCE TNC Combined Skim Result",0)
+
         # AM Auto generalized Cost same for all modes
         util.initmat(eb, "mf6303", "pr-gtAutoWkAMAP", "PnR Generalized Cost Auto Leg",0)
+
         # AM bus impedance matrices
         util.initmat(eb, "mf6305", "buspr-GctranWkAMAP", "PnR Generalized Cost Transit Leg - Bus",0)
         util.initmat(eb, "mf6306", "buspr-minGCWkAMAP", "PnR Combined Skim Result - Bus",0)
