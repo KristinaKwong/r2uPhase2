@@ -78,7 +78,8 @@ class AutoAssignment(_m.Tool()):
                     "hovVot2":  ["mfAmHovOpCstVOT2", "mfAmHovTimeVOT2", "mfSkimAmHovTimeVOT2", "mfSkimAmHovDistVOT2", "mfSkimAmHovTollVOT2"],
                     "hovVot3":  ["mfAmHovOpCstVOT3", "mfAmHovTimeVOT3", "mfSkimAmHovTimeVOT3", "mfSkimAmHovDistVOT3", "mfSkimAmHovTollVOT3"],
                     "lgv":  ["mfAmLgvOpCst", "mfAmLgvTime", "mfSkimAmLgvTime", "mfSkimAmLgvDist", "mfSkimAmLgvToll"],
-                    "hgv":  ["mfAmHgvOpCst", "mfAmHgvTime", "mfSkimAmHgvTime", "mfSkimAmHgvDist", "mfSkimAmHgvToll"]}
+                    "hgv":  ["mfAmHgvOpCst", "mfAmHgvTime", "mfSkimAmHgvTime", "mfSkimAmHgvDist", "mfSkimAmHgvToll"],
+                    "tnc":  ["mfAmTNCCost"]}
         self.store_skims(am_scenario, am_skims)
 
         md_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Md", "mfSOV_drvtrp_VOT_2_Md", "mfSOV_drvtrp_VOT_3_Md", "mfSOV_drvtrp_VOT_4_Md"],
@@ -93,7 +94,8 @@ class AutoAssignment(_m.Tool()):
                     "hovVot2":  ["mfMdHovOpCstVOT2", "mfMdHovTimeVOT2", "mfSkimMdHovTimeVOT2", "mfSkimMdHovDistVOT2", "mfSkimMdHovTollVOT2"],
                     "hovVot3":  ["mfMdHovOpCstVOT3", "mfMdHovTimeVOT3", "mfSkimMdHovTimeVOT3", "mfSkimMdHovDistVOT3", "mfSkimMdHovTollVOT3"],
                     "lgv":  ["mfMdLgvOpCst", "mfMdLgvTime", "mfSkimMdLgvTime", "mfSkimMdLgvDist", "mfSkimMdLgvToll"],
-                    "hgv":  ["mfMdHgvOpCst", "mfMdHgvTime", "mfSkimMdHgvTime", "mfSkimMdHgvDist", "mfSkimMdHgvToll"]}
+                    "hgv":  ["mfMdHgvOpCst", "mfMdHgvTime", "mfSkimMdHgvTime", "mfSkimMdHgvDist", "mfSkimMdHgvToll"],
+                    "tnc":  ["mfMdTNCCost"]}
         self.store_skims(md_scenario, md_skims)
         pm_demands = {"sov":   ["mfSOV_drvtrp_VOT_1_Pm", "mfSOV_drvtrp_VOT_2_Pm", "mfSOV_drvtrp_VOT_3_Pm", "mfSOV_drvtrp_VOT_4_Pm"],
                       "hov":   ["mfHOV_drvtrp_VOT_1_Pm", "mfHOV_drvtrp_VOT_2_Pm", "mfHOV_drvtrp_VOT_3_Pm"],
@@ -107,7 +109,8 @@ class AutoAssignment(_m.Tool()):
                     "hovVot2":  ["mfPmHovOpCstVOT2", "mfPmHovTimeVOT2", "mfSkimPmHovTimeVOT2", "mfSkimPmHovDistVOT2", "mfSkimPmHovTollVOT2"],
                     "hovVot3":  ["mfPmHovOpCstVOT3", "mfPmHovTimeVOT3", "mfSkimPmHovTimeVOT3", "mfSkimPmHovDistVOT3", "mfSkimPmHovTollVOT3"],
                     "lgv":  ["mfPmLgvOpCst", "mfPmLgvTime", "mfSkimPmLgvTime", "mfSkimPmLgvDist", "mfSkimPmLgvToll"],
-                    "hgv":  ["mfPmHgvOpCst", "mfPmHgvTime", "mfSkimPmHgvTime", "mfSkimPmHgvDist", "mfSkimPmHgvToll"]}
+                    "hgv":  ["mfPmHgvOpCst", "mfPmHgvTime", "mfSkimPmHgvTime", "mfSkimPmHgvDist", "mfSkimPmHgvToll"],
+                    "tnc":  ["mfPmTNCCost"]}
         self.store_skims(pm_scenario, pm_skims)
 
     def assign_scen(self, scenario, demands):
@@ -317,6 +320,14 @@ class AutoAssignment(_m.Tool()):
         specs.append(util.matrix_spec(skim_list["hovVot3"][4], "mfHOVTollVOT3 * mshovTollFac"))
         specs.append(util.matrix_spec(skim_list["lgv"][4], "mfLGVToll * mslgvTollFac"))
         specs.append(util.matrix_spec(skim_list["hgv"][4], "mfHGVToll * mshgvTollFac"))
+
+        # Set the estimated TNC Distance based on HOV3 (OpCost - Tolls) / AutoVOC
+        # Base this on the averaged opcost and toll skims maintained during the run
+
+        # Get TNC per km rate
+        alpha_tnc, beta_tnc = util.calc_tnc_params()
+
+        specs.append(util.matrix_spec(skim_list["tnc"][0], "%s + %s * ((%s - %s) / msautoOpCost) + %s" % (alpha_tnc, beta_tnc, skim_list["hovVot3"][0], skim_list["hovVot3"][5], skim_list["hovVot3"][5])))
 
         util.compute_matrix(specs, scenario)
 
