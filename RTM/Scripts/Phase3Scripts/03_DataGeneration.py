@@ -90,6 +90,50 @@ class DataGeneration(_m.Tool()):
         if model_year > 2016 and cyclenum == 1 and runParking == 1:
             self.parking_model(eb)
 
+    @_m.logbook_trace("calculate distance to closest station or bus exchange")
+    def calc_dist_to_station(self, eb):
+        util = _m.Modeller().tool("translink.util")
+
+        NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
+        rail_dummy = util.get_matrix_numpy(eb, 'railStn').reshape(1, NoTAZ) + np.zeros((NoTAZ, 1))
+        shortest_distance = util.get_matrix_numpy(eb, 'mfdistAON')
+        max_distance = 100.0*shortest_distance.max()
+        dist_station = np.where(rail_dummy == 0, max_distance, shortest_distance)
+        min_mat = dist_station.min(axis = 1)
+    	util.set_matrix_numpy(eb, 'moclosest_station', min_mat)
+
+    @_m.logbook_trace("Generate Area Type")
+    def generate_area_type(self, eb):
+        util = _m.Modeller().tool("translink.util")
+
+    	df = pd.DataFrame()
+        tiny = 0.000001
+        df['tz'] = util.get_matrix_numpy(eb, "mozoneindex", reshape = False)
+        df['gh'] = util.get_matrix_numpy(eb, "mogh_ensem", reshape = False)
+        df['pop'] = util.get_matrix_numpy(eb, "moTotPop", reshape = False)
+        df['emp'] = util.get_matrix_numpy(eb, "moTotEmp", reshape = False)
+        df['enrl'] = util.get_matrix_numpy(eb, "moEnrolPsFte", reshape = False)
+        df['area'] = util.get_matrix_numpy(eb, "moareahc", reshape = False)
+        df['area'] = np.where(df['area'] == 0, tiny, df['area'])
+
+
+        df_gh = df.groupby(['gh']).sum().reset_index()
+        df_gh['density'] = np.round((df_gh['pop'] + df_gh['emp'] + df_gh['enrl'])/(df_gh['area']), 1)
+
+        df_gh['level'] = 1
+        df_gh['level'] = np.where((df_gh['density'] > 5.30) & (df_gh['density'] <=21.10), 2, df_gh['level'])
+        df_gh['level'] = np.where((df_gh['density'] > 21.10) & (df_gh['density'] <=39.80), 3, df_gh['level'])
+        df_gh['level'] = np.where((df_gh['density'] > 39.80) & (df_gh['density'] <=77.00), 4, df_gh['level'])
+        df_gh['level'] = np.where((df_gh['density'] > 77.00), 5, df_gh['level'])
+        df_gh = df_gh.rename(columns = {'gh': 'gh_ensem'})
+
+        df = pd.merge(df, df_gh, how = 'left', left_on = ['gh'], right_on = ['gh_ensem'])
+        df['tncwait'] = (6.0 - df['level'])*5.0 # tnc wait time in minutes
+        df['tncwait'] = np.where(df['tncwait']>15, 15+0.5*(df['tncwait']-15), df['tncwait'])
+
+    	util.set_matrix_numpy(eb, 'moarea_type', df['level'].values)
+    	util.set_matrix_numpy(eb, 'motncwaittime', df['tncwait'].values)
+
     @_m.logbook_trace("Calculate Accessibilites")
     def calc_all_accessibilities(self, eb):
         # note transit_uni_accessibility has to run before other accessibilities
@@ -842,3 +886,15 @@ class DataGeneration(_m.Tool()):
         util.initmat(eb, "mo227", "tncsocAccLn", "Log TNC Social Accessibility", 0)
         util.initmat(eb, "mo228", "tncuniAccLn", "Log TNC University Accessibility", 0)
 
+        ########################################################################
+        # landuse type
+        ########################################################################
+
+        util.initmat(eb, "mo230", "area_type", "Area Type", 0)
+        util.initmat(eb, "mo231", "tncwaittime", "TNC Wait Time", 0)
+
+        ########################################################################
+        # distance to closest station or exchange
+        ########################################################################
+
+        util.initmat(eb, "mo240", "closest_station", "Distance to Closest Station", 0)

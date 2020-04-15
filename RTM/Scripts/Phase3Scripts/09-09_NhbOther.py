@@ -23,9 +23,15 @@ class Non_hbwork(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
         MChM = _m.Modeller().tool("translink.RTM3.stage2.modechoiceutils")
 
-        self.matrix_batchins(eb)
-        NoTAZ = len(util.get_matrix_numpy(eb, "mo51"))
+        if eb.matrix("mstnc_cav_penetration"):
+            tnc_av_rate = float(eb.matrix("tnc_cav_penetration").data)
 
+        else:
+            tnc_av_rate = 0.0
+        self.matrix_batchins(eb)
+        self.trip_generation(eb)
+        NoTAZ = len(util.get_matrix_numpy(eb, "mo51"))
+        hov_occupancy = eb.matrix("msAutoOcc").data
 #        ##############################################################################
 #        ##       Define Availability thresholds
 #        ##############################################################################
@@ -73,6 +79,57 @@ class Non_hbwork(_m.Tool()):
 
         LS_Coeff = 0.8
 
+        # TNC Cost Factors
+        # alpha_tnc and beta_tnc are calculated in Blended_Skims.py
+        # TNC Coefficients and Calibration
+        p30 = 0  #
+        tnc_cost_scale = 30  # Coeff3 = coeff 2/lambda
+        tnc_cost_exponent = 2 # TNC Cost exponent ; non-linear calibration constant
+        p604 = 0.3  # TNC Accessibility measure
+        tnc_wait_percep = 1.5 # multiplied to IVTT coefficient
+
+        # HB mode to NHB mode calibration constants
+        p41 = 0.55  # Auto to Auto
+        p42 = -4.47  # Auto to TNC
+        p43 = -0.85  # Auto to Transit
+        p44 = -0.74  # Auto to Active
+
+        p51 = -1.98  # TNC to Auto
+        p52 = 0.79  # TNC to TNC
+        p53 = 1.77  # TNC to Transit
+        p54 = 1.98  # TNC to Active
+
+        p61 = -2.30  # Transit to Auto
+        p62 = -5.12  # Transit to TNC
+        p63 = 3.58  # Transit to Transit
+        p64 = 0.15  # Transit to Active
+
+        p71 = -1.08  # Active to Auto
+        p72 = -4.45  # Active to TNC
+        p73 = 1.12  # Active to Transit
+        p74 = 3.00  # Active to Active
+
+        # CAVs : TODO: Set these coefficients
+        # Scale coefficients by 1/2 or 2/3 for TNC-Others and Others-TNC
+        p46 = 0.55  # Auto to Auto
+        p47 = -2.24  # Auto to TNC
+        p48 = -0.42  # Auto to Transit
+        p49 = -0.37  # Auto to Active
+
+        p56 = -0.99  # TNC to Auto
+        p57 = 0.79  # TNC to TNC
+        p58 = 1.77  # TNC to Transit
+        p59 = 1.98  # TNC to Active
+
+        p66 = -1.15  # Transit to Auto
+        p67 = -5.12  # Transit to TNC
+        p68 = 3.58  # Transit to Transit
+        p69 = 0.15  # Transit to Active
+
+        p76 = -0.54  # Active to Auto
+        p77 = -4.45  # Active to TNC
+        p78 = 1.12  # Active to Transit
+        p79 = 3.00  # Active to Active
 #        ##############################################################################
 #        ##       Auto Modes
 #        ##############################################################################
@@ -80,8 +137,10 @@ class Non_hbwork(_m.Tool()):
         Df = {}
         MaxPark = 10.0
         Hov_scale = 0.70
+        tnc_scale = 0.70
 
         Occ = util.get_matrix_numpy(eb, 'AutoOccNHBo') # Occupancy across SOV and HOV
+        tnc_occupancy = float(util.get_matrix_numpy(eb, 'TNCOccNhbo')) # TNC Occupancy
         Df['ParkCost'] = util.get_matrix_numpy(eb, 'prk2hr')  # 2 hour parking
 
         Df['ParkCost'] = Df['ParkCost'].reshape(1, NoTAZ) + np.zeros((NoTAZ, 1))
@@ -90,6 +149,12 @@ class Non_hbwork(_m.Tool()):
         Df['AutoCosHOV'] = util.get_matrix_numpy(eb, 'NHbOBlHovCost')
         Df['AutoTimHOV'] = util.get_matrix_numpy(eb, 'NHbOBlHovTime')
         Df['AutoTotCosHOV'] = Df['AutoCosHOV'] + Df['ParkCost']
+
+        Df['TNCCost'] = util.get_matrix_numpy(eb, 'NHbOBlTNCCost')
+        Df['TNCWaitTime'] = util.get_matrix_numpy(eb, 'tncwaittime')
+        Df['TNCWaitTime'] = Df['TNCWaitTime'].reshape(NoTAZ,1)+ np.zeros((1,NoTAZ))
+
+        Df['TNCAccess'] = util.get_matrix_numpy(eb,'tncAccLn').reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
 
         # Auto Utility across all incomes
         Df['GeUtl'] = ( 0.0
@@ -100,6 +165,15 @@ class Non_hbwork(_m.Tool()):
         # Add Income parameters
         DfU['Auto'] = Df['GeUtl']
 
+        ## Taxi/TNC
+        # Use HOV Skims, TNC Cost and Wait Times
+        DfU['TNC'] = (p30
+                     + p15 * Df['AutoTimHOV']
+                     + p12 * Df['TNCCost']/pow(tnc_occupancy, tnc_scale)+
+                     + (p12/tnc_cost_scale)*np.power(Df['TNCCost']/pow(tnc_occupancy, tnc_scale), tnc_cost_exponent)
+                     + tnc_wait_percep * p15 * Df['TNCWaitTime']
+                     + p604 * Df['TNCAccess']
+        )
 #        ##############################################################################
 #        ##       Walk to Transit Modes
 #        ##############################################################################
@@ -208,43 +282,77 @@ class Non_hbwork(_m.Tool()):
 #        ##############################################################################
 #        ##       Calculate Probabilities
 #        ##############################################################################
+        # All Incomes
+        LrgU = -9999
 
-        taz_list = util.get_matrix_numpy(eb, 'zoneindex', reshape = False)
-
-        # All Incomes All Autos
+        # Regular Auto HHs
+        # HB Mode Auto
         Dict = {
-               'Auto'  : [DfU['Auto']],
-               'WTra' : [DfU['Bus'], DfU['Ral']],
-               'Acti' : [DfU['Walk'], DfU['Bike']]
-               }
+            'Auto': [DfU['Auto'] + p41],
+            'WTra': [DfU['Bus'] + p43, DfU['Ral'] + p43],
+            'Acti': [DfU['Walk'] + p44, DfU['Bike'] + p44],
+            'TNC': [DfU['TNC'] + p42]
+        }
 
+        # get a list of all keys
+        taz_list = util.get_matrix_numpy(eb, 'zoneindex', reshape=False)
         keys_list = list(Dict.keys())
-        modes_dict = {'All':keys_list, 'Auto': ['Auto'],
+        modes_dict = {'All':keys_list, 'Auto': ['Auto'], 'Auto2': ['Auto', 'TNC'], 'TNC': ['TNC'],
                      'Transit': ['WTra'], 'Active': ['Acti']}
 
-        Prob_Dict = MChM.Calc_Prob(eb, Dict, "NHbOLS", thet, 'nhboatr', LS_Coeff, modes_dict, taz_list)
+        Dict_Au = MChM.Calc_Prob(eb, Dict, "NHbOLSAut", thet, 'aut_nhboatr', LS_Coeff, modes_dict, taz_list)
+
+        # HB Mode Taxi/TNC
+        Dict = {
+            'Auto': [DfU['Auto'] + p51],
+            'WTra': [DfU['Bus'] + p53, DfU['Ral'] + p53],
+            'Acti': [DfU['Walk'] + p54, DfU['Bike'] + p54],
+            'TNC': [DfU['TNC'] + p52]
+        }
+        Dict_Tn = MChM.Calc_Prob(eb, Dict, "NHbOLSTnc", thet, 'tnc_nhboatr', LS_Coeff, modes_dict, taz_list)
+
+        # HB Mode Transit
+        Dict = {
+            'Auto': [DfU['Auto'] + p61],
+            'WTra': [DfU['Bus'] + p63, DfU['Ral'] + p63],
+            'Acti': [DfU['Walk'] + p64, DfU['Bike'] + p64],
+            'TNC': [DfU['TNC'] + p62]
+        }
+
+        Dict_Tr = MChM.Calc_Prob(eb, Dict, "NHbOLSTrn", thet, 'tra_nhboatr', LS_Coeff, modes_dict, taz_list)
+
+        # HB Mode Active
+        Dict = {
+            'Auto': [DfU['Auto'] + p71],
+            'WTra': [DfU['Bus'] + p73, DfU['Ral'] + p73],
+            'Acti': [DfU['Walk'] + p74, DfU['Bike'] + p74],
+            'TNC': [DfU['TNC'] + p72]
+        }
+
+        Dict_Ac = MChM.Calc_Prob(eb, Dict, "NHbOLSAct", thet, 'act_nhboatr', LS_Coeff, modes_dict, taz_list)
+
         del DfU, Dict
 #
        ##############################################################################
         ##       Trip Distribution
        ##############################################################################
 
-        Logsum =  ["NHbOLS"]
+        Logsum =  ["NHbOLSAut", "NHbOLSTrn", "NHbOLSAct", "NHbOLSTnc"]
 
-        imp_list = ["P-AFrictionFact1"]
+        imp_list = ["P-AFrictionFact1", "P-AFrictionFact2", "P-AFrictionFact3","P-AFrictionFact4"]
 
-        mo_list =  ["nhboprd"]
+        mo_list =  ["aut_nhboprd", "tra_nhboprd", "act_nhboprd", "tnc_nhboprd"]
 
-        md_list =  ["nhboatr"]
+        md_list =  ["aut_nhboatr", "tra_nhboatr", "act_nhboatr", "tnc_nhboatr"]
 
-        out_list = ["NHbOP-A"]
+        out_list = ["NHbOP-AAut","NHbOP-ATrn","NHbOP-AAct","NHbOP-ATnc"]
 
 
-        LambdaList = [-0.273022]
+        LambdaList = [-0.244182, -0.278400, -0.384027, -0.260000]
 
-        AlphaList =  [0.007442]
+        AlphaList =  [0.002548,  0.005041,  0.0, 0.003800]
 
-        GammaList =  [-0.000285]
+        GammaList =  [-0.000007, -0.000050, 0.0, -0.000028]
 
 
         Kij = util.get_matrix_numpy(eb, "Kij_nhbo")
@@ -252,29 +360,41 @@ class Non_hbwork(_m.Tool()):
         Bridge_Factor = 0.5
 
         MChM.ImpCalc(eb, Logsum, imp_list, LS_Coeff, LambdaList ,AlphaList, GammaList, util.get_matrix_numpy(eb, "mfdistAON"), Kij, "NHbOBl_BPen", Bridge_Factor)
-        MChM.one_dim_matrix_balancing(eb, mo_list, md_list, imp_list, out_list)
+        for i in range (len(out_list)):
+
+            MChM.one_dim_matrix_balancing(eb, [mo_list[i]], [md_list[i]], [imp_list[i]], [out_list[i]])
+
 
 
 #       ##############################################################################
 #        ##       Calculate Demand
 #       ##############################################################################
 
-        Demand_Dict = MChM.Calc_Demand(eb, Prob_Dict, "NHbOP-A")
+        name_dict = {
+            'Auto': ['Auto'],
+            'WTra': ['Bus', 'Ral'],
+            'Acti': ['Walk', 'Bike'],
+            'TNC': ['TNC']
+        }
 
+        Dict_Au = MChM.Calc_Demand(eb, Dict_RvAu,"NHbOP-AAut", name_dict, write_att_demand = False)
+        Dict_Tr = MChM.Calc_Demand(eb, Dict_RvTr,"NHbOP-ATrn", name_dict, write_att_demand = False)
+        Dict_Ac = MChM.Calc_Demand(eb, Dict_RvAc,"NHbOP-AAct", name_dict, write_att_demand = False)
+        Dict_Tn = MChM.Calc_Demand(eb, Dict_RvTn,"NHbOP-ATnc", name_dict, write_att_demand = False)
 
-        Auto =   Demand_Dict['Auto'][0]
+        
+        Auto =   Dict_Au['Auto'][0]+Dict_Tr['Auto'][0]+Dict_Ac['Auto'][0]+Dict_Tn['Auto'][0]
 
-        Bus  =  Demand_Dict['WTra'][0]
+        Bus  =  Dict_Au['WTra'][0]+Dict_Tr['WTra'][0]+Dict_Ac['WTra'][0]+Dict_Tn['WTra'][0]
+        Rail = Dict_Au['WTra'][1]+Dict_Tr['WTra'][1]+Dict_Ac['WTra'][1]+Dict_Tn['WTra'][1]
 
-        Rail =  Demand_Dict['WTra'][1]
+        Walk =  Dict_Au['Acti'][0]+Dict_Tr['Acti'][0]+Dict_Ac['Acti'][0]+Dict_Tn['Acti'][0]
+        Bike = Dict_Au['Acti'][1]+Dict_Tr['Acti'][1]+Dict_Ac['Acti'][1]+Dict_Tn['Acti'][1]
 
-        Walk =  Demand_Dict['Acti'][0]
+        TNC = Dict_Au['TNC'][0]+Dict_Tr['TNC'][0]+Dict_Ac['TNC'][0]+Dict_Tn['TNC'][0]
 
-        Bike =  Demand_Dict['Acti'][1]
+        del Dict_RvAu, Dict_Tr, Dict_Ac, Dict_Tn
 
-
-        del Demand_Dict
-        del Prob_Dict
 
 #       ##############################################################################
 #        ##       Get Time Slice Factors
@@ -362,12 +482,44 @@ class Non_hbwork(_m.Tool()):
         Bike_MD = Bike*Acti_MD_Fct_PA
         Bike_PM = Bike*Acti_PM_Fct_PA
 
+        #TNC
+        TNC_AM = TNC*Auto_AM_Fct_PA
+        TNC_MD = TNC*Auto_MD_Fct_PA
+        TNC_PM = TNC*Auto_PM_Fct_PA
+
+        # Split TNC trips into SOV and HOV
+        # TNC CAV Trips
+        split_tnc_sov = (hov_occupancy - tnc_occupancy) / (hov_occupancy - 1)
+        SOV_TNC_AM = TNC_AM * tnc_av_rate * split_tnc_sov
+        SOV_TNC_MD = TNC_MD * tnc_av_rate * split_tnc_sov
+        SOV_TNC_PM = TNC_PM * tnc_av_rate * split_tnc_sov
+
+        HOV_TNC_AM = TNC_AM * tnc_av_rate * (1 - split_tnc_sov) / hov_occupancy + TNC_AM * (
+                    1 - tnc_av_rate) / tnc_occupancy
+        HOV_TNC_MD = TNC_MD * tnc_av_rate * (1 - split_tnc_sov) / hov_occupancy + TNC_MD * (
+                    1 - tnc_av_rate) / tnc_occupancy
+        HOV_TNC_PM = TNC_PM * tnc_av_rate * (1 - split_tnc_sov) / hov_occupancy + TNC_PM * (
+                    1 - tnc_av_rate) / tnc_occupancy
 
         # Convert HOV to Auto Drivers
         # HOV2
-        AuDr_HOV_AM = HOV_AM/HOcc
-        AuDr_HOV_MD = HOV_MD/HOcc
-        AuDr_HOV_PM = HOV_PM/HOcc
+        # Add TNC HOV Trips
+        AuDr_HOV_AM = HOV_AM/Occ + HOV_TNC_AM
+        AuDr_HOV_MD = HOV_MD/Occ + HOV_TNC_MD
+        AuDr_HOV_PM = HOV_PM/Occ + HOV_TNC_PM
+
+        ## add TNC matrices for empty TNC component
+        util.add_matrix_numpy(eb, "TncAMVehicleTrip", SOV_TNC_AM)
+        util.add_matrix_numpy(eb, "TncAMVehicleTrip", HOV_TNC_AM)
+
+        util.add_matrix_numpy(eb, "TncMDVehicleTrip", SOV_TNC_MD)
+        util.add_matrix_numpy(eb, "TncMDVehicleTrip", HOV_TNC_MD)
+
+        util.add_matrix_numpy(eb, "TncPMVehicleTrip", SOV_TNC_PM)
+        util.add_matrix_numpy(eb, "TncPMVehicleTrip", HOV_TNC_PM)
+
+
+        del HOV_TNC_AM, HOV_TNC_MD, HOV_TNC_PM
 
 
 #       ##############################################################################
@@ -381,6 +533,7 @@ class Non_hbwork(_m.Tool()):
         util.set_matrix_numpy(eb, "NHbORailPerTrips", Rail)
         util.set_matrix_numpy(eb, "NHbOWalkPerTrips", Walk)
         util.set_matrix_numpy(eb, "NHbOBikePerTrips", Bike)
+        util.set_matrix_numpy(eb, "NHbOTNCPerTrips", TNC)
 
        # Auto-person
 
@@ -403,6 +556,11 @@ class Non_hbwork(_m.Tool()):
 
         # PM
         util.add_matrix_numpy(eb, "HOV_pertrp_VOT_1_Pm", HOV_PM)
+
+        # TNC
+        util.add_matrix_numpy(eb, "TNC_pertrp_VOT_1_Am", TNC_AM)
+        util.add_matrix_numpy(eb, "TNC_pertrp_VOT_1_Md", TNC_MD)
+        util.add_matrix_numpy(eb, "TNC_pertrp_VOT_1_Pm", TNC_PM)
 
         # Transit
         # AM
@@ -442,7 +600,12 @@ class Non_hbwork(_m.Tool()):
         # PM
         util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Pm", SOV_PM)
 
-        # HOV
+        # Add SOV TNC Trips to SOV trip tables
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Am", SOV_TNC_AM)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Md", SOV_TNC_MD)
+        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Pm", SOV_TNC_PM)
+
+        # HOV (includes TNC trips)
         # AM
         util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_1_Am", AuDr_HOV_AM)
 
@@ -457,21 +620,24 @@ class Non_hbwork(_m.Tool()):
         Zone_Index_O = util.get_matrix_numpy(eb, "zoneindex") + np.zeros((1, NoTAZ))
         Zone_Index_D = Zone_Index_O.transpose()
 
-        T_SOV_AM = np.where((Zone_Index_O>9999) & (Zone_Index_D>9999), SOV_AM, 0)
+        T_SOV_AM = np.where((Zone_Index_O > 9999) & (Zone_Index_D > 9999), SOV_AM, 0)
         T_HOV_AM = HOV_AM
-
+        T_TNC_AM = TNC_AM
 
         # MD
-        T_SOV_MD = np.where((Zone_Index_O>9999) & (Zone_Index_D>9999), SOV_MD, 0)
+        T_SOV_MD = np.where((Zone_Index_O > 9999) & (Zone_Index_D > 9999), SOV_MD, 0)
         T_HOV_MD = HOV_MD
+        T_TNC_MD = TNC_MD
 
         # PM
-        T_SOV_PM = np.where((Zone_Index_O>9999) & (Zone_Index_D>9999), SOV_PM, 0)
+        T_SOV_PM = np.where((Zone_Index_O > 9999) & (Zone_Index_D > 9999), SOV_PM, 0)
         T_HOV_PM = HOV_PM
+        T_TNC_PM = TNC_PM
 
         # Daily
-        T_SOV = np.where((Zone_Index_O>9999) & (Zone_Index_D>9999), SOV, 0)
+        T_SOV = np.where((Zone_Index_O > 9999) & (Zone_Index_D > 9999), SOV, 0)
         T_HOV = HOV
+        T_TNC = TNC
         #
         df_demand = pd.DataFrame()
 
@@ -482,14 +648,14 @@ class Non_hbwork(_m.Tool()):
         df_demand['gy_j'] = Gy_A.flatten()
         df_demand.gy_i = df_demand.gy_i.astype(int)
         df_demand.gy_j = df_demand.gy_j.astype(int)
-        mode_list_am_pm = ['sov', 'hov', 'bus', 'rail', 'walk', 'bike']
-        mode_list_md = ['sov', 'hov', 'bus', 'rail', 'walk', 'bike']
-        mode_list_daily = ['sov', 'hov', 'bus', 'rail', 'walk', 'bike']
+        mode_list_am_pm = ['sov', 'hov', 'bus', 'rail', 'walk', 'bike', 'tnc']
+        mode_list_md = ['sov', 'hov', 'bus', 'rail', 'walk', 'bike', 'tnc']
+        mode_list_daily = ['sov', 'hov', 'bus', 'rail', 'walk', 'bike', 'tnc']
 
-        AM_Demand_List = [T_SOV_AM, T_HOV_AM, Bus_AM, Rail_AM,  Walk_AM, Bike_AM]
-        MD_Demand_List = [T_SOV_MD, T_HOV_MD, Bus_MD, Rail_MD, Walk_MD, Bike_MD]
-        PM_Demand_List = [T_SOV_PM, T_HOV_PM, Bus_PM, Rail_PM,  Walk_PM, Bike_PM]
-        Daily_Demand_List = [T_SOV, T_HOV, Bus, Rail, Walk, Bike]
+        AM_Demand_List = [T_SOV_AM, T_HOV_AM, Bus_AM, Rail_AM, Walk_AM, Bike_AM, T_TNC_AM]
+        MD_Demand_List = [T_SOV_MD, T_HOV_MD, Bus_MD, Rail_MD, Walk_MD, Bike_MD, T_TNC_MD]
+        PM_Demand_List = [T_SOV_PM, T_HOV_PM, Bus_PM, Rail_PM, Walk_PM, Bike_PM, T_TNC_PM]
+        Daily_Demand_List = [T_SOV, T_HOV, Bus, Rail, Walk, Bike, T_TNC]
 
         purp = "nhbo"
 
@@ -518,6 +684,78 @@ class Non_hbwork(_m.Tool()):
         conn.close()
 
 
+    @_m.logbook_trace("Trip Generation")
+    def trip_generation(self, eb):
+
+        util = _m.Modeller().tool("translink.util")
+
+        # get hb-attraction dataframe
+        stat_sql = "SELECT * from trip_att_tots"
+
+        conn = util.get_db_byname(eb, "trip_summaries.db")
+        df = pd.read_sql(stat_sql, conn)
+        conn.close()
+        tiny = 0.0000001
+        df['prod'], df['attr'] = 'p', 'a'
+
+        df_coeff = pd.DataFrame()
+        df_coeff['purpose'] = ['hbw', 'hbw', 'hbw', 'hbo', 'hbo' , 'hbo', 'hbw', 'hbw', 'hbw', 'hbo', 'hbo' , 'hbo', 'hbw', 'hbo', 'hbw', 'hbo']
+        df_coeff['p-a'] = ['p', 'p', 'p','p', 'p', 'p', 'a', 'a', 'a','a', 'a', 'a', 'p', 'p', 'a', 'a']
+        df_coeff['mode'] = ['Auto','Transit','Active','Auto','Transit','Active','Auto','Transit','Active','Auto','Transit','Active', 'TNC', 'TNC', 'TNC', 'TNC']
+        df_coeff['coef'] = [0.050583,0.099943,0.210649,0.244174,0.114599,0.130311,0.027661,0.16644,0.17312,0.254689,0.07916,0.15068,0.150795,0.150795,0.150795,0.150795]
+
+        df = pd.merge(df, df_coeff, how = 'left', left_on = ['purp', 'mode_agg', 'prod'], right_on = ['purpose', 'mode', 'p-a'])
+        df['trip_prod'] = df['trips']*df['coef']
+        df = df[['tz', 'purp', 'segment', 'mode_agg', 'trips', 'trip_prod', 'attr']]
+
+        df = pd.merge(df, df_coeff, how = 'left', left_on = ['purp', 'mode_agg', 'attr'], right_on = ['purpose', 'mode', 'p-a'])
+        df['trip_attr'] = df['trips']*df['coef']
+        df = df[['tz', 'purp', 'segment', 'mode_agg', 'trip_prod', 'trip_attr']]
+        df = df.groupby(['tz', 'segment', 'mode_agg']).sum().reset_index()
+        df = df.fillna(0)
+
+        # Balance productions to attractions (use midpoint)
+        df['trip_prod_adj'] = df['trip_prod']* 0.5*(1 + df.groupby(['mode_agg', 'segment']).trip_attr.transform(np.sum)/(np.where(df.groupby(['mode_agg', 'segment']).trip_prod.transform(np.sum) == 0, tiny, df.groupby(['mode_agg', 'segment']).trip_prod.transform(np.sum))))
+        df['trip_attr_adj'] = df['trip_attr']* 0.5*(1 + df.groupby(['mode_agg', 'segment']).trip_prod.transform(np.sum)/(np.where(df.groupby(['mode_agg', 'segment']).trip_attr.transform(np.sum) == 0, tiny, df.groupby(['mode_agg', 'segment']).trip_attr.transform(np.sum))))
+
+        #RV Auto
+        df1 = df.loc[(df['segment'] == 0) & (df['mode_agg'] == "Auto")]
+        util.set_matrix_numpy(eb, "aut_nhboprd", df1['trip_prod_adj'].values)
+        util.set_matrix_numpy(eb, "aut_nhboatr", df1['trip_attr_adj'].values)
+
+        #RV Transit
+        df1 = df.loc[(df['segment'] == 0) & (df['mode_agg'] == "Transit")]
+        util.set_matrix_numpy(eb, "tra_nhboprd", df1['trip_prod_adj'].values)
+        util.set_matrix_numpy(eb, "tra_nhboatr", df1['trip_attr_adj'].values)
+
+        #RV Active
+        df1 = df.loc[(df['segment'] == 0) & (df['mode_agg'] == "Active")]
+        util.set_matrix_numpy(eb, "act_nhboprd", df1['trip_prod_adj'].values)
+        util.set_matrix_numpy(eb, "act_nhboatr", df1['trip_attr_adj'].values)
+
+        #RV TNC
+        df1 = df.loc[(df['segment'] == 0) & (df['mode_agg'] == "TNC")]
+        util.set_matrix_numpy(eb, "tnc_nhboprd", df1['trip_prod_adj'].values)
+        util.set_matrix_numpy(eb, "tnc_nhboatr", df1['trip_attr_adj'].values)
+
+
+
+        df = df.groupby(['tz']).sum().reset_index()
+
+         # upload data to sql database
+        stat_sql1 = "SELECT * from TripsTazPrds"
+        stat_sql2 = "SELECT * from TripsTazAtrs"
+
+        conn = util.get_db_byname(eb, "rtm.db")
+        df1 = pd.read_sql(stat_sql1, conn)
+        df1['nhbo'] = df['trip_prod_adj']
+        df1.to_sql(name='TripsTazPrds', con=conn, flavor='sqlite', index=False, if_exists='replace')
+
+        df1 = pd.read_sql(stat_sql2, conn)
+        df1['nhbo'] = df['trip_attr_adj']
+        df1.to_sql(name='TripsTazAtrs', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        conn.close()
+
     @_m.logbook_trace("PnR")
     def splitpnr (self, DfmergedAuto, DfmergedTran, DfInt):
 
@@ -537,16 +775,18 @@ class Non_hbwork(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
 
         ## Initialze Logsum Matrices
-        util.initmat(eb, "mf9080", "NHbOLS", " NHbO LogSum", 0)
-
-        util.initmat(eb, "mf9380", "NHbOLSAU", " NHbO LogSum Auto", 0)
-
-        util.initmat(eb, "mf9480", "NHbOLSTR", " NHbO LogSum Transit", 0)
-
-        util.initmat(eb, "mf9580", "NHbOLSAC", " NHbO LogSum Active", 0)
+        util.initmat(eb, "mf9080", "NHbOLSAut", " NhbO LogSum HB Auto", 0)
+        util.initmat(eb, "mf9081", "NHbOLSTrn", " NhbO LogSum HB Transit", 0)
+        util.initmat(eb, "mf9082", "NHbOLSAct", " NhbO LogSum HB Active", 0)
+        util.initmat(eb, "mf9083", "NHbOLSTnc", " NhbO LogSum HB TNC", 0)
+        
 
         ## Initialze Friction Factor Matrices
         util.initmat(eb, "mf9100", "P-AFrictionFact1", "Trip Distribution Friction Factor 1", 0)
+        util.initmat(eb, "mf9101", "P-AFrictionFact2", "Trip Distribution Friction Factor 2", 0)
+        util.initmat(eb, "mf9102", "P-AFrictionFact3", "Trip Distribution Friction Factor 3", 0)
+        util.initmat(eb, "mf9103", "P-AFrictionFact4", "Trip Distribution Friction Factor 4", 0)
+        
 
         ## Initialize P-A Trip Tables by mode
         util.initmat(eb, "mf3800", "NHbOSOVPerTrips",  "NHbO SOV Per-Trips", 0)
@@ -555,6 +795,23 @@ class Non_hbwork(_m.Tool()):
         util.initmat(eb, "mf3820", "NHbORailPerTrips", "NHbO Rail Per-Trips", 0)
         util.initmat(eb, "mf3830", "NHbOWalkPerTrips", "NHbO Walk Per-Trips", 0)
         util.initmat(eb, "mf3835", "NHbOBikePerTrips", "NHbO Bike Per-Trips", 0)
+        util.initmat(eb, "mf3840", "NHbOTNCPerTrips", "NHbO TNC Per-Trips", 0)
 
         ## Initialize P-A Trip Tables from trip distribution
-        util.initmat(eb, "mf3850", "NHbOP-A", " NHbO P-A Trips ", 0)
+        util.initmat(eb, "mf3860", "NHbOP-AAut", " NHbO P-A Trips HB Auto", 0)
+        util.initmat(eb, "mf3861", "NHbOP-ATrn", " NHbO P-A Trips HB Transit", 0)
+        util.initmat(eb, "mf3862", "NHbOP-AAct", " NHbO P-A Trips HB Active", 0)
+        util.initmat(eb, "mf3863", "NHbOP-ATnc", " NHbO P-A Trips HB TNC", 0)
+
+        ## Initialize trip generation matrices
+        util.initmat(eb, "mo2080", "aut_nhboprd", " Auto segment NHBO prd ", 0)
+        util.initmat(eb, "mo2081", "tra_nhboprd", " Transit segment NHBO prd ", 0)
+        util.initmat(eb, "mo2082", "act_nhboprd", " Active segment NHBO prd ", 0)
+        util.initmat(eb, "mo2083", "tnc_nhboprd", " TNC segment NHBO prd ", 0)
+
+        util.initmat(eb, "md2080", "aut_nhboatr", " Auto segment NHBO atr ", 0)
+        util.initmat(eb, "md2081", "tra_nhboatr", " Transit segment NHBO atr ", 0)
+        util.initmat(eb, "md2082", "act_nhboatr", " Active segment NHBO atr ", 0)
+        util.initmat(eb, "md2083", "tnc_nhboatr", " TNC segment NHBO atr ", 0)
+        
+        

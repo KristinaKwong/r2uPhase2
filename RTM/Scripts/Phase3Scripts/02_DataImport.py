@@ -186,6 +186,7 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms352", "wceWALKprcpNwk", "wce walk time perception nonwork", 0)
         util.initmat(eb, "ms353", "wceTRANSprcpNwk", "wce transfer perception nonwork", 0)
         util.initmat(eb, "ms354", "wceBOARDSprcpNwk", "wce boarding perception nonwork", 0)
+        util.initmat(eb, "ms606", "tmp_cav_penatration", "tmp_cav_penatration", 0)
         util.initmat(eb, "ms607", "tnc_zov_imp_factor_Am", "Impedance factor for TNC empty trips gravity model for AM period", -1.60)
         util.initmat(eb, "ms608", "tnc_zov_imp_factor_Md", "Impedance factor for TNC empty trips gravity model for MD period", -2.50)
         util.initmat(eb, "ms609", "tnc_zov_imp_factor_Pm", "Impedance factor for TNC empty trips gravity model for PM period", -2.60)
@@ -202,6 +203,8 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms362", "tnc_auto_time_prcp", "TNC/Taxi Access Drive time perception factor", 1.2)
 
         ##   TNC Cost Parameters : TODO: Update Values
+        util.initmat(eb, "ms370", "alpha_AV", "TNC Cost Alpha Factor for AV Households", 1.00)
+        util.initmat(eb, "ms371", "beta_AV", "TNC Cost Beta Factor for AV Households", 0.50)
         util.initmat(eb, "ms372", "alpha_nonAV", "TNC Cost Alpha Factor for Regular Households", 3.25)
         util.initmat(eb, "ms373", "beta_nonAV", "TNC Cost Beta Factor for Regular Households", 1.88)
         util.initmat(eb, "ms374", "alpha_tnc", "Weighted TNC Cost Alpha Factor", 0)

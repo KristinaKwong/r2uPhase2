@@ -548,3 +548,23 @@ class Util(_m.Tool()):
         ensem = eb.partition(part)
         ensem.description = mat.description
         ensem.set_data(matData)
+
+    def calc_tnc_params(self):
+            util = _m.Modeller().tool("translink.util")
+            eb = _m.Modeller().emmebank
+            ## check if tnc/cav parameters exist
+            if eb.matrix("mstnc_cav_penetration"):
+                av_rate = float(eb.matrix('tnc_cav_penetration').data)
+
+            if not eb.matrix("mstnc_cav_penetration"):
+                av_rate = 0.0
+
+            alpha_AV = float(eb.matrix('msalpha_AV').data)
+            alpha_nonAV = float(eb.matrix('msalpha_nonAV').data)
+            beta_AV = float(eb.matrix('msbeta_AV').data)
+            beta_nonAV = float(eb.matrix('beta_nonAV').data)
+
+            alpha_tnc = alpha_AV * av_rate + alpha_nonAV * (1 - av_rate)
+            beta_tnc = beta_AV * av_rate + beta_nonAV * (1 - av_rate)
+
+            return alpha_tnc, beta_tnc
