@@ -27,11 +27,7 @@ class HbSchool(_m.Tool()):
         NoTAZ = len(util.get_matrix_numpy(eb, "mo51"))
         tnc_occupancy = float(util.get_matrix_numpy(eb, 'TNCOccHbsch'))  # TNC Occupancy
 
-        if eb.matrix("mstnc_cav_penetration"):
-            tnc_av_rate = float(eb.matrix("tnc_cav_penetration").data)
-
-        else:
-            tnc_av_rate = 0.0
+        tnc_av_rate = 0.0
 
         hov_occupancy = eb.matrix("msAutoOcc").data
 

@@ -29,11 +29,7 @@ class Non_hbwork(_m.Tool()):
         # get dataframe for tripgeneration
         MChM.agg_hb_att(eb)
         self.trip_generation(eb)
-        if eb.matrix("mstnc_cav_penetration"):
-            tnc_av_rate = float(eb.matrix("tnc_cav_penetration").data)
-
-        else:
-            tnc_av_rate = 0.0
+        tnc_av_rate = 0.0
         NoTAZ = len(util.get_matrix_numpy(eb, "mo51"))
 
         hov_occupancy = eb.matrix("msAutoOcc").data
@@ -328,7 +324,7 @@ class Non_hbwork(_m.Tool()):
         modes_dict = {'All':keys_list, 'Auto': ['SOV', 'HOV'], 'Auto2': ['SOV', 'HOV', 'TNC'], 'TNC': ['TNC'],
                      'Transit': ['WTra'], 'Active': ['Acti']}
 
-        Dict_Au = MChM.Calc_Prob(eb, Dict, "NHbWLS", thet, 'nhbwatr', LS_Coeff, modes_dict, taz_list)
+        Dict_Au = MChM.Calc_Prob(eb, Dict, "NHbWLS", thet, 'aut_nhbwatr', LS_Coeff, modes_dict, taz_list)
         # HB Mode Taxi/TNC
         Dict = {
                'SOV'  : [DfU['SOV'] + p51],
@@ -371,9 +367,9 @@ class Non_hbwork(_m.Tool()):
 
         imp_list = ["P-AFrictionFact1", "P-AFrictionFact2", "P-AFrictionFact3","P-AFrictionFact4"]
 
-        mo_list =  ["nhbwprd", "tra_nhbwprd", "act_nhbwprd", "tnc_nhbwprd"]
+        mo_list =  ["aut_nhbwprd", "tra_nhbwprd", "act_nhbwprd", "tnc_nhbwprd"]
 
-        md_list =  ["nhbwatr", "tra_nhbwatr", "act_nhbwatr", "tnc_nhbwatr"]
+        md_list =  ["aut_nhbwatr", "tra_nhbwatr", "act_nhbwatr", "tnc_nhbwatr"]
 
         out_list = ["NHbWP-A","NHbWP-ATrn","NHbWP-AAct","NHbWP-ATnc"]
 

@@ -28,11 +28,7 @@ class HbSoc(_m.Tool()):
         tnc_occupancy = float(util.get_matrix_numpy(eb, 'TNCOccHbsoc'))  # TNC Occupancy
         hov_occupancy = eb.matrix("msAutoOcc").data
 
-        if eb.matrix("mstnc_cav_penetration"):
-            tnc_av_rate = float(eb.matrix("tnc_cav_penetration").data)
-
-        else:
-            tnc_av_rate = 0.0
+        tnc_av_rate = 0.0
 
        # Xfer time from KNR and TNC to Transit
         tnc_xfer_time = float(eb.matrix("tncxtime").data)

@@ -45,14 +45,11 @@ class TripProductions(_m.Tool()):
         ##Generate Dataframe (Df for short hand) used for trip production rates
         hh_c_df, hh_nc_df = self.Generate_HH_Trip_Productions_dfs(eb)
 
-        # calculate household level trip productions and export nhb control totals
-        nhbw_ct, nhbo_ct = self.Calcuate_HH_Level_Trips(eb, hh_c_df=hh_c_df, hh_nc_df=hh_nc_df)
-
         # get variables for taz level production calculations
         taz_df = self.Generate_TAZ_Trip_Productions_df(eb)
 
         # calculate taz level trip productions
-        self.Calculate_TAZ_Level_Trips(eb, df=taz_df, nhbw_ct=nhbw_ct, nhbo_ct=nhbo_ct)
+        self.Calculate_TAZ_Level_Trips(eb, df=taz_df)
 
     @_m.logbook_trace("Calculate Household Level Trip Productions")
     def Calcuate_HH_Level_Trips(self, eb, hh_c_df, hh_nc_df):
@@ -79,7 +76,7 @@ class TripProductions(_m.Tool()):
         hh_df = pd.merge(hh_df, hh_c_df, how = 'left', left_on = ['HHWorker','HHInc'], right_on = ['HHWorker','HHInc'])
         # 0 workers households make no commute trips
         hh_df['hbw_prds'].fillna(0, inplace=True)
-        hh_df['nhbw_ct_prds'].fillna(0, inplace=True)
+        
 
         # Attach non-commute trip rates
         hh_df = pd.merge(hh_df, hh_nc_df, how = 'left', left_on = ['HHSize','HHInc'], right_on = ['HHSize','HHInc'])
@@ -93,18 +90,13 @@ class TripProductions(_m.Tool()):
 
         # Commute
         hh_df['hbw'] = hh_df['CountHHs'] * hh_df['hbw_prds'] * hh_df['bowen_adj']
-        hh_df['nhbw_ct'] = hh_df['CountHHs'] * hh_df['nhbw_ct_prds'] * hh_df['bowen_adj']
+        
         #  Non Commute
         hh_df['hbesc'] = hh_df['CountHHs'] * hh_df['hbesc_prds'] * hh_df['bowen_adj']
         hh_df['hbpb'] = hh_df['CountHHs'] * hh_df['hbpb_prds'] * hh_df['bowen_adj']
         hh_df['hbsch'] = hh_df['CountHHs'] * hh_df['hbsch_prds'] * hh_df['bowen_adj']
         hh_df['hbshop'] = hh_df['CountHHs'] * hh_df['hbshop_prds'] * hh_df['bowen_adj']
         hh_df['hbsoc'] = hh_df['CountHHs'] * hh_df['hbsoc_prds'] * hh_df['bowen_adj']
-        hh_df['nhbo_ct'] = hh_df['CountHHs'] * hh_df['nhbo_ct_prds'] * hh_df['bowen_adj']
-
-        # Calculate NHB trip control totals
-        nhbw_ct = hh_df['nhbw_ct'].sum()
-        nhbo_ct = hh_df['nhbo_ct'].sum()
 
         # Set Balancing Control Totals
         ct_df = hh_df[['hbw','hbesc','hbpb','hbsch','hbshop', 'hbsoc']]
@@ -153,7 +145,6 @@ class TripProductions(_m.Tool()):
                     vec = "{purpose} {income} {auto}".format(purpose=purpose, income=income, auto=auto)
                     util.set_matrix_numpy(eb, mo, df_emme[vec].values)
 
-        return np.round(nhbw_ct,6), np.round(nhbo_ct,6)
 
 
         @_m.logbook_trace("Import TAZ level Data")
@@ -198,7 +189,7 @@ class TripProductions(_m.Tool()):
 
 
     @_m.logbook_trace("Calculate TAZ Level Trip Productions")
-    def Calculate_TAZ_Level_Trips(self, eb, df, nhbw_ct, nhbo_ct):
+    def Calculate_TAZ_Level_Trips(self, eb, df):
         util = _m.Modeller().tool("translink.util")
 
         # set coefficents
@@ -242,60 +233,19 @@ class TripProductions(_m.Tool()):
                     + c_iPop1824UnAcSur * df['iPop1824UnAcSur']
                     + c_iP2434UnAc * df['iPop2534UnAc'] ) * df['bowen_adj']
 
-        # calculate non-home based work productions
-        df['nhbw'] = ( c_nhbw_int
-                     + c_nhbw_CM * df['EMP_Construct_Mfg']
-                     + c_nhbw_TW * df['EMP_TCU_Wholesale']
-                     + c_nhbw_FIRE * df['EMP_FIRE']
-                     + c_nhbw_BOS * df['EMP_Business_OtherServices']
-                     + c_nhbw_AFIC * df['EMP_AccomFood_InfoCult']
-                     + c_nhbw_Ret * df['EMP_Retail']
-                     + c_nhbw_HEPA * df['EMP_Health_Educat_PubAdmin']
-                     + c_nhbw_EE * df['Elementary_Enrolment']
-                     + c_nhbw_SE * df['Secondary_Enrolment']
-                     + c_nhbw_HHs * df['HH_Total'] ) * df['bowen_adj']
-
-        # calculate non-home based other productions
-        df['nhbo'] = ( c_nhbo_int
-                     + c_nhbo_AFIC * df['EMP_AccomFood_InfoCult']
-                     + c_nhbo_Ret * df['EMP_Retail']
-                     + c_nhbo_HEPA * df['EMP_Health_Educat_PubAdmin']
-                     + c_nhbo_EE * df['Elementary_Enrolment']
-                     + c_nhbo_SE * df['Secondary_Enrolment']
-                     + c_nhbo_PS * df['PostSecFTE']
-                     + c_nhbo_HHs * df['HH_Total'] ) * df['bowen_adj']
 
         # clear out intercept trips from pnr and external zones
         df['hbu'] = np.where(df['TAZ1741'] < 1000, 0, df['hbu'])
-        df['nhbw'] = np.where(df['TAZ1741'] < 1000, 0, df['nhbw'])
-        df['nhbo'] = np.where(df['TAZ1741'] < 1000, 0, df['nhbo'])
-
-        # scale based on houseold productions
-
-        nhbw_scalar = nhbw_ct / df['nhbw'].sum()
-        nhbo_scalar = nhbo_ct / df['nhbo'].sum()
-
-        df['nhbw'] = df['nhbw'] * nhbw_scalar
-        df['nhbo'] = df['nhbo'] * nhbo_scalar
 
         # export data to sqlite database
-        ct_df = df[['nhbw','nhbo']]
-        ct_df = pd.DataFrame(ct_df.sum())
-        ct_df.reset_index(inplace=True)
-        ct_df.columns = ['purpose','control_total']
-
-        # export data to sqlite database
-        df = df[['TAZ1741','hbu','nhbw','nhbo']]
+        df = df[['TAZ1741','hbu']]
 
         conn = util.get_rtm_db(eb)
         df.to_sql(name='TripsTazPrds', con=conn, flavor='sqlite', index=False, if_exists='replace')
-        ct_df.to_sql(name='TripsBalCts', con=conn, flavor='sqlite', index=False, if_exists='append')
         conn.close()
 
         # stuff in emmebank
         util.set_matrix_numpy(eb, 'mohbuprd', df['hbu'].values)
-        util.set_matrix_numpy(eb, 'monhbwprd', df['nhbw'].values)
-        util.set_matrix_numpy(eb, 'monhboprd', df['nhbo'].values)
 
 
     @_m.logbook_trace("Generate TAZ Level Trip Production Variables Dataframe")
@@ -359,17 +309,6 @@ class TripProductions(_m.Tool()):
         3,3,4.163671
         """)
 
-        nhbw_ct_prods = StringIO("""HHWorker,HHInc,nhbw_ct_prds
-        1,1,0.377038
-        2,1,0.732431
-        3,1,0.714433
-        1,2,0.548288
-        2,2,0.845521
-        3,2,0.896147
-        1,3,0.706515
-        2,3,1.161107
-        3,3,1.113165
-        """)
 
         hbesc_prods = StringIO("""HHSize,HHInc,hbesc_prds
         1,1,0.062889
@@ -438,25 +377,10 @@ class TripProductions(_m.Tool()):
         4,3,1.567024
         """)
 
-        nhbo_ct_prods = StringIO("""HHSize,HHInc,nhbo_ct_prds
-        1,1,0.523913
-        2,1,0.918434
-        3,1,0.865844
-        4,1,1.317712
-        1,2,0.58403
-        2,2,0.740073
-        3,2,0.921248
-        4,2,1.291335
-        1,3,0.382194
-        2,3,0.598365
-        3,3,0.747529
-        4,3,1.183577
-        """)
 
         # Generate Commute Trip Rate Data Frome
-        hbw_prod_df = pd.read_csv(hbw_prods, sep = ',')
-        nhbw_ct_prod_df = pd.read_csv(nhbw_ct_prods, sep = ',')
-        hh_commute_prds = pd.merge(hbw_prod_df, nhbw_ct_prod_df, how= 'left',left_on = ['HHWorker','HHInc'], right_on = ['HHWorker','HHInc'])
+        hh_commute_prds = pd.read_csv(hbw_prods, sep = ',')
+    
 
         # Generate Non Commute Data Frame
         hbesc_prod_df = pd.read_csv(hbesc_prods, sep = ',')
@@ -464,13 +388,11 @@ class TripProductions(_m.Tool()):
         hbsch_prod_df = pd.read_csv(hbsch_prods, sep = ',')
         hbshop_prod_df = pd.read_csv(hbshop_prods, sep = ',')
         hbsoc_prod_df = pd.read_csv(hbsoc_prods, sep = ',')
-        nhbo_ct_prod_df = pd.read_csv(nhbo_ct_prods, sep = ',')
         df = pd.merge(hbesc_prod_df, hbpb_prod_df, how= 'left', left_on = ['HHSize'], right_on = ['HHSize'])
         df = pd.merge(df, hbsch_prod_df, how= 'left', left_on = ['HHSize', 'HHInc'], right_on = ['HHSize', 'HHInc'])
         df = pd.merge(df, hbshop_prod_df, how= 'left', left_on = ['HHSize', 'HHInc'], right_on = ['HHSize', 'HHInc'])
-        df = pd.merge(df, hbsoc_prod_df, how= 'left', left_on = ['HHSize', 'HHInc'], right_on = ['HHSize', 'HHInc'])
-        hh_noncommute_prds = pd.merge(df, nhbo_ct_prod_df, how= 'left', left_on = ['HHSize', 'HHInc'], right_on = ['HHSize', 'HHInc'])
-
+        hh_noncommute_prds = pd.merge(df, hbsoc_prod_df, how= 'left', left_on = ['HHSize', 'HHInc'], right_on = ['HHSize', 'HHInc'])
+        
         return hh_commute_prds, hh_noncommute_prds
 
 
@@ -539,7 +461,3 @@ class TripProductions(_m.Tool()):
         util.initmat(eb, "mo2058", "hbsocInc3Au2prd", "hbsocInc3Au2 Productions", 0)
 
         util.initmat(eb, "mo2060", "hbuprd", "hbu productions", 0)
-
-        util.initmat(eb, "mo2070", "nhbwprd", "nhbw productions", 0)
-
-        util.initmat(eb, "mo2080", "nhboprd", "nhbo productions", 0)

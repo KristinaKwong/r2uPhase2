@@ -23,11 +23,7 @@ class Non_hbwork(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
         MChM = _m.Modeller().tool("translink.RTM3.stage2.modechoiceutils")
 
-        if eb.matrix("mstnc_cav_penetration"):
-            tnc_av_rate = float(eb.matrix("tnc_cav_penetration").data)
-
-        else:
-            tnc_av_rate = 0.0
+        tnc_av_rate = 0.0
         self.matrix_batchins(eb)
         self.trip_generation(eb)
         NoTAZ = len(util.get_matrix_numpy(eb, "mo51"))

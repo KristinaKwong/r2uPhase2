@@ -26,11 +26,7 @@ class HbWork(_m.Tool()):
         self.matrix_batchins(eb)
         NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
 
-        if eb.matrix("mstnc_cav_penetration"):
-            tnc_av_rate = float(eb.matrix("tnc_cav_penetration").data)
-
-        else:
-            tnc_av_rate = 0.0
+        tnc_av_rate = 0.0
 
         tnc_xfer_time = float(eb.matrix("tncxtime").data)
 #        ##############################################################################
