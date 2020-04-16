@@ -45,6 +45,9 @@ class TripProductions(_m.Tool()):
         ##Generate Dataframe (Df for short hand) used for trip production rates
         hh_c_df, hh_nc_df = self.Generate_HH_Trip_Productions_dfs(eb)
 
+        # calculate household level trip productions and export control totals
+        self.Calcuate_HH_Level_Trips(eb, hh_c_df=hh_c_df, hh_nc_df=hh_nc_df)
+
         # get variables for taz level production calculations
         taz_df = self.Generate_TAZ_Trip_Productions_df(eb)
 
@@ -77,7 +80,6 @@ class TripProductions(_m.Tool()):
         # 0 workers households make no commute trips
         hh_df['hbw_prds'].fillna(0, inplace=True)
         
-
         # Attach non-commute trip rates
         hh_df = pd.merge(hh_df, hh_nc_df, how = 'left', left_on = ['HHSize','HHInc'], right_on = ['HHSize','HHInc'])
 
@@ -90,7 +92,7 @@ class TripProductions(_m.Tool()):
 
         # Commute
         hh_df['hbw'] = hh_df['CountHHs'] * hh_df['hbw_prds'] * hh_df['bowen_adj']
-        
+     
         #  Non Commute
         hh_df['hbesc'] = hh_df['CountHHs'] * hh_df['hbesc_prds'] * hh_df['bowen_adj']
         hh_df['hbpb'] = hh_df['CountHHs'] * hh_df['hbpb_prds'] * hh_df['bowen_adj']
