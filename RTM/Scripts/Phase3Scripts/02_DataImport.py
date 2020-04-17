@@ -223,7 +223,7 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms396", "TNCOccHbesc", "TNCOccHbesc", 2.14)
         util.initmat(eb, "ms397", "TNCOccNhbw", "TNCOccNhbw", 1.27)
         util.initmat(eb, "ms398", "TNCOccNhbo", "TNCOccNhbo", 2.01)
-        
+
         ##      Batch in Blending Factors
 
         util.initmat(eb, "ms400", "HbWBl_AM_P-A", "HbW Blend AM P-A Factor", 0.391751)
@@ -443,14 +443,7 @@ class DataImport(_m.Tool()):
         proj_path = os.path.dirname(project.path)
 
         skimData = os.path.join(proj_path, "BaseNetworks", "starter_skims.csv.gz")
-        df_skims = pd.read_csv(skimData, compression = 'gzip')
-
-        ## GET ensemble based ij dataframe
-        df = util.get_ijensem_df(eb, 'gj')
-        df['gj_i'] = np.where(df['gj_i'] > 999, df['gj_i']*10, df['gj_i'])
-        df['gj_j'] = np.where(df['gj_j'] > 999, df['gj_j']*10, df['gj_j'])
-
-        df = pd.merge(df, df_skims, how = 'left', left_on = ['gj_i', 'gj_j'], right_on = ['i', 'j'])
+        df = pd.read_csv(skimData, compression = 'gzip')
 
         # Set auto skims based on SOV VOT skims
         # AM
@@ -517,46 +510,11 @@ class DataImport(_m.Tool()):
         util.set_matrix_numpy(eb, "mfPmHgvOpCst", df['SeedAutoOpCst'].values.reshape(NoTAZ, NoTAZ))
         util.set_matrix_numpy(eb, "mfPmHgvTime", df['SeedAutoTime'].values.reshape(NoTAZ, NoTAZ))
 
-        # Calculate a TNC Distance based on HOV3
-        tnc_dist = df['SeedAutoOpCst'].values.reshape(NoTAZ, NoTAZ) / eb.matrix("msautoOpCost").data
-
-        # Get TNC per km rate and set values for reference
-        alpha_tnc, beta_tnc = util.calc_tnc_params()
-
-        util.set_matrix_numpy(eb, "alpha_tnc", alpha_tnc)
-        util.set_matrix_numpy(eb, "beta_tnc", beta_tnc)
-
-        # Calculate a TNC Cost
-        tnc_cost = alpha_tnc + beta_tnc*tnc_dist
-
-        util.set_matrix_numpy(eb, "AmTNCCost", tnc_cost)
-        util.set_matrix_numpy(eb, "MdTNCCost", tnc_cost)
-        util.set_matrix_numpy(eb, "PmTNCCost", tnc_cost)
-
         del df
 
         # input external demand and bike score
         inData = os.path.join(proj_path, "BaseNetworks", "externals_bikescore_%s.csv.gz" % model_year)
-        df_ext_bikescore = pd.read_csv(inData, compression = 'gzip')
-
-        df_in = util.get_ijensem_df(eb, 'gj')
-        ij = util.get_pd_ij_df(eb)
-        df_in = pd.concat([df_in,ij], axis=1)
-        df_in['pr'] = np.where((df_in['i'] >= 100) & (df_in['i'] <= 999), 1, 0)
-        df_in['pr'] = np.where((df_in['j'] >= 100) & (df_in['j'] <= 999), 1, df_in['pr'])
-        df_in['gj_i'] = np.where(df_in['gj_i'] > 999, df_in['gj_i']*10, df_in['gj_i'])
-        df_in['gj_j'] = np.where(df_in['gj_j'] > 999, df_in['gj_j']*10, df_in['gj_j'])
-        df_in = df_in.drop(columns=['i', 'j'])
-        df_in = pd.merge(df_in, df_ext_bikescore, how = 'left', left_on = ['gj_i', 'gj_j'], right_on = ['i', 'j'])
-
-        dem_list = ['extSovAm', 'extHovAm', 'extSovMd', 'extHovMd', 'extSovPm', 'extHovPm']
-
-        for dem in dem_list:
-            df_in[dem] = np.where(df_in['pr'] == 1, 0, df_in[dem])
-
-        df_in['bikeskim'] = np.where(df_in['pr'] == 1, -1, df_in['bikeskim'])
-        df_in['md_adj'] = np.where(df_in['pr'] == 1, 0, df_in['md_adj'])
-
+        df_in = pd.read_csv(inData, compression = 'gzip')
 
         # SET external demand
         util.set_matrix_numpy(eb, "mfextSovAm", df_in['extSovAm'].values.reshape(NoTAZ, NoTAZ))
@@ -860,13 +818,13 @@ class DataImport(_m.Tool()):
 
         # Fare Zones Travelled
         util.initmat(eb, "mf95", "fare_zones", "Fare Zones Travelled", 0)
-   
+
     @_m.logbook_trace("Importing custom ensembles if custom ensemble CSV file is available")
     def update_ensembles(self, eb):
         util = _m.Modeller().tool("translink.util")
-        
-        # Code to check if a custom ensemble file exists and if yes - 
-        # replace the values read in the code above       
+
+        # Code to check if a custom ensemble file exists and if yes -
+        # replace the values read in the code above
         custom_ensembles = os.path.join(util.get_input_path(eb), 'custom_ensembles.csv')
         if os.path.isfile(custom_ensembles):
             util.read_csv_momd(eb, custom_ensembles)
@@ -897,4 +855,4 @@ class DataImport(_m.Tool()):
             util.set_ensemble_from_mo(eb, "gw", "mo142")
             util.set_ensemble_from_mo(eb, "gx", "mo143")
             util.set_ensemble_from_mo(eb, "gy", "mo144")
-            util.set_ensemble_from_mo(eb, "gz", "mo145")    
+            util.set_ensemble_from_mo(eb, "gz", "mo145")
