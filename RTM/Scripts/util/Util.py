@@ -504,8 +504,8 @@ class Util(_m.Tool()):
                     self.emme_segment_calc(mdscen, res, exp, sellink, selline, agg)
 
                 if per == "PM" or per == "ALL":
-                    self.emme_segment_calc(pmscen, res, exp, sellink, selline, agg)   
-   
+                    self.emme_segment_calc(pmscen, res, exp, sellink, selline, agg)
+
     def custom_link_attributes(self, amscen, mdscen, pmscen):
 
         create_attr = _m.Modeller().tool("inro.emme.data.extra_attribute.create_extra_attribute")
@@ -519,7 +519,7 @@ class Util(_m.Tool()):
 
         with open(custom_attributes) as f:
             reader =csv.reader(f, delimiter ='\t')
-            col_labs = reader.next()       
+            col_labs = reader.next()
 
         new_attributes = col_labs[2:]
 
@@ -527,9 +527,9 @@ class Util(_m.Tool()):
             for attr in new_attributes:
                 create_attr("LINK", attr, attr[1:], 0, False, scen)
             import_values(file_path=custom_attributes,
-                            field_separator='TAB', 
-                            scenario=scen, 
-                            column_labels=col_labs, 
+                            field_separator='TAB',
+                            scenario=scen,
+                            column_labels=col_labs,
                             revert_on_error=True)
 
     def get_tod_scenarios(self, eb):
@@ -568,3 +568,10 @@ class Util(_m.Tool()):
             beta_tnc = beta_AV * av_rate + beta_nonAV * (1 - av_rate)
 
             return alpha_tnc, beta_tnc
+
+    def get_matrix_transpose(self, eb, mat_id):
+        NAMESPACE = "inro.emme.data.matrix.transpose_matrix"
+        transpose_matrix = _m.Modeller().tool(NAMESPACE)
+        eb = _m.Modeller().emmebank
+        matrix = eb.matrix(mat_id)
+        transpose_matrix(matrix=matrix)
