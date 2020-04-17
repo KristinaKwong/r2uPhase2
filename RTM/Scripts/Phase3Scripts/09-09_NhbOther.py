@@ -366,19 +366,12 @@ class Non_hbwork(_m.Tool()):
 #        ##       Calculate Demand
 #       ##############################################################################
 
-        name_dict = {
-            'Auto': ['Auto'],
-            'WTra': ['Bus', 'Ral'],
-            'Acti': ['Walk', 'Bike'],
-            'TNC': ['TNC']
-        }
+        Dict_Au = MChM.Calc_Demand(eb, Dict_RvAu,"NHbOP-AAut", write_att_demand = False)
+        Dict_Tr = MChM.Calc_Demand(eb, Dict_RvTr,"NHbOP-ATrn", write_att_demand = False)
+        Dict_Ac = MChM.Calc_Demand(eb, Dict_RvAc,"NHbOP-AAct", write_att_demand = False)
+        Dict_Tn = MChM.Calc_Demand(eb, Dict_RvTn,"NHbOP-ATnc", write_att_demand = False)
 
-        Dict_Au = MChM.Calc_Demand(eb, Dict_RvAu,"NHbOP-AAut", name_dict, write_att_demand = False)
-        Dict_Tr = MChM.Calc_Demand(eb, Dict_RvTr,"NHbOP-ATrn", name_dict, write_att_demand = False)
-        Dict_Ac = MChM.Calc_Demand(eb, Dict_RvAc,"NHbOP-AAct", name_dict, write_att_demand = False)
-        Dict_Tn = MChM.Calc_Demand(eb, Dict_RvTn,"NHbOP-ATnc", name_dict, write_att_demand = False)
 
-        
         Auto =   Dict_Au['Auto'][0]+Dict_Tr['Auto'][0]+Dict_Ac['Auto'][0]+Dict_Tn['Auto'][0]
 
         Bus  =  Dict_Au['WTra'][0]+Dict_Tr['WTra'][0]+Dict_Ac['WTra'][0]+Dict_Tn['WTra'][0]
@@ -771,18 +764,37 @@ class Non_hbwork(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
 
         ## Initialze Logsum Matrices
+        # Auto Segment
         util.initmat(eb, "mf9080", "NHbOLSAut", " NhbO LogSum HB Auto", 0)
+        util.initmat(eb, "mf9380", "NHbOAutLSAU", "NHBO Auto Seg LogSum AU", 0)
+        util.initmat(eb, "mf9480", "NHbOAutLSTR", "NHBO Auto Seg LogSum TR", 0)
+        util.initmat(eb, "mf9580", "NHbOAutLSAC", "NHBO Auto Seg LogSum AC", 0)
+
+        # Transit Segment
         util.initmat(eb, "mf9081", "NHbOLSTrn", " NhbO LogSum HB Transit", 0)
+        util.initmat(eb, "mf9381", "NHbOTrnLSAU", "NHBO Transit Seg LogSum AU", 0)
+        util.initmat(eb, "mf9481", "NHbOTrnLSTR", "NHBO Transit Seg LogSum TR", 0)
+        util.initmat(eb, "mf9581", "NHbOTrnLSAC", "NHBO Transit Seg LogSum AC", 0)
+
+        # Active Segment
         util.initmat(eb, "mf9082", "NHbOLSAct", " NhbO LogSum HB Active", 0)
+        util.initmat(eb, "mf9382", "NHbOActLSAU", "NHBO Active Seg LogSum AU", 0)
+        util.initmat(eb, "mf9482", "NHbOActLSTR", "NHBO Active Seg LogSum TR", 0)
+        util.initmat(eb, "mf9582", "NHbOActLSAC", "NHBO Active Seg LogSum AC", 0)
+
+        # TNC Segment
         util.initmat(eb, "mf9083", "NHbOLSTnc", " NhbO LogSum HB TNC", 0)
-        
+        util.initmat(eb, "mf9383", "NHbOTncLSAU", "NHBO TNC Seg LogSum AU", 0)
+        util.initmat(eb, "mf9483", "NHbOTncLSTR", "NHBO TNC Seg LogSum TR", 0)
+        util.initmat(eb, "mf9583", "NHbOTncLSAC", "NHBO TNC Seg LogSum AC", 0)
+
 
         ## Initialze Friction Factor Matrices
         util.initmat(eb, "mf9100", "P-AFrictionFact1", "Trip Distribution Friction Factor 1", 0)
         util.initmat(eb, "mf9101", "P-AFrictionFact2", "Trip Distribution Friction Factor 2", 0)
         util.initmat(eb, "mf9102", "P-AFrictionFact3", "Trip Distribution Friction Factor 3", 0)
         util.initmat(eb, "mf9103", "P-AFrictionFact4", "Trip Distribution Friction Factor 4", 0)
-        
+
 
         ## Initialize P-A Trip Tables by mode
         util.initmat(eb, "mf3800", "NHbOSOVPerTrips",  "NHbO SOV Per-Trips", 0)
@@ -809,5 +821,5 @@ class Non_hbwork(_m.Tool()):
         util.initmat(eb, "md2081", "tra_nhboatr", " Transit segment NHBO atr ", 0)
         util.initmat(eb, "md2082", "act_nhboatr", " Active segment NHBO atr ", 0)
         util.initmat(eb, "md2083", "tnc_nhboatr", " TNC segment NHBO atr ", 0)
-        
-        
+
+
