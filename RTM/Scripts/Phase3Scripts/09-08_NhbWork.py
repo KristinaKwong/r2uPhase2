@@ -371,7 +371,7 @@ class Non_hbwork(_m.Tool()):
 
         md_list =  ["aut_nhbwatr", "tra_nhbwatr", "act_nhbwatr", "tnc_nhbwatr"]
 
-        out_list = ["NHbWP-A","NHbWP-ATrn","NHbWP-AAct","NHbWP-ATnc"]
+        out_list = ["NHbWP-AAut","NHbWP-ATrn","NHbWP-AAct","NHbWP-ATnc"]
 
 
 
@@ -794,27 +794,27 @@ class Non_hbwork(_m.Tool()):
         ## Initialze Logsum Matrices
         # Auto Segment
         util.initmat(eb, "mf9070", "NHbWLSAut", " NHbW LogSum HB Auto", 0)
-        util.initmat(eb, "mf9370", "NHbWAutLSAU", "NHBW Auto Seg LogSum AU", 0)
-        util.initmat(eb, "mf9470", "NHbWAutLSTR", "NHBW Auto Seg LogSum TR", 0)
-        util.initmat(eb, "mf9570", "NHbWAutLSAC", "NHBW Auto Seg LogSum AC", 0)
+        util.initmat(eb, "mf9370", "NHbWLSAUAut", "NHBW Auto Seg LogSum AU", 0)
+        util.initmat(eb, "mf9470", "NHbWLSTRAut", "NHBW Auto Seg LogSum TR", 0)
+        util.initmat(eb, "mf9570", "NHbWLSACAut", "NHBW Auto Seg LogSum AC", 0)
 
         # Transit Segment
         util.initmat(eb, "mf9071", "NHbWLSTrn", " NHbW LogSum HB Transit", 0)
-        util.initmat(eb, "mf9371", "NHbWTrnLSAU", "NHBW Transit Seg LogSum AU", 0)
-        util.initmat(eb, "mf9471", "NHbWTrnLSTR", "NHBW Transit Seg LogSum TR", 0)
-        util.initmat(eb, "mf9571", "NHbWTrnLSAC", "NHBW Transit Seg LogSum AC", 0)
+        util.initmat(eb, "mf9371", "NHbWLSAUTrn", "NHBW Transit Seg LogSum AU", 0)
+        util.initmat(eb, "mf9471", "NHbWLSTRTrn", "NHBW Transit Seg LogSum TR", 0)
+        util.initmat(eb, "mf9571", "NHbWLSACTrn", "NHBW Transit Seg LogSum AC", 0)
 
         # Active Segment
         util.initmat(eb, "mf9072", "NHbWLSAct", " NHbW LogSum HB Active", 0)
-        util.initmat(eb, "mf9372", "NHbWActLSAU", "NHBW Active Seg LogSum AU", 0)
-        util.initmat(eb, "mf9472", "NHbWActLSTR", "NHBW Active Seg LogSum TR", 0)
-        util.initmat(eb, "mf9572", "NHbWActLSAC", "NHBW Active Seg LogSum AC", 0)
+        util.initmat(eb, "mf9372", "NHbWLSAUAct", "NHBW Active Seg LogSum AU", 0)
+        util.initmat(eb, "mf9472", "NHbWLSTRAct", "NHBW Active Seg LogSum TR", 0)
+        util.initmat(eb, "mf9572", "NHbWLSACAct", "NHBW Active Seg LogSum AC", 0)
 
         # TNC Segment
         util.initmat(eb, "mf9073", "NHbWLSTnc", " NHbW LogSum HB TNC", 0)
-        util.initmat(eb, "mf9373", "NHbWTncLSAU", "NHBW TNC Seg LogSum AU", 0)
-        util.initmat(eb, "mf9473", "NHbWTncLSTR", "NHBW TNC Seg LogSum TR", 0)
-        util.initmat(eb, "mf9573", "NHbWTncLSAC", "NHBW TNC Seg LogSum AC", 0)
+        util.initmat(eb, "mf9373", "NHbWLSAUTnc", "NHBW TNC Seg LogSum AU", 0)
+        util.initmat(eb, "mf9473", "NHbWLSTRTnc", "NHBW TNC Seg LogSum TR", 0)
+        util.initmat(eb, "mf9573", "NHbWLSACTnc", "NHBW TNC Seg LogSum AC", 0)
 
         ## Initialze Friction Factor Matrices
         util.initmat(eb, "mf9100", "P-AFrictionFact1", "Trip Distribution Friction Factor 1", 0)
