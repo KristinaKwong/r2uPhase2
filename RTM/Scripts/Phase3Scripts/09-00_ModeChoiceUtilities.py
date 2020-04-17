@@ -437,7 +437,7 @@ class ModeChoiceUtilities(_m.Tool()):
 
         conn = util.get_db_byname(eb, "trip_summaries.db")
         df = pd.read_sql(stat_sql, conn)
-        df = df.groupby(['tz', 'purp', 'segment', 'mode_agg']).sum().reset_index()
+        df = df.groupby(['tz', 'purp', 'mode_agg']).sum().reset_index()
         df.to_sql(name='trip_att_tots', con=conn, flavor='sqlite', index=False, if_exists='replace')
         conn.close()
 

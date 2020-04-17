@@ -324,7 +324,7 @@ class Non_hbwork(_m.Tool()):
         modes_dict = {'All':keys_list, 'Auto': ['SOV', 'HOV'], 'Auto2': ['SOV', 'HOV', 'TNC'], 'TNC': ['TNC'],
                      'Transit': ['WTra'], 'Active': ['Acti']}
 
-        Dict_Au = MChM.Calc_Prob(eb, Dict, "NHbWLS", thet, 'aut_nhbwatr', LS_Coeff, modes_dict, taz_list)
+        Dict_Au = MChM.Calc_Prob(eb, Dict, "NHbWLSAut", thet, 'aut_nhbwatr', LS_Coeff, modes_dict, taz_list)
         # HB Mode Taxi/TNC
         Dict = {
                'SOV'  : [DfU['SOV'] + p51],
@@ -356,14 +356,14 @@ class Non_hbwork(_m.Tool()):
                }
 
         Dict_Ac = MChM.Calc_Prob(eb, Dict, "NHbWLSAct", thet, 'act_nhbwatr', LS_Coeff, modes_dict, taz_list)
-        
+
         del DfU, Dict
 #
        ##############################################################################
         ##       Trip Distribution
        ##############################################################################
 
-        Logsum =  ["NHbWLS", "NHbWLSTrn", "NHbWLSAct", "NHbWLSTnc"]
+        Logsum =  ["NHbWLSAut", "NHbWLSTrn", "NHbWLSAct", "NHbWLSTnc"]
 
         imp_list = ["P-AFrictionFact1", "P-AFrictionFact2", "P-AFrictionFact3","P-AFrictionFact4"]
 
@@ -413,7 +413,7 @@ class Non_hbwork(_m.Tool()):
         Dict_Tr = MChM.Calc_Demand(eb, Dict_Tr,"NHbWP-ATrn", name_dict, write_att_demand = False)
         Dict_Ac = MChM.Calc_Demand(eb, Dict_Ac,"NHbWP-AAct", name_dict, write_att_demand = False)
         Dict_Tn = MChM.Calc_Demand(eb, Dict_Tn,"NHbWP-ATnc", name_dict, write_att_demand = False)
-        
+
         SOV =   Dict_Au['SOV'][0]+Dict_Tr['SOV'][0]+Dict_Ac['SOV'][0]+Dict_Tn['SOV'][0]
         HOV =   Dict_Au['HOV'][0]+ Dict_Tr['HOV'][0]+Dict_Ac['HOV'][0]+ Dict_Tn['HOV'][0]
 
@@ -589,7 +589,7 @@ class Non_hbwork(_m.Tool()):
         util.add_matrix_numpy(eb, "TNC_pertrp_VOT_3_Am", TNC_AM)
         util.add_matrix_numpy(eb, "TNC_pertrp_VOT_3_Md", TNC_MD)
         util.add_matrix_numpy(eb, "TNC_pertrp_VOT_3_Pm", TNC_PM)
-        
+
         # Transit
         # AM
         util.add_matrix_numpy(eb, "busAm", Bus_AM)
@@ -733,38 +733,38 @@ class Non_hbwork(_m.Tool()):
 
         df = pd.merge(df, df_coeff, how = 'left', left_on = ['purp', 'mode_agg', 'prod'], right_on = ['purpose', 'mode', 'p-a'])
         df['trip_prod'] = df['trips']*df['coef']
-        df = df[['tz', 'purp', 'segment', 'mode_agg', 'trips', 'trip_prod', 'attr']]
+        df = df[['tz', 'purp', 'mode_agg', 'trips', 'trip_prod', 'attr']]
 
         df = pd.merge(df, df_coeff, how = 'left', left_on = ['purp', 'mode_agg', 'attr'], right_on = ['purpose', 'mode', 'p-a'])
         df['trip_attr'] = df['trips']*df['coef']
-        df = df[['tz', 'purp', 'segment', 'mode_agg', 'trip_prod', 'trip_attr']]
-        df = df.groupby(['tz', 'segment', 'mode_agg']).sum().reset_index()
+        df = df[['tz', 'purp', 'mode_agg', 'trip_prod', 'trip_attr']]
+        df = df.groupby(['tz', 'mode_agg']).sum().reset_index()
         df = df.fillna(0)
 
         # Balance productions to attractions (use midpoint)
-        df['trip_prod_adj'] = df['trip_prod']* 0.5*(1 + df.groupby(['mode_agg', 'segment']).trip_attr.transform(np.sum)/(np.where(df.groupby(['mode_agg', 'segment']).trip_prod.transform(np.sum) == 0, tiny, df.groupby(['mode_agg', 'segment']).trip_prod.transform(np.sum))))
-        df['trip_attr_adj'] = df['trip_attr']* 0.5*(1 + df.groupby(['mode_agg', 'segment']).trip_prod.transform(np.sum)/(np.where(df.groupby(['mode_agg', 'segment']).trip_attr.transform(np.sum) == 0, tiny, df.groupby(['mode_agg', 'segment']).trip_attr.transform(np.sum))))
+        df['trip_prod_adj'] = df['trip_prod']* 0.5*(1 + df.groupby(['mode_agg']).trip_attr.transform(np.sum)/(np.where(df.groupby(['mode_agg']).trip_prod.transform(np.sum) == 0, tiny, df.groupby(['mode_agg']).trip_prod.transform(np.sum))))
+        df['trip_attr_adj'] = df['trip_attr']* 0.5*(1 + df.groupby(['mode_agg']).trip_prod.transform(np.sum)/(np.where(df.groupby(['mode_agg']).trip_attr.transform(np.sum) == 0, tiny, df.groupby(['mode_agg']).trip_attr.transform(np.sum))))
 
         #RV Auto
-        df1 = df.loc[(df['segment'] == 0) & (df['mode_agg'] == "Auto")]
+        df1 = df.loc[(df['mode_agg'] == "Auto")]
         util.set_matrix_numpy(eb, "aut_nhbwprd", df1['trip_prod_adj'].values)
         util.set_matrix_numpy(eb, "aut_nhbwatr", df1['trip_attr_adj'].values)
 
         #RV Transit
-        df1 = df.loc[(df['segment'] == 0) & (df['mode_agg'] == "Transit")]
+        df1 = df.loc[(df['mode_agg'] == "Transit")]
         util.set_matrix_numpy(eb, "tra_nhbwprd", df1['trip_prod_adj'].values)
         util.set_matrix_numpy(eb, "tra_nhbwatr", df1['trip_attr_adj'].values)
 
         #RV Active
-        df1 = df.loc[(df['segment'] == 0) & (df['mode_agg'] == "Active")]
+        df1 = df.loc[(df['mode_agg'] == "Active")]
         util.set_matrix_numpy(eb, "act_nhbwprd", df1['trip_prod_adj'].values)
         util.set_matrix_numpy(eb, "act_nhbwatr", df1['trip_attr_adj'].values)
 
         #RV TNC
-        df1 = df.loc[(df['segment'] == 0) & (df['mode_agg'] == "TNC")]
+        df1 = df.loc[(df['mode_agg'] == "TNC")]
         util.set_matrix_numpy(eb, "tnc_nhbwprd", df1['trip_prod_adj'].values)
         util.set_matrix_numpy(eb, "tnc_nhbwatr", df1['trip_attr_adj'].values)
-        
+
         df = df.groupby(['tz']).sum().reset_index()
 
         # upload data to sql database
