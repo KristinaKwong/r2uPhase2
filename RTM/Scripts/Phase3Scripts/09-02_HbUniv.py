@@ -435,33 +435,26 @@ class HbWork(_m.Tool()):
 
 
 
-        # Split TNC trips into SOV and HOV
-        # TNC CAV Trips
-        split_tnc_sov = (hov_occupancy - tnc_occupancy)/(hov_occupancy-1)
-        SOV_TNC_AM = TNC_AM * split_tnc_sov
-        SOV_TNC_MD = TNC_MD * split_tnc_sov
-        SOV_TNC_PM = TNC_PM * split_tnc_sov
+       # Convert TNC HOV to Vehicles
+        HOV_TNC_AM = TNC_AM / tnc_occupancy
+        HOV_TNC_MD = TNC_MD / tnc_occupancy
+        HOV_TNC_PM = TNC_PM / tnc_occupancy
 
-        HOV_TNC_AM = TNC_AM * (1 - split_tnc_sov)
-        HOV_TNC_MD = TNC_MD * (1 - split_tnc_sov)
-        HOV_TNC_PM = TNC_PM * (1 - split_tnc_sov)
-
-
-        ## add TNC matrices for empty TNC component
-        util.add_matrix_numpy(eb, "TncAMVehicleTrip", SOV_TNC_AM)
-        util.add_matrix_numpy(eb, "TncAMVehicleTrip", HOV_TNC_AM)
-
-        util.add_matrix_numpy(eb, "TncMDVehicleTrip", SOV_TNC_MD)
-        util.add_matrix_numpy(eb, "TncMDVehicleTrip", HOV_TNC_MD)
-
-        util.add_matrix_numpy(eb, "TncPMVehicleTrip", SOV_TNC_PM)
-        util.add_matrix_numpy(eb, "TncPMVehicleTrip", HOV_TNC_PM)
 
         # Convert HOV to Auto Drivers
         # HOV2 + TNC HOV
         AuDr_HOV_AM = HOV_AM/Occ + HOV_TNC_AM
         AuDr_HOV_MD = HOV_MD/Occ + HOV_TNC_MD
         AuDr_HOV_PM = HOV_PM/Occ + HOV_TNC_PM
+
+        ## add TNC matrices for empty TNC component
+        util.add_matrix_numpy(eb, "TncAMVehicleTrip", HOV_TNC_AM)
+        util.add_matrix_numpy(eb, "TncMDVehicleTrip", HOV_TNC_MD)
+        util.add_matrix_numpy(eb, "TncPMVehicleTrip", HOV_TNC_PM)
+
+
+        del HOV_TNC_AM, HOV_TNC_MD, HOV_TNC_PM
+
 
 #       ##############################################################################
 #        ##       Set Demand Matrices
@@ -488,7 +481,7 @@ class HbWork(_m.Tool()):
         util.add_matrix_numpy(eb, "SOV_pertrp_VOT_2_Pm", SOV_PM)
 
 
-        # HOV
+        # HOV (includes TNC)
         # AM
         util.add_matrix_numpy(eb, "HOV_pertrp_VOT_2_Am", HOV_AM)
 
@@ -540,11 +533,6 @@ class HbWork(_m.Tool()):
 
         # PM
         util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Pm", SOV_PM)
-
-        # Add SOV TNC Trips to SOV trip tables
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Am", SOV_TNC_AM)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Md", SOV_TNC_MD)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Pm", SOV_TNC_PM)
 
         # HOV
         # AM

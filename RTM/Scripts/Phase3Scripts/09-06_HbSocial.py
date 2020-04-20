@@ -50,12 +50,9 @@ class HbSoc(_m.Tool()):
                      'BRTotHig': 120.0,
                      'WCTotLow': 30.0,
                      'WCTotHig': 130.0,
-                     #'PRAutTim': 0.0,
-                     'PRAutTim_min': 0.0,
-                     'PRAutTim_max': 35.0,
+                     'PRAutTim': 0.0,
                      'br_ratio': 2.0,
-                     'r_time'  : 20.0,
-                     'pr_ratio': 2.0
+                     'r_time'  : 20.0
                     }
 
         # Declare Utilities Data Frame
@@ -94,8 +91,6 @@ class HbSoc(_m.Tool()):
         p991 = -0.135461
         p5 = -2.027129
         p7 = 0.725872
-       # TNC/Taxi Access to Transit Coefficient
-        p31 = -9999.0 # Currently unvailable
 
         # TNC Cost Factors
         # alpha_tnc and beta_tnc are calculated in Blended_Skims.py
@@ -308,104 +303,6 @@ class HbSoc(_m.Tool()):
         DfU['RalI3'] = Df['GeUtl'] + p14*Df['RalFar']
 
 #        ##############################################################################
-#        ##       TNC/Taxi-and-Ride to Transit Modes
-#        ##############################################################################
-        # Generate Dataframe
-        Df = {}
-        Df['BAuCos'] = util.get_matrix_numpy(eb, 'HbSoBlBAuTNCCost')  # Bus TNC Drive Distance
-        Df['BAuTim'] = util.get_matrix_numpy(eb, 'HbSoBlBAuTNCTime')  # Bus TNC Drive Time
-
-        Df['BusIVT'] = util.get_matrix_numpy(eb, 'HbSoBlBTncBusIvtt')  # Bus IVTT
-        Df['BusWat'] = util.get_matrix_numpy(eb, 'HbSoBlBTncBusWait')  # Bus Wait Time
-        Df['BusAux'] = util.get_matrix_numpy(eb, 'HbSoBlBTncBusAux')  # Bus Walk Time
-        Df['BusBrd'] = util.get_matrix_numpy(eb, 'HbSoBlBTncBusBoard')  # Bus Boarding Time
-        Df['BusFar'] = util.get_matrix_numpy(eb, 'HbSoBlBTncBusFare')  # Bus Fare
-        Df['BusTot'] = util.get_matrix_numpy(eb, 'HbSoBlBusIvtt') + util.get_matrix_numpy(eb,
-                                                                                          'HbSoBlBusWait') + util.get_matrix_numpy(
-            eb, 'HbSoBlBusAux')
-        Df['BusIVT'] = util.get_matrix_numpy(eb, 'HbSoBlBusIvtt')  # In vehicle Bus time
-        Df['BAuTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] + Df['BAuTim']  # Total Travel Time
-        Df['BAuIBR'] = Df['BusIVT'] / (Df['BusIVT'] + Df['BAuTim'] + Tiny)  # Ratio of Time on Bus to total travel time
-        Df['WBusFar'] = util.get_matrix_numpy(eb, 'HbSoBlBusFare')  # Walk to Transit Fare
-
-        Df['RAuCos'] = util.get_matrix_numpy(eb, 'HbSoBlRAuTNCCost')  # Rail TNC Drive Distance
-        Df['RAuTim'] = util.get_matrix_numpy(eb, 'HbSoBlRAuTNCTime')  # Rail TNC Drive Time
-
-        Df['RalIVR'] = util.get_matrix_numpy(eb, 'HbSoBlRTncRailIvtt')  # IVT on Rail
-        Df['RalIVB'] = util.get_matrix_numpy(eb, 'HbSoBlRTncRailIvttBus')  # IVT on Bus
-        Df['RalWat'] = util.get_matrix_numpy(eb, 'HbSoBlRTncRailWait')  # Rail Wait Time
-        Df['RalAux'] = util.get_matrix_numpy(eb, 'HbSoBlRTncRailAux')  # Rail Walk Time
-        Df['RalBrd'] = util.get_matrix_numpy(eb, 'HbSoBlRTncRailBoard')  # Rail Board Time
-        Df['RalFar'] = util.get_matrix_numpy(eb, 'HbSoBlRTncRailFare')  # Rail Fare
-        Df['RAuTot'] = Df['RalIVB'] + Df['RalIVR'] + Df['RalWat'] + Df['RalAux'] + Df['RAuTim']  # Total Travel Time
-        Df['RAuIBR'] = Df['RalIVB'] / (
-                Df['RalIVB'] + Df['RalIVR'] + Df['RAuTim'] + Tiny)  # Ratio of Time on Bus to total travel time
-        Df['RAuIRR'] = Df['RalIVR'] / (
-                Df['RalIVB'] + Df['RalIVR'] + Df['RAuTim'] + Tiny)  # Ratio of Time on Rail to total travel time
-
-        Df['WRalFar'] = util.get_matrix_numpy(eb, 'HbSoBlRailFare')
-        Df['WRalIVR'] = util.get_matrix_numpy(eb, 'HbSoBlRailIvtt')  # In vehicle Rail time on rail
-        Df['RalTot'] = (util.get_matrix_numpy(eb, 'HbSoBlRailIvtt') + util.get_matrix_numpy(eb, 'HbSoBlRailIvttBus')
-                        + util.get_matrix_numpy(eb, 'HbSoBlRailWait') + util.get_matrix_numpy(eb, 'HbSoBlRailAux'))
-
-        Df['WAuCos'] = util.get_matrix_numpy(eb, 'HbSoBlWAuTNCCost')  # WCE TNC Drive Distance
-        Df['WAuTim'] = util.get_matrix_numpy(eb, 'HbSoBlWAuTNCTime')  # WCE TNC Drive Time
-
-        Df['IntZnl'] = np.identity(NoTAZ)  # Intra-zonal
-        Df['AutoDis'] = util.get_matrix_numpy(eb, "mfdistAON")  # Distance
-
-        Df['TNCWaitTime'] = util.get_matrix_numpy(eb, 'tncwaittime')
-        Df['TNCWaitTime'] = Df['TNCWaitTime'].reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
-        Df['SocAccess'] = util.get_matrix_numpy(eb, 'socAccLn').reshape(NoTAZ,1) + np.zeros((1, NoTAZ)) # Log transit accessiblity broadcast
-
-        # Utilities
-        # TNC Bus Utility
-        # TNC Bus Common Utility for all incomes
-        Df['GeUtl'] = (p31 + p5+
-                       + p4 * Df['BAuIBR']
-                       + p15 * Df['BAuTim']
-                       + p15 * Df['BusIVT']
-                       + 1.5 * p15 * Df['TNCWaitTime']
-                       + p17 * Df['BusWat']
-                       + p18 * Df['BusAux']
-                       + p18 * tnc_xfer_time
-                       + p19 * Df['BusBrd']
-                       + p991 * Df['AutoDis']
-                       + p602 * Df['SocAccess'])
-
-        # Check availability conditions else add high negative utility (-99999)
-        Df['GeUtl'] = MChM.BAuAvail(Df, Df['GeUtl'], AvailDict)
-        # Add Income Parameters
-        DfU['BTncI1'] = Df['GeUtl'] + p12 * (Df['BusFar'] + Df['BAuCos'])
-        DfU['BTncI2'] = Df['GeUtl'] + p14 * (Df['BusFar'] + Df['BAuCos'])
-        DfU['BTncI3'] = Df['GeUtl'] + p14 * (Df['BusFar'] + Df['BAuCos'])
-
-        # Rail Utility
-        # TNC Rail Utility
-        # TNC Rail Common Utility for all incomes
-        Df['GeUtl'] = (p31+ p7 +
-                       + p4 * Df['RAuIBR']
-                       + p6 * Df['RAuIRR']
-                       + p15 * Df['RAuTim']
-                       + 1.5 * p15 * Df['TNCWaitTime']
-                       + p15 * Df['RalIVB'] * B_IVT_perc
-                       + p15 * Df['RalIVR']
-                       + p17 * Df['RalWat']
-                       + p18 * Df['RalAux']
-                       + p18 * tnc_xfer_time
-                       + p19 * Df['RalBrd']
-                       + p991 * Df['AutoDis']
-                       + p602 * Df['SocAccess'])
-
-        # Check availability conditions else add high negative utility (-99999)
-        Df['GeUtl'] = MChM.RAuAvail(Df, Df['GeUtl'], AvailDict)
-
-        # Add Income Parameters
-        DfU['RTncI1'] = Df['GeUtl'] + p12 * (Df['RalFar'] + Df['RAuCos'])
-        DfU['RTncI2'] = Df['GeUtl'] + p14 * (Df['RalFar'] + Df['RAuCos'])
-        DfU['RTncI3'] = Df['GeUtl'] + p14 * (Df['RalFar'] + Df['RAuCos'])
-
-#        ##############################################################################
 #        ##       Active Modes
 #        ##############################################################################
 
@@ -453,14 +350,13 @@ class HbSoc(_m.Tool()):
                'SOV'  : [np.where(CarShare>0, DfU['SOVI1'], LrgU)],
                'HOV'  : [DfU['HOVI1']],
                'WTra' : [DfU['BusI1'] + p164, DfU['RalI1'] + p164],  # Zero car households additional transit bias term
-               'DTra' : [DfU['BTncI1'], DfU['RTncI1']],
                'Acti' : [DfU['Walk'], DfU['Bike']],
                'TNC'  : [DfU['TNCI1']+ p164]
                }
 
         keys_list = list(Dict.keys())
-        modes_dict = {'All':keys_list, 'Auto': ['SOV', 'HOV'], 'Auto2': ['SOV', 'HOV', 'TNC'],
-                     'Transit': ['WTra', 'DTra'], 'TNC': ['TNC'], 'Active': ['Acti']}
+        modes_dict = {'All':keys_list, 'Auto': ['SOV', 'HOV', 'TNC'],
+                     'Transit': ['WTra', 'DTra'], 'Active': ['Acti']}
 
         I1A0_Dict = MChM.Calc_Prob(eb, Dict, "HbSoLSI1A0", thet, 'hbsocatr', LS_Coeff, modes_dict, taz_list)
 
@@ -469,7 +365,6 @@ class HbSoc(_m.Tool()):
                'SOV'  : [DfU['SOVI1'] + p160], # One car households additional SOV bias term
                'HOV'  : [DfU['HOVI1'] + p162], # One car households additional HOV bias term
                'WTra' : [DfU['BusI1'], DfU['RalI1']],
-               'DTra':  [DfU['BTncI1'], DfU['RTncI1']],
                'Acti' : [DfU['Walk'], DfU['Bike']],
                'TNC'  : [DfU['TNCI1']]
                }
@@ -480,7 +375,6 @@ class HbSoc(_m.Tool()):
                'SOV'  : [DfU['SOVI1'] + p161], # One car households additional SOV bias term
                'HOV'  : [DfU['HOVI1'] + p163], # One car households additional HOV bias term
                'WTra' : [DfU['BusI1'], DfU['RalI1']],
-               'DTra' : [DfU['BTncI1'], DfU['RTncI1']],
                'Acti' : [DfU['Walk'], DfU['Bike']],
                'TNC'  : [DfU['TNCI1']]
                }
@@ -495,7 +389,6 @@ class HbSoc(_m.Tool()):
                'SOV'  : [np.where(CarShare>0, DfU['SOVI2'], LrgU)],
                'HOV'  : [DfU['HOVI2']],
                'WTra' : [DfU['BusI2'] + p164, DfU['RalI2'] + p164],
-               'DTra' : [DfU['BTncI2'], DfU['RTncI2']],
                'Acti' : [DfU['Walk'], DfU['Bike']],
                'TNC'  : [DfU['TNCI2']+ p164]
                }
@@ -507,7 +400,6 @@ class HbSoc(_m.Tool()):
                'SOV'  : [DfU['SOVI2'] + p160],
                'HOV'  : [DfU['HOVI2'] + p162],
                'WTra' : [DfU['BusI2'], DfU['RalI2']],
-               'DTra' : [DfU['BTncI2'], DfU['RTncI2']],
                'Acti' : [DfU['Walk'], DfU['Bike']],
                'TNC'  : [DfU['TNCI2']]
                }
@@ -518,7 +410,6 @@ class HbSoc(_m.Tool()):
                'SOV'  : [DfU['SOVI2'] + p161],
                'HOV'  : [DfU['HOVI2'] + p163],
                'WTra' : [DfU['BusI2'], DfU['RalI2']],
-               'DTra' : [DfU['BTncI2'], DfU['RTncI2']],
                'Acti' : [DfU['Walk'], DfU['Bike']],
                'TNC'  : [DfU['TNCI2']]
                }
@@ -533,7 +424,6 @@ class HbSoc(_m.Tool()):
                'SOV'  : [np.where(CarShare>0, DfU['SOVI3'], LrgU)],
                'HOV'  : [DfU['HOVI3']],
                'WTra' : [DfU['BusI3'] + p164, DfU['RalI3'] + p164],
-               'DTra' : [DfU['BTncI3'], DfU['RTncI3']],
                'Acti' : [DfU['Walk'], DfU['Bike']],
                'TNC'  : [DfU['TNCI3']+ p164]
                }
@@ -544,7 +434,6 @@ class HbSoc(_m.Tool()):
                'SOV'  : [DfU['SOVI3'] + p160],
                'HOV'  : [DfU['HOVI3'] + p162],
                'WTra' : [DfU['BusI3'], DfU['RalI3']],
-               'DTra' : [DfU['BTncI3'], DfU['RTncI3']],
                'Acti' : [DfU['Walk'], DfU['Bike']],
                'TNC'  : [DfU['TNCI3']]
                }
@@ -555,7 +444,6 @@ class HbSoc(_m.Tool()):
                'SOV'  : [DfU['SOVI3'] + p161],
                'HOV'  : [DfU['HOVI3'] + p163],
                'WTra' : [DfU['BusI3'], DfU['RalI3']],
-               'DTra' : [DfU['BTncI3'], DfU['RTncI3']],
                'Acti' : [DfU['Walk'], DfU['Bike']],
                'TNC'  : [DfU['TNCI3']]
                }
@@ -648,14 +536,7 @@ class HbSoc(_m.Tool()):
         Rail =  I1A0_Dict['WTra'][1] + I1A1_Dict['WTra'][1] + I1A2_Dict['WTra'][1]
         Rail += I2A0_Dict['WTra'][1] + I2A1_Dict['WTra'][1] + I2A2_Dict['WTra'][1]
         Rail += I3A0_Dict['WTra'][1] + I3A1_Dict['WTra'][1] + I3A2_Dict['WTra'][1]
-        # TNC/Taxi to Transit Bus, Rail and WCE Trips - Added by SG 1/9/2019
-        BTncI1 = I1A0_Dict['DTra'][0] + I1A1_Dict['DTra'][0] + I1A2_Dict['DTra'][0]
-        BTncI2 = I2A0_Dict['DTra'][0] + I2A1_Dict['DTra'][0] + I2A2_Dict['DTra'][0]
-        BTncI3 = I3A0_Dict['DTra'][0] + I3A1_Dict['DTra'][0] + I3A2_Dict['DTra'][0]
-        RTncI1 = I1A0_Dict['DTra'][1] + I1A1_Dict['DTra'][1] + I1A2_Dict['DTra'][1]
-        RTncI2 = I2A0_Dict['DTra'][1] + I2A1_Dict['DTra'][1] + I2A2_Dict['DTra'][1]
-        RTncI3 = I3A0_Dict['DTra'][1] + I3A1_Dict['DTra'][1] + I3A2_Dict['DTra'][1]
-
+ 
         # Active Trips
         Walk =  I1A0_Dict['Acti'][0] + I1A1_Dict['Acti'][0] + I1A2_Dict['Acti'][0]
         Walk += I2A0_Dict['Acti'][0] + I2A1_Dict['Acti'][0] + I2A2_Dict['Acti'][0]
@@ -723,57 +604,7 @@ class HbSoc(_m.Tool()):
         Acti_AM_Fct_PA, Acti_AM_Fct_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='AM', geo='A',minimum_value=min_val)
         Acti_MD_Fct_PA, Acti_MD_Fct_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='MD', geo='A',minimum_value=min_val)
         Acti_PM_Fct_PA, Acti_PM_Fct_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='PM', geo='A',minimum_value=min_val)
-
-      #       #########################################################################################
-        #       ##       Split TNC and Ride to Auto and Transit Legs
-        #       ##########################################################################################
-        ## General Setup
-        TncBsWk = util.get_matrix_numpy(eb, "bustnc-lotChceWkAMPA").flatten()  # Best Lot Bus Work
-        TncRlWk = util.get_matrix_numpy(eb, "railtnc-lotChceWkAMPA").flatten()  # Best Lot Rail Work
-        TncWcWk = util.get_matrix_numpy(eb, "wcetnc-lotChceWkAMPA").flatten()  # Best Lot WCE Work
-        DfInt = util.get_pd_ij_df(eb)
-
-        ## Bus
-        Dfmerge = util.get_pd_ij_df(eb)  # pandas Dataframe
-        Dfmerge['BL'] = TncBsWk  # best bus lot
-        Dfmerge['BTncI1'] = BTncI1.flatten()
-        Dfmerge['BTncI2'] = BTncI2.flatten()
-        Dfmerge['BTncI3'] = BTncI3.flatten()
-
-        DfmergedAuto = Dfmerge.groupby(['i', 'BL']).sum().reset_index()
-        DfmergedTran = Dfmerge.groupby(['BL', 'j']).sum().reset_index()
-        DfAuto, DfTran = self.splitpnr(DfmergedAuto, DfmergedTran, DfInt)
-
-        # Store park and ride Demands separately for time slicing
-        HOV_BTnc_I1 = DfAuto['BTncI1'].values.reshape(NoTAZ, NoTAZ)  # low income TNC trips to PnR Zones
-        HOV_BTnc_I2 = DfAuto['BTncI2'].values.reshape(NoTAZ, NoTAZ)  # med income TNC trips to PnR Zones
-        HOV_BTnc_I3 = DfAuto['BTncI3'].values.reshape(NoTAZ, NoTAZ)  # high income TNC trips to PnR Zones
-        Bus_BTnc = (DfTran['BTncI1'].values.reshape(NoTAZ, NoTAZ)  # bus trips from TNC zone to destination
-                    + DfTran['BTncI2'].values.reshape(NoTAZ, NoTAZ)
-                    + DfTran['BTncI3'].values.reshape(NoTAZ, NoTAZ))
-
-        ## Rail
-        Dfmerge = util.get_pd_ij_df(eb)
-        Dfmerge['BL'] = TncRlWk
-        Dfmerge['RTncI1'] = RTncI1.flatten()
-        Dfmerge['RTncI2'] = RTncI2.flatten()
-        Dfmerge['RTncI3'] = RTncI3.flatten()
-
-        DfmergedAuto = Dfmerge.groupby(['i', 'BL']).sum().reset_index()
-        DfmergedTran = Dfmerge.groupby(['BL', 'j']).sum().reset_index()
-        DfAuto, DfTran = self.splitpnr(DfmergedAuto, DfmergedTran, DfInt)
-
-        HOV_RTnc_I1 = DfAuto['RTncI1'].values.reshape(NoTAZ, NoTAZ)  # low income TNC trips to PnR Zones
-        HOV_RTnc_I2 = DfAuto['RTncI2'].values.reshape(NoTAZ, NoTAZ)  # med income TNC trips to PnR Zones
-        HOV_RTnc_I3 = DfAuto['RTncI3'].values.reshape(NoTAZ, NoTAZ)  # high income TNC trips to PnR Zones
-        Ral_RTnc = (DfTran['RTncI1'].values.reshape(NoTAZ, NoTAZ)  # rail trips from PnR zone to destination
-                    + DfTran['RTncI2'].values.reshape(NoTAZ, NoTAZ)
-                    + DfTran['RTncI3'].values.reshape(NoTAZ, NoTAZ))
-
-        del Dfmerge, DfmergedAuto, DfmergedTran
-        del DfAuto, DfTran
-
-      
+  
       ##########################################################################################
        ##       Calculate peak hour O-D person trips and final 24 hour P-A Trips
       ##########################################################################################
@@ -812,43 +643,6 @@ class HbSoc(_m.Tool()):
         Rail_MD = Rail*Tran_MD_Fct_PA + Rail.transpose()*Tran_MD_Fct_AP
         Rail_PM = Rail*Rail_PM_Fct_PA + Rail.transpose()*Rail_PM_Fct_AP
 
-       ## TNC-Transit Trips
-        # Bus TNC Trips Auto leg by income and TOD
-        HOV_BTnc_I1_AM = HOV_BTnc_I1 * Auto_AM_Fct_PA + HOV_BTnc_I1.transpose() * Auto_AM_Fct_AP
-        HOV_BTnc_I1_MD = HOV_BTnc_I1 * Auto_MD_Fct_PA + HOV_BTnc_I1.transpose() * Auto_MD_Fct_AP
-        HOV_BTnc_I1_PM = HOV_BTnc_I1 * Auto_PM_Fct_PA + HOV_BTnc_I1.transpose() * Auto_PM_Fct_AP
-
-        HOV_BTnc_I2_AM = HOV_BTnc_I2 * Auto_AM_Fct_PA + HOV_BTnc_I2.transpose() * Auto_AM_Fct_AP
-        HOV_BTnc_I2_MD = HOV_BTnc_I2 * Auto_MD_Fct_PA + HOV_BTnc_I2.transpose() * Auto_MD_Fct_AP
-        HOV_BTnc_I2_PM = HOV_BTnc_I2 * Auto_PM_Fct_PA + HOV_BTnc_I2.transpose() * Auto_PM_Fct_AP
-
-        HOV_BTnc_I3_AM = HOV_BTnc_I3 * Auto_AM_Fct_PA + HOV_BTnc_I3.transpose() * Auto_AM_Fct_AP
-        HOV_BTnc_I3_MD = HOV_BTnc_I3 * Auto_MD_Fct_PA + HOV_BTnc_I3.transpose() * Auto_MD_Fct_AP
-        HOV_BTnc_I3_PM = HOV_BTnc_I3 * Auto_PM_Fct_PA + HOV_BTnc_I3.transpose() * Auto_PM_Fct_AP
-
-        # Bus TNC Trips Transit leg
-        Bus_BTnc_AM = Bus_BTnc * Auto_AM_Fct_PA + Bus_BTnc.transpose() * Auto_AM_Fct_AP
-        Bus_BTnc_MD = Bus_BTnc * Auto_MD_Fct_PA + Bus_BTnc.transpose() * Auto_MD_Fct_AP
-        Bus_BTnc_PM = Bus_BTnc * Auto_PM_Fct_PA + Bus_BTnc.transpose() * Auto_PM_Fct_AP
-
-        # Rail TNC Trips Auto Leg by income and TOD
-        HOV_RTnc_I1_AM = HOV_RTnc_I1 * Auto_AM_Fct_PA + HOV_RTnc_I1.transpose() * Auto_AM_Fct_AP
-        HOV_RTnc_I1_MD = HOV_RTnc_I1 * Auto_MD_Fct_PA + HOV_RTnc_I1.transpose() * Auto_MD_Fct_AP
-        HOV_RTnc_I1_PM = HOV_RTnc_I1 * Auto_PM_Fct_PA + HOV_RTnc_I1.transpose() * Auto_PM_Fct_AP
-
-        HOV_RTnc_I2_AM = HOV_RTnc_I2 * Auto_AM_Fct_PA + HOV_RTnc_I2.transpose() * Auto_AM_Fct_AP
-        HOV_RTnc_I2_MD = HOV_RTnc_I2 * Auto_MD_Fct_PA + HOV_RTnc_I2.transpose() * Auto_MD_Fct_AP
-        HOV_RTnc_I2_PM = HOV_RTnc_I2 * Auto_PM_Fct_PA + HOV_RTnc_I2.transpose() * Auto_PM_Fct_AP
-
-        HOV_RTnc_I3_AM = HOV_RTnc_I3 * Auto_AM_Fct_PA + HOV_RTnc_I3.transpose() * Auto_AM_Fct_AP
-        HOV_RTnc_I3_MD = HOV_RTnc_I3 * Auto_MD_Fct_PA + HOV_RTnc_I3.transpose() * Auto_MD_Fct_AP
-        HOV_RTnc_I3_PM = HOV_RTnc_I3 * Auto_PM_Fct_PA + HOV_RTnc_I3.transpose() * Auto_PM_Fct_AP
-
-        # Rail TNC Transit Leg
-        Ral_RTnc_AM = Ral_RTnc * Auto_AM_Fct_PA + Ral_RTnc.transpose() * Auto_AM_Fct_AP
-        Ral_RTnc_MD = Ral_RTnc * Auto_MD_Fct_PA + Ral_RTnc.transpose() * Auto_MD_Fct_AP
-        Ral_RTnc_PM = Ral_RTnc * Auto_PM_Fct_PA + Ral_RTnc.transpose() * Auto_PM_Fct_AP
-
 
         ## TNC/Taxi Trips
         TNCI1_AM = TNCI1 * Auto_AM_Fct_PA + TNCI1.transpose() * Auto_AM_Fct_AP  # Low Income
@@ -872,79 +666,21 @@ class HbSoc(_m.Tool()):
         Bike_MD = Bike*Acti_MD_Fct_PA + Bike.transpose()*Acti_MD_Fct_AP
         Bike_PM = Bike*Acti_PM_Fct_PA + Bike.transpose()*Acti_PM_Fct_AP
 
-       # TNC -to-Transit Auto Leg to Other TNC Trips
-        TNCI1 = TNCI1 + HOV_BTnc_I1 + HOV_RTnc_I1
-        TNCI2 = TNCI2 + HOV_BTnc_I2 + HOV_RTnc_I2
-        TNCI3 = TNCI3 + HOV_BTnc_I3 + HOV_RTnc_I3
-
-       # Add Transit legs
-        Bus = Bus  + Bus_BTnc
-        Rail = Rail  + Ral_RTnc
-
-        del HOV_BTnc_I1, HOV_RTnc_I1
-        del HOV_BTnc_I2, HOV_RTnc_I2
-        del HOV_BTnc_I3, HOV_RTnc_I3
-
-        del Bus_BTnc, Ral_RTnc
-
-        Bus_AM +=  Bus_BTnc_AM
-        Bus_MD +=  Bus_BTnc_MD
-        Bus_PM +=  Bus_BTnc_PM
-        del Bus_BTnc_AM, Bus_BTnc_MD, Bus_BTnc_PM
-
-        Rail_AM += Ral_RTnc_AM
-        Rail_MD += Ral_RTnc_MD
-        Rail_PM += Ral_RTnc_PM
-        del Ral_RTnc_AM, Ral_RTnc_MD, Ral_RTnc_PM
-
-        # Add TNC-Auto Leg of Tnc-ride
-        TNCI1_AM += HOV_BTnc_I1_AM + HOV_RTnc_I1_AM
-        TNCI1_MD += HOV_BTnc_I1_MD + HOV_RTnc_I1_MD
-        TNCI1_PM += HOV_BTnc_I1_PM + HOV_RTnc_I1_PM
-
-        TNCI2_AM += HOV_BTnc_I2_AM + HOV_RTnc_I2_AM
-        TNCI2_MD += HOV_BTnc_I2_MD + HOV_RTnc_I2_MD
-        TNCI2_PM += HOV_BTnc_I2_PM + HOV_RTnc_I2_PM
-
-        TNCI3_AM += HOV_BTnc_I3_AM + HOV_RTnc_I3_AM
-        TNCI3_MD += HOV_BTnc_I3_MD + HOV_RTnc_I3_MD
-        TNCI3_PM += HOV_BTnc_I3_PM + HOV_RTnc_I3_PM
-
-        del HOV_BTnc_I1_AM, HOV_RTnc_I1_AM, HOV_BTnc_I1_MD, HOV_RTnc_I1_MD, HOV_BTnc_I1_PM, HOV_RTnc_I1_PM,
-        del HOV_BTnc_I2_AM, HOV_RTnc_I2_AM, HOV_BTnc_I2_MD, HOV_RTnc_I2_MD, HOV_BTnc_I2_PM, HOV_RTnc_I2_PM
-        del HOV_BTnc_I3_AM, HOV_RTnc_I3_AM, HOV_BTnc_I3_MD, HOV_RTnc_I3_MD, HOV_BTnc_I3_PM, HOV_RTnc_I3_PM
-
-        # Split TNC trips into SOV and HOV
-        # TNC CAV Trips
-        # Calculate SOV split rate, assuming SOV and HOV (avg occupancy) only
-        split_tnc_sov = (hov_occupancy - tnc_occupancy)/(hov_occupancy-1)
-        SOV_TNCI1_AM = TNCI1_AM * tnc_av_rate * split_tnc_sov
-        SOV_TNCI2_AM = TNCI2_AM * tnc_av_rate * split_tnc_sov
-        SOV_TNCI3_AM = TNCI3_AM * tnc_av_rate * split_tnc_sov
-
-        SOV_TNCI1_MD = TNCI1_MD*tnc_av_rate*split_tnc_sov
-        SOV_TNCI2_MD = TNCI2_MD * tnc_av_rate * split_tnc_sov
-        SOV_TNCI3_MD = TNCI3_MD * tnc_av_rate * split_tnc_sov
-
-        SOV_TNCI1_PM = TNCI1_PM *tnc_av_rate*split_tnc_sov
-        SOV_TNCI2_PM = TNCI2_PM * tnc_av_rate * split_tnc_sov
-        SOV_TNCI3_PM = TNCI3_PM * tnc_av_rate * split_tnc_sov
-
-        # HOV Vehicles
-        HOV_TNCI1_AM = TNCI1_AM * tnc_av_rate*(1-split_tnc_sov)/hov_occupancy + TNCI1_AM*(1-tnc_av_rate)/tnc_occupancy
-        HOV_TNCI2_AM = TNCI2_AM * tnc_av_rate*(1-split_tnc_sov)/hov_occupancy + TNCI2_AM*(1-tnc_av_rate)/tnc_occupancy
-        HOV_TNCI3_AM = TNCI3_AM * tnc_av_rate*(1-split_tnc_sov)/hov_occupancy + TNCI3_AM*(1-tnc_av_rate)/tnc_occupancy
-
-        HOV_TNCI1_MD = TNCI1_MD * tnc_av_rate*(1-split_tnc_sov)/hov_occupancy + TNCI1_MD*(1-tnc_av_rate)/tnc_occupancy
-        HOV_TNCI2_MD = TNCI2_MD * tnc_av_rate*(1-split_tnc_sov)/hov_occupancy + TNCI2_MD*(1-tnc_av_rate)/tnc_occupancy
-        HOV_TNCI3_MD = TNCI3_MD * tnc_av_rate*(1-split_tnc_sov)/hov_occupancy + TNCI3_MD*(1-tnc_av_rate)/tnc_occupancy
-
-        HOV_TNCI1_PM = TNCI1_PM * tnc_av_rate*(1-split_tnc_sov)/hov_occupancy + TNCI1_PM*(1-tnc_av_rate)/tnc_occupancy
-        HOV_TNCI2_PM = TNCI2_PM * tnc_av_rate*(1-split_tnc_sov)/hov_occupancy + TNCI2_PM*(1-tnc_av_rate)/tnc_occupancy
-        HOV_TNCI3_PM = TNCI3_PM * tnc_av_rate*(1-split_tnc_sov)/hov_occupancy + TNCI3_PM*(1-tnc_av_rate)/tnc_occupancy
+        # Convert TNC HOV to Vehicles
+        HOV_TNCI1_AM = TNCI1_AM / tnc_occupancy
+        HOV_TNCI2_AM = TNCI2_AM / tnc_occupancy
+        HOV_TNCI3_AM = TNCI3_AM / tnc_occupancy
+ 
+        HOV_TNCI1_MD = TNCI1_MD / tnc_occupancy
+        HOV_TNCI2_MD = TNCI2_MD / tnc_occupancy
+        HOV_TNCI3_MD = TNCI3_MD / tnc_occupancy
+ 
+        HOV_TNCI1_PM = TNCI1_PM / tnc_occupancy
+        HOV_TNCI2_PM = TNCI2_PM / tnc_occupancy
+        HOV_TNCI3_PM = TNCI3_PM / tnc_occupancy
 
         # Convert HOV to Auto Drivers
-        # Add TNC HOV Trips
+
         AuDr_HOVI1_AM = HOVI1_AM/Occ + HOV_TNCI1_AM
         AuDr_HOVI1_MD = HOVI1_MD/Occ + HOV_TNCI1_MD
         AuDr_HOVI1_PM = HOVI1_PM/Occ + HOV_TNCI1_PM
@@ -957,29 +693,18 @@ class HbSoc(_m.Tool()):
         AuDr_HOVI3_MD = HOVI3_MD/Occ + HOV_TNCI3_MD
         AuDr_HOVI3_PM = HOVI3_PM/Occ + HOV_TNCI3_PM
 
-       ## add TNC matrices for empty TNC component
-        util.add_matrix_numpy(eb, "TncAMVehicleTrip", SOV_TNCI1_AM)
-        util.add_matrix_numpy(eb, "TncAMVehicleTrip", SOV_TNCI2_AM)
-        util.add_matrix_numpy(eb, "TncAMVehicleTrip", SOV_TNCI3_AM)
+        ## add TNC matrices for empty TNC component
         util.add_matrix_numpy(eb, "TncAMVehicleTrip", HOV_TNCI1_AM)
         util.add_matrix_numpy(eb, "TncAMVehicleTrip", HOV_TNCI2_AM)
         util.add_matrix_numpy(eb, "TncAMVehicleTrip", HOV_TNCI3_AM)
 
-        util.add_matrix_numpy(eb, "TncMDVehicleTrip", SOV_TNCI1_MD)
-        util.add_matrix_numpy(eb, "TncMDVehicleTrip", SOV_TNCI2_MD)
-        util.add_matrix_numpy(eb, "TncMDVehicleTrip", SOV_TNCI3_MD)
         util.add_matrix_numpy(eb, "TncMDVehicleTrip", HOV_TNCI1_MD)
         util.add_matrix_numpy(eb, "TncMDVehicleTrip", HOV_TNCI2_MD)
         util.add_matrix_numpy(eb, "TncMDVehicleTrip", HOV_TNCI3_MD)
 
-        util.add_matrix_numpy(eb, "TncPMVehicleTrip", SOV_TNCI1_PM)
-        util.add_matrix_numpy(eb, "TncPMVehicleTrip", SOV_TNCI2_PM)
-        util.add_matrix_numpy(eb, "TncPMVehicleTrip", SOV_TNCI3_PM)
         util.add_matrix_numpy(eb, "TncPMVehicleTrip", HOV_TNCI1_PM)
         util.add_matrix_numpy(eb, "TncPMVehicleTrip", HOV_TNCI2_PM)
         util.add_matrix_numpy(eb, "TncPMVehicleTrip", HOV_TNCI3_PM)
-
-
 
         del HOV_TNCI1_AM, HOV_TNCI1_MD, HOV_TNCI1_PM
         del HOV_TNCI2_AM, HOV_TNCI2_MD, HOV_TNCI2_PM
@@ -1085,19 +810,6 @@ class HbSoc(_m.Tool()):
         util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Pm", SOVI2_PM)
         util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Pm", SOVI3_PM)
 
-        # Add TNC SOV trips
-        # AM
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Am", SOV_TNCI1_AM)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Am", SOV_TNCI2_AM)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Am", SOV_TNCI3_AM)
-        # MD
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Md", SOV_TNCI1_MD)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Md", SOV_TNCI2_MD)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Md", SOV_TNCI3_MD)
-        # PM
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Pm", SOV_TNCI1_PM)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_2_Pm", SOV_TNCI2_PM)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Pm", SOV_TNCI3_PM)
 
         # HOV (includes TNC HOV)
         # AM

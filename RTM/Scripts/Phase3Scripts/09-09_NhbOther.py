@@ -287,13 +287,13 @@ class Non_hbwork(_m.Tool()):
             'Auto': [DfU['Auto'] + p41],
             'WTra': [DfU['Bus'] + p43, DfU['Ral'] + p43],
             'Acti': [DfU['Walk'] + p44, DfU['Bike'] + p44],
-            'TNC': [DfU['TNC'] + p42]
+            'TNC' : [DfU['TNC'] + p42]
         }
 
         # get a list of all keys
         taz_list = util.get_matrix_numpy(eb, 'zoneindex', reshape=False)
         keys_list = list(Dict.keys())
-        modes_dict = {'All':keys_list, 'Auto': ['Auto'], 'Auto2': ['Auto', 'TNC'], 'TNC': ['TNC'],
+        modes_dict = {'All':keys_list, 'Auto': ['Auto', 'TNC'],
                      'Transit': ['WTra'], 'Active': ['Acti']}
 
         Dict_Au = MChM.Calc_Prob(eb, Dict, "NHbOLSAut", thet, 'aut_nhboatr', LS_Coeff, modes_dict, taz_list)
@@ -476,19 +476,10 @@ class Non_hbwork(_m.Tool()):
         TNC_MD = TNC*Auto_MD_Fct_PA
         TNC_PM = TNC*Auto_PM_Fct_PA
 
-        # Split TNC trips into SOV and HOV
-        # TNC CAV Trips
-        split_tnc_sov = (hov_occupancy - tnc_occupancy) / (hov_occupancy - 1)
-        SOV_TNC_AM = TNC_AM * tnc_av_rate * split_tnc_sov
-        SOV_TNC_MD = TNC_MD * tnc_av_rate * split_tnc_sov
-        SOV_TNC_PM = TNC_PM * tnc_av_rate * split_tnc_sov
-
-        HOV_TNC_AM = TNC_AM * tnc_av_rate * (1 - split_tnc_sov) / hov_occupancy + TNC_AM * (
-                    1 - tnc_av_rate) / tnc_occupancy
-        HOV_TNC_MD = TNC_MD * tnc_av_rate * (1 - split_tnc_sov) / hov_occupancy + TNC_MD * (
-                    1 - tnc_av_rate) / tnc_occupancy
-        HOV_TNC_PM = TNC_PM * tnc_av_rate * (1 - split_tnc_sov) / hov_occupancy + TNC_PM * (
-                    1 - tnc_av_rate) / tnc_occupancy
+        # Convert TNC HOV to Vehicles
+        HOV_TNC_AM = TNC_AM / tnc_occupancy
+        HOV_TNC_MD = TNC_MD / tnc_occupancy
+        HOV_TNC_PM = TNC_PM / tnc_occupancy
 
         # Convert HOV to Auto Drivers
         # HOV2
@@ -498,13 +489,8 @@ class Non_hbwork(_m.Tool()):
         AuDr_HOV_PM = HOV_PM/Occ + HOV_TNC_PM
 
         ## add TNC matrices for empty TNC component
-        util.add_matrix_numpy(eb, "TncAMVehicleTrip", SOV_TNC_AM)
         util.add_matrix_numpy(eb, "TncAMVehicleTrip", HOV_TNC_AM)
-
-        util.add_matrix_numpy(eb, "TncMDVehicleTrip", SOV_TNC_MD)
         util.add_matrix_numpy(eb, "TncMDVehicleTrip", HOV_TNC_MD)
-
-        util.add_matrix_numpy(eb, "TncPMVehicleTrip", SOV_TNC_PM)
         util.add_matrix_numpy(eb, "TncPMVehicleTrip", HOV_TNC_PM)
 
 
@@ -588,11 +574,6 @@ class Non_hbwork(_m.Tool()):
 
         # PM
         util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Pm", SOV_PM)
-
-        # Add SOV TNC Trips to SOV trip tables
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Am", SOV_TNC_AM)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Md", SOV_TNC_MD)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Pm", SOV_TNC_PM)
 
         # HOV (includes TNC trips)
         # AM

@@ -259,8 +259,8 @@ class HbSchool(_m.Tool()):
         # get a list of all keys
 
         keys_list = list(Dict.keys())
-        modes_dict = {'All':keys_list, 'Auto': ['HOV'], 'Auto2': ['HOV', 'TNC'],
-                     'Transit': ['WTra'], 'TNC': ['TNC'], 'Active': ['Acti']}
+        modes_dict = {'All':keys_list, 'Auto': ['HOV', 'TNC'],
+                     'Transit': ['WTra'], 'Active': ['Acti']}
 
         A0_Dict = MChM.Calc_Prob(eb, Dict, "HbScLSA0", thet, 'hbschatr', LS_Coeff, modes_dict, taz_list)
 
@@ -487,60 +487,21 @@ class HbSchool(_m.Tool()):
         Bike_MD = Bike*Acti_MD_Fct_PA + Bike.transpose()*Acti_MD_Fct_AP
         Bike_PM = Bike*Acti_PM_Fct_PA + Bike.transpose()*Acti_PM_Fct_AP
 
-        # Split TNC trips into SOV and HOV
-        # TNC CAV Trips
-        # Calculate SOV split rate, assuming SOV and HOV (avg occupancy) only
-        hov_occupancy = eb.matrix("msAutoOcc").data
-        split_tnc_sov = (hov_occupancy - tnc_occupancy)/(hov_occupancy-1)
-        SOV_TNCI1_AM = TNCI1_AM * tnc_av_rate * split_tnc_sov
-        SOV_TNCI2_AM = TNCI2_AM * tnc_av_rate * split_tnc_sov
-        SOV_TNCI3_AM = TNCI3_AM * tnc_av_rate * split_tnc_sov
-
-        SOV_TNCI1_MD = TNCI1_MD*tnc_av_rate*split_tnc_sov
-        SOV_TNCI2_MD = TNCI2_MD * tnc_av_rate * split_tnc_sov
-        SOV_TNCI3_MD = TNCI3_MD * tnc_av_rate * split_tnc_sov
-
-        SOV_TNCI1_PM = TNCI1_PM*tnc_av_rate*split_tnc_sov
-        SOV_TNCI2_PM = TNCI2_PM * tnc_av_rate * split_tnc_sov
-        SOV_TNCI3_PM = TNCI3_PM * tnc_av_rate * split_tnc_sov
-
-        # HOV Vehicles
-        HOV_TNCI1_AM = TNCI1_AM * tnc_av_rate*(1-split_tnc_sov)/hov_occupancy + TNCI1_AM*(1-tnc_av_rate)/tnc_occupancy
-        HOV_TNCI2_AM = TNCI2_AM * tnc_av_rate*(1-split_tnc_sov)/hov_occupancy + TNCI2_AM*(1-tnc_av_rate)/tnc_occupancy
-        HOV_TNCI3_AM = TNCI3_AM * tnc_av_rate*(1-split_tnc_sov)/hov_occupancy + TNCI3_AM*(1-tnc_av_rate)/tnc_occupancy
-
-        HOV_TNCI1_MD = TNCI1_MD * tnc_av_rate*(1-split_tnc_sov)/hov_occupancy + TNCI1_MD*(1-tnc_av_rate)/tnc_occupancy
-        HOV_TNCI2_MD = TNCI2_MD * tnc_av_rate*(1-split_tnc_sov)/hov_occupancy + TNCI2_MD*(1-tnc_av_rate)/tnc_occupancy
-        HOV_TNCI3_MD = TNCI3_MD * tnc_av_rate*(1-split_tnc_sov)/hov_occupancy + TNCI3_MD*(1-tnc_av_rate)/tnc_occupancy
-
-        HOV_TNCI1_PM = TNCI1_PM * tnc_av_rate*(1-split_tnc_sov)/hov_occupancy + TNCI1_PM*(1-tnc_av_rate)/tnc_occupancy
-        HOV_TNCI2_PM = TNCI2_PM * tnc_av_rate*(1-split_tnc_sov)/hov_occupancy + TNCI2_PM*(1-tnc_av_rate)/tnc_occupancy
-        HOV_TNCI3_PM = TNCI3_PM * tnc_av_rate*(1-split_tnc_sov)/hov_occupancy + TNCI3_PM*(1-tnc_av_rate)/tnc_occupancy
-
-        ## add TNC matrices for empty TNC component
-        util.add_matrix_numpy(eb, "TncAMVehicleTrip", SOV_TNCI1_AM)
-        util.add_matrix_numpy(eb, "TncAMVehicleTrip", SOV_TNCI2_AM)
-        util.add_matrix_numpy(eb, "TncAMVehicleTrip", SOV_TNCI3_AM)
-        util.add_matrix_numpy(eb, "TncAMVehicleTrip", HOV_TNCI1_AM)
-        util.add_matrix_numpy(eb, "TncAMVehicleTrip", HOV_TNCI2_AM)
-        util.add_matrix_numpy(eb, "TncAMVehicleTrip", HOV_TNCI3_AM)
-
-        util.add_matrix_numpy(eb, "TncMDVehicleTrip", SOV_TNCI1_MD)
-        util.add_matrix_numpy(eb, "TncMDVehicleTrip", SOV_TNCI2_MD)
-        util.add_matrix_numpy(eb, "TncMDVehicleTrip", SOV_TNCI3_MD)
-        util.add_matrix_numpy(eb, "TncMDVehicleTrip", HOV_TNCI1_MD)
-        util.add_matrix_numpy(eb, "TncMDVehicleTrip", HOV_TNCI2_MD)
-        util.add_matrix_numpy(eb, "TncMDVehicleTrip", HOV_TNCI3_MD)
-
-        util.add_matrix_numpy(eb, "TncPMVehicleTrip", SOV_TNCI1_PM)
-        util.add_matrix_numpy(eb, "TncPMVehicleTrip", SOV_TNCI2_PM)
-        util.add_matrix_numpy(eb, "TncPMVehicleTrip", SOV_TNCI3_PM)
-        util.add_matrix_numpy(eb, "TncPMVehicleTrip", HOV_TNCI1_PM)
-        util.add_matrix_numpy(eb, "TncPMVehicleTrip", HOV_TNCI2_PM)
-        util.add_matrix_numpy(eb, "TncPMVehicleTrip", HOV_TNCI3_PM)
+       # Convert TNC HOV to Vehicles
+        HOV_TNCI1_AM = TNCI1_AM / tnc_occupancy
+        HOV_TNCI2_AM = TNCI2_AM / tnc_occupancy
+        HOV_TNCI3_AM = TNCI3_AM / tnc_occupancy
+ 
+        HOV_TNCI1_MD = TNCI1_MD / tnc_occupancy
+        HOV_TNCI2_MD = TNCI2_MD / tnc_occupancy
+        HOV_TNCI3_MD = TNCI3_MD / tnc_occupancy
+ 
+        HOV_TNCI1_PM = TNCI1_PM / tnc_occupancy
+        HOV_TNCI2_PM = TNCI2_PM / tnc_occupancy
+        HOV_TNCI3_PM = TNCI3_PM / tnc_occupancy
 
         # Convert HOV to Auto Drivers
-        # Add TNC HOV Trips
+
         AuDr_HOVI1_AM = HOVI1_AM/Occ + HOV_TNCI1_AM
         AuDr_HOVI1_MD = HOVI1_MD/Occ + HOV_TNCI1_MD
         AuDr_HOVI1_PM = HOVI1_PM/Occ + HOV_TNCI1_PM
@@ -552,6 +513,23 @@ class HbSchool(_m.Tool()):
         AuDr_HOVI3_AM = HOVI3_AM/Occ + HOV_TNCI3_AM
         AuDr_HOVI3_MD = HOVI3_MD/Occ + HOV_TNCI3_MD
         AuDr_HOVI3_PM = HOVI3_PM/Occ + HOV_TNCI3_PM
+
+        ## add TNC matrices for empty TNC component
+        util.add_matrix_numpy(eb, "TncAMVehicleTrip", HOV_TNCI1_AM)
+        util.add_matrix_numpy(eb, "TncAMVehicleTrip", HOV_TNCI2_AM)
+        util.add_matrix_numpy(eb, "TncAMVehicleTrip", HOV_TNCI3_AM)
+
+        util.add_matrix_numpy(eb, "TncMDVehicleTrip", HOV_TNCI1_MD)
+        util.add_matrix_numpy(eb, "TncMDVehicleTrip", HOV_TNCI2_MD)
+        util.add_matrix_numpy(eb, "TncMDVehicleTrip", HOV_TNCI3_MD)
+
+        util.add_matrix_numpy(eb, "TncPMVehicleTrip", HOV_TNCI1_PM)
+        util.add_matrix_numpy(eb, "TncPMVehicleTrip", HOV_TNCI2_PM)
+        util.add_matrix_numpy(eb, "TncPMVehicleTrip", HOV_TNCI3_PM)
+		
+        del HOV_TNCI1_AM, HOV_TNCI1_MD, HOV_TNCI1_PM
+        del HOV_TNCI2_AM, HOV_TNCI2_MD, HOV_TNCI2_PM
+        del HOV_TNCI3_AM, HOV_TNCI3_MD, HOV_TNCI3_PM
 
 
 #       ##############################################################################
@@ -627,21 +605,6 @@ class HbSchool(_m.Tool()):
         util.add_matrix_numpy(eb, "Bk_pertrp_Pm", Bike_PM)
 
         # Auto-driver
-        
-        # Add TNC SOV trips
-        # AM
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Am", SOV_TNCI1_AM)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Am", SOV_TNCI2_AM)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Am", SOV_TNCI3_AM)
-        # MD
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Md", SOV_TNCI1_MD)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Md", SOV_TNCI2_MD)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Md", SOV_TNCI3_MD)
-        # PM
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Pm", SOV_TNCI1_PM)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Pm", SOV_TNCI2_PM)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_1_Pm", SOV_TNCI3_PM)
-
         # HOV (includes TNC)
         # AM
         util.add_matrix_numpy(eb, "HOV_drvtrp_VOT_1_Am", AuDr_HOVI1_AM)

@@ -24,7 +24,7 @@ class Non_hbwork(_m.Tool()):
         MChM = _m.Modeller().tool("translink.RTM3.stage2.modechoiceutils")
 
         self.matrix_batchins(eb)
-        self.trip_generation(eb)
+        # self.trip_generation(eb)
 
         # get dataframe for tripgeneration
         MChM.agg_hb_att(eb)
@@ -321,7 +321,7 @@ class Non_hbwork(_m.Tool()):
         # get a list of all keys
         taz_list = util.get_matrix_numpy(eb, 'zoneindex', reshape = False)
         keys_list = list(Dict.keys())
-        modes_dict = {'All':keys_list, 'Auto': ['SOV', 'HOV'], 'Auto2': ['SOV', 'HOV', 'TNC'], 'TNC': ['TNC'],
+        modes_dict = {'All':keys_list, 'Auto': ['SOV', 'HOV', 'TNC'],
                      'Transit': ['WTra'], 'Active': ['Acti']}
 
         Dict_Au = MChM.Calc_Prob(eb, Dict, "NHbWLSAut", thet, 'aut_nhbwatr', LS_Coeff, modes_dict, taz_list)
@@ -506,19 +506,10 @@ class Non_hbwork(_m.Tool()):
         TNC_MD = TNC*Auto_MD_Fct_PA
         TNC_PM = TNC*Auto_PM_Fct_PA
 
-        # Split TNC trips into SOV and HOV
-        # TNC CAV Trips
-        split_tnc_sov = (hov_occupancy - tnc_occupancy) / (hov_occupancy - 1)
-        SOV_TNC_AM = TNC_AM * tnc_av_rate * split_tnc_sov
-        SOV_TNC_MD = TNC_MD * tnc_av_rate * split_tnc_sov
-        SOV_TNC_PM = TNC_PM * tnc_av_rate * split_tnc_sov
-
-        HOV_TNC_AM = TNC_AM * tnc_av_rate * (1 - split_tnc_sov) / hov_occupancy + TNC_AM * (
-                    1 - tnc_av_rate) / tnc_occupancy
-        HOV_TNC_MD = TNC_MD * tnc_av_rate * (1 - split_tnc_sov) / hov_occupancy + TNC_MD * (
-                    1 - tnc_av_rate) / tnc_occupancy
-        HOV_TNC_PM = TNC_PM * tnc_av_rate * (1 - split_tnc_sov) / hov_occupancy + TNC_PM * (
-                    1 - tnc_av_rate) / tnc_occupancy
+        # Convert TNC HOV to Vehicles
+        HOV_TNC_AM = TNC_AM / tnc_occupancy
+        HOV_TNC_MD = TNC_MD / tnc_occupancy
+        HOV_TNC_PM = TNC_PM / tnc_occupancy
 
         # Convert HOV to Auto Drivers
         # HOV2
@@ -528,13 +519,8 @@ class Non_hbwork(_m.Tool()):
         AuDr_HOV_PM = HOV_PM/Occ + HOV_TNC_PM
 
         ## add TNC matrices for empty TNC component
-        util.add_matrix_numpy(eb, "TncAMVehicleTrip", SOV_TNC_AM)
         util.add_matrix_numpy(eb, "TncAMVehicleTrip", HOV_TNC_AM)
-
-        util.add_matrix_numpy(eb, "TncMDVehicleTrip", SOV_TNC_MD)
         util.add_matrix_numpy(eb, "TncMDVehicleTrip", HOV_TNC_MD)
-
-        util.add_matrix_numpy(eb, "TncPMVehicleTrip", SOV_TNC_PM)
         util.add_matrix_numpy(eb, "TncPMVehicleTrip", HOV_TNC_PM)
 
 
@@ -619,11 +605,6 @@ class Non_hbwork(_m.Tool()):
 
         # PM
         util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Pm", SOV_PM)
-
-        # Add SOV TNC Trips to SOV trip tables
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Am", SOV_TNC_AM)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Md", SOV_TNC_MD)
-        util.add_matrix_numpy(eb, "SOV_drvtrp_VOT_3_Pm", SOV_TNC_PM)
 
         # HOV (includes TNC trips)
         # AM
