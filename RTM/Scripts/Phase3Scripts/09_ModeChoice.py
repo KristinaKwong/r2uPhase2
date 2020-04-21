@@ -110,29 +110,22 @@ class ModeChoice(_m.Tool()):
 
         stat_sql = ''' SELECT TAZ1741
                       ,HHInc
-                      ,cav_segment
                       ,purpose
                       ,mode
                       ,Access_HHs
-                      ,Emp_Access_HHs
                       ,tot_hhs
                       ,Avg_access AS Avg_access_unweighted
-                      ,Emp_Avg_access AS Emp_Avg_access_unweighted
                       ,CASE WHEN tot_hhs = 0 THEN Avg_access ELSE Access_HHs/tot_hhs END Access_final
-                      ,CASE WHEN tot_hhs = 0 THEN Emp_Avg_access ELSE Emp_Access_HHs/tot_hhs END Emp_Access_final
 
                       FROM
 
                           (SELECT TAZ1741
                                 ,HHInc
-                                ,cav_segment
                                 ,purpose
                                 ,mode
                                 ,SUM(Accessibility*tot_hhs) AS Access_HHs
-                                ,SUM(Emp_Accessibility*tot_hhs) AS Emp_Access_HHs
                                 ,SUM(tot_hhs) AS tot_hhs
                                 ,AVG(Accessibility) AS Avg_access
-                                ,AVG(Emp_Accessibility) AS Emp_Avg_access
 
                           FROM
 
@@ -140,12 +133,9 @@ class ModeChoice(_m.Tool()):
                                         TAZ1741
                                       , HHInc
                                       , CASE WHEN HHAuto = 3 THEN 2 ELSE HHAuto END HHAuto2
-                                      , cav_segment
-                                      , cv_seg_auto
                                       , df_access.purpose
                                       , df_access.mode
                                       , AVG( df_access.Accessibility_Value) AS Accessibility
-                                      , AVG( df_access.Emp_Accessibility_Value) AS Emp_Accessibility
                                       , SUM(CountHHs) AS tot_hhs
 
                                   FROM
@@ -154,12 +144,11 @@ class ModeChoice(_m.Tool()):
 
 
 
-                                  LEFT JOIN logsum_accessibilities df_access ON
+                                  LEFT JOIN logsum_accessibilities df_access 
 
-                                  df_hh.TAZ1741 = df_access.TZ AND
-                                  df_hh.HHInc = df_access.income AND
-                                  HHAuto2 = df_access.autos AND
-                                  df_hh.cv_seg_auto = df_access.car_segment
+                                  ON  df_hh.TAZ1741 = df_access.TZ 
+                                  AND df_hh.HHInc = df_access.income 
+                                  AND HHAuto2 = df_access.autos
 
                                   WHERE TAZ1741 > 9999
 
@@ -168,8 +157,6 @@ class ModeChoice(_m.Tool()):
                                       TAZ1741
                                      ,HHInc
                                      ,CASE WHEN HHAuto = 3 THEN 2 ELSE HHAuto END
-                                     ,cav_segment
-                                     ,cv_seg_auto
                                      ,df_access.purpose
                                  ,df_access.mode)
 
@@ -180,7 +167,6 @@ class ModeChoice(_m.Tool()):
 
                           TAZ1741
                           ,HHInc
-                          ,cav_segment
                           ,purpose
                           ,mode) '''
 
@@ -191,7 +177,6 @@ class ModeChoice(_m.Tool()):
 
         stat_sql = ''' SELECT TAZ1741
                       ,HHInc
-                      ,cav_segment
                       ,purpose
                       ,mode
                       ,Access_HHs
@@ -203,7 +188,6 @@ class ModeChoice(_m.Tool()):
 
                           (SELECT TAZ1741
                                 ,HHInc
-                                ,cav_segment
                                 ,purpose
                                 ,mode
                                 ,SUM(Accessibility*tot_hhs) AS Access_HHs
@@ -216,8 +200,6 @@ class ModeChoice(_m.Tool()):
                                         TAZ1741
                                       , HHInc
                                       --, CASE WHEN HHAuto = 3 THEN 2 ELSE HHAuto END HHAuto2
-                                      , cav_segment
-                                      , cv_seg_auto
                                       , df_access.purpose
                                       , df_access.mode
                                       , AVG( df_access.Accessibility_Value) AS Accessibility
@@ -229,12 +211,11 @@ class ModeChoice(_m.Tool()):
 
 
 
-                                  LEFT JOIN logsum_accessibilities df_access ON
+                                  LEFT JOIN logsum_accessibilities df_access
 
-                                  df_hh.TAZ1741 = df_access.TZ AND
-                                  df_hh.HHInc = df_access.income AND
-                                  --HHAuto2 = df_access.autos AND
-                                  df_hh.cv_seg_auto = df_access.car_segment
+                                  ON  df_hh.TAZ1741 = df_access.TZ 
+                                  AND df_hh.HHInc = df_access.income 
+                                  --HHAuto2 = df_access.autos 
 
                                   WHERE TAZ1741 > 9999
 
@@ -243,8 +224,6 @@ class ModeChoice(_m.Tool()):
                                       TAZ1741
                                      ,HHInc
                                      --,CASE WHEN HHAuto = 3 THEN 2 ELSE HHAuto END
-                                     ,cav_segment
-                                     ,cv_seg_auto
                                      ,df_access.purpose
                                  ,df_access.mode)
 
@@ -255,7 +234,6 @@ class ModeChoice(_m.Tool()):
 
                           TAZ1741
                           ,HHInc
-                          ,cav_segment
                           ,purpose
                           ,mode) '''
 
