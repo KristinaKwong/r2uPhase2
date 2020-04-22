@@ -65,6 +65,13 @@ class DataGeneration(_m.Tool()):
             # Generate distances to closest bus
             self.calc_dist_to_station(eb)
 
+            # Calculate Initial TNC Costs
+            specs = []
+            specs.append(util.matrix_spec("mfAmTNCCost", "msalpha_nonAV + beta_nonAV*mfdistAON"))
+            specs.append(util.matrix_spec("mfMdTNCCost", "msalpha_nonAV + beta_nonAV*mfdistAON"))
+            specs.append(util.matrix_spec("mfPmTNCCost", "msalpha_nonAV + beta_nonAV*mfdistAON"))
+            util.compute_matrix(specs)
+
             # turn off congested/capacited transit during data generation 0 matrix assignment
 
             # use default bus speed to populate us2
@@ -75,7 +82,7 @@ class DataGeneration(_m.Tool()):
             util.emme_segment_calc(am_scen, "us3", "us1 + 60 * length / @posted_speed * 1.1 + @signal_delay")
             util.emme_segment_calc(md_scen, "us3", "us1 + 60 * length / @posted_speed * 1.1 + @signal_delay")
             util.emme_segment_calc(pm_scen, "us3", "us1 + 60 * length / @posted_speed * 1.1 + @signal_delay")
-            
+
 
             transit_assign = _m.Modeller().tool("translink.RTM3.stage3.transitassignment")
 

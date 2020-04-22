@@ -51,8 +51,8 @@ class Tnc_Zov(_m.Tool()):
         NAMESPACE = "inro.emme.matrix_calculation.matrix_balancing"
         balance_matrix = _m.Modeller().tool(NAMESPACE)
 
-        log_file = open(
-            path.join(toolbox_path, "tnc_zov_summaries.txt"), "w")
+#        log_file = open(
+#            path.join(toolbox_path, "tnc_zov_summaries.txt"), "w")
         for i in range(0,len(periods)):
             period = periods[i]
             impedance_factor = eb.matrix("tnc_zov_imp_factor_"+period).data
@@ -121,10 +121,10 @@ class Tnc_Zov(_m.Tool()):
             average_loaded_VHT = loaded_total_VHT/total_trips
             average_empty_VHT = empty_total_VHT / total_trips
 
-            log_file.write("Period = "+period + "\n")
-            log_file.write("   Average loaded VHT = " + str(average_loaded_VHT) + "\n")
-            log_file.write(
-                "   Average empty VHT = " + str(average_empty_VHT) + "\n")
+#            log_file.write("Period = "+period + "\n")
+#            log_file.write("   Average loaded VHT = " + str(average_loaded_VHT) + "\n")
+#            log_file.write(
+#                "   Average empty VHT = " + str(average_empty_VHT) + "\n")
 
 
 

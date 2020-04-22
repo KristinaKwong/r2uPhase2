@@ -356,7 +356,7 @@ class HbSoc(_m.Tool()):
 
         keys_list = list(Dict.keys())
         modes_dict = {'All':keys_list, 'Auto': ['SOV', 'HOV', 'TNC'],
-                     'Transit': ['WTra', 'DTra'], 'Active': ['Acti']}
+                     'Transit': ['WTra'], 'Active': ['Acti']}
 
         I1A0_Dict = MChM.Calc_Prob(eb, Dict, "HbSoLSI1A0", thet, 'hbsocatr', LS_Coeff, modes_dict, taz_list)
 
@@ -536,7 +536,7 @@ class HbSoc(_m.Tool()):
         Rail =  I1A0_Dict['WTra'][1] + I1A1_Dict['WTra'][1] + I1A2_Dict['WTra'][1]
         Rail += I2A0_Dict['WTra'][1] + I2A1_Dict['WTra'][1] + I2A2_Dict['WTra'][1]
         Rail += I3A0_Dict['WTra'][1] + I3A1_Dict['WTra'][1] + I3A2_Dict['WTra'][1]
- 
+
         # Active Trips
         Walk =  I1A0_Dict['Acti'][0] + I1A1_Dict['Acti'][0] + I1A2_Dict['Acti'][0]
         Walk += I2A0_Dict['Acti'][0] + I2A1_Dict['Acti'][0] + I2A2_Dict['Acti'][0]
@@ -604,7 +604,7 @@ class HbSoc(_m.Tool()):
         Acti_AM_Fct_PA, Acti_AM_Fct_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='AM', geo='A',minimum_value=min_val)
         Acti_MD_Fct_PA, Acti_MD_Fct_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='MD', geo='A',minimum_value=min_val)
         Acti_PM_Fct_PA, Acti_PM_Fct_AP = MChM.AP_PA_Factor(eb=eb, purpose=purp,mode='Active',peakperiod='PM', geo='A',minimum_value=min_val)
-  
+
       ##########################################################################################
        ##       Calculate peak hour O-D person trips and final 24 hour P-A Trips
       ##########################################################################################
@@ -670,11 +670,11 @@ class HbSoc(_m.Tool()):
         HOV_TNCI1_AM = TNCI1_AM / tnc_occupancy
         HOV_TNCI2_AM = TNCI2_AM / tnc_occupancy
         HOV_TNCI3_AM = TNCI3_AM / tnc_occupancy
- 
+
         HOV_TNCI1_MD = TNCI1_MD / tnc_occupancy
         HOV_TNCI2_MD = TNCI2_MD / tnc_occupancy
         HOV_TNCI3_MD = TNCI3_MD / tnc_occupancy
- 
+
         HOV_TNCI1_PM = TNCI1_PM / tnc_occupancy
         HOV_TNCI2_PM = TNCI2_PM / tnc_occupancy
         HOV_TNCI3_PM = TNCI3_PM / tnc_occupancy
