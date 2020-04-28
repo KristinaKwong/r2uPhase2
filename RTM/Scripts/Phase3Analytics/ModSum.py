@@ -196,4 +196,9 @@ class ModSum(_m.Tool()):
 
         # export to csv
         modsum_vector.to_csv(os.path.join(util.get_eb_path(eb), "ModSum_"+DatabankName+".csv"),index=False)
+
+        conn.close()
+        conn_rtm.close()
+
+
         return modsum_vector
