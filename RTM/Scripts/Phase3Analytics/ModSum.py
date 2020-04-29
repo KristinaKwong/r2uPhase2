@@ -83,7 +83,12 @@ class ModSum(_m.Tool()):
                 modsum_forAllDatabanks = modsum_vector
             else:
                 modsum_forAllDatabanks = pd.merge(modsum_forAllDatabanks, modsum_vector, on="Measure", how = "outer")
-        modsum_forAllDatabanks.to_csv("ModSum.csv", index=False)
+
+        project = dt.project
+        proj_path = os.path.dirname(project.path)
+        modsum_compare = os.path.join(proj_path, "ModSumComparison.csv")
+
+        modsum_forAllDatabanks.to_csv(modsum_compare, index=False)
         
     def generateModSumVector(self, eb):
         util = _m.Modeller().tool("translink.util")
