@@ -77,7 +77,7 @@ class ModSum(_m.Tool()):
             try:
                 am_scen, md_scen, pm_scen = util.get_tod_scenarios(eb)
             except:
-                continue #to next databank
+                continue # to next databank
             modsum_vector = self.generateModSumVector(eb)
             if modsum_forAllDatabanks.empty:
                 modsum_forAllDatabanks = modsum_vector
@@ -134,7 +134,6 @@ class ModSum(_m.Tool()):
         modsum_vector = modsum_vector.append(df_transit_boardings[modsum_header])
         
         # vkt
-        # sum((@wsovl+@whovl+@lgvol/1.5+@hgvol/2.5+volad/2.5)*length), exclude centroids
         df_VKT = pd.read_sql("select * from aggregateNetResults", conn)[["period","measure","value"]]
         df_VKT["Measure"] = "VKT_"+df_VKT["period"]+"-"+df_VKT["measure"]
         df_VKT[DatabankName] = df_VKT["value"]
@@ -147,7 +146,7 @@ class ModSum(_m.Tool()):
         df_LandUse = pd.DataFrame.from_records(dict_LandUse,columns=modsum_header)
         modsum_vector = modsum_vector.append(df_LandUse[modsum_header])
         
-        # RTS - Network-Based VKT by Mode (Auto/LGV/HGV)
+        # Network-Based VKT by Mode (Auto/LGV/HGV)
         GetVKT = _m.Modeller().tool("translink.RTM3Analytics.GetVKT")
         Auto_VKT, LGV_VKT, HGV_VKT = [0, 0, 0]
         expansion_factors = {"SOV": [3.44, 8.41, 3.95], # time-of-day to daily expansion factors
@@ -169,7 +168,7 @@ class ModSum(_m.Tool()):
         df_AnnualVKT = pd.DataFrame.from_records(dict_AnnualVKT,columns=modsum_header)
         modsum_vector = modsum_vector.append(df_AnnualVKT[modsum_header])
         
-        # RTS - Matrix-Based VKT by Mode (LGV/HGV)
+        # Matrix-Based VKT by Mode (LGV/HGV)
         truckPCE = {"Lgv":1.5, "Hgv":2.5}
         daily_to_annual = {"Lgv":313, "Hgv":276}
         dict_AnnualVKT = []
@@ -185,8 +184,6 @@ class ModSum(_m.Tool()):
                 Daily_VKT += tod_to_daily_fac*tod_vkt/truckPCE_factor
             dict_AnnualVKT.append(["MatrixBasedAnnualVKT_"+mode, Daily_VKT*daily_to_annual[mode]])
             AnnualTruckVKT += Daily_VKT*daily_to_annual[mode]
-        GHG_Factor_2050 = 836.517262727637/1000000 # truck CO2 emission: g/VKT --> converted to tonnes/VKT
-        dict_AnnualVKT.append(["AnnualTruckGHG(tonnes)", AnnualTruckVKT*GHG_Factor_2050])
         df_AnnualVKT = pd.DataFrame.from_records(dict_AnnualVKT,columns=modsum_header)
         modsum_vector = modsum_vector.append(df_AnnualVKT[modsum_header])
         
