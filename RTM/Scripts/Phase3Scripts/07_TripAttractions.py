@@ -99,29 +99,9 @@ class TripAttractions(_m.Tool()):
         c_hbsoc_HEPA = 0.270025
         c_hbsoc_PoTot = 0.131466
 
-
-        # nhbw
-        c_nhbw_int = 62.21822
-        c_nhbw_CM = 0.147559
-        c_nhbw_TW = 0.123596
-        c_nhbw_BOS = 0.286774
-        c_nhbw_FIRE = 0.100723
-        c_nhbw_Ret = 1.132009
-        c_nhbw_AFIC = 0.45005
-        c_nhbw_HEPA = 0.390779
-
-        # nhbo
-        c_nhbo_Ret = 2.581269
-        c_nhbo_AFIC = 0.36586
-        c_nhbo_HEPA = 0.295724
-        c_nhbo_PoTot = 0.076945
-        c_nhbo_EE = 0.208777
-        c_nhbo_SE = 0.177848
-
         # hbu
         c_hbu_iCbdPsfte = 0.287631
         c_hbu_iNotCbdPsfte = 1.411431
-
 
 
         ########################################################################
@@ -211,31 +191,6 @@ class TripAttractions(_m.Tool()):
         scalar = ct_df.at['hbsoc', 'control_total'] / df['hbsoc'].sum()
         df['hbsoc'] = df['hbsoc'] * scalar
 
-        # NHBW #################################################################
-        df['nhbw'] = ( c_nhbw_int
-                     + c_nhbw_CM * df['EMP_Construct_Mfg']
-                     + c_nhbw_TW * df['EMP_TCU_Wholesale']
-                     + c_nhbw_BOS * df['EMP_Business_OtherServices']
-                     + c_nhbw_FIRE * df['EMP_FIRE']
-                     + c_nhbw_Ret * df['EMP_Retail']
-                     + c_nhbw_AFIC * df['EMP_AccomFood_InfoCult']
-                     + c_nhbw_HEPA * df['EMP_Health_Educat_PubAdmin'] )*df['bowen_adj']
-
-        df['nhbw'] = np.where(df['TAZ1741'] < 1000, 0, df['nhbw'])
-        scalar = ct_df.at['nhbw', 'control_total'] / df['nhbw'].sum()
-        df['nhbw'] = df['nhbw'] * scalar
-
-        # NHBO #################################################################
-        df['nhbo'] = ( c_nhbo_Ret * df['EMP_Retail']
-                     + c_nhbo_AFIC * df['EMP_AccomFood_InfoCult']
-                     + c_nhbo_HEPA * df['EMP_Health_Educat_PubAdmin']
-                     + c_nhbo_PoTot * df['POP_Total']
-                     + c_nhbo_EE * df['Elementary_Enrolment']
-                     + c_nhbo_SE * df['Secondary_Enrolment'] )*df['bowen_adj']
-
-        scalar = ct_df.at['nhbo', 'control_total'] / df['nhbo'].sum()
-        df['nhbo'] = df['nhbo'] * scalar
-
         # HBU ##################################################################
         df['hbu'] = ( c_hbu_iCbdPsfte * df['iCbdPsfte']
                     + c_hbu_iNotCbdPsfte * df['iNotCbdPsfte'] )*df['bowen_adj']
@@ -261,7 +216,7 @@ class TripAttractions(_m.Tool()):
         ########################################################################
 
         # retain only taz index and trip columns
-        df = df[['TAZ1741','hbw','hbu','hbesc','hbpb','hbsch','hbshop','hbsoc','nhbw','nhbo']]
+        df = df[['TAZ1741','hbw','hbu','hbesc','hbpb','hbsch','hbshop','hbsoc']]
 
         # Write to sqlite
         conn = util.get_rtm_db(eb)
@@ -280,8 +235,6 @@ class TripAttractions(_m.Tool()):
         util.set_matrix_numpy(eb, 'mdhbschatr', df['hbsch'].values)
         util.set_matrix_numpy(eb, 'mdhbshopatr', df['hbshop'].values)
         util.set_matrix_numpy(eb, 'mdhbsocatr', df['hbsoc'].values)
-        util.set_matrix_numpy(eb, 'mdnhbwatr', df['nhbw'].values)
-        util.set_matrix_numpy(eb, 'mdnhboatr', df['nhbo'].values)
 
     @_m.logbook_trace("Generate Dataframes for Trip Attractions")
     def Generate_Trip_Attractions_dfs(self, eb):

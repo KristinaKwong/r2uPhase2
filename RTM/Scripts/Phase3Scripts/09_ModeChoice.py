@@ -51,6 +51,8 @@ class ModeChoice(_m.Tool()):
         td_mode_choice_hbes = _m.Modeller().tool("translink.RTM3.stage2.hbescorting")
         td_mode_choice_nhbw = _m.Modeller().tool("translink.RTM3.stage2.nhbwork")
         td_mode_choice_nhbo = _m.Modeller().tool("translink.RTM3.stage2.nhbother")
+        empty_tnc = _m.Modeller().tool(
+            "translink.RTM3.stage2.tnc_zov")
 
         # Read in calibration file
 
@@ -89,13 +91,157 @@ class ModeChoice(_m.Tool()):
         # nhbo
         Bus_Bias, Rail_Bias,WCE_Bias = self.calibrate(eb, df_transit_adj, 'nhbo')
         td_mode_choice_nhbo(eb,Bus_Bias, Rail_Bias, WCE_Bias)
+        empty_tnc(eb)
 
         # adjust MD Auto
         self.add_external_demadj_demand()
+        self.add_empty_tnc()
 
        # adjust Evergreen usage
 
         self.adjust_egl(eb)
+
+        # calculate utility-based log accessibilities
+        self.agg_accessibilities(eb)
+
+    def agg_accessibilities(self, eb):
+        util = _m.Modeller().tool("translink.util")
+
+
+        stat_sql = ''' SELECT TAZ1741
+                      ,HHInc
+                      ,purpose
+                      ,mode
+                      ,Access_HHs
+                      ,tot_hhs
+                      ,Avg_access AS Avg_access_unweighted
+                      ,CASE WHEN tot_hhs = 0 THEN Avg_access ELSE Access_HHs/tot_hhs END Access_final
+
+                      FROM
+
+                          (SELECT TAZ1741
+                                ,HHInc
+                                ,purpose
+                                ,mode
+                                ,SUM(Accessibility*tot_hhs) AS Access_HHs
+                                ,SUM(tot_hhs) AS tot_hhs
+                                ,AVG(Accessibility) AS Avg_access
+
+                          FROM
+
+                              (SELECT
+                                        TAZ1741
+                                      , HHInc
+                                      , CASE WHEN HHAuto = 3 THEN 2 ELSE HHAuto END HHAuto2
+                                      , df_access.purpose
+                                      , df_access.mode
+                                      , AVG( df_access.Accessibility_Value) AS Accessibility
+                                      , SUM(CountHHs) AS tot_hhs
+
+                                  FROM
+
+                                      segmentedHouseholds df_hh
+
+
+
+                                  LEFT JOIN logsum_accessibilities df_access 
+
+                                  ON  df_hh.TAZ1741 = df_access.TZ 
+                                  AND df_hh.HHInc = df_access.income 
+                                  AND HHAuto2 = df_access.autos
+
+                                  WHERE TAZ1741 > 9999
+
+                                  GROUP BY
+
+                                      TAZ1741
+                                     ,HHInc
+                                     ,CASE WHEN HHAuto = 3 THEN 2 ELSE HHAuto END
+                                     ,df_access.purpose
+                                 ,df_access.mode)
+
+                          --Include all purposes
+                          --WHERE purpose in ('HbW', 'HbSh', 'HbSo', 'HbPb', 'HbEs', 'HbU')
+
+                          GROUP BY
+
+                          TAZ1741
+                          ,HHInc
+                          ,purpose
+                          ,mode) '''
+
+        conn = util.get_db_byname(eb, "rtm.db")
+        df = pd.read_sql(stat_sql, conn)
+        df.to_sql(name='log_accessibilities_agg', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        
+
+        stat_sql = ''' SELECT TAZ1741
+                      ,HHInc
+                      ,purpose
+                      ,mode
+                      ,Access_HHs
+                      ,tot_hhs
+                      ,Avg_access AS Avg_access_unweighted
+                      ,CASE WHEN tot_hhs = 0 THEN Avg_access ELSE Access_HHs/tot_hhs END Access_final
+
+                      FROM
+
+                          (SELECT TAZ1741
+                                ,HHInc
+                                ,purpose
+                                ,mode
+                                ,SUM(Accessibility*tot_hhs) AS Access_HHs
+                                ,SUM(tot_hhs) AS tot_hhs
+                                ,AVG(Accessibility) AS Avg_access
+
+                          FROM
+
+                              (SELECT
+                                        TAZ1741
+                                      , HHInc
+                                      --, CASE WHEN HHAuto = 3 THEN 2 ELSE HHAuto END HHAuto2
+                                      , df_access.purpose
+                                      , df_access.mode
+                                      , AVG( df_access.Accessibility_Value) AS Accessibility
+                                      , SUM(CountHHs) AS tot_hhs
+
+                                  FROM
+
+                                      segmentedHouseholds df_hh
+
+
+
+                                  LEFT JOIN logsum_accessibilities df_access
+
+                                  ON  df_hh.TAZ1741 = df_access.TZ 
+                                  AND df_hh.HHInc = df_access.income 
+                                  --HHAuto2 = df_access.autos 
+
+                                  WHERE TAZ1741 > 9999
+
+                                  GROUP BY
+
+                                      TAZ1741
+                                     ,HHInc
+                                     --,CASE WHEN HHAuto = 3 THEN 2 ELSE HHAuto END
+                                     ,df_access.purpose
+                                 ,df_access.mode)
+
+                          --Include only HbSc, HbU purposes
+                          WHERE purpose IN ('HbSc', 'HbU')
+
+                          GROUP BY
+
+                          TAZ1741
+                          ,HHInc
+                          ,purpose
+                          ,mode) '''
+
+        conn = util.get_db_byname(eb, "rtm.db")
+        df_hbsc_hbu = pd.read_sql(stat_sql, conn)
+        df_hbsc_hbu.to_sql(name='log_accessibilities_agg_hbsc_hbu', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        
+        conn.close()
 
     def adjust_egl(self, eb):
 
@@ -152,6 +298,18 @@ class ModeChoice(_m.Tool()):
 
         util.compute_matrix(specs)
 
+    def add_empty_tnc(self):
+        util = _m.Modeller().tool("translink.util")
+        specs = []
+        specs.append(util.matrix_spec("SOV_drvtrp_VOT_4_Am",
+                                      "SOV_drvtrp_VOT_4_Am + TncZovAm"))
+        specs.append(util.matrix_spec("SOV_drvtrp_VOT_4_Md",
+                                      "SOV_drvtrp_VOT_4_Md + TncZovMd"))
+        specs.append(util.matrix_spec("SOV_drvtrp_VOT_4_Pm",
+                                      "SOV_drvtrp_VOT_4_Pm + TncZovPm"))
+
+        util.compute_matrix(specs)
+
     @_m.logbook_trace("Initialize Matrices")
     def matrix_batchins(self, eb):
         util = _m.Modeller().tool("translink.util")
@@ -167,6 +325,10 @@ class ModeChoice(_m.Tool()):
         util.initmat(eb, "mf209", "HOV_pertrp_VOT_4_Am", "HOV per-trips VOT 4 AM", 0)
         util.initmat(eb, "mf215", "Wk_pertrp_Am", "Walk per-trips AM", 0)
         util.initmat(eb, "mf216", "Bk_pertrp_Am", "Bike per-trips AM", 0)
+        util.initmat(eb, "mf220", "TNC_pertrp_VOT_1_Am", "TNC_pertrp_VOT_1_Am", 0)
+        util.initmat(eb, "mf221", "TNC_pertrp_VOT_2_Am", "TNC_pertrp_VOT_2_Am", 0)
+        util.initmat(eb, "mf222", "TNC_pertrp_VOT_3_Am", "TNC_pertrp_VOT_3_Am", 0)
+        util.initmat(eb, "mf223", "TNC_pertrp_VOT_4_Am", "TNC_pertrp_VOT_4_Am", 0)
 
         # Initialize MD Peak Hour Person Trip Matrices
         util.initmat(eb, "mf230", "SOV_pertrp_VOT_1_Md", "SOV per-trips VOT 1 MD", 0)
@@ -179,6 +341,10 @@ class ModeChoice(_m.Tool()):
         util.initmat(eb, "mf239", "HOV_pertrp_VOT_4_Md", "HOV per-trips VOT 4 MD", 0)
         util.initmat(eb, "mf245", "Wk_pertrp_Md", "Walk per-trips MD", 0)
         util.initmat(eb, "mf246", "Bk_pertrp_Md", "Bike per-trips MD", 0)
+        util.initmat(eb, "mf250", "TNC_pertrp_VOT_1_Md", "TNC_pertrp_VOT_1_Md", 0)
+        util.initmat(eb, "mf251", "TNC_pertrp_VOT_2_Md", "TNC_pertrp_VOT_2_Md", 0)
+        util.initmat(eb, "mf252", "TNC_pertrp_VOT_3_Md", "TNC_pertrp_VOT_3_Md", 0)
+        util.initmat(eb, "mf253", "TNC_pertrp_VOT_4_Md", "TNC_pertrp_VOT_4_Md", 0)
 
         # Initialize PM Peak Hour Person Trip Matrices
         util.initmat(eb, "mf260", "SOV_pertrp_VOT_1_Pm", "SOV per-trips VOT 1 PM", 0)
@@ -191,12 +357,18 @@ class ModeChoice(_m.Tool()):
         util.initmat(eb, "mf269", "HOV_pertrp_VOT_4_Pm", "HOV per-trips VOT 4 PM", 0)
         util.initmat(eb, "mf275", "Wk_pertrp_Pm", "Walk per-trips PM", 0)
         util.initmat(eb, "mf276", "Bk_pertrp_Pm", "Bike per-trips PM", 0)
+        util.initmat(eb, "mf280", "TNC_pertrp_VOT_1_Pm", "TNC_pertrp_VOT_1_Pm", 0)
+        util.initmat(eb, "mf281", "TNC_pertrp_VOT_2_Pm", "TNC_pertrp_VOT_2_Pm", 0)
+        util.initmat(eb, "mf282", "TNC_pertrp_VOT_3_Pm", "TNC_pertrp_VOT_3_Pm", 0)
+        util.initmat(eb, "mf283", "TNC_pertrp_VOT_4_Pm", "TNC_pertrp_VOT_4_Pm", 0)
+
 
         # Initialize AM Peak Hour Driver and Transit Demand Matrices
         util.initmat(eb, "mf300", "SOV_drvtrp_VOT_1_Am", "SOV drv-trips VOT 1 AM", 0)
         util.initmat(eb, "mf301", "SOV_drvtrp_VOT_2_Am", "SOV drv-trips VOT 2 AM", 0)
         util.initmat(eb, "mf302", "SOV_drvtrp_VOT_3_Am", "SOV drv-trips VOT 3 AM", 0)
         util.initmat(eb, "mf303", "SOV_drvtrp_VOT_4_Am", "SOV drv-trips VOT 4 AM", 0)
+
         util.initmat(eb, "mf306", "HOV_drvtrp_VOT_1_Am", "HOV drv-trips VOT 1 AM", 0)
         util.initmat(eb, "mf307", "HOV_drvtrp_VOT_2_Am", "HOV drv-trips VOT 2 AM", 0)
         util.initmat(eb, "mf308", "HOV_drvtrp_VOT_3_Am", "HOV drv-trips VOT 3 AM", 0)
@@ -210,6 +382,7 @@ class ModeChoice(_m.Tool()):
         util.initmat(eb, "mf321", "SOV_drvtrp_VOT_2_Md", "SOV drv-trips VOT 2 MD", 0)
         util.initmat(eb, "mf322", "SOV_drvtrp_VOT_3_Md", "SOV drv-trips VOT 3 MD", 0)
         util.initmat(eb, "mf323", "SOV_drvtrp_VOT_4_Md", "SOV drv-trips VOT 4 MD", 0)
+
         util.initmat(eb, "mf326", "HOV_drvtrp_VOT_1_Md", "HOV drv-trips VOT 1 MD", 0)
         util.initmat(eb, "mf327", "HOV_drvtrp_VOT_2_Md", "HOV drv-trips VOT 2 MD", 0)
         util.initmat(eb, "mf328", "HOV_drvtrp_VOT_3_Md", "HOV drv-trips VOT 3 MD", 0)
@@ -223,6 +396,7 @@ class ModeChoice(_m.Tool()):
         util.initmat(eb, "mf341", "SOV_drvtrp_VOT_2_Pm", "SOV drv-trips VOT 2 PM", 0)
         util.initmat(eb, "mf342", "SOV_drvtrp_VOT_3_Pm", "SOV drv-trips VOT 3 PM", 0)
         util.initmat(eb, "mf343", "SOV_drvtrp_VOT_4_Pm", "SOV drv-trips VOT 4 PM", 0)
+
         util.initmat(eb, "mf346", "HOV_drvtrp_VOT_1_Pm", "HOV drv-trips VOT 1 PM", 0)
         util.initmat(eb, "mf347", "HOV_drvtrp_VOT_2_Pm", "HOV drv-trips VOT 2 PM", 0)
         util.initmat(eb, "mf348", "HOV_drvtrp_VOT_3_Pm", "HOV drv-trips VOT 3 PM", 0)

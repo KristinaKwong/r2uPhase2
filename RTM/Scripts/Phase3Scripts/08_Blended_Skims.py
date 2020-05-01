@@ -45,6 +45,7 @@ class ModeChoiceGenDf(_m.Tool()):
         model_year = int(util.get_matrix_numpy(eb, "Year"))
 
         self.AutoGT(eb)
+
         self.BusGT(eb)
         self.RailGT(eb)
         self.WceGT(eb)
@@ -55,12 +56,15 @@ class ModeChoiceGenDf(_m.Tool()):
 
 
         ## General Setup
+        # PNR Lots
         BLBsWk = util.get_matrix_numpy(eb, "buspr-lotChceWkAMPA").flatten() #Best Lot Bus Work
         BLBsNw = util.get_matrix_numpy(eb, "buspr-lotChceNWkAMPA").flatten() #Best Lot Bus Non-Work
         BLRlWk = util.get_matrix_numpy(eb, "railpr-lotChceWkAMPA").flatten() #Best Lot Rail Work
         BLRlNw = util.get_matrix_numpy(eb, "railpr-lotChceNWkAMPA").flatten() #Best Lot Rail Non-Work
         BLWcWk = util.get_matrix_numpy(eb, "wcepr-lotChceWkAMPA").flatten() #Best Lot WCE Work
         BLWcNw = util.get_matrix_numpy(eb, "wcepr-lotChceNWkAMPA").flatten() #Best Lot WCE Non-Work
+
+
         NoTAZ  = len(util.get_matrix_numpy(eb, "zoneindex")) # Number of TAZs in Model
 
         # Time component blend factors
@@ -283,18 +287,19 @@ class ModeChoiceGenDf(_m.Tool()):
         ##############################################################################
         # Initialize Time and Cost Skim Dictionaries
 
-        TimeDict, CostDict = {}, {}
+        TimeDict, CostDict, TNCDict = {}, {}, {}
 
         # Generate Skim Dictionaries
             #                                 AM    ,       MD   ,            PM
         self.GenSkimDict(eb, CostDict, ["mfAmHovOpCstVOT1", "mfMdHovOpCstVOT1", "mfPmHovOpCstVOT1"]) # Cost
         self.GenSkimDict(eb, TimeDict, ["AmHovTimeVOT1", "MdHovTimeVOT1", "PmHovTimeVOT1"]) # Time
+        self.GenSkimDict(eb, TNCDict, ["mfAmTNCCost", "mfMdTNCCost", "mfPmTNCCost"])  # TNC Cost
 
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
-        BlendDict = {'nhbo':{'PA':nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlHovCost', 'NHbOBlHovTime']}, # non-home base other
-                     'hbsc':{'PA':hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlHovCost', 'HbScBlHovTime']}, # home-base school
-                     'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovCost_I1', 'HbShBlHovTime_I1']}} # home-base shopping low
+        BlendDict = {'nhbo':{'PA':nhbo_fct[0], 'AP':nhbo_fct[1], 'Mat':['NHbOBlHovCost', 'NHbOBlHovTime', 'NHbOBlTNCCost']}, # non-home base other
+                     'hbsc':{'PA':hbsc_fct[0], 'AP':hbsc_fct[1], 'Mat':['HbScBlHovCost', 'HbScBlHovTime', 'HbScBlTNCCost']}, # home-base school
+                     'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovCost_I1', 'HbShBlHovTime_I1', 'HbShBlTNCCost_I1']}} # home-base shopping low
 
         for keys, values in BlendDict.items():
 
@@ -302,34 +307,37 @@ class ModeChoiceGenDf(_m.Tool()):
             # Calculate blended skim
             Df['AutoCos'] = self.calc_blend(values, CostDict)
             Df['AutoTim'] = self.calc_blend(values, TimeDict)
+            Df['TNCCost'] = self.calc_blend(values, TNCDict)
 
 
         # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoCos'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
+            util.set_matrix_numpy(eb, values['Mat'][2], Df['TNCCost'])
 
         #
         ###############################################################################################################
-        ##       Auto Skims SOV VOT 2 HbShopMed, HbSocLow, HbPbLow, HbPBMed, HbEsc, HbUniv, HbWLow, HbPB High, HbSocMed
+        ##       Auto Skims HOV VOT 2 HbShopMed, HbSocLow, HbPbLow, HbPBMed, HbEsc, HbUniv, HbWLow, HbPB High, HbSocMed
         ###############################################################################################################
 
-        TimeDict, CostDict = {}, {}
+        TimeDict, CostDict, TNCDict = {}, {}, {}
 
             #                                 AM    ,       MD   ,            PM
         self.GenSkimDict(eb, CostDict, ["mfAmHovOpCstVOT2", "mfMdHovOpCstVOT2", "mfPmHovOpCstVOT2"]) # Cost
         self.GenSkimDict(eb, TimeDict, ["AmHovTimeVOT2", "MdHovTimeVOT2", "PmHovTimeVOT2"]) # Time
+        self.GenSkimDict(eb, TNCDict, ["mfAmTNCCost", "mfMdTNCCost", "mfPmTNCCost"])  # TNC Cost
 
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
-        BlendDict = {'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovCost_I2', 'HbShBlHovTime_I2' ]}, # home-base shopping med
-                     'hbsol':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I1', 'HbSoBlHovTime_I1']}, # home-base social low
-                     'hbpbl':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I1', 'HbPbBlHovTime_I1']}, # home-base personal business low
-                     'hbpbm':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I2', 'HbPbBlHovTime_I2']}, # home-base personal business med
-                     'hbes':{'PA':hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlHovCost', 'HbEsBlHovTime']}, # home-base escorting
-                     'hbun':{'PA':hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbUBlHovCost', 'HbUBlHovTime']}, # home-base escorting
-                     'hbwo':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovCost_I1', 'HbWBlHovTime_I1' ]}, # home-base work low
-                     'hbpbh':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I3', 'HbPbBlHovTime_I3']}, # home-base personal business high
-                     'hbsom':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I2', 'HbSoBlHovTime_I2']}} # home-base social med
+        BlendDict = {'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovCost_I2', 'HbShBlHovTime_I2', 'HbShBlTNCCost_I2']}, # home-base shopping med
+                     'hbsol':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I1', 'HbSoBlHovTime_I1', 'HbSoBlTNCCost_I1']}, # home-base social low
+                     'hbpbl':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I1', 'HbPbBlHovTime_I1', 'HbPbBlTNCCost_I1']}, # home-base personal business low
+                     'hbpbm':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I2', 'HbPbBlHovTime_I2', 'HbPbBlTNCCost_I2']}, # home-base personal business med
+                     'hbes':{'PA':hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlHovCost', 'HbEsBlHovTime', 'HbEsBlTNCCost']}, # home-base escorting
+                     'hbun':{'PA':hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbUBlHovCost', 'HbUBlHovTime', 'HbUBlTNCCost']}, # home-base escorting
+                     'hbwo':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovCost_I1', 'HbWBlHovTime_I1', 'HbWBlTNCCost_I1']}, # home-base work low
+                     'hbpbh':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I3', 'HbPbBlHovTime_I3', 'HbPbBlTNCCost_I3']}, # home-base personal business high
+                     'hbsom':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I2', 'HbSoBlHovTime_I2', 'HbSoBlTNCCost_I2']}} # home-base social med
 
         for keys, values in BlendDict.items():
 
@@ -337,29 +345,31 @@ class ModeChoiceGenDf(_m.Tool()):
             # Calculate blended skim
             Df['AutoCos'] = self.calc_blend(values, CostDict)
             Df['AutoTim'] = self.calc_blend(values, TimeDict)
+            Df['TNCCost'] = self.calc_blend(values, TNCDict)
 
 
            # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoCos'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
+            util.set_matrix_numpy(eb, values['Mat'][2], Df['TNCCost'])
 
         ##############################################################################
         ##       Auto Skims Hov VOT 3 HbShopHigh, HbW Low, HbSocMed
         ##############################################################################
 
-        TimeDict, CostDict = {}, {}
+        TimeDict, CostDict, TNCDict, TollDict = {}, {}, {}, {}
 
             #                                 AM    ,       MD   ,            PM
         self.GenSkimDict(eb, CostDict, ["mfAmHovOpCstVOT3", "mfMdHovOpCstVOT3", "mfPmHovOpCstVOT3"]) # Cost
         self.GenSkimDict(eb, TimeDict, ["AmHovTimeVOT3", "MdHovTimeVOT3", "PmHovTimeVOT3"]) # Time
-
+        self.GenSkimDict(eb, TNCDict, ["mfAmTNCCost", "mfMdTNCCost", "mfPmTNCCost"])  # TNC Cost
 
         # Blend Factors            AM , MD  , PM           AM  ,MD , PM       Where Blended Matrices get stored in same order as above
-        BlendDict = {'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovCost_I3', 'HbShBlHovTime_I3']}, # home-base shopping high
-                     'hbwom':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovCost_I2', 'HbWBlHovTime_I2' ]}, # home-base work med
-                     'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlHovCost', 'NHbWBlHovTime']}, # non-home base work
-                     'hbso':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I3', 'HbSoBlHovTime_I3']}, # home-base social high
-                     'hbwoh':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovCost_I3', 'HbWBlHovTime_I3']}} # home-base work high
+        BlendDict = {'hbsh':{'PA':hbsh_fct[0], 'AP':hbsh_fct[1], 'Mat':['HbShBlHovCost_I3', 'HbShBlHovTime_I3', 'HbShBlTNCCost_I3']}, # home-base shopping high
+                     'hbwom':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovCost_I2', 'HbWBlHovTime_I2', 'HbWBlTNCCost_I2' ]}, # home-base work med
+                     'nhbw':{'PA': nhbw_fct[0], 'AP':nhbw_fct[1], 'Mat':['NHbWBlHovCost', 'NHbWBlHovTime', 'NHbWBlTNCCost']}, # non-home base work
+                     'hbso':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I3', 'HbSoBlHovTime_I3', 'HbSoBlTNCCost_I3']}, # home-base social high
+                     'hbwoh':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovCost_I3', 'HbWBlHovTime_I3', 'HbWBlTNCCost_I3']}} # home-base work high
 
         for keys, values in BlendDict.items():
 
@@ -367,12 +377,12 @@ class ModeChoiceGenDf(_m.Tool()):
             # Calculate blended skim
             Df['AutoCos'] = self.calc_blend(values, CostDict)
             Df['AutoTim'] = self.calc_blend(values, TimeDict)
-
+            Df['TNCCost'] = self.calc_blend(values, TNCDict)
 
            # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['AutoCos'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['AutoTim'])
-
+            util.set_matrix_numpy(eb, values['Mat'][2], Df['TNCCost'])
 
 #       ##############################################################################
 #       ##       Blended Bridge Crossings
@@ -494,18 +504,19 @@ class ModeChoiceGenDf(_m.Tool()):
             Df = {}
             Df['BusFar']  = self.calc_blend(values, BusFarDict)
             if keys == "trfrhbwo":
-                Temp_Fare = Df['BusFar'].flatten()
+                hbwo_temp_Fare = Df['BusFar'].flatten()
 
             util.set_matrix_numpy(eb, values['Mat'][0], Df['BusFar'])
 
 
        ##############################################################################
-       ##       Park and Ride Home-base Work/Uni/Soc Bus-leg
+       ##       Park and Ride and TNC Access Home-base Work/Uni/Soc Bus-leg
        ##############################################################################
-        BlendDictPR = { #AM,   MD,   PM         AM,   MD,   PM         Where Blended Matrices get stored in same order as above
-         'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
-         'Mat':['HbWBlBAuBusIvtt', 'HbWBlBAuBusWait', 'HbWBlBAuBusAux', 'HbWBlBAuBusBoard', 'HbWBlBAuBusFare'], 'BL': BLBsWk}
-                      }
+        BlendDictPR = {# AM,   MD,   PM         AM,   MD,   PM         Where Blended Matrices get stored in same order as above
+            'hbwopr': {'PA': hbwo_fct[0], 'AP': hbwo_fct[1],
+                     'Mat': ['HbWBlBAuBusIvtt', 'HbWBlBAuBusWait', 'HbWBlBAuBusAux', 'HbWBlBAuBusBoard','HbWBlBAuBusFare'], 'BL': BLBsWk},
+                        }
+
         for keys, xValue in BlendDictPR.items():
 
             Df = pd.DataFrame()
@@ -518,7 +529,9 @@ class ModeChoiceGenDf(_m.Tool()):
             Df_Bus_Leg['BusWat'] = self.calc_blend(xValue, BusWatDict).flatten()
             Df_Bus_Leg['BusAux'] = self.calc_blend(xValue, BusAuxDict).flatten()
             Df_Bus_Leg['BusBrd'] = self.calc_blend(xValue, BusBrdDict).flatten()
-            Df_Bus_Leg['BusFar'] = Temp_Fare
+            if "hbwo" in keys:
+                Df_Bus_Leg['BusFar'] = hbwo_temp_Fare
+
             # Join the two data frames based on skims from the Best Lot to the destination
             Df = pd.merge(Dfmerge, Df_Bus_Leg, left_on = ['BL', 'j'],
                      right_on = ['i', 'j'], how = 'left')
@@ -529,7 +542,7 @@ class ModeChoiceGenDf(_m.Tool()):
             util.set_matrix_numpy(eb, xValue['Mat'][3], Df['BusBrd'].values.reshape(NoTAZ,NoTAZ))
             util.set_matrix_numpy(eb, xValue['Mat'][4], Df['BusFar'].values.reshape(NoTAZ,NoTAZ))
         # delete data generated to free up memory
-        del Df, Dfmerge, Df_Bus_Leg, BusIVTDict, BusWatDict, BusAuxDict, BusBrdDict, BusFarDict, Temp_Fare
+        del Df, Dfmerge, Df_Bus_Leg, BusIVTDict, BusWatDict, BusAuxDict, BusBrdDict, BusFarDict, hbwo_temp_Fare
 #
 #        ##############################################################################
 #        ##       Rail Skims
@@ -605,18 +618,22 @@ class ModeChoiceGenDf(_m.Tool()):
             Df = {}
             Df['RalFar']  = self.calc_blend(values, RalFarDict)
             if keys == "trfrhbwo":
-                Temp_Fare = Df['RalFar'].flatten()
+                hbwo_temp_Fare = Df['RalFar'].flatten()
+            if keys == "trfrhbun":
+                hbun_temp_Fare = Df['RalFar'].flatten()
+            if keys == "trfrhbso":
+                hbso_temp_Fare = Df['RalFar'].flatten()
 
             util.set_matrix_numpy(eb, values['Mat'][0], Df['RalFar'])
 
 #       ##############################################################################
-#        ##       Park and Ride Home-base Work/Uni/Soc Rail-leg
+#        ##       Park and Ride and TNC Access Home-base Work/Uni/Soc Rail-leg
 #        ##############################################################################
-        BlendDictPR = { #AM,   MD,   PM         AM,   MD,   PM
-           'hbwo':{'PA': hbwo_fct[0], 'AP':hbwo_fct[1],
-                 'Mat':['HbWBlRAuRailIvtt', 'HbWBlRAuRailIvttBus', 'HbWBlRAuRailWait', 'HbWBlRAuRailAux', 'HbWBlRAuRailBoard', 'HbWBlRAuRailFare'],
-                        'BL': BLRlWk}, #Where Blended Matrices get stored in same order as above
-                      }
+        BlendDictPR = {# AM,   MD,   PM         AM,   MD,   PM         Where Blended Matrices get stored in same order as above
+            'hbwopr': {'PA': hbwo_fct[0], 'AP': hbwo_fct[1],
+                       'Mat': ['HbWBlRAuRailIvtt', 'HbWBlRAuRailIvttBus', 'HbWBlRAuRailWait', 'HbWBlRAuRailAux', 'HbWBlRAuRailBoard', 'HbWBlRAuRailFare'], 'BL': BLRlWk},
+                        }
+
         for keys, xValue in BlendDictPR.items():
 
             Df = pd.DataFrame()
@@ -630,7 +647,9 @@ class ModeChoiceGenDf(_m.Tool()):
             Df_Rail_Leg['RalWat'] = self.calc_blend(xValue, RalWatDict).flatten()
             Df_Rail_Leg['RalAux'] = self.calc_blend(xValue, RalAuxDict).flatten()
             Df_Rail_Leg['RalBrd'] = self.calc_blend(xValue, RalBrdDict).flatten()
-            Df_Rail_Leg['RalFar'] = Temp_Fare
+            if "hbwo" in keys:
+                Df_Rail_Leg['RalFar'] = hbwo_temp_Fare
+
             # Join the two data frames based on skims from the Best Lot to the destination
             Df = pd.merge(Dfmerge, Df_Rail_Leg, left_on = ['BL', 'j'],
                      right_on = ['i', 'j'], how = 'left')
@@ -642,7 +661,7 @@ class ModeChoiceGenDf(_m.Tool()):
             util.set_matrix_numpy(eb, xValue['Mat'][4], Df['RalBrd'].values.reshape(NoTAZ,NoTAZ))
             util.set_matrix_numpy(eb, xValue['Mat'][5], Df['RalFar'].values.reshape(NoTAZ,NoTAZ))
         # delete data generated to free up memory
-        del Df, Dfmerge, Df_Rail_Leg, RalIVBDict, RalIVRDict, RalWatDict, RalAuxDict, RalBrdDict, RalFarDict, Temp_Fare
+        del Df, Dfmerge, Df_Rail_Leg, RalIVBDict, RalIVRDict, RalWatDict, RalAuxDict, RalBrdDict, RalFarDict, hbwo_temp_Fare
 #
 #        ##############################################################################
 #        ##       WCE Skims
@@ -678,6 +697,7 @@ class ModeChoiceGenDf(_m.Tool()):
             Df['WCEAux'] = self.calc_blend(values, WCEAuxDict)
             Df['WCEBrd'] = self.calc_blend(values, WCEBrdDict)
             Df['WCEFar'] = self.calc_blend(values, WCEFarDict)
+
             # Put results back in the Emmebank
             util.set_matrix_numpy(eb, values['Mat'][0], Df['WCEIVW'])
             util.set_matrix_numpy(eb, values['Mat'][1], Df['WCEIVR'])
@@ -687,13 +707,12 @@ class ModeChoiceGenDf(_m.Tool()):
             util.set_matrix_numpy(eb, values['Mat'][5], Df['WCEBrd'])
             util.set_matrix_numpy(eb, values['Mat'][6], Df['WCEFar'])
 #        ##############################################################################
-#        ##       Park and Ride Home-base Work/Uni/Soc WCE-leg
+#        ##       Park and Ride and TNC Access Home-base Work/Uni/Soc WCE-leg
 #        ##############################################################################
         BlendDictPR = { #AM,   PM,        AM,   PM,
-         'hbwo':{'PA': hbwo_fct_wce[0], 'AP':hbwo_fct_wce[1],  'BL': BLWcWk,
-                 'Mat':['HbWBlWAuWceIvtt', 'HbWBlWAuWceIvttRail', 'HbWBlWAuWceIvttBus',
-                        'HbWBlWAuWceWait', 'HbWBlWAuWceAux', 'HbWBlWAuWceBoards', 'HbWBlWAuWceFare']} # Where Blended Matrices get stored in same order as above
-                      }
+         'hbwopr':{'PA': hbwo_fct_wce[0], 'AP':hbwo_fct_wce[1],  'BL': BLWcWk,
+                 'Mat':['HbWBlWAuWceIvtt', 'HbWBlWAuWceIvttRail', 'HbWBlWAuWceIvttBus','HbWBlWAuWceWait',
+                        'HbWBlWAuWceAux', 'HbWBlWAuWceBoards', 'HbWBlWAuWceFare']}}
 
         for keys, xValue in BlendDictPR.items():
 
@@ -790,8 +809,7 @@ class ModeChoiceGenDf(_m.Tool()):
         return np.array([PA_List, AP_List])
 
 
-
-    @_m.logbook_trace("Park & Ride - Choose Best Lot")
+    @_m.logbook_trace("Drive Access - Choose Best Lot")
     def bestlot(self, eb, year):
         compute_lot = _m.Modeller().tool(
             "inro.emme.matrix_calculation.matrix_triple_index_operation")
@@ -1220,6 +1238,26 @@ class ModeChoiceGenDf(_m.Tool()):
         util.initmat(eb, "mf5176", "HbSoBlHovCost_I3", "HbSo Bl Hov Cost_High_Income", 0)
         util.initmat(eb, "mf5177", "HbSoBlHovTime_I3", "HbSo Bl Hov Time_High_Income", 0)
         util.initmat(eb, "mf5178", "HbSoBlHovToll_I3", "HbSo Bl Hov Toll_High_Income", 0)
+
+        # Initialize Blended Distance Matrices for taxi/TNC Skims - SG 1/3/19
+        util.initmat(eb, "mf5180", "HbWBlTNCCost_I1", "HbW Bl TNC Cost_Low_Income", 0)
+        util.initmat(eb, "mf5181", "HbWBlTNCCost_I2", "HbW Bl TNC Cost_Med_Income", 0)
+        util.initmat(eb, "mf5182", "HbWBlTNCCost_I3", "HbW Bl TNC Cost_High_Income", 0)
+        util.initmat(eb, "mf5183", "HbShBlTNCCost_I1", "HbSh Bl TNC Cost_Low_Income", 0)
+        util.initmat(eb, "mf5184", "HbShBlTNCCost_I2", "HbSh Bl TNC Cost_Med_Income", 0)
+        util.initmat(eb, "mf5185", "HbShBlTNCCost_I3", "HbSh Bl TNC Cost_High_Income", 0)
+        util.initmat(eb, "mf5186", "HbPbBlTNCCost_I1", "HbPb Bl TNC Cost_Low_Income", 0)
+        util.initmat(eb, "mf5187", "HbPbBlTNCCost_I2", "HbPb Bl TNC Cost_Med_Income", 0)
+        util.initmat(eb, "mf5189", "HbPbBlTNCCost_I3", "HbPb Bl TNC Cost_High_Income", 0)
+        util.initmat(eb, "mf5190", "HbSoBlTNCCost_I1", "HbSo Bl TNC Cost_Low_Income", 0)
+        util.initmat(eb, "mf5191", "HbSoBlTNCCost_I2", "HbSo Bl TNC Cost_Med_Income", 0)
+        util.initmat(eb, "mf5192", "HbSoBlTNCCost_I3", "HbSo Bl TNC Cost_High_Income", 0)
+        util.initmat(eb, "mf5193", "HbUBlTNCCost", "HbU Bl TNC Cost", 0)
+        util.initmat(eb, "mf5194", "HbScBlTNCCost", "HbSc Bl TNC Cost", 0)
+        util.initmat(eb, "mf5195", "HbEsBlTNCCost", "HbEs Bl TNC Cost", 0)
+        util.initmat(eb, "mf5196", "NHbWBlTNCCost", "NHbW Bl TNC Cost", 0)
+        util.initmat(eb, "mf5197", "NHbOBlTNCCost", "NHbO Bl TNC Cost", 0)
+
         util.initmat(eb, "mf5200", "HbUBlSovCost", "HbU Bl Sov Cost", 0)
         util.initmat(eb, "mf5201", "HbUBlSovTime", "HbU Bl Sov Time", 0)
         util.initmat(eb, "mf5202", "HbUBlSovToll", "HbU Bl Sov Toll", 0)
@@ -1394,6 +1432,7 @@ class ModeChoiceGenDf(_m.Tool()):
         util.initmat(eb, "mf5804", "HbWBlWceAux", "HbW Bl WCE Auxilliary Time", 0)
         util.initmat(eb, "mf5805", "HbWBlWceBoard", "HbW Bl WCE Boardings", 0)
         util.initmat(eb, "mf5806", "HbWBlWceFare", "HbW Bl WCE Fare", 0)
+        # HBW Auto Access transit
         util.initmat(eb, "mf6800", "HbWBlBAuPRCost", "HbW Bl Bus-Auto PR Cost", 0)
         util.initmat(eb, "mf6801", "HbWBlBAuPRTime", "HbW Bl Bus-Auto PR Time", 0)
         util.initmat(eb, "mf6802", "HbWBlBAuPRToll", "HbW Bl Bus-Auto PR Toll", 0)
@@ -1409,6 +1448,8 @@ class ModeChoiceGenDf(_m.Tool()):
         util.initmat(eb, "mf6822", "HbWBlWAuPRToll", "HbW Bl WCE-Auto PR Toll", 0)
         util.initmat(eb, "mf6823", "HbWWAuPrkCst", "HbW WCE-Auto PR Parking Cost", 0)
         util.initmat(eb, "mf6824", "HbWWAuTrmTim", "HbW WCE-Auto PR Terminal Time", 0)
+
+        # HBW PNR Skims
         util.initmat(eb, "mf6900", "HbWBlBAuBusIvtt", "HbW Bl Bus-Auto PR InVehicle Time", 0)
         util.initmat(eb, "mf6901", "HbWBlBAuBusWait", "HbW Bl Bus-Auto PR Bus Waiting Time", 0)
         util.initmat(eb, "mf6902", "HbWBlBAuBusAux", "HbW Bl Bus-Auto PR Bus Auxillary Time", 0)

@@ -1,4 +1,6 @@
 c Modeller - Transit Line Transaction
+c Date: 2020-04-24 14:34:17
+c Project:        RTM revise FVRD                                             
 c Scenario 3500:  2035 Base Network
 t lines
 c Transit Lines
@@ -23967,7 +23969,7 @@ a'C01N1X' b   9  20.00  23.00 'Vedder'                  0      0      0
    822609         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    822606         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    822605         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   822604         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822604         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    822602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    821806         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    821505         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -23999,7 +24001,7 @@ a'C01S1X' b   9  20.00  23.00 'Vedder'                  0      0      0
    821503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    821601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    821505         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   821805         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821805         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    821806         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    822602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    822605         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24016,6 +24018,7 @@ a'C01S1X' b   9  20.00  23.00 'Vedder'                  0      0      0
 c C01S1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
 a'C02N1X' b   9  60.00  23.00 'Evans'                   0      0      0
   path=no
+   822605      dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
    822201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    822405         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    822404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24030,15 +24033,14 @@ a'C02N1X' b   9  60.00  23.00 'Evans'                   0      0      0
    821103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    820509         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    820510         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   820511         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820511         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    820513        lay=5.00
-c C02N1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+c C02N1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
 a'C02S1X' b   9  60.00  23.00 'Evans'                   0      0      0
   path=no
    820513         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   820511         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   820510         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   820509         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821104         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821105         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    821103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    821102         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    821101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24051,8 +24053,9 @@ a'C02S1X' b   9  60.00  23.00 'Evans'                   0      0      0
    822811         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    822404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    822405         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   822201        lay=5.00
-c C02S1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+   822201         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   822605        lay=5.00
+c C02S1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
 a'C03L1X' b   9  30.00  23.00 'Chilliwack'              0      0      0
   path=no
    820511         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24093,10 +24096,12 @@ a'C04N1X' b   9  60.00  23.00 'Promontory'              0      0      0
    822812         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    822404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    822405         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   822201        lay=5.00
-c C04N1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+   822201         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   822605        lay=5.00
+c C04N1X first:      dwt=<0.01 hidden:    us1=0   us2=0   us3=0
 a'C04S1X' b   9  60.00  23.00 'Promontory'              0      0      0
   path=no
+   822605      dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
    822201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    822405         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    822404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24114,12 +24119,202 @@ a'C04S1X' b   9  60.00  23.00 'Promontory'              0      0      0
    823402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    823201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    823202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   823203         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   823203         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    823801        lay=5.00
-c C04S1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+c C04S1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
+a'C05L1X' b   9  60.00  23.00 'Yarrow Greendale'        0      0      0
+  path=no
+   824103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   824102         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   824101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   823016         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   823017         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   823015         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   823013         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822816         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822817         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   823301         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822904         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822617         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   823201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   823204         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   823703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   823702         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   823701        lay=5.00
+c C05L1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
+a'C07N1X' b   9  60.00  23.00 'Boardway to Chilliwack'      0      0      0
+  path=no
+   822201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822605         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821506         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821006         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820803         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820903         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821006         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821005         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821004         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820513         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821104         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821105         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820512         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   820511        lay=5.00
+c C07N1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
+a'C07S1X' b   9  60.00  23.00 'Broadway to Malls'       0      0      0
+  path=no
+   820511         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820512         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821105         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821104         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820513         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821004         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821005         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821006         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820903         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820803         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821006         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821506         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822605         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   822201        lay=5.00
+c C07S1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
+a'C08L1X' b   9  60.00  23.00 'Tyson'                   0      0      0
+  path=no
+   822605         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822405         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822812         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822813         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822903         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822904         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   823401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   823701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   823602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   823701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   823401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822904         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822903         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822813         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822812         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822405         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822201         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   822605        lay=5.00
+c C08L1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
+a'C09L1X' b   9  60.00  23.00 'Industrial'              0      0      0
+  path=no
+   821403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821506         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822605         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822405         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822405         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822605         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   822503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821506         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   821403        lay=5.00
+c C09L1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
+a'C11N1X' b   9  60.00  23.00 'Harrison Hot Springs'      0      0      0
+  path=no
+   820513         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821004         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821003         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   821002         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820803         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820902         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820304         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   820404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   830303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   830302         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   830301         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720517         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720514         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   720515         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720516         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720513         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   720512         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720511         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720510         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720505         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720501         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   720301        lay=5.00
+c C11N1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
+a'C11S1X' b   9  60.00  23.00 'Chilliwack'              0      0      0
+  path=no
+   720301         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720505         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720510         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   720511         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720512         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720513         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720516         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   720515         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720514         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720517         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   830301         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   830302         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   830303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   820404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820305         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820304         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820902         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820803         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   820701         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   821002         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821003         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   821004         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   820513        lay=5.00
+c C11S1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
+a'C22N1X' b   9  60.00  23.00 'Hope'                    0      0      0
+  path=no
+   720511         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720510         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720505         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   720509         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720108         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   720107         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   720105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   720103         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   720104         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   720106         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   720110         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   720109         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   830101         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   830104         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   830103        lay=5.00
+c C22N1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
 a'F01E1X' b   7  15.00  23.00 'McKee-Blueridge'         0      0      0
   path=no
-   813303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813302         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    811604         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    811702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24141,8 +24336,9 @@ a'F01E1X' b   7  15.00  23.00 'McKee-Blueridge'         0      0      0
    814702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814704         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815302         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814207         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   815303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814804         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814208         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814209         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814210         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24159,14 +24355,15 @@ a'F01E1X' b   7  15.00  23.00 'McKee-Blueridge'         0      0      0
    812901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    811304         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811302         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   811302         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    811301        lay=5.00
-c F01E1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+c F01E1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
 a'F01W1X' b   7  15.00  23.00 'McKee-Blueridge'         0      0      0
   path=no
    811301         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811302         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811304         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812203         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    812901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    812902         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24194,9 +24391,8 @@ a'F01W1X' b   7  15.00  23.00 'McKee-Blueridge'         0      0      0
    813808         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813807         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813806         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814004         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   813806         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   813805         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813804         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    812701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24204,9 +24400,9 @@ a'F01W1X' b   7  15.00  23.00 'McKee-Blueridge'         0      0      0
    812101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    811703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    811702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811604         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   811604         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    813302        lay=5.00
-c F01W1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+c F01W1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
 a'F02E1X' b   7  15.00  23.00 'Bluejay-Huntingdon'      0      0      0
   path=no
    811506         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24224,7 +24420,7 @@ a'F02E1X' b   7  15.00  23.00 'Bluejay-Huntingdon'      0      0      0
    813309         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814002         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813804         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813805         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814004         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813807         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24240,7 +24436,7 @@ a'F02E1X' b   7  15.00  23.00 'Bluejay-Huntingdon'      0      0      0
    814103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814208         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814208         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    814802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814804         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24255,16 +24451,11 @@ a'F02E1X' b   7  15.00  23.00 'Bluejay-Huntingdon'      0      0      0
    816208         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    816209         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    816002         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   816604         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   816606         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   816609         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   816607         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   816608        lay=5.00
-c F02E1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+   816604         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   816606        lay=5.00
+c F02E1X first:      dwt=<0.01 hidden:    us1=0   us2=0   us3=0
 a'F02W1X' b   7  15.00  23.00 'Bluejay-Huntington'      0      0      0
   path=no
-   816607         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   816608         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    816607         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    816606         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    816604         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24279,8 +24470,9 @@ a'F02W1X' b   7  15.00  23.00 'Bluejay-Huntington'      0      0      0
    815305         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815302         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814207         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   815303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814804         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814208         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24296,30 +24488,20 @@ a'F02W1X' b   7  15.00  23.00 'Bluejay-Huntington'      0      0      0
    813808         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813807         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813806         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814004         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   813806         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   813805         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813804         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814002         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813309         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813307         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813305         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813302         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811604         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811603         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811504         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811505         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811506        lay=5.00
-c F02W1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+   813304         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812606         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   812602        lay=5.00
+c F02W1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
 a'F03E1X' b   7  15.00  23.00 'Clearbrook-UFV'          0      0      0
   path=no
    814009         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814010         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814605         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814004         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813804         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    812701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24344,9 +24526,9 @@ a'F03E1X' b   7  15.00  23.00 'Clearbrook-UFV'          0      0      0
    815312         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    816110         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    816105         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   816106         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   816106         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    816107        lay=5.00
-c F03E1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+c F03E1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
 a'F03W1X' b   7  15.00  23.00 'Clearbrook-UFV'          0      0      0
   path=no
    816107         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24424,26 +24606,26 @@ a'F05E1X' b   7  30.00  23.00 'Hospital'                0      0      0
    814704         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815204         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   815203         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   815203         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815206         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814010         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814009         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814009         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    814004        lay=5.00
-c F05E1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+c F05E1X first:      dwt=<0.01 hidden:    us1=0   us2=0   us3=0
 a'F05W1X' b   7  30.00  23.00 'Hospital'                0      0      0
   path=no
    814004         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814009         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   814010         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814605         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814010         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815206         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815203         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815204         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814704         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814703         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    814104        lay=5.00
-c F05W1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+c F05W1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
 a'F06L1X' b   7  30.00  23.00 'Gladwin-Peardonville'      0      0      0
   path=no
    814703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24456,6 +24638,8 @@ a'F06L1X' b   7  30.00  23.00 'Gladwin-Peardonville'      0      0      0
    811406         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    811405         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    811407         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   811404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   810611         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    811404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    811801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    811802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24470,9 +24654,9 @@ a'F06L1X' b   7  30.00  23.00 'Gladwin-Peardonville'      0      0      0
    814608         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814604         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813810         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814104         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814104         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    814703        lay=5.00
-c F06L1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+c F06L1X first:      dwt=<0.01 hidden:    us1=0   us2=0   us3=0
 a'F07L1X' b   7  30.00  23.00 'Sumas Mountain'          0      0      0
   path=no
    815303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24502,11 +24686,11 @@ a'F07L1X' b   7  30.00  23.00 'Sumas Mountain'          0      0      0
    815705         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815305         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   815302        lay=5.00
-c F07L1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+   815302         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   815303        lay=5.00
+c F07L1X first:      dwt=<0.01 hidden:    us1=0   us2=0   us3=0
 a'F12N1X' b   7  30.00  23.00 'UFV-Bourquin'            0      0      0
   path=no
-   816104         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    816107         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    816106         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    816105         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24520,9 +24704,9 @@ a'F12N1X' b   7  30.00  23.00 'UFV-Bourquin'            0      0      0
    815602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814704         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814703         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    814104        lay=5.00
-c F12N1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+c F12N1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
 a'F12S1X' b   7  30.00  23.00 'UFV-Bourquin'            0      0      0
   path=no
    814104         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24560,17 +24744,11 @@ a'F15E1X' b   7  60.00  23.00 'Auguston'                0      0      0
    813001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    811304         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    811303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   810902         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   810403        lay=5.00
-c F15E1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+   811202         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   811201        lay=5.00
+c F15E1X first:      dwt=<0.01 hidden:    us1=0   us2=0   us3=0
 a'F15W1X' b   7  60.00  23.00 'Auguston'                0      0      0
   path=no
-   810403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   810902         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    811201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    811202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    811303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24590,9 +24768,9 @@ a'F15W1X' b   7  60.00  23.00 'Auguston'                0      0      0
    814202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814208         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814804         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814804         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    815303        lay=5.00
-c F15W1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+c F15W1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
 a'F16E1X' b   7  30.00  23.00 'McMillan commuter'       0      0      0
   path=no
    814802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24606,27 +24784,31 @@ a'F16E1X' b   7  30.00  23.00 'McMillan commuter'       0      0      0
    815404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815710         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815413         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   815402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   815403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   815402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   815403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   813906         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    815507        lay=5.00
-c F16E1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+c F16E1X first:      dwt=<0.01 hidden:    us1=0   us2=0   us3=0
 a'F16W1X' b   7  30.00  23.00 'McMillan commuter'       0      0      0
   path=no
    815507         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   815402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   815413         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   815710         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   815402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   815503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814301         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   815401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   815406         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   815405         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814222         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814807         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   815304         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   815301         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   815303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814804         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814802        lay=5.00
-c F16W1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+   814212         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814210         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814209         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814208         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814802         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   814804        lay=5.00
+c F16W1X first:      dwt=<0.01 hidden:    us1=0   us2=0   us3=0
 a'F17L1X' b   7  60.00  23.00 'Townline Industrial'      0      0      0
   path=no
    814513         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24674,12 +24856,11 @@ a'F17L1X' b   7  60.00  23.00 'Townline Industrial'      0      0      0
 c F17L1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
 a'F21E1X' b   7  60.00  23.00 'Aldergrove'              0      0      0
   path=no
-   687102         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   687201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   687202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   687603         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813105         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813102         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   687102         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   686702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   813102         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   813105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   813106         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813104         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815003         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815002         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -24698,9 +24879,9 @@ a'F21E1X' b   7  60.00  23.00 'Aldergrove'              0      0      0
    813808         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813809         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813810         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814104         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814104         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    814703        lay=5.00
-c F21E1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+c F21E1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
 a'F21W1X' b   7  60.00  23.00 'Aldergrove'              0      0      0
   path=no
    814703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24728,53 +24909,53 @@ a'F21W1X' b   7  60.00  23.00 'Aldergrove'              0      0      0
    813205         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    815002         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   815003         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813104         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813106         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813105         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813102         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   686702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   687102        lay=5.00
-c F21W1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+   815003         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   813104         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   813102         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   813105         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   687603         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   687202         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   687201        lay=5.00
+c F21W1X first:      dwt=<0.01 hidden:    us1=0   us2=0   us3=0
 a'F22L1X' b   7  30.00  23.00 'East Townline'           0      0      0
   path=no
    814703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814104         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813810         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813809         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   813809         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    813808         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813807         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813803         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    812702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    811803         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   812701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813804         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814002         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813309         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813307         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813305         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813302         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811604         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   810609         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   812101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814001         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    812102         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   811701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   810609         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   811702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   811604         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   813302         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   813303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   813305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   813306         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   813309         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814002         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   813804         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    811803         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    812702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813803         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   813807         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   813807         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    813808         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813809         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813810         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814104         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814104         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    814703        lay=5.00
-c F22L1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+c F22L1X first:      dwt=<0.01 hidden:    us1=0   us2=0   us3=0
 a'F23L1X' b   7  60.00  23.00 'West Townline'           0      0      0
   path=no
    814703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24820,6 +25001,98 @@ a'F23L1X' b   7  60.00  23.00 'West Townline'           0      0      0
    814104         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814703        lay=5.00
 c F23L1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+a'F24L1X' b   7  60.00  23.00 'Centre Loop'             0      0      0
+  path=no
+   814703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814104         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   813408         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   813409         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   813401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   811406         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   811405         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   811407         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   811404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   810611         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   811404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   811801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   811802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   811803         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   813803         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814602         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   813806         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814004         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814009         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814010         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814607         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   815201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814704         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814702         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   814703        lay=5.00
+c F24L1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
+a'F26L1X' b   7  60.00  23.00 'Sandy Hill'              0      0      0
+  path=no
+   814104         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814703         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814704         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   815302         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   815303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814804         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814208         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814209         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814210         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814211         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814213         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814214         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814215         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814216         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814904         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814903         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814902         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   815401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812902         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812203         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812204         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   811106         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812201         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   812204         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812203         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812902         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   813001         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   811304         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   811302         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   811301         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812202         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   812203         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812902         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   815401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814902         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814903         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814904         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814216         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814215         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814214         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814213         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814211         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814210         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814209         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814208         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   814802         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814804         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   815303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   815302         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814704         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814703         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   814104        lay=5.00
+c F26L1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
 a'F31N1X' b   7  15.00  23.00 'Abbotsford-Mission'      0      0      0
   path=no
    814703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24834,27 +25107,27 @@ a'F31N1X' b   7  15.00  23.00 'Abbotsford-Mission'      0      0      0
    814204         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    812408         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    812405         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   812801         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811110         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811109         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811108         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812801         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   811110         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   811109         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   811108         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   811403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    810608         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   810606         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   810303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711734         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711735         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   810606         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   810303         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   711734         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   711735         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    711730         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711728         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   711736         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711736         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    711723         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   711717         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711717         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    711710         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    711712         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711714         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711704         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711706         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711706         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    711505         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711503        lay=5.00
 c F31N1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
@@ -24863,34 +25136,34 @@ a'F31S1X' b   7  15.00  23.00 'Abbotsford-Mission'      0      0      0
    711503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711505         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711714         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711713         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711710         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711716         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711722         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711733         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711714         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   711713         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   711710         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   711716         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   711722         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   711733         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    711727         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711724         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711727         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711733         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711729         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711731         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711732         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711724         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   711727         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   711733         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   711729         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   711731         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   711732         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    810601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   810606         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   810608         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   810606         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   810608         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   811403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    812401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   811110         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   811110         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    812405         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   812408         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   812408         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    814204         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814203         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814103         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    813409         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   814101         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   814101         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    813408         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814104         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    814703        lay=5.00
@@ -24903,28 +25176,28 @@ a'F32L1X' b   7  25.00  23.00 'West Heights'            0      0      0
    711505         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711714         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711713         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711713         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    711710         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711709         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711707         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711301         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711206         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711211         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711206         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711301         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711707         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711710         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   711402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711707         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   711710         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711712         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711714         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711704         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711706         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711505         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711505         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    711503        lay=5.00
-c F32L1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+c F32L1X first:      dwt=<0.01 hidden:    us1=0   us2=0   us3=0
 a'F33L1X' b   7  25.00  23.00 'Cedar Valley'            0      0      0
   path=no
    711503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24965,10 +25238,12 @@ a'F34N1X' b   7  25.00  23.00 'East Side'               0      0      0
    711208         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711205         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    710606         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711201        lay=5.00
-c F34N1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+   711201         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   710702        lay=5.00
+c F34N1X first:      dwt=<0.01 hidden:    us1=0   us2=0   us3=0
 a'F34S1X' b   7  25.00  23.00 'East Side'               0      0      0
   path=no
+   710702      dwt=+0.01   ttf=1   us1=0   us2=0   us3=0
    711201         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711205         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -24982,9 +25257,9 @@ a'F34S1X' b   7  25.00  23.00 'East Side'               0      0      0
    711703         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711704         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711706         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   711505         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711505         dwt=>0   ttf=1   us1=0   us2=0   us3=0
    711503        lay=5.00
-c F34S1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+c F34S1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
 a'F35E1X' b   7  30.00  23.00 'Hatzic'                  0      0      0
   path=no
    711503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -25004,6 +25279,29 @@ a'F35W1X' b   7  60.00  23.00 'Hatzic'                  0      0      0
    711505         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    711503        lay=5.00
 c F35W1X first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
+a'F39L1X' b   7  60.00  23.00 '39 Shopper Shuttle'      0      0      0
+  path=no
+   711505         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711714         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711713         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   711710         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711709         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711707         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711404         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711707         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711211         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711212         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711207         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711212         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711213         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711504         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   711506         dwt=>0   ttf=1   us1=0   us2=0   us3=0
+   711505        lay=5.00
+c F39L1X first:         dwt=<0 hidden:    us1=0   us2=0   us3=0
 a'F66E1X' b   7  30.00  23.00 'FraserValleyExpress'      0      0      0
   path=no
    681518         dwt=+0   ttf=1   us1=0   us2=0   us3=0

@@ -429,6 +429,31 @@ class ModeChoiceUtilities(_m.Tool()):
 
         return Seg_Dict
 
+    def agg_hb_att(self, eb):
+
+        util = _m.Modeller().tool("translink.util")
+
+        stat_sql = "SELECT * from trip_att_tots"
+
+        conn = util.get_db_byname(eb, "trip_summaries.db")
+        df = pd.read_sql(stat_sql, conn)
+        df = df.groupby(['tz', 'purp', 'mode_agg']).sum().reset_index()
+        df.to_sql(name='trip_att_tots', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        conn.close()
+
+    def splitpnr (self, DfmergedAuto, DfmergedTran, DfInt):
+
+        DfAuto = pd.DataFrame()
+        DfAuto = pd.merge(DfInt, DfmergedAuto, left_on = ['i', 'j'],
+                     right_on = ['i', 'BL'], how = 'left')
+        DfAuto = DfAuto.fillna(0)
+
+        DfTran = pd.merge(DfInt, DfmergedTran, left_on = ['i', 'j'],
+                     right_on = ['BL', 'j'], how = 'left')
+        DfTran = DfTran.fillna(0)
+
+        return (DfAuto, DfTran)
+
     def calc_BRT_LRT_asc(self, eb, busASC, railASC):
         # Calculate mode specific constant for BRT and LRT as a fraction of bus and rail constants
         BRT_fac = eb.matrix("msBRTASCFactor").data
