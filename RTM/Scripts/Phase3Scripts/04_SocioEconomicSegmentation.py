@@ -78,18 +78,18 @@ class SocioEconomicSegmentation(_m.Tool()):
 
         ##Coefficients:
         ##Bias Terms
-        Bias_W0I1 =  0.0000
-        Bias_W0I2 = -0.5543
-        Bias_W0I3 = -2.1514
-        Bias_W1I1 = 1.1678
-        Bias_W1I2 = 1.9228
-        Bias_W1I3 = 1.2631
-        Bias_W2I1 = 3.0504
-        Bias_W2I2 = 3.5171
-        Bias_W2I3 = 3.9325
-        Bias_W3I1 = 1.2604
-        Bias_W3I2 = 2.1688
-        Bias_W3I3 = 3.1593
+        Bias_W0I1 = eb.matrix("msBias_W0I1").data
+        Bias_W0I2 = eb.matrix("msBias_W0I2").data
+        Bias_W0I3 = eb.matrix("msBias_W0I3").data
+        Bias_W1I1 = eb.matrix("msBias_W1I1").data
+        Bias_W1I2 = eb.matrix("msBias_W1I2").data
+        Bias_W1I3 = eb.matrix("msBias_W1I3").data
+        Bias_W2I1 = eb.matrix("msBias_W2I1").data
+        Bias_W2I2 = eb.matrix("msBias_W2I2").data
+        Bias_W2I3 = eb.matrix("msBias_W2I3").data
+        Bias_W3I1 = eb.matrix("msBias_W3I1").data
+        Bias_W3I2 = eb.matrix("msBias_W3I2").data
+        Bias_W3I3 = eb.matrix("msBias_W3I3").data
 
         ##Demographic Terms
         Pop18_24_W0 = 3.8961

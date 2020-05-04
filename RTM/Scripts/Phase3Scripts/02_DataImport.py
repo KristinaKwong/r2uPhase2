@@ -76,6 +76,21 @@ class DataImport(_m.Tool()):
     def init_scalars(self, eb):
         util = _m.Modeller().tool("translink.util")
 
+        # workers income model bias terms
+        # manipulate to change assumptions about economy/employment levels
+        util.initmat(eb,  "ms1000", "Bias_W0I1", "Bias_W0I1",  0.0000)
+        util.initmat(eb,  "ms1001", "Bias_W0I2", "Bias_W0I2", -0.5543)
+        util.initmat(eb,  "ms1002", "Bias_W0I3", "Bias_W0I3", -2.1514)
+        util.initmat(eb,  "ms1003", "Bias_W1I1", "Bias_W1I1",  1.1678)
+        util.initmat(eb,  "ms1004", "Bias_W1I2", "Bias_W1I2",  1.9228)
+        util.initmat(eb,  "ms1005", "Bias_W1I3", "Bias_W1I3",  1.2631)
+        util.initmat(eb,  "ms1006", "Bias_W2I1", "Bias_W2I1",  3.0504)
+        util.initmat(eb,  "ms1007", "Bias_W2I2", "Bias_W2I2",  3.5171)
+        util.initmat(eb,  "ms1008", "Bias_W2I3", "Bias_W2I3",  3.9325)
+        util.initmat(eb,  "ms1009", "Bias_W3I1", "Bias_W3I1",  1.2604)
+        util.initmat(eb,  "ms1010", "Bias_W3I2", "Bias_W3I2",  2.1688)
+        util.initmat(eb,  "ms1011", "Bias_W3I3", "Bias_W3I3",  3.1593)
+        
         util.initmat(eb, "ms100", "autoOpCost", "Auto Operating Cost", 0.18)
         util.initmat(eb, "ms101", "lgvOpCost", "Light Truck Operating Cost", 0.24)
         util.initmat(eb, "ms102", "hgvOpCost", "Heavy Truck Operating Cost", 0.56)
