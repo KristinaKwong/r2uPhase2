@@ -299,17 +299,17 @@ class TripProductions(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
 
         # define Coefficients from model estimation
-        hbw_prods = StringIO("""HHWorker,HHInc,hbw_prds
-        1,1,1.142723
-        2,1,2.044779
-        3,1,3.488924
-        1,2,1.280331
-        2,2,2.426104
-        3,2,3.812845
-        1,3,1.38898
-        2,3,2.390059
-        3,3,4.163671
-        """)
+        hbw_prods = [
+        [1, 1, eb.matrix("hbwprd_1-1").data],
+        [2, 1, eb.matrix("hbwprd_2-1").data],
+        [3, 1, eb.matrix("hbwprd_3-1").data],
+        [1, 2, eb.matrix("hbwprd_1-2").data],
+        [2, 2, eb.matrix("hbwprd_2-2").data],
+        [3, 2, eb.matrix("hbwprd_3-2").data],
+        [1, 3, eb.matrix("hbwprd_1-3").data],
+        [2, 3, eb.matrix("hbwprd_2-3").data],
+        [3, 3, eb.matrix("hbwprd_3-3").data]
+        ]
 
 
         hbesc_prods = StringIO("""HHSize,HHInc,hbesc_prds
@@ -380,8 +380,8 @@ class TripProductions(_m.Tool()):
         """)
 
 
-        # Generate Commute Trip Rate Data Frome
-        hh_commute_prds = pd.read_csv(hbw_prods, sep = ',')
+        # Generate Commute Trip Rate Data Frame
+        hh_commute_prds = pd.DataFrame(hbw_prods, columns =  ['HHWorker','HHInc','hbw_prds'])
     
 
         # Generate Non Commute Data Frame

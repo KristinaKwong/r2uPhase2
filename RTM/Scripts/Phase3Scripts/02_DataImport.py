@@ -90,7 +90,20 @@ class DataImport(_m.Tool()):
         util.initmat(eb,  "ms1009", "Bias_W3I1", "Bias_W3I1",  1.2604)
         util.initmat(eb,  "ms1010", "Bias_W3I2", "Bias_W3I2",  2.1688)
         util.initmat(eb,  "ms1011", "Bias_W3I3", "Bias_W3I3",  3.1593)
-        
+
+        # Trip generation
+        # HBW productions by number of hh workers and income category
+        util.initmat(eb,  "ms1020", "hbwprd_1-1", "hbwprd_1-1", 1.142723)
+        util.initmat(eb,  "ms1021", "hbwprd_2-1", "hbwprd_2-1", 2.044779)
+        util.initmat(eb,  "ms1022", "hbwprd_3-1", "hbwprd_3-1", 3.488924)
+        util.initmat(eb,  "ms1023", "hbwprd_1-2", "hbwprd_1-2", 1.280331)
+        util.initmat(eb,  "ms1024", "hbwprd_2-2", "hbwprd_2-2", 2.426104)
+        util.initmat(eb,  "ms1025", "hbwprd_3-2", "hbwprd_3-2", 3.812845)
+        util.initmat(eb,  "ms1026", "hbwprd_1-3", "hbwprd_1-3", 1.388980)
+        util.initmat(eb,  "ms1027", "hbwprd_2-3", "hbwprd_2-3", 2.390059)
+        util.initmat(eb,  "ms1028", "hbwprd_3-3", "hbwprd_3-3", 4.163671)
+
+
         util.initmat(eb, "ms100", "autoOpCost", "Auto Operating Cost", 0.18)
         util.initmat(eb, "ms101", "lgvOpCost", "Light Truck Operating Cost", 0.24)
         util.initmat(eb, "ms102", "hgvOpCost", "Heavy Truck Operating Cost", 0.56)
