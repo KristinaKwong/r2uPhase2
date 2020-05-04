@@ -60,13 +60,13 @@ class TripAttractions(_m.Tool()):
         ########################################################################
 
         # hbw
-        c_hbw_CM = 1.463994
-        c_hbw_TW = 1.179233
-        c_hbw_BOS = 1.561658
-        c_hbw_FIRE = 1.621333
-        c_hbw_Ret = 0.587329
-        c_hbw_AFIC = 1.285617
-        c_hbw_HEPA = 1.300219
+        c_hbw_CM   = eb.matrix("c_hbw_CM").data
+        c_hbw_TW   = eb.matrix("c_hbw_TW").data
+        c_hbw_BOS  = eb.matrix("c_hbw_BOS").data
+        c_hbw_FIRE = eb.matrix("c_hbw_FIRE").data
+        c_hbw_Ret  = eb.matrix("c_hbw_Ret").data
+        c_hbw_AFIC = eb.matrix("c_hbw_AFIC").data
+        c_hbw_HEPA = eb.matrix("c_hbw_HEPA").data
 
         # hbesc
         c_hbesc_int = 176.886252

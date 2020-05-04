@@ -103,6 +103,15 @@ class DataImport(_m.Tool()):
         util.initmat(eb,  "ms1027", "hbwprd_2-3", "hbwprd_2-3", 2.390059)
         util.initmat(eb,  "ms1028", "hbwprd_3-3", "hbwprd_3-3", 4.163671)
 
+        # HBW Attractions by job category
+        util.initmat(eb,  "ms1030", "c_hbw_CM"  , "c_hbw_CM"  , 1.463994)
+        util.initmat(eb,  "ms1031", "c_hbw_TW"  , "c_hbw_TW"  , 1.179233)
+        util.initmat(eb,  "ms1032", "c_hbw_BOS" , "c_hbw_BOS" , 1.561658)
+        util.initmat(eb,  "ms1033", "c_hbw_FIRE", "c_hbw_FIRE", 1.621333)
+        util.initmat(eb,  "ms1034", "c_hbw_Ret" , "c_hbw_Ret" , 0.587329)
+        util.initmat(eb,  "ms1035", "c_hbw_AFIC", "c_hbw_AFIC", 1.285617)
+        util.initmat(eb,  "ms1036", "c_hbw_HEPA", "c_hbw_HEPA", 1.300219)
+
 
         util.initmat(eb, "ms100", "autoOpCost", "Auto Operating Cost", 0.18)
         util.initmat(eb, "ms101", "lgvOpCost", "Light Truck Operating Cost", 0.24)
