@@ -146,6 +146,17 @@ class DataImport(_m.Tool()):
         util.initmat(eb,  "ms1080", "hbsoc_3-3", "hbsoc_3-3", 1.074033)
         util.initmat(eb,  "ms1081", "hbsoc_4-3", "hbsoc_4-3", 1.567024)
 
+        # HBU Productions
+        util.initmat(eb,  "ms1090", "c_hbu_int"        , "c_hbu_int"        , 20.617679)
+        util.initmat(eb,  "ms1091", "c_iPop1824UnAcOth", "c_iPop1824UnAcOth",  0.079319)
+        util.initmat(eb,  "ms1092", "c_iPop1824UnAcVan", "c_iPop1824UnAcVan",  0.086291)
+        util.initmat(eb,  "ms1093", "c_iPop1824UnAcSur", "c_iPop1824UnAcSur",  0.070245)
+        util.initmat(eb,  "ms1094", "c_iP2434UnAc"     , "c_iP2434UnAc"     ,  0.009762)
+
+        # HBU Attractions
+        util.initmat(eb,  "ms1095", "c_hbu_iCbdPsfte"   , "c_hbu_iCbdPsfte"   ,  0.287631)
+        util.initmat(eb,  "ms1096", "c_hbu_iNotCbdPsfte", "c_hbu_iNotCbdPsfte",  1.411431)
+
         util.initmat(eb, "ms100", "autoOpCost", "Auto Operating Cost", 0.18)
         util.initmat(eb, "ms101", "lgvOpCost", "Light Truck Operating Cost", 0.24)
         util.initmat(eb, "ms102", "hgvOpCost", "Heavy Truck Operating Cost", 0.56)

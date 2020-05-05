@@ -195,32 +195,11 @@ class TripProductions(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
 
         # set coefficents
-        c_hbu_int = 20.617679
-        c_iPop1824UnAcOth = 0.079319
-        c_iPop1824UnAcVan = 0.086291
-        c_iPop1824UnAcSur = 0.070245
-        c_iP2434UnAc = 0.009762
-
-        c_nhbw_int = 11.09161
-        c_nhbw_CM = 0.313161
-        c_nhbw_TW = 0.180534
-        c_nhbw_FIRE = 0.296122
-        c_nhbw_BOS = 0.412223
-        c_nhbw_AFIC = 0.252867
-        c_nhbw_Ret = 0.679641
-        c_nhbw_HEPA = 0.420215
-        c_nhbw_EE = 0.059015
-        c_nhbw_SE = 0.093358
-        c_nhbw_HHs = 0.055688
-
-        c_nhbo_int = 12.878959
-        c_nhbo_AFIC = 0.505787
-        c_nhbo_Ret = 1.828427
-        c_nhbo_HEPA = 0.361545
-        c_nhbo_EE = 0.38903
-        c_nhbo_SE = 0.230765
-        c_nhbo_PS = 0.040261
-        c_nhbo_HHs = 0.175705
+        c_hbu_int         = eb.matrix("c_hbu_int"        ).data
+        c_iPop1824UnAcOth = eb.matrix("c_iPop1824UnAcOth").data
+        c_iPop1824UnAcVan = eb.matrix("c_iPop1824UnAcVan").data
+        c_iPop1824UnAcSur = eb.matrix("c_iPop1824UnAcSur").data
+        c_iP2434UnAc      = eb.matrix("c_iP2434UnAc"     ).data
 
         ## Add Bowenn Island adjsutment
 

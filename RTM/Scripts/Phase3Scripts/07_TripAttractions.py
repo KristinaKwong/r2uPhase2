@@ -100,8 +100,8 @@ class TripAttractions(_m.Tool()):
         c_hbsoc_PoTot = 0.131466
 
         # hbu
-        c_hbu_iCbdPsfte = 0.287631
-        c_hbu_iNotCbdPsfte = 1.411431
+        c_hbu_iCbdPsfte    = eb.matrix("c_hbu_iCbdPsfte"   ).data
+        c_hbu_iNotCbdPsfte = eb.matrix("c_hbu_iNotCbdPsfte").data
 
 
         ########################################################################
