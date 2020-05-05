@@ -77,8 +77,9 @@ class DataImport(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
 
         #################################
-        # workers income model bias terms
+        # Socio-economic Segmentation
         #################################
+        # workers and income
         # manipulate to change assumptions about economy/employment levels
         util.initmat(eb,  "ms1000", "Bias_W0I1", "Bias_W0I1",  0.0000)
         util.initmat(eb,  "ms1001", "Bias_W0I2", "Bias_W0I2", -0.5543)
@@ -92,6 +93,11 @@ class DataImport(_m.Tool()):
         util.initmat(eb,  "ms1009", "Bias_W3I1", "Bias_W3I1",  1.2604)
         util.initmat(eb,  "ms1010", "Bias_W3I2", "Bias_W3I2",  2.1688)
         util.initmat(eb,  "ms1011", "Bias_W3I3", "Bias_W3I3",  3.1593)
+
+        # Vehicle availablity
+        util.initmat(eb,  "ms1243", "vam_asc_1car", "vam_asc_1car",  1.020321178)
+        util.initmat(eb,  "ms1244", "vam_asc_2car", "vam_asc_2car", -1.955615736)
+        util.initmat(eb,  "ms1245", "vam_asc_3car", "vam_asc_3car", -8.743428750)
 
         #################################
         # Trip generation
