@@ -61,11 +61,11 @@ class HbSoc(_m.Tool()):
         # Add Coefficients
 
 
-        p2   =   3.321339
-        p4   =  -1.653539
-        p6   =   0.682089
-        p10  =   4.498746
-        p11  =  -0.297950
+        p2   =  eb.matrix("hbsoc_asc_hov" ).data # HOV
+        p4   =  eb.matrix("hbsoc_asc_bus" ).data # bus
+        p6   =  eb.matrix("hbsoc_asc_rail").data # rail
+        p10  =  eb.matrix("hbsoc_asc_walk").data # walk
+        p11  =  eb.matrix("hbsoc_asc_bike").data # bike
         p12  =  -0.310166
         p14  =  -0.155043
         p15  =  -0.045506
@@ -95,7 +95,7 @@ class HbSoc(_m.Tool()):
         # TNC Cost Factors
         # alpha_tnc and beta_tnc are calculated in Blended_Skims.py
         # TNC Coefficients and Calibration
-        p30 = 0
+        p30 = eb.matrix("hbsoc_asc_tnc" ).data
         tnc_cost_scale = 20  # Coeff3 = coeff 2/lambda
         tnc_cost_exponent = 2.2 # TNC Cost exponent ; non-linear calibration constant
         p604 = 0.35  # TNC Accessibility measure coefficient p602 TrnAcc

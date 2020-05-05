@@ -213,6 +213,41 @@ class DataImport(_m.Tool()):
         util.initmat(eb,  "ms1215", "hbu_asc_bike", "hbw_asc_bike", -0.439153)
         util.initmat(eb,  "ms1216", "hbu_asc_tnc" , "hbw_asc_tnc" , -2.000000)
 
+        # HBSCH
+        util.initmat(eb,  "ms1217", "hbsch_asc_hov" , "hbsch_asc_hov" , -5.133076)
+        util.initmat(eb,  "ms1218", "hbsch_asc_bus" , "hbsch_asc_bus" , -4.512706)
+        util.initmat(eb,  "ms1219", "hbsch_asc_rail", "hbsch_asc_rail", -5.226410)
+        util.initmat(eb,  "ms1220", "hbsch_asc_bike", "hbsch_asc_bike", -4.012878)
+
+        # HBSHOP
+        util.initmat(eb,  "ms1221", "hbshop_asc_hov" , "hbshop_asc_hov" ,  1.389055)
+        util.initmat(eb,  "ms1222", "hbshop_asc_bus" , "hbshop_asc_bus" ,  8.890770)
+        util.initmat(eb,  "ms1223", "hbshop_asc_rail", "hbshop_asc_rail", 10.332980)
+        util.initmat(eb,  "ms1224", "hbshop_asc_walk", "hbshop_asc_walk", 10.391703)
+        util.initmat(eb,  "ms1225", "hbshop_asc_bike", "hbshop_asc_bike",  4.637252)
+        util.initmat(eb,  "ms1226", "hbshop_asc_tnc" , "hbshop_asc_tnc" ,  0.000000)
+
+        # HBPB
+        util.initmat(eb,  "ms1227", "hbpb_asc_hov" , "hbpb_asc_hov" ,   6.340926)
+        util.initmat(eb,  "ms1228", "hbpb_asc_bus" , "hbpb_asc_bus" , -17.900850)
+        util.initmat(eb,  "ms1229", "hbpb_asc_rail", "hbpb_asc_rail", -16.224604)
+        util.initmat(eb,  "ms1230", "hbpb_asc_walk", "hbpb_asc_walk",   9.740911)
+        util.initmat(eb,  "ms1231", "hbpb_asc_bike", "hbpb_asc_bike",   5.740659)
+        util.initmat(eb,  "ms1232", "hbpb_asc_tnc" , "hbpb_asc_tnc" ,   0.000000)       
+
+        # HBSOC
+        util.initmat(eb,  "ms1233", "hbsoc_asc_hov" , "hbsoc_asc_hov" ,  3.321339)
+        util.initmat(eb,  "ms1234", "hbsoc_asc_bus" , "hbsoc_asc_bus" , -1.653539)
+        util.initmat(eb,  "ms1235", "hbsoc_asc_rail", "hbsoc_asc_rail",  0.682089)
+        util.initmat(eb,  "ms1236", "hbsoc_asc_walk", "hbsoc_asc_walk",  4.498746)
+        util.initmat(eb,  "ms1237", "hbsoc_asc_bike", "hbsoc_asc_bike", -0.297950)
+        util.initmat(eb,  "ms1238", "hbsoc_asc_tnc" , "hbsoc_asc_tnc" ,  0.000000)
+
+        # HBESC
+        util.initmat(eb,  "ms1239", "hbesc_asc_bus" , "hbesc_asc_bus" , -4.120999)
+        util.initmat(eb,  "ms1240", "hbesc_asc_rail", "hbesc_asc_rail", -0.863372)
+        util.initmat(eb,  "ms1241", "hbesc_asc_walk", "hbesc_asc_walk",  2.387704)
+        util.initmat(eb,  "ms1242", "hbesc_asc_bike", "hbesc_asc_bike", -1.471055)
 
 
         util.initmat(eb, "ms100", "autoOpCost", "Auto Operating Cost", 0.18)
