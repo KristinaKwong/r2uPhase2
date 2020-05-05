@@ -255,6 +255,16 @@ class DataImport(_m.Tool()):
         util.initmat(eb,  "ms1241", "hbesc_asc_walk", "hbesc_asc_walk",  2.387704)
         util.initmat(eb,  "ms1242", "hbesc_asc_bike", "hbesc_asc_bike", -1.471055)
 
+        #################################
+        # Transit Assignment
+        #################################
+        # Parameters to adjust vehicle capacity assumptions
+        util.initmat(eb,  "ms1250", "seat_cap_fac", "seat_cap_fac", 1.0)
+        util.initmat(eb,  "ms1251", "stnd_cap_fac", "stnd_cap_fac", 1.0)
+
+        #################################
+        # Standard Model Scalars
+        #################################
 
         util.initmat(eb, "ms100", "autoOpCost", "Auto Operating Cost", 0.18)
         util.initmat(eb, "ms101", "lgvOpCost", "Light Truck Operating Cost", 0.24)

@@ -487,8 +487,21 @@ class TransitAssignment(_m.Tool()):
         util.emme_tline_calc(sc, "@dwtboard", str(self.dwt_board_factor_bus), sel_line="mode=bg")
         util.emme_tline_calc(sc, "@dwtalight", str(self.dwt_alight_factor_bus), sel_line="mode=bg")
 
-        util.emme_tline_calc(sc, "@seatcapacity", "%s*vcaps*60/hdw" % period_length)
-        util.emme_tline_calc(sc, "@totcapacity",  "%s*vcapt*60/hdw" % period_length)
+
+        # capacity reduction factors
+        seat_cap_fac = eb.matrix("seat_cap_fac").data
+        stnd_cap_fac = eb.matrix("stnd_cap_fac").data
+
+        if stnd_cap_fac == 0:
+            # only seated passengers allowed
+            util.emme_tline_calc(sc, "@seatcapacity", "{}*vcaps*60*{}/hdw".format(period_length, seat_cap_fac)
+            util.emme_tline_calc(sc, "@totcapacity",  "@seatcapacity") 
+        else:
+            util.emme_tline_calc(sc, "@totcapacity",  "{}*(((vcapt-vcaps)*{})+(vcaps*{}))*60/hdw".format(period_length, stnd_cap_fac, seat_cap_fac)       
+            util.emme_tline_calc(sc, "@seatcapacity", "{}*vcaps*60*{}/hdw".format(period_length, seat_cap_fac)
+
+        # util.emme_tline_calc(sc, "@seatcapacity", "%s*vcaps*60/hdw" % period_length)
+        # util.emme_tline_calc(sc, "@totcapacity",  "%s*vcapt*60/hdw" % period_length)
 
 
         # Fare Calculations
