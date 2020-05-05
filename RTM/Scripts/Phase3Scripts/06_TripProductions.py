@@ -327,12 +327,12 @@ class TripProductions(_m.Tool()):
         4,3,1.535946
         """)
 
-        hbpb_prods = StringIO("""HHSize,hbpb_prds
-        1,0.334523
-        2,0.520753
-        3,0.52108
-        4,0.499412
-        """)
+        hbpb_prods = [
+        [1, eb.matrix("hbpbprd_1").data],
+        [2, eb.matrix("hbpbprd_2").data],
+        [3, eb.matrix("hbpbprd_3").data],
+        [4, eb.matrix("hbpbprd_4").data]
+        ]
 
         hbsch_prods = StringIO("""HHSize,HHInc,hbsch_prds
         1,1,0
@@ -349,36 +349,35 @@ class TripProductions(_m.Tool()):
         4,3,1.490737
         """)
 
-        hbshop_prods = StringIO("""HHSize,HHInc,hbshop_prds
-        1,1,0.530045
-        2,1,0.89068
-        3,1,0.743733
-        4,1,0.780986
-        1,2,0.466144
-        2,2,0.690868
-        3,2,0.723615
-        4,2,0.711063
-        1,3,0.265136
-        2,3,0.537008
-        3,3,0.598171
-        4,3,0.62543
-        """)
+        hbshop_prods = [
+        [1, 1, eb.matrix("hbshop_1-1").data],
+        [2, 1, eb.matrix("hbshop_2-1").data],
+        [3, 1, eb.matrix("hbshop_3-1").data],
+        [4, 1, eb.matrix("hbshop_4-1").data],
+        [1, 2, eb.matrix("hbshop_1-2").data],
+        [2, 2, eb.matrix("hbshop_2-2").data],
+        [3, 2, eb.matrix("hbshop_3-2").data],
+        [4, 2, eb.matrix("hbshop_4-2").data],
+        [1, 3, eb.matrix("hbshop_1-3").data],
+        [2, 3, eb.matrix("hbshop_2-3").data],
+        [3, 3, eb.matrix("hbshop_3-3").data],
+        [4, 3, eb.matrix("hbshop_4-3").data]
+        ]
 
-        hbsoc_prods = StringIO("""HHSize,HHInc,hbsoc_prds
-        1,1,0.47585
-        2,1,0.865361
-        3,1,0.995139
-        4,1,1.06819
-        1,2,0.58349
-        2,2,0.961634
-        3,2,0.9654
-        4,2,1.445937
-        1,3,0.503203
-        2,3,0.855158
-        3,3,1.074033
-        4,3,1.567024
-        """)
-
+        hbsoc_prods = [
+        [1, 1, eb.matrix("hbsoc_1-1").data],
+        [2, 1, eb.matrix("hbsoc_2-1").data],
+        [3, 1, eb.matrix("hbsoc_3-1").data],
+        [4, 1, eb.matrix("hbsoc_4-1").data],
+        [1, 2, eb.matrix("hbsoc_1-2").data],
+        [2, 2, eb.matrix("hbsoc_2-2").data],
+        [3, 2, eb.matrix("hbsoc_3-2").data],
+        [4, 2, eb.matrix("hbsoc_4-2").data],
+        [1, 3, eb.matrix("hbsoc_1-3").data],
+        [2, 3, eb.matrix("hbsoc_2-3").data],
+        [3, 3, eb.matrix("hbsoc_3-3").data],
+        [4, 3, eb.matrix("hbsoc_4-3").data]
+        ]
 
         # Generate Commute Trip Rate Data Frame
         hh_commute_prds = pd.DataFrame(hbw_prods, columns =  ['HHWorker','HHInc','hbw_prds'])
@@ -386,10 +385,10 @@ class TripProductions(_m.Tool()):
 
         # Generate Non Commute Data Frame
         hbesc_prod_df = pd.read_csv(hbesc_prods, sep = ',')
-        hbpb_prod_df = pd.read_csv(hbpb_prods, sep = ',')
+        hbpb_prod_df = pd.DataFrame(hbpb_prods, columns = ['HHSize', 'hbpb_prds'])
         hbsch_prod_df = pd.read_csv(hbsch_prods, sep = ',')
-        hbshop_prod_df = pd.read_csv(hbshop_prods, sep = ',')
-        hbsoc_prod_df = pd.read_csv(hbsoc_prods, sep = ',')
+        hbshop_prod_df = pd.DataFrame(hbshop_prods, columns = ['HHSize','HHInc','hbshop_prds'])
+        hbsoc_prod_df = pd.DataFrame(hbsoc_prods, columns = ['HHSize','HHInc','hbsoc_prds'])
         df = pd.merge(hbesc_prod_df, hbpb_prod_df, how= 'left', left_on = ['HHSize'], right_on = ['HHSize'])
         df = pd.merge(df, hbsch_prod_df, how= 'left', left_on = ['HHSize', 'HHInc'], right_on = ['HHSize', 'HHInc'])
         df = pd.merge(df, hbshop_prod_df, how= 'left', left_on = ['HHSize', 'HHInc'], right_on = ['HHSize', 'HHInc'])

@@ -112,6 +112,39 @@ class DataImport(_m.Tool()):
         util.initmat(eb,  "ms1035", "c_hbw_AFIC", "c_hbw_AFIC", 1.285617)
         util.initmat(eb,  "ms1036", "c_hbw_HEPA", "c_hbw_HEPA", 1.300219)
 
+        # HBPB productions
+        util.initmat(eb,  "ms1040", "hbpbprd_1", "hbpbprd_1", 0.334523)
+        util.initmat(eb,  "ms1041", "hbpbprd_2", "hbpbprd_2", 0.520753)
+        util.initmat(eb,  "ms1042", "hbpbprd_3", "hbpbprd_3", 0.521080)
+        util.initmat(eb,  "ms1043", "hbpbprd_4", "hbpbprd_4", 0.499412)
+
+        # HBSHOP productions
+        util.initmat(eb,  "ms1050", "hbshop_1-1", "hbshop_1-1", 0.530045)
+        util.initmat(eb,  "ms1051", "hbshop_2-1", "hbshop_2-1", 0.890680)
+        util.initmat(eb,  "ms1052", "hbshop_3-1", "hbshop_3-1", 0.743733)
+        util.initmat(eb,  "ms1053", "hbshop_4-1", "hbshop_4-1", 0.780986)
+        util.initmat(eb,  "ms1054", "hbshop_1-2", "hbshop_1-2", 0.466144)
+        util.initmat(eb,  "ms1055", "hbshop_2-2", "hbshop_2-2", 0.690868)
+        util.initmat(eb,  "ms1056", "hbshop_3-2", "hbshop_3-2", 0.723615)
+        util.initmat(eb,  "ms1057", "hbshop_4-2", "hbshop_4-2", 0.711063)
+        util.initmat(eb,  "ms1058", "hbshop_1-3", "hbshop_1-3", 0.265136)
+        util.initmat(eb,  "ms1059", "hbshop_2-3", "hbshop_2-3", 0.537008)
+        util.initmat(eb,  "ms1060", "hbshop_3-3", "hbshop_3-3", 0.598171)
+        util.initmat(eb,  "ms1061", "hbshop_4-3", "hbshop_4-3", 0.625430)
+
+        # HBSOC productions
+        util.initmat(eb,  "ms1070", "hbsoc_1-1", "hbsoc_1-1", 0.475850)
+        util.initmat(eb,  "ms1071", "hbsoc_2-1", "hbsoc_2-1", 0.865361)
+        util.initmat(eb,  "ms1072", "hbsoc_3-1", "hbsoc_3-1", 0.995139)
+        util.initmat(eb,  "ms1073", "hbsoc_4-1", "hbsoc_4-1", 1.068190)
+        util.initmat(eb,  "ms1074", "hbsoc_1-2", "hbsoc_1-2", 0.583490)
+        util.initmat(eb,  "ms1075", "hbsoc_2-2", "hbsoc_2-2", 0.961634)
+        util.initmat(eb,  "ms1076", "hbsoc_3-2", "hbsoc_3-2", 0.965400)
+        util.initmat(eb,  "ms1077", "hbsoc_4-2", "hbsoc_4-2", 1.445937)
+        util.initmat(eb,  "ms1078", "hbsoc_1-3", "hbsoc_1-3", 0.503203)
+        util.initmat(eb,  "ms1079", "hbsoc_2-3", "hbsoc_2-3", 0.855158)
+        util.initmat(eb,  "ms1080", "hbsoc_3-3", "hbsoc_3-3", 1.074033)
+        util.initmat(eb,  "ms1081", "hbsoc_4-3", "hbsoc_4-3", 1.567024)
 
         util.initmat(eb, "ms100", "autoOpCost", "Auto Operating Cost", 0.18)
         util.initmat(eb, "ms101", "lgvOpCost", "Light Truck Operating Cost", 0.24)
