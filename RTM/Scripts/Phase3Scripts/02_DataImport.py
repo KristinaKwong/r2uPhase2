@@ -76,7 +76,9 @@ class DataImport(_m.Tool()):
     def init_scalars(self, eb):
         util = _m.Modeller().tool("translink.util")
 
+        #################################
         # workers income model bias terms
+        #################################
         # manipulate to change assumptions about economy/employment levels
         util.initmat(eb,  "ms1000", "Bias_W0I1", "Bias_W0I1",  0.0000)
         util.initmat(eb,  "ms1001", "Bias_W0I2", "Bias_W0I2", -0.5543)
@@ -91,7 +93,9 @@ class DataImport(_m.Tool()):
         util.initmat(eb,  "ms1010", "Bias_W3I2", "Bias_W3I2",  2.1688)
         util.initmat(eb,  "ms1011", "Bias_W3I3", "Bias_W3I3",  3.1593)
 
+        #################################
         # Trip generation
+        #################################
         # HBW productions by number of hh workers and income category
         util.initmat(eb,  "ms1020", "hbwprd_1-1", "hbwprd_1-1", 1.142723)
         util.initmat(eb,  "ms1021", "hbwprd_2-1", "hbwprd_2-1", 2.044779)
@@ -184,6 +188,32 @@ class DataImport(_m.Tool()):
         util.initmat(eb,  "ms1129", "hbsch_2-3", "hbsch_2-3", 0.007462)
         util.initmat(eb,  "ms1130", "hbsch_3-3", "hbsch_3-3", 0.358231)
         util.initmat(eb,  "ms1131", "hbsch_4-3", "hbsch_4-3", 1.490737)
+
+        #################################
+        # Mode Choice ASCs
+        #################################
+        # HBW
+        util.initmat(eb,  "ms1200", "hbw_asc_hov2", "hbw_asc_hov2",  0.957766)
+        util.initmat(eb,  "ms1201", "hbw_asc_hov3", "hbw_asc_hov3", -0.839134)
+        util.initmat(eb,  "ms1202", "hbw_asc_bus" , "hbw_asc_bus" , -0.164578)
+        util.initmat(eb,  "ms1203", "hbw_asc_bpr" , "hbw_asc_bpr" , -2.027129)
+        util.initmat(eb,  "ms1204", "hbw_asc_rail", "hbw_asc_rail",  1.657704)
+        util.initmat(eb,  "ms1205", "hbw_asc_rpr" , "hbw_asc_rpr" ,  0.725872)
+        util.initmat(eb,  "ms1206", "hbw_asc_wce" , "hbw_asc_wce" ,  3.203539)
+        util.initmat(eb,  "ms1207", "hbw_asc_wpr" , "hbw_asc_wpr" ,  0.117616)
+        util.initmat(eb,  "ms1208", "hbw_asc_walk", "hbw_asc_walk",  6.743114)
+        util.initmat(eb,  "ms1209", "hbw_asc_bike", "hbw_asc_bike",  1.342106)
+        util.initmat(eb,  "ms1210", "hbw_asc_tnc" , "hbw_asc_tnc" ,  0.000000)
+
+        # HBU
+        util.initmat(eb,  "ms1211", "hbu_asc_hov" , "hbw_asc_hov" , -2.655347)
+        util.initmat(eb,  "ms1212", "hbu_asc_bus" , "hbw_asc_bus" ,  2.767892)
+        util.initmat(eb,  "ms1213", "hbu_asc_rail", "hbw_asc_rail",  4.112298)
+        util.initmat(eb,  "ms1214", "hbu_asc_walk", "hbw_asc_walk",  5.727228)
+        util.initmat(eb,  "ms1215", "hbu_asc_bike", "hbw_asc_bike", -0.439153)
+        util.initmat(eb,  "ms1216", "hbu_asc_tnc" , "hbw_asc_tnc" , -2.000000)
+
+
 
         util.initmat(eb, "ms100", "autoOpCost", "Auto Operating Cost", 0.18)
         util.initmat(eb, "ms101", "lgvOpCost", "Light Truck Operating Cost", 0.24)
