@@ -262,6 +262,16 @@ class DataImport(_m.Tool()):
         util.initmat(eb,  "ms1250", "seat_cap_fac", "seat_cap_fac", 1.0)
         util.initmat(eb,  "ms1251", "stnd_cap_fac", "stnd_cap_fac", 1.0)
 
+        util.initmat(eb, "ms1252", "oneZoneFareAM", "oneZoneFareAM", 2.1)
+        util.initmat(eb, "ms1253", "oneZoneFareMD", "oneZoneFareMD", 2.1)
+        util.initmat(eb, "ms1254", "oneZoneFarePM", "oneZoneFarePM", 2.1)
+        util.initmat(eb, "ms1255", "oneZoneFareOP", "oneZoneFareOP", 2.1)
+        
+        util.initmat(eb, "ms1256", "fareIncrementAM", "fareIncrementAM", 1.05)
+        util.initmat(eb, "ms1257", "fareIncrementMD", "fareIncrementMD", 1.05)
+        util.initmat(eb, "ms1258", "fareIncrementPM", "fareIncrementPM", 1.05)
+        util.initmat(eb, "ms1259", "fareIncrementOP", "fareIncrementOP", 1.05)
+
         #################################
         # Standard Model Scalars
         #################################

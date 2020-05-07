@@ -762,7 +762,7 @@ class ModeChoiceGenDf(_m.Tool()):
         AM_Mat = util.get_matrix_numpy(eb, Mat[0])
         MD_Mat = util.get_matrix_numpy(eb, Mat[1])
         PM_Mat = util.get_matrix_numpy(eb, Mat[2])
-        OP_Mat = util.get_matrix_numpy(eb, "oneZoneFare")
+        OP_Mat = util.get_matrix_numpy(eb, "oneZoneFareOP")
 
         Dict['PA'] = [AM_Mat, MD_Mat, PM_Mat, OP_Mat]
         Dict['AP'] = [AM_Mat.transpose(), MD_Mat.transpose(), PM_Mat.transpose(), OP_Mat.transpose()]

@@ -182,6 +182,17 @@ class TransitAssignment(_m.Tool()):
 
         for i, (sc, period_length, demand_bus, demand_rail, demand_wce) in enumerate(zip(scenario_list, period_length_list, demand_bus_list, demand_rail_list, demand_wce_list)):
             report={}
+
+            if sc is scenarioam:
+                self.bus_zone1_fare = eb.matrix("oneZoneFareAM").data
+                self.bus_zone_increment = eb.matrix("fareIncrementAM").data
+            if sc is scenariomd:
+                self.bus_zone1_fare = eb.matrix("oneZoneFareMD").data
+                self.bus_zone_increment = eb.matrix("fareIncrementMD").data
+            if sc is scenariopm:
+                self.bus_zone1_fare = eb.matrix("oneZoneFarePM").data
+                self.bus_zone_increment = eb.matrix("fareIncrementPM").data
+
             self.calc_network_costs(eb, sc, period_length, i)
 
             # LOOP FOR CROWDING AND CAPACITY CONSTRAINT
