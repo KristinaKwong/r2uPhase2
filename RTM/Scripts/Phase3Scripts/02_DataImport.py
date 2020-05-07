@@ -270,7 +270,7 @@ class DataImport(_m.Tool()):
         util.initmat(eb, "ms1256", "fareIncrementAM", "fareIncrementAM", 1.05)
         util.initmat(eb, "ms1257", "fareIncrementMD", "fareIncrementMD", 1.05)
         util.initmat(eb, "ms1258", "fareIncrementPM", "fareIncrementPM", 1.05)
-        util.initmat(eb, "ms1259", "fareIncrementOP", "fareIncrementOP", 1.05)
+        util.initmat(eb, "ms1259", "fareIncrementOP", "fareIncrementOP", 0.00)
 
         #################################
         # Standard Model Scalars
