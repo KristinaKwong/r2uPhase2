@@ -93,7 +93,7 @@ class VehicleAvailability(_m.Tool()):
         p153 = -0.604797223
 
         # calculate utility 0 cars - this is reference level
-        df['U0c'] = 0
+        df['U0c'] = eb.matrix("vam_asc_0car").data 
 
         # calculate utility 1 cars
         df['U1c'] = (  p1

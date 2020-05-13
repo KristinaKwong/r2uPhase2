@@ -98,6 +98,7 @@ class DataImport(_m.Tool()):
         util.initmat(eb,  "ms1243", "vam_asc_1car", "vam_asc_1car",  1.020321178)
         util.initmat(eb,  "ms1244", "vam_asc_2car", "vam_asc_2car", -1.955615736)
         util.initmat(eb,  "ms1245", "vam_asc_3car", "vam_asc_3car", -8.743428750)
+        util.initmat(eb,  "ms1246", "vam_asc_0car", "vam_asc_0car",  0.000000000)
 
         #################################
         # Trip generation
@@ -210,6 +211,11 @@ class DataImport(_m.Tool()):
         util.initmat(eb,  "ms1208", "hbw_asc_walk", "hbw_asc_walk",  6.743114)
         util.initmat(eb,  "ms1209", "hbw_asc_bike", "hbw_asc_bike",  1.342106)
         util.initmat(eb,  "ms1210", "hbw_asc_tnc" , "hbw_asc_tnc" ,  0.000000)
+    
+        util.initmat(eb, "ms1260", "hbw_bias_sov_1car", "hbw_bias_sov_1car", 5.479080)
+        util.initmat(eb, "ms1261", "hbw_bias_sov_2car", "hbw_bias_sov_2car", 7.505207)
+        util.initmat(eb, "ms1262", "hbw_bias_hov_1car", "hbw_bias_hov_1car", 1.589878)
+        util.initmat(eb, "ms1263", "hbw_bias_hov_2car", "hbw_bias_hov_2car", 2.837890)
 
         # HBU
         util.initmat(eb,  "ms1211", "hbu_asc_hov" , "hbw_asc_hov" , -2.655347)
