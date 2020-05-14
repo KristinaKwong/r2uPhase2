@@ -94,11 +94,11 @@ class TripProductions(_m.Tool()):
         hh_df['hbw'] = hh_df['CountHHs'] * hh_df['hbw_prds'] * hh_df['bowen_adj']
      
         #  Non Commute
-        hh_df['hbesc'] = hh_df['CountHHs'] * hh_df['hbesc_prds'] * hh_df['bowen_adj']
-        hh_df['hbpb'] = hh_df['CountHHs'] * hh_df['hbpb_prds'] * hh_df['bowen_adj']
-        hh_df['hbsch'] = hh_df['CountHHs'] * hh_df['hbsch_prds'] * hh_df['bowen_adj']
-        hh_df['hbshop'] = hh_df['CountHHs'] * hh_df['hbshop_prds'] * hh_df['bowen_adj']
-        hh_df['hbsoc'] = hh_df['CountHHs'] * hh_df['hbsoc_prds'] * hh_df['bowen_adj']
+        hh_df['hbesc'] = hh_df['CountHHs'] * hh_df['hbesc_prds'] * hh_df['bowen_adj'] * eb.matrix("hbesc_fac").data
+        hh_df['hbpb'] = hh_df['CountHHs'] * hh_df['hbpb_prds'] * hh_df['bowen_adj'] * eb.matrix("hbpb_fac").data
+        hh_df['hbsch'] = hh_df['CountHHs'] * hh_df['hbsch_prds'] * hh_df['bowen_adj'] * eb.matrix("hbsch_fac").data
+        hh_df['hbshop'] = hh_df['CountHHs'] * hh_df['hbshop_prds'] * hh_df['bowen_adj'] * eb.matrix("hbshop_fac").data
+        hh_df['hbsoc'] = hh_df['CountHHs'] * hh_df['hbsoc_prds'] * hh_df['bowen_adj'] * eb.matrix("hbsoc_fac").data
 
         # Set Balancing Control Totals
         ct_df = hh_df[['hbw','hbesc','hbpb','hbsch','hbshop', 'hbsoc']]

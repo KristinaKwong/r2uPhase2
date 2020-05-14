@@ -129,6 +129,7 @@ class DataImport(_m.Tool()):
         util.initmat(eb,  "ms1042", "hbpbprd_3", "hbpbprd_3", 0.521080)
         util.initmat(eb,  "ms1043", "hbpbprd_4", "hbpbprd_4", 0.499412)
 
+
         # HBSHOP productions
         util.initmat(eb,  "ms1050", "hbshop_1-1", "hbshop_1-1", 0.530045)
         util.initmat(eb,  "ms1051", "hbshop_2-1", "hbshop_2-1", 0.890680)
@@ -195,6 +196,13 @@ class DataImport(_m.Tool()):
         util.initmat(eb,  "ms1129", "hbsch_2-3", "hbsch_2-3", 0.007462)
         util.initmat(eb,  "ms1130", "hbsch_3-3", "hbsch_3-3", 0.358231)
         util.initmat(eb,  "ms1131", "hbsch_4-3", "hbsch_4-3", 1.490737)
+
+        # simplified adjustment for discretionary purposes        
+        util.initmat(eb,  "ms1270", "hbpb_fac"  , "hbpb_fac"  ,  1.0) 
+        util.initmat(eb,  "ms1271", "hbesc_fac" , "hbesc_fac" , 1.0) 
+        util.initmat(eb,  "ms1272", "hbsch_fac" , "hbsch_fac" , 1.0) 
+        util.initmat(eb,  "ms1273", "hbshop_fac", "hbshop_fac", 1.0) 
+        util.initmat(eb,  "ms1274", "hbsoc_fac" , "hbsoc_fac" , 1.0) 
 
         #################################
         # Mode Choice ASCs
