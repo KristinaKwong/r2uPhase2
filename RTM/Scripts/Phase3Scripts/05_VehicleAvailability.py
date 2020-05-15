@@ -52,21 +52,21 @@ class VehicleAvailability(_m.Tool()):
     def Run_VAM(self, eb, df):
         util = _m.Modeller().tool("translink.util")
 
-        p1 = 1.020321178
-        p2 = -1.955615736
-        p3 = -8.74342875
-        p41 = 1.295070575
-        p42 = 2.974969559
-        p43 = 4.238969774
+        p1  =  eb.matrix("vam_asc_1car").data # 1 car
+        p2  =  eb.matrix("vam_asc_2car").data # 2 car
+        p3  =  eb.matrix("vam_asc_3car").data # 3 car 
+        p41 =  1.295070575
+        p42 =  2.974969559
+        p43 =  4.238969774
         p51 = -0.752179913
         p52 = -2.750774812
         p53 = -5.444109042
-        p61 = 1.026483956
-        p62 = 2.391921441
-        p63 = 3.450781929
-        p71 = 0.737276992
-        p72 = 2.156543019
-        p73 = 3.647708838
+        p61 =  1.026483956
+        p62 =  2.391921441
+        p63 =  3.450781929
+        p71 =  0.737276992
+        p72 =  2.156543019
+        p73 =  3.647708838
         p81 = -0.405910204
         p82 = -0.815626229
         p83 = -0.877730852
@@ -93,7 +93,7 @@ class VehicleAvailability(_m.Tool()):
         p153 = -0.604797223
 
         # calculate utility 0 cars - this is reference level
-        df['U0c'] = 0
+        df['U0c'] = eb.matrix("vam_asc_0car").data 
 
         # calculate utility 1 cars
         df['U1c'] = (  p1

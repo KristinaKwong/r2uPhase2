@@ -56,17 +56,17 @@ class HbEscorting(_m.Tool()):
 
         # Add Coefficients
 
-        p4   =-4.120999
-        p6   =-0.863372
-        p10  = 2.387704
-        p11  =-1.471055
-        p12  =-0.399781
-        p20  =-2.483381
-        p21  =-1.769784
-        p160 = 1.028527
-        p161 = 2.731352
-        p164 = 4.789199
-        thet = 0.500000
+        p4   = eb.matrix("hbesc_asc_bus" ).data # bus
+        p6   = eb.matrix("hbesc_asc_rail").data # rail
+        p10  = eb.matrix("hbesc_asc_walk").data # walk 
+        p11  = eb.matrix("hbesc_asc_bike").data # bike
+        p12  = -0.399781
+        p20  = -2.483381
+        p21  = -1.769784
+        p160 =  1.028527
+        p161 =  2.731352
+        p164 =  4.789199
+        thet =  0.500000
         LS_Coeff = 0.2
 
         # TNC Cost Factors

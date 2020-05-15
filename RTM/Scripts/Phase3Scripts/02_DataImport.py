@@ -76,6 +76,220 @@ class DataImport(_m.Tool()):
     def init_scalars(self, eb):
         util = _m.Modeller().tool("translink.util")
 
+        #################################
+        # Socio-economic Segmentation
+        #################################
+        # workers and income
+        # manipulate to change assumptions about economy/employment levels
+        util.initmat(eb,  "ms1000", "Bias_W0I1", "Bias_W0I1",  0.0000)
+        util.initmat(eb,  "ms1001", "Bias_W0I2", "Bias_W0I2", -0.5543)
+        util.initmat(eb,  "ms1002", "Bias_W0I3", "Bias_W0I3", -2.1514)
+        util.initmat(eb,  "ms1003", "Bias_W1I1", "Bias_W1I1",  1.1678)
+        util.initmat(eb,  "ms1004", "Bias_W1I2", "Bias_W1I2",  1.9228)
+        util.initmat(eb,  "ms1005", "Bias_W1I3", "Bias_W1I3",  1.2631)
+        util.initmat(eb,  "ms1006", "Bias_W2I1", "Bias_W2I1",  3.0504)
+        util.initmat(eb,  "ms1007", "Bias_W2I2", "Bias_W2I2",  3.5171)
+        util.initmat(eb,  "ms1008", "Bias_W2I3", "Bias_W2I3",  3.9325)
+        util.initmat(eb,  "ms1009", "Bias_W3I1", "Bias_W3I1",  1.2604)
+        util.initmat(eb,  "ms1010", "Bias_W3I2", "Bias_W3I2",  2.1688)
+        util.initmat(eb,  "ms1011", "Bias_W3I3", "Bias_W3I3",  3.1593)
+
+        # Vehicle availablity
+        util.initmat(eb,  "ms1243", "vam_asc_1car", "vam_asc_1car",  1.020321178)
+        util.initmat(eb,  "ms1244", "vam_asc_2car", "vam_asc_2car", -1.955615736)
+        util.initmat(eb,  "ms1245", "vam_asc_3car", "vam_asc_3car", -8.743428750)
+        util.initmat(eb,  "ms1246", "vam_asc_0car", "vam_asc_0car",  0.000000000)
+
+        #################################
+        # Trip generation
+        #################################
+        # HBW productions by number of hh workers and income category
+        util.initmat(eb,  "ms1020", "hbwprd_1-1", "hbwprd_1-1", 1.142723)
+        util.initmat(eb,  "ms1021", "hbwprd_2-1", "hbwprd_2-1", 2.044779)
+        util.initmat(eb,  "ms1022", "hbwprd_3-1", "hbwprd_3-1", 3.488924)
+        util.initmat(eb,  "ms1023", "hbwprd_1-2", "hbwprd_1-2", 1.280331)
+        util.initmat(eb,  "ms1024", "hbwprd_2-2", "hbwprd_2-2", 2.426104)
+        util.initmat(eb,  "ms1025", "hbwprd_3-2", "hbwprd_3-2", 3.812845)
+        util.initmat(eb,  "ms1026", "hbwprd_1-3", "hbwprd_1-3", 1.388980)
+        util.initmat(eb,  "ms1027", "hbwprd_2-3", "hbwprd_2-3", 2.390059)
+        util.initmat(eb,  "ms1028", "hbwprd_3-3", "hbwprd_3-3", 4.163671)
+
+        # HBW Attractions by job category
+        util.initmat(eb,  "ms1030", "c_hbw_CM"  , "c_hbw_CM"  , 1.463994)
+        util.initmat(eb,  "ms1031", "c_hbw_TW"  , "c_hbw_TW"  , 1.179233)
+        util.initmat(eb,  "ms1032", "c_hbw_BOS" , "c_hbw_BOS" , 1.561658)
+        util.initmat(eb,  "ms1033", "c_hbw_FIRE", "c_hbw_FIRE", 1.621333)
+        util.initmat(eb,  "ms1034", "c_hbw_Ret" , "c_hbw_Ret" , 0.587329)
+        util.initmat(eb,  "ms1035", "c_hbw_AFIC", "c_hbw_AFIC", 1.285617)
+        util.initmat(eb,  "ms1036", "c_hbw_HEPA", "c_hbw_HEPA", 1.300219)
+
+        # HBPB productions
+        util.initmat(eb,  "ms1040", "hbpbprd_1", "hbpbprd_1", 0.334523)
+        util.initmat(eb,  "ms1041", "hbpbprd_2", "hbpbprd_2", 0.520753)
+        util.initmat(eb,  "ms1042", "hbpbprd_3", "hbpbprd_3", 0.521080)
+        util.initmat(eb,  "ms1043", "hbpbprd_4", "hbpbprd_4", 0.499412)
+
+
+        # HBSHOP productions
+        util.initmat(eb,  "ms1050", "hbshop_1-1", "hbshop_1-1", 0.530045)
+        util.initmat(eb,  "ms1051", "hbshop_2-1", "hbshop_2-1", 0.890680)
+        util.initmat(eb,  "ms1052", "hbshop_3-1", "hbshop_3-1", 0.743733)
+        util.initmat(eb,  "ms1053", "hbshop_4-1", "hbshop_4-1", 0.780986)
+        util.initmat(eb,  "ms1054", "hbshop_1-2", "hbshop_1-2", 0.466144)
+        util.initmat(eb,  "ms1055", "hbshop_2-2", "hbshop_2-2", 0.690868)
+        util.initmat(eb,  "ms1056", "hbshop_3-2", "hbshop_3-2", 0.723615)
+        util.initmat(eb,  "ms1057", "hbshop_4-2", "hbshop_4-2", 0.711063)
+        util.initmat(eb,  "ms1058", "hbshop_1-3", "hbshop_1-3", 0.265136)
+        util.initmat(eb,  "ms1059", "hbshop_2-3", "hbshop_2-3", 0.537008)
+        util.initmat(eb,  "ms1060", "hbshop_3-3", "hbshop_3-3", 0.598171)
+        util.initmat(eb,  "ms1061", "hbshop_4-3", "hbshop_4-3", 0.625430)
+
+        # HBSOC productions
+        util.initmat(eb,  "ms1070", "hbsoc_1-1", "hbsoc_1-1", 0.475850)
+        util.initmat(eb,  "ms1071", "hbsoc_2-1", "hbsoc_2-1", 0.865361)
+        util.initmat(eb,  "ms1072", "hbsoc_3-1", "hbsoc_3-1", 0.995139)
+        util.initmat(eb,  "ms1073", "hbsoc_4-1", "hbsoc_4-1", 1.068190)
+        util.initmat(eb,  "ms1074", "hbsoc_1-2", "hbsoc_1-2", 0.583490)
+        util.initmat(eb,  "ms1075", "hbsoc_2-2", "hbsoc_2-2", 0.961634)
+        util.initmat(eb,  "ms1076", "hbsoc_3-2", "hbsoc_3-2", 0.965400)
+        util.initmat(eb,  "ms1077", "hbsoc_4-2", "hbsoc_4-2", 1.445937)
+        util.initmat(eb,  "ms1078", "hbsoc_1-3", "hbsoc_1-3", 0.503203)
+        util.initmat(eb,  "ms1079", "hbsoc_2-3", "hbsoc_2-3", 0.855158)
+        util.initmat(eb,  "ms1080", "hbsoc_3-3", "hbsoc_3-3", 1.074033)
+        util.initmat(eb,  "ms1081", "hbsoc_4-3", "hbsoc_4-3", 1.567024)
+
+        # HBU Productions
+        util.initmat(eb,  "ms1090", "c_hbu_int"        , "c_hbu_int"        , 20.617679)
+        util.initmat(eb,  "ms1091", "c_iPop1824UnAcOth", "c_iPop1824UnAcOth",  0.079319)
+        util.initmat(eb,  "ms1092", "c_iPop1824UnAcVan", "c_iPop1824UnAcVan",  0.086291)
+        util.initmat(eb,  "ms1093", "c_iPop1824UnAcSur", "c_iPop1824UnAcSur",  0.070245)
+        util.initmat(eb,  "ms1094", "c_iP2434UnAc"     , "c_iP2434UnAc"     ,  0.009762)
+
+        # HBU Attractions
+        util.initmat(eb,  "ms1095", "c_hbu_iCbdPsfte"   , "c_hbu_iCbdPsfte"   ,  0.287631)
+        util.initmat(eb,  "ms1096", "c_hbu_iNotCbdPsfte", "c_hbu_iNotCbdPsfte",  1.411431)
+
+        # HBESC Productions
+        util.initmat(eb,  "ms1100", "hbesc_1-1", "hbesc_1-1", 0.062889)
+        util.initmat(eb,  "ms1101", "hbesc_2-1", "hbesc_2-1", 0.302580)
+        util.initmat(eb,  "ms1102", "hbesc_3-1", "hbesc_3-1", 0.682318)
+        util.initmat(eb,  "ms1103", "hbesc_4-1", "hbesc_4-1", 1.549849)
+        util.initmat(eb,  "ms1104", "hbesc_1-2", "hbesc_1-2", 0.097310)
+        util.initmat(eb,  "ms1105", "hbesc_2-2", "hbesc_2-2", 0.271858)
+        util.initmat(eb,  "ms1106", "hbesc_3-2", "hbesc_3-2", 0.719410)
+        util.initmat(eb,  "ms1107", "hbesc_4-2", "hbesc_4-2", 1.713166)
+        util.initmat(eb,  "ms1108", "hbesc_1-3", "hbesc_1-3", 0.062455)
+        util.initmat(eb,  "ms1109", "hbesc_2-3", "hbesc_2-3", 0.227354)
+        util.initmat(eb,  "ms1110", "hbesc_3-3", "hbesc_3-3", 0.733460)
+        util.initmat(eb,  "ms1111", "hbesc_4-3", "hbesc_4-3", 1.535946)
+
+        # HBSCH Productions
+        util.initmat(eb,  "ms1120", "hbsch_1-1", "hbsch_1-1", 0.000000)
+        util.initmat(eb,  "ms1121", "hbsch_2-1", "hbsch_2-1", 0.074779)
+        util.initmat(eb,  "ms1122", "hbsch_3-1", "hbsch_3-1", 0.684717)
+        util.initmat(eb,  "ms1123", "hbsch_4-1", "hbsch_4-1", 1.782312)
+        util.initmat(eb,  "ms1124", "hbsch_1-2", "hbsch_1-2", 0.000000)
+        util.initmat(eb,  "ms1125", "hbsch_2-2", "hbsch_2-2", 0.018304)
+        util.initmat(eb,  "ms1126", "hbsch_3-2", "hbsch_3-2", 0.429790)
+        util.initmat(eb,  "ms1127", "hbsch_4-2", "hbsch_4-2", 1.715844)
+        util.initmat(eb,  "ms1128", "hbsch_1-3", "hbsch_1-3", 0.000000)
+        util.initmat(eb,  "ms1129", "hbsch_2-3", "hbsch_2-3", 0.007462)
+        util.initmat(eb,  "ms1130", "hbsch_3-3", "hbsch_3-3", 0.358231)
+        util.initmat(eb,  "ms1131", "hbsch_4-3", "hbsch_4-3", 1.490737)
+
+        # simplified adjustment for discretionary purposes        
+        util.initmat(eb,  "ms1270", "hbpb_fac"  , "hbpb_fac"  ,  1.0) 
+        util.initmat(eb,  "ms1271", "hbesc_fac" , "hbesc_fac" , 1.0) 
+        util.initmat(eb,  "ms1272", "hbsch_fac" , "hbsch_fac" , 1.0) 
+        util.initmat(eb,  "ms1273", "hbshop_fac", "hbshop_fac", 1.0) 
+        util.initmat(eb,  "ms1274", "hbsoc_fac" , "hbsoc_fac" , 1.0) 
+
+        #################################
+        # Mode Choice ASCs
+        #################################
+        # HBW
+        util.initmat(eb,  "ms1200", "hbw_asc_hov2", "hbw_asc_hov2",  0.957766)
+        util.initmat(eb,  "ms1201", "hbw_asc_hov3", "hbw_asc_hov3", -0.839134)
+        util.initmat(eb,  "ms1202", "hbw_asc_bus" , "hbw_asc_bus" , -0.164578)
+        util.initmat(eb,  "ms1203", "hbw_asc_bpr" , "hbw_asc_bpr" , -2.027129)
+        util.initmat(eb,  "ms1204", "hbw_asc_rail", "hbw_asc_rail",  1.657704)
+        util.initmat(eb,  "ms1205", "hbw_asc_rpr" , "hbw_asc_rpr" ,  0.725872)
+        util.initmat(eb,  "ms1206", "hbw_asc_wce" , "hbw_asc_wce" ,  3.203539)
+        util.initmat(eb,  "ms1207", "hbw_asc_wpr" , "hbw_asc_wpr" ,  0.117616)
+        util.initmat(eb,  "ms1208", "hbw_asc_walk", "hbw_asc_walk",  6.743114)
+        util.initmat(eb,  "ms1209", "hbw_asc_bike", "hbw_asc_bike",  1.342106)
+        util.initmat(eb,  "ms1210", "hbw_asc_tnc" , "hbw_asc_tnc" ,  0.000000)
+    
+        util.initmat(eb, "ms1260", "hbw_bias_sov_1car", "hbw_bias_sov_1car", 5.479080)
+        util.initmat(eb, "ms1261", "hbw_bias_sov_2car", "hbw_bias_sov_2car", 7.505207)
+        util.initmat(eb, "ms1262", "hbw_bias_hov_1car", "hbw_bias_hov_1car", 1.589878)
+        util.initmat(eb, "ms1263", "hbw_bias_hov_2car", "hbw_bias_hov_2car", 2.837890)
+
+        # HBU
+        util.initmat(eb,  "ms1211", "hbu_asc_hov" , "hbw_asc_hov" , -2.655347)
+        util.initmat(eb,  "ms1212", "hbu_asc_bus" , "hbw_asc_bus" ,  2.767892)
+        util.initmat(eb,  "ms1213", "hbu_asc_rail", "hbw_asc_rail",  4.112298)
+        util.initmat(eb,  "ms1214", "hbu_asc_walk", "hbw_asc_walk",  5.727228)
+        util.initmat(eb,  "ms1215", "hbu_asc_bike", "hbw_asc_bike", -0.439153)
+        util.initmat(eb,  "ms1216", "hbu_asc_tnc" , "hbw_asc_tnc" , -2.000000)
+
+        # HBSCH
+        util.initmat(eb,  "ms1217", "hbsch_asc_hov" , "hbsch_asc_hov" , -5.133076)
+        util.initmat(eb,  "ms1218", "hbsch_asc_bus" , "hbsch_asc_bus" , -4.512706)
+        util.initmat(eb,  "ms1219", "hbsch_asc_rail", "hbsch_asc_rail", -5.226410)
+        util.initmat(eb,  "ms1220", "hbsch_asc_bike", "hbsch_asc_bike", -4.012878)
+
+        # HBSHOP
+        util.initmat(eb,  "ms1221", "hbshop_asc_hov" , "hbshop_asc_hov" ,  1.389055)
+        util.initmat(eb,  "ms1222", "hbshop_asc_bus" , "hbshop_asc_bus" ,  8.890770)
+        util.initmat(eb,  "ms1223", "hbshop_asc_rail", "hbshop_asc_rail", 10.332980)
+        util.initmat(eb,  "ms1224", "hbshop_asc_walk", "hbshop_asc_walk", 10.391703)
+        util.initmat(eb,  "ms1225", "hbshop_asc_bike", "hbshop_asc_bike",  4.637252)
+        util.initmat(eb,  "ms1226", "hbshop_asc_tnc" , "hbshop_asc_tnc" ,  0.000000)
+
+        # HBPB
+        util.initmat(eb,  "ms1227", "hbpb_asc_hov" , "hbpb_asc_hov" ,   6.340926)
+        util.initmat(eb,  "ms1228", "hbpb_asc_bus" , "hbpb_asc_bus" , -17.900850)
+        util.initmat(eb,  "ms1229", "hbpb_asc_rail", "hbpb_asc_rail", -16.224604)
+        util.initmat(eb,  "ms1230", "hbpb_asc_walk", "hbpb_asc_walk",   9.740911)
+        util.initmat(eb,  "ms1231", "hbpb_asc_bike", "hbpb_asc_bike",   5.740659)
+        util.initmat(eb,  "ms1232", "hbpb_asc_tnc" , "hbpb_asc_tnc" ,   0.000000)       
+
+        # HBSOC
+        util.initmat(eb,  "ms1233", "hbsoc_asc_hov" , "hbsoc_asc_hov" ,  3.321339)
+        util.initmat(eb,  "ms1234", "hbsoc_asc_bus" , "hbsoc_asc_bus" , -1.653539)
+        util.initmat(eb,  "ms1235", "hbsoc_asc_rail", "hbsoc_asc_rail",  0.682089)
+        util.initmat(eb,  "ms1236", "hbsoc_asc_walk", "hbsoc_asc_walk",  4.498746)
+        util.initmat(eb,  "ms1237", "hbsoc_asc_bike", "hbsoc_asc_bike", -0.297950)
+        util.initmat(eb,  "ms1238", "hbsoc_asc_tnc" , "hbsoc_asc_tnc" ,  0.000000)
+
+        # HBESC
+        util.initmat(eb,  "ms1239", "hbesc_asc_bus" , "hbesc_asc_bus" , -4.120999)
+        util.initmat(eb,  "ms1240", "hbesc_asc_rail", "hbesc_asc_rail", -0.863372)
+        util.initmat(eb,  "ms1241", "hbesc_asc_walk", "hbesc_asc_walk",  2.387704)
+        util.initmat(eb,  "ms1242", "hbesc_asc_bike", "hbesc_asc_bike", -1.471055)
+
+        #################################
+        # Transit Assignment
+        #################################
+        # Parameters to adjust vehicle capacity assumptions
+        util.initmat(eb,  "ms1250", "seat_cap_fac", "seat_cap_fac", 1.0)
+        util.initmat(eb,  "ms1251", "stnd_cap_fac", "stnd_cap_fac", 1.0)
+
+        util.initmat(eb, "ms1252", "oneZoneFareAM", "oneZoneFareAM", 2.1)
+        util.initmat(eb, "ms1253", "oneZoneFareMD", "oneZoneFareMD", 2.1)
+        util.initmat(eb, "ms1254", "oneZoneFarePM", "oneZoneFarePM", 2.1)
+        util.initmat(eb, "ms1255", "oneZoneFareOP", "oneZoneFareOP", 2.1)
+        
+        util.initmat(eb, "ms1256", "fareIncrementAM", "fareIncrementAM", 1.05)
+        util.initmat(eb, "ms1257", "fareIncrementMD", "fareIncrementMD", 1.05)
+        util.initmat(eb, "ms1258", "fareIncrementPM", "fareIncrementPM", 1.05)
+        util.initmat(eb, "ms1259", "fareIncrementOP", "fareIncrementOP", 0.00)
+
+        #################################
+        # Standard Model Scalars
+        #################################
+
         util.initmat(eb, "ms100", "autoOpCost", "Auto Operating Cost", 0.18)
         util.initmat(eb, "ms101", "lgvOpCost", "Light Truck Operating Cost", 0.24)
         util.initmat(eb, "ms102", "hgvOpCost", "Heavy Truck Operating Cost", 0.56)

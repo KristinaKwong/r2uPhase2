@@ -59,11 +59,11 @@ class HbWork(_m.Tool()):
 
         # Add Coefficients
 
-        p2   =  1.389055
-        p4   =  8.890770
-        p6   = 10.332980
-        p10  = 10.391703
-        p11  =  4.637252
+        p2   = eb.matrix("hbshop_asc_hov" ).data # hov
+        p4   = eb.matrix("hbshop_asc_bus" ).data # bus
+        p6   = eb.matrix("hbshop_asc_rail").data # rail
+        p10  = eb.matrix("hbshop_asc_walk").data # walk
+        p11  = eb.matrix("hbshop_asc_bike").data # bike
         p12  = -0.772843
         p14  = -0.420448
         p15  = -0.105966
@@ -85,7 +85,7 @@ class HbWork(_m.Tool()):
         # TNC Cost Factors
         # alpha_tnc and beta_tnc are calculated in Blended_Skims.py
         # TNC Coefficients and Calibration
-        p30 = 0
+        p30 = eb.matrix("hbshop_asc_tnc" ).data
         tnc_cost_scale = 20  # Coeff3 = coeff 2/lambda
         tnc_cost_exponent = 2.0 # TNC Cost exponent ; non-linear calibration constant
         p604 = 0.4  # TNC Accessibility measure coefficient

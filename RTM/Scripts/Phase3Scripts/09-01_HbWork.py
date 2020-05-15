@@ -59,16 +59,16 @@ class HbWork(_m.Tool()):
         DfU = {}
 
         # Add Coefficients
-        p2   =  0.957766
-        p3   = -0.839134
-        p4   = -0.164578
-        p5   = -2.027129
-        p6   =  1.657704
-        p7   =  0.725872
-        p8   =  3.203539
-        p9   =  0.117616
-        p10  =  6.743114
-        p11  =  1.342106
+        p2   = eb.matrix("hbw_asc_hov2").data # hov2
+        p3   = eb.matrix("hbw_asc_hov3").data # hov3
+        p4   = eb.matrix("hbw_asc_bus" ).data # bus
+        p5   = eb.matrix("hbw_asc_bpr" ).data # bus pnr
+        p6   = eb.matrix("hbw_asc_rail").data # rail
+        p7   = eb.matrix("hbw_asc_rpr" ).data # rail pnr
+        p8   = eb.matrix("hbw_asc_wce" ).data # WCE
+        p9   = eb.matrix("hbw_asc_wpr" ).data # WCE pnr
+        p10  = eb.matrix("hbw_asc_walk").data # Walk
+        p11  = eb.matrix("hbw_asc_bike").data # Bike
         p12  = -0.256430
         p13  = -0.183268
         p14  = -0.158294
@@ -80,10 +80,10 @@ class HbWork(_m.Tool()):
         p151 = -0.048225
         p152 = -0.059809
         p153 = -0.047601
-        p160 =  5.479080
-        p161 =  7.505207
-        p162 =  1.589878
-        p163 =  2.837890
+        p160 =  eb.matrix("hbw_bias_sov_1car").data # sov 1car
+        p161 =  eb.matrix("hbw_bias_sov_2car").data # sov 2car
+        p162 =  eb.matrix("hbw_bias_hov_1car").data # hov 1car
+        p163 =  eb.matrix("hbw_bias_hov_2car").data # hov 2car
         p164 =  1.213446
         p505 = -0.196322
         p506 = -0.334867
@@ -100,7 +100,7 @@ class HbWork(_m.Tool()):
         # TNC Cost Factors
         # alpha_tnc and beta_tnc are calculated in Blended_Skims.py
         # TNC Coefficients and Calibration
-        p30 = 0  #
+        p30 = eb.matrix("hbw_asc_tnc" ).data  # TNC ASC
         tnc_cost_scale = 30  # Coeff3 = coeff 2/lambda
         tnc_cost_exponent = 2 # TNC Cost exponent ; non-linear calibration constant
         p604 = 0.35  # TNC Accessibility measure

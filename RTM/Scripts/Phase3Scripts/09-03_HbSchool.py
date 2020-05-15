@@ -58,10 +58,11 @@ class HbSchool(_m.Tool()):
         DfU = {}
 
         # Add Coefficients
-        p2   = -5.133076
-        p4   = -4.512706
-        p6   = -5.226410
-        p11  = -4.012878
+        # walk is reference level
+        p2   = eb.matrix("hbsch_asc_hov" ).data # hov
+        p4   = eb.matrix("hbsch_asc_bus" ).data # bus
+        p6   = eb.matrix("hbsch_asc_rail").data # rail
+        p11  = eb.matrix("hbsch_asc_bike").data # bike
         p12  = -0.445877
         p20  = -1.874970
         p21  = -1.320351

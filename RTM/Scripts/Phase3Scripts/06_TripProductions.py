@@ -94,11 +94,11 @@ class TripProductions(_m.Tool()):
         hh_df['hbw'] = hh_df['CountHHs'] * hh_df['hbw_prds'] * hh_df['bowen_adj']
      
         #  Non Commute
-        hh_df['hbesc'] = hh_df['CountHHs'] * hh_df['hbesc_prds'] * hh_df['bowen_adj']
-        hh_df['hbpb'] = hh_df['CountHHs'] * hh_df['hbpb_prds'] * hh_df['bowen_adj']
-        hh_df['hbsch'] = hh_df['CountHHs'] * hh_df['hbsch_prds'] * hh_df['bowen_adj']
-        hh_df['hbshop'] = hh_df['CountHHs'] * hh_df['hbshop_prds'] * hh_df['bowen_adj']
-        hh_df['hbsoc'] = hh_df['CountHHs'] * hh_df['hbsoc_prds'] * hh_df['bowen_adj']
+        hh_df['hbesc'] = hh_df['CountHHs'] * hh_df['hbesc_prds'] * hh_df['bowen_adj'] * eb.matrix("hbesc_fac").data
+        hh_df['hbpb'] = hh_df['CountHHs'] * hh_df['hbpb_prds'] * hh_df['bowen_adj'] * eb.matrix("hbpb_fac").data
+        hh_df['hbsch'] = hh_df['CountHHs'] * hh_df['hbsch_prds'] * hh_df['bowen_adj'] * eb.matrix("hbsch_fac").data
+        hh_df['hbshop'] = hh_df['CountHHs'] * hh_df['hbshop_prds'] * hh_df['bowen_adj'] * eb.matrix("hbshop_fac").data
+        hh_df['hbsoc'] = hh_df['CountHHs'] * hh_df['hbsoc_prds'] * hh_df['bowen_adj'] * eb.matrix("hbsoc_fac").data
 
         # Set Balancing Control Totals
         ct_df = hh_df[['hbw','hbesc','hbpb','hbsch','hbshop', 'hbsoc']]
@@ -195,32 +195,11 @@ class TripProductions(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
 
         # set coefficents
-        c_hbu_int = 20.617679
-        c_iPop1824UnAcOth = 0.079319
-        c_iPop1824UnAcVan = 0.086291
-        c_iPop1824UnAcSur = 0.070245
-        c_iP2434UnAc = 0.009762
-
-        c_nhbw_int = 11.09161
-        c_nhbw_CM = 0.313161
-        c_nhbw_TW = 0.180534
-        c_nhbw_FIRE = 0.296122
-        c_nhbw_BOS = 0.412223
-        c_nhbw_AFIC = 0.252867
-        c_nhbw_Ret = 0.679641
-        c_nhbw_HEPA = 0.420215
-        c_nhbw_EE = 0.059015
-        c_nhbw_SE = 0.093358
-        c_nhbw_HHs = 0.055688
-
-        c_nhbo_int = 12.878959
-        c_nhbo_AFIC = 0.505787
-        c_nhbo_Ret = 1.828427
-        c_nhbo_HEPA = 0.361545
-        c_nhbo_EE = 0.38903
-        c_nhbo_SE = 0.230765
-        c_nhbo_PS = 0.040261
-        c_nhbo_HHs = 0.175705
+        c_hbu_int         = eb.matrix("c_hbu_int"        ).data
+        c_iPop1824UnAcOth = eb.matrix("c_iPop1824UnAcOth").data
+        c_iPop1824UnAcVan = eb.matrix("c_iPop1824UnAcVan").data
+        c_iPop1824UnAcSur = eb.matrix("c_iPop1824UnAcSur").data
+        c_iP2434UnAc      = eb.matrix("c_iP2434UnAc"     ).data
 
         ## Add Bowenn Island adjsutment
 
@@ -299,97 +278,97 @@ class TripProductions(_m.Tool()):
         util = _m.Modeller().tool("translink.util")
 
         # define Coefficients from model estimation
-        hbw_prods = StringIO("""HHWorker,HHInc,hbw_prds
-        1,1,1.142723
-        2,1,2.044779
-        3,1,3.488924
-        1,2,1.280331
-        2,2,2.426104
-        3,2,3.812845
-        1,3,1.38898
-        2,3,2.390059
-        3,3,4.163671
-        """)
+        hbw_prods = [
+        [1, 1, eb.matrix("hbwprd_1-1").data],
+        [2, 1, eb.matrix("hbwprd_2-1").data],
+        [3, 1, eb.matrix("hbwprd_3-1").data],
+        [1, 2, eb.matrix("hbwprd_1-2").data],
+        [2, 2, eb.matrix("hbwprd_2-2").data],
+        [3, 2, eb.matrix("hbwprd_3-2").data],
+        [1, 3, eb.matrix("hbwprd_1-3").data],
+        [2, 3, eb.matrix("hbwprd_2-3").data],
+        [3, 3, eb.matrix("hbwprd_3-3").data]
+        ]
 
 
-        hbesc_prods = StringIO("""HHSize,HHInc,hbesc_prds
-        1,1,0.062889
-        2,1,0.30258
-        3,1,0.682318
-        4,1,1.549849
-        1,2,0.09731
-        2,2,0.271858
-        3,2,0.71941
-        4,2,1.713166
-        1,3,0.062455
-        2,3,0.227354
-        3,3,0.73346
-        4,3,1.535946
-        """)
+        hbesc_prods = [
+        [1, 1, eb.matrix("hbesc_1-1").data],
+        [2, 1, eb.matrix("hbesc_2-1").data],
+        [3, 1, eb.matrix("hbesc_3-1").data],
+        [4, 1, eb.matrix("hbesc_4-1").data],
+        [1, 2, eb.matrix("hbesc_1-2").data],
+        [2, 2, eb.matrix("hbesc_2-2").data],
+        [3, 2, eb.matrix("hbesc_3-2").data],
+        [4, 2, eb.matrix("hbesc_4-2").data],
+        [1, 3, eb.matrix("hbesc_1-3").data],
+        [2, 3, eb.matrix("hbesc_2-3").data],
+        [3, 3, eb.matrix("hbesc_3-3").data],
+        [4, 3, eb.matrix("hbesc_4-3").data]
+        ]
 
-        hbpb_prods = StringIO("""HHSize,hbpb_prds
-        1,0.334523
-        2,0.520753
-        3,0.52108
-        4,0.499412
-        """)
+        hbpb_prods = [
+        [1, eb.matrix("hbpbprd_1").data],
+        [2, eb.matrix("hbpbprd_2").data],
+        [3, eb.matrix("hbpbprd_3").data],
+        [4, eb.matrix("hbpbprd_4").data]
+        ]
 
-        hbsch_prods = StringIO("""HHSize,HHInc,hbsch_prds
-        1,1,0
-        2,1,0.074779
-        3,1,0.684717
-        4,1,1.782312
-        1,2,0
-        2,2,0.018304
-        3,2,0.42979
-        4,2,1.715844
-        1,3,0
-        2,3,0.007462
-        3,3,0.358231
-        4,3,1.490737
-        """)
-
-        hbshop_prods = StringIO("""HHSize,HHInc,hbshop_prds
-        1,1,0.530045
-        2,1,0.89068
-        3,1,0.743733
-        4,1,0.780986
-        1,2,0.466144
-        2,2,0.690868
-        3,2,0.723615
-        4,2,0.711063
-        1,3,0.265136
-        2,3,0.537008
-        3,3,0.598171
-        4,3,0.62543
-        """)
-
-        hbsoc_prods = StringIO("""HHSize,HHInc,hbsoc_prds
-        1,1,0.47585
-        2,1,0.865361
-        3,1,0.995139
-        4,1,1.06819
-        1,2,0.58349
-        2,2,0.961634
-        3,2,0.9654
-        4,2,1.445937
-        1,3,0.503203
-        2,3,0.855158
-        3,3,1.074033
-        4,3,1.567024
-        """)
+        hbsch_prods = [
+        [1, 1, eb.matrix("hbsch_1-1").data],
+        [2, 1, eb.matrix("hbsch_2-1").data],
+        [3, 1, eb.matrix("hbsch_3-1").data],
+        [4, 1, eb.matrix("hbsch_4-1").data],
+        [1, 2, eb.matrix("hbsch_1-2").data],
+        [2, 2, eb.matrix("hbsch_2-2").data],
+        [3, 2, eb.matrix("hbsch_3-2").data],
+        [4, 2, eb.matrix("hbsch_4-2").data],
+        [1, 3, eb.matrix("hbsch_1-3").data],
+        [2, 3, eb.matrix("hbsch_2-3").data],
+        [3, 3, eb.matrix("hbsch_3-3").data],
+        [4, 3, eb.matrix("hbsch_4-3").data]
+        ]
 
 
-        # Generate Commute Trip Rate Data Frome
-        hh_commute_prds = pd.read_csv(hbw_prods, sep = ',')
+        hbshop_prods = [
+        [1, 1, eb.matrix("hbshop_1-1").data],
+        [2, 1, eb.matrix("hbshop_2-1").data],
+        [3, 1, eb.matrix("hbshop_3-1").data],
+        [4, 1, eb.matrix("hbshop_4-1").data],
+        [1, 2, eb.matrix("hbshop_1-2").data],
+        [2, 2, eb.matrix("hbshop_2-2").data],
+        [3, 2, eb.matrix("hbshop_3-2").data],
+        [4, 2, eb.matrix("hbshop_4-2").data],
+        [1, 3, eb.matrix("hbshop_1-3").data],
+        [2, 3, eb.matrix("hbshop_2-3").data],
+        [3, 3, eb.matrix("hbshop_3-3").data],
+        [4, 3, eb.matrix("hbshop_4-3").data]
+        ]
+
+        hbsoc_prods = [
+        [1, 1, eb.matrix("hbsoc_1-1").data],
+        [2, 1, eb.matrix("hbsoc_2-1").data],
+        [3, 1, eb.matrix("hbsoc_3-1").data],
+        [4, 1, eb.matrix("hbsoc_4-1").data],
+        [1, 2, eb.matrix("hbsoc_1-2").data],
+        [2, 2, eb.matrix("hbsoc_2-2").data],
+        [3, 2, eb.matrix("hbsoc_3-2").data],
+        [4, 2, eb.matrix("hbsoc_4-2").data],
+        [1, 3, eb.matrix("hbsoc_1-3").data],
+        [2, 3, eb.matrix("hbsoc_2-3").data],
+        [3, 3, eb.matrix("hbsoc_3-3").data],
+        [4, 3, eb.matrix("hbsoc_4-3").data]
+        ]
+
+        # Generate Commute Trip Rate Data Frame
+        hh_commute_prds = pd.DataFrame(hbw_prods, columns =  ['HHWorker','HHInc','hbw_prds'])
     
 
         # Generate Non Commute Data Frame
-        hbesc_prod_df = pd.read_csv(hbesc_prods, sep = ',')
-        hbpb_prod_df = pd.read_csv(hbpb_prods, sep = ',')
-        hbsch_prod_df = pd.read_csv(hbsch_prods, sep = ',')
-        hbshop_prod_df = pd.read_csv(hbshop_prods, sep = ',')
-        hbsoc_prod_df = pd.read_csv(hbsoc_prods, sep = ',')
+        hbesc_prod_df = pd.DataFrame(hbesc_prods, columns = ['HHSize','HHInc','hbesc_prds'])
+        hbpb_prod_df = pd.DataFrame(hbpb_prods, columns = ['HHSize', 'hbpb_prds'])
+        hbsch_prod_df = pd.DataFrame(hbsch_prods, columns = ['HHSize','HHInc','hbsch_prds'])
+        hbshop_prod_df = pd.DataFrame(hbshop_prods, columns = ['HHSize','HHInc','hbshop_prds'])
+        hbsoc_prod_df = pd.DataFrame(hbsoc_prods, columns = ['HHSize','HHInc','hbsoc_prds'])
         df = pd.merge(hbesc_prod_df, hbpb_prod_df, how= 'left', left_on = ['HHSize'], right_on = ['HHSize'])
         df = pd.merge(df, hbsch_prod_df, how= 'left', left_on = ['HHSize', 'HHInc'], right_on = ['HHSize', 'HHInc'])
         df = pd.merge(df, hbshop_prod_df, how= 'left', left_on = ['HHSize', 'HHInc'], right_on = ['HHSize', 'HHInc'])

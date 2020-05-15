@@ -59,11 +59,11 @@ class HbPersonalBusiness(_m.Tool()):
 
         # Add Coefficients
 
-        p2   =    6.340926
-        p4   =  -17.900850
-        p6   =  -16.224604
-        p10  =    9.740911
-        p11  =    5.740659
+        p2   =  eb.matrix("hbpb_asc_hov" ).data # HOV
+        p4   =  eb.matrix("hbpb_asc_bus" ).data # bus
+        p6   =  eb.matrix("hbpb_asc_rail").data # rail
+        p10  =  eb.matrix("hbpb_asc_walk").data # walk
+        p11  =  eb.matrix("hbpb_asc_bike").data # bike
         p12  =   -0.351170
         p14  =   -0.278559
         p15  =   -0.054559
@@ -87,7 +87,7 @@ class HbPersonalBusiness(_m.Tool()):
         # TNC Cost Factors
         # alpha_tnc and beta_tnc are calculated in Blended_Skims.py
         # TNC Coefficients and Calibration
-        p30 = 0
+        p30 = eb.matrix("hbpb_asc_tnc" ).data
         tnc_cost_scale = 15  # Coeff3 = coeff 2/lambda
         tnc_cost_exponent = 2.2 # TNC Cost exponent ; non-linear calibration constant
         p604 = 0.6  # TNC Accessibility measure coefficient p602 trnAcc

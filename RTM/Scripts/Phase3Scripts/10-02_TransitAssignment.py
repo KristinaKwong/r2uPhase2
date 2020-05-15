@@ -182,6 +182,17 @@ class TransitAssignment(_m.Tool()):
 
         for i, (sc, period_length, demand_bus, demand_rail, demand_wce) in enumerate(zip(scenario_list, period_length_list, demand_bus_list, demand_rail_list, demand_wce_list)):
             report={}
+
+            if sc is scenarioam:
+                self.bus_zone1_fare = eb.matrix("oneZoneFareAM").data
+                self.bus_zone_increment = eb.matrix("fareIncrementAM").data
+            if sc is scenariomd:
+                self.bus_zone1_fare = eb.matrix("oneZoneFareMD").data
+                self.bus_zone_increment = eb.matrix("fareIncrementMD").data
+            if sc is scenariopm:
+                self.bus_zone1_fare = eb.matrix("oneZoneFarePM").data
+                self.bus_zone_increment = eb.matrix("fareIncrementPM").data
+
             self.calc_network_costs(eb, sc, period_length, i)
 
             # LOOP FOR CROWDING AND CAPACITY CONSTRAINT
@@ -487,8 +498,21 @@ class TransitAssignment(_m.Tool()):
         util.emme_tline_calc(sc, "@dwtboard", str(self.dwt_board_factor_bus), sel_line="mode=bg")
         util.emme_tline_calc(sc, "@dwtalight", str(self.dwt_alight_factor_bus), sel_line="mode=bg")
 
-        util.emme_tline_calc(sc, "@seatcapacity", "%s*vcaps*60/hdw" % period_length)
-        util.emme_tline_calc(sc, "@totcapacity",  "%s*vcapt*60/hdw" % period_length)
+
+        # capacity reduction factors
+        seat_cap_fac = eb.matrix("seat_cap_fac").data
+        stnd_cap_fac = eb.matrix("stnd_cap_fac").data
+
+        if stnd_cap_fac == 0:
+            # only seated passengers allowed
+            util.emme_tline_calc(sc, "@seatcapacity", "{}*vcaps*60*{}/hdw".format(period_length, seat_cap_fac))
+            util.emme_tline_calc(sc, "@totcapacity",  "@seatcapacity") 
+        else:
+            util.emme_tline_calc(sc, "@totcapacity",  "{}*(((vcapt-vcaps)*{})+(vcaps*{}))*60/hdw".format(period_length, stnd_cap_fac, seat_cap_fac))       
+            util.emme_tline_calc(sc, "@seatcapacity", "{}*vcaps*60*{}/hdw".format(period_length, seat_cap_fac))
+
+        # util.emme_tline_calc(sc, "@seatcapacity", "%s*vcaps*60/hdw" % period_length)
+        # util.emme_tline_calc(sc, "@totcapacity",  "%s*vcapt*60/hdw" % period_length)
 
 
         # Fare Calculations
