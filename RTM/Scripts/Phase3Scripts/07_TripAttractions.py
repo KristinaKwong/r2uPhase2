@@ -202,7 +202,7 @@ class TripAttractions(_m.Tool()):
         ct_df_hbu.columns = ['purpose','control_total']
 
         conn = util.get_rtm_db(eb)
-        ct_df_hbu.to_sql(name='TripsBalCts', con=conn, flavor='sqlite', index=False, if_exists='append')
+        ct_df_hbu.to_sql(name='TripsBalCts', con=conn, index=False, if_exists='append')
         prd_df = pd.read_sql("SELECT * FROM TripsTazPrds", conn)
         conn.close()
 
@@ -220,8 +220,8 @@ class TripAttractions(_m.Tool()):
 
         # Write to sqlite
         conn = util.get_rtm_db(eb)
-        df.to_sql(name='TripsTazAtrs', con=conn, flavor='sqlite', index=False, if_exists='replace')
-        prd_df.to_sql(name='TripsTazPrds', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='TripsTazAtrs', con=conn, index=False, if_exists='replace')
+        prd_df.to_sql(name='TripsTazPrds', con=conn, index=False, if_exists='replace')
         conn.close()
 
 

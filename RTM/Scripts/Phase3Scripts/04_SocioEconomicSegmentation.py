@@ -518,7 +518,7 @@ class SocioEconomicSegmentation(_m.Tool()):
         output_df = pd.melt(output_df, id_vars = ['TAZ1741','HHSize','HHWorker'], var_name='HHInc', value_name='CountHHs')
 
         conn = util.get_rtm_db(eb)
-        output_df.to_sql(name='segmentedHouseholds', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        output_df.to_sql(name='segmentedHouseholds', con=conn, index=False, if_exists='replace')
         conn.close()
 
 

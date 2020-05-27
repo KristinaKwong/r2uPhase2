@@ -164,7 +164,7 @@ class VehicleAvailability(_m.Tool()):
         df.HHAuto = df.HHAuto.astype(int)
 
         conn = util.get_rtm_db(eb)
-        df.to_sql(name='segmentedHouseholds', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='segmentedHouseholds', con=conn, index=False, if_exists='replace')
         conn.close()
 
 

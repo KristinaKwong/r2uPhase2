@@ -606,9 +606,9 @@ class HbWork(_m.Tool()):
         ## Dump to SQLite DB
         conn = util.get_db_byname(eb, "trip_summaries.db")
 
-        df_gy_phr.to_sql(name='phr_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
+        df_gy_phr.to_sql(name='phr_gy', con=conn, index=False, if_exists='append')
 
-        df_Daily_Gy.to_sql(name='daily_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
+        df_Daily_Gy.to_sql(name='daily_gy', con=conn, index=False, if_exists='append')
 
         conn.close()
 

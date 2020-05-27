@@ -111,8 +111,8 @@ class TripProductions(_m.Tool()):
 
         # write data to sqlite database
         conn = util.get_rtm_db(eb)
-        hh_df.to_sql(name='TripsHhPrds', con=conn, flavor='sqlite', index=False, if_exists='replace')
-        ct_df.to_sql(name='TripsBalCts', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        hh_df.to_sql(name='TripsHhPrds', con=conn, index=False, if_exists='replace')
+        ct_df.to_sql(name='TripsBalCts', con=conn, index=False, if_exists='replace')
         conn.close()
 
         # collapse 2 and 3 Auto
@@ -222,7 +222,7 @@ class TripProductions(_m.Tool()):
         df = df[['TAZ1741','hbu']]
 
         conn = util.get_rtm_db(eb)
-        df.to_sql(name='TripsTazPrds', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='TripsTazPrds', con=conn, index=False, if_exists='replace')
         conn.close()
 
         # stuff in emmebank

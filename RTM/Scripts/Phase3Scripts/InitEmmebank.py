@@ -271,7 +271,7 @@ class InitEmmebank(_m.Tool()):
         df = pd.DataFrame({"TAZ1741": eb.matrix("mozoneindex").get_numpy_data()})
 
         conn = util.get_rtm_db(eb)
-        df.to_sql(name="taz_index", con=conn, flavor="sqlite",index = False, if_exists="replace")
+        df.to_sql(name="taz_index", con=conn, index = False, if_exists="replace")
         conn.close()
 
     def initfunctions(self, eb):

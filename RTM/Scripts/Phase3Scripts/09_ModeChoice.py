@@ -172,7 +172,7 @@ class ModeChoice(_m.Tool()):
 
         conn = util.get_db_byname(eb, "rtm.db")
         df = pd.read_sql(stat_sql, conn)
-        df.to_sql(name='log_accessibilities_agg', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='log_accessibilities_agg', con=conn, index=False, if_exists='replace')
         
 
         stat_sql = ''' SELECT TAZ1741
@@ -239,7 +239,7 @@ class ModeChoice(_m.Tool()):
 
         conn = util.get_db_byname(eb, "rtm.db")
         df_hbsc_hbu = pd.read_sql(stat_sql, conn)
-        df_hbsc_hbu.to_sql(name='log_accessibilities_agg_hbsc_hbu', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df_hbsc_hbu.to_sql(name='log_accessibilities_agg_hbsc_hbu', con=conn, index=False, if_exists='replace')
         
         conn.close()
 
