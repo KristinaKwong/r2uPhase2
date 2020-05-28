@@ -98,5 +98,5 @@ class ExploreML(_m.Tool()):
                 util.compute_matrix(specs)
                 df[row["Attributes"]] = util.get_matrix_numpy(eb, tempmatrix).flatten()
                 
-            df.to_sql(name=SQL_Table, con=conn, flavor='sqlite', index=False, if_exists='replace')
+            df.to_sql(name=SQL_Table, con=conn, index=False, if_exists='replace')
         conn.close()

@@ -679,9 +679,9 @@ class Non_hbwork(_m.Tool()):
         ## Dump to SQLite DB
         conn = util.get_db_byname(eb, "trip_summaries.db")
 
-        df_gy_phr.to_sql(name='phr_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
+        df_gy_phr.to_sql(name='phr_gy', con=conn, index=False, if_exists='append')
 
-        df_Daily_Gy.to_sql(name='daily_gy', con=conn, flavor='sqlite', index=False, if_exists='append')
+        df_Daily_Gy.to_sql(name='daily_gy', con=conn, index=False, if_exists='append')
 
         conn.close()
 
@@ -747,11 +747,11 @@ class Non_hbwork(_m.Tool()):
         conn = util.get_db_byname(eb, "rtm.db")
         df1 = pd.read_sql(stat_sql1, conn)
         df1['nhbw'] = df['trip_prod_adj']
-        df1.to_sql(name='TripsTazPrds', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df1.to_sql(name='TripsTazPrds', con=conn, index=False, if_exists='replace')
 
         df1 = pd.read_sql(stat_sql2, conn)
         df1['nhbw'] = df['trip_attr_adj']
-        df1.to_sql(name='TripsTazAtrs', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df1.to_sql(name='TripsTazAtrs', con=conn, index=False, if_exists='replace')
         conn.close()
 
     @_m.logbook_trace("PnR")

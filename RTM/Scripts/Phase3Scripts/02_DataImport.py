@@ -607,43 +607,43 @@ class DataImport(_m.Tool()):
 
         # demographics
         df = pd.read_csv(demo_file, skiprows = 3)
-        df.to_sql(name='demographics', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='demographics', con=conn, index=False, if_exists='replace')
 
         # geographics
         df = pd.read_csv(geo_file, skiprows = 3)
-        df.to_sql(name='geographics', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='geographics', con=conn, index=False, if_exists='replace')
 
         # park and ride
         df = pd.read_csv(pnr_file, skiprows = 3)
-        df.to_sql(name='parknride', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='parknride', con=conn, index=False, if_exists='replace')
 
         # dummary variables
         df = pd.read_csv(dummy_file, skiprows = 3)
-        df.to_sql(name='dummies', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='dummies', con=conn, index=False, if_exists='replace')
 
         # ensembles
         df = pd.read_csv(ensem_file, skiprows = 3)
-        df.to_sql(name='ensembles', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='ensembles', con=conn, index=False, if_exists='replace')
 
         # time_slicing
         df = pd.read_csv(time_slicing_file, skiprows = 0)
-        df.to_sql(name='timeSlicingFactors', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='timeSlicingFactors', con=conn, index=False, if_exists='replace')
 
         # time_slicing gb
         df = pd.read_csv(time_slicing_file_gb, skiprows = 0)
-        df.to_sql(name='timeSlicingFactorsGb', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='timeSlicingFactorsGb', con=conn, index=False, if_exists='replace')
 
         # transit bias adjustments
         df = pd.read_csv(transit_adj, skiprows = 0)
-        df.to_sql(name='transit_adj', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='transit_adj', con=conn, index=False, if_exists='replace')
 
         # import original taz system (1741)
         df = pd.read_csv(tz_original , skiprows = 0)
-        df.to_sql(name='taz_original', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='taz_original', con=conn, index=False, if_exists='replace')
 
         # import starter accessibilities
         df = pd.read_csv(log_accessibilities_agg , skiprows = 0)
-        df.to_sql(name='log_accessibilities_agg', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='log_accessibilities_agg', con=conn, index=False, if_exists='replace')
 
         conn.close()
 

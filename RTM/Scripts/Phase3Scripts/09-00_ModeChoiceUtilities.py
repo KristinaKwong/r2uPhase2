@@ -361,7 +361,7 @@ class ModeChoiceUtilities(_m.Tool()):
         else:
             write_type = 'append'
 
-        df_final.to_sql(name='logsum_accessibilities', con=conn, flavor='sqlite', index=False, if_exists=write_type)
+        df_final.to_sql(name='logsum_accessibilities', con=conn, index=False, if_exists=write_type)
         conn.close()
 
         return Prob_Dict
@@ -420,10 +420,10 @@ class ModeChoiceUtilities(_m.Tool()):
 
             write_type = 'append'
 
-        df_triptots.to_sql(name='trip_tots', con=conn, flavor='sqlite', index=False, if_exists=write_type)
+        df_triptots.to_sql(name='trip_tots', con=conn, index=False, if_exists=write_type)
 
         if write_att_demand == True:
-            df_att.to_sql(name='trip_att_tots', con=conn, flavor='sqlite', index=False, if_exists=write_type)
+            df_att.to_sql(name='trip_att_tots', con=conn, index=False, if_exists=write_type)
 
         conn.close()
 
@@ -438,7 +438,7 @@ class ModeChoiceUtilities(_m.Tool()):
         conn = util.get_db_byname(eb, "trip_summaries.db")
         df = pd.read_sql(stat_sql, conn)
         df = df.groupby(['tz', 'purp', 'mode_agg']).sum().reset_index()
-        df.to_sql(name='trip_att_tots', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='trip_att_tots', con=conn, index=False, if_exists='replace')
         conn.close()
 
     def splitpnr (self, DfmergedAuto, DfmergedTran, DfInt):

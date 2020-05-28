@@ -228,7 +228,7 @@ class DataGeneration(_m.Tool()):
     	df.drop('i', axis=1, inplace=True)
 
     	# write the data back to database
-    	df.to_sql(name='accessibilities', con=conn, flavor='sqlite', index=False, if_exists='replace')
+    	df.to_sql(name='accessibilities', con=conn, index=False, if_exists='replace')
     	conn.close()
 
     @_m.logbook_trace("Calculate Transit Accessibility")
@@ -497,7 +497,7 @@ class DataGeneration(_m.Tool()):
     	# establish connection to db and write out data
     	# note, this table is created in transit accessibilities method and expanded with the methods
     	conn = util.get_rtm_db(eb)
-    	ij_acc.to_sql(name='accessibilities', con=conn, flavor='sqlite', index=False, if_exists='replace')
+    	ij_acc.to_sql(name='accessibilities', con=conn, index=False, if_exists='replace')
     	conn.close()
 
     @_m.logbook_trace("Calculate Auto Accessibility")
@@ -577,7 +577,7 @@ class DataGeneration(_m.Tool()):
     	df.drop('i', axis=1, inplace=True)
 
     	# write the data back to database
-    	df.to_sql(name='accessibilities', con=conn, flavor='sqlite', index=False, if_exists='replace')
+    	df.to_sql(name='accessibilities', con=conn, index=False, if_exists='replace')
     	conn.close()
 
     @_m.logbook_trace("Calculate Densities")
@@ -648,7 +648,7 @@ class DataGeneration(_m.Tool()):
 
         # write data to rtm sqlite database
         conn = util.get_rtm_db(eb)
-        df.to_sql(name='densities', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='densities', con=conn, index=False, if_exists='replace')
         conn.close()
 
     @_m.logbook_trace("Update Parking Rates")
@@ -793,7 +793,7 @@ class DataGeneration(_m.Tool()):
         df = pd.merge(geo, df, how='inner', left_on = ['TAZ1700'], right_on = ['TAZ1741'])
         df = df[['TAZ1700','Hectares','prk2hrRateFin','prk8hrRateFin','rail_stn_dummy','car_share_250m','car_share_500m','bike_score_taz']]
         df.rename(columns={'prk2hrRateFin': 'parking_two_hr_rate', 'prk8hrRateFin': 'parking_eight_hr_rate'}, inplace=True)
-        df.to_sql(name='geographics', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        df.to_sql(name='geographics', con=conn, index=False, if_exists='replace')
         conn.close()
 
 

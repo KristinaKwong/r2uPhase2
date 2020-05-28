@@ -156,10 +156,10 @@ class FullModelRun(_m.Tool()):
               'horizon_year' : horizon_year}
         md = pd.DataFrame(md, index=[0])
         conn = util.get_rtm_db(eb)
-        md.to_sql(name='metadata', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        md.to_sql(name='metadata', con=conn, index=False, if_exists='replace')
         conn.close()
         conn = util.get_db_byname(eb, 'trip_summaries.db')
-        md.to_sql(name='metadata', con=conn, flavor='sqlite', index=False, if_exists='replace')
+        md.to_sql(name='metadata', con=conn, index=False, if_exists='replace')
         conn.close()
 
         self.initoptions(eb=eb, horizon_year=horizon_year, global_iterations=global_iterations,
