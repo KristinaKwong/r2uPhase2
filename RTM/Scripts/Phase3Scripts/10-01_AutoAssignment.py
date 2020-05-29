@@ -126,9 +126,6 @@ class AutoAssignment(_m.Tool()):
         # skim the vehicle operating costs
         self.add_opcost_path_analysis(spec)
 
-        # skim @tolls value for every cycle.  this is to be in sync with op cost
-        self.add_toll_path_analysis(spec)
-
         # conditionally skim the tolls on the final model cycle
         skimToll = int(scenario.emmebank.matrix("mstollSkim").data)
         if skimToll == 1:
@@ -136,6 +133,7 @@ class AutoAssignment(_m.Tool()):
             cur_cycles = int(scenario.emmebank.matrix("msCycleNum").data)
             if max_cycles == cur_cycles:
                 self.add_distance_path_analysis(spec)
+                self.add_toll_path_analysis(spec)
 
 
         # run assignment
