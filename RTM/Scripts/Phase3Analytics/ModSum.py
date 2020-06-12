@@ -56,13 +56,13 @@ class ModSum(_m.Tool()):
         else:
             eb = _m.Modeller().emmebank
             self.generateModSumVector(eb)
-        
+
     def generateComparisonFile(self):
         util = _m.Modeller().tool("translink.util")
-        
+
         # combine modsum for all emmebanks into one comparison file
         modsum_forAllDatabanks = pd.DataFrame()
-        
+
         dt = _m.Modeller().desktop
         de = dt.data_explorer()
         db = de.active_database()
@@ -89,19 +89,19 @@ class ModSum(_m.Tool()):
         modsum_compare = os.path.join(proj_path, "ModSumComparison.csv")
 
         modsum_forAllDatabanks.to_csv(modsum_compare, index=False)
-        
+
     def generateModSumVector(self, eb):
         util = _m.Modeller().tool("translink.util")
         model_year = int(util.get_year(eb))
         am_scen, md_scen, pm_scen = util.get_tod_scenarios(eb)
-        
+
         # Merge all the modsum measures into one vector
         DatabankName = eb.title
         modsum_header = ["Measure",DatabankName]
         modsum_vector = pd.DataFrame(columns=modsum_header)
 
         conn = util.get_db_byname(eb, "trip_summaries.db")
-        
+
         # daily trips by purpose
         # summarized after mode choice
     	df_daily_gy = pd.read_sql("select * from daily_gy", conn)
@@ -109,14 +109,14 @@ class ModSum(_m.Tool()):
         df_DailyTripByPurpose["Measure"] = "DailyTripsByPurpose_"+df_DailyTripByPurpose["purpose"]
         df_DailyTripByPurpose[DatabankName] = df_DailyTripByPurpose["trips"]
         modsum_vector = modsum_vector.append(df_DailyTripByPurpose[modsum_header])
-        
+
         # daily trips by mode
         # summarized after mode choice
         df_DailyTripByMode = pd.DataFrame(df_daily_gy[["mode","trips"]].groupby(["mode"]).sum().reset_index())
         df_DailyTripByMode["Measure"] = "DailyTripsByMode_"+df_DailyTripByMode["mode"]
         df_DailyTripByMode[DatabankName] = df_DailyTripByMode["trips"]
         modsum_vector = modsum_vector.append(df_DailyTripByMode[modsum_header])
-        
+
         # time-of-day trips by mode
     	df_autoTrips_gy = pd.read_sql("select * from autoTripsGy", conn)
         df_TODTripByMode = pd.DataFrame(df_autoTrips_gy[["peak", "mode","trips"]].groupby(["peak", "mode"]).sum().reset_index())
@@ -125,27 +125,27 @@ class ModSum(_m.Tool()):
         df_TODTripByMode["Measure"] = "TimeofDayTripsByMode_"+df_TODTripByMode["peak"]+"-"+df_TODTripByMode["mode"]
         df_TODTripByMode[DatabankName] = df_TODTripByMode["trips"]
         modsum_vector = modsum_vector.append(df_TODTripByMode[modsum_header])
-        
+
         # transit boardings
         df_transit_network = pd.read_sql("select * from transitResults", conn)
         df_transit_boardings = pd.DataFrame(df_transit_network[["peakperiod", "modeDesc","boardings"]].groupby(["peakperiod", "modeDesc"]).sum().reset_index())
         df_transit_boardings["Measure"] = "TransitBoardings_"+df_transit_boardings["peakperiod"]+"-"+df_transit_boardings["modeDesc"]
         df_transit_boardings[DatabankName] = df_transit_boardings["boardings"]
         modsum_vector = modsum_vector.append(df_transit_boardings[modsum_header])
-        
+
         # vkt
         df_VKT = pd.read_sql("select * from aggregateNetResults", conn)[["period","measure","value"]]
         df_VKT["Measure"] = "VKT_"+df_VKT["period"]+"-"+df_VKT["measure"]
         df_VKT[DatabankName] = df_VKT["value"]
         modsum_vector = modsum_vector.append(df_VKT[modsum_header])
-        
+
         # Land Use: Pop/Emp/HH
         dict_LandUse = [["TotalPop",util.get_matrix_numpy(eb, "moTotPop").sum()],
                         ["TotalEmp",util.get_matrix_numpy(eb, "moTotEmp").sum()],
                         ["TotalHH",util.get_matrix_numpy(eb, "moTotHh").sum()]]
         df_LandUse = pd.DataFrame.from_records(dict_LandUse,columns=modsum_header)
         modsum_vector = modsum_vector.append(df_LandUse[modsum_header])
-        
+
         # Network-Based VKT by Mode (Auto/LGV/HGV)
         GetVKT = _m.Modeller().tool("translink.RTM3Analytics.GetVKT")
         Auto_VKT, LGV_VKT, HGV_VKT = [0, 0, 0]
@@ -156,18 +156,30 @@ class ModSum(_m.Tool()):
         dt = _m.Modeller().desktop
         de = dt.data_explorer()
         db = de.active_database()
-        for sc in db.scenarios():
-            scenario_number = sc.number()
-            if eb.scenario(scenario_number) in [am_scen, md_scen, pm_scen]:
-                de.replace_primary_scenario(sc)
-                component_list = GetVKT.compute_network_based_vkt(sc, expansion_factors, "all")
-                Auto_VKT, LGV_VKT, HGV_VKT = [sum(x) for x in zip([Auto_VKT, LGV_VKT, HGV_VKT], component_list)]
+
+        df_netvkt = pd.read_sql('''select  peakperiod
+                                ,SUM((sov1+sov2+sov3+sov4)*Length) AS SOV_VKT
+                                ,SUM((hov1+hov2+hov3)*Length) AS HOV_VKT
+                                ,SUM(Light_Trucks*Length) AS LGV_VKT
+                                ,SUM(Heavy_Trucks*Length) AS HGV_VKT
+                                    FROM netResults
+                                    WHERE Auto_Time>0
+                                    GROUP BY peakperiod
+                                    ORDER BY (CASE WHEN peakperiod IS 'AM' THEN 1
+                                    WHEN peakperiod = 'MD' THEN 2 ELSE 3 END)''', conn)
+
+        Auto_VKT = (np.dot(np.array(expansion_factors['SOV']),np.array(df_netvkt['SOV_VKT']))
+                   +np.dot(np.array(expansion_factors['HOV']),np.array(df_netvkt['HOV_VKT'])))*335
+
+        LGV_VKT =  (np.dot(np.array(expansion_factors['LGV']),np.array(df_netvkt['LGV_VKT'])))*313
+        HGV_VKT =  (np.dot(np.array(expansion_factors['HGV']),np.array(df_netvkt['HGV_VKT'])))*276
+
         dict_AnnualVKT = [["NetworkBasedAnnualVKT_Auto", Auto_VKT],
                           ["NetworkBasedAnnualVKT_LGV" , LGV_VKT],
                           ["NetworkBasedAnnualVKT_HGV" , HGV_VKT]]
         df_AnnualVKT = pd.DataFrame.from_records(dict_AnnualVKT,columns=modsum_header)
         modsum_vector = modsum_vector.append(df_AnnualVKT[modsum_header])
-        
+
         # Matrix-Based VKT by Mode (LGV/HGV)
         truckPCE = {"Lgv":1.5, "Hgv":2.5}
         daily_to_annual = {"Lgv":313, "Hgv":276}
@@ -186,7 +198,7 @@ class ModSum(_m.Tool()):
             AnnualTruckVKT += Daily_VKT*daily_to_annual[mode]
         df_AnnualVKT = pd.DataFrame.from_records(dict_AnnualVKT,columns=modsum_header)
         modsum_vector = modsum_vector.append(df_AnnualVKT[modsum_header])
-        
+
         # Auto Ownership
         conn_rtm = util.get_rtm_db(eb)
         df_AutoOwnership = pd.read_sql("select * from segmentedHouseholds", conn_rtm)
