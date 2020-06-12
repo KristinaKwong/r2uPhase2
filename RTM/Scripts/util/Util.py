@@ -466,6 +466,18 @@ class Util(_m.Tool()):
             if per == "PM" or per == "ALL":
                 self.emme_tline_calc(pmscen, res, exp, sel, agg)
 
+        # cleanup unused transit lines.  This allows services to be turned off by specifying hdw=0 in the custom_tline file
+        del_transit = _m.Modeller().tool("inro.emme.data.network.transit.delete_transit_lines")
+        scenarios = [amscen, mdscen, pmscen]
+
+        # EMME will fail if the delete transit lines module is passed a selection and doesnt find it
+        try:
+            for scen in scenarios:
+                del_transit(selection="hdw=0,0.02", scenario=scen)
+        except:
+            pass
+
+
     def custom_tseg(self, amscen, mdscen, pmscen):
 
             custom_network = os.path.join(self.get_input_path(amscen.emmebank), 'custom_tseg.txt')
