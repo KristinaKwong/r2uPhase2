@@ -471,11 +471,11 @@ class Util(_m.Tool()):
         scenarios = [amscen, mdscen, pmscen]
 
         # EMME will fail if the delete transit lines module is passed a selection and doesnt find it
-        try:
-            for scen in scenarios:
+        for scen in scenarios:
+            try:
                 del_transit(selection="hdw=0,0.02", scenario=scen)
-        except:
-            pass
+            except:
+                continue
 
 
     def custom_tseg(self, amscen, mdscen, pmscen):

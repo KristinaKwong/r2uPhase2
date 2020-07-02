@@ -221,6 +221,53 @@ class DataExport(_m.Tool()):
         dfTollGy = dfTollGy.sum().reset_index()
 
 
+        dfVkt = util.get_pd_ij_df(eb)
+        dfVkt['amSovVkt1'] = df['amSovDemand1'].multiply(util.get_matrix_numpy(eb, "mfSkimAmSovDistVOT1").flatten(), axis = 0)
+        dfVkt['amSovVkt2'] = df['amSovDemand2'].multiply(util.get_matrix_numpy(eb, "mfSkimAmSovDistVOT2").flatten(), axis = 0)
+        dfVkt['amSovVkt3'] = df['amSovDemand3'].multiply(util.get_matrix_numpy(eb, "mfSkimAmSovDistVOT3").flatten(), axis = 0)
+        dfVkt['amSovVkt4'] = df['amSovDemand4'].multiply(util.get_matrix_numpy(eb, "mfSkimAmSovDistVOT4").flatten(), axis = 0)
+        dfVkt['mdSovVkt1'] = df['mdSovDemand1'].multiply(util.get_matrix_numpy(eb, "mfSkimMdSovDistVOT1").flatten(), axis = 0)
+        dfVkt['mdSovVkt2'] = df['mdSovDemand2'].multiply(util.get_matrix_numpy(eb, "mfSkimMdSovDistVOT2").flatten(), axis = 0)
+        dfVkt['mdSovVkt3'] = df['mdSovDemand3'].multiply(util.get_matrix_numpy(eb, "mfSkimMdSovDistVOT3").flatten(), axis = 0)
+        dfVkt['mdSovVkt4'] = df['mdSovDemand4'].multiply(util.get_matrix_numpy(eb, "mfSkimMdSovDistVOT4").flatten(), axis = 0)
+        dfVkt['pmSovVkt1'] = df['pmSovDemand1'].multiply(util.get_matrix_numpy(eb, "mfSkimPmSovDistVOT1").flatten(), axis = 0)
+        dfVkt['pmSovVkt2'] = df['pmSovDemand2'].multiply(util.get_matrix_numpy(eb, "mfSkimPmSovDistVOT2").flatten(), axis = 0)
+        dfVkt['pmSovVkt3'] = df['pmSovDemand3'].multiply(util.get_matrix_numpy(eb, "mfSkimPmSovDistVOT3").flatten(), axis = 0)
+        dfVkt['pmSovVkt4'] = df['pmSovDemand4'].multiply(util.get_matrix_numpy(eb, "mfSkimPmSovDistVOT4").flatten(), axis = 0)
+        dfVkt['amHovVkt1'] = df['amHovDemand1'].multiply(util.get_matrix_numpy(eb, "mfSkimAmHovDistVOT1").flatten(), axis = 0)
+        dfVkt['amHovVkt2'] = df['amHovDemand2'].multiply(util.get_matrix_numpy(eb, "mfSkimAmHovDistVOT2").flatten(), axis = 0)
+        dfVkt['amHovVkt3'] = df['amHovDemand3'].multiply(util.get_matrix_numpy(eb, "mfSkimAmHovDistVOT3").flatten(), axis = 0)
+        dfVkt['amHovVkt4'] = df['amHovDemand4'].multiply(util.get_matrix_numpy(eb, "mfSkimAmHovDistVOT4").flatten(), axis = 0)
+        dfVkt['mdHovVkt1'] = df['mdHovDemand1'].multiply(util.get_matrix_numpy(eb, "mfSkimMdHovDistVOT1").flatten(), axis = 0)
+        dfVkt['mdHovVkt2'] = df['mdHovDemand2'].multiply(util.get_matrix_numpy(eb, "mfSkimMdHovDistVOT2").flatten(), axis = 0)
+        dfVkt['mdHovVkt3'] = df['mdHovDemand3'].multiply(util.get_matrix_numpy(eb, "mfSkimMdHovDistVOT3").flatten(), axis = 0)
+        dfVkt['mdHovVkt4'] = df['mdHovDemand4'].multiply(util.get_matrix_numpy(eb, "mfSkimMdHovDistVOT4").flatten(), axis = 0)
+        dfVkt['pmHovVkt1'] = df['pmHovDemand1'].multiply(util.get_matrix_numpy(eb, "mfSkimPmHovDistVOT1").flatten(), axis = 0)
+        dfVkt['pmHovVkt2'] = df['pmHovDemand2'].multiply(util.get_matrix_numpy(eb, "mfSkimPmHovDistVOT2").flatten(), axis = 0)
+        dfVkt['pmHovVkt3'] = df['pmHovDemand3'].multiply(util.get_matrix_numpy(eb, "mfSkimPmHovDistVOT3").flatten(), axis = 0)
+        dfVkt['pmHovVkt4'] = df['pmHovDemand4'].multiply(util.get_matrix_numpy(eb, "mfSkimPmHovDistVOT4").flatten(), axis = 0)
+        dfVkt['amLGVVkt1'] = df['amLGVDemand1'].multiply(util.get_matrix_numpy(eb, "mfSkimAmLgvDist").flatten(), axis = 0)
+        dfVkt['amHGVVkt1'] = df['amHGVDemand1'].multiply(util.get_matrix_numpy(eb, "mfSkimAmHgvDist").flatten(), axis = 0)
+        dfVkt['mdLGVVkt1'] = df['mdLGVDemand1'].multiply(util.get_matrix_numpy(eb, "mfSkimMdLgvDist").flatten(), axis = 0)
+        dfVkt['mdHGVVkt1'] = df['mdHGVDemand1'].multiply(util.get_matrix_numpy(eb, "mfSkimMdHgvDist").flatten(), axis = 0)
+        dfVkt['pmLGVVkt1'] = df['pmLGVDemand1'].multiply(util.get_matrix_numpy(eb, "mfSkimPmLgvDist").flatten(), axis = 0)
+        dfVkt['pmHGVVkt1'] = df['pmHGVDemand1'].multiply(util.get_matrix_numpy(eb, "mfSkimPmHgvDist").flatten(), axis = 0)
+
+        dfVkt = pd.melt(dfVkt, id_vars = ['i','j'], var_name = 'timeModeVot', value_name = 'vkt')
+
+        dfVkt['peak'] = dfVkt['timeModeVot'].str[:2]
+        dfVkt['mode'] = dfVkt['timeModeVot'].str[2:5]
+
+        dfVkt = dfVkt.drop(['j','timeModeVot'], axis=1)
+        dfVkt = dfVkt.groupby(['i','peak','mode'])
+        dfVkt = dfVkt.sum().reset_index()
+
+        dfVkt = dfVkt[['peak','mode','i','vkt']]
+
+
+
+
+
         # create categorical fields from original colnames
         # old coding*****  dfTimeModeVot = dfGy['timeModeVot'].str.extract(r'(?P<peak>[a|m|p]{1}[m|d])(?P<mode>Sov|Hov|LGV|HGV)Demand(?P<votclass>\d)')
         dfTimeModeVot = dfGy['timeModeVot'].str.extract(r'(?P<peak>[a|m|p]{1}[m|d])(?P<mode>Sov|Hov|LGV|HGV)Demand(?P<votclass>\d)',expand=True)
@@ -240,6 +287,7 @@ class DataExport(_m.Tool()):
         dfGy.to_sql(name='autoTripsGy', con=conn, index=False, if_exists='replace')
         df2Gy.to_sql(name='autoVktGy', con=conn, index=False, if_exists='replace')
         dfTollGy.to_sql(name='autoTollGy', con=conn, index=False, if_exists='replace')
+        dfVkt.to_sql(name='autoVktModeOrigin', con=conn, index=False, if_exists='replace')
         conn.close()
 
     def addViewBridgeXings(self, eb):
