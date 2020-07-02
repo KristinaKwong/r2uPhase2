@@ -259,7 +259,7 @@ class DataExport(_m.Tool()):
         dfVkt['mode'] = dfVkt['timeModeVot'].str[2:5]
 
         dfVkt = dfVkt.drop(['j','timeModeVot'], axis=1)
-        dfVkt = dfVkt.groupby(['i','peak'])
+        dfVkt = dfVkt.groupby(['i','peak','mode'])
         dfVkt = dfVkt.sum().reset_index()
 
         dfVkt = dfVkt[['peak','mode','i','vkt']]
