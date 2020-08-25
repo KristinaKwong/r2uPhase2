@@ -265,15 +265,10 @@ class TransitAssignment(_m.Tool()):
                 "perception_factor": 2.50
             },
             "boarding_time": {
-<<<<<<< HEAD
-                "at_nodes": {
-                    "penalty": 1,
-=======
                 "at_nodes": None,
                 "on_lines": None,
                 "on_segments": {
                     "penalty": "@brdpeneff",
->>>>>>> 40a4c9cf... RTM: add a per-segment effective boarding penalty
                     "perception_factor":10.00
                 }
             },
