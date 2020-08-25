@@ -179,6 +179,10 @@ class InputSettings(_m.Tool()):
         create_attr("TRANSIT_LINE", "@ivtp",  "In vehicle travel time penalty", 0, False, scen)
         create_attr("TRANSIT_SEGMENT", "@hdwyfac", "Effective Headway Multiplier",1, False, scen)
 
+        # Initialize transit segment boarding penalty to default penalty for the transit line
+        create_attr("TRANSIT_SEGMENT", "@brdpeneff", "Effective Boarding Penalty",0, False, scen)
+        util.emme_segment_calc(scen, "@brdpeneff", "@brdline")
+
         create_attr("TRANSIT_SEGMENT", "@hdwyeff",  "Effective Headway", 0, False, scen)
         create_attr("TRANSIT_SEGMENT", "@ivttfac",  "IVTT Perception Factor",1, False, scen)
         create_attr("TRANSIT_SEGMENT", "@pseat", "Number of Seated Passengers", 0, False, scen)

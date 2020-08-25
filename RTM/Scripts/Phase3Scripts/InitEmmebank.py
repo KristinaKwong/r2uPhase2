@@ -176,6 +176,7 @@ class InitEmmebank(_m.Tool()):
         create_attr("TRANSIT_LINE", "@hdwyam", "AM Transit Headway", 0, False, scen)
         create_attr("TRANSIT_LINE", "@hdwymd", "MD Transit Headway", 0, False, scen)
         create_attr("TRANSIT_LINE", "@hdwypm", "PM Transit Headway", 0, False, scen)
+        create_attr("TRANSIT_LINE", "@brdline", "Line Boarding Penalty", 1, False, scen)
         create_attr("LINK", "@capacityam", "AM Roadway Lane Capacity", 0, False, scen)
         create_attr("LINK", "@capacitymd", "MD Roadway Lane Capacity", 0, False, scen)
         create_attr("LINK", "@capacitypm", "PM Roadway Lane Capacity", 0, False, scen)
