@@ -98,7 +98,7 @@ class ExportNetwork(_m.Tool()):
                           "@lanesmd", "@vdfmd", "@tollmd", "@capacitymd",
                           "@lanespm", "@vdfpm", "@tollpm", "@capacitypm",
                           "@tpfam", "@tpfmd", "@tpfpm",
-                          "@hdwyam", "@hdwymd", "@hdwypm",
+                          "@hdwyam", "@hdwymd", "@hdwypm", "@brdline",
                           "@lscid", "@lscstn", "@timeseg",
                           "@posted_speed","@signal_delay",
                           "@farezone", "@fareboundary", "@wcefareboundary"]

@@ -265,11 +265,12 @@ class TransitAssignment(_m.Tool()):
                 "perception_factor": 2.50
             },
             "boarding_time": {
-                "at_nodes": {
-                    "penalty": 1,
+                "at_nodes": None,
+                "on_lines": None,
+                "on_segments": {
+                    "penalty": "@brdpeneff",
                     "perception_factor":10.00
-                },
-                "on_lines": None
+                }
             },
             "boarding_cost": {
                 "at_nodes": None,
@@ -686,9 +687,9 @@ class TransitAssignment(_m.Tool()):
 
         spec_as_dict = self.get_matrix_skim_spec(modelist)
         spec_as_dict["actual_total_waiting_times"] = "mfBusWait"
+        spec_as_dict["by_mode_subset"]["actual_total_boarding_times"] = "mfBusBoard"
         spec_as_dict["by_mode_subset"]["actual_in_vehicle_times"] = "mfBusIvtt"
         spec_as_dict["by_mode_subset"]["actual_aux_transit_times"] = "mfBusAux"
-        spec_as_dict["by_mode_subset"]["avg_boardings"] = "mfBusBoard"
         spec_as_dict["by_mode_subset"]["actual_first_boarding_costs"] = "mfBusIncFirstCost"
         transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
@@ -725,9 +726,9 @@ class TransitAssignment(_m.Tool()):
         modelist = self.rail_mode_list
 
         spec_as_dict = self.get_matrix_skim_spec(modelist)
+        spec_as_dict["actual_total_waiting_times"] = "mfRailWait"
         spec_as_dict["by_mode_subset"]["actual_total_boarding_times"] = "mfRailBoard"
         spec_as_dict["by_mode_subset"]["actual_aux_transit_times"] = "mfRailAux"
-        spec_as_dict["actual_total_waiting_times"] = "mfRailWait"
         spec_as_dict["by_mode_subset"]["actual_first_boarding_costs"] = "mfRailBrdCst"
         transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
@@ -779,9 +780,9 @@ class TransitAssignment(_m.Tool()):
         modelist = self.wce_mode_list
 
         spec_as_dict = self.get_matrix_skim_spec(modelist)
+        spec_as_dict["actual_total_waiting_times"] = "mfWceWait"
         spec_as_dict["by_mode_subset"]["actual_total_boarding_times"] = "mfWceBoard"
         spec_as_dict["by_mode_subset"]["actual_aux_transit_times"] = "mfWceAux"
-        spec_as_dict["actual_total_waiting_times"] = "mfWceWait"
         transit_skim(spec_as_dict, scenario=scenarionumber, class_name=classname)
 
         spec_as_dict = self.get_matrix_skim_spec(modelist)
