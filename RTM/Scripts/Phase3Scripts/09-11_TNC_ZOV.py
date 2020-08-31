@@ -121,11 +121,6 @@ class Tnc_Zov(_m.Tool()):
             average_loaded_VHT = loaded_total_VHT/total_trips
             average_empty_VHT = empty_total_VHT / total_trips
 
-#            log_file.write("Period = "+period + "\n")
-#            log_file.write("   Average loaded VHT = " + str(average_loaded_VHT) + "\n")
-#            log_file.write(
-#                "   Average empty VHT = " + str(average_empty_VHT) + "\n")
-
 
 
 
