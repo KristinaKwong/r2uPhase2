@@ -78,7 +78,7 @@ class Util(_m.Tool()):
         }
         return spec
 
-    def compute_matrix(self, specs, scenario=None, num_procs=None):
+    def compute_matrix(self, specs, scenario=None, num_procs=None, quiet_logbook=True):
         comp = _m.Modeller().tool("inro.emme.matrix_calculation.matrix_calculator")
 
         if scenario is None:
@@ -92,7 +92,16 @@ class Util(_m.Tool()):
             else:
                 num_procs = int(num_procs_mat.data)
 
-        return comp(specs, scenario, num_procs)
+        if quiet_logbook:
+            previous_level = self.get_logbook_level()
+            self.stop_logbook_logging()   
+            ret = comp(specs, scenario, num_procs)
+            self.set_logbook_level(previous_level)     
+ 
+        else:
+            ret = comp(specs, scenario, num_procs)
+
+        return ret
 
     def matrix_sum(self, matrices):
         """Returns a string representation of a summation expression containing all matrix names passed in.
@@ -342,7 +351,7 @@ class Util(_m.Tool()):
             ret += factors[i] * matrices[i]
         return ret
 
-    def emme_node_calc(self, scen, result, expression, sel_node="all", aggregate=None):
+    def emme_node_calc(self, scen, result, expression, sel_node="all", aggregate=None, quiet_logbook=True):
         calc_link = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         spec = { "result": result,
                  "expression": expression,
@@ -350,9 +359,20 @@ class Util(_m.Tool()):
                  "aggregation": aggregate,
                  "type": "NETWORK_CALCULATION"
                }
-        return calc_link(spec, scenario=scen)
 
-    def emme_link_calc(self, scen, result, expression, sel_link="all", aggregate=None):
+        if quiet_logbook:
+            previous_level = self.get_logbook_level()
+            try:
+                self.stop_logbook_logging()
+            finally:
+                ret = calc_link(spec, scenario=scen)
+                self.set_logbook_level(previous_level)     
+        else:
+            ret = calc_link(spec, scenario=scen)
+
+        return ret
+
+    def emme_link_calc(self, scen, result, expression, sel_link="all", aggregate=None, quiet_logbook=True):
         calc_link = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         spec = { "result": result,
                  "expression": expression,
@@ -360,9 +380,20 @@ class Util(_m.Tool()):
                  "aggregation": aggregate,
                  "type": "NETWORK_CALCULATION"
                }
-        return calc_link(spec, scenario=scen)
 
-    def emme_turn_calc(self, scen, result, expression, sel_inlink="all", sel_outlink="all", aggregate=None):
+        if quiet_logbook:
+            previous_level = self.get_logbook_level()
+            try:
+                self.stop_logbook_logging()
+            finally:
+                ret = calc_link(spec, scenario=scen)
+                self.set_logbook_level(previous_level)     
+        else:
+            ret = calc_link(spec, scenario=scen)
+
+        return ret
+
+    def emme_turn_calc(self, scen, result, expression, sel_inlink="all", sel_outlink="all", aggregate=None, quiet_logbook=True):
         calc_link = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         spec = { "result": result,
                  "expression": expression,
@@ -370,9 +401,20 @@ class Util(_m.Tool()):
                  "aggregation": aggregate,
                  "type": "NETWORK_CALCULATION"
                }
-        return calc_link(spec, scenario=scen)
 
-    def emme_tline_calc(self, scen, result, expression, sel_line="all", aggregate=None):
+        if quiet_logbook:
+            previous_level = self.get_logbook_level()
+            try:
+                self.stop_logbook_logging()
+            finally:
+                ret = calc_link(spec, scenario=scen)
+                self.set_logbook_level(previous_level)     
+        else:
+            ret = calc_link(spec, scenario=scen)
+
+        return ret
+
+    def emme_tline_calc(self, scen, result, expression, sel_line="all", aggregate=None, quiet_logbook=True):
         calc_link = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         spec = { "result": result,
                  "expression": expression,
@@ -380,9 +422,20 @@ class Util(_m.Tool()):
                  "aggregation": aggregate,
                  "type": "NETWORK_CALCULATION"
                }
-        return calc_link(spec, scenario=scen)
 
-    def emme_segment_calc(self, scen, result, expression, sel_link="all", sel_line="all", aggregate=None):
+        if quiet_logbook:
+            previous_level = self.get_logbook_level()
+            try:
+                self.stop_logbook_logging()
+            finally:
+                ret = calc_link(spec, scenario=scen)
+                self.set_logbook_level(previous_level)     
+        else:
+            ret = calc_link(spec, scenario=scen)
+
+        return ret
+
+    def emme_segment_calc(self, scen, result, expression, sel_link="all", sel_line="all", aggregate=None, quiet_logbook=True):
         calc_link = _m.Modeller().tool("inro.emme.network_calculation.network_calculator")
         spec = { "result": result,
                  "expression": expression,
@@ -390,7 +443,18 @@ class Util(_m.Tool()):
                  "aggregation": aggregate,
                  "type": "NETWORK_CALCULATION"
                }
-        return calc_link(spec, scenario=scen)
+
+        if quiet_logbook:
+            previous_level = self.get_logbook_level()
+            try:
+                self.stop_logbook_logging()
+            finally:
+                ret = calc_link(spec, scenario=scen)
+                self.set_logbook_level(previous_level)     
+        else:
+            ret = calc_link(spec, scenario=scen)
+
+        return ret
 
     def overide_network(self, amscen, mdscen, pmscen):
 
@@ -587,3 +651,23 @@ class Util(_m.Tool()):
         eb = _m.Modeller().emmebank
         matrix = eb.matrix(mat_id)
         transpose_matrix(matrix=matrix)
+
+    # TODO update the following function documentation to standard determined over the next
+    # few months
+    ##############################################################
+    # the following three functions are to control the emme logbook logging
+    # the first one documents the current state of the the logbook
+    # the second one stops the logging
+    # the third sets the resets to a given state (likely from the first function)
+    # so far the have been deployed in the network and matrix calculators with an
+    # option argument to default to no logging for those.  
+    # these functions could be deployed inline in the code if need be
+    ##############################################################
+    def get_logbook_level(self):
+        return _m.logbook_level()    
+
+    def stop_logbook_logging(self):
+        return _m.logbook_level(_m.LogbookLevel.NONE)
+
+    def set_logbook_level(self, level):
+        return _m.logbook_level(level)
