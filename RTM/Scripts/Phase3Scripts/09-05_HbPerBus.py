@@ -715,9 +715,9 @@ class HbPersonalBusiness(_m.Tool()):
         util.set_matrix_numpy(eb, "HbPbRailPerTrips", Rail)
         util.set_matrix_numpy(eb, "HbPbWalkPerTrips", Walk)
         util.set_matrix_numpy(eb, "HbPbBikePerTrips", Bike)
-        util.set_matrix_numpy(eb, "HbShTNCI1PerTrips", TNCI1)
-        util.set_matrix_numpy(eb, "HbShTNCI2PerTrips", TNCI2)
-        util.set_matrix_numpy(eb, "HbShTNCI3PerTrips", TNCI3)
+        util.set_matrix_numpy(eb, "HbPbTNCI1PerTrips", TNCI1)
+        util.set_matrix_numpy(eb, "HbPbTNCI2PerTrips", TNCI2)
+        util.set_matrix_numpy(eb, "HbPbTNCI3PerTrips", TNCI3)
 
         # SOV
         # AM
