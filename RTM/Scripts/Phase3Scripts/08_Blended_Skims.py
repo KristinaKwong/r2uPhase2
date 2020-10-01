@@ -173,7 +173,7 @@ class ModeChoiceGenDf(_m.Tool()):
                      'hbpbl':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlSovCost_I1', 'HbPbBlSovTime_I1']}, # home-base personal business low
                      'hbpbm':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlSovCost_I2', 'HbPbBlSovTime_I2']}, # home-base personal business med
                      'hbes':{'PA':hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlSovCost', 'HbEsBlSovTime']}, # home-base escorting
-                     'hbun':{'PA':hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbUBlSovCost', 'HbUBlSovTime']}, # home-base escorting
+                     'hbun':{'PA':hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['HbUBlSovCost', 'HbUBlSovTime']}, # home-base escorting
                      'hbwo':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlSovCost_I1', 'HbWBlSovTime_I1' ]}, # home-base work low
                      'hbpbh':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlSovCost_I3', 'HbPbBlSovTime_I3']}, # home-base personal business high
                      'hbsom':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlSovCost_I2', 'HbSoBlSovTime_I2']}} # home-base social med
@@ -334,7 +334,7 @@ class ModeChoiceGenDf(_m.Tool()):
                      'hbpbl':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I1', 'HbPbBlHovTime_I1', 'HbPbBlTNCCost_I1']}, # home-base personal business low
                      'hbpbm':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I2', 'HbPbBlHovTime_I2', 'HbPbBlTNCCost_I2']}, # home-base personal business med
                      'hbes':{'PA':hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbEsBlHovCost', 'HbEsBlHovTime', 'HbEsBlTNCCost']}, # home-base escorting
-                     'hbun':{'PA':hbes_fct[0], 'AP':hbes_fct[1], 'Mat':['HbUBlHovCost', 'HbUBlHovTime', 'HbUBlTNCCost']}, # home-base escorting
+                     'hbun':{'PA':hbun_fct[0], 'AP':hbun_fct[1], 'Mat':['HbUBlHovCost', 'HbUBlHovTime', 'HbUBlTNCCost']}, # home-base escorting
                      'hbwo':{'PA':hbwo_fct[0], 'AP':hbwo_fct[1], 'Mat':['HbWBlHovCost_I1', 'HbWBlHovTime_I1', 'HbWBlTNCCost_I1']}, # home-base work low
                      'hbpbh':{'PA':hbpb_fct[0], 'AP':hbpb_fct[1], 'Mat':['HbPbBlHovCost_I3', 'HbPbBlHovTime_I3', 'HbPbBlTNCCost_I3']}, # home-base personal business high
                      'hbsom':{'PA':hbso_fct[0], 'AP':hbso_fct[1], 'Mat':['HbSoBlHovCost_I2', 'HbSoBlHovTime_I2', 'HbSoBlTNCCost_I2']}} # home-base social med
