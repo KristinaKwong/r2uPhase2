@@ -406,8 +406,7 @@ class HbWork(_m.Tool()):
         Df['BusAux'] = util.get_matrix_numpy(eb, 'HbWBlBAuBusAux') # Bus Walk Time
         Df['BusBrd'] = util.get_matrix_numpy(eb, 'HbWBlBAuBusBoard') # Bus Boarding Time
         Df['BusFar'] = util.get_matrix_numpy(eb, 'HbWBlBAuBusFare') # Bus Fare
-        Df['BusTot'] = util.get_matrix_numpy(eb, 'HbWBlBusIvtt') + util.get_matrix_numpy(eb, 'HbWBlBusWait') + util.get_matrix_numpy(eb, 'HbWBlBusAux')
-        Df['BusIVT'] = util.get_matrix_numpy(eb, 'HbWBlBusIvtt') #In vehicle Bus time
+        Df['BusTot'] = util.get_matrix_numpy(eb, 'HbWBlBAuBusIvtt') + util.get_matrix_numpy(eb, 'HbWBlBAuBusWait') + util.get_matrix_numpy(eb, 'HbWBlBAuBusAux')
         Df['BAuTot'] = Df['BusIVT'] + Df['BusWat'] + Df['BusAux'] + Df['BAuTim'] # Total Travel Time
         Df['BAuIBR'] = Df['BusIVT']/(Df['BusIVT'] + Df['BAuTim'] + Tiny) # Ratio of Time on Bus to total travel time
         Df['WBusFar'] = util.get_matrix_numpy(eb, 'HbWBlBusFare') #Walk to Transit Fare
