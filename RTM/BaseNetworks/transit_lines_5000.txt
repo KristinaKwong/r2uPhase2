@@ -564,6 +564,8 @@ a'004E1X' b   2  15.00  23.00 '004-EB1'                 0      0      0
    230301         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231600         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -678,6 +680,8 @@ a'004W1X' b   2  12.00  23.00 '004-WB1'                 0      0      0
    230702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231600         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230301         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -821,7 +825,9 @@ a'007E1X' b   2  15.00  23.00 '007-EB1'                 0      0      0
    233401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   230402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   230402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231500         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231600         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -945,7 +951,9 @@ a'007W1X' b   2  15.00  23.00 '007-WB1'                 0      0      0
    231901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   230503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   230503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231600         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -1016,7 +1024,9 @@ a'007W2M' b   2  15.00  23.00 '007-WB2'                 0      0      0
    231901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   230503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   230503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231600         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -1121,14 +1131,16 @@ a'009E1A' b   2   4.62  23.00 '009-EB1'                 0      0      0
    210303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210305         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   234401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   234401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   233501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   233501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233603         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -1183,14 +1195,16 @@ a'009E1P' b   2   5.00  23.00 '009-EB1'                 0      0      0
    210303         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210305         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   234401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   234401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   233501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   233501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233603         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -1257,7 +1271,8 @@ a'009E2X' b   2   7.50  23.00 '009-EB1BDY'              0      0      0
    231502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   233501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   233501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233603         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    232013         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -1490,13 +1505,15 @@ a'009W1A' b   2   4.29  23.00 '009-WB1X1'               0      0      0
    233603         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231903         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    234401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -1564,13 +1581,15 @@ a'009W1P' b   2   4.62  23.00 '009-WB1'                 0      0      0
    233603         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231903         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    234401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -1614,6 +1633,7 @@ a'009W2X' b   2   6.67  23.00 '009-WB1A'                0      0      0
    232013         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233603         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -1879,13 +1899,15 @@ a'014E1A' b   2   8.57  23.00 '014-EB1'                 0      0      0
    210305         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    234401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   233501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   233501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233603         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -1914,7 +1936,7 @@ a'014E1A' b   2   8.57  23.00 '014-EB1'                 0      0      0
    224406         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    224411         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    224412         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   224501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   224501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    224504         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    226202         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    250907         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -1941,13 +1963,15 @@ a'014E1M' b   2  10.00  23.00 '014-EB1'                 0      0      0
    210305         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    234401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   233501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   233501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233603         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    232013         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -2000,13 +2024,15 @@ a'014E1P' b   2  10.00  23.00 '014-EB1'                 0      0      0
    210305         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    234401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   233501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   233501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233602         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233603         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -2035,8 +2061,8 @@ a'014E1P' b   2  10.00  23.00 '014-EB1'                 0      0      0
    224406         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    224411         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    224412         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   224501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   224504         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   224501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   224504         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    226201         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    226202         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    226203         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -2139,6 +2165,7 @@ a'014W1A' b   2   7.50  23.00 '014-WB1'                 0      0      0
    233603         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231903         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -2146,6 +2173,7 @@ a'014W1A' b   2   7.50  23.00 '014-WB1'                 0      0      0
    231402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    234401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -2199,6 +2227,7 @@ a'014W1M' b   2  12.00  23.00 '014-WB1'                 0      0      0
    232013         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233603         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -2206,6 +2235,7 @@ a'014W1M' b   2  12.00  23.00 '014-WB1'                 0      0      0
    231402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    234401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -2262,6 +2292,7 @@ a'014W1P' b   2  10.00  23.00 '014-WB1'                 0      0      0
    233603         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231903         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -2269,6 +2300,7 @@ a'014W1P' b   2  10.00  23.00 '014-WB1'                 0      0      0
    231402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    234401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -4580,7 +4612,9 @@ a'032N1A' b   1  20.00  23.00 '032-NB1'                 0      0      0
    233401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   230402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   230402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231500         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231600         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    230501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -4644,7 +4678,9 @@ a'032S1P' b   1  15.00  23.00 '032-SB1'                 0      0      0
    230601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   230503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   230503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231600         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -5039,8 +5075,10 @@ a'044E1X' b  10  20.00  35.00 '044-EB1'                 0      0      0
    230203         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    230301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   230402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   230503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   230402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231500         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231600         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   230503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231901         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -5090,7 +5128,9 @@ a'044W1X' b  10  10.00  35.00 '044-WB1'                 0      0      0
    231901         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    230702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   230503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   230503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231600         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    230301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -5380,8 +5420,10 @@ a'084E1X' b   1   8.57  23.00 '084-EB1'                 0      0      0
    230203         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   230402         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   230503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   230402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231500         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231600         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   230503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231901         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -5440,7 +5482,9 @@ a'084W1X' b   1  12.00  23.00 '084-WB1'                 0      0      0
    231901         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    230702         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231701         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   230503         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   230503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231600         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    230402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    230301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -5460,13 +5504,15 @@ a'099E1A' b  10   6.00  35.00 '99BL: UBC/Commercial'      0      0      0
    210305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    234401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   231403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   233501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   233501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    233602         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    233603         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -5513,13 +5559,15 @@ a'099E1M' b  10   4.62  35.00 '99BL: UBC/Commercial'      0      0      0
    210305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    234401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   231403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   233501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   233501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    233603         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    232013         dwt=+0   ttf=1   us1=0   us2=0   us3=0
@@ -5554,13 +5602,15 @@ a'099E1P' b  10   3.16  23.00 '99BL: UBC/Commercial'      0      0      0
    210305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    234401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   231403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   231601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    233602         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    233603         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -5619,13 +5669,15 @@ a'099E2P' b  10   3.16  23.00 '99BL: UBC/Boundary'      0      0      0
    210305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    234401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   231403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   231601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    233602         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    233603         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -5694,13 +5746,15 @@ a'099E3X' b  10   3.00  35.00 '99BL: UBC/Arbutus'       0      0      0
    210305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    234401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   231403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   233501         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   233501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233601        lay=5.00
 c '099E3X' first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
 a'099W1A' b  10   5.45  35.00 '99BL: Commercial/UBC'      0      0      0
@@ -5752,14 +5806,16 @@ a'099W1A' b  10   5.45  35.00 '99BL: Commercial/UBC'      0      0      0
    232012         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    233603         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231903         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   233601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   233601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    234401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -5794,14 +5850,16 @@ a'099W1M' b  10   4.62  35.00 '99BL: Commercial/UBC'      0      0      0
    233703         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    232013         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    233603         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   233601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   233601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    234401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -5860,14 +5918,16 @@ a'099W1P' b  10   3.00  23.00 '99BL: Commercial/UBC'      0      0      0
    232012         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    233603         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231903         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   233601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   233601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    234401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -5934,14 +5994,16 @@ a'099W2X' b  10   5.45  35.00 '99BL: Boundary/UBC'      0      0      0
    232012         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    233603         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231903         dwt=+0   ttf=1   us1=0   us2=0   us3=0
-   233601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   233601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    234401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -5951,14 +6013,16 @@ a'099W2X' b  10   5.45  35.00 '99BL: Boundary/UBC'      0      0      0
 c '099W2X' first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
 a'099W3X' b  10   3.00  35.00 '99BL: Arbutus/UBC'       0      0      0
   path=no
-   233601         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   233601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231700         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    233501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231601         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    231402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    233401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
-   231403         dwt=+0   ttf=1   us1=0   us2=0   us3=0
+   231403         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   234500         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    234401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    210502         dwt=+0   ttf=1   us1=0   us2=0   us3=0
    210305         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -13973,6 +14037,8 @@ a'258N1P' b   3  60.00  23.00 '258-NB1'                 0      0      0
    230301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    230402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231500         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231600         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    230503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231701         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    230702         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -14062,6 +14128,8 @@ a'258S1A' b   3  20.00  35.00 '258-SB1'                 0      0      0
    230501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    230502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    230503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231600         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231500         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    230402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    230301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
@@ -14112,6 +14180,8 @@ a'258S2A' b   3  20.00  35.00 '258-SB2'                 0      0      0
    230501         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    230502         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    230503         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231600         dwt=#0   ttf=1   us1=0   us2=0   us3=0
+   231500         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    230402         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    231401         dwt=#0   ttf=1   us1=0   us2=0   us3=0
    230301         dwt=#0   ttf=1   us1=0   us2=0   us3=0
