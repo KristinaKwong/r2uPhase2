@@ -1,0 +1,699 @@
+{
+    "command_history": [
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "262404": "POINT(497.276217 5453.371141)",
+                    "262402": "POINT(497.387118 5453.485858)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "262402-262404"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "262402-262404": "LINESTRING(497.387118 5453.485858, 497.384316 5453.488077, 497.341976 5453.425275, 497.319921 5453.402486, 497.274333 5453.373871, 497.276217 5453.371141)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@capacityam",
+                "element_ids": [
+                    "262402-262404"
+                ],
+                "value": 800.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "262404": "POINT(497.276217 5453.371141)",
+                    "262402": "POINT(497.387118 5453.485858)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "262402-262404"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "262402-262404": "LINESTRING(497.387118 5453.485858, 497.384316 5453.488077, 497.341976 5453.425275, 497.319921 5453.402486, 497.274333 5453.373871, 497.276217 5453.371141)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@capacitymd",
+                "element_ids": [
+                    "262402-262404"
+                ],
+                "value": 800.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "262404": "POINT(497.276217 5453.371141)",
+                    "262402": "POINT(497.387118 5453.485858)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "262402-262404"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "262402-262404": "LINESTRING(497.387118 5453.485858, 497.384316 5453.488077, 497.341976 5453.425275, 497.319921 5453.402486, 497.274333 5453.373871, 497.276217 5453.371141)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@capacitypm",
+                "element_ids": [
+                    "262402-262404"
+                ],
+                "value": 800.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "262404": "POINT(497.276217 5453.371141)",
+                    "262403": "POINT(497.176096 5453.351753)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "262403-262404"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "262403-262404": "LINESTRING(497.176096 5453.351753, 497.176199 5453.348296, 497.17722 5453.348353, 497.207854 5453.350058, 497.225055 5453.353455, 497.240814 5453.356567, 497.278102 5453.368411, 497.276217 5453.371141)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@capacityam",
+                "element_ids": [
+                    "262403-262404"
+                ],
+                "value": 800.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "262404": "POINT(497.276217 5453.371141)",
+                    "262403": "POINT(497.176096 5453.351753)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "262403-262404"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "262403-262404": "LINESTRING(497.176096 5453.351753, 497.176199 5453.348296, 497.17722 5453.348353, 497.207854 5453.350058, 497.225055 5453.353455, 497.240814 5453.356567, 497.278102 5453.368411, 497.276217 5453.371141)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@capacitymd",
+                "element_ids": [
+                    "262403-262404"
+                ],
+                "value": 800.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "262404": "POINT(497.276217 5453.371141)",
+                    "262403": "POINT(497.176096 5453.351753)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "262403-262404"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "262403-262404": "LINESTRING(497.176096 5453.351753, 497.176199 5453.348296, 497.17722 5453.348353, 497.207854 5453.350058, 497.225055 5453.353455, 497.240814 5453.356567, 497.278102 5453.368411, 497.276217 5453.371141)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@capacitypm",
+                "element_ids": [
+                    "262403-262404"
+                ],
+                "value": 800.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "262302": "POINT(496.448457 5453.332219)",
+                    "262301": "POINT(496.239329 5453.333881)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "262301-262302"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "262301-262302": "LINESTRING(496.239329 5453.333881, 496.296933 5453.333094, 496.347212 5453.332407, 496.405991 5453.332298, 496.448457 5453.332219)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@capacityam",
+                "element_ids": [
+                    "262301-262302"
+                ],
+                "value": 800.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "262302": "POINT(496.448457 5453.332219)",
+                    "262301": "POINT(496.239329 5453.333881)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "262301-262302"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "262301-262302": "LINESTRING(496.239329 5453.333881, 496.296933 5453.333094, 496.347212 5453.332407, 496.405991 5453.332298, 496.448457 5453.332219)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@capacitymd",
+                "element_ids": [
+                    "262301-262302"
+                ],
+                "value": 800.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "262302": "POINT(496.448457 5453.332219)",
+                    "262301": "POINT(496.239329 5453.333881)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "262301-262302"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "262301-262302": "LINESTRING(496.239329 5453.333881, 496.296933 5453.333094, 496.347212 5453.332407, 496.405991 5453.332298, 496.448457 5453.332219)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@capacitypm",
+                "element_ids": [
+                    "262301-262302"
+                ],
+                "value": 800.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "262302": "POINT(496.448457 5453.332219)",
+                    "261504": "POINT(496.862987 5453.352879)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "261504-262302"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "261504-262302": "LINESTRING(496.862987 5453.352879, 496.862833 5453.357492, 496.759398 5453.357975, 496.758393 5453.357963, 496.697103 5453.357311, 496.688611 5453.352669, 496.655997 5453.354357, 496.606393 5453.350682, 496.604357 5453.350531, 496.559472 5453.342615, 496.509196 5453.333748, 496.448457 5453.332219)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@capacityam",
+                "element_ids": [
+                    "261504-262302"
+                ],
+                "value": 800.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "262302": "POINT(496.448457 5453.332219)",
+                    "261504": "POINT(496.862987 5453.352879)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "261504-262302"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "261504-262302": "LINESTRING(496.862987 5453.352879, 496.862833 5453.357492, 496.759398 5453.357975, 496.758393 5453.357963, 496.697103 5453.357311, 496.688611 5453.352669, 496.655997 5453.354357, 496.606393 5453.350682, 496.604357 5453.350531, 496.559472 5453.342615, 496.509196 5453.333748, 496.448457 5453.332219)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@capacitymd",
+                "element_ids": [
+                    "261504-262302"
+                ],
+                "value": 800.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "262302": "POINT(496.448457 5453.332219)",
+                    "261504": "POINT(496.862987 5453.352879)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "261504-262302"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "261504-262302": "LINESTRING(496.862987 5453.352879, 496.862833 5453.357492, 496.759398 5453.357975, 496.758393 5453.357963, 496.697103 5453.357311, 496.688611 5453.352669, 496.655997 5453.354357, 496.606393 5453.350682, 496.604357 5453.350531, 496.559472 5453.342615, 496.509196 5453.333748, 496.448457 5453.332219)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@capacitypm",
+                "element_ids": [
+                    "261504-262302"
+                ],
+                "value": 800.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "262301": "POINT(496.239329 5453.333881)",
+                    "261303": "POINT(495.960949 5453.338481)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "262301-261303"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "262301-261303": "LINESTRING(496.239329 5453.333881, 496.025941 5453.337406, 495.960949 5453.338481)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@capacityam",
+                "element_ids": [
+                    "262301-261303"
+                ],
+                "value": 800.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "262301": "POINT(496.239329 5453.333881)",
+                    "261303": "POINT(495.960949 5453.338481)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "262301-261303"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "262301-261303": "LINESTRING(496.239329 5453.333881, 496.025941 5453.337406, 495.960949 5453.338481)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@capacitymd",
+                "element_ids": [
+                    "262301-261303"
+                ],
+                "value": 800.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "262301": "POINT(496.239329 5453.333881)",
+                    "261303": "POINT(495.960949 5453.338481)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "262301-261303"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "262301-261303": "LINESTRING(496.239329 5453.333881, 496.025941 5453.337406, 495.960949 5453.338481)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@capacitypm",
+                "element_ids": [
+                    "262301-261303"
+                ],
+                "value": 800.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "262201": "POINT(495.478407 5453.345087)",
+                    "261303": "POINT(495.960949 5453.338481)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "262201-261303"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "262201-261303": "LINESTRING(495.478407 5453.345087, 495.478454 5453.340323, 495.540902 5453.339783, 495.550566 5453.343677, 495.599037 5453.343527, 495.714373 5453.340935, 495.787327 5453.340645, 495.838947 5453.339961, 495.879929 5453.339419, 495.920953 5453.338944, 495.960949 5453.338481)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@capacityam",
+                "element_ids": [
+                    "262201-261303"
+                ],
+                "value": 800.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "262201": "POINT(495.478407 5453.345087)",
+                    "261303": "POINT(495.960949 5453.338481)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "262201-261303"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "262201-261303": "LINESTRING(495.478407 5453.345087, 495.478454 5453.340323, 495.540902 5453.339783, 495.550566 5453.343677, 495.599037 5453.343527, 495.714373 5453.340935, 495.787327 5453.340645, 495.838947 5453.339961, 495.879929 5453.339419, 495.920953 5453.338944, 495.960949 5453.338481)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@capacitymd",
+                "element_ids": [
+                    "262201-261303"
+                ],
+                "value": 800.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "262201": "POINT(495.478407 5453.345087)",
+                    "261303": "POINT(495.960949 5453.338481)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "262201-261303"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "262201-261303": "LINESTRING(495.478407 5453.345087, 495.478454 5453.340323, 495.540902 5453.339783, 495.550566 5453.343677, 495.599037 5453.343527, 495.714373 5453.340935, 495.787327 5453.340645, 495.838947 5453.339961, 495.879929 5453.339419, 495.920953 5453.338944, 495.960949 5453.338481)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@capacitypm",
+                "element_ids": [
+                    "262201-261303"
+                ],
+                "value": 800.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "241801": "POINT(488.152093 5453.557987)",
+                    "240803": "POINT(488.676821 5453.545477)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "241801-240803"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "241801-240803": "LINESTRING(488.152093 5453.557987, 488.254496 5453.556757, 488.35683 5453.553927, 488.461356 5453.550994, 488.516876 5453.549756, 488.676821 5453.545477)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@signal_delay",
+                "element_ids": [
+                    "241801-240803"
+                ],
+                "value": 1.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "241801": "POINT(488.152093 5453.557987)",
+                    "240803": "POINT(488.676821 5453.545477)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "240803-241801"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "240803-241801": "LINESTRING(488.676821 5453.545477, 488.516876 5453.549756, 488.461356 5453.550994, 488.35683 5453.553927, 488.254496 5453.556757, 488.152093 5453.557987)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@signal_delay",
+                "element_ids": [
+                    "240803-241801"
+                ],
+                "value": 1.0,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "240501": "POINT(487.401045 5453.565035)",
+                    "240603": "POINT(487.605859 5453.56288)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "240501-240603"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "240501-240603": "LINESTRING(487.401045 5453.565035, 487.605859 5453.56288)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@signal_delay",
+                "element_ids": [
+                    "240501-240603"
+                ],
+                "value": 0.5,
+                "element_type": "LINK"
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "240501": "POINT(487.401045 5453.565035)",
+                    "240403": "POINT(486.989903 5453.568914)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "240501-240403"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "240501-240403": "LINESTRING(487.401045 5453.565035, 487.205388 5453.566209, 487.134478 5453.567508, 487.098547 5453.567858, 487.063982 5453.568194, 486.989903 5453.568914)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@signal_delay",
+                "element_ids": [
+                    "240501-240403"
+                ],
+                "value": 0.5,
+                "element_type": "LINK"
+            }
+        }
+    ],
+    "version": "F8A1BCA0-D0A1-49a1-9A43-6769D2312D7D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 1 0 0",
+    "type": "NETWORK_BUILD",
+    "metadata": {
+        "projection": "PROJCS[\"WGS_84_UTM_10N_vancouver_special\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",500.0],PARAMETER[\"False_Northing\",0],PARAMETER[\"Central_Meridian\",-123.0],PARAMETER[\"Scale_Factor\",0.9996],PARAMETER[\"Latitude_Of_Origin\",0.0],UNIT[\"Kilometer\",1000.0]]",
+        "emmebank_path": "C:/Workspace/RTM/R2U/RTM/check_validation/emmebank",
+        "comments": "",
+        "scenario_title": "sc1704 network fixes",
+        "author_initials": "none",
+        "scenario_number": "1704",
+        "time": "16:00:34",
+        "date": "2020-04-20",
+        "project_title": "check_validation"
+    }
+}
