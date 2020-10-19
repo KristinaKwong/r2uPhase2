@@ -1,0 +1,110 @@
+{
+    "command_history": [
+        {
+            "extra_geometries": {},
+            "command": "create_node",
+            "results": {
+                "changes": {
+                    "added": {
+                        "NODE": [
+                            "233613"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "233613": "POINT(487.776726 5456.815936)"
+                    }
+                }
+            },
+            "parameters": {
+                "attributes": {
+                    "label": "0000",
+                    "@farezone": 0.0,
+                    "y": 5456.81593629308,
+                    "x": 487.77672602744,
+                    "data1": 0.0,
+                    "data3": 0.0,
+                    "data2": 0.0
+                },
+                "node_id": 233613,
+                "is_centroid": false
+            }
+        },
+        {
+            "extra_geometries": {},
+            "command": "create_node",
+            "results": {
+                "changes": {
+                    "added": {
+                        "NODE": [
+                            "233614"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "233614": "POINT(486.49808 5456.830331)"
+                    }
+                }
+            },
+            "parameters": {
+                "attributes": {
+                    "label": "0000",
+                    "@farezone": 0.0,
+                    "y": 5456.83033102751,
+                    "x": 486.498079523054,
+                    "data1": 0.0,
+                    "data3": 0.0,
+                    "data2": 0.0
+                },
+                "node_id": 233614,
+                "is_centroid": false
+            }
+        },
+        {
+            "extra_geometries": {},
+            "command": "create_node",
+            "results": {
+                "changes": {
+                    "added": {
+                        "NODE": [
+                            "233615"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "NODE": {
+                        "233615": "POINT(481.941257 5457.026827)"
+                    }
+                }
+            },
+            "parameters": {
+                "attributes": {
+                    "label": "0000",
+                    "@farezone": 0.0,
+                    "y": 5457.02682650697,
+                    "x": 481.94125703406,
+                    "data1": 0.0,
+                    "data3": 0.0,
+                    "data2": 0.0
+                },
+                "node_id": 233615,
+                "is_centroid": false
+            }
+        }
+    ],
+    "version": "F8A1BCA0-D0A1-49a1-9A43-6769D2312D7D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 1 0 0",
+    "type": "NETWORK_BUILD",
+    "metadata": {
+        "projection": "PROJCS[\"WGS_84_UTM_10N_vancouver_special\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",500.0],PARAMETER[\"False_Northing\",0],PARAMETER[\"Central_Meridian\",-123.0],PARAMETER[\"Scale_Factor\",0.9996],PARAMETER[\"Latitude_Of_Origin\",0.0],UNIT[\"Kilometer\",1000.0]]",
+        "emmebank_path": "C:/KristinaK/_R2U/RTM/_R2U_2035Sc1_2020-04-06/emmebank",
+        "comments": "",
+        "scenario_title": "2035 Sc1: Sc3501 + Tunnel",
+        "author_initials": "none",
+        "scenario_number": "3511",
+        "time": "15:32:43",
+        "date": "2020-04-30",
+        "project_title": "_R2U_2035Sc1_2020-04-06"
+    }
+}
