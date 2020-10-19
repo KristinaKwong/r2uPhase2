@@ -1,0 +1,65 @@
+{
+    "command_history": [
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "210208": "POINT(481.917607 5457.044772)",
+                    "233615": "POINT(481.941257 5457.026827)",
+                    "210304": "POINT(481.983848 5457.226834)"
+                }
+            },
+            "command": "change_link_node",
+            "results": {
+                "changes": {
+                    "removed": {
+                        "LINK": [
+                            "210304-233615",
+                            "233615-210304"
+                        ]
+                    },
+                    "added": {
+                        "LINK": [
+                            "210208-233615",
+                            "233615-210208"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "210304-233615": "LINESTRING(481.983848 5457.226834, 481.941257 5457.026827)",
+                        "233615-210208": "LINESTRING(481.941257 5457.026827, 481.917607 5457.044772)",
+                        "233615-210304": "LINESTRING(481.941257 5457.026827, 481.983848 5457.226834)",
+                        "210208-233615": "LINESTRING(481.917607 5457.044772, 481.941257 5457.026827)"
+                    }
+                }
+            },
+            "parameters": {
+                "include_reverse": true,
+                "link_id": "210304-233615",
+                "attach_to_node_id": 210208,
+                "detach_from_node_id": 210304,
+                "compute_length": false,
+                "length_computation_mode": "ADJUST_LENGTH_MODE",
+                "new_turn_attributes": {
+                    "@tpfpm": -1.0,
+                    "@tpfmd": -1.0,
+                    "penalty_func": "auto",
+                    "@tpfam": -1.0
+                }
+            }
+        }
+    ],
+    "version": "F8A1BCA0-D0A1-49a1-9A43-6769D2312D7D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 1 0 0",
+    "type": "NETWORK_BUILD",
+    "metadata": {
+        "projection": "PROJCS[\"WGS_84_UTM_10N_vancouver_special\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",500.0],PARAMETER[\"False_Northing\",0],PARAMETER[\"Central_Meridian\",-123.0],PARAMETER[\"Scale_Factor\",0.9996],PARAMETER[\"Latitude_Of_Origin\",0.0],UNIT[\"Kilometer\",1000.0]]",
+        "emmebank_path": "C:/KristinaK/_R2U/RTM/_R2U_2035Sc1_2020-04-06/emmebank",
+        "comments": "",
+        "scenario_title": "2035 Sc1: Sc3501 + Tunnel",
+        "author_initials": "none",
+        "scenario_number": "3511",
+        "time": "16:40:47",
+        "date": "2020-05-01",
+        "project_title": "_R2U_2035Sc1_2020-04-06"
+    }
+}
