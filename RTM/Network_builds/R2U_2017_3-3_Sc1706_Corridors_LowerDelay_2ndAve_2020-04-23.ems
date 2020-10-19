@@ -1,0 +1,455 @@
+{
+    "command_history": [
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "254010": "POINT(494.084687 5456.945147)",
+                    "254011": "POINT(494.223234 5456.940475)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "254011-254010"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "254011-254010": "LINESTRING(494.223234 5456.940475, 494.084687 5456.945147)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@signal_delay",
+                "element_ids": [
+                    "254011-254010"
+                ],
+                "value": 0.1,
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "@tpfpm": -1.0,
+                    "@tpfmd": -1.0,
+                    "penalty_func": "auto",
+                    "@tpfam": -1.0
+                }
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "254008": "POINT(493.703038 5457.053662)",
+                    "254010": "POINT(494.084687 5456.945147)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "254010-254008"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "254010-254008": "LINESTRING(494.084687 5456.945147, 494.063897 5456.947527, 493.851578 5457.009974, 493.818499 5457.019703, 493.703038 5457.053662)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@signal_delay",
+                "element_ids": [
+                    "254010-254008"
+                ],
+                "value": 0.1,
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "@tpfpm": -1.0,
+                    "@tpfmd": -1.0,
+                    "penalty_func": "auto",
+                    "@tpfam": -1.0
+                }
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "254007": "POINT(492.855808 5457.224276)",
+                    "254701": "POINT(492.673851 5457.373659)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "254007-254701"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "254007-254701": "LINESTRING(492.855808 5457.224276, 492.792666 5457.284125, 492.790796 5457.294321, 492.756444 5457.328229, 492.691649 5457.372628, 492.679353 5457.377258, 492.673851 5457.373659)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@signal_delay",
+                "element_ids": [
+                    "254007-254701"
+                ],
+                "value": 0.1,
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "@tpfpm": -1.0,
+                    "@tpfmd": -1.0,
+                    "penalty_func": "auto",
+                    "@tpfam": -1.0
+                }
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "254701": "POINT(492.673851 5457.373659)",
+                    "232701": "POINT(492.527795 5457.388638)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "254701-232701"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "254701-232701": "LINESTRING(492.673851 5457.373659, 492.668817 5457.381107, 492.648296 5457.387582, 492.616489 5457.391737, 492.527946 5457.39459, 492.527795 5457.388638)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@signal_delay",
+                "element_ids": [
+                    "254701-232701"
+                ],
+                "value": 0.1,
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "@tpfpm": -1.0,
+                    "@tpfmd": -1.0,
+                    "penalty_func": "auto",
+                    "@tpfam": -1.0
+                }
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "232601": "POINT(492.243136 5457.396246)",
+                    "232701": "POINT(492.527795 5457.388638)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "232701-232601"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "232701-232601": "LINESTRING(492.527795 5457.388638, 492.243136 5457.396246)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@signal_delay",
+                "element_ids": [
+                    "232701-232601"
+                ],
+                "value": 0.1,
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "@tpfpm": -1.0,
+                    "@tpfmd": -1.0,
+                    "penalty_func": "auto",
+                    "@tpfam": -1.0
+                }
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "232601": "POINT(492.243136 5457.396246)",
+                    "231103": "POINT(492.039416 5457.391361)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "232601-231103"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "232601-231103": "LINESTRING(492.243136 5457.396246, 492.079363 5457.399983, 492.039416 5457.391361)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@signal_delay",
+                "element_ids": [
+                    "232601-231103"
+                ],
+                "value": 0.1,
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "@tpfpm": -1.0,
+                    "@tpfmd": -1.0,
+                    "penalty_func": "auto",
+                    "@tpfam": -1.0
+                }
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "233202": "POINT(491.660779 5457.115694)",
+                    "232502": "POINT(491.776951 5457.200198)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "232502-233202"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "232502-233202": "LINESTRING(491.776951 5457.200198, 491.660779 5457.115694)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@signal_delay",
+                "element_ids": [
+                    "232502-233202"
+                ],
+                "value": 0.1,
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "@tpfpm": -1.0,
+                    "@tpfmd": -1.0,
+                    "penalty_func": "auto",
+                    "@tpfam": -1.0
+                }
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "232407": "POINT(491.617392 5457.088292)",
+                    "232406": "POINT(491.550526 5457.044392)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "232407-232406"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "232407-232406": "LINESTRING(491.617392 5457.088292, 491.572887 5457.058952, 491.557459 5457.048079, 491.550526 5457.044392)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@signal_delay",
+                "element_ids": [
+                    "232407-232406"
+                ],
+                "value": 0.1,
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "@tpfpm": -1.0,
+                    "@tpfmd": -1.0,
+                    "penalty_func": "auto",
+                    "@tpfam": -1.0
+                }
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "232405": "POINT(491.457721 5457.021318)",
+                    "232406": "POINT(491.550526 5457.044392)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "232406-232405"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "232406-232405": "LINESTRING(491.550526 5457.044392, 491.457721 5457.021318)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@signal_delay",
+                "element_ids": [
+                    "232406-232405"
+                ],
+                "value": 0.1,
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "@tpfpm": -1.0,
+                    "@tpfmd": -1.0,
+                    "penalty_func": "auto",
+                    "@tpfam": -1.0
+                }
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "232405": "POINT(491.457721 5457.021318)",
+                    "233001": "POINT(491.228328 5457.023662)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "232405-233001"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "232405-233001": "LINESTRING(491.457721 5457.021318, 491.228328 5457.023662)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@signal_delay",
+                "element_ids": [
+                    "232405-233001"
+                ],
+                "value": 0.1,
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "@tpfpm": -1.0,
+                    "@tpfmd": -1.0,
+                    "penalty_func": "auto",
+                    "@tpfam": -1.0
+                }
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "231500": "POINT(486.785135 5457.326984)",
+                    "231600": "POINT(487.073298 5457.319772)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "231600-231500"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "231600-231500": "LINESTRING(487.073298 5457.319772, 486.926333 5457.323888, 486.785135 5457.326984)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@signal_delay",
+                "element_ids": [
+                    "231600-231500"
+                ],
+                "value": 0.1,
+                "element_type": "LINK",
+                "new_turn_attributes": {
+                    "@tpfpm": -1.0,
+                    "@tpfmd": -1.0,
+                    "penalty_func": "auto",
+                    "@tpfam": -1.0
+                }
+            }
+        },
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "231500": "POINT(486.785135 5457.326984)",
+                    "230402": "POINT(486.4916 5457.332865)"
+                }
+            },
+            "command": "set_attribute",
+            "results": {
+                "changes": {
+                    "modified": {
+                        "LINK": [
+                            "231500-230402"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "231500-230402": "LINESTRING(486.785135 5457.326984, 486.77893 5457.32712, 486.640714 5457.330055, 486.4916 5457.332865)"
+                    }
+                }
+            },
+            "parameters": {
+                "attribute_name": "@signal_delay",
+                "element_ids": [
+                    "231500-230402"
+                ],
+                "value": 0.1,
+                "element_type": "LINK"
+            }
+        }
+    ],
+    "version": "F8A1BCA0-D0A1-49a1-9A43-6769D2312D7D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 1 0 0",
+    "type": "NETWORK_BUILD",
+    "metadata": {
+        "projection": "PROJCS[\"WGS_84_UTM_10N_vancouver_special\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",500.0],PARAMETER[\"False_Northing\",0],PARAMETER[\"Central_Meridian\",-123.0],PARAMETER[\"Scale_Factor\",0.9996],PARAMETER[\"Latitude_Of_Origin\",0.0],UNIT[\"Kilometer\",1000.0]]",
+        "emmebank_path": "C:/KristinaK/_R2U/RTM/_R2U_2017Base_2020-04-06/emmebank",
+        "comments": "",
+        "scenario_title": "2017 Base: Sc1705 + DelayFix3",
+        "author_initials": "none",
+        "scenario_number": "1706",
+        "time": "09:57:00",
+        "date": "2020-04-23",
+        "project_title": "_R2U_2017Base_2020-04-06"
+    }
+}
