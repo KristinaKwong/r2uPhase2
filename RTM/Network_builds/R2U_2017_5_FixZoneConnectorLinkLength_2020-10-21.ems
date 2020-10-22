@@ -1,0 +1,1457 @@
+{
+    "command_history": [
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "234401": "POINT(484.785349 5456.806889)",
+                            "23130": "POINT(484.567648 5457.112364)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "23130-234401"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "23130-234401": "LINESTRING(484.567648 5457.112364, 484.785349 5456.806889)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "23130-234401"
+                        ],
+                        "value": 0.375111,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "234401": "POINT(484.785349 5456.806889)",
+                            "23130": "POINT(484.567648 5457.112364)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "234401-23130"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "234401-23130": "LINESTRING(484.785349 5456.806889, 484.567648 5457.112364)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "234401-23130"
+                        ],
+                        "value": 0.375111,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23150": "POINT(486.776042 5457.089638)",
+                            "231500": "POINT(486.785135 5457.326984)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "23150-231500"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "23150-231500": "LINESTRING(486.776042 5457.089638, 486.785135 5457.326984)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "23150-231500"
+                        ],
+                        "value": 0.237519,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23150": "POINT(486.776042 5457.089638)",
+                            "231500": "POINT(486.785135 5457.326984)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "231500-23150"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "231500-23150": "LINESTRING(486.785135 5457.326984, 486.776042 5457.089638)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "231500-23150"
+                        ],
+                        "value": 0.237519,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23160": "POINT(487.413175 5457.073238)",
+                            "231600": "POINT(487.073298 5457.319772)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "23160-231600"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "23160-231600": "LINESTRING(487.413175 5457.073238, 487.073298 5457.319772)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "23160-231600"
+                        ],
+                        "value": 0.419875,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23160": "POINT(487.413175 5457.073238)",
+                            "231600": "POINT(487.073298 5457.319772)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "231600-23160"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "231600-23160": "LINESTRING(487.073298 5457.319772, 487.413175 5457.073238)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "231600-23160"
+                        ],
+                        "value": 0.419875,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23170": "POINT(488.144238 5457.055378)",
+                            "231700": "POINT(488.358229 5456.809741)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "23170-231700"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "23170-231700": "LINESTRING(488.144238 5457.055378, 488.358229 5456.809741)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "23170-231700"
+                        ],
+                        "value": 0.325775,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23170": "POINT(488.144238 5457.055378)",
+                            "231700": "POINT(488.358229 5456.809741)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "231700-23170"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "231700-23170": "LINESTRING(488.358229 5456.809741, 488.144238 5457.055378)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "231700-23170"
+                        ],
+                        "value": 0.325775,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23190": "POINT(489.139494 5457.02722)",
+                            "231801": "POINT(488.880847 5457.083229)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "23190-231801"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "23190-231801": "LINESTRING(489.139494 5457.02722, 488.880847 5457.083229)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "23190-231801"
+                        ],
+                        "value": 0.264641,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23190": "POINT(489.139494 5457.02722)",
+                            "231801": "POINT(488.880847 5457.083229)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "231801-23190"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "231801-23190": "LINESTRING(488.880847 5457.083229, 489.139494 5457.02722)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "231801-23190"
+                        ],
+                        "value": 0.264641,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "232901": "POINT(490.389434 5457.047284)",
+                            "23290": "POINT(490.532109 5456.899338)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "23290-232901"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "23290-232901": "LINESTRING(490.532109 5456.899338, 490.389434 5457.047284)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "23290-232901"
+                        ],
+                        "value": 0.205533,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "232901": "POINT(490.389434 5457.047284)",
+                            "23290": "POINT(490.532109 5456.899338)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "232901-23290"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "232901-23290": "LINESTRING(490.389434 5457.047284, 490.532109 5456.899338)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "232901-23290"
+                        ],
+                        "value": 0.205533,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23300": "POINT(491.037213 5456.883532)",
+                            "233005": "POINT(491.136887 5456.735326)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "23300-233005"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "23300-233005": "LINESTRING(491.037213 5456.883532, 491.136887 5456.735326)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "23300-233005"
+                        ],
+                        "value": 0.178606,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23300": "POINT(491.037213 5456.883532)",
+                            "233005": "POINT(491.136887 5456.735326)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "233005-23300"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "233005-23300": "LINESTRING(491.136887 5456.735326, 491.037213 5456.883532)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "233005-23300"
+                        ],
+                        "value": 0.178606,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23310": "POINT(491.469378 5456.895188)",
+                            "234103": "POINT(491.449618 5456.727383)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "23310-234103"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "23310-234103": "LINESTRING(491.469378 5456.895188, 491.449618 5456.727383)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "23310-234103"
+                        ],
+                        "value": 0.168965,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23310": "POINT(491.469378 5456.895188)",
+                            "234103": "POINT(491.449618 5456.727383)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "234103-23310"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "234103-23310": "LINESTRING(491.449618 5456.727383, 491.469378 5456.895188)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "234103-23310"
+                        ],
+                        "value": 0.168965,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23330": "POINT(492.348732 5456.840994)",
+                            "234303": "POINT(492.508862 5456.69431)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "23330-234303"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "23330-234303": "LINESTRING(492.348732 5456.840994, 492.508862 5456.69431)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "23330-234303"
+                        ],
+                        "value": 0.217158,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23330": "POINT(492.348732 5456.840994)",
+                            "234303": "POINT(492.508862 5456.69431)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "234303-23330"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "234303-23330": "LINESTRING(492.508862 5456.69431, 492.348732 5456.840994)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "234303-23330"
+                        ],
+                        "value": 0.217158,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23360": "POINT(489.129292 5456.634482)",
+                            "233601": "POINT(488.872902 5456.795458)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "23360-233601"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "23360-233601": "LINESTRING(489.129292 5456.634482, 488.872902 5456.795458)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "23360-233601"
+                        ],
+                        "value": 0.302736,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23360": "POINT(489.129292 5456.634482)",
+                            "233601": "POINT(488.872902 5456.795458)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "233601-23360"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "233601-23360": "LINESTRING(488.872902 5456.795458, 489.129292 5456.634482)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "233601-23360"
+                        ],
+                        "value": 0.302736,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "234107": "POINT(491.273382 5456.421706)",
+                            "23400": "POINT(491.029179 5456.583678)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "23400-234107"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "23400-234107": "LINESTRING(491.029179 5456.583678, 491.273382 5456.421706)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "23400-234107"
+                        ],
+                        "value": 0.293037,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "234107": "POINT(491.273382 5456.421706)",
+                            "23400": "POINT(491.029179 5456.583678)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "234107-23400"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "234107-23400": "LINESTRING(491.273382 5456.421706, 491.029179 5456.583678)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "234107-23400"
+                        ],
+                        "value": 0.293037,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23410": "POINT(491.459854 5456.571523)",
+                            "234103": "POINT(491.449618 5456.727383)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "23410-234103"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "23410-234103": "LINESTRING(491.459854 5456.571523, 491.449618 5456.727383)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "23410-234103"
+                        ],
+                        "value": 0.156196,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23410": "POINT(491.459854 5456.571523)",
+                            "234103": "POINT(491.449618 5456.727383)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "234103-23410"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "234103-23410": "LINESTRING(491.449618 5456.727383, 491.459854 5456.571523)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "234103-23410"
+                        ],
+                        "value": 0.156196,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23440": "POINT(484.666137 5456.500042)",
+                            "234501": "POINT(485.212898 5456.179192)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "23440-234501"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "23440-234501": "LINESTRING(484.666137 5456.500042, 485.212898 5456.179192)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "23440-234501"
+                        ],
+                        "value": 0.63395,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23440": "POINT(484.666137 5456.500042)",
+                            "234501": "POINT(485.212898 5456.179192)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "234501-23440"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "234501-23440": "LINESTRING(485.212898 5456.179192, 484.666137 5456.500042)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "234501-23440"
+                        ],
+                        "value": 0.63395,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23450": "POINT(485.329172 5456.483545)",
+                            "234500": "POINT(485.229769 5456.795406)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "234500-23450"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "234500-23450": "LINESTRING(485.229769 5456.795406, 485.329172 5456.483545)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "234500-23450"
+                        ],
+                        "value": 0.32732,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23450": "POINT(485.329172 5456.483545)",
+                            "234500": "POINT(485.229769 5456.795406)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "23450-234500"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "23450-234500": "LINESTRING(485.329172 5456.483545, 485.229769 5456.795406)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "23450-234500"
+                        ],
+                        "value": 0.32732,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23460": "POINT(486.118811 5456.462679)",
+                            "236201": "POINT(486.530083 5456.145154)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "23460-236201"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "23460-236201": "LINESTRING(486.118811 5456.462679, 486.530083 5456.145154)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "23460-236201"
+                        ],
+                        "value": 0.519584,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "23460": "POINT(486.118811 5456.462679)",
+                            "236201": "POINT(486.530083 5456.145154)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "236201-23460"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "236201-23460": "LINESTRING(486.530083 5456.145154, 486.118811 5456.462679)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "236201-23460"
+                        ],
+                        "value": 0.519584,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "233503": "POINT(487.759334 5456.633101)",
+                            "23470": "POINT(487.403888 5456.483478)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "23470-233503"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "23470-233503": "LINESTRING(487.403888 5456.483478, 487.759334 5456.633101)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "23470-233503"
+                        ],
+                        "value": 0.385653,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "233503": "POINT(487.759334 5456.633101)",
+                            "23470": "POINT(487.403888 5456.483478)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "233503-23470"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "233503-23470": "LINESTRING(487.759334 5456.633101, 487.403888 5456.483478)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "233503-23470"
+                        ],
+                        "value": 0.385653,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "234802": "POINT(488.50965 5456.077297)",
+                            "23480": "POINT(488.308262 5456.324536)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "23480-234802"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "23480-234802": "LINESTRING(488.308262 5456.324536, 488.50965 5456.077297)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "23480-234802"
+                        ],
+                        "value": 0.318879,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "234802": "POINT(488.50965 5456.077297)",
+                            "23480": "POINT(488.308262 5456.324536)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "234802-23480"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "234802-23480": "LINESTRING(488.50965 5456.077297, 488.308262 5456.324536)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "234802-23480"
+                        ],
+                        "value": 0.318879,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "25530": "POINT(493.162596 5456.50676)",
+                            "255303": "POINT(493.091479 5456.643777)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "25530-255303"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "25530-255303": "LINESTRING(493.162596 5456.50676, 493.091479 5456.643777)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "25530-255303"
+                        ],
+                        "value": 0.154373,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "25530": "POINT(493.162596 5456.50676)",
+                            "255303": "POINT(493.091479 5456.643777)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "255303-25530"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "255303-25530": "LINESTRING(493.091479 5456.643777, 493.162596 5456.50676)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "255303-25530"
+                        ],
+                        "value": 0.154373,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "255405": "POINT(494.358571 5456.419957)",
+                            "25550": "POINT(494.641543 5456.47189)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "25550-255405"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "25550-255405": "LINESTRING(494.641543 5456.47189, 494.358571 5456.419957)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "25550-255405"
+                        ],
+                        "value": 0.287698,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "255405": "POINT(494.358571 5456.419957)",
+                            "25550": "POINT(494.641543 5456.47189)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "255405-25550"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "255405-25550": "LINESTRING(494.358571 5456.419957, 494.641543 5456.47189)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "255405-25550"
+                        ],
+                        "value": 0.287698,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "256301": "POINT(493.088812 5456.339251)",
+                            "25630": "POINT(493.279434 5456.197189)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "25630-256301"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "25630-256301": "LINESTRING(493.279434 5456.197189, 493.088812 5456.339251)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "25630-256301"
+                        ],
+                        "value": 0.237735,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set link length to shape length",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "256301": "POINT(493.088812 5456.339251)",
+                            "25630": "POINT(493.279434 5456.197189)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "256301-25630"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "256301-25630": "LINESTRING(493.088812 5456.339251, 493.279434 5456.197189)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "256301-25630"
+                        ],
+                        "value": 0.237735,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        }
+    ],
+    "version": "F8A1BCA0-D0A1-49a1-9A43-6769D2312D7D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 1 0 0",
+    "type": "NETWORK_BUILD",
+    "metadata": {
+        "projection": "PROJCS[\"WGS_84_UTM_10N_vancouver_special\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",500.0],PARAMETER[\"False_Northing\",0],PARAMETER[\"Central_Meridian\",-123.0],PARAMETER[\"Scale_Factor\",0.9996],PARAMETER[\"Latitude_Of_Origin\",0.0],UNIT[\"Kilometer\",1000.0]]",
+        "emmebank_path": "C:/KristinaK/_R2U_Phase2/RTM/R2U_Phase2_2050BAU/emmebank",
+        "comments": "",
+        "scenario_title": "2050 BAU",
+        "author_initials": "none",
+        "scenario_number": "5000",
+        "time": "17:20:17",
+        "date": "2020-10-21",
+        "project_title": "R2U_Phase2_2050BAU"
+    }
+}
