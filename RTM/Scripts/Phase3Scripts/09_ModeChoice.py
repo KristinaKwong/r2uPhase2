@@ -40,8 +40,8 @@ class ModeChoice(_m.Tool()):
         conn = util.get_rtm_db(eb)
         df_transit_adj = pd.read_sql("SELECT * FROM transit_adj", conn)
         conn.close()
-        
-        
+
+
         td_mode_choice_hbw = _m.Modeller().tool("translink.RTM3.stage2.hbwork")
         td_mode_choice_hbu = _m.Modeller().tool("translink.RTM3.stage2.hbuniv")
         td_mode_choice_hbsc = _m.Modeller().tool("translink.RTM3.stage2.hbschool")
@@ -100,6 +100,7 @@ class ModeChoice(_m.Tool()):
        # adjust Evergreen usage
 
         self.adjust_egl(eb)
+        self.adjust_ubc(eb)
 
         # calculate utility-based log accessibilities
         self.agg_accessibilities(eb)
@@ -259,6 +260,41 @@ class ModeChoice(_m.Tool()):
 
         util.set_matrix_numpy(eb, "railAm", np.array(df_gy['AM_Rail']).reshape(NoTAZ, NoTAZ))
         util.set_matrix_numpy(eb, "railPm", np.array(df_gy['PM_Rail']).reshape(NoTAZ, NoTAZ))
+
+    def adjust_ubc(self, eb):
+
+        util = _m.Modeller().tool("translink.util")
+        NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
+
+        WB_Auto_fc = [0.86, 1.00, 1.00]
+        EB_Auto_fc = [0.86, 1.00, 1.00]
+        WB_Tran_fc = [0.86, 1.20, 1.20]
+        EB_Tran_fc = [0.86, 1.20, 0.86]
+
+        AM_Auto = ['mf300', 'mf301', 'mf302', 'mf303', 'mf306', 'mf307', 'mf308']
+        MD_Auto = ['mf320', 'mf321', 'mf322', 'mf323', 'mf326', 'mf327', 'mf328']
+        PM_Auto = ['mf340', 'mf341', 'mf342', 'mf343', 'mf346', 'mf347', 'mf348']
+
+        AM_Transit = ['mf314', 'mf315']
+        MD_Transit = ['mf334', 'mf335']
+        PM_Transit = ['mf354', 'mf355']
+
+        self.calc_ubc_adj(eb, WB_Auto_fc, EB_Auto_fc, [AM_Auto, MD_Auto, PM_Auto])
+        self.calc_ubc_adj(eb, WB_Tran_fc, EB_Tran_fc, [AM_Transit, MD_Transit, PM_Transit])
+
+    def calc_ubc_adj(self, eb, wb_fac, eb_fac, mat_list):
+
+        util = _m.Modeller().tool("translink.util")
+        NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
+
+        for i in range (3):
+            for j in range (len(mat_list[i])):
+
+                df_gm = util.get_ijensem_df(eb, 'gm','gm')
+                df_gm['mat'] = util.get_matrix_numpy(eb, mat_list[i][j]).flatten()
+                df_gm['mat'] = np.where((df_gm['gm_i'] != 106 ) & (df_gm['gm_j'] == 106 ), wb_fac[i]*df_gm['mat'], df_gm['mat'])
+                df_gm['mat'] = np.where((df_gm['gm_i'] == 106 ) & (df_gm['gm_j'] != 106 ), eb_fac[i]*df_gm['mat'], df_gm['mat'])
+                util.set_matrix_numpy(eb, mat_list[i][j], np.array(df_gm['mat']).reshape(NoTAZ, NoTAZ))
 
 
     def calibrate(self, eb, df, purp):
