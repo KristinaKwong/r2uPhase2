@@ -168,10 +168,15 @@ class ModeChoiceUtilities(_m.Tool()):
 
         Tiny = 0.0000001
         LrgU     = -99999.0
+        dist_fact = 3.7
+        Ral_Speed, Walk_Speed = 50.0, 4.8
+        # emme matrix expression ((mf5520*50/60 + mf5523*4.8/60).le.(3.7*mf91))
+        # new distance rule to remove cases where people take rail when the auto distance is significantly less
         return np.where((Df['RalIVR']>AvailDict['TranIVT']) &
                         (Df['RalWat']<AvailDict['TranWat']) &
                         (Df['RalAux']<AvailDict['TranAux']) &
                         (Df['RalBrd']<=AvailDict['TranBrd']) &
+                        (Ral_Speed*Df['RalIVR']/60.0 + Walk_Speed*Df['RalAux']/60.0 < dist_fact*Df['AutoDis']) &
                         (Df['IntZnl']!=1)                   &
                         (np.logical_or(Df['RalTot']<AvailDict['r_time'], Df['RalTot']/(Df['BusTot'] + Tiny)<AvailDict['br_ratio'])) &
                         (np.logical_and(Df['RalTot']>=AvailDict['BRTotLow'], Df['RalTot']<=AvailDict['BRTotHig'])),
