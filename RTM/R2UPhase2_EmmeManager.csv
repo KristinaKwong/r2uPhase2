@@ -1,0 +1,29 @@
+Client:,TransLink,,,,,,,,,,,,,,
+Project:,Arbutus to UBC Modelling Phase 2,,,,,,,,,,,,,,
+Project #:,2121-00651-00,,,,,,,,,,,,,,
+Model:,RTM3.4,,,,,,,,,,,,,,
+Years:,"2017, 2035, 2050",,,,,,,,,,,,,,
+Location:,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+Parent Scenario,Name,Year,AM,MD,PM,c/o Sc.,Zones,Land Use,Road Network,Transit Network,Notes,By:,Date,Databank,Reference (git SHA1 ID)
+3500,2035 Base Network,2035,-,-,-,n/a,RTM 1700,2035,2035,2035,2035 Base Network from RTM3.4,-,-,,d241faebfd8ab3a8392086d5a532a38a5363b3f5
+3601,2035 BAU: Business As Usual,2035,34011,34012,34013,3400,RTM 1700,2035,2035,2035,Includes 2017 base validation edits and adjustment to board penalty (7.5 mins) for rail to bus,KK,2020.10.30,UBCx_Ph2_2035BAU,c5d4b1657d1cf9e52c93ac2bcf33af0703c3e50f
+3602,2035 BAU: Run 2,2035,34021,34022,34023,3401,RTM 1700,2035,2035,2035,,KK,2020.11.27,UBCx_Ph2_2035BAU,d0a270237d68d53d3d00c76445aa1ef2ac5e7fbf
+3612,2035 Alt 1A,2035,36121,36122,36123,3602,RTM 1700,2035,2035,2035,,KK,2020.12.01,UBCx_Ph2_2035Alt_1A,d0a270237d68d53d3d00c76445aa1ef2ac5e7fbf
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+3301,2035 BAU: Without R4,2035,33011,33012,33013,3601,RTM 1700,2035,2035,2035,Headways for R4 set to 0,KK,2020.11.03,R2U_Phase2_2035BAU_ExcR4,3043146231d6a8c568c912689d86c728efbdf78b
