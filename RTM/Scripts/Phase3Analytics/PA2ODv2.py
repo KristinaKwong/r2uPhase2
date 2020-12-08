@@ -36,7 +36,7 @@ def get_facs(eb, pa_fac_list):
     ap_fac = 1 - pa_fac
     return pa_fac, ap_fac
 
-def pa_to_od(eb, pa_mat, pa_fac_list, pa_flag = False):
+def pa_to_od(eb, pa_mat, pa_fac_list, pa_flag = True):
 
     pa_fac, ap_fac = get_facs(eb, pa_fac_list)
     if pa_flag:
@@ -46,7 +46,7 @@ def pa_to_od(eb, pa_mat, pa_fac_list, pa_flag = False):
 
     return od_mat
 
-def generate_od_df(eb, increment_dict, mode_dict, peak_facs, ensem='ga',ensem_agg=True, pa_flag = False):
+def generate_od_df(eb, increment_dict, mode_dict, peak_facs, ensem='ga',ensem_agg=True, pa_flag = True):
     util = _m.Modeller().tool("translink.util")
     counter=0
     for purpose, increment in increment_dict.iteritems():
@@ -99,7 +99,7 @@ def generate_od_df(eb, increment_dict, mode_dict, peak_facs, ensem='ga',ensem_ag
                 df.to_sql(name='od_daily_{}'.format(ensem), con=conn, index=False, if_exists='append')
             conn.close()
 
-def main(eb, ensem='ga',ensem_agg=True, pa_flag = False):
+def main(eb, ensem='ga',ensem_agg=True, pa_flag = True):
     util = _m.Modeller().tool("translink.util")
     mode_dict = {'sov'  : [3000,3001,3002],
                  'hov'  : [3005,3006,3007,3010,3011,3012],
@@ -130,5 +130,5 @@ if __name__ == '__main__':
     # run with ensemble name and ensem_agg = True to aggregat
     # run with no ensemble name and ensem_agg = False to get TAZ level results
     # note, TAZ level results create very large file
-    main(eb, ensem='gm', ensem_agg=True, pa_flag = False)
+    main(eb, ensem='gm', ensem_agg=True, pa_flag = True)
 
