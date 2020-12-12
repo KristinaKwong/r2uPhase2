@@ -165,7 +165,9 @@ class ModeChoiceUtilities(_m.Tool()):
                          Utility, LrgU)
 
     def RailAvail(self, Df, Utility, AvailDict):
-
+        util = _m.Modeller().tool("translink.util")
+        eb = _m.Modeller().emmebank
+        Df['AutoDis'] = util.get_matrix_numpy(eb, "mfdistAON")
         Tiny = 0.0000001
         LrgU     = -99999.0
         dist_fact = 3.7
