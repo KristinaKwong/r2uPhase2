@@ -22975,10 +22975,10 @@ a'931W1X' l  35   3.16  55.00 'Mill Douglas-Arbutus'      0      0      0
 c '931W1X' first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
 a'941E1X' l  40   3.16  55.00 'MillWesbrk2-Douglas'      0      0      0
   path=no
-   211304         dwt=+0  ttf=10   us1=0   us2=0   us3=0
-   210306         dwt=+0  ttf=10   us1=0   us2=0   us3=0
-   231404         dwt=+0  ttf=10   us1=0   us2=0   us3=0
-   233506         dwt=+0  ttf=10   us1=0   us2=0   us3=0
+   211304      dwt=+1.73  ttf=10   us1=0   us2=0   us3=0
+   210306      dwt=+5.12  ttf=10   us1=0   us2=0   us3=0
+   231404      dwt=+1.75  ttf=10   us1=0   us2=0   us3=0
+   233506      dwt=+1.85  ttf=10   us1=0   us2=0   us3=0
    233607      dwt=+1.65  ttf=10   us1=0   us2=0   us3=0
    233608      dwt=+1.44  ttf=10   us1=0   us2=0   us3=0
    233609      dwt=+1.44  ttf=10   us1=0   us2=0   us3=0
@@ -23029,10 +23029,10 @@ a'941W1X' l  40   3.16  55.00 'MillDouglas-Wesbrk2'      0      0      0
    233610      dwt=+1.44  ttf=10   us1=0   us2=0   us3=0
    233609      dwt=+1.44  ttf=10   us1=0   us2=0   us3=0
    233608      dwt=+1.65  ttf=10   us1=0   us2=0   us3=0
-   233607      dwt=+1.83  ttf=10   us1=0   us2=0   us3=0
-   233506         dwt=+0  ttf=10   us1=0   us2=0   us3=0
-   231404         dwt=+0  ttf=10   us1=0   us2=0   us3=0
-   210306         dwt=+0  ttf=10   us1=0   us2=0   us3=0
+   233607      dwt=+1.85  ttf=10   us1=0   us2=0   us3=0
+   233506      dwt=+1.75  ttf=10   us1=0   us2=0   us3=0
+   231404      dwt=+4.85  ttf=10   us1=0   us2=0   us3=0
+   210306      dwt=+2.23  ttf=10   us1=0   us2=0   us3=0
    211304        lay=1.00
 c '941W1X' first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
 a'950N1X' g  21   5.00  23.00 'Newton-Guildford BRT'      0      0      0
