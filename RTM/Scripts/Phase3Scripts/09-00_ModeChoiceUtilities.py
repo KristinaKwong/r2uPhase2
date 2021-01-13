@@ -172,9 +172,11 @@ class ModeChoiceUtilities(_m.Tool()):
         LrgU     = -99999.0
         dist_fact = 3.7
         Ral_Speed, Walk_Speed = 50.0, 4.8
+        NoTAZ = len(util.get_matrix_numpy(eb, "zoneindex"))
+
         # emme matrix expression ((mf5520*50/60 + mf5523*4.8/60).le.(3.7*mf91))
         # new distance rule to remove cases where people take rail when the auto distance is significantly less
-        return np.where((Df['RalIVR']>AvailDict['TranIVT']) &
+        Utility =  np.where((Df['RalIVR']>AvailDict['TranIVT']) &
                         (Df['RalWat']<AvailDict['TranWat']) &
                         (Df['RalAux']<AvailDict['TranAux']) &
                         (Df['RalBrd']<=AvailDict['TranBrd']) &
@@ -183,6 +185,14 @@ class ModeChoiceUtilities(_m.Tool()):
                         (np.logical_or(Df['RalTot']<AvailDict['r_time'], Df['RalTot']/(Df['BusTot'] + Tiny)<AvailDict['br_ratio'])) &
                         (np.logical_and(Df['RalTot']>=AvailDict['BRTotLow'], Df['RalTot']<=AvailDict['BRTotHig'])),
                          Utility, LrgU)
+
+        df_gm = util.get_ijensem_df(eb, 'gm')
+        df_gm['util'] = Utility.flatten()
+        df_gm['rail_ivr'] = Df['RalIVR'].flatten()
+        df_gm['util'] = np.where((df_gm['gm_i'] == 106) & (df_gm['gm_j'] == 106) & (df_gm['rail_ivr'] >= 5.0), LrgU, df_gm['util'])
+        Utility = df_gm['util'].values.reshape(NoTAZ,NoTAZ)
+
+        return Utility
 
     def WCEAvail(self, Df, Utility, AvailDict):
 
