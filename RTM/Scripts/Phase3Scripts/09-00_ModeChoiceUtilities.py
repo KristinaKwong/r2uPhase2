@@ -190,7 +190,14 @@ class ModeChoiceUtilities(_m.Tool()):
         df_gm['util'] = Utility.flatten()
         df_gm['rail_ivr'] = Df['RalIVR'].flatten()
         df_gm['util'] = np.where((df_gm['gm_i'] == 106) & (df_gm['gm_j'] == 106) & (df_gm['rail_ivr'] >= 5.0), LrgU, df_gm['util'])
-        Utility = df_gm['util'].values.reshape(NoTAZ,NoTAZ)
+        ij = util.get_pd_ij_df(eb)
+        ij['uel_i'] = np.where((ij['i'] == 21010) | (ij['i'] == 21020) | (ij['i'] == 21030) | (ij['i'] == 21040) |
+                               (ij['i'] == 21060) | (ij['i'] == 21070) | (ij['i'] == 21090), 1, 0)
+        ij['uel_j'] = np.where((ij['j'] == 21010) | (ij['j'] == 21020) | (ij['j'] == 21030) | (ij['j'] == 21040) |
+                               (ij['j'] == 21060) | (ij['j'] == 21070) | (ij['j'] == 21090), 1, 0)
+        ij['util'] = np.array(df_gm['util'])
+        ij['util'] = np.where((ij['uel_i'] == 1) & (ij['uel_j'] == 1), LrgU, ij['util'])
+        Utility = ij['util'].values.reshape(NoTAZ,NoTAZ)
 
         return Utility
 
