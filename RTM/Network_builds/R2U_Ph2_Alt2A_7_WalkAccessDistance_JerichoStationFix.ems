@@ -1,0 +1,56 @@
+{
+    "command_history": [
+        {
+            "description": "Set link attributes",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "234502": "POINT(485.555662 5457.15511)",
+                            "234500": "POINT(485.229769 5456.795406)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "234500-234502",
+                                    "234502-234500"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "234502-234500": "LINESTRING(485.555662 5457.15511, 485.229769 5456.795406)",
+                                "234500-234502": "LINESTRING(485.229769 5456.795406, 485.555662 5457.15511)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "234500-234502",
+                            "234502-234500"
+                        ],
+                        "value": 0.25,
+                        "element_type": "LINK"
+                    }
+                }
+            ]
+        }
+    ],
+    "version": "F8A1BCA0-D0A1-49a1-9A43-6769D2312D7D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 1 0 0",
+    "type": "NETWORK_BUILD",
+    "metadata": {
+        "projection": "PROJCS[\"WGS_84_UTM_10N_vancouver_special\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",500.0],PARAMETER[\"False_Northing\",0],PARAMETER[\"Central_Meridian\",-123.0],PARAMETER[\"Scale_Factor\",0.9996],PARAMETER[\"Latitude_Of_Origin\",0.0],UNIT[\"Kilometer\",1000.0]]",
+        "emmebank_path": "C:/KristinaK/_R2U_Phase2/RTM/UBCx_Ph2_2035Alt_2A_2020-12-31/emmebank",
+        "comments": "",
+        "scenario_title": "2035 Alt 2A",
+        "author_initials": "none",
+        "scenario_number": "3540",
+        "time": "16:10:25",
+        "date": "2021-01-17",
+        "project_title": "UBCx_Ph2_2035Alt_2A_2020-12-31"
+    }
+}
