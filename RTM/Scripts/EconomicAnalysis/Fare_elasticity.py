@@ -160,19 +160,36 @@ class DataExport(_m.Tool()):
         rev_bus_s, rev_ral_s, rev_wce_s = 0, 0, 0
         dict_len = len(full_dict) + 0.0
 
+        adj_rate1, adj_rate2 = self.adj_upass(eb_b)
+
+
+
         ## Fares
 
         for keys, values in full_dict.items():
 
+            demand_adjust = 1.0
+
             lng = (1 + values['fare_slice_range'][1] - values['fare_slice_range'][0])/2
 
+            if keys == 'hbu_dict':
+                demand_adjust = 0.0
+
+            if keys == 'hbh_dict' or keys == 'hbp_dict' or keys == 'hbr_dict':
+                demand_adjust = adj_rate1
+
+            if keys == 'nho_dict':
+                demand_adjust = adj_rate2
+
             # Get Base Year Demands
-            dem1 = util.get_matrix_numpy(eb_b, values['pa_demand'][0])
-            dem2 = util.get_matrix_numpy(eb_b, values['pa_demand'][1])
+            dem1 = demand_adjust*util.get_matrix_numpy(eb_b, values['pa_demand'][0])
+            dem2 = demand_adjust*util.get_matrix_numpy(eb_b, values['pa_demand'][1])
 
             # Get scenario year Demands
-            dem3 = util.get_matrix_numpy(eb_s, values['pa_demand'][0])
-            dem4 = util.get_matrix_numpy(eb_s, values['pa_demand'][1])
+            dem3 = demand_adjust*util.get_matrix_numpy(eb_s, values['pa_demand'][0])
+            dem4 = demand_adjust*util.get_matrix_numpy(eb_s, values['pa_demand'][1])
+
+
 
             for ln in range (lng):
 
@@ -238,4 +255,33 @@ class DataExport(_m.Tool()):
         df = df.groupby(['gh_i', 'gh_j', 'mode']).sum().reset_index()
         df = df[['gh_i', 'gh_j', 'mode', 'dem_b', 'dem_s', 'demxfare_b', 'demxfare_s', 'avgfare_b', 'avgfare_s', 'rev_s', 'count']]
 
+        df.to_csv('C:/RTM_Work/farerev.csv')
+
         return df
+
+    def adj_upass(self, eb_b):
+
+        util = _m.Modeller().tool("translink.util")
+        NoTAZ = len(util.get_matrix_numpy(eb_b, 'mozoneindex', reshape = False))
+
+        Tiny = 0.0000001
+
+        uni_pop = util.get_matrix_numpy(eb_b, 'moPop18t24').reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
+        tot_pop = util.get_matrix_numpy(eb_b, 'moTotPop') - util.get_matrix_numpy(eb_b, 'moPop5t12') - util.get_matrix_numpy(eb_b, 'moPop0t4')
+        tot_pop = tot_pop.reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
+
+        enrol = util.get_matrix_numpy(eb_b, 'EnrolPsFte').reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
+        tot_emp = util.get_matrix_numpy(eb_b, 'TotEmp').reshape(NoTAZ, 1) + np.zeros((1, NoTAZ))
+
+        tot_enrol_emp = enrol + tot_emp
+
+        uni_rat1 = 1 - uni_pop/(tot_pop + Tiny)
+
+        uni_rat2 = 1 - (enrol + enrol.transpose())/(tot_enrol_emp + tot_enrol_emp.transpose() + Tiny)
+
+        return uni_rat1, uni_rat2
+
+
+
+
+
