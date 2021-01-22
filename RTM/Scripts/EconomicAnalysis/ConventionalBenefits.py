@@ -97,8 +97,8 @@ class EconomicAnalysis(_m.Tool()):
 
             expansion_factors = {"SOV": [3.44, 8.41, 3.95],
                                  "HOV": [1.51, 8.58, 5.32],
-                                 "BUS": [2.54, 9.44, 2.57],
-                                 "RAL": [2.53, 9.54, 2.92],
+                                 "BUS": [4.24, 4.85, 4.22],
+                                 "RAL": [4.24, 4.85, 4.22],
                                  "WCE": [3.34,    0, 2.02],
                                  "LGV": [3.59, 5.63, 6.17],
                                  "HGV": [4.88, 5.43, 6.36]}
@@ -298,7 +298,7 @@ class EconomicAnalysis(_m.Tool()):
                      "Transit": ["BUS", "RAL", "WCE"],
                      "Light_Truck": ["LGV"],
                      "Heavy_Truck": ["HGV"]}
-        DailyToAnnual_factors = {"SOV":335,"HOV":335,"BUS":299,"RAL":331,"WCE":224,"LGV":313,"HGV":276}
+        DailyToAnnual_factors = {"SOV":335,"HOV":335,"BUS":270,"RAL":270,"WCE":224,"LGV":313,"HGV":276}
 
         # voc_list = {mode_category: vehicle operating cost ($/min)}
         voc_list = {"Auto": np.asscalar(util.get_matrix_numpy(eb, "msautoOpCost")),

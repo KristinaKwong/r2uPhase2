@@ -172,14 +172,12 @@ class DataExport(_m.Tool()):
 
             lng = (1 + values['fare_slice_range'][1] - values['fare_slice_range'][0])/2
 
-            if keys == 'hbu_dict':
+            if keys == 'hbu_dict' or keys == 'nho_dict':
                 demand_adjust = 0.0
 
             if keys == 'hbh_dict' or keys == 'hbp_dict' or keys == 'hbr_dict':
                 demand_adjust = adj_rate1
 
-            if keys == 'nho_dict':
-                demand_adjust = adj_rate2
 
             # Get Base Year Demands
             dem1 = demand_adjust*util.get_matrix_numpy(eb_b, values['pa_demand'][0])
