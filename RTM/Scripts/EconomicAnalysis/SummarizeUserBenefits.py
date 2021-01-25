@@ -18,7 +18,7 @@ class SummarizeUserBenefits(_m.Tool()):
     ensem_selector = _m.Attribute(str)
 
     def __init__(self):
-        self.ensem_selector = "210,220,330,340,350,360,380,390"
+        self.ensem_selector = "210,220,330,340,350,360,380,390,290"
 
     def page(self):
         pb = _m.ToolPageBuilder(self)

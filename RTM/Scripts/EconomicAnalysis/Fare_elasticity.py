@@ -253,7 +253,6 @@ class DataExport(_m.Tool()):
         df = df.groupby(['gh_i', 'gh_j', 'mode']).sum().reset_index()
         df = df[['gh_i', 'gh_j', 'mode', 'dem_b', 'dem_s', 'demxfare_b', 'demxfare_s', 'avgfare_b', 'avgfare_s', 'rev_s', 'count']]
 
-        df.to_csv('C:/RTM_Work/farerev.csv')
 
         return df
 
