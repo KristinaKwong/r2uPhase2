@@ -22975,10 +22975,10 @@ a'931W1X' l  36   3.16  55.00 'Mill Douglas-Arbutus'      0      0      0
 c '931W1X' first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
 a'934E1X' l  41   3.16  55.00 'Mill Stadium-Douglas'      0      0      0
   path=no
-   211104      dwt=+2.93  ttf=10   us1=0   us2=0   us3=0
-   210600      dwt=+4.88  ttf=10   us1=0   us2=0   us3=0
+   211104      dwt=+2.78  ttf=10   us1=0   us2=0   us3=0
+   210600      dwt=+4.87  ttf=10   us1=0   us2=0   us3=0
    231404      dwt=+1.75  ttf=10   us1=0   us2=0   us3=0
-   233506      dwt=+1.85  ttf=10   us1=0   us2=0   us3=0
+   233506      dwt=+1.87  ttf=10   us1=0   us2=0   us3=0
    233607      dwt=+1.65  ttf=10   us1=0   us2=0   us3=0
    233608      dwt=+1.44  ttf=10   us1=0   us2=0   us3=0
    233609      dwt=+1.44  ttf=10   us1=0   us2=0   us3=0
@@ -23029,10 +23029,10 @@ a'934W1X' l  41   3.16  55.00 'Mill Douglas-Stadium'      0      0      0
    233610      dwt=+1.44  ttf=10   us1=0   us2=0   us3=0
    233609      dwt=+1.44  ttf=10   us1=0   us2=0   us3=0
    233608      dwt=+1.65  ttf=10   us1=0   us2=0   us3=0
-   233607      dwt=+1.85  ttf=10   us1=0   us2=0   us3=0
+   233607      dwt=+1.87  ttf=10   us1=0   us2=0   us3=0
    233506      dwt=+1.75  ttf=10   us1=0   us2=0   us3=0
-   231404       dwt=+4.6  ttf=10   us1=0   us2=0   us3=0
-   210600      dwt=+3.57  ttf=10   us1=0   us2=0   us3=0
+   231404      dwt=+4.58  ttf=10   us1=0   us2=0   us3=0
+   210600      dwt=+3.28  ttf=10   us1=0   us2=0   us3=0
    211104        lay=1.00
 c '934W1X' first:      dwt=+0.01 hidden:    us1=0   us2=0   us3=0
 a'950N1X' g  21   5.00  23.00 'Newton-Guildford BRT'      0      0      0
