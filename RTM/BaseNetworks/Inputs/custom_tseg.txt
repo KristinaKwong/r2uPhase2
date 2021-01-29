@@ -1,5 +1,6 @@
 ALL	@brdpeneff	0.5	i=233607 and j=233608
 ALL	@brdpeneff	0.75	i=233601 and j=231700	line=099W3X
+ALL	@brdpeneff	0.75	i=231700 and j=233601	line=099E3X
 ALL	@brdpeneff	0.5	i=233610 and j=233611
 ALL	@brdpeneff	0.5	i=233610 and j=233609
 ALL	@brdpeneff	0.5	i=254203 and j=254009
