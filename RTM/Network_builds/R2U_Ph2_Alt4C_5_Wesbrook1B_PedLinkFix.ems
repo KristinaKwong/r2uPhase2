@@ -1,0 +1,110 @@
+{
+    "command_history": [
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "210607": "POINT(482.217306 5456.954075)",
+                    "210303": "POINT(482.1369 5457.100849)",
+                    "210306": "POINT(482.20389 5456.943143)"
+                }
+            },
+            "command": "change_link_node",
+            "results": {
+                "changes": {
+                    "removed": {
+                        "LINK": [
+                            "210303-210306",
+                            "210306-210303"
+                        ]
+                    },
+                    "added": {
+                        "LINK": [
+                            "210306-210607",
+                            "210607-210306"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "LINK": {
+                        "210607-210306": "LINESTRING(482.217306 5456.954075, 482.20389 5456.943143)",
+                        "210306-210607": "LINESTRING(482.20389 5456.943143, 482.217306 5456.954075)",
+                        "210306-210303": "LINESTRING(482.20389 5456.943143, 482.1369 5457.100849)",
+                        "210303-210306": "LINESTRING(482.1369 5457.100849, 482.20389 5456.943143)"
+                    }
+                }
+            },
+            "parameters": {
+                "include_reverse": true,
+                "link_id": "210303-210306",
+                "attach_to_node_id": 210607,
+                "detach_from_node_id": 210303,
+                "compute_length": true,
+                "length_computation_mode": "COMPUTE_EUCLIDEAN_DISTANCE_MODE",
+                "new_turn_attributes": {
+                    "@tpfpm": -1.0,
+                    "@tpfmd": -1.0,
+                    "penalty_func": "auto",
+                    "@tpfam": -1.0
+                }
+            }
+        },
+        {
+            "description": "Set link attributes",
+            "child_commands": [
+                {
+                    "extra_geometries": {
+                        "NODE": {
+                            "210607": "POINT(482.217306 5456.954075)",
+                            "210306": "POINT(482.20389 5456.943143)"
+                        }
+                    },
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "LINK": [
+                                    "210306-210607",
+                                    "210607-210306"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "LINK": {
+                                "210607-210306": "LINESTRING(482.217306 5456.954075, 482.20389 5456.943143)",
+                                "210306-210607": "LINESTRING(482.20389 5456.943143, 482.217306 5456.954075)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "length",
+                        "element_ids": [
+                            "210607-210306",
+                            "210306-210607"
+                        ],
+                        "value": 0.102,
+                        "element_type": "LINK",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "version": "F8A1BCA0-D0A1-49a1-9A43-6769D2312D7D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 1 0 0",
+    "type": "NETWORK_BUILD",
+    "metadata": {
+        "projection": "PROJCS[\"WGS_84_UTM_10N_vancouver_special\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",500.0],PARAMETER[\"False_Northing\",0],PARAMETER[\"Central_Meridian\",-123.0],PARAMETER[\"Scale_Factor\",0.9996],PARAMETER[\"Latitude_Of_Origin\",0.0],UNIT[\"Kilometer\",1000.0]]",
+        "emmebank_path": "C:/KristinaK/_R2U_Phase2/RTM/UBCx_Ph2_2035Alt_4C_2020-12-31/emmebank",
+        "comments": "",
+        "scenario_title": "2035 Alt 4C",
+        "author_initials": "none",
+        "scenario_number": "3730",
+        "time": "21:04:33",
+        "date": "2021-02-05",
+        "project_title": "UBCx_Ph2_2035Alt_4C_2020-12-31"
+    }
+}
