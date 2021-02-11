@@ -1,0 +1,748 @@
+{
+    "command_history": [
+        {
+            "extra_geometries": {
+                "NODE": {
+                    "211108": "POINT(482.617129 5456.237575)"
+                }
+            },
+            "command": "create_intersection",
+            "results": {
+                "changes": {
+                    "added": {
+                        "TURN": [
+                            "21100-211108-21100",
+                            "21100-211108-211001",
+                            "21100-211108-21110",
+                            "21100-211108-211301",
+                            "211001-211108-21100",
+                            "211001-211108-211001",
+                            "211001-211108-21110",
+                            "211001-211108-211301",
+                            "21110-211108-21100",
+                            "21110-211108-211001",
+                            "21110-211108-21110",
+                            "21110-211108-211301",
+                            "211301-211108-21100",
+                            "211301-211108-211001",
+                            "211301-211108-21110",
+                            "211301-211108-211301"
+                        ]
+                    }
+                },
+                "geometries": {
+                    "TURN": {
+                        "21110-211108-211001": "LINESTRING(482.410733 5456.218738, 482.617129 5456.237575, 482.42952 5456.566695)",
+                        "21110-211108-211301": "LINESTRING(482.410733 5456.218738, 482.617129 5456.237575, 482.801555 5455.914038)",
+                        "21110-211108-21100": "LINESTRING(482.410733 5456.218738, 482.617129 5456.237575, 482.754585 5456.459658)",
+                        "21100-211108-21100": "LINESTRING(482.754585 5456.459658, 482.617129 5456.237575, 482.754585 5456.459658)",
+                        "21100-211108-21110": "LINESTRING(482.754585 5456.459658, 482.617129 5456.237575, 482.410733 5456.218738)",
+                        "21100-211108-211001": "LINESTRING(482.754585 5456.459658, 482.617129 5456.237575, 482.42952 5456.566695)",
+                        "211301-211108-21110": "LINESTRING(482.801555 5455.914038, 482.617129 5456.237575, 482.410733 5456.218738)",
+                        "21110-211108-21110": "LINESTRING(482.410733 5456.218738, 482.617129 5456.237575, 482.410733 5456.218738)",
+                        "21100-211108-211301": "LINESTRING(482.754585 5456.459658, 482.617129 5456.237575, 482.801555 5455.914038)",
+                        "211301-211108-21100": "LINESTRING(482.801555 5455.914038, 482.617129 5456.237575, 482.754585 5456.459658)",
+                        "211301-211108-211001": "LINESTRING(482.801555 5455.914038, 482.617129 5456.237575, 482.42952 5456.566695)",
+                        "211001-211108-211301": "LINESTRING(482.42952 5456.566695, 482.617129 5456.237575, 482.801555 5455.914038)",
+                        "211001-211108-21110": "LINESTRING(482.42952 5456.566695, 482.617129 5456.237575, 482.410733 5456.218738)",
+                        "211301-211108-211301": "LINESTRING(482.801555 5455.914038, 482.617129 5456.237575, 482.801555 5455.914038)",
+                        "211001-211108-21100": "LINESTRING(482.42952 5456.566695, 482.617129 5456.237575, 482.754585 5456.459658)",
+                        "211001-211108-211001": "LINESTRING(482.42952 5456.566695, 482.617129 5456.237575, 482.42952 5456.566695)"
+                    }
+                }
+            },
+            "parameters": {
+                "node_id": 211108,
+                "turn_attributes": {
+                    "@tpfpm": -1.0,
+                    "@tpfmd": -1.0,
+                    "penalty_func": "auto",
+                    "@tpfam": -1.0
+                }
+            }
+        },
+        {
+            "description": "Set turn attributes",
+            "child_commands": [
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "21100-211108-21100"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "21100-211108-21100": "LINESTRING(482.754585 5456.459658, 482.617129 5456.237575, 482.754585 5456.459658)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "@tpfam",
+                        "element_ids": [
+                            "21100-211108-21100"
+                        ],
+                        "value": 0.0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                },
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "21100-211108-21100"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "21100-211108-21100": "LINESTRING(482.754585 5456.459658, 482.617129 5456.237575, 482.754585 5456.459658)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "@tpfmd",
+                        "element_ids": [
+                            "21100-211108-21100"
+                        ],
+                        "value": 0.0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                },
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "21100-211108-21100"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "21100-211108-21100": "LINESTRING(482.754585 5456.459658, 482.617129 5456.237575, 482.754585 5456.459658)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "@tpfpm",
+                        "element_ids": [
+                            "21100-211108-21100"
+                        ],
+                        "value": 0.0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set turn attributes",
+            "child_commands": [
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "211001-211108-211001"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "211001-211108-211001": "LINESTRING(482.42952 5456.566695, 482.617129 5456.237575, 482.42952 5456.566695)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "@tpfam",
+                        "element_ids": [
+                            "211001-211108-211001"
+                        ],
+                        "value": 0.0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                },
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "211001-211108-211001"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "211001-211108-211001": "LINESTRING(482.42952 5456.566695, 482.617129 5456.237575, 482.42952 5456.566695)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "@tpfmd",
+                        "element_ids": [
+                            "211001-211108-211001"
+                        ],
+                        "value": 0.0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                },
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "211001-211108-211001"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "211001-211108-211001": "LINESTRING(482.42952 5456.566695, 482.617129 5456.237575, 482.42952 5456.566695)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "@tpfpm",
+                        "element_ids": [
+                            "211001-211108-211001"
+                        ],
+                        "value": 0.0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set turn attributes",
+            "child_commands": [
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "211301-211108-211301"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "211301-211108-211301": "LINESTRING(482.801555 5455.914038, 482.617129 5456.237575, 482.801555 5455.914038)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "@tpfam",
+                        "element_ids": [
+                            "211301-211108-211301"
+                        ],
+                        "value": 0.0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                },
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "211301-211108-211301"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "211301-211108-211301": "LINESTRING(482.801555 5455.914038, 482.617129 5456.237575, 482.801555 5455.914038)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "@tpfmd",
+                        "element_ids": [
+                            "211301-211108-211301"
+                        ],
+                        "value": 0.0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                },
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "211301-211108-211301"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "211301-211108-211301": "LINESTRING(482.801555 5455.914038, 482.617129 5456.237575, 482.801555 5455.914038)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "@tpfpm",
+                        "element_ids": [
+                            "211301-211108-211301"
+                        ],
+                        "value": 0.0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set turn attributes",
+            "child_commands": [
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "21110-211108-21110"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "21110-211108-21110": "LINESTRING(482.410733 5456.218738, 482.617129 5456.237575, 482.410733 5456.218738)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "@tpfam",
+                        "element_ids": [
+                            "21110-211108-21110"
+                        ],
+                        "value": 0.0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                },
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "21110-211108-21110"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "21110-211108-21110": "LINESTRING(482.410733 5456.218738, 482.617129 5456.237575, 482.410733 5456.218738)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "@tpfmd",
+                        "element_ids": [
+                            "21110-211108-21110"
+                        ],
+                        "value": 0.0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                },
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "21110-211108-21110"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "21110-211108-21110": "LINESTRING(482.410733 5456.218738, 482.617129 5456.237575, 482.410733 5456.218738)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "@tpfpm",
+                        "element_ids": [
+                            "21110-211108-21110"
+                        ],
+                        "value": 0.0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set turn attributes",
+            "child_commands": [
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "211301-211108-21110"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "211301-211108-21110": "LINESTRING(482.801555 5455.914038, 482.617129 5456.237575, 482.410733 5456.218738)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "penalty_func",
+                        "element_ids": [
+                            "211301-211108-21110"
+                        ],
+                        "value": 0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                },
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "211301-211108-21110"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "211301-211108-21110": "LINESTRING(482.801555 5455.914038, 482.617129 5456.237575, 482.410733 5456.218738)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "@tpfam",
+                        "element_ids": [
+                            "211301-211108-21110"
+                        ],
+                        "value": 0.0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                },
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "211301-211108-21110"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "211301-211108-21110": "LINESTRING(482.801555 5455.914038, 482.617129 5456.237575, 482.410733 5456.218738)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "@tpfmd",
+                        "element_ids": [
+                            "211301-211108-21110"
+                        ],
+                        "value": 0.0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                },
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "211301-211108-21110"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "211301-211108-21110": "LINESTRING(482.801555 5455.914038, 482.617129 5456.237575, 482.410733 5456.218738)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "@tpfpm",
+                        "element_ids": [
+                            "211301-211108-21110"
+                        ],
+                        "value": 0.0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Set turn attributes",
+            "child_commands": [
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "211001-211108-21100"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "211001-211108-21100": "LINESTRING(482.42952 5456.566695, 482.617129 5456.237575, 482.754585 5456.459658)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "penalty_func",
+                        "element_ids": [
+                            "211001-211108-21100"
+                        ],
+                        "value": 0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                },
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "211001-211108-21100"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "211001-211108-21100": "LINESTRING(482.42952 5456.566695, 482.617129 5456.237575, 482.754585 5456.459658)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "@tpfam",
+                        "element_ids": [
+                            "211001-211108-21100"
+                        ],
+                        "value": 0.0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                },
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "211001-211108-21100"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "211001-211108-21100": "LINESTRING(482.42952 5456.566695, 482.617129 5456.237575, 482.754585 5456.459658)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "@tpfmd",
+                        "element_ids": [
+                            "211001-211108-21100"
+                        ],
+                        "value": 0.0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                },
+                {
+                    "extra_geometries": {},
+                    "command": "set_attribute",
+                    "results": {
+                        "changes": {
+                            "modified": {
+                                "TURN": [
+                                    "211001-211108-21100"
+                                ]
+                            }
+                        },
+                        "geometries": {
+                            "TURN": {
+                                "211001-211108-21100": "LINESTRING(482.42952 5456.566695, 482.617129 5456.237575, 482.754585 5456.459658)"
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "attribute_name": "@tpfpm",
+                        "element_ids": [
+                            "211001-211108-21100"
+                        ],
+                        "value": 0.0,
+                        "element_type": "TURN",
+                        "new_turn_attributes": {
+                            "@tpfpm": -1.0,
+                            "@tpfmd": -1.0,
+                            "penalty_func": "auto",
+                            "@tpfam": -1.0
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "version": "F8A1BCA0-D0A1-49a1-9A43-6769D2312D7D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 1 0 0",
+    "type": "NETWORK_BUILD",
+    "metadata": {
+        "projection": "PROJCS[\"WGS_84_UTM_10N_vancouver_special\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",500.0],PARAMETER[\"False_Northing\",0],PARAMETER[\"Central_Meridian\",-123.0],PARAMETER[\"Scale_Factor\",0.9996],PARAMETER[\"Latitude_Of_Origin\",0.0],UNIT[\"Kilometer\",1000.0]]",
+        "emmebank_path": "C:/KristinaK/_R2U_Phase2/RTM/UBCx_Ph2_2035Alt_4C_2020-12-31/emmebank",
+        "comments": "",
+        "scenario_title": "2035 Alt 4C",
+        "author_initials": "none",
+        "scenario_number": "3730",
+        "time": "16:11:23",
+        "date": "2021-02-10",
+        "project_title": "UBCx_Ph2_2035Alt_4C_2020-12-31"
+    }
+}
