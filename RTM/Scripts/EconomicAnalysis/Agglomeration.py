@@ -129,7 +129,7 @@ class ComputeAgglomeration(_m.Tool()):
         # elasticity_list = {sector: elasticity}
         # source: Graham et al. UK
         elasticity_list = {"ConMfg":   0.026,
-                           "Fire":     0.043,
+                           "Fire":     0.083,
                            "TcuWh":    0.024,
                            "Ret":      0.024,
                            "BoS":      0.083,
