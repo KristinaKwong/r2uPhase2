@@ -1,6 +1,6 @@
 292ED8A4-37FA-4242-AE4E-D78DB768CA1D 07B0F5AD-A2A7-4B4E-B4A9-06EB441586D6 2 0 0
-# Emme table generated on Tue Feb 16 14:49:45 2021
-# File: E:/2121-00651_UBCx_MAE/Worksheets/TransitVolume_UBCScreenline.emt
+# Emme table generated on Tue Feb 23 08:54:03 2021
+# File: E:/2121-00651_UBCx_MAE_v2/RTM/Worksheets/MAE/TransitVolume_UBCScreenline.emt
 #
 [transit segments]
 # String Name: table name that appears in the table header (tr,subst)
@@ -25,4 +25,5 @@ ColumnDef[] = Route;transit line;6;0;line;0;;0;90
 ColumnDef[] = i;I-node of segment;7;0;i;0;;0;0
 ColumnDef[] = j;J-node of segment;7;0;j;0;;0;0
 ColumnDef[] = Volume;Average Transit Segment Volume;8;2;@voltravg;0;;0;0
+ColumnDef[] = Capacity;;8;2;@totcapacity;0;;0;0
 
