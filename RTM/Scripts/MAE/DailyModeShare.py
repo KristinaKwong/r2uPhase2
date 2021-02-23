@@ -55,7 +55,7 @@ class DailyTripsbyMode(_m.Tool()):
             print("%s: %.1f"%(title, trip_total))
             break
             
-    def getDemand(self, eb, filter_vector=None):
+    def getDemand(self, eb, filter_vector=None, export_vector=False):
         util = _m.Modeller().tool("translink.util")
         SOV_matrix_list = []
         SOV_matrix_list += [3000, 3001, 3002, 3100, 3300, 3301, 3302, 3400, 3401, 3402]         
@@ -137,6 +137,19 @@ class DailyTripsbyMode(_m.Tool()):
         print("Transit: %.0f"%(Sum_Transit*filter).sum())
         print("Walk: %.0f"%(Sum_Walk*filter).sum())
         print("Bike: %.0f"%(Sum_Bike*filter).sum())
+        
+        if export_vector:
+            trips_by_mode_Dict = {"AutoDriver_byOrig": np.sum(Sum_Driver*filter, axis=1),
+                                  "AutoPassenger_byOrig": np.sum(Sum_Passenger*filter, axis=1),
+                                  "Transit_byOrig": np.sum(Sum_Transit*filter, axis=1),
+                                  "Walk_byOrig": np.sum(Sum_Walk*filter, axis=1),
+                                  "Bike_byOrig": np.sum(Sum_Bike*filter, axis=1),
+                                  "AutoDriver_byDest": np.sum(Sum_Driver*filter, axis=0),
+                                  "AutoPassenger_byDest": np.sum(Sum_Passenger*filter, axis=0),
+                                  "Transit_byDest": np.sum(Sum_Transit*filter, axis=0),
+                                  "Walk_byDest": np.sum(Sum_Walk*filter, axis=0),
+                                  "Bike_byDest": np.sum(Sum_Bike*filter, axis=0)}
+            return trips_by_mode_Dict
         
         trips_by_mode_Dict = {"Auto Driver": (Sum_Driver*filter).sum(),
                               "Auto Passenger": (Sum_Passenger*filter).sum(),
