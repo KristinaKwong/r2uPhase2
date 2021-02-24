@@ -1,20 +1,20 @@
-Item,Account,Sub-Objective,Measures ,Geographic Scale,Temporal Scale,Calc
-A1,Customer Service & Experience,Reduce Travel Times,Annual System-wide Transit travel time savings,TAZ level,Annual,"BAU demand x reduction in transit time AM, MD, PM --> daily --> annual Then summed to origin OD level, or TAZ output directly from logsum calc"
-A3,Customer Service & Experience,Improve safety and security,Reduction of accidents due to reduced VKT,Scalar for region wide Calc,Life Cycle of Project,Exact way being used in BCR calc
-A4a,Customer Service & Experience,Reduce Road Congestion,Annual travel time savings (hours) for auto,TAZ level,Annual,"BAU demand x reduction in auto time AM, MD, PM --> daily --> annual Then summed to origin OD level, or TAZ output directly from logsum calc"
-A4b,Customer Service & Experience,Reduce Road Congestion,Reduction in auto delay along the corridor for the peak direction (min) ,Broadway from Commerical Drive to UBC,AM and PM (both directions),Vehicle minutes of BAU minus Vehicle minutes of project
-B1,Transportation,Increase Ridership,New Daily Transit Trips,Region-wide scalar,Daily,Scenario minus BAU daily transit trips
-B2,Transportation,Increase sustainable Mode share,Mode share for non-driving modes,TAZ level,Daily,Take PA daily trips-> convert to OD and summarize sustainable mode share at origin level
-B3,Transportation,Increase capacity to meet future needs,Crowding on parallel routes ,UBC Screenline,AM-WB  ,modelled volume and capacity for bus routes across UBC screenline
+Item,Account,Sub-Objective,Measures ,Geographic Scale,Temporal Scale
+A1,Customer Service & Experience,Reduce Travel Times,Annual System-wide Transit travel time savings,TAZ level,Annual
+A3,Customer Service & Experience,Improve safety and security,Reduction of accidents due to reduced VKT,Scalar for region wide Calc,Life Cycle of Project
+A4a,Customer Service & Experience,Reduce Road Congestion,Annual travel time savings (hours) for auto,TAZ level,Annual
+A4b,Customer Service & Experience,Reduce Road Congestion,Reduction in auto delay along the corridor for the peak direction (min) ,Broadway from Commerical Drive to UBC,AM and PM (both directions)
+B1,Transportation,Increase Ridership,New Daily Transit Trips,Region-wide scalar,Daily
+B2,Transportation,Increase sustainable Mode share,Mode share for non-driving modes,TAZ level,Daily
+B3,Transportation,Increase capacity to meet future needs,Crowding on parallel routes ,UBC Screenline,AM-WB  
 B4,Transportation,Connect people with places,"Specifically for UBC as a destination
 
 Travelshed analysis representing 45/60 min transit trip for:
 -	Residents
--	Jobs",TAZ level ,AM peak hour  ,Transit travel time to/from select UBC TAZs
-C1a,"Social, Community and Environment",Reduce GHG and CAC emissions ,System-wide VKT reduction and VKT reduction/capita ,Region-wide scalar,Annual,Exact way being used in BCR calc
-C1b,"Social, Community and Environment",Reduce GHG and CAC emissions ,Total expected reduction in GHG emissions (tonnes of CO2) and CACs during project life cycle,Region-wide scalar,Life Cycle of Project,"Already being done for BCR, need to add CACs to calc"
+-	Jobs",TAZ level ,AM peak hour  
+C1a,"Social, Community and Environment",Reduce GHG and CAC emissions ,System-wide VKT reduction and VKT reduction/capita ,Region-wide scalar,Annual
+C1b,"Social, Community and Environment",Reduce GHG and CAC emissions ,Total expected reduction in GHG emissions (tonnes of CO2) and CACs during project life cycle,Region-wide scalar,Life Cycle of Project
 C3,"Social, Community and Environment",Support Social Equity and Distribution of Benefits ,"Travelshed analysis
--	Jobs within 45/60-min catchment of lower income neighbourhoods",TAZ level ,AM peak hour,travel time from select TAZs with known low income neighborhoods. There is potential to add logsum based accessibility measure
+-	Jobs within 45/60-min catchment of lower income neighbourhoods",TAZ level ,AM peak hour
 C3_HH,"Social, Community and Environment",Support Social Equity and Distribution of Benefits ,"Travelshed analysis
--	Jobs within 45/60-min catchment of lower income neighbourhoods",TAZ level ,AM peak hour,travel time from select TAZs with known low income neighborhoods. There is potential to add logsum based accessibility measure
-D3,Economic Development,Reduce truck travel time,Daily (change to annual) truck travel time savings,Region-wide scalar,annual,"BAU demand x reduction in truck time AM, MD, PM --> daily "
+-	Jobs within 45/60-min catchment of lower income neighbourhoods",TAZ level ,AM peak hour
+D3,Economic Development,Reduce truck travel time,Daily (change to annual) truck travel time savings,Region-wide scalar,annual
