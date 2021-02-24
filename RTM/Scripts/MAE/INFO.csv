@@ -15,4 +15,6 @@ C1a,"Social, Community and Environment",Reduce GHG and CAC emissions ,System-wid
 C1b,"Social, Community and Environment",Reduce GHG and CAC emissions ,Total expected reduction in GHG emissions (tonnes of CO2) and CACs during project life cycle,Region-wide scalar,Life Cycle of Project,"Already being done for BCR, need to add CACs to calc"
 C3,"Social, Community and Environment",Support Social Equity and Distribution of Benefits ,"Travelshed analysis
 -	Jobs within 45/60-min catchment of lower income neighbourhoods",TAZ level ,AM peak hour,travel time from select TAZs with known low income neighborhoods. There is potential to add logsum based accessibility measure
+C3_HH,"Social, Community and Environment",Support Social Equity and Distribution of Benefits ,"Travelshed analysis
+-	Jobs within 45/60-min catchment of lower income neighbourhoods",TAZ level ,AM peak hour,travel time from select TAZs with known low income neighborhoods. There is potential to add logsum based accessibility measure
 D3,Economic Development,Reduce truck travel time,Daily (change to annual) truck travel time savings,Region-wide scalar,annual,"BAU demand x reduction in truck time AM, MD, PM --> daily "
