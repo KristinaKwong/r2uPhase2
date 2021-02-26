@@ -124,8 +124,8 @@ class DailyTripsbyMode(_m.Tool()):
         
         #Apply Study Area Filter
         Zone_Ensemble = util.get_matrix_numpy(eb, "mo99")
-        if filter_vector==None:
-            filter_vector = 1+np.zeros((NoTAZ,NoTAZ))
+        # if filter_vector is None:
+            # filter_vector = 1+np.zeros((NoTAZ,NoTAZ))
         #filter_vector = np.where(Zone_Ensemble==210,1,0)+np.zeros((NoTAZ,NoTAZ))
         #filter = filter_vector #trip originated from study area
         #filter = np.transpose(filter_vector) #trip destinated in study area
